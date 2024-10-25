@@ -978,6 +978,20 @@
 		drive-strength = <8>;
 		input-enable;
 	};
+	
+	ts_reset_suspend: ts_reset_suspend-state {
+		pins = "gpio24";
+		function = "gpio";
+		bias-pull-down;
+		drive-strength = <2>;
+	};
+
+	ts_int_suspend: ts_int_suspend-state {
+		pins = "gpio25";
+		function = "gpio";
+		bias-pull-down;
+		drive-strength = <2>;
+	};
 
 	wlan_en: wlan-en-state {
 		pins = "gpio80";
@@ -1002,25 +1016,66 @@
 		};
 	};
 
-	bq27541_id_not_pull: bq27541_id_not_pull-state {
-		pins = "gpio73";
-		function = "gpio";
-		drive-strength = <2>;
-		bias-disable;
+	bq27541_default: bq27541-default-state {
+		bq27541_id_not_pull: bq27541_id_not_pull-state {
+			pins = "gpio73";
+			function = "gpio";
+			drive-strength = <2>;
+			bias-disable;
+		};
+		
+		bq27541_id_pull_up: bq27541_id_pull_up-state {
+			pins = "gpio73";
+			function = "gpio";
+			drive-strength = <2>;
+			bias-pull-up;
+		};
+		
+		bq27541_id_pull_down: bq27541_id_pull_down-state {
+			pins = "gpio73";
+			function = "gpio";
+			drive-strength = <2>;
+			bias-pull-down;
+		};
 	};
 	
-	bq27541_id_pull_up: bq27541_id_pull_up-state {
-		pins = "gpio73";
-		function = "gpio";
-		drive-strength = <2>;
-		bias-pull-up;
-	};
-	
-	bq27541_id_pull_down: bq27541_id_pull_down-state {
-		pins = "gpio73";
-		function = "gpio";
-		drive-strength = <2>;
-		bias-pull-down;
+	nfc_default: nfc-default-state {
+		nfc_int_active: nfc_int_active-state {
+			pins = "gpio55";
+			function = "gpio";
+			drive-strength = <2>;
+			bias-pull-up;
+		};
+		nfc_enable_active: nfc_enable_active-state {
+			pins = "gpio30";
+			function = "gpio";
+			drive-strength = <2>;
+			bias-pull-up;
+		};
+		nfc_clk_req_active: nfc_clk_req_active-state {
+			pins = "gpio31";
+			function = "gpio";
+			drive-strength = <2>;
+			bias-pull-up;
+		};
+		nfc_int_suspend: nfc_int_suspend-state {
+			pins = "gpio55";
+			function = "gpio";
+			drive-strength = <2>;
+			bias-pull-up;
+		};
+		nfc_enable_suspend: nfc_enable_suspend-state {
+			pins = "gpio30";
+			function = "gpio";
+			drive-strength = <2>;
+			bias-disable;
+		};
+		nfc_clk_req_suspend: nfc_clk_req_suspend-state {
+			pins = "gpio31";
+			function = "gpio";
+			drive-strength = <2>;
+			bias-disable;
+		};
 	};
 };
 
@@ -1048,6 +1103,13 @@
 
 &usb_1_dwc3_hs {
 	remote-endpoint = <&pmic_glink_hs_in>;
+};
+
+&usb_1_dwc3 {
+	snps,disable-clk-gating;
+	snps,ssp-u3-u0-quirk;
+	dr_mode = "otg";
+	maximum-speed = "high-speed";
 };
 
 &usb_1_hsphy {
@@ -1207,6 +1269,27 @@
 	};
 };
 
+&i2c0 {
+	status = "okay";
+	nfc: sn-nci@28 {
+		compatible = "qcom,sn-nci", "nxp,nxp-nci-i2c";
+		reg = <0x28>;
+		qcom,sn-irq = <&tlmm 55 0x00>;
+		enable-gpios = <&tlmm 30 0x00>;
+		//qcom,sn-firm = <&tlmm 86 0x00>;
+		qcom,sn-clkreq = <&tlmm 31 0x00>;
+		//qcom,clk-src = "BBCLK2";
+		interrupt-parent = <&tlmm>;
+		interrupts = <55 0>;
+		interrupt-names = "nfc_irq";
+		pinctrl-names = "default","sleep";
+		pinctrl-0 = <&nfc_int_active &nfc_enable_active &nfc_clk_req_active>;
+		pinctrl-1 = <&nfc_int_suspend &nfc_enable_suspend &nfc_clk_req_suspend>;
+		//clocks = <&clock_rpm clk_bb_clk2_pin>;
+		//clock-names = "ref_clk";
+	};
+};
+
 &spi4 {
 	status = "okay";
 	synaptics_tcm_hbp@0 {
@@ -1229,8 +1312,13 @@
 		/* Other HW Resource */
 		synaptics,irq-gpio = <&tlmm 25 0x2008>;
 		synaptics,reset-gpio = <&tlmm 24 0x1>;
-		pinctrl-names = "default";
+		pinctrl-names = "ts_spi_active", "ts_spi_suspend";
 		pinctrl-0 = <&ts_int_active &ts_reset_active>;
+		pinctrl-1 = <&ts_int_suspend &ts_reset_suspend>;
+		
+		platform_support_project = <0x5cf9 0x5d35 0x5d36 0x5d37>;
+		platform_support_project_dir = <0x5cf9 0x5cf9 0x5cf9 0x5cf9>;
+		platform_support_project_commandline = "mdss_dsi_panel_AA551_P_3_A0004_dsc_cmd", "mdss_dsi_panel_AA545_P_2_A0007_dsc_cmd";
 
 		touchpanel,panel-coords = <20224 44480>;
 		touchpanel,tx-rx-num = <17 38>;
