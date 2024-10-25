@@ -117,9 +117,9 @@ static void report_point(struct touchpanel_data *ts, struct touch_point_report *
 		if ((points[i].report_bit)&REPORT_Y) {
 			input_report_abs(ts->input_dev, ABS_MT_POSITION_Y, points[i].y);
 		}
-		if ((points[i].report_bit)&REPORT_PRESS) {
-			input_report_abs(ts->input_dev, ABS_MT_PRESSURE, points[i].press);
-		}
+		//if ((points[i].report_bit)&REPORT_PRESS) {
+		//	input_report_abs(ts->input_dev, ABS_MT_PRESSURE, points[i].press);
+		//}
 		if ((points[i].report_bit)&REPORT_TMAJOR) {
 			input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR, points[i].touch_major);
 		}
@@ -173,9 +173,9 @@ static void report_point_ext(struct touchpanel_data *ts, struct touch_point_repo
 		if ((points[i].report_bit)&REPORT_Y) {
 			input_report_abs(ts->input_dev, ABS_MT_POSITION_Y, points[i].y);
 		}
-		if ((points[i].report_bit)&REPORT_PRESS) {
-			input_report_abs(ts->input_dev, ABS_MT_PRESSURE, points[i].press);
-		}
+		//if ((points[i].report_bit)&REPORT_PRESS) {
+		//	input_report_abs(ts->input_dev, ABS_MT_PRESSURE, points[i].press);
+		//}
 		if ((points[i].report_bit)&REPORT_TMAJOR) {
 			input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR, points[i].touch_major);
 		}

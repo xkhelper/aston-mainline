@@ -821,14 +821,14 @@ static int syna_dev_create_input_device(struct syna_tcm *tcm)
 	set_bit(EV_ABS, input_dev->evbit);
 
 	set_bit(ABS_MT_TOUCH_MAJOR, input_dev->absbit);
-	set_bit(ABS_MT_WIDTH_MAJOR, input_dev->absbit);
+	//set_bit(ABS_MT_WIDTH_MAJOR, input_dev->absbit);
 	set_bit(ABS_MT_POSITION_X, input_dev->absbit);
 	set_bit(ABS_MT_POSITION_Y, input_dev->absbit);
-	set_bit(ABS_MT_PRESSURE, input_dev->absbit);
+	//set_bit(ABS_MT_PRESSURE, input_dev->absbit);
 	set_bit(ABS_MT_TOOL_TYPE, input_dev->absbit);
-	set_bit(ABS_TOUCH_COST_TIME_KERNEL, input_dev->absbit);
-	set_bit(ABS_TOUCH_COST_TIME_ALGO, input_dev->absbit);
-	set_bit(ABS_TOUCH_COST_TIME_DAEMON, input_dev->absbit);
+	//set_bit(ABS_TOUCH_COST_TIME_KERNEL, input_dev->absbit);
+	//set_bit(ABS_TOUCH_COST_TIME_ALGO, input_dev->absbit);
+	//set_bit(ABS_TOUCH_COST_TIME_DAEMON, input_dev->absbit);
 
 	set_bit(BTN_TOUCH, input_dev->keybit);
 	set_bit(BTN_TOOL_FINGER, input_dev->keybit);
@@ -857,6 +857,7 @@ static int syna_dev_create_input_device(struct syna_tcm *tcm)
 			ABS_MT_TOUCH_MINOR, 0, 255, 0, 0);
 #endif
 
+	input_set_abs_params(input_dev, ABS_PROFILE, 0, 1, 0, 0);
 	tcm->input_dev_params.max_x = tcm_dev->max_x;
 	tcm->input_dev_params.max_y = tcm_dev->max_y;
 	tcm->input_dev_params.max_objects = tcm_dev->max_objects;

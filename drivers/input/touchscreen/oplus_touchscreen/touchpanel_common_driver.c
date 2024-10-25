@@ -341,9 +341,9 @@ static void tp_touch_down(struct touchpanel_data *ts, struct point_info points, 
                 }
             }
 
-            if (ts->pressure_report_support) {
-                input_report_abs(ts->input_dev, ABS_MT_PRESSURE, points.touch_major);   //add for fixing gripview tap no function issue
-            }
+            //if (ts->pressure_report_support) {
+            //    input_report_abs(ts->input_dev, ABS_MT_PRESSURE, points.touch_major);   //add for fixing gripview tap no function issue
+            //}
         }
         if(!CHK_BIT(ts->irq_slot, (1 << id))) {
             TPD_DETAIL("first touch point id %d [%4d %4d %4d %4d %4d %4d %4d]\n", id, points.x, points.y, points.z,
@@ -1028,10 +1028,10 @@ static void tp_touch_handle(struct touchpanel_data *ts)
 #ifdef TYPE_B_PROTOCOL
             else {
                 input_mt_slot(ts->input_dev, i);
-                if (ts->kernel_grip_support && ts->grip_info && ts->grip_info->eli_reject_status[i]
-                    && !(ts->grip_info->grip_disable_level & (1 << GRIP_DISABLE_UP2CANCEL))) {
-                    input_report_abs(ts->input_dev, ABS_MT_PRESSURE, UP2CANCEL_PRESSURE_VALUE);
-                }
+                //if (ts->kernel_grip_support && ts->grip_info && ts->grip_info->eli_reject_status[i]
+                //    && !(ts->grip_info->grip_disable_level & (1 << GRIP_DISABLE_UP2CANCEL))) {
+                //    input_report_abs(ts->input_dev, ABS_MT_PRESSURE, UP2CANCEL_PRESSURE_VALUE);
+                //}
                 input_mt_report_slot_state(ts->input_dev, MT_TOOL_FINGER, 0);
             }
 #endif
@@ -6784,7 +6784,7 @@ static int init_input_device(struct touchpanel_data *ts)
     set_bit(ABS_MT_WIDTH_MAJOR, ts->input_dev->absbit);
     set_bit(ABS_MT_POSITION_X, ts->input_dev->absbit);
     set_bit(ABS_MT_POSITION_Y, ts->input_dev->absbit);
-    set_bit(ABS_MT_PRESSURE, ts->input_dev->absbit);
+    //set_bit(ABS_MT_PRESSURE, ts->input_dev->absbit);
     set_bit(INPUT_PROP_DIRECT, ts->input_dev->propbit);
     set_bit(BTN_TOUCH, ts->input_dev->keybit);
 	if (ts->palm_to_sleep_support) {

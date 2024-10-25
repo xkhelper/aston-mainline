@@ -73,9 +73,9 @@ static void touch_algoithm_click_down(struct touchpanel_data *ts)
             input_report_key(ts->input_dev, BTN_TOOL_FINGER, 1);
             input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR, point_buf->down_point.z);
             input_report_abs(ts->input_dev, ABS_MT_WIDTH_MAJOR, point_buf->down_point.z);
-            if (ts->pressure_report_support) {
-                input_report_abs(ts->input_dev, ABS_MT_PRESSURE, point_buf->down_point.z);   //add for fixing gripview tap no function issue
-            }
+            //if (ts->pressure_report_support) {
+            //    input_report_abs(ts->input_dev, ABS_MT_PRESSURE, point_buf->down_point.z);   //add for fixing gripview tap no function issue
+            //}
             input_report_abs(ts->input_dev, ABS_MT_POSITION_X, point_buf->down_point.x);
             input_report_abs(ts->input_dev, ABS_MT_POSITION_Y, point_buf->down_point.y);
 #endif
