@@ -124,6 +124,5 @@ obj-$(CONFIG_TOUCHSCREEN_HIMAX_HX83112B)	+= himax_hx83112b.o
 obj-$(CONFIG_TOUCHPANEL_OPLUS) += oplus_touchscreen_v2/
 obj-y += synaptics_hbp/
 obj-y += kernelFwUpdate/
-obj-y += oplus_touchscreen_v2/touch_custom/
 obj-y += touchpanel_notify/
 

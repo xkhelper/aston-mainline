@@ -29,17 +29,7 @@
  * DOLLARS.
  */
 
-/**
- * @file syna_tcm2_platform_spi.c
- *
- * This file is the reference code of I2C module used for communicating with
- * Synaptics TouchCom device using I2C
- */
-
 #include <linux/spi/spi.h>
-#ifdef CONFIG_TOUCHPANEL_MTK_PLATFORM
-#include <linux/platform_data/spi-mt65xx.h>
-#endif
 #include "syna_tcm2.h"
 #include <linux/pinctrl/consumer.h>
 #include "syna_tcm2_platform.h"
@@ -55,14 +45,7 @@ static struct spi_transfer *xfer;
 
 struct platform_device *syna_spi_device;
 
-/**
- * @brief FOR TUNE DEBUG LOG
- * 0 -- disable (default)
- * 1 -- read all the report and response
- * 2 -- don't print the report except identify report
- * 3 -- don't print the report (>REPORT_TOUCH)
- */
-int tune_debug_enable = 0;//FOR_LOG_DEBUG
+int tune_debug_enable = 0;
 module_param_named(tune_debug_enable, tune_debug_enable, int, S_IRUGO | S_IWUSR | S_IWGRP);
 
 #define SYNA_SPI_TRANSFER_READ 0
@@ -88,14 +71,10 @@ static void syna_print_xfer_data(unsigned char *data, unsigned int length, unsig
 	}
 
 	if(tune_debug_enable == 1) {
-		// print all the report and response
-		// print all the write data
 	} else if (tune_debug_enable == 2) {
-		/* skip all the report data except identify report */
 		if (((code == STATUS_CONTINUED_READ) && (last_code > REPORT_IDENTIFY) ) || (code > REPORT_IDENTIFY))
 			goto exit;
 	} else if (tune_debug_enable == 3) {
-		/* skip all the report (> REPORT_TOUCH) */
 		if (((code == STATUS_CONTINUED_READ) && (last_code > REPORT_TOUCH) ) || (code > REPORT_TOUCH))
 			goto exit;
 	} else {
@@ -109,7 +88,6 @@ static void syna_print_xfer_data(unsigned char *data, unsigned int length, unsig
 	for (i = 0; i < length; i++) {
 		left = SYNA_SPI_PRINT_BUF_SIZE - offset;
 		if (left <= SYNA_SPI_PRINT_BUF_LEFT_SIZE) {
-			//LOGI("There is unprinted data\n");
 			break;
 		}
 		cnt = snprintf(print_buf + offset, SYNA_SPI_PRINT_BUF_SIZE - offset, "%02x ", data[i]);
@@ -124,17 +102,6 @@ exit:
 	return;
 }
 
-/**
- * syna_request_managed_device()
- *
- * Request and return the device pointer for managed
- *
- * @param
- *     none.
- *
- * @return
- *     a device pointer allocated previously
- */
 #if defined(DEV_MANAGED_API) || defined(USE_DRM_PANEL_NOTIFIER)
 struct device *syna_request_managed_device(void)
 {
@@ -145,17 +112,6 @@ struct device *syna_request_managed_device(void)
 }
 #endif
 
-/**
- * syna_spi_hw_reset()
- *
- * Toggle the hardware gpio pin to perform the chip reset
- *
- * @param
- *    [ in] hw_if: the handle of hw interface
- *
- * @return
- *     none.
- */
 static void syna_spi_hw_reset(struct syna_hw_interface *hw_if)
 {
 	struct syna_hw_rst_data *rst = &hw_if->bdata_rst;
@@ -174,20 +130,6 @@ static void syna_spi_hw_reset(struct syna_hw_interface *hw_if)
 	}
 }
 
-/**
- * syna_spi_request_gpio()
- *
- * Setup the given gpio
- *
- * @param
- *    [ in] gpio:   the target gpio
- *    [ in] config: '1' for setting up, and '0' to release the gpio
- *    [ in] dir:    default direction of gpio
- *    [ in] state:  default state of gpio
- *
- * @return
- *    on success, 0; otherwise, negative value on error.
- */
 static int syna_spi_request_gpio(int gpio, bool config, int dir,
 		int state, char *label)
 {
@@ -214,11 +156,7 @@ static int syna_spi_request_gpio(int gpio, bool config, int dir,
 			LOGE("Fail to set GPIO label\n");
 			return retval;
 		}
-#ifdef DEV_MANAGED_API
-		retval = devm_gpio_request(dev, gpio, label);
-#else /* Legacy API */
 		retval = gpio_request(gpio, label);
-#endif
 		if (retval < 0) {
 			LOGE("Fail to request GPIO %d\n", gpio);
 			return retval;
@@ -234,34 +172,18 @@ static int syna_spi_request_gpio(int gpio, bool config, int dir,
 			return retval;
 		}
 	} else {
-#ifdef DEV_MANAGED_API
-		devm_gpio_free(dev, gpio);
-#else /* Legacy API */
 		gpio_free(gpio);
-#endif
 	}
 
 	return 0;
 }
 
-/**
- * syna_spi_release_gpio()
- *
- * Release the GPIOs requested previously
- *
- * @param
- *    [ in] hw_if: the handle of hw interface
- *
- * @return
- *    none
- */
 static void syna_spi_release_gpio(struct syna_hw_interface *hw_if)
 {
 	struct syna_hw_attn_data *attn = &hw_if->bdata_attn;
 	struct syna_hw_rst_data *rst = &hw_if->bdata_rst;
 	struct syna_hw_bus_data *bus = &hw_if->bdata_io;
 
-	/* release gpios */
 	if (rst->reset_gpio >= 0)
 		syna_spi_request_gpio(rst->reset_gpio, false, 0, 0, NULL);
 	if (attn->irq_gpio >= 0)
@@ -288,17 +210,6 @@ err_active_pinctrl:
 	return retval;
 }
 
-/**
- * syna_spi_config_gpio()
- *
- * Initialize the GPIOs defined in device tree
- *
- * @param
- *    [ in] hw_if: the handle of hw interface
- *
- * @return
- *    on success, 0; otherwise, negative value on error.
- */
 static int syna_spi_config_gpio(struct syna_hw_interface *hw_if)
 {
 	int retval;
@@ -352,18 +263,7 @@ err_set_gpio_reset:
 err_set_gpio_irq:
 	return retval;
 }
-/**
- * syna_spi_enable_pwr_gpio()
- *
- * Helper to enable power supply through GPIO
- *
- * @param
- *    [ in] hw_if: the handle of hw interface
- *    [ in] en:    '1' for enabling, and '0' for disabling
- *
- * @return
- *    none
- */
+
 static int syna_spi_enable_pwr_gpio(struct syna_hw_interface *hw_if,
 		bool en)
 {
@@ -392,18 +292,6 @@ static int syna_spi_enable_pwr_gpio(struct syna_hw_interface *hw_if,
 	return ret;
 }
 
-/**
- * syna_spi_enable_regulator()
- *
- * Enable or disable the regulator
- *
- * @param
- *    [ in] hw_if: the handle of hw interface
- *    [ in] en:    '1' for enabling, and '0' for disabling
- *
- * @return
- *    on success, 0; otherwise, negative value on error.
- */
 static int syna_spi_enable_regulator(struct syna_hw_interface *hw_if,
 		bool en)
 {
@@ -449,18 +337,6 @@ exit:
 	return retval;
 }
 
-/**
- * syna_spi_power_on()
- *
- * Power on touch controller through regulators or gpios for PWM
- *
- * @param
- *    [ in] hw_if: the handle of hw interface
- *    [ in] en:    '1' for powering on, and '0' for powering off
- *
- * @return
- *    on success, 0; otherwise, negative value on error.
- */
 static int syna_spi_power_on(struct syna_hw_interface *hw_if,
 		bool en)
 {
@@ -490,18 +366,6 @@ static int syna_spi_power_on(struct syna_hw_interface *hw_if,
 	return 0;
 }
 
-/**
- * syna_spi_get_regulator()
- *
- * Acquire or release the regulator
- *
- * @param
- *    [ in] hw_if: the handle of hw interface
- *    [ in] get:   '1' for getting the regulator, and '0' for removing
- *
- * @return
- *    on success, 0; otherwise, negative value on error.
- */
 static int syna_spi_get_regulator(struct syna_hw_interface *hw_if,
 		bool get)
 {
@@ -517,11 +381,7 @@ static int syna_spi_get_regulator(struct syna_hw_interface *hw_if,
 	}
 
 	if (pwr->vdd_reg_name != NULL && *pwr->vdd_reg_name != 0) {
-#ifdef DEV_MANAGED_API
-		pwr->vdd_reg_dev = devm_regulator_get(dev, pwr->vdd_reg_name);
-#else /* Legacy API */
 		pwr->vdd_reg_dev = regulator_get(dev, pwr->vdd_reg_name);
-#endif
 		if (IS_ERR((struct regulator *)pwr->vdd_reg_dev)) {
 			LOGE("Vdd regulator is not ready\n");
 			retval = PTR_ERR((struct regulator *)pwr->vdd_reg_dev);
@@ -544,11 +404,7 @@ static int syna_spi_get_regulator(struct syna_hw_interface *hw_if,
 	}
 
 	if (pwr->avdd_reg_name != NULL && *pwr->avdd_reg_name != 0) {
-#ifdef DEV_MANAGED_API
-		pwr->avdd_reg_dev = devm_regulator_get(dev, pwr->avdd_reg_name);
-#else /* Legacy API */
 		pwr->avdd_reg_dev = regulator_get(dev, pwr->avdd_reg_name);
-#endif
 		if (IS_ERR((struct regulator *)pwr->avdd_reg_dev)) {
 			LOGW("AVdd regulator is not ready\n");
 			retval = PTR_ERR((struct regulator *)pwr->avdd_reg_dev);
@@ -574,37 +430,18 @@ static int syna_spi_get_regulator(struct syna_hw_interface *hw_if,
 
 regulator_put:
 	if (pwr->vdd_reg_dev) {
-#ifdef DEV_MANAGED_API
-		devm_regulator_put(pwr->vdd_reg_dev);
-#else /* Legacy API */
 		regulator_put(pwr->vdd_reg_dev);
-#endif
 		pwr->vdd_reg_dev = NULL;
 	}
 regulator_vdd_put:
 	if (pwr->avdd_reg_dev) {
-#ifdef DEV_MANAGED_API
-		devm_regulator_put(pwr->avdd_reg_dev);
-#else /* Legacy API */
 		regulator_put(pwr->avdd_reg_dev);
-#endif
 		pwr->avdd_reg_dev = NULL;
 	}
 exit:
 	return retval;
 }
 
-/**
- * syna_spi_config_psu()
- *
- * Initialize the power supply unit
- *
- * @param
- *    [ in] hw_if: the handle of hw interface
- *
- * @return
- *    on success, 0; otherwise, negative value on error.
- */
 static int syna_spi_config_psu(struct syna_hw_interface *hw_if)
 {
 	int retval;
@@ -613,7 +450,6 @@ static int syna_spi_config_psu(struct syna_hw_interface *hw_if)
 	struct syna_hw_pwr_data *pwr = &hw_if->bdata_pwr;
 
 	if (pwr->psu == PSU_GPIO) {
-		/* set up power gpio */
 		if (pwr->vdd_gpio >= 0) {
 			retval = syna_spi_request_gpio(pwr->vdd_gpio,
 					true, 1, !pwr->power_on_state,
@@ -639,7 +475,6 @@ static int syna_spi_config_psu(struct syna_hw_interface *hw_if)
 			}
 		}
 	} else {
-		/* set up regulator */
 		retval = syna_spi_get_regulator(hw_if, true);
 		if (retval < 0) {
 			LOGE("Fail to configure regulators\n");
@@ -650,17 +485,6 @@ static int syna_spi_config_psu(struct syna_hw_interface *hw_if)
 	return 0;
 }
 
-/**
- * syna_spi_release_psu()
- *
- * Release the power supply unit
- *
- * @param
- *    [ in] hw_if: the handle of hw interface
- *
- * @return
- *    on success, 0; otherwise, negative value on error.
- */
 static int syna_spi_release_psu(struct syna_hw_interface *hw_if)
 {
 	struct syna_hw_pwr_data *pwr = &hw_if->bdata_pwr;
@@ -675,18 +499,6 @@ static int syna_spi_release_psu(struct syna_hw_interface *hw_if)
 	return 0;
 }
 
-/**
- * syna_spi_enable_irq()
- *
- * Enable or disable the handling of interrupt
- *
- * @param
- *    [ in] hw_if: the handle of hw interface
- *    [ in] en:    '1' for enabling, and '0' for disabling
- *
- * @return
- *    0 on success; otherwise, on error.
- */
 static int syna_spi_enable_irq(struct syna_hw_interface *hw_if,
 		bool en)
 {
@@ -698,7 +510,6 @@ static int syna_spi_enable_irq(struct syna_hw_interface *hw_if,
 
 	syna_pal_mutex_lock(&attn->irq_en_mutex);
 
-	/* enable the handling of interrupt */
 	if (en) {
 		if (attn->irq_enabled) {
 			LOGD("Interrupt already enabled\n");
@@ -711,7 +522,6 @@ static int syna_spi_enable_irq(struct syna_hw_interface *hw_if,
 
 		LOGD("Interrupt enabled\n");
 	}
-	/* disable the handling of interrupt */
 	else {
 		if (!attn->irq_enabled) {
 			LOGD("Interrupt already disabled\n");
@@ -731,21 +541,6 @@ exit:
 	return retval;
 }
 
-
-/**
- * syna_spi_parse_dt()
- *
- * Parse and obtain board specific data from the device tree source file.
- * Keep the data in structure syna_tcm_hw_data for later using.
- *
- * @param
- *    [ in] hw_if: the handle of hw interface
- *    [ in] dev: device model
- *
- * @return
- *    on success, 0; otherwise, negative value on error.
- */
-#ifdef CONFIG_OF
 static int syna_spi_parse_dt(struct syna_hw_interface *hw_if,
 		struct device *dev)
 {
@@ -982,7 +777,6 @@ static int syna_spi_parse_dt(struct syna_hw_interface *hw_if,
 	if (IS_ERR_OR_NULL(bus->pinctrl)) {
 		LOGI("Getting pinctrl handle failed");
 	} else {
-		/* active spi mode */
 		bus->pin_spi_mode_active = pinctrl_lookup_state(bus->pinctrl, "ts_spi_active");
 		if (IS_ERR_OR_NULL(bus->pin_spi_mode_active)) {
 			retval = PTR_ERR(bus->pin_spi_mode_active);
@@ -991,7 +785,6 @@ static int syna_spi_parse_dt(struct syna_hw_interface *hw_if,
 			bus->pin_spi_mode_active = NULL;
 		}
 
-		/* suspend spi mode */
 		bus->pin_spi_mode_suspend = pinctrl_lookup_state(bus->pinctrl, "ts_spi_suspend");
 		if (IS_ERR_OR_NULL(bus->pin_spi_mode_suspend)) {
 			retval = PTR_ERR(bus->pin_spi_mode_suspend);
@@ -1003,20 +796,7 @@ static int syna_spi_parse_dt(struct syna_hw_interface *hw_if,
 
 	return 0;
 }
-#endif
 
-/**
- * syna_tcm_spi_alloc_mem()
- *
- * Manage and allocate the memory to buf being as a temporary buffer for IO
- *
- * @param
- *    [ in] count: number of spi_transfer structures to send
- *    [ in] size:  size of temporary buffer
- *
- * @return
- *    on success, 0; otherwise, negative value on error.
- */
 static int syna_spi_alloc_mem(unsigned int count, unsigned int size)
 {
 	static unsigned int xfer_count;
@@ -1063,21 +843,6 @@ static int syna_spi_alloc_mem(unsigned int count, unsigned int size)
 	return 0;
 }
 
-
-/**
- * syna_spi_read()
- *
- * TouchCom over SPI requires the host to assert the SSB signal to address
- * the device and retrieve the data.
- *
- * @param
- *    [ in] hw_if:   the handle of hw interface
- *    [out] rd_data: buffer for storing data retrieved from device
- *    [ in] rd_len: number of bytes retrieved from device
- *
- * @return
- *    on success, 0; otherwise, negative value on error.
- */
 static int syna_spi_read(struct syna_hw_interface *hw_if,
 		unsigned char *rd_data, unsigned int rd_len)
 {
@@ -1110,10 +875,6 @@ static int syna_spi_read(struct syna_hw_interface *hw_if,
 		xfer[0].len = rd_len;
 		xfer[0].tx_buf = tx_buf;
 		xfer[0].rx_buf = rx_buf;
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 13, 0))
-		if (bus->spi_block_delay_us)
-			xfer[0].delay_usecs = bus->spi_block_delay_us;
-#endif
 		spi_message_add_tail(&xfer[0], &msg);
 	} else {
 		tx_buf[0] = 0xff;
@@ -1121,11 +882,6 @@ static int syna_spi_read(struct syna_hw_interface *hw_if,
 			xfer[idx].len = 1;
 			xfer[idx].tx_buf = tx_buf;
 			xfer[idx].rx_buf = &rx_buf[idx];
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 13, 0))
-			xfer[idx].delay_usecs = bus->spi_byte_delay_us;
-			if (bus->spi_block_delay_us && (idx == rd_len - 1))
-				xfer[idx].delay_usecs = bus->spi_block_delay_us;
-#endif
 			spi_message_add_tail(&xfer[idx], &msg);
 		}
 	}
@@ -1151,20 +907,6 @@ exit:
 	return retval;
 }
 
-/**
- * syna_spi_write()
- *
- * TouchCom over SPI requires the host to assert the SSB signal to address
- * the device and send the data to the device.
- *
- * @param
- *    [ in] hw_if:   the handle of hw interface
- *    [ in] wr_data: written data
- *    [ in] wr_len: length of written data in bytes
- *
- * @return
- *    on success, 0; otherwise, negative value on error.
- */
 static int syna_spi_write(struct syna_hw_interface *hw_if,
 		unsigned char *wr_data, unsigned int wr_len)
 {
@@ -1201,20 +943,11 @@ static int syna_spi_write(struct syna_hw_interface *hw_if,
 	if (bus->spi_byte_delay_us == 0) {
 		xfer[0].len = wr_len;
 		xfer[0].tx_buf = tx_buf;
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 13, 0))
-		if (bus->spi_block_delay_us)
-			xfer[0].delay_usecs = bus->spi_block_delay_us;
-#endif
 		spi_message_add_tail(&xfer[0], &msg);
 	} else {
 		for (idx = 0; idx < wr_len; idx++) {
 			xfer[idx].len = 1;
 			xfer[idx].tx_buf = &tx_buf[idx];
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 13, 0))
-			xfer[idx].delay_usecs = bus->spi_byte_delay_us;
-			if (bus->spi_block_delay_us && (idx == wr_len - 1))
-				xfer[idx].delay_usecs = bus->spi_block_delay_us;
-#endif
 			spi_message_add_tail(&xfer[idx], &msg);
 		}
 	}
@@ -1235,13 +968,6 @@ exit:
 	return retval;
 }
 
-
-/**
- * syna_hw_interface
- *
- * Provide the hardware specific settings in defaults.
- * Be noted the followings could be changed after .dtsi is parsed
- */
 static struct syna_hw_interface syna_spi_hw_if = {
 	.bdata_io = {
 		.type = BUS_TYPE_SPI,
@@ -1267,26 +993,7 @@ static struct syna_hw_interface syna_spi_hw_if = {
 	.ops_write_data = syna_spi_write,
 	.ops_enable_irq = syna_spi_enable_irq,
 };
-#ifdef CONFIG_TOUCHPANEL_MTK_PLATFORM
-const struct mtk_chip_config st_spi_ctrdata = {
-	.sample_sel = 0,
-	.cs_setuptime = 5000,
-	.cs_holdtime = 3000,
-	.cs_idletime = 0,
-	.tick_delay = 0,
-};
-#endif
-/**
- * syna_spi_probe()
- *
- * Prepare the specific hardware interface and register the platform spi device
- *
- * @param
- *    [ in] spi: spi device
- *
- * @return
- *    on success, 0; otherwise, negative value on error.
- */
+
 static int syna_spi_probe(struct spi_device *spi)
 {
 	int retval;
@@ -1294,16 +1001,13 @@ static int syna_spi_probe(struct spi_device *spi)
 	struct syna_hw_bus_data *bus = &syna_spi_hw_if.bdata_io;
 	struct syna_hw_rst_data *rst = &syna_spi_hw_if.bdata_rst;
 
-	/* allocate an spi platform device */
 	syna_spi_device = platform_device_alloc(PLATFORM_DRIVER_NAME, 0);
 	if (!syna_spi_device) {
 		LOGE("Fail to allocate platform device\n");
 		return _ENODEV;
 	}
 
-#ifdef CONFIG_OF
 	syna_spi_parse_dt(&syna_spi_hw_if, &spi->dev);
-#endif
 
 	syna_pal_mutex_alloc(&attn->irq_en_mutex);
 	syna_pal_mutex_alloc(&bus->io_mutex);
@@ -1326,7 +1030,6 @@ static int syna_spi_probe(struct spi_device *spi)
 		break;
 	}
 
-	/* keep the i/o device */
 	syna_spi_hw_if.pdev = spi;
 
 	syna_spi_device->dev.parent = &spi->dev;
@@ -1334,43 +1037,33 @@ static int syna_spi_probe(struct spi_device *spi)
 
 	spi->bits_per_word = 8;
 
-	/* set up spi driver */
-#ifdef CONFIG_TOUCHPANEL_MTK_PLATFORM
-	spi->controller_data = (void *)&st_spi_ctrdata;
-#else
 	retval = spi_setup(spi);
 	if (retval < 0) {
 		LOGE("Fail to set up SPI protocol driver\n");
 		return retval;
 	}
-#endif
 
-	/* initialize power unit */
 	retval = syna_spi_config_psu(&syna_spi_hw_if);
 	if (retval < 0) {
 		LOGE("Fail to config power unit\n");
 		return retval;
 	}
 
-	/* initialize the gpio pins */
 	retval = syna_spi_config_gpio(&syna_spi_hw_if);
 	if (retval < 0) {
 		LOGE("Fail to config gpio\n");
 		return retval;
 	}
 
-	/* initialize the pinctrl pins */
 	retval = syna_spi_active_pinctrl(&syna_spi_hw_if);
 	if (retval < 0) {
 		LOGE("Fail to config gpio\n");
 		return retval;
 	}
 
-	/* do i/o switch if defined */
 	if (bus->switch_gpio >= 0)
 		gpio_set_value(bus->switch_gpio, bus->switch_state);
 
-	/* register the spi platform device */
 	retval = platform_device_add(syna_spi_device);
 	if (retval < 0) {
 		LOGE("Fail to add platform device\n");
@@ -1381,58 +1074,25 @@ static int syna_spi_probe(struct spi_device *spi)
 	return 0;
 }
 
-/**
- * syna_spi_remove()
- *
- * Unregister the platform spi device
- *
- * @param
- *    [ in] spi: spi device
- *
- * @return
- *    on success, 0; otherwise, negative value on error.
- */
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 1, 0))
 static void syna_spi_remove(struct spi_device *spi)
-#else
-static int syna_spi_remove(struct spi_device *spi)
-#endif
 {
 	struct syna_hw_attn_data *attn = &syna_spi_hw_if.bdata_attn;
 	struct syna_hw_bus_data *bus = &syna_spi_hw_if.bdata_io;
 	struct syna_hw_rst_data *rst = &syna_spi_hw_if.bdata_rst;
-
-	/* release gpios */
 	syna_spi_release_gpio(&syna_spi_hw_if);
-
-	/* disable the regulators */
 	syna_spi_release_psu(&syna_spi_hw_if);
-
-	/* release mutex */
 	syna_pal_mutex_free(&attn->irq_en_mutex);
 	syna_pal_mutex_free(&bus->io_mutex);
 	syna_pal_mutex_free(&rst->reset_en_mutex);
-
-	/* remove the platform device */
 	syna_spi_device->dev.platform_data = NULL;
 	platform_device_unregister(syna_spi_device);
-
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 1, 0))
-#else
-	return 0;
-#endif
 }
-
-/**
- * Describe an spi device driver and its related declarations
- */
 static const struct spi_device_id syna_spi_id_table[] = {
 	{SPI_MODULE_NAME, 0},
 	{},
 };
 MODULE_DEVICE_TABLE(spi, syna_spi_id_table);
 
-#ifdef CONFIG_OF
 static const struct of_device_id syna_spi_of_match_table[] = {
 	{
 		.compatible = "synaptics,tcm-spi-hbp",
@@ -1440,9 +1100,7 @@ static const struct of_device_id syna_spi_of_match_table[] = {
 	{},
 };
 MODULE_DEVICE_TABLE(of, syna_spi_of_match_table);
-#else
-#define syna_spi_of_match_table NULL
-#endif
+
 
 static struct spi_driver syna_spi_driver = {
 	.driver = {
@@ -1455,35 +1113,11 @@ static struct spi_driver syna_spi_driver = {
 	.id_table = syna_spi_id_table,
 };
 
-
-/**
- * syna_hw_interface_init()
- *
- * Initialize the lower-level hardware interface module.
- * After returning, the handle of hw interface should be ready.
- *
- * @param
- *    void
- *
- * @return
- *    on success, 0; otherwise, negative value on error.
- */
 int syna_hw_interface_init(void)
 {
 	return spi_register_driver(&syna_spi_driver);
 }
 
-/**
- * syna_hw_interface_exit()
- *
- * Delete the lower-level hardware interface module
- *
- * @param
- *    void
- *
- * @return
- *    none.
- */
 void syna_hw_interface_exit(void)
 {
 	if (rx_buf) {

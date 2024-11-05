@@ -38,7 +38,7 @@
 
 #include "synaptics_touchcom_func_touch.h"
 #include "../syna_tcm2.h"
-#include "../touchpanel_healthinfo/touchpanel_healthinfo.h"
+//#include "../touchpanel_healthinfo/touchpanel_healthinfo.h"
 
 /**
  * syna_tcm_get_touch_data()
@@ -601,9 +601,6 @@ int syna_tcm_parse_touch_report(struct tcm_dev *tcm_dev,
 						touch_data->gesture_id, tcm->pwr_state, tcm->sub_pwr_state);
 					if ((tcm->pwr_state == PWR_ON && tcm->sub_pwr_state == SUB_PWR_RESUME_DONE) &&
 						(touch_data->gesture_id >= DTAP_DETECT && touch_data->gesture_id <= W_UNICODE)) {
-						if (tcm->health_monitor_support) {
-							tp_healthinfo_report(&tcm->monitor_data, HEALTH_REPORT, "report_gesture_event_in_resume_cnt");
-						}
 						LOGE("unexpected gesture id report in resume state\n");
 					}
 				}
