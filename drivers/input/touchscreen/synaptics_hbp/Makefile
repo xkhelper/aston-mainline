@@ -20,7 +20,6 @@ synaptics_tcm2-y += \
 					$(TCM_CORE)synaptics_touchcom_func_reflash.o
 
 synaptics_tcm2-y += syna_tcm2_platform_spi.o
-synaptics_tcm2-y += touch_comon_api/touch_comon_api.o
 
 obj-$(CONFIG_TOUCHSCREEN_SYNA_TCM2) += synaptics_tcm2.o
 
