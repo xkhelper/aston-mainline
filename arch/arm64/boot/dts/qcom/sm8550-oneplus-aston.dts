@@ -429,7 +429,7 @@
 			reg = <0x00 0xf7b00000 0x00 0x100000>;
 		};
 
-		llcc_lpi_region: llcc_lpi_region@ff800000 {?
+		llcc_lpi_region: llcc_lpi_region@ff800000 {
 			no-map;
 			reg = <0x00 0xff800000 0x00 0x600000>;
 		};
@@ -439,11 +439,11 @@
 			no-map;
 		};
 
-		botloader_mem: botloader_mem@a7605000 {?
+		botloader_mem: botloader_mem@a7605000 {
 			reg = <0x00 0xa7605000 0x00 0x8000>;
 		};
 
-		device_info_mem: device_info_mem@a4f00000 {?
+		device_info_mem: device_info_mem@a4f00000 {
 			reg = <0x00 0xa4f00000 0x00 0x8000>;
 		};
 	};
