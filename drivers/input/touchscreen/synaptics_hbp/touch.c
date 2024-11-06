@@ -9,9 +9,6 @@
 #include <linux/input.h>
 #include <linux/serio.h>
 #include <linux/regulator/consumer.h>
-#ifndef CONFIG_REMOVE_OPLUS_FUNCTION
-#include <soc/oplus/system/oplus_project.h>
-#endif
 #include "touch.h"
 
 #define MAX_CMDLINE_PARAM_LEN 512
@@ -21,13 +18,13 @@ char tp_dsi_display_secondary[MAX_CMDLINE_PARAM_LEN];
 EXPORT_SYMBOL(tp_dsi_display_primary);
 EXPORT_SYMBOL(tp_dsi_display_secondary);
 
-//#if defined(CONFIG_OPLUS_FEATURE_OPROJECT)
-//extern unsigned int get_project(void);
-//#else
+#if defined(CONFIG_OPLUS_FEATURE_OPROJECT)
+extern unsigned int get_project(void);
+#else
  __attribute__((weak)) unsigned int get_project(void) {
-	return 23801;
+	return -1;
 }
-//#endif
+#endif
 
 #define MAX_LIMIT_DATA_LENGTH         100
 int g_tp_prj_id = 0;
@@ -71,21 +68,21 @@ TP_USED_INDEX tp_used_index  = TP_INDEX_NULL;
 
 bool tp_judge_ic_match(char *tp_ic_name)
 {
-	pr_err("[TP] tp_ic_name = %s \n", tp_ic_name);
-	pr_err("[TP] tp_dsi_display_primary = %s \n", tp_dsi_display_primary);
-	pr_err("[TP] tp_dsi_display_secondary = %s \n", tp_dsi_display_secondary);
+	pr_info("[TP] tp_ic_name = %s \n", tp_ic_name);
+	pr_info("[TP] tp_dsi_display_primary = %s \n", tp_dsi_display_primary);
+	pr_info("[TP] tp_dsi_display_secondary = %s \n", tp_dsi_display_secondary);
 
 	if (strstr(tp_dsi_display_primary, tp_ic_name) || (strstr("synaptics-s3910", tp_ic_name))) {
-		pr_err("[TP] tp_judge_ic_match match ok\n");
+		pr_info("[TP] tp_judge_ic_match match ok\n");
 		return true;
 	}
 
 	if (strstr(tp_dsi_display_secondary, tp_ic_name)) {
-		pr_err("[TP] secondary disp match ok\n");
+		pr_info("[TP] secondary disp match ok\n");
 		return true;
 	}
 
-	pr_err("[TP] tp_judge_ic_match not match ok\n");
+	pr_info("[TP] tp_judge_ic_match not match ok\n");
 	return false;
 
 }
@@ -97,24 +94,31 @@ int tp_judge_ic_match_commandline(struct panel_info *panel_data)
 	int i = 0;
 	prj_id = get_project();
 
-	/*pr_err("[TP] prj_id = %d\n", prj_id);
-	pr_err("[TP] tp_dsi_display_primary = %s \n", tp_dsi_display_primary);
-	for(j = 0; j < panel_data->panel_num; j++) {
-		if(strstr(tp_dsi_display_primary, panel_data->platform_support_commandline[j]) \
-		|| strstr(tp_dsi_display_secondary, panel_data->platform_support_commandline[j]) \
-		|| strstr("default_commandline", panel_data->platform_support_commandline[j])) {
-			panel_data->tp_type = panel_data->panel_type[j];
-			if(panel_data->chip_num > 1) {
-				chip_name = panel_data->chip_name[j];
-				pr_err("[TP] WGL--1 chip_name = %s, panel_data->chip_name = %s", chip_name, panel_data->chip_name[j]);
+	pr_info("[TP] prj_id = %d\n", prj_id);
+	pr_info("[TP] tp_dsi_display_primary = %s \n", tp_dsi_display_primary);
+	for(i = 0; i < panel_data->project_num; i++) {
+		if(prj_id == panel_data->platform_support_project[i]) {
+			g_tp_prj_id = panel_data->platform_support_project_dir[i];
+			pr_info("[TP] Driver match support project [%d]\n", panel_data->platform_support_project[i]);
+
+			for(j = 0; j < panel_data->panel_num; j++) {
+				if(strstr(tp_dsi_display_primary, panel_data->platform_support_commandline[j]) \
+				|| strstr(tp_dsi_display_secondary, panel_data->platform_support_commandline[j]) \
+				|| strstr("default_commandline", panel_data->platform_support_commandline[j])) {
+					panel_data->tp_type = panel_data->panel_type[j];
+					if(panel_data->chip_num > 1) {
+						chip_name = panel_data->chip_name[j];
+						pr_info("[TP] WGL--1 chip_name = %s, panel_data->chip_name = %s", chip_name, panel_data->chip_name[j]);
+					}
+					pr_info("[TP] match panel type OK , panel type is [%d]\n", panel_data->tp_type);
+					return j;
+				}
+				pr_err("[TP] Panel not found\n");
 			}
-			pr_err("[TP] match panel type OK , panel type is [%d]\n", panel_data->tp_type);
-			return j;
 		}
-		pr_err("[TP] Panel not found\n");
 	}
-	pr_err("[TP] Driver does not match the project\n");*/
-	return 0;
+	pr_err("[TP] Driver does not match the project\n");
+	return -1;
 }
 EXPORT_SYMBOL(tp_judge_ic_match_commandline);
 
