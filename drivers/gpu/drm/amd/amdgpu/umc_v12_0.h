@@ -81,6 +81,14 @@
 	(((REG_GET_FIELD(ipid, MCMP1_IPIDT0, InstanceIdLo) & 0x1) << 2) | \
 	 (REG_GET_FIELD(ipid, MCMP1_IPIDT0, InstanceIdHi) & 0x03))
 
+<<<<<<< HEAD
+=======
+#define UMC_V12_ADDR_MASK_BAD_COLS(addr) \
+	((addr) & ~((0x3ULL << UMC_V12_0_PA_C2_BIT) | \
+			(0x1ULL << UMC_V12_0_PA_C4_BIT) | \
+			(0x1ULL << UMC_V12_0_PA_R13_BIT)))
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool umc_v12_0_is_deferred_error(struct amdgpu_device *adev, uint64_t mc_umc_status);
 bool umc_v12_0_is_uncorrectable_error(struct amdgpu_device *adev, uint64_t mc_umc_status);
 bool umc_v12_0_is_correctable_error(struct amdgpu_device *adev, uint64_t mc_umc_status);

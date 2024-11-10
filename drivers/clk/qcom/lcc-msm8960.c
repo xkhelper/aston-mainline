@@ -57,7 +57,11 @@ static struct clk_parent_data lcc_pxo_pll4[] = {
 	{ .fw_name = "pll4_vote", .name = "pll4_vote" },
 };
 
+<<<<<<< HEAD
 static struct freq_tbl clk_tbl_aif_osr_492[] = {
+=======
+static const struct freq_tbl clk_tbl_aif_osr_492[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{   512000, P_PLL4, 4, 1, 240 },
 	{   768000, P_PLL4, 4, 1, 160 },
 	{  1024000, P_PLL4, 4, 1, 120 },
@@ -73,7 +77,11 @@ static struct freq_tbl clk_tbl_aif_osr_492[] = {
 	{ }
 };
 
+<<<<<<< HEAD
 static struct freq_tbl clk_tbl_aif_osr_393[] = {
+=======
+static const struct freq_tbl clk_tbl_aif_osr_393[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{   512000, P_PLL4, 4, 1, 192 },
 	{   768000, P_PLL4, 4, 1, 128 },
 	{  1024000, P_PLL4, 4, 1,  96 },
@@ -218,7 +226,11 @@ CLK_AIF_OSR_DIV(spare_i2s_mic, 0x78, 0x7c, 0x80);
 CLK_AIF_OSR_DIV(codec_i2s_spkr, 0x6c, 0x70, 0x74);
 CLK_AIF_OSR_DIV(spare_i2s_spkr, 0x84, 0x88, 0x8c);
 
+<<<<<<< HEAD
 static struct freq_tbl clk_tbl_pcm_492[] = {
+=======
+static const struct freq_tbl clk_tbl_pcm_492[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{   256000, P_PLL4, 4, 1, 480 },
 	{   512000, P_PLL4, 4, 1, 240 },
 	{   768000, P_PLL4, 4, 1, 160 },
@@ -235,7 +247,11 @@ static struct freq_tbl clk_tbl_pcm_492[] = {
 	{ }
 };
 
+<<<<<<< HEAD
 static struct freq_tbl clk_tbl_pcm_393[] = {
+=======
+static const struct freq_tbl clk_tbl_pcm_393[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{   256000, P_PLL4, 4, 1, 384 },
 	{   512000, P_PLL4, 4, 1, 192 },
 	{   768000, P_PLL4, 4, 1, 128 },

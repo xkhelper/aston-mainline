@@ -703,9 +703,15 @@ static void xgbe_an73_isr(struct xgbe_prv_data *pdata)
 	}
 }
 
+<<<<<<< HEAD
 static void xgbe_an_isr_task(struct tasklet_struct *t)
 {
 	struct xgbe_prv_data *pdata = from_tasklet(pdata, t, tasklet_an);
+=======
+static void xgbe_an_isr_bh_work(struct work_struct *work)
+{
+	struct xgbe_prv_data *pdata = from_work(pdata, work, an_bh_work);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	netif_dbg(pdata, intr, pdata->netdev, "AN interrupt received\n");
 
@@ -727,17 +733,28 @@ static irqreturn_t xgbe_an_isr(int irq, void *data)
 {
 	struct xgbe_prv_data *pdata = (struct xgbe_prv_data *)data;
 
+<<<<<<< HEAD
 	if (pdata->isr_as_tasklet)
 		tasklet_schedule(&pdata->tasklet_an);
 	else
 		xgbe_an_isr_task(&pdata->tasklet_an);
+=======
+	if (pdata->isr_as_bh_work)
+		queue_work(system_bh_wq, &pdata->an_bh_work);
+	else
+		xgbe_an_isr_bh_work(&pdata->an_bh_work);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return IRQ_HANDLED;
 }
 
 static irqreturn_t xgbe_an_combined_isr(struct xgbe_prv_data *pdata)
 {
+<<<<<<< HEAD
 	xgbe_an_isr_task(&pdata->tasklet_an);
+=======
+	xgbe_an_isr_bh_work(&pdata->an_bh_work);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return IRQ_HANDLED;
 }
@@ -1454,7 +1471,11 @@ static void xgbe_phy_stop(struct xgbe_prv_data *pdata)
 
 	if (pdata->dev_irq != pdata->an_irq) {
 		devm_free_irq(pdata->dev, pdata->an_irq, pdata);
+<<<<<<< HEAD
 		tasklet_kill(&pdata->tasklet_an);
+=======
+		cancel_work_sync(&pdata->an_bh_work);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	pdata->phy_if.phy_impl.stop(pdata);
@@ -1477,7 +1498,11 @@ static int xgbe_phy_start(struct xgbe_prv_data *pdata)
 
 	/* If we have a separate AN irq, enable it */
 	if (pdata->dev_irq != pdata->an_irq) {
+<<<<<<< HEAD
 		tasklet_setup(&pdata->tasklet_an, xgbe_an_isr_task);
+=======
+		INIT_WORK(&pdata->an_bh_work, xgbe_an_isr_bh_work);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		ret = devm_request_irq(pdata->dev, pdata->an_irq,
 				       xgbe_an_isr, 0, pdata->an_name,

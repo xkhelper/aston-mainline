@@ -515,7 +515,11 @@ static struct platform_driver vesafb_driver = {
 		.name = "vesa-framebuffer",
 	},
 	.probe = vesafb_probe,
+<<<<<<< HEAD
 	.remove_new = vesafb_remove,
+=======
+	.remove = vesafb_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(vesafb_driver);

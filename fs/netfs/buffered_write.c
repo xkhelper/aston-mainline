@@ -13,6 +13,7 @@
 #include <linux/pagevec.h>
 #include "internal.h"
 
+<<<<<<< HEAD
 /*
  * Determined write method.  Adjust netfs_folio_traces if this is changed.
  */
@@ -25,11 +26,19 @@ enum netfs_how_to_modify {
 	NETFS_STREAMING_WRITE_CONT,	/* Continue streaming write. */
 	NETFS_FLUSH_CONTENT,		/* Flush incompatible content. */
 };
+=======
+static void __netfs_set_group(struct folio *folio, struct netfs_group *netfs_group)
+{
+	if (netfs_group)
+		folio_attach_private(folio, netfs_get_group(netfs_group));
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void netfs_set_group(struct folio *folio, struct netfs_group *netfs_group)
 {
 	void *priv = folio_get_private(folio);
 
+<<<<<<< HEAD
 	if (netfs_group && (!priv || priv == NETFS_FOLIO_COPY_TO_CACHE))
 		folio_attach_private(folio, netfs_get_group(netfs_group));
 	else if (!netfs_group && priv == NETFS_FOLIO_COPY_TO_CACHE)
@@ -98,6 +107,14 @@ no_write_streaming:
 		return NETFS_FLUSH_CONTENT;
 	}
 	return NETFS_JUST_PREFETCH;
+=======
+	if (unlikely(priv != netfs_group)) {
+		if (netfs_group && (!priv || priv == NETFS_FOLIO_COPY_TO_CACHE))
+			folio_attach_private(folio, netfs_get_group(netfs_group));
+		else if (!netfs_group && priv == NETFS_FOLIO_COPY_TO_CACHE)
+			folio_detach_private(folio);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -177,6 +194,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
 		.range_end	= iocb->ki_pos + iter->count,
 	};
 	struct netfs_io_request *wreq = NULL;
+<<<<<<< HEAD
 	struct netfs_folio *finfo;
 	struct folio *folio, *writethrough = NULL;
 	enum netfs_how_to_modify howto;
@@ -184,6 +202,12 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
 	unsigned int bdp_flags = (iocb->ki_flags & IOCB_NOWAIT) ? BDP_ASYNC : 0;
 	ssize_t written = 0, ret, ret2;
 	loff_t i_size, pos = iocb->ki_pos, from, to;
+=======
+	struct folio *folio = NULL, *writethrough = NULL;
+	unsigned int bdp_flags = (iocb->ki_flags & IOCB_NOWAIT) ? BDP_ASYNC : 0;
+	ssize_t written = 0, ret, ret2;
+	loff_t i_size, pos = iocb->ki_pos;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	size_t max_chunk = mapping_max_folio_size(mapping);
 	bool maybe_trouble = false;
 
@@ -213,15 +237,24 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
 	}
 
 	do {
+<<<<<<< HEAD
+=======
+		struct netfs_folio *finfo;
+		struct netfs_group *group;
+		unsigned long long fpos;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		size_t flen;
 		size_t offset;	/* Offset into pagecache folio */
 		size_t part;	/* Bytes to write to folio */
 		size_t copied;	/* Bytes copied from user */
 
+<<<<<<< HEAD
 		ret = balance_dirty_pages_ratelimited_flags(mapping, bdp_flags);
 		if (unlikely(ret < 0))
 			break;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		offset = pos & (max_chunk - 1);
 		part = min(max_chunk - offset, iov_iter_count(iter));
 
@@ -247,7 +280,12 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
 		}
 
 		flen = folio_size(folio);
+<<<<<<< HEAD
 		offset = pos & (flen - 1);
+=======
+		fpos = folio_pos(folio);
+		offset = pos - fpos;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		part = min_t(size_t, flen - offset, part);
 
 		/* Wait for writeback to complete.  The writeback engine owns
@@ -265,6 +303,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
 			goto error_folio_unlock;
 		}
 
+<<<<<<< HEAD
 		/* See if we need to prefetch the area we're going to modify.
 		 * We need to do this before we get a lock on the folio in case
 		 * there's more than one writer competing for the same cache
@@ -330,6 +369,54 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
 			folio_mark_uptodate(folio);
 			break;
 		case NETFS_WHOLE_FOLIO_MODIFY:
+=======
+		/* Decide how we should modify a folio.  We might be attempting
+		 * to do write-streaming, in which case we don't want to a
+		 * local RMW cycle if we can avoid it.  If we're doing local
+		 * caching or content crypto, we award that priority over
+		 * avoiding RMW.  If the file is open readably, then we also
+		 * assume that we may want to read what we wrote.
+		 */
+		finfo = netfs_folio_info(folio);
+		group = netfs_folio_group(folio);
+
+		if (unlikely(group != netfs_group) &&
+		    group != NETFS_FOLIO_COPY_TO_CACHE)
+			goto flush_content;
+
+		if (folio_test_uptodate(folio)) {
+			if (mapping_writably_mapped(mapping))
+				flush_dcache_folio(folio);
+			copied = copy_folio_from_iter_atomic(folio, offset, part, iter);
+			if (unlikely(copied == 0))
+				goto copy_failed;
+			netfs_set_group(folio, netfs_group);
+			trace_netfs_folio(folio, netfs_folio_is_uptodate);
+			goto copied;
+		}
+
+		/* If the page is above the zero-point then we assume that the
+		 * server would just return a block of zeros or a short read if
+		 * we try to read it.
+		 */
+		if (fpos >= ctx->zero_point) {
+			zero_user_segment(&folio->page, 0, offset);
+			copied = copy_folio_from_iter_atomic(folio, offset, part, iter);
+			if (unlikely(copied == 0))
+				goto copy_failed;
+			zero_user_segment(&folio->page, offset + copied, flen);
+			__netfs_set_group(folio, netfs_group);
+			folio_mark_uptodate(folio);
+			trace_netfs_folio(folio, netfs_modify_and_clear);
+			goto copied;
+		}
+
+		/* See if we can write a whole folio in one go. */
+		if (!maybe_trouble && offset == 0 && part >= flen) {
+			copied = copy_folio_from_iter_atomic(folio, offset, part, iter);
+			if (unlikely(copied == 0))
+				goto copy_failed;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (unlikely(copied < part)) {
 				maybe_trouble = true;
 				iov_iter_revert(iter, copied);
@@ -337,6 +424,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
 				folio_unlock(folio);
 				goto retry;
 			}
+<<<<<<< HEAD
 			netfs_set_group(folio, netfs_group);
 			folio_mark_uptodate(folio);
 			break;
@@ -347,6 +435,55 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
 				trace = netfs_streaming_filled_page;
 				break;
 			}
+=======
+			__netfs_set_group(folio, netfs_group);
+			folio_mark_uptodate(folio);
+			trace_netfs_folio(folio, netfs_whole_folio_modify);
+			goto copied;
+		}
+
+		/* We don't want to do a streaming write on a file that loses
+		 * caching service temporarily because the backing store got
+		 * culled and we don't really want to get a streaming write on
+		 * a file that's open for reading as ->read_folio() then has to
+		 * be able to flush it.
+		 */
+		if ((file->f_mode & FMODE_READ) ||
+		    netfs_is_cache_enabled(ctx)) {
+			if (finfo) {
+				netfs_stat(&netfs_n_wh_wstream_conflict);
+				goto flush_content;
+			}
+			ret = netfs_prefetch_for_write(file, folio, offset, part);
+			if (ret < 0) {
+				_debug("prefetch = %zd", ret);
+				goto error_folio_unlock;
+			}
+			/* Note that copy-to-cache may have been set. */
+
+			copied = copy_folio_from_iter_atomic(folio, offset, part, iter);
+			if (unlikely(copied == 0))
+				goto copy_failed;
+			netfs_set_group(folio, netfs_group);
+			trace_netfs_folio(folio, netfs_just_prefetch);
+			goto copied;
+		}
+
+		if (!finfo) {
+			ret = -EIO;
+			if (WARN_ON(folio_get_private(folio)))
+				goto error_folio_unlock;
+			copied = copy_folio_from_iter_atomic(folio, offset, part, iter);
+			if (unlikely(copied == 0))
+				goto copy_failed;
+			if (offset == 0 && copied == flen) {
+				__netfs_set_group(folio, netfs_group);
+				folio_mark_uptodate(folio);
+				trace_netfs_folio(folio, netfs_streaming_filled_page);
+				goto copied;
+			}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			finfo = kzalloc(sizeof(*finfo), GFP_KERNEL);
 			if (!finfo) {
 				iov_iter_revert(iter, copied);
@@ -358,9 +495,24 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
 			finfo->dirty_len = copied;
 			folio_attach_private(folio, (void *)((unsigned long)finfo |
 							     NETFS_FOLIO_INFO));
+<<<<<<< HEAD
 			break;
 		case NETFS_STREAMING_WRITE_CONT:
 			finfo = netfs_folio_info(folio);
+=======
+			trace_netfs_folio(folio, netfs_streaming_write);
+			goto copied;
+		}
+
+		/* We can continue a streaming write only if it continues on
+		 * from the previous.  If it overlaps, we must flush lest we
+		 * suffer a partial copy and disjoint dirty regions.
+		 */
+		if (offset == finfo->dirty_offset + finfo->dirty_len) {
+			copied = copy_folio_from_iter_atomic(folio, offset, part, iter);
+			if (unlikely(copied == 0))
+				goto copy_failed;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			finfo->dirty_len += copied;
 			if (finfo->dirty_offset == 0 && finfo->dirty_len == flen) {
 				if (finfo->netfs_group)
@@ -369,6 +521,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
 					folio_detach_private(folio);
 				folio_mark_uptodate(folio);
 				kfree(finfo);
+<<<<<<< HEAD
 				trace = netfs_streaming_cont_filled_page;
 			}
 			break;
@@ -380,6 +533,27 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
 		}
 
 		trace_netfs_folio(folio, trace);
+=======
+				trace_netfs_folio(folio, netfs_streaming_cont_filled_page);
+			} else {
+				trace_netfs_folio(folio, netfs_streaming_write_cont);
+			}
+			goto copied;
+		}
+
+		/* Incompatible write; flush the folio and try again. */
+	flush_content:
+		trace_netfs_folio(folio, netfs_flush_content);
+		folio_unlock(folio);
+		folio_put(folio);
+		ret = filemap_write_and_wait_range(mapping, fpos, fpos + flen - 1);
+		if (ret < 0)
+			goto error_folio_unlock;
+		continue;
+
+	copied:
+		flush_dcache_folio(folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* Update the inode size if we moved the EOF marker */
 		pos += copied;
@@ -401,12 +575,30 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
 		folio_put(folio);
 		folio = NULL;
 
+<<<<<<< HEAD
+=======
+		ret = balance_dirty_pages_ratelimited_flags(mapping, bdp_flags);
+		if (unlikely(ret < 0))
+			break;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		cond_resched();
 	} while (iov_iter_count(iter));
 
 out:
+<<<<<<< HEAD
 	if (likely(written) && ctx->ops->post_modify)
 		ctx->ops->post_modify(inode);
+=======
+	if (likely(written)) {
+		/* Set indication that ctime and mtime got updated in case
+		 * close is deferred.
+		 */
+		set_bit(NETFS_ICTX_MODIFIED_ATTR, &ctx->flags);
+		if (unlikely(ctx->ops->post_modify))
+			ctx->ops->post_modify(inode);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (unlikely(wreq)) {
 		ret2 = netfs_end_writethrough(wreq, &wbc, writethrough);
@@ -421,6 +613,11 @@ out:
 	_leave(" = %zd [%zd]", written, ret);
 	return written ? written : ret;
 
+<<<<<<< HEAD
+=======
+copy_failed:
+	ret = -EFAULT;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 error_folio_unlock:
 	folio_unlock(folio);
 	folio_put(folio);
@@ -577,6 +774,10 @@ vm_fault_t netfs_page_mkwrite(struct vm_fault *vmf, struct netfs_group *netfs_gr
 		trace_netfs_folio(folio, netfs_folio_trace_mkwrite);
 	netfs_set_group(folio, netfs_group);
 	file_update_time(file);
+<<<<<<< HEAD
+=======
+	set_bit(NETFS_ICTX_MODIFIED_ATTR, &ictx->flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ictx->ops->post_modify)
 		ictx->ops->post_modify(inode);
 	ret = VM_FAULT_LOCKED;

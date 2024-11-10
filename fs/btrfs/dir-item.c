@@ -347,8 +347,13 @@ btrfs_search_dir_index_item(struct btrfs_root *root, struct btrfs_path *path,
 			return di;
 	}
 	/* Adjust return code if the key was not found in the next leaf. */
+<<<<<<< HEAD
 	if (ret > 0)
 		ret = 0;
+=======
+	if (ret >= 0)
+		ret = -ENOENT;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ERR_PTR(ret);
 }

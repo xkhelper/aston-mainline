@@ -4847,6 +4847,10 @@ struct fcp_iwrite64_wqe {
 #define	cmd_buff_len_SHIFT  16
 #define	cmd_buff_len_MASK  0x00000ffff
 #define	cmd_buff_len_WORD  word3
+<<<<<<< HEAD
+=======
+/* Note: payload_offset_len field depends on ASIC support */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define payload_offset_len_SHIFT 0
 #define payload_offset_len_MASK 0x0000ffff
 #define payload_offset_len_WORD word3
@@ -4863,6 +4867,10 @@ struct fcp_iread64_wqe {
 #define	cmd_buff_len_SHIFT  16
 #define	cmd_buff_len_MASK  0x00000ffff
 #define	cmd_buff_len_WORD  word3
+<<<<<<< HEAD
+=======
+/* Note: payload_offset_len field depends on ASIC support */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define payload_offset_len_SHIFT 0
 #define payload_offset_len_MASK 0x0000ffff
 #define payload_offset_len_WORD word3
@@ -4879,6 +4887,10 @@ struct fcp_icmnd64_wqe {
 #define	cmd_buff_len_SHIFT  16
 #define	cmd_buff_len_MASK  0x00000ffff
 #define	cmd_buff_len_WORD  word3
+<<<<<<< HEAD
+=======
+/* Note: payload_offset_len field depends on ASIC support */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define payload_offset_len_SHIFT 0
 #define payload_offset_len_MASK 0x0000ffff
 #define payload_offset_len_WORD word3

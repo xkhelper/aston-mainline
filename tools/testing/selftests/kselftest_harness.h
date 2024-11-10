@@ -488,12 +488,15 @@
  * Use once to append a main() to the test file.
  */
 #define TEST_HARNESS_MAIN \
+<<<<<<< HEAD
 	static void __attribute__((constructor)) \
 	__constructor_order_last(void) \
 	{ \
 		if (!__constructor_order) \
 			__constructor_order = _CONSTRUCTOR_ORDER_BACKWARD; \
 	} \
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int main(int argc, char **argv) { \
 		return test_harness_run(argc, argv); \
 	}
@@ -824,7 +827,11 @@
 		item->prev = item; \
 		return;	\
 	} \
+<<<<<<< HEAD
 	if (__constructor_order == _CONSTRUCTOR_ORDER_FORWARD) { \
+=======
+	if (__constructor_order_forward) { \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		item->next = NULL; \
 		item->prev = head->prev; \
 		item->prev->next = item; \
@@ -888,10 +895,14 @@ struct __test_xfail {
 	}
 
 static struct __fixture_metadata *__fixture_list = &_fixture_global;
+<<<<<<< HEAD
 static int __constructor_order;
 
 #define _CONSTRUCTOR_ORDER_FORWARD   1
 #define _CONSTRUCTOR_ORDER_BACKWARD -1
+=======
+static bool __constructor_order_forward;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline void __register_fixture(struct __fixture_metadata *f)
 {
@@ -942,7 +953,11 @@ static inline bool __test_passed(struct __test_metadata *metadata)
  * list so tests are run in source declaration order.
  * https://gcc.gnu.org/onlinedocs/gccint/Initialization.html
  * However, it seems not all toolchains do this correctly, so use
+<<<<<<< HEAD
  * __constructor_order to detect which direction is called first
+=======
+ * __constructor_order_foward to detect which direction is called first
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * and adjust list building logic to get things running in the right
  * direction.
  */
@@ -1337,8 +1352,12 @@ static int test_harness_run(int argc, char **argv)
 
 static void __attribute__((constructor)) __constructor_order_first(void)
 {
+<<<<<<< HEAD
 	if (!__constructor_order)
 		__constructor_order = _CONSTRUCTOR_ORDER_FORWARD;
+=======
+	__constructor_order_forward = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #endif  /* __KSELFTEST_HARNESS_H */

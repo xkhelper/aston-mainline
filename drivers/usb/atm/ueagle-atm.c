@@ -25,7 +25,11 @@
 #include <linux/slab.h>
 #include <linux/kernel.h>
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "usbatm.h"
 

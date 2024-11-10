@@ -830,13 +830,21 @@ TRACE_EVENT_CONDITION(isoc_inbound_multiple_queue,
 #ifndef show_cause
 enum fw_iso_context_completions_cause {
 	FW_ISO_CONTEXT_COMPLETIONS_CAUSE_FLUSH = 0,
+<<<<<<< HEAD
 	FW_ISO_CONTEXT_COMPLETIONS_CAUSE_IRQ,
+=======
+	FW_ISO_CONTEXT_COMPLETIONS_CAUSE_INTERRUPT,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	FW_ISO_CONTEXT_COMPLETIONS_CAUSE_HEADER_OVERFLOW,
 };
 #define show_cause(cause) 								\
 	__print_symbolic(cause,								\
 		{ FW_ISO_CONTEXT_COMPLETIONS_CAUSE_FLUSH, "FLUSH" },			\
+<<<<<<< HEAD
 		{ FW_ISO_CONTEXT_COMPLETIONS_CAUSE_IRQ, "IRQ" },			\
+=======
+		{ FW_ISO_CONTEXT_COMPLETIONS_CAUSE_INTERRUPT, "INTERRUPT" },		\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		{ FW_ISO_CONTEXT_COMPLETIONS_CAUSE_HEADER_OVERFLOW, "HEADER_OVERFLOW" }	\
 	)
 #endif

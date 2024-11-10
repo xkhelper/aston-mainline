@@ -15,7 +15,11 @@
  *	- Add interrupt support
  */
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/bits.h>
 #include <linux/delay.h>
 #include <linux/i2c.h>

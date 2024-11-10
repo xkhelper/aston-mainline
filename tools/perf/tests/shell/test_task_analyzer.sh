@@ -11,6 +11,12 @@ if [ -e "$perfdir/scripts/python/Perf-Trace-Util" ]; then
   export PERF_EXEC_PATH=$perfdir
 fi
 
+<<<<<<< HEAD
+=======
+# Disable lsan to avoid warnings about python memory leaks.
+export ASAN_OPTIONS=detect_leaks=0
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 cleanup() {
   rm -f perf.data
   rm -f perf.data.old
@@ -52,8 +58,13 @@ find_str_or_fail() {
 
 # check if perf is compiled with libtraceevent support
 skip_no_probe_record_support() {
+<<<<<<< HEAD
 	perf version --build-options | grep -q " OFF .* HAVE_LIBTRACEEVENT" && return 2
 	return 0
+=======
+	perf check feature -q libtraceevent && return 0
+	return 2
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 prepare_perf_data() {

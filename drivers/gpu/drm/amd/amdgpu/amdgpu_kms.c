@@ -43,6 +43,10 @@
 #include "amdgpu_gem.h"
 #include "amdgpu_display.h"
 #include "amdgpu_ras.h"
+<<<<<<< HEAD
+=======
+#include "amdgpu_reset.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "amd_pcie.h"
 
 void amdgpu_unregister_gpu_instance(struct amdgpu_device *adev)
@@ -778,6 +782,10 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
 				    ? -EFAULT : 0;
 	}
 	case AMDGPU_INFO_READ_MMR_REG: {
+<<<<<<< HEAD
+=======
+		int ret = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		unsigned int n, alloc_size;
 		uint32_t *regs;
 		unsigned int se_num = (info->read_mmr_reg.instance >>
@@ -787,6 +795,7 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
 				   AMDGPU_INFO_MMR_SH_INDEX_SHIFT) &
 				  AMDGPU_INFO_MMR_SH_INDEX_MASK;
 
+<<<<<<< HEAD
 		/* set full masks if the userspace set all bits
 		 * in the bitfields
 		 */
@@ -805,6 +814,39 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
 		regs = kmalloc_array(info->read_mmr_reg.count, sizeof(*regs), GFP_KERNEL);
 		if (!regs)
 			return -ENOMEM;
+=======
+		if (!down_read_trylock(&adev->reset_domain->sem))
+			return -ENOENT;
+
+		/* set full masks if the userspace set all bits
+		 * in the bitfields
+		 */
+		if (se_num == AMDGPU_INFO_MMR_SE_INDEX_MASK) {
+			se_num = 0xffffffff;
+		} else if (se_num >= AMDGPU_GFX_MAX_SE) {
+			ret = -EINVAL;
+			goto out;
+		}
+
+		if (sh_num == AMDGPU_INFO_MMR_SH_INDEX_MASK) {
+			sh_num = 0xffffffff;
+		} else if (sh_num >= AMDGPU_GFX_MAX_SH_PER_SE) {
+			ret = -EINVAL;
+			goto out;
+		}
+
+		if (info->read_mmr_reg.count > 128) {
+			ret = -EINVAL;
+			goto out;
+		}
+
+		regs = kmalloc_array(info->read_mmr_reg.count, sizeof(*regs), GFP_KERNEL);
+		if (!regs) {
+			ret = -ENOMEM;
+			goto out;
+		}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		alloc_size = info->read_mmr_reg.count * sizeof(*regs);
 
 		amdgpu_gfx_off_ctrl(adev, false);
@@ -816,13 +858,25 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
 					      info->read_mmr_reg.dword_offset + i);
 				kfree(regs);
 				amdgpu_gfx_off_ctrl(adev, true);
+<<<<<<< HEAD
 				return -EFAULT;
+=======
+				ret = -EFAULT;
+				goto out;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 		}
 		amdgpu_gfx_off_ctrl(adev, true);
 		n = copy_to_user(out, regs, min(size, alloc_size));
 		kfree(regs);
+<<<<<<< HEAD
 		return n ? -EFAULT : 0;
+=======
+		ret = (n ? -EFAULT : 0);
+out:
+		up_read(&adev->reset_domain->sem);
+		return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	case AMDGPU_INFO_DEV_INFO: {
 		struct drm_amdgpu_info_device *dev_info;
@@ -1269,6 +1323,7 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
 	return 0;
 }
 
+<<<<<<< HEAD
 
 /*
  * Outdated mess for old drm with Xorg being in charge (void function now).
@@ -1286,6 +1341,8 @@ void amdgpu_driver_lastclose_kms(struct drm_device *dev)
 	vga_switcheroo_process_delayed_switch();
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * amdgpu_driver_open_kms - drm callback for open
  *

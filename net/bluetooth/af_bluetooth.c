@@ -185,6 +185,31 @@ void bt_sock_unlink(struct bt_sock_list *l, struct sock *sk)
 }
 EXPORT_SYMBOL(bt_sock_unlink);
 
+<<<<<<< HEAD
+=======
+bool bt_sock_linked(struct bt_sock_list *l, struct sock *s)
+{
+	struct sock *sk;
+
+	if (!l || !s)
+		return false;
+
+	read_lock(&l->lock);
+
+	sk_for_each(sk, &l->head) {
+		if (s == sk) {
+			read_unlock(&l->lock);
+			return true;
+		}
+	}
+
+	read_unlock(&l->lock);
+
+	return false;
+}
+EXPORT_SYMBOL(bt_sock_linked);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void bt_accept_enqueue(struct sock *parent, struct sock *sk, bool bh)
 {
 	const struct cred *old_cred;
@@ -825,11 +850,20 @@ cleanup_sysfs:
 	bt_sysfs_cleanup();
 cleanup_led:
 	bt_leds_cleanup();
+<<<<<<< HEAD
+=======
+	debugfs_remove_recursive(bt_debugfs);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
 static void __exit bt_exit(void)
 {
+<<<<<<< HEAD
+=======
+	iso_exit();
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mgmt_exit();
 
 	sco_exit();

@@ -10,8 +10,11 @@
 
 #ifdef CONFIG_NUMA
 
+<<<<<<< HEAD
 #define NR_NODE_MEMBLKS		(MAX_NUMNODES*2)
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern int numa_off;
 
 /*
@@ -25,9 +28,12 @@ extern int numa_off;
 extern s16 __apicid_to_node[MAX_LOCAL_APIC];
 extern nodemask_t numa_nodes_parsed __initdata;
 
+<<<<<<< HEAD
 extern int __init numa_add_memblk(int nodeid, u64 start, u64 end);
 extern void __init numa_set_distance(int from, int to, int distance);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void set_apicid_to_node(int apicid, s16 node)
 {
 	__apicid_to_node[apicid] = node;
@@ -54,19 +60,30 @@ static inline int numa_cpu_node(int cpu)
 extern void numa_set_node(int cpu, int node);
 extern void numa_clear_node(int cpu);
 extern void __init init_cpu_to_node(void);
+<<<<<<< HEAD
 extern void numa_add_cpu(int cpu);
 extern void numa_remove_cpu(int cpu);
+=======
+extern void numa_add_cpu(unsigned int cpu);
+extern void numa_remove_cpu(unsigned int cpu);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void init_gi_nodes(void);
 #else	/* CONFIG_NUMA */
 static inline void numa_set_node(int cpu, int node)	{ }
 static inline void numa_clear_node(int cpu)		{ }
 static inline void init_cpu_to_node(void)		{ }
+<<<<<<< HEAD
 static inline void numa_add_cpu(int cpu)		{ }
 static inline void numa_remove_cpu(int cpu)		{ }
+=======
+static inline void numa_add_cpu(unsigned int cpu)	{ }
+static inline void numa_remove_cpu(unsigned int cpu)	{ }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void init_gi_nodes(void)			{ }
 #endif	/* CONFIG_NUMA */
 
 #ifdef CONFIG_DEBUG_PER_CPU_MAPS
+<<<<<<< HEAD
 void debug_cpumask_set_cpu(int cpu, int node, bool enable);
 #endif
 
@@ -81,4 +98,9 @@ static inline int numa_emu_cmdline(char *str)
 }
 #endif /* CONFIG_NUMA_EMU */
 
+=======
+void debug_cpumask_set_cpu(unsigned int cpu, int node, bool enable);
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif	/* _ASM_X86_NUMA_H */

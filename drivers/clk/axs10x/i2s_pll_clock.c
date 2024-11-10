@@ -215,7 +215,11 @@ static struct platform_driver i2s_pll_clk_driver = {
 		.of_match_table = i2s_pll_clk_id,
 	},
 	.probe = i2s_pll_clk_probe,
+<<<<<<< HEAD
 	.remove_new = i2s_pll_clk_remove,
+=======
+	.remove = i2s_pll_clk_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(i2s_pll_clk_driver);
 

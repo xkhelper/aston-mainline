@@ -145,6 +145,7 @@ SYSCALL_DEFINE1(uselib, const char __user *, library)
 		goto out;
 
 	/*
+<<<<<<< HEAD
 	 * may_open() has already checked for this, so it should be
 	 * impossible to trip now. But we need to be extra cautious
 	 * and check again at the very end too.
@@ -152,6 +153,13 @@ SYSCALL_DEFINE1(uselib, const char __user *, library)
 	error = -EACCES;
 	if (WARN_ON_ONCE(!S_ISREG(file_inode(file)->i_mode) ||
 			 path_noexec(&file->f_path)))
+=======
+	 * Check do_open_execat() for an explanation.
+	 */
+	error = -EACCES;
+	if (WARN_ON_ONCE(!S_ISREG(file_inode(file)->i_mode)) ||
+	    path_noexec(&file->f_path))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto exit;
 
 	error = -ENOEXEC;
@@ -712,6 +720,7 @@ static int copy_strings_kernel(int argc, const char *const *argv,
 #ifdef CONFIG_MMU
 
 /*
+<<<<<<< HEAD
  * During bprm_mm_init(), we create a temporary stack at STACK_TOP_MAX.  Once
  * the binfmt code determines where the new stack should reside, we shift it to
  * its final location.  The process proceeds as follows:
@@ -786,6 +795,8 @@ static int shift_arg_pages(struct vm_area_struct *vma, unsigned long shift)
 }
 
 /*
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Finalizes the stack vm_area_struct. The flags and permissions are updated,
  * the stack is optionally relocated, and some extra space is added.
  */
@@ -813,7 +824,12 @@ int setup_arg_pages(struct linux_binprm *bprm,
 	stack_base = calc_max_stack_size(stack_base);
 
 	/* Add space for stack randomization. */
+<<<<<<< HEAD
 	stack_base += (STACK_RND_MASK << PAGE_SHIFT);
+=======
+	if (current->flags & PF_RANDOMIZE)
+		stack_base += (STACK_RND_MASK << PAGE_SHIFT);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Make sure we didn't let the argument array grow too large. */
 	if (vma->vm_end - vma->vm_start > stack_base)
@@ -877,7 +893,16 @@ int setup_arg_pages(struct linux_binprm *bprm,
 
 	/* Move stack pages down in memory. */
 	if (stack_shift) {
+<<<<<<< HEAD
 		ret = shift_arg_pages(vma, stack_shift);
+=======
+		/*
+		 * During bprm_mm_init(), we create a temporary stack at STACK_TOP_MAX.  Once
+		 * the binfmt code determines where the new stack should reside, we shift it to
+		 * its final location.
+		 */
+		ret = relocate_vma_down(vma, stack_shift);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret)
 			goto out_unlock;
 	}
@@ -954,7 +979,10 @@ EXPORT_SYMBOL(transfer_args_to_stack);
 static struct file *do_open_execat(int fd, struct filename *name, int flags)
 {
 	struct file *file;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct open_flags open_exec_flags = {
 		.open_flag = O_LARGEFILE | O_RDONLY | __FMODE_EXEC,
 		.acc_mode = MAY_EXEC,
@@ -971,6 +999,7 @@ static struct file *do_open_execat(int fd, struct filename *name, int flags)
 
 	file = do_filp_open(fd, name, &open_exec_flags);
 	if (IS_ERR(file))
+<<<<<<< HEAD
 		goto out;
 
 	/*
@@ -989,6 +1018,22 @@ out:
 exit:
 	fput(file);
 	return ERR_PTR(err);
+=======
+		return file;
+
+	/*
+	 * In the past the regular type check was here. It moved to may_open() in
+	 * 633fb6ac3980 ("exec: move S_ISREG() check earlier"). Since then it is
+	 * an invariant that all non-regular files error out before we get here.
+	 */
+	if (WARN_ON_ONCE(!S_ISREG(file_inode(file)->i_mode)) ||
+	    path_noexec(&file->f_path)) {
+		fput(file);
+		return ERR_PTR(-EACCES);
+	}
+
+	return file;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**

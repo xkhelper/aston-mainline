@@ -410,22 +410,46 @@ static struct dma_buf *export_and_register_object(struct drm_device *dev,
 }
 
 /**
+<<<<<<< HEAD
  * drm_gem_prime_handle_to_fd - PRIME export function for GEM drivers
+=======
+ * drm_gem_prime_handle_to_dmabuf - PRIME export function for GEM drivers
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @dev: dev to export the buffer from
  * @file_priv: drm file-private structure
  * @handle: buffer handle to export
  * @flags: flags like DRM_CLOEXEC
+<<<<<<< HEAD
  * @prime_fd: pointer to storage for the fd id of the create dma-buf
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * This is the PRIME export function which must be used mandatorily by GEM
  * drivers to ensure correct lifetime management of the underlying GEM object.
  * The actual exporting from GEM object to a dma-buf is done through the
  * &drm_gem_object_funcs.export callback.
+<<<<<<< HEAD
  */
 int drm_gem_prime_handle_to_fd(struct drm_device *dev,
 			       struct drm_file *file_priv, uint32_t handle,
 			       uint32_t flags,
 			       int *prime_fd)
+=======
+ *
+ * Unlike drm_gem_prime_handle_to_fd(), it returns the struct dma_buf it
+ * has created, without attaching it to any file descriptors.  The difference
+ * between those two is similar to that between anon_inode_getfile() and
+ * anon_inode_getfd(); insertion into descriptor table is something you
+ * can not revert if any cleanup is needed, so the descriptor-returning
+ * variants should only be used when you are past the last failure exit
+ * and the only thing left is passing the new file descriptor to userland.
+ * When all you need is the object itself or when you need to do something
+ * else that might fail, use that one instead.
+ */
+struct dma_buf *drm_gem_prime_handle_to_dmabuf(struct drm_device *dev,
+			       struct drm_file *file_priv, uint32_t handle,
+			       uint32_t flags)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct drm_gem_object *obj;
 	int ret = 0;
@@ -434,14 +458,22 @@ int drm_gem_prime_handle_to_fd(struct drm_device *dev,
 	mutex_lock(&file_priv->prime.lock);
 	obj = drm_gem_object_lookup(file_priv, handle);
 	if (!obj)  {
+<<<<<<< HEAD
 		ret = -ENOENT;
+=======
+		dmabuf = ERR_PTR(-ENOENT);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out_unlock;
 	}
 
 	dmabuf = drm_prime_lookup_buf_by_handle(&file_priv->prime, handle);
 	if (dmabuf) {
 		get_dma_buf(dmabuf);
+<<<<<<< HEAD
 		goto out_have_handle;
+=======
+		goto out;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	mutex_lock(&dev->object_name_lock);
@@ -463,7 +495,10 @@ int drm_gem_prime_handle_to_fd(struct drm_device *dev,
 		/* normally the created dma-buf takes ownership of the ref,
 		 * but if that fails then drop the ref
 		 */
+<<<<<<< HEAD
 		ret = PTR_ERR(dmabuf);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mutex_unlock(&dev->object_name_lock);
 		goto out;
 	}
@@ -478,6 +513,7 @@ out_have_obj:
 	ret = drm_prime_add_buf_handle(&file_priv->prime,
 				       dmabuf, handle);
 	mutex_unlock(&dev->object_name_lock);
+<<<<<<< HEAD
 	if (ret)
 		goto fail_put_dmabuf;
 
@@ -500,12 +536,58 @@ out_have_handle:
 
 fail_put_dmabuf:
 	dma_buf_put(dmabuf);
+=======
+	if (ret) {
+		dma_buf_put(dmabuf);
+		dmabuf = ERR_PTR(ret);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out:
 	drm_gem_object_put(obj);
 out_unlock:
 	mutex_unlock(&file_priv->prime.lock);
+<<<<<<< HEAD
 
 	return ret;
+=======
+	return dmabuf;
+}
+EXPORT_SYMBOL(drm_gem_prime_handle_to_dmabuf);
+
+/**
+ * drm_gem_prime_handle_to_fd - PRIME export function for GEM drivers
+ * @dev: dev to export the buffer from
+ * @file_priv: drm file-private structure
+ * @handle: buffer handle to export
+ * @flags: flags like DRM_CLOEXEC
+ * @prime_fd: pointer to storage for the fd id of the create dma-buf
+ *
+ * This is the PRIME export function which must be used mandatorily by GEM
+ * drivers to ensure correct lifetime management of the underlying GEM object.
+ * The actual exporting from GEM object to a dma-buf is done through the
+ * &drm_gem_object_funcs.export callback.
+ */
+int drm_gem_prime_handle_to_fd(struct drm_device *dev,
+			       struct drm_file *file_priv, uint32_t handle,
+			       uint32_t flags,
+			       int *prime_fd)
+{
+	struct dma_buf *dmabuf;
+	int fd = get_unused_fd_flags(flags);
+
+	if (fd < 0)
+		return fd;
+
+	dmabuf = drm_gem_prime_handle_to_dmabuf(dev, file_priv, handle, flags);
+	if (IS_ERR(dmabuf)) {
+		put_unused_fd(fd);
+		return PTR_ERR(dmabuf);
+	}
+
+	fd_install(fd, dmabuf->file);
+	*prime_fd = fd;
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(drm_gem_prime_handle_to_fd);
 

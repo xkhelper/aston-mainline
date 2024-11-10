@@ -25,6 +25,13 @@ properties:
               - renesas,riic-r9a07g054  # RZ/V2L
           - const: renesas,riic-rz      # RZ/A or RZ/G2L
 
+<<<<<<< HEAD
+=======
+      - items:
+          - const: renesas,riic-r9a08g045   # RZ/G3S
+          - const: renesas,riic-r9a09g057   # RZ/V2H(P)
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       - const: renesas,riic-r9a09g057   # RZ/V2H(P)
 
   reg:

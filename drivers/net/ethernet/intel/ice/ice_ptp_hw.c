@@ -34,7 +34,10 @@ static const struct ice_cgu_pin_desc ice_e810t_sfp_cgu_inputs[] = {
 		ARRAY_SIZE(ice_cgu_pin_freq_common), ice_cgu_pin_freq_common },
 	{ "GNSS-1PPS",	  ZL_REF4P, DPLL_PIN_TYPE_GNSS,
 		ARRAY_SIZE(ice_cgu_pin_freq_1_hz), ice_cgu_pin_freq_1_hz },
+<<<<<<< HEAD
 	{ "OCXO",	  ZL_REF4N, DPLL_PIN_TYPE_INT_OSCILLATOR, 0, },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct ice_cgu_pin_desc ice_e810t_qsfp_cgu_inputs[] = {
@@ -52,7 +55,10 @@ static const struct ice_cgu_pin_desc ice_e810t_qsfp_cgu_inputs[] = {
 		ARRAY_SIZE(ice_cgu_pin_freq_common), ice_cgu_pin_freq_common },
 	{ "GNSS-1PPS",	  ZL_REF4P, DPLL_PIN_TYPE_GNSS,
 		ARRAY_SIZE(ice_cgu_pin_freq_1_hz), ice_cgu_pin_freq_1_hz },
+<<<<<<< HEAD
 	{ "OCXO",	  ZL_REF4N, DPLL_PIN_TYPE_INT_OSCILLATOR, },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct ice_cgu_pin_desc ice_e810t_sfp_cgu_outputs[] = {
@@ -5965,6 +5971,28 @@ ice_cgu_get_pin_desc(struct ice_hw *hw, bool input, int *size)
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * ice_cgu_get_num_pins - get pin description array size
+ * @hw: pointer to the hw struct
+ * @input: if request is done against input or output pins
+ *
+ * Return: size of pin description array for given hw.
+ */
+int ice_cgu_get_num_pins(struct ice_hw *hw, bool input)
+{
+	const struct ice_cgu_pin_desc *t;
+	int size;
+
+	t = ice_cgu_get_pin_desc(hw, input, &size);
+	if (t)
+		return size;
+
+	return 0;
+}
+
+/**
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * ice_cgu_get_pin_type - get pin's type
  * @hw: pointer to the hw struct
  * @pin: pin index

@@ -5,6 +5,10 @@
 #include <linux/slab.h>
 #include <linux/module.h>
 #include <linux/kernel.h>
+<<<<<<< HEAD
+=======
+#include <linux/rcupdate.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "../mm/slab.h"
 
 static struct kunit_resource resource;
@@ -140,7 +144,11 @@ static void test_kmalloc_redzone_access(struct kunit *test)
 {
 	struct kmem_cache *s = test_kmem_cache_create("TestSlub_RZ_kmalloc", 32,
 				SLAB_KMALLOC|SLAB_STORE_USER|SLAB_RED_ZONE);
+<<<<<<< HEAD
 	u8 *p = __kmalloc_cache_noprof(s, GFP_KERNEL, 18);
+=======
+	u8 *p = alloc_hooks(__kmalloc_cache_noprof(s, GFP_KERNEL, 18));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	kasan_disable_current();
 
@@ -157,6 +165,43 @@ static void test_kmalloc_redzone_access(struct kunit *test)
 	kmem_cache_destroy(s);
 }
 
+<<<<<<< HEAD
+=======
+struct test_kfree_rcu_struct {
+	struct rcu_head rcu;
+};
+
+static void test_kfree_rcu(struct kunit *test)
+{
+	struct kmem_cache *s;
+	struct test_kfree_rcu_struct *p;
+
+	if (IS_BUILTIN(CONFIG_SLUB_KUNIT_TEST))
+		kunit_skip(test, "can't do kfree_rcu() when test is built-in");
+
+	s = test_kmem_cache_create("TestSlub_kfree_rcu",
+				   sizeof(struct test_kfree_rcu_struct),
+				   SLAB_NO_MERGE);
+	p = kmem_cache_alloc(s, GFP_KERNEL);
+
+	kfree_rcu(p, rcu);
+	kmem_cache_destroy(s);
+
+	KUNIT_EXPECT_EQ(test, 0, slab_errors);
+}
+
+static void test_leak_destroy(struct kunit *test)
+{
+	struct kmem_cache *s = test_kmem_cache_create("TestSlub_leak_destroy",
+							64, SLAB_NO_MERGE);
+	kmem_cache_alloc(s, GFP_KERNEL);
+
+	kmem_cache_destroy(s);
+
+	KUNIT_EXPECT_EQ(test, 2, slab_errors);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int test_init(struct kunit *test)
 {
 	slab_errors = 0;
@@ -177,6 +222,11 @@ static struct kunit_case test_cases[] = {
 
 	KUNIT_CASE(test_clobber_redzone_free),
 	KUNIT_CASE(test_kmalloc_redzone_access),
+<<<<<<< HEAD
+=======
+	KUNIT_CASE(test_kfree_rcu),
+	KUNIT_CASE(test_leak_destroy),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 

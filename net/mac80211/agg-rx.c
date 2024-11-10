@@ -207,6 +207,7 @@ static void ieee80211_send_addba_resp(struct sta_info *sta, u8 *da, u16 tid,
 		return;
 
 	skb_reserve(skb, local->hw.extra_tx_headroom);
+<<<<<<< HEAD
 	mgmt = skb_put_zero(skb, 24);
 	memcpy(mgmt->da, da, ETH_ALEN);
 	memcpy(mgmt->sa, sdata->vif.addr, ETH_ALEN);
@@ -221,6 +222,9 @@ static void ieee80211_send_addba_resp(struct sta_info *sta, u8 *da, u16 tid,
 
 	mgmt->frame_control = cpu_to_le16(IEEE80211_FTYPE_MGMT |
 					  IEEE80211_STYPE_ACTION);
+=======
+	mgmt = ieee80211_mgmt_ba(skb, da, sdata);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	skb_put(skb, 1 + sizeof(mgmt->u.action.u.addba_resp));
 	mgmt->u.action.category = WLAN_CATEGORY_BACK;

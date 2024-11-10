@@ -11,7 +11,10 @@
 #include <linux/sched/debug.h>
 #include <linux/sched/task_stack.h>
 
+<<<<<<< HEAD
 #include <asm/sysrq.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/stacktrace.h>
 #include <os.h>
 

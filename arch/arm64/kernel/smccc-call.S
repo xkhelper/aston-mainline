@@ -7,6 +7,7 @@
 
 #include <asm/asm-offsets.h>
 #include <asm/assembler.h>
+<<<<<<< HEAD
 #include <asm/thread_info.h>
 
 /*
@@ -42,13 +43,26 @@ alternative_else_nop_endif
 	stp	x0, x1, [x4, #ARM_SMCCC_RES_X0_OFFS]
 	stp	x2, x3, [x4, #ARM_SMCCC_RES_X2_OFFS]
 	ldr	x4, [sp, #24]
+=======
+
+	.macro SMCCC instr
+	\instr	#0
+	ldr	x4, [sp]
+	stp	x0, x1, [x4, #ARM_SMCCC_RES_X0_OFFS]
+	stp	x2, x3, [x4, #ARM_SMCCC_RES_X2_OFFS]
+	ldr	x4, [sp, #8]
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cbz	x4, 1f /* no quirk structure */
 	ldr	x9, [x4, #ARM_SMCCC_QUIRK_ID_OFFS]
 	cmp	x9, #ARM_SMCCC_QUIRK_QCOM_A6
 	b.ne	1f
 	str	x6, [x4, ARM_SMCCC_QUIRK_STATE_OFFS]
+<<<<<<< HEAD
 1:	ldp     x29, x30, [sp], #16
 	ret
+=======
+1:	ret
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.endm
 
 /*

@@ -15,7 +15,10 @@
 #include <asm/set_memory.h>
 #include <asm/smp.h>
 
+<<<<<<< HEAD
 #include "display/intel_frontbuffer.h"
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "gt/intel_gt.h"
 #include "gt/intel_gt_requests.h"
 

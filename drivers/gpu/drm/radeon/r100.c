@@ -459,7 +459,11 @@ void r100_pm_misc(struct radeon_device *rdev)
  */
 void r100_pm_prepare(struct radeon_device *rdev)
 {
+<<<<<<< HEAD
 	struct drm_device *ddev = rdev->ddev;
+=======
+	struct drm_device *ddev = rdev_to_drm(rdev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_crtc *crtc;
 	struct radeon_crtc *radeon_crtc;
 	u32 tmp;
@@ -490,7 +494,11 @@ void r100_pm_prepare(struct radeon_device *rdev)
  */
 void r100_pm_finish(struct radeon_device *rdev)
 {
+<<<<<<< HEAD
 	struct drm_device *ddev = rdev->ddev;
+=======
+	struct drm_device *ddev = rdev_to_drm(rdev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_crtc *crtc;
 	struct radeon_crtc *radeon_crtc;
 	u32 tmp;
@@ -603,7 +611,11 @@ void r100_hpd_set_polarity(struct radeon_device *rdev,
  */
 void r100_hpd_init(struct radeon_device *rdev)
 {
+<<<<<<< HEAD
 	struct drm_device *dev = rdev->ddev;
+=======
+	struct drm_device *dev = rdev_to_drm(rdev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_connector *connector;
 	unsigned enable = 0;
 
@@ -626,7 +638,11 @@ void r100_hpd_init(struct radeon_device *rdev)
  */
 void r100_hpd_fini(struct radeon_device *rdev)
 {
+<<<<<<< HEAD
 	struct drm_device *dev = rdev->ddev;
+=======
+	struct drm_device *dev = rdev_to_drm(rdev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_connector *connector;
 	unsigned disable = 0;
 
@@ -798,7 +814,11 @@ int r100_irq_process(struct radeon_device *rdev)
 		/* Vertical blank interrupts */
 		if (status & RADEON_CRTC_VBLANK_STAT) {
 			if (rdev->irq.crtc_vblank_int[0]) {
+<<<<<<< HEAD
 				drm_handle_vblank(rdev->ddev, 0);
+=======
+				drm_handle_vblank(rdev_to_drm(rdev), 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				rdev->pm.vblank_sync = true;
 				wake_up(&rdev->irq.vblank_queue);
 			}
@@ -807,7 +827,11 @@ int r100_irq_process(struct radeon_device *rdev)
 		}
 		if (status & RADEON_CRTC2_VBLANK_STAT) {
 			if (rdev->irq.crtc_vblank_int[1]) {
+<<<<<<< HEAD
 				drm_handle_vblank(rdev->ddev, 1);
+=======
+				drm_handle_vblank(rdev_to_drm(rdev), 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				rdev->pm.vblank_sync = true;
 				wake_up(&rdev->irq.vblank_queue);
 			}
@@ -1016,6 +1040,7 @@ static int r100_cp_init_microcode(struct radeon_device *rdev)
 
 	DRM_DEBUG_KMS("\n");
 
+<<<<<<< HEAD
 	if ((rdev->family == CHIP_R100) || (rdev->family == CHIP_RV100) ||
 	    (rdev->family == CHIP_RV200) || (rdev->family == CHIP_RS100) ||
 	    (rdev->family == CHIP_RS200)) {
@@ -1055,6 +1080,67 @@ static int r100_cp_init_microcode(struct radeon_device *rdev)
 		   (rdev->family == CHIP_RV570)) {
 		DRM_INFO("Loading R500 Microcode\n");
 		fw_name = FIRMWARE_R520;
+=======
+	switch (rdev->family) {
+	case CHIP_R100:
+	case CHIP_RV100:
+	case CHIP_RV200:
+	case CHIP_RS100:
+	case CHIP_RS200:
+		DRM_INFO("Loading R100 Microcode\n");
+		fw_name = FIRMWARE_R100;
+		break;
+
+	case CHIP_R200:
+	case CHIP_RV250:
+	case CHIP_RV280:
+	case CHIP_RS300:
+		DRM_INFO("Loading R200 Microcode\n");
+		fw_name = FIRMWARE_R200;
+		break;
+
+	case CHIP_R300:
+	case CHIP_R350:
+	case CHIP_RV350:
+	case CHIP_RV380:
+	case CHIP_RS400:
+	case CHIP_RS480:
+		DRM_INFO("Loading R300 Microcode\n");
+		fw_name = FIRMWARE_R300;
+		break;
+
+	case CHIP_R420:
+	case CHIP_R423:
+	case CHIP_RV410:
+		DRM_INFO("Loading R400 Microcode\n");
+		fw_name = FIRMWARE_R420;
+		break;
+
+	case CHIP_RS690:
+	case CHIP_RS740:
+		DRM_INFO("Loading RS690/RS740 Microcode\n");
+		fw_name = FIRMWARE_RS690;
+		break;
+
+	case CHIP_RS600:
+		DRM_INFO("Loading RS600 Microcode\n");
+		fw_name = FIRMWARE_RS600;
+		break;
+
+	case CHIP_RV515:
+	case CHIP_R520:
+	case CHIP_RV530:
+	case CHIP_R580:
+	case CHIP_RV560:
+	case CHIP_RV570:
+		DRM_INFO("Loading R500 Microcode\n");
+		fw_name = FIRMWARE_R520;
+		break;
+
+	default:
+		DRM_ERROR("Unsupported Radeon family %u\n", rdev->family);
+		return -EINVAL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	err = request_firmware(&rdev->me_fw, fw_name, rdev->dev);
@@ -1471,7 +1557,11 @@ int r100_cs_packet_parse_vline(struct radeon_cs_parser *p)
 	header = radeon_get_ib_value(p, h_idx);
 	crtc_id = radeon_get_ib_value(p, h_idx + 5);
 	reg = R100_CP_PACKET0_GET_REG(header);
+<<<<<<< HEAD
 	crtc = drm_crtc_find(p->rdev->ddev, p->filp, crtc_id);
+=======
+	crtc = drm_crtc_find(rdev_to_drm(p->rdev), p->filp, crtc_id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!crtc) {
 		DRM_ERROR("cannot find crtc %d\n", crtc_id);
 		return -ENOENT;
@@ -3059,7 +3149,11 @@ DEFINE_SHOW_ATTRIBUTE(r100_debugfs_mc_info);
 void  r100_debugfs_rbbm_init(struct radeon_device *rdev)
 {
 #if defined(CONFIG_DEBUG_FS)
+<<<<<<< HEAD
 	struct dentry *root = rdev->ddev->primary->debugfs_root;
+=======
+	struct dentry *root = rdev_to_drm(rdev)->primary->debugfs_root;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	debugfs_create_file("r100_rbbm_info", 0444, root, rdev,
 			    &r100_debugfs_rbbm_info_fops);
@@ -3069,7 +3163,11 @@ void  r100_debugfs_rbbm_init(struct radeon_device *rdev)
 void r100_debugfs_cp_init(struct radeon_device *rdev)
 {
 #if defined(CONFIG_DEBUG_FS)
+<<<<<<< HEAD
 	struct dentry *root = rdev->ddev->primary->debugfs_root;
+=======
+	struct dentry *root = rdev_to_drm(rdev)->primary->debugfs_root;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	debugfs_create_file("r100_cp_ring_info", 0444, root, rdev,
 			    &r100_debugfs_cp_ring_info_fops);
@@ -3081,7 +3179,11 @@ void r100_debugfs_cp_init(struct radeon_device *rdev)
 void  r100_debugfs_mc_info_init(struct radeon_device *rdev)
 {
 #if defined(CONFIG_DEBUG_FS)
+<<<<<<< HEAD
 	struct dentry *root = rdev->ddev->primary->debugfs_root;
+=======
+	struct dentry *root = rdev_to_drm(rdev)->primary->debugfs_root;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	debugfs_create_file("r100_mc_info", 0444, root, rdev,
 			    &r100_debugfs_mc_info_fops);
@@ -3947,7 +4049,11 @@ int r100_resume(struct radeon_device *rdev)
 			RREG32(R_0007C0_CP_STAT));
 	}
 	/* post */
+<<<<<<< HEAD
 	radeon_combios_asic_init(rdev->ddev);
+=======
+	radeon_combios_asic_init(rdev_to_drm(rdev));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Resume clock after posting */
 	r100_clock_startup(rdev);
 	/* Initialize surface registers */
@@ -4056,7 +4162,11 @@ int r100_init(struct radeon_device *rdev)
 	/* Set asic errata */
 	r100_errata(rdev);
 	/* Initialize clocks */
+<<<<<<< HEAD
 	radeon_get_clock_info(rdev->ddev);
+=======
+	radeon_get_clock_info(rdev_to_drm(rdev));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* initialize AGP */
 	if (rdev->flags & RADEON_IS_AGP) {
 		r = radeon_agp_init(rdev);

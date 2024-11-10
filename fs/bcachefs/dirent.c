@@ -250,6 +250,7 @@ int bch2_dirent_create(struct btree_trans *trans, subvol_inum dir,
 	return ret;
 }
 
+<<<<<<< HEAD
 static void dirent_copy_target(struct bkey_i_dirent *dst,
 			       struct bkey_s_c_dirent src)
 {
@@ -257,6 +258,8 @@ static void dirent_copy_target(struct bkey_i_dirent *dst,
 	dst->v.d_type = src.v->d_type;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int bch2_dirent_read_target(struct btree_trans *trans, subvol_inum dir,
 			    struct bkey_s_c_dirent d, subvol_inum *target)
 {
@@ -552,6 +555,7 @@ static int bch2_dir_emit(struct dir_context *ctx, struct bkey_s_c_dirent d, subv
 
 int bch2_readdir(struct bch_fs *c, subvol_inum inum, struct dir_context *ctx)
 {
+<<<<<<< HEAD
 	struct btree_trans *trans = bch2_trans_get(c);
 	struct btree_iter iter;
 	struct bkey_s_c k;
@@ -610,4 +614,32 @@ err:
 	bch2_bkey_buf_exit(&sk, c);
 
 	return ret;
+=======
+	struct bkey_buf sk;
+	bch2_bkey_buf_init(&sk);
+
+	int ret = bch2_trans_run(c,
+		for_each_btree_key_in_subvolume_upto(trans, iter, BTREE_ID_dirents,
+				   POS(inum.inum, ctx->pos),
+				   POS(inum.inum, U64_MAX),
+				   inum.subvol, 0, k, ({
+			if (k.k->type != KEY_TYPE_dirent)
+				continue;
+
+			/* dir_emit() can fault and block: */
+			bch2_bkey_buf_reassemble(&sk, c, k);
+			struct bkey_s_c_dirent dirent = bkey_i_to_s_c_dirent(sk.k);
+
+			subvol_inum target;
+			int ret2 = bch2_dirent_read_target(trans, inum, dirent, &target);
+			if (ret2 > 0)
+				continue;
+
+			ret2 ?: drop_locks_do(trans, bch2_dir_emit(ctx, dirent, target));
+		})));
+
+	bch2_bkey_buf_exit(&sk, c);
+
+	return ret < 0 ? ret : 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

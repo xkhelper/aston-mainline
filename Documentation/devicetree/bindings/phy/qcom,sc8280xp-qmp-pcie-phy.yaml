@@ -40,6 +40,10 @@ properties:
       - qcom,sm8650-qmp-gen4x2-pcie-phy
       - qcom,x1e80100-qmp-gen3x2-pcie-phy
       - qcom,x1e80100-qmp-gen4x2-pcie-phy
+<<<<<<< HEAD
+=======
+      - qcom,x1e80100-qmp-gen4x4-pcie-phy
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   reg:
     minItems: 1
@@ -118,6 +122,10 @@ allOf:
           contains:
             enum:
               - qcom,sc8280xp-qmp-gen3x4-pcie-phy
+<<<<<<< HEAD
+=======
+              - qcom,x1e80100-qmp-gen4x4-pcie-phy
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     then:
       properties:
         reg:
@@ -152,8 +160,11 @@ allOf:
               - qcom,sm8550-qmp-gen4x2-pcie-phy
               - qcom,sm8650-qmp-gen3x2-pcie-phy
               - qcom,sm8650-qmp-gen4x2-pcie-phy
+<<<<<<< HEAD
               - qcom,x1e80100-qmp-gen3x2-pcie-phy
               - qcom,x1e80100-qmp-gen4x2-pcie-phy
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     then:
       properties:
         clocks:
@@ -169,6 +180,12 @@ allOf:
               - qcom,sc8280xp-qmp-gen3x1-pcie-phy
               - qcom,sc8280xp-qmp-gen3x2-pcie-phy
               - qcom,sc8280xp-qmp-gen3x4-pcie-phy
+<<<<<<< HEAD
+=======
+              - qcom,x1e80100-qmp-gen3x2-pcie-phy
+              - qcom,x1e80100-qmp-gen4x2-pcie-phy
+              - qcom,x1e80100-qmp-gen4x4-pcie-phy
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     then:
       properties:
         clocks:
@@ -198,6 +215,10 @@ allOf:
               - qcom,sm8550-qmp-gen4x2-pcie-phy
               - qcom,sm8650-qmp-gen4x2-pcie-phy
               - qcom,x1e80100-qmp-gen4x2-pcie-phy
+<<<<<<< HEAD
+=======
+              - qcom,x1e80100-qmp-gen4x4-pcie-phy
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     then:
       properties:
         resets:

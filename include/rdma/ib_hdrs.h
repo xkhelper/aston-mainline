@@ -7,7 +7,11 @@
 #define IB_HDRS_H
 
 #include <linux/types.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <rdma/ib_verbs.h>
 
 #define IB_SEQ_NAK	(3 << 29)

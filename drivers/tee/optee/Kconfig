@@ -4,6 +4,10 @@ config OPTEE
 	tristate "OP-TEE"
 	depends on HAVE_ARM_SMCCC
 	depends on MMU
+<<<<<<< HEAD
+=======
+	depends on RPMB || !RPMB
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  This implements the OP-TEE Trusted Execution Environment (TEE)
 	  driver.

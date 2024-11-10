@@ -165,6 +165,7 @@ static struct platform_driver serial_pxa_driver = {
 
 module_platform_driver(serial_pxa_driver);
 
+<<<<<<< HEAD
 #ifdef CONFIG_SERIAL_8250_CONSOLE
 static int __init early_serial_pxa_setup(struct earlycon_device *device,
 				  const char *options)
@@ -181,6 +182,8 @@ OF_EARLYCON_DECLARE(early_pxa, "mrvl,pxa-uart", early_serial_pxa_setup);
 OF_EARLYCON_DECLARE(mmp, "mrvl,mmp-uart", early_serial_pxa_setup);
 #endif
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_AUTHOR("Sergei Ianovich");
 MODULE_DESCRIPTION("driver for PXA on-board UARTS");
 MODULE_LICENSE("GPL");

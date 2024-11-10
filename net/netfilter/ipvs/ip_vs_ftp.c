@@ -35,7 +35,11 @@
 #include <linux/gfp.h>
 #include <net/protocol.h>
 #include <net/tcp.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <net/ip_vs.h>
 

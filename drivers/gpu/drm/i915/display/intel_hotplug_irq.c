@@ -456,6 +456,10 @@ u32 i9xx_hpd_irq_ack(struct drm_i915_private *dev_priv)
 
 void i9xx_hpd_irq_handler(struct drm_i915_private *dev_priv, u32 hotplug_status)
 {
+<<<<<<< HEAD
+=======
+	struct intel_display *display = &dev_priv->display;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 pin_mask = 0, long_mask = 0;
 	u32 hotplug_trigger;
 
@@ -477,7 +481,11 @@ void i9xx_hpd_irq_handler(struct drm_i915_private *dev_priv, u32 hotplug_status)
 	if ((IS_G4X(dev_priv) ||
 	     IS_VALLEYVIEW(dev_priv) || IS_CHERRYVIEW(dev_priv)) &&
 	    hotplug_status & DP_AUX_CHANNEL_MASK_INT_STATUS_G4X)
+<<<<<<< HEAD
 		intel_dp_aux_irq_handler(dev_priv);
+=======
+		intel_dp_aux_irq_handler(display);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void ibx_hpd_irq_handler(struct drm_i915_private *dev_priv, u32 hotplug_trigger)
@@ -513,6 +521,10 @@ void ibx_hpd_irq_handler(struct drm_i915_private *dev_priv, u32 hotplug_trigger)
 
 void xelpdp_pica_irq_handler(struct drm_i915_private *i915, u32 iir)
 {
+<<<<<<< HEAD
+=======
+	struct intel_display *display = &i915->display;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	enum hpd_pin pin;
 	u32 hotplug_trigger = iir & (XELPDP_DP_ALT_HOTPLUG_MASK | XELPDP_TBT_HOTPLUG_MASK);
 	u32 trigger_aux = iir & XELPDP_AUX_TC_MASK;
@@ -545,7 +557,11 @@ void xelpdp_pica_irq_handler(struct drm_i915_private *i915, u32 iir)
 	}
 
 	if (trigger_aux)
+<<<<<<< HEAD
 		intel_dp_aux_irq_handler(i915);
+=======
+		intel_dp_aux_irq_handler(display);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!pin_mask && !trigger_aux)
 		drm_err(&i915->drm,

@@ -116,6 +116,7 @@ int bpf_token_create(union bpf_attr *attr)
 	struct user_namespace *userns;
 	struct inode *inode;
 	struct file *file;
+<<<<<<< HEAD
 	struct path path;
 	struct fd f;
 	umode_t mode;
@@ -142,11 +143,35 @@ int bpf_token_create(union bpf_attr *attr)
 		goto out_path;
 
 	userns = path.dentry->d_sb->s_user_ns;
+=======
+	CLASS(fd, f)(attr->token_create.bpffs_fd);
+	struct path path;
+	struct super_block *sb;
+	umode_t mode;
+	int err, fd;
+
+	if (fd_empty(f))
+		return -EBADF;
+
+	path = fd_file(f)->f_path;
+	sb = path.dentry->d_sb;
+
+	if (path.dentry != sb->s_root)
+		return -EINVAL;
+	if (sb->s_op != &bpf_super_ops)
+		return -EINVAL;
+	err = path_permission(&path, MAY_ACCESS);
+	if (err)
+		return err;
+
+	userns = sb->s_user_ns;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Enforce that creators of BPF tokens are in the same user
 	 * namespace as the BPF FS instance. This makes reasoning about
 	 * permissions a lot easier and we can always relax this later.
 	 */
+<<<<<<< HEAD
 	if (current_user_ns() != userns) {
 		err = -EPERM;
 		goto out_path;
@@ -177,6 +202,28 @@ int bpf_token_create(union bpf_attr *attr)
 		err = PTR_ERR(inode);
 		goto out_path;
 	}
+=======
+	if (current_user_ns() != userns)
+		return -EPERM;
+	if (!ns_capable(userns, CAP_BPF))
+		return -EPERM;
+
+	/* Creating BPF token in init_user_ns doesn't make much sense. */
+	if (current_user_ns() == &init_user_ns)
+		return -EOPNOTSUPP;
+
+	mnt_opts = sb->s_fs_info;
+	if (mnt_opts->delegate_cmds == 0 &&
+	    mnt_opts->delegate_maps == 0 &&
+	    mnt_opts->delegate_progs == 0 &&
+	    mnt_opts->delegate_attachs == 0)
+		return -ENOENT; /* no BPF token delegation is set up */
+
+	mode = S_IFREG | ((S_IRUSR | S_IWUSR) & ~current_umask());
+	inode = bpf_get_inode(sb, NULL, mode);
+	if (IS_ERR(inode))
+		return PTR_ERR(inode);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	inode->i_op = &bpf_token_iops;
 	inode->i_fop = &bpf_token_fops;
@@ -185,8 +232,12 @@ int bpf_token_create(union bpf_attr *attr)
 	file = alloc_file_pseudo(inode, path.mnt, BPF_TOKEN_INODE_NAME, O_RDWR, &bpf_token_fops);
 	if (IS_ERR(file)) {
 		iput(inode);
+<<<<<<< HEAD
 		err = PTR_ERR(file);
 		goto out_path;
+=======
+		return PTR_ERR(file);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	token = kzalloc(sizeof(*token), GFP_USER);
@@ -218,20 +269,27 @@ int bpf_token_create(union bpf_attr *attr)
 	file->private_data = token;
 	fd_install(fd, file);
 
+<<<<<<< HEAD
 	path_put(&path);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return fd;
 
 out_token:
 	bpf_token_free(token);
 out_file:
 	fput(file);
+<<<<<<< HEAD
 out_path:
 	path_put(&path);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
 struct bpf_token *bpf_token_get_from_fd(u32 ufd)
 {
+<<<<<<< HEAD
 	struct fd f = fdget(ufd);
 	struct bpf_token *token;
 
@@ -245,6 +303,18 @@ struct bpf_token *bpf_token_get_from_fd(u32 ufd)
 	token = f.file->private_data;
 	bpf_token_inc(token);
 	fdput(f);
+=======
+	CLASS(fd, f)(ufd);
+	struct bpf_token *token;
+
+	if (fd_empty(f))
+		return ERR_PTR(-EBADF);
+	if (fd_file(f)->f_op != &bpf_token_fops)
+		return ERR_PTR(-EINVAL);
+
+	token = fd_file(f)->private_data;
+	bpf_token_inc(token);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return token;
 }

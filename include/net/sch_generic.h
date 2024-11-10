@@ -848,7 +848,10 @@ static inline void qdisc_calculate_pkt_len(struct sk_buff *skb,
 static inline int qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
 				struct sk_buff **to_free)
 {
+<<<<<<< HEAD
 	qdisc_calculate_pkt_len(skb, sch);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return sch->enqueue(skb, sch, to_free);
 }
 

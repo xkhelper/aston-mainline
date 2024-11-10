@@ -53,6 +53,10 @@
 
 #define RGU_RESET_DELAY_MS	10
 #define PORT_RESET_DELAY_MS	2000
+<<<<<<< HEAD
+=======
+#define FASTBOOT_RESET_DELAY_MS	2000
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define EX_HS_TIMEOUT_MS	5000
 #define EX_HS_POLL_DELAY_MS	10
 
@@ -167,11 +171,24 @@ static int t7xx_acpi_reset(struct t7xx_pci_dev *t7xx_dev, char *fn_name)
 	}
 
 	kfree(buffer.pointer);
+<<<<<<< HEAD
 
+=======
+#else
+	struct device *dev = &t7xx_dev->pdev->dev;
+	int ret;
+
+	ret = pci_reset_function(t7xx_dev->pdev);
+	if (ret) {
+		dev_err(dev, "Failed to reset device, error:%d\n", ret);
+		return ret;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	return 0;
 }
 
+<<<<<<< HEAD
 int t7xx_acpi_fldr_func(struct t7xx_pci_dev *t7xx_dev)
 {
 	return t7xx_acpi_reset(t7xx_dev, "_RST");
@@ -180,6 +197,41 @@ int t7xx_acpi_fldr_func(struct t7xx_pci_dev *t7xx_dev)
 int t7xx_acpi_pldr_func(struct t7xx_pci_dev *t7xx_dev)
 {
 	return t7xx_acpi_reset(t7xx_dev, "MRST._RST");
+=======
+static void t7xx_host_event_notify(struct t7xx_pci_dev *t7xx_dev, unsigned int event_id)
+{
+	u32 value;
+
+	value = ioread32(IREG_BASE(t7xx_dev) + T7XX_PCIE_MISC_DEV_STATUS);
+	value &= ~HOST_EVENT_MASK;
+	value |= FIELD_PREP(HOST_EVENT_MASK, event_id);
+	iowrite32(value, IREG_BASE(t7xx_dev) + T7XX_PCIE_MISC_DEV_STATUS);
+}
+
+int t7xx_reset_device(struct t7xx_pci_dev *t7xx_dev, enum reset_type type)
+{
+	int ret = 0;
+
+	pci_save_state(t7xx_dev->pdev);
+	t7xx_pci_reprobe_early(t7xx_dev);
+	t7xx_mode_update(t7xx_dev, T7XX_RESET);
+
+	if (type == FLDR) {
+		ret = t7xx_acpi_reset(t7xx_dev, "_RST");
+	} else if (type == PLDR) {
+		ret = t7xx_acpi_reset(t7xx_dev, "MRST._RST");
+	} else if (type == FASTBOOT) {
+		t7xx_host_event_notify(t7xx_dev, FASTBOOT_DL_NOTIFY);
+		t7xx_mhccif_h2d_swint_trigger(t7xx_dev, H2D_CH_DEVICE_RESET);
+		msleep(FASTBOOT_RESET_DELAY_MS);
+	}
+
+	pci_restore_state(t7xx_dev->pdev);
+	if (ret)
+		return ret;
+
+	return t7xx_pci_reprobe(t7xx_dev, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void t7xx_reset_device_via_pmic(struct t7xx_pci_dev *t7xx_dev)
@@ -188,16 +240,25 @@ static void t7xx_reset_device_via_pmic(struct t7xx_pci_dev *t7xx_dev)
 
 	val = ioread32(IREG_BASE(t7xx_dev) + T7XX_PCIE_MISC_DEV_STATUS);
 	if (val & MISC_RESET_TYPE_PLDR)
+<<<<<<< HEAD
 		t7xx_acpi_reset(t7xx_dev, "MRST._RST");
 	else if (val & MISC_RESET_TYPE_FLDR)
 		t7xx_acpi_fldr_func(t7xx_dev);
+=======
+		t7xx_reset_device(t7xx_dev, PLDR);
+	else if (val & MISC_RESET_TYPE_FLDR)
+		t7xx_reset_device(t7xx_dev, FLDR);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static irqreturn_t t7xx_rgu_isr_thread(int irq, void *data)
 {
 	struct t7xx_pci_dev *t7xx_dev = data;
 
+<<<<<<< HEAD
 	t7xx_mode_update(t7xx_dev, T7XX_RESET);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	msleep(RGU_RESET_DELAY_MS);
 	t7xx_reset_device_via_pmic(t7xx_dev);
 	return IRQ_HANDLED;

@@ -73,6 +73,7 @@ static enum power_supply_property cros_usbpd_dedicated_charger_props[] = {
 	POWER_SUPPLY_PROP_VOLTAGE_NOW,
 };
 
+<<<<<<< HEAD
 static enum power_supply_usb_type cros_usbpd_charger_usb_types[] = {
 	POWER_SUPPLY_USB_TYPE_UNKNOWN,
 	POWER_SUPPLY_USB_TYPE_SDP,
@@ -84,6 +85,8 @@ static enum power_supply_usb_type cros_usbpd_charger_usb_types[] = {
 	POWER_SUPPLY_USB_TYPE_APPLE_BRICK_ID
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Input voltage/current limit in mV/mA. Default to none. */
 static u16 input_voltage_limit = EC_POWER_LIMIT_NONE;
 static u16 input_current_limit = EC_POWER_LIMIT_NONE;
@@ -643,9 +646,20 @@ static int cros_usbpd_charger_probe(struct platform_device *pd)
 			psy_desc->properties = cros_usbpd_charger_props;
 			psy_desc->num_properties =
 				ARRAY_SIZE(cros_usbpd_charger_props);
+<<<<<<< HEAD
 			psy_desc->usb_types = cros_usbpd_charger_usb_types;
 			psy_desc->num_usb_types =
 				ARRAY_SIZE(cros_usbpd_charger_usb_types);
+=======
+			psy_desc->usb_types = BIT(POWER_SUPPLY_USB_TYPE_UNKNOWN) |
+					      BIT(POWER_SUPPLY_USB_TYPE_SDP)     |
+					      BIT(POWER_SUPPLY_USB_TYPE_DCP)     |
+					      BIT(POWER_SUPPLY_USB_TYPE_CDP)     |
+					      BIT(POWER_SUPPLY_USB_TYPE_C)       |
+					      BIT(POWER_SUPPLY_USB_TYPE_PD)      |
+					      BIT(POWER_SUPPLY_USB_TYPE_PD_DRP)  |
+					      BIT(POWER_SUPPLY_USB_TYPE_APPLE_BRICK_ID);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		psy_desc->name = port->name;

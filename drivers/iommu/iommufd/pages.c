@@ -45,6 +45,7 @@
  * last_iova + 1 can overflow. An iopt_pages index will always be much less than
  * ULONG_MAX so last_index + 1 cannot overflow.
  */
+<<<<<<< HEAD
 #include <linux/overflow.h>
 #include <linux/slab.h>
 #include <linux/iommu.h>
@@ -55,6 +56,18 @@
 
 #include "io_pagetable.h"
 #include "double_span.h"
+=======
+#include <linux/highmem.h>
+#include <linux/iommu.h>
+#include <linux/iommufd.h>
+#include <linux/kthread.h>
+#include <linux/overflow.h>
+#include <linux/slab.h>
+#include <linux/sched/mm.h>
+
+#include "double_span.h"
+#include "io_pagetable.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifndef CONFIG_IOMMUFD_TEST
 #define TEMP_MEMORY_LIMIT 65536

@@ -3,6 +3,10 @@
 #ifndef _ASM_ARM64_SET_MEMORY_H
 #define _ASM_ARM64_SET_MEMORY_H
 
+<<<<<<< HEAD
+=======
+#include <asm/mem_encrypt.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm-generic/set_memory.h>
 
 bool can_set_direct_map(void);

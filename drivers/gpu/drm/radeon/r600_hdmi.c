@@ -116,7 +116,11 @@ void r600_audio_update_hdmi(struct work_struct *work)
 {
 	struct radeon_device *rdev = container_of(work, struct radeon_device,
 						  audio_work);
+<<<<<<< HEAD
 	struct drm_device *dev = rdev->ddev;
+=======
+	struct drm_device *dev = rdev_to_drm(rdev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct r600_audio_pin audio_status = r600_audio_status(rdev);
 	struct drm_encoder *encoder;
 	bool changed = false;

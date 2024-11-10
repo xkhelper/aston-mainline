@@ -31,6 +31,10 @@ int BPF_PROG(check_access, struct bpf_map *map, fmode_t fmode)
 
 	if (fmode & FMODE_WRITE)
 		return -EACCES;
+<<<<<<< HEAD
+=======
+	barrier();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

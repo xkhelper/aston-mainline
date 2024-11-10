@@ -1,7 +1,11 @@
 // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 /* Copyright 2017-2019 NXP */
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/mdio.h>
 #include <linux/module.h>
 #include <linux/fsl/enetc_mdio.h>
@@ -665,12 +669,16 @@ static int enetc_sriov_configure(struct pci_dev *pdev, int num_vfs)
 
 	if (!num_vfs) {
 		enetc_msg_psi_free(pf);
+<<<<<<< HEAD
 		kfree(pf->vf_state);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pf->num_vfs = 0;
 		pci_disable_sriov(pdev);
 	} else {
 		pf->num_vfs = num_vfs;
 
+<<<<<<< HEAD
 		pf->vf_state = kcalloc(num_vfs, sizeof(struct enetc_vf_state),
 				       GFP_KERNEL);
 		if (!pf->vf_state) {
@@ -678,6 +686,8 @@ static int enetc_sriov_configure(struct pci_dev *pdev, int num_vfs)
 			return -ENOMEM;
 		}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = enetc_msg_psi_init(pf);
 		if (err) {
 			dev_err(&pdev->dev, "enetc_msg_psi_init (%d)\n", err);
@@ -696,7 +706,10 @@ static int enetc_sriov_configure(struct pci_dev *pdev, int num_vfs)
 err_en_sriov:
 	enetc_msg_psi_free(pf);
 err_msg_psi:
+<<<<<<< HEAD
 	kfree(pf->vf_state);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pf->num_vfs = 0;
 
 	return err;
@@ -1286,6 +1299,15 @@ static int enetc_pf_probe(struct pci_dev *pdev,
 	pf = enetc_si_priv(si);
 	pf->si = si;
 	pf->total_vfs = pci_sriov_get_totalvfs(pdev);
+<<<<<<< HEAD
+=======
+	if (pf->total_vfs) {
+		pf->vf_state = kcalloc(pf->total_vfs, sizeof(struct enetc_vf_state),
+				       GFP_KERNEL);
+		if (!pf->vf_state)
+			goto err_alloc_vf_state;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = enetc_setup_mac_addresses(node, pf);
 	if (err)
@@ -1363,6 +1385,11 @@ err_alloc_si_res:
 	free_netdev(ndev);
 err_alloc_netdev:
 err_setup_mac_addresses:
+<<<<<<< HEAD
+=======
+	kfree(pf->vf_state);
+err_alloc_vf_state:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	enetc_psi_destroy(pdev);
 err_psi_create:
 	return err;
@@ -1389,6 +1416,10 @@ static void enetc_pf_remove(struct pci_dev *pdev)
 	enetc_free_si_resources(priv);
 
 	free_netdev(si->ndev);
+<<<<<<< HEAD
+=======
+	kfree(pf->vf_state);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	enetc_psi_destroy(pdev);
 }

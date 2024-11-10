@@ -63,8 +63,17 @@ static u64 nested_svm_get_tdp_pdptr(struct kvm_vcpu *vcpu, int index)
 	u64 pdpte;
 	int ret;
 
+<<<<<<< HEAD
 	ret = kvm_vcpu_read_guest_page(vcpu, gpa_to_gfn(cr3), &pdpte,
 				       offset_in_page(cr3) + index * 8, 8);
+=======
+	/*
+	 * Note, nCR3 is "assumed" to be 32-byte aligned, i.e. the CPU ignores
+	 * nCR3[4:0] when loading PDPTEs from memory.
+	 */
+	ret = kvm_vcpu_read_guest_page(vcpu, gpa_to_gfn(cr3), &pdpte,
+				       (cr3 & GENMASK(11, 5)) + index * 8, 8);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return 0;
 	return pdpte;
@@ -1693,8 +1702,13 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
 		return -EINVAL;
 
 	ret  = -ENOMEM;
+<<<<<<< HEAD
 	ctl  = kzalloc(sizeof(*ctl),  GFP_KERNEL_ACCOUNT);
 	save = kzalloc(sizeof(*save), GFP_KERNEL_ACCOUNT);
+=======
+	ctl  = kzalloc(sizeof(*ctl),  GFP_KERNEL);
+	save = kzalloc(sizeof(*save), GFP_KERNEL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ctl || !save)
 		goto out_free;
 

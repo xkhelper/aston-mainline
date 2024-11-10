@@ -27,7 +27,11 @@
 #include <linux/iopoll.h>
 
 #include <asm/irq.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/irq.h>
 #include <linux/platform_device.h>

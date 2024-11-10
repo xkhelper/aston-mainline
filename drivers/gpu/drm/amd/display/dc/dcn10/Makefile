@@ -24,8 +24,11 @@
 
 DCN10 = dcn10_ipp.o \
 		dcn10_hw_sequencer_debug.o \
+<<<<<<< HEAD
 		dcn10_opp.o \
 		dcn10_mpc.o \
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dcn10_cm_common.o \
 
 AMD_DAL_DCN10 = $(addprefix $(AMDDALPATH)/dc/dcn10/,$(DCN10))

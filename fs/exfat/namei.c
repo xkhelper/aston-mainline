@@ -372,8 +372,11 @@ static int exfat_find_empty_entry(struct inode *inode,
 
 		/* directory inode should be updated in here */
 		i_size_write(inode, size);
+<<<<<<< HEAD
 		ei->i_size_ondisk += sbi->cluster_size;
 		ei->i_size_aligned += sbi->cluster_size;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ei->valid_size += sbi->cluster_size;
 		ei->flags = p_dir->flags;
 		inode->i_blocks += sbi->cluster_size >> 9;
@@ -549,6 +552,12 @@ static int exfat_create(struct mnt_idmap *idmap, struct inode *dir,
 	int err;
 	loff_t size = i_size_read(dir);
 
+<<<<<<< HEAD
+=======
+	if (unlikely(exfat_forced_shutdown(sb)))
+		return -EIO;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_lock(&EXFAT_SB(sb)->s_lock);
 	exfat_set_volume_dirty(sb);
 	err = exfat_add_entry(dir, dentry->d_name.name, &cdir, TYPE_FILE,
@@ -772,6 +781,12 @@ static int exfat_unlink(struct inode *dir, struct dentry *dentry)
 	struct exfat_entry_set_cache es;
 	int entry, err = 0;
 
+<<<<<<< HEAD
+=======
+	if (unlikely(exfat_forced_shutdown(sb)))
+		return -EIO;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_lock(&EXFAT_SB(sb)->s_lock);
 	exfat_chain_dup(&cdir, &ei->dir);
 	entry = ei->entry;
@@ -825,6 +840,12 @@ static int exfat_mkdir(struct mnt_idmap *idmap, struct inode *dir,
 	int err;
 	loff_t size = i_size_read(dir);
 
+<<<<<<< HEAD
+=======
+	if (unlikely(exfat_forced_shutdown(sb)))
+		return -EIO;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_lock(&EXFAT_SB(sb)->s_lock);
 	exfat_set_volume_dirty(sb);
 	err = exfat_add_entry(dir, dentry->d_name.name, &cdir, TYPE_DIR,
@@ -915,6 +936,12 @@ static int exfat_rmdir(struct inode *dir, struct dentry *dentry)
 	struct exfat_entry_set_cache es;
 	int entry, err;
 
+<<<<<<< HEAD
+=======
+	if (unlikely(exfat_forced_shutdown(sb)))
+		return -EIO;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_lock(&EXFAT_SB(inode->i_sb)->s_lock);
 
 	exfat_chain_dup(&cdir, &ei->dir);
@@ -982,6 +1009,12 @@ static int exfat_rename_file(struct inode *inode, struct exfat_chain *p_dir,
 	struct exfat_entry_set_cache old_es, new_es;
 	int sync = IS_DIRSYNC(inode);
 
+<<<<<<< HEAD
+=======
+	if (unlikely(exfat_forced_shutdown(sb)))
+		return -EIO;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	num_new_entries = exfat_calc_num_entries(p_uniname);
 	if (num_new_entries < 0)
 		return num_new_entries;

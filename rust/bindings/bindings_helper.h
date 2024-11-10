@@ -7,8 +7,13 @@
  */
 
 #include <kunit/test.h>
+<<<<<<< HEAD
 #include <linux/blk_types.h>
 #include <linux/blk-mq.h>
+=======
+#include <linux/blk-mq.h>
+#include <linux/blk_types.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/blkdev.h>
 #include <linux/errname.h>
 #include <linux/ethtool.h>

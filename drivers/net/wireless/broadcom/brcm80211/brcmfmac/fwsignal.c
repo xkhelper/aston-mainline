@@ -1673,7 +1673,10 @@ void brcmf_fws_rxreorder(struct brcmf_if *ifp, struct sk_buff *pkt)
 	struct sk_buff_head reorder_list;
 	struct sk_buff *pnext;
 	u8 flags;
+<<<<<<< HEAD
 	u32 buf_size;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	reorder_data = ((struct brcmf_skb_reorder_data *)pkt->cb)->reorder;
 	flow_id = reorder_data[BRCMF_RXREORDER_FLOWID_OFFSET];
@@ -1708,6 +1711,7 @@ void brcmf_fws_rxreorder(struct brcmf_if *ifp, struct sk_buff *pkt)
 	}
 	/* from here on we need a flow reorder instance */
 	if (rfi == NULL) {
+<<<<<<< HEAD
 		buf_size = sizeof(*rfi);
 		max_idx = reorder_data[BRCMF_RXREORDER_MAXIDX_OFFSET];
 
@@ -1717,6 +1721,15 @@ void brcmf_fws_rxreorder(struct brcmf_if *ifp, struct sk_buff *pkt)
 		brcmf_dbg(INFO, "flow-%d: start, maxidx %d\n",
 			  flow_id, max_idx);
 		rfi = kzalloc(buf_size, GFP_ATOMIC);
+=======
+		max_idx = reorder_data[BRCMF_RXREORDER_MAXIDX_OFFSET];
+
+		/* allocate space for flow reorder info */
+		brcmf_dbg(INFO, "flow-%d: start, maxidx %d\n",
+			  flow_id, max_idx);
+		rfi = kzalloc(struct_size(rfi, pktslots, max_idx + 1),
+			      GFP_ATOMIC);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (rfi == NULL) {
 			bphy_err(drvr, "failed to alloc buffer\n");
 			brcmf_netif_rx(ifp, pkt);
@@ -1724,7 +1737,10 @@ void brcmf_fws_rxreorder(struct brcmf_if *ifp, struct sk_buff *pkt)
 		}
 
 		ifp->drvr->reorder_flows[flow_id] = rfi;
+<<<<<<< HEAD
 		rfi->pktslots = (struct sk_buff **)(rfi + 1);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rfi->max_idx = max_idx;
 	}
 	if (flags & BRCMF_RXREORDER_NEW_HOLE)  {

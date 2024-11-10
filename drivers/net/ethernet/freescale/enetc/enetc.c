@@ -902,6 +902,10 @@ static bool enetc_clean_tx_ring(struct enetc_bdr *tx_ring, int napi_budget)
 
 	if (unlikely(tx_frm_cnt && netif_carrier_ok(ndev) &&
 		     __netif_subqueue_stopped(ndev, tx_ring->index) &&
+<<<<<<< HEAD
+=======
+		     !test_bit(ENETC_TX_DOWN, &priv->flags) &&
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		     (enetc_bd_unused(tx_ring) >= ENETC_TXBDS_MAX_NEEDED))) {
 		netif_wake_subqueue(ndev, tx_ring->index);
 	}
@@ -977,7 +981,10 @@ static int enetc_refill_rx_ring(struct enetc_bdr *rx_ring, const int buff_cnt)
 	return j;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_FSL_ENETC_PTP_CLOCK
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void enetc_get_rx_tstamp(struct net_device *ndev,
 				union enetc_rx_bd *rxbd,
 				struct sk_buff *skb)
@@ -1001,7 +1008,10 @@ static void enetc_get_rx_tstamp(struct net_device *ndev,
 		shhwtstamps->hwtstamp = ns_to_ktime(tstamp);
 	}
 }
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void enetc_get_offloads(struct enetc_bdr *rx_ring,
 			       union enetc_rx_bd *rxbd, struct sk_buff *skb)
@@ -1041,10 +1051,16 @@ static void enetc_get_offloads(struct enetc_bdr *rx_ring,
 		__vlan_hwaccel_put_tag(skb, tpid, le16_to_cpu(rxbd->r.vlan_opt));
 	}
 
+<<<<<<< HEAD
 #ifdef CONFIG_FSL_ENETC_PTP_CLOCK
 	if (priv->active_offloads & ENETC_F_RX_TSTAMP)
 		enetc_get_rx_tstamp(rx_ring->ndev, rxbd, skb);
 #endif
+=======
+	if (IS_ENABLED(CONFIG_FSL_ENETC_PTP_CLOCK) &&
+	    (priv->active_offloads & ENETC_F_RX_TSTAMP))
+		enetc_get_rx_tstamp(rx_ring->ndev, rxbd, skb);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* This gets called during the non-XDP NAPI poll cycle as well as on XDP_PASS,
@@ -1380,6 +1396,12 @@ int enetc_xdp_xmit(struct net_device *ndev, int num_frames,
 	int xdp_tx_bd_cnt, i, k;
 	int xdp_tx_frm_cnt = 0;
 
+<<<<<<< HEAD
+=======
+	if (unlikely(test_bit(ENETC_TX_DOWN, &priv->flags)))
+		return -ENETDOWN;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	enetc_lock_mdio();
 
 	tx_ring = priv->xdp_tx_ring[smp_processor_id()];
@@ -1524,7 +1546,10 @@ static void enetc_xdp_drop(struct enetc_bdr *rx_ring, int rx_ring_first,
 				  &rx_ring->rx_swbd[rx_ring_first]);
 		enetc_bdr_idx_inc(rx_ring, &rx_ring_first);
 	}
+<<<<<<< HEAD
 	rx_ring->stats.xdp_drops++;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
@@ -1589,6 +1614,10 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
 			fallthrough;
 		case XDP_DROP:
 			enetc_xdp_drop(rx_ring, orig_i, i);
+<<<<<<< HEAD
+=======
+			rx_ring->stats.xdp_drops++;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		case XDP_PASS:
 			rxbd = orig_rxbd;
@@ -1605,6 +1634,15 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
 			break;
 		case XDP_TX:
 			tx_ring = priv->xdp_tx_ring[rx_ring->index];
+<<<<<<< HEAD
+=======
+			if (unlikely(test_bit(ENETC_TX_DOWN, &priv->flags))) {
+				enetc_xdp_drop(rx_ring, orig_i, i);
+				tx_ring->stats.xdp_tx_drops++;
+				break;
+			}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			xdp_tx_bd_cnt = enetc_rx_swbd_to_xdp_tx_swbd(xdp_tx_arr,
 								     rx_ring,
 								     orig_i, i);
@@ -2226,16 +2264,32 @@ static void enetc_enable_rxbdr(struct enetc_hw *hw, struct enetc_bdr *rx_ring)
 	enetc_rxbdr_wr(hw, idx, ENETC_RBMR, rbmr);
 }
 
+<<<<<<< HEAD
 static void enetc_enable_bdrs(struct enetc_ndev_priv *priv)
+=======
+static void enetc_enable_rx_bdrs(struct enetc_ndev_priv *priv)
+{
+	struct enetc_hw *hw = &priv->si->hw;
+	int i;
+
+	for (i = 0; i < priv->num_rx_rings; i++)
+		enetc_enable_rxbdr(hw, priv->rx_ring[i]);
+}
+
+static void enetc_enable_tx_bdrs(struct enetc_ndev_priv *priv)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct enetc_hw *hw = &priv->si->hw;
 	int i;
 
 	for (i = 0; i < priv->num_tx_rings; i++)
 		enetc_enable_txbdr(hw, priv->tx_ring[i]);
+<<<<<<< HEAD
 
 	for (i = 0; i < priv->num_rx_rings; i++)
 		enetc_enable_rxbdr(hw, priv->rx_ring[i]);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void enetc_disable_rxbdr(struct enetc_hw *hw, struct enetc_bdr *rx_ring)
@@ -2254,16 +2308,32 @@ static void enetc_disable_txbdr(struct enetc_hw *hw, struct enetc_bdr *rx_ring)
 	enetc_txbdr_wr(hw, idx, ENETC_TBMR, 0);
 }
 
+<<<<<<< HEAD
 static void enetc_disable_bdrs(struct enetc_ndev_priv *priv)
+=======
+static void enetc_disable_rx_bdrs(struct enetc_ndev_priv *priv)
+{
+	struct enetc_hw *hw = &priv->si->hw;
+	int i;
+
+	for (i = 0; i < priv->num_rx_rings; i++)
+		enetc_disable_rxbdr(hw, priv->rx_ring[i]);
+}
+
+static void enetc_disable_tx_bdrs(struct enetc_ndev_priv *priv)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct enetc_hw *hw = &priv->si->hw;
 	int i;
 
 	for (i = 0; i < priv->num_tx_rings; i++)
 		enetc_disable_txbdr(hw, priv->tx_ring[i]);
+<<<<<<< HEAD
 
 	for (i = 0; i < priv->num_rx_rings; i++)
 		enetc_disable_rxbdr(hw, priv->rx_ring[i]);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void enetc_wait_txbdr(struct enetc_hw *hw, struct enetc_bdr *tx_ring)
@@ -2305,12 +2375,19 @@ static int enetc_setup_irqs(struct enetc_ndev_priv *priv)
 
 		snprintf(v->name, sizeof(v->name), "%s-rxtx%d",
 			 priv->ndev->name, i);
+<<<<<<< HEAD
 		err = request_irq(irq, enetc_msix, 0, v->name, v);
+=======
+		err = request_irq(irq, enetc_msix, IRQF_NO_AUTOEN, v->name, v);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err) {
 			dev_err(priv->dev, "request_irq() failed!\n");
 			goto irq_err;
 		}
+<<<<<<< HEAD
 		disable_irq(irq);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		v->tbier_base = hw->reg + ENETC_BDR(TX, 0, ENETC_TBIER);
 		v->rbier = hw->reg + ENETC_BDR(RX, i, ENETC_RBIER);
@@ -2464,9 +2541,19 @@ void enetc_start(struct net_device *ndev)
 		enable_irq(irq);
 	}
 
+<<<<<<< HEAD
 	enetc_enable_bdrs(priv);
 
 	netif_tx_start_all_queues(ndev);
+=======
+	enetc_enable_tx_bdrs(priv);
+
+	enetc_enable_rx_bdrs(priv);
+
+	netif_tx_start_all_queues(ndev);
+
+	clear_bit(ENETC_TX_DOWN, &priv->flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(enetc_start);
 
@@ -2524,9 +2611,21 @@ void enetc_stop(struct net_device *ndev)
 	struct enetc_ndev_priv *priv = netdev_priv(ndev);
 	int i;
 
+<<<<<<< HEAD
 	netif_tx_stop_all_queues(ndev);
 
 	enetc_disable_bdrs(priv);
+=======
+	set_bit(ENETC_TX_DOWN, &priv->flags);
+
+	netif_tx_stop_all_queues(ndev);
+
+	enetc_disable_rx_bdrs(priv);
+
+	enetc_wait_bdrs(priv);
+
+	enetc_disable_tx_bdrs(priv);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 0; i < priv->bdr_int_num; i++) {
 		int irq = pci_irq_vector(priv->si->pdev,
@@ -2537,8 +2636,11 @@ void enetc_stop(struct net_device *ndev)
 		napi_disable(&priv->int_vector[i]->napi);
 	}
 
+<<<<<<< HEAD
 	enetc_wait_bdrs(priv);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	enetc_clear_interrupts(priv);
 }
 EXPORT_SYMBOL_GPL(enetc_stop);
@@ -2882,7 +2984,10 @@ void enetc_set_features(struct net_device *ndev, netdev_features_t features)
 }
 EXPORT_SYMBOL_GPL(enetc_set_features);
 
+<<<<<<< HEAD
 #ifdef CONFIG_FSL_ENETC_PTP_CLOCK
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int enetc_hwtstamp_set(struct net_device *ndev, struct ifreq *ifr)
 {
 	struct enetc_ndev_priv *priv = netdev_priv(ndev);
@@ -2951,17 +3056,30 @@ static int enetc_hwtstamp_get(struct net_device *ndev, struct ifreq *ifr)
 	return copy_to_user(ifr->ifr_data, &config, sizeof(config)) ?
 	       -EFAULT : 0;
 }
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int enetc_ioctl(struct net_device *ndev, struct ifreq *rq, int cmd)
 {
 	struct enetc_ndev_priv *priv = netdev_priv(ndev);
+<<<<<<< HEAD
 #ifdef CONFIG_FSL_ENETC_PTP_CLOCK
 	if (cmd == SIOCSHWTSTAMP)
 		return enetc_hwtstamp_set(ndev, rq);
 	if (cmd == SIOCGHWTSTAMP)
 		return enetc_hwtstamp_get(ndev, rq);
 #endif
+=======
+
+	if (IS_ENABLED(CONFIG_FSL_ENETC_PTP_CLOCK)) {
+		if (cmd == SIOCSHWTSTAMP)
+			return enetc_hwtstamp_set(ndev, rq);
+		if (cmd == SIOCGHWTSTAMP)
+			return enetc_hwtstamp_get(ndev, rq);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!priv->phylink)
 		return -EOPNOTSUPP;

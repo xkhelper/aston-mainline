@@ -247,7 +247,11 @@ static void adf_ctl_stop_devices(u32 id)
 			if (!accel_dev->is_vf)
 				continue;
 
+<<<<<<< HEAD
 			adf_dev_down(accel_dev, false);
+=======
+			adf_dev_down(accel_dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -256,7 +260,11 @@ static void adf_ctl_stop_devices(u32 id)
 			if (!adf_dev_started(accel_dev))
 				continue;
 
+<<<<<<< HEAD
 			adf_dev_down(accel_dev, false);
+=======
+			adf_dev_down(accel_dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 }
@@ -319,7 +327,11 @@ static int adf_ctl_ioctl_dev_start(struct file *fp, unsigned int cmd,
 	if (ret) {
 		dev_err(&GET_DEV(accel_dev), "Failed to start qat_dev%d\n",
 			ctl_data->device_id);
+<<<<<<< HEAD
 		adf_dev_down(accel_dev, false);
+=======
+		adf_dev_down(accel_dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 out:
 	kfree(ctl_data);

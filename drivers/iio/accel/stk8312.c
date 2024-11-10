@@ -448,8 +448,12 @@ static irqreturn_t stk8312_trigger_handler(int irq, void *p)
 			goto err;
 		}
 	} else {
+<<<<<<< HEAD
 		for_each_set_bit(bit, indio_dev->active_scan_mask,
 				 indio_dev->masklength) {
+=======
+		iio_for_each_active_channel(indio_dev, bit) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ret = stk8312_read_accel(data, bit);
 			if (ret < 0) {
 				mutex_unlock(&data->lock);

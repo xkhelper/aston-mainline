@@ -1,7 +1,13 @@
 # SPDX-License-Identifier: GPL-2.0
 
 purgatory-y := purgatory.o sha256.o entry.o string.o ctype.o memcpy.o memset.o
+<<<<<<< HEAD
 purgatory-y += strcmp.o strlen.o strncmp.o
+=======
+ifeq ($(CONFIG_KASAN_GENERIC)$(CONFIG_KASAN_SW_TAGS),)
+purgatory-y += strcmp.o strlen.o strncmp.o
+endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 targets += $(purgatory-y)
 PURGATORY_OBJS = $(addprefix $(obj)/,$(purgatory-y))

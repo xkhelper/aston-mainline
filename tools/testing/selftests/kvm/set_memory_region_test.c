@@ -175,7 +175,11 @@ static void guest_code_move_memory_region(void)
 	GUEST_DONE();
 }
 
+<<<<<<< HEAD
 static void test_move_memory_region(void)
+=======
+static void test_move_memory_region(bool disable_slot_zap_quirk)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	pthread_t vcpu_thread;
 	struct kvm_vcpu *vcpu;
@@ -184,6 +188,12 @@ static void test_move_memory_region(void)
 
 	vm = spawn_vm(&vcpu, &vcpu_thread, guest_code_move_memory_region);
 
+<<<<<<< HEAD
+=======
+	if (disable_slot_zap_quirk)
+		vm_enable_cap(vm, KVM_CAP_DISABLE_QUIRKS2, KVM_X86_QUIRK_SLOT_ZAP_ALL);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	hva = addr_gpa2hva(vm, MEM_REGION_GPA);
 
 	/*
@@ -266,7 +276,11 @@ static void guest_code_delete_memory_region(void)
 	GUEST_ASSERT(0);
 }
 
+<<<<<<< HEAD
 static void test_delete_memory_region(void)
+=======
+static void test_delete_memory_region(bool disable_slot_zap_quirk)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	pthread_t vcpu_thread;
 	struct kvm_vcpu *vcpu;
@@ -276,6 +290,12 @@ static void test_delete_memory_region(void)
 
 	vm = spawn_vm(&vcpu, &vcpu_thread, guest_code_delete_memory_region);
 
+<<<<<<< HEAD
+=======
+	if (disable_slot_zap_quirk)
+		vm_enable_cap(vm, KVM_CAP_DISABLE_QUIRKS2, KVM_X86_QUIRK_SLOT_ZAP_ALL);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Delete the memory region, the guest should not die. */
 	vm_mem_region_delete(vm, MEM_REGION_SLOT);
 	wait_for_vcpu();
@@ -553,7 +573,14 @@ int main(int argc, char *argv[])
 {
 #ifdef __x86_64__
 	int i, loops;
+<<<<<<< HEAD
 
+=======
+	int j, disable_slot_zap_quirk = 0;
+
+	if (kvm_check_cap(KVM_CAP_DISABLE_QUIRKS2) & KVM_X86_QUIRK_SLOT_ZAP_ALL)
+		disable_slot_zap_quirk = 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * FIXME: the zero-memslot test fails on aarch64 and s390x because
 	 * KVM_RUN fails with ENOEXEC or EFAULT.
@@ -579,6 +606,7 @@ int main(int argc, char *argv[])
 	else
 		loops = 10;
 
+<<<<<<< HEAD
 	pr_info("Testing MOVE of in-use region, %d loops\n", loops);
 	for (i = 0; i < loops; i++)
 		test_move_memory_region();
@@ -586,6 +614,19 @@ int main(int argc, char *argv[])
 	pr_info("Testing DELETE of in-use region, %d loops\n", loops);
 	for (i = 0; i < loops; i++)
 		test_delete_memory_region();
+=======
+	for (j = 0; j <= disable_slot_zap_quirk; j++) {
+		pr_info("Testing MOVE of in-use region, %d loops, slot zap quirk %s\n",
+			loops, j ? "disabled" : "enabled");
+		for (i = 0; i < loops; i++)
+			test_move_memory_region(!!j);
+
+		pr_info("Testing DELETE of in-use region, %d loops, slot zap quirk %s\n",
+			loops, j ? "disabled" : "enabled");
+		for (i = 0; i < loops; i++)
+			test_delete_memory_region(!!j);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 	return 0;

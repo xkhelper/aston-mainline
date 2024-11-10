@@ -22,14 +22,21 @@
 #include <linux/nfs.h>
 #include <linux/nfs2.h>
 #include <linux/nfs_fs.h>
+<<<<<<< HEAD
+=======
+#include <linux/nfs_common.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "nfstrace.h"
 #include "internal.h"
 
 #define NFSDBG_FACILITY		NFSDBG_XDR
 
+<<<<<<< HEAD
 /* Mapping from NFS error code to "errno" error code. */
 #define errno_NFSERR_IO		EIO
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Declare the space requirements for NFS arguments and replies as
  * number of 32bit-words
@@ -64,8 +71,11 @@
 #define NFS_readdirres_sz	(1+NFS_pagepad_sz)
 #define NFS_statfsres_sz	(1+NFS_info_sz)
 
+<<<<<<< HEAD
 static int nfs_stat_to_errno(enum nfs_stat);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Encode/decode NFSv2 basic data types
  *
@@ -1054,6 +1064,7 @@ out_default:
 	return nfs_stat_to_errno(status);
 }
 
+<<<<<<< HEAD
 
 /*
  * We need to translate between nfs status return values and
@@ -1118,6 +1129,8 @@ static int nfs_stat_to_errno(enum nfs_stat status)
 	return nfs_errtbl[i].errno;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define PROC(proc, argtype, restype, timer)				\
 [NFSPROC_##proc] = {							\
 	.p_proc	    =  NFSPROC_##proc,					\

@@ -1138,7 +1138,11 @@
 			reg = <6>;
 
 			temperature-sensor@4c {
+<<<<<<< HEAD
 				compatible = "ti,tmp423";
+=======
+				compatible = "ti,tmp432";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				reg = <0x4c>;
 			};
 		};
@@ -1599,7 +1603,11 @@
 			reg = <6>;
 
 			temperature-sensor@4c {
+<<<<<<< HEAD
 				compatible = "ti,tmp423";
+=======
+				compatible = "ti,tmp432";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				reg = <0x4c>;
 			};
 		};
@@ -1615,7 +1623,11 @@
 			};
 
 			temperature-sensor@4c {
+<<<<<<< HEAD
 				compatible = "ti,tmp423";
+=======
+				compatible = "ti,tmp432";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				reg = <0x4c>;
 			};
 		};

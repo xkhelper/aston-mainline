@@ -2,7 +2,11 @@
 //
 // PCM3060 I2C driver
 //
+<<<<<<< HEAD
 // Copyright (C) 2018 Kirill Marinushkin <kmarinushkin@birdec.com>
+=======
+// Copyright (C) 2018 Kirill Marinushkin <k.marinushkin@gmail.com>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/i2c.h>
 #include <linux/module.h>
@@ -55,5 +59,9 @@ static struct i2c_driver pcm3060_i2c_driver = {
 module_i2c_driver(pcm3060_i2c_driver);
 
 MODULE_DESCRIPTION("PCM3060 I2C driver");
+<<<<<<< HEAD
 MODULE_AUTHOR("Kirill Marinushkin <kmarinushkin@birdec.com>");
+=======
+MODULE_AUTHOR("Kirill Marinushkin <k.marinushkin@gmail.com>");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_LICENSE("GPL v2");

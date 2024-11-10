@@ -17,6 +17,10 @@ properties:
   compatible:
     enum:
       - rockchip,rk3568-vepu
+<<<<<<< HEAD
+=======
+      - rockchip,rk3588-vepu121
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   reg:
     maxItems: 1

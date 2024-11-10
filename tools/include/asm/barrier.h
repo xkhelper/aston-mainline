@@ -8,6 +8,11 @@
 #include "../../arch/arm64/include/asm/barrier.h"
 #elif defined(__powerpc__)
 #include "../../arch/powerpc/include/asm/barrier.h"
+<<<<<<< HEAD
+=======
+#elif defined(__riscv)
+#include "../../arch/riscv/include/asm/barrier.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #elif defined(__s390__)
 #include "../../arch/s390/include/asm/barrier.h"
 #elif defined(__sh__)

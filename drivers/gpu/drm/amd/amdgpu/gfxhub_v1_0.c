@@ -443,6 +443,7 @@ static void gfxhub_v1_0_init(struct amdgpu_device *adev)
 		mmVM_INVALIDATE_ENG0_ADDR_RANGE_LO32;
 }
 
+<<<<<<< HEAD
 static bool gfxhub_v1_0_query_utcl2_poison_status(struct amdgpu_device *adev,
 				int xcc_id)
 {
@@ -460,6 +461,8 @@ static bool gfxhub_v1_0_query_utcl2_poison_status(struct amdgpu_device *adev,
 	return REG_GET_FIELD(status, VM_L2_PROTECTION_FAULT_STATUS, FED);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const struct amdgpu_gfxhub_funcs gfxhub_v1_0_funcs = {
 	.get_mc_fb_offset = gfxhub_v1_0_get_mc_fb_offset,
 	.setup_vm_pt_regs = gfxhub_v1_0_setup_vm_pt_regs,
@@ -468,5 +471,8 @@ const struct amdgpu_gfxhub_funcs gfxhub_v1_0_funcs = {
 	.set_fault_enable_default = gfxhub_v1_0_set_fault_enable_default,
 	.init = gfxhub_v1_0_init,
 	.get_xgmi_info = gfxhub_v1_1_get_xgmi_info,
+<<<<<<< HEAD
 	.query_utcl2_poison_status = gfxhub_v1_0_query_utcl2_poison_status,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };

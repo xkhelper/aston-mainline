@@ -77,7 +77,12 @@ void nilfs_forget_buffer(struct buffer_head *bh)
 	const unsigned long clear_bits =
 		(BIT(BH_Uptodate) | BIT(BH_Dirty) | BIT(BH_Mapped) |
 		 BIT(BH_Async_Write) | BIT(BH_NILFS_Volatile) |
+<<<<<<< HEAD
 		 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected));
+=======
+		 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected) |
+		 BIT(BH_Delay));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	lock_buffer(bh);
 	set_mask_bits(&bh->b_state, clear_bits, 0);
@@ -262,7 +267,11 @@ repeat:
 			NILFS_FOLIO_BUG(folio, "inconsistent dirty state");
 
 		dfolio = filemap_grab_folio(dmap, folio->index);
+<<<<<<< HEAD
 		if (unlikely(IS_ERR(dfolio))) {
+=======
+		if (IS_ERR(dfolio)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/* No empty page is added to the page cache */
 			folio_unlock(folio);
 			err = PTR_ERR(dfolio);
@@ -357,9 +366,14 @@ repeat:
 /**
  * nilfs_clear_dirty_pages - discard dirty pages in address space
  * @mapping: address space with dirty pages for discarding
+<<<<<<< HEAD
  * @silent: suppress [true] or print [false] warning messages
  */
 void nilfs_clear_dirty_pages(struct address_space *mapping, bool silent)
+=======
+ */
+void nilfs_clear_dirty_pages(struct address_space *mapping)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct folio_batch fbatch;
 	unsigned int i;
@@ -380,7 +394,11 @@ void nilfs_clear_dirty_pages(struct address_space *mapping, bool silent)
 			 * was acquired.  Skip processing in that case.
 			 */
 			if (likely(folio->mapping == mapping))
+<<<<<<< HEAD
 				nilfs_clear_folio_dirty(folio, silent);
+=======
+				nilfs_clear_folio_dirty(folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			folio_unlock(folio);
 		}
@@ -392,38 +410,58 @@ void nilfs_clear_dirty_pages(struct address_space *mapping, bool silent)
 /**
  * nilfs_clear_folio_dirty - discard dirty folio
  * @folio: dirty folio that will be discarded
+<<<<<<< HEAD
  * @silent: suppress [true] or print [false] warning messages
  */
 void nilfs_clear_folio_dirty(struct folio *folio, bool silent)
 {
 	struct inode *inode = folio->mapping->host;
 	struct super_block *sb = inode->i_sb;
+=======
+ */
+void nilfs_clear_folio_dirty(struct folio *folio)
+{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct buffer_head *bh, *head;
 
 	BUG_ON(!folio_test_locked(folio));
 
+<<<<<<< HEAD
 	if (!silent)
 		nilfs_warn(sb, "discard dirty page: offset=%lld, ino=%lu",
 			   folio_pos(folio), inode->i_ino);
 
 	folio_clear_uptodate(folio);
 	folio_clear_mappedtodisk(folio);
+=======
+	folio_clear_uptodate(folio);
+	folio_clear_mappedtodisk(folio);
+	folio_clear_checked(folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	head = folio_buffers(folio);
 	if (head) {
 		const unsigned long clear_bits =
 			(BIT(BH_Uptodate) | BIT(BH_Dirty) | BIT(BH_Mapped) |
 			 BIT(BH_Async_Write) | BIT(BH_NILFS_Volatile) |
+<<<<<<< HEAD
 			 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected));
+=======
+			 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected) |
+			 BIT(BH_Delay));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		bh = head;
 		do {
 			lock_buffer(bh);
+<<<<<<< HEAD
 			if (!silent)
 				nilfs_warn(sb,
 					   "discard dirty block: blocknr=%llu, size=%zu",
 					   (u64)bh->b_blocknr, bh->b_size);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			set_mask_bits(&bh->b_state, clear_bits, 0);
 			unlock_buffer(bh);
 		} while (bh = bh->b_this_page, bh != head);

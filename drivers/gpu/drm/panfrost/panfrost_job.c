@@ -727,7 +727,11 @@ panfrost_reset(struct panfrost_device *pfdev,
 
 	/* Restart the schedulers */
 	for (i = 0; i < NUM_JOB_SLOTS; i++)
+<<<<<<< HEAD
 		drm_sched_start(&pfdev->js->queue[i].sched, true);
+=======
+		drm_sched_start(&pfdev->js->queue[i].sched);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Re-enable job interrupts now that everything has been restarted. */
 	job_write(pfdev, JOB_INT_MASK,

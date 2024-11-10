@@ -100,7 +100,11 @@ sof_pcm_setup_connected_widgets(struct snd_sof_dev *sdev, struct snd_soc_pcm_run
 							     dpcm_end_walk_at_be);
 		if (ret < 0) {
 			dev_err(sdev->dev, "error: dai %s has no valid %s path\n", dai->name,
+<<<<<<< HEAD
 				dir == SNDRV_PCM_STREAM_PLAYBACK ? "playback" : "capture");
+=======
+				snd_pcm_direction_name(dir));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return ret;
 		}
 

@@ -2355,7 +2355,11 @@ static int smc_drv_probe(struct platform_device *pdev)
 	 * the resource supplies a trigger, override the irqflags with
 	 * the trigger flags from the resource.
 	 */
+<<<<<<< HEAD
 	irq_resflags = irqd_get_trigger_type(irq_get_irq_data(ndev->irq));
+=======
+	irq_resflags = irq_get_trigger_type(ndev->irq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (irq_flags == -1 || irq_resflags & IRQF_TRIGGER_MASK)
 		irq_flags = irq_resflags & IRQF_TRIGGER_MASK;
 

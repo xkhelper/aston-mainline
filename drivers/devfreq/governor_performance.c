@@ -58,4 +58,8 @@ static void __exit devfreq_performance_exit(void)
 	return;
 }
 module_exit(devfreq_performance_exit);
+<<<<<<< HEAD
+=======
+MODULE_DESCRIPTION("DEVFREQ Performance governor");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_LICENSE("GPL");

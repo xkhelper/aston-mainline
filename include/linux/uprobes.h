@@ -16,6 +16,10 @@
 #include <linux/types.h>
 #include <linux/wait.h>
 
+<<<<<<< HEAD
+=======
+struct uprobe;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct vm_area_struct;
 struct mm_struct;
 struct inode;
@@ -27,6 +31,7 @@ struct page;
 
 #define MAX_URETPROBE_DEPTH		64
 
+<<<<<<< HEAD
 enum uprobe_filter_ctx {
 	UPROBE_FILTER_REGISTER,
 	UPROBE_FILTER_UNREGISTER,
@@ -34,15 +39,32 @@ enum uprobe_filter_ctx {
 };
 
 struct uprobe_consumer {
+=======
+struct uprobe_consumer {
+	/*
+	 * handler() can return UPROBE_HANDLER_REMOVE to signal the need to
+	 * unregister uprobe for current process. If UPROBE_HANDLER_REMOVE is
+	 * returned, filter() callback has to be implemented as well and it
+	 * should return false to "confirm" the decision to uninstall uprobe
+	 * for the current process. If filter() is omitted or returns true,
+	 * UPROBE_HANDLER_REMOVE is effectively ignored.
+	 */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int (*handler)(struct uprobe_consumer *self, struct pt_regs *regs);
 	int (*ret_handler)(struct uprobe_consumer *self,
 				unsigned long func,
 				struct pt_regs *regs);
+<<<<<<< HEAD
 	bool (*filter)(struct uprobe_consumer *self,
 				enum uprobe_filter_ctx ctx,
 				struct mm_struct *mm);
 
 	struct uprobe_consumer *next;
+=======
+	bool (*filter)(struct uprobe_consumer *self, struct mm_struct *mm);
+
+	struct list_head cons_node;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #ifdef CONFIG_UPROBES
@@ -76,6 +98,11 @@ struct uprobe_task {
 	struct uprobe			*active_uprobe;
 	unsigned long			xol_vaddr;
 
+<<<<<<< HEAD
+=======
+	struct arch_uprobe              *auprobe;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct return_instance		*return_instances;
 	unsigned int			depth;
 };
@@ -110,10 +137,17 @@ extern bool is_trap_insn(uprobe_opcode_t *insn);
 extern unsigned long uprobe_get_swbp_addr(struct pt_regs *regs);
 extern unsigned long uprobe_get_trap_addr(struct pt_regs *regs);
 extern int uprobe_write_opcode(struct arch_uprobe *auprobe, struct mm_struct *mm, unsigned long vaddr, uprobe_opcode_t);
+<<<<<<< HEAD
 extern int uprobe_register(struct inode *inode, loff_t offset, struct uprobe_consumer *uc);
 extern int uprobe_register_refctr(struct inode *inode, loff_t offset, loff_t ref_ctr_offset, struct uprobe_consumer *uc);
 extern int uprobe_apply(struct inode *inode, loff_t offset, struct uprobe_consumer *uc, bool);
 extern void uprobe_unregister(struct inode *inode, loff_t offset, struct uprobe_consumer *uc);
+=======
+extern struct uprobe *uprobe_register(struct inode *inode, loff_t offset, loff_t ref_ctr_offset, struct uprobe_consumer *uc);
+extern int uprobe_apply(struct uprobe *uprobe, struct uprobe_consumer *uc, bool);
+extern void uprobe_unregister_nosync(struct uprobe *uprobe, struct uprobe_consumer *uc);
+extern void uprobe_unregister_sync(void);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern int uprobe_mmap(struct vm_area_struct *vma);
 extern void uprobe_munmap(struct vm_area_struct *vma, unsigned long start, unsigned long end);
 extern void uprobe_start_dup_mmap(void);
@@ -151,6 +185,7 @@ static inline void uprobes_init(void)
 
 #define uprobe_get_trap_addr(regs)	instruction_pointer(regs)
 
+<<<<<<< HEAD
 static inline int
 uprobe_register(struct inode *inode, loff_t offset, struct uprobe_consumer *uc)
 {
@@ -162,11 +197,27 @@ static inline int uprobe_register_refctr(struct inode *inode, loff_t offset, lof
 }
 static inline int
 uprobe_apply(struct inode *inode, loff_t offset, struct uprobe_consumer *uc, bool add)
+=======
+static inline struct uprobe *
+uprobe_register(struct inode *inode, loff_t offset, loff_t ref_ctr_offset, struct uprobe_consumer *uc)
+{
+	return ERR_PTR(-ENOSYS);
+}
+static inline int
+uprobe_apply(struct uprobe* uprobe, struct uprobe_consumer *uc, bool add)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return -ENOSYS;
 }
 static inline void
+<<<<<<< HEAD
 uprobe_unregister(struct inode *inode, loff_t offset, struct uprobe_consumer *uc)
+=======
+uprobe_unregister_nosync(struct uprobe *uprobe, struct uprobe_consumer *uc)
+{
+}
+static inline void uprobe_unregister_sync(void)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 }
 static inline int uprobe_mmap(struct vm_area_struct *vma)

@@ -31,6 +31,7 @@
 
 #endif /* CONFIG_SPARSEMEM */
 
+<<<<<<< HEAD
 #ifndef __ASSEMBLY__
 #ifdef CONFIG_NUMA_KEEP_MEMINFO
 extern int phys_to_target_node(phys_addr_t start);
@@ -40,4 +41,6 @@ extern int memory_add_physaddr_to_nid(u64 start);
 #endif
 #endif /* __ASSEMBLY__ */
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _ASM_X86_SPARSEMEM_H */

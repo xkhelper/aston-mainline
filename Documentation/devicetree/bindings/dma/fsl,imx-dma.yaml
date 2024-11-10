@@ -28,6 +28,17 @@ properties:
       - description: DMA Error interrupt
     minItems: 1
 
+<<<<<<< HEAD
+=======
+  clocks:
+    maxItems: 2
+
+  clock-names:
+    items:
+      - const: ipg
+      - const: ahb
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   "#dma-cells":
     const: 1
 
@@ -42,15 +53,30 @@ required:
   - reg
   - interrupts
   - "#dma-cells"
+<<<<<<< HEAD
+=======
+  - clocks
+  - clock-names
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 additionalProperties: false
 
 examples:
   - |
+<<<<<<< HEAD
+=======
+    #include <dt-bindings/clock/imx27-clock.h>
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     dma-controller@10001000 {
       compatible = "fsl,imx27-dma";
       reg = <0x10001000 0x1000>;
       interrupts = <32 33>;
       #dma-cells = <1>;
       dma-channels = <16>;
+<<<<<<< HEAD
+=======
+      clocks = <&clks IMX27_CLK_DMA_IPG_GATE>, <&clks IMX27_CLK_DMA_AHB_GATE>;
+      clock-names = "ipg", "ahb";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     };

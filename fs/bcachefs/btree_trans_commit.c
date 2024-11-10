@@ -214,7 +214,11 @@ bool bch2_btree_bset_insert_key(struct btree_trans *trans,
 
 	k = bch2_btree_node_iter_bset_pos(node_iter, b, bset_tree_last(b));
 overwrite:
+<<<<<<< HEAD
 	bch2_bset_insert(b, node_iter, k, insert, clobber_u64s);
+=======
+	bch2_bset_insert(b, k, insert, clobber_u64s);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	new_u64s = k->u64s;
 fix_iter:
 	if (clobber_u64s != new_u64s)
@@ -684,10 +688,17 @@ bch2_trans_commit_write_locked(struct btree_trans *trans, unsigned flags,
 	    !(flags & BCH_TRANS_COMMIT_no_journal_res)) {
 		if (bch2_journal_seq_verify)
 			trans_for_each_update(trans, i)
+<<<<<<< HEAD
 				i->k->k.version.lo = trans->journal_res.seq;
 		else if (bch2_inject_invalid_keys)
 			trans_for_each_update(trans, i)
 				i->k->k.version = MAX_VERSION;
+=======
+				i->k->k.bversion.lo = trans->journal_res.seq;
+		else if (bch2_inject_invalid_keys)
+			trans_for_each_update(trans, i)
+				i->k->k.bversion = MAX_VERSION;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	h = trans->hooks;
@@ -700,6 +711,7 @@ bch2_trans_commit_write_locked(struct btree_trans *trans, unsigned flags,
 
 	struct jset_entry *entry = trans->journal_entries;
 
+<<<<<<< HEAD
 	if (likely(!(flags & BCH_TRANS_COMMIT_skip_accounting_apply))) {
 		percpu_down_read(&c->mark_lock);
 
@@ -721,6 +733,33 @@ bch2_trans_commit_write_locked(struct btree_trans *trans, unsigned flags,
 		/* XXX: we only want to run this if deltas are nonzero */
 		bch2_trans_account_disk_usage_change(trans);
 	}
+=======
+	percpu_down_read(&c->mark_lock);
+
+	for (entry = trans->journal_entries;
+	     entry != (void *) ((u64 *) trans->journal_entries + trans->journal_entries_u64s);
+	     entry = vstruct_next(entry))
+		if (entry->type == BCH_JSET_ENTRY_write_buffer_keys &&
+		    entry->start->k.type == KEY_TYPE_accounting) {
+			BUG_ON(!trans->journal_res.ref);
+
+			struct bkey_i_accounting *a = bkey_i_to_accounting(entry->start);
+
+			a->k.bversion = journal_pos_to_bversion(&trans->journal_res,
+							(u64 *) entry - (u64 *) trans->journal_entries);
+			BUG_ON(bversion_zero(a->k.bversion));
+
+			if (likely(!(flags & BCH_TRANS_COMMIT_skip_accounting_apply))) {
+				ret = bch2_accounting_mem_mod_locked(trans, accounting_i_to_s_c(a), BCH_ACCOUNTING_normal);
+				if (ret)
+					goto revert_fs_usage;
+			}
+		}
+	percpu_up_read(&c->mark_lock);
+
+	/* XXX: we only want to run this if deltas are nonzero */
+	bch2_trans_account_disk_usage_change(trans);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	trans_for_each_update(trans, i)
 		if (btree_node_type_has_atomic_triggers(i->bkey_type)) {
@@ -735,6 +774,43 @@ bch2_trans_commit_write_locked(struct btree_trans *trans, unsigned flags,
 			goto fatal_err;
 	}
 
+<<<<<<< HEAD
+=======
+	trans_for_each_update(trans, i) {
+		enum bch_validate_flags invalid_flags = 0;
+
+		if (!(flags & BCH_TRANS_COMMIT_no_journal_res))
+			invalid_flags |= BCH_VALIDATE_write|BCH_VALIDATE_commit;
+
+		ret = bch2_bkey_validate(c, bkey_i_to_s_c(i->k),
+					 i->bkey_type, invalid_flags);
+		if (unlikely(ret)){
+			bch2_trans_inconsistent(trans, "invalid bkey on insert from %s -> %ps\n",
+						trans->fn, (void *) i->ip_allocated);
+			goto fatal_err;
+		}
+		btree_insert_entry_checks(trans, i);
+	}
+
+	for (struct jset_entry *i = trans->journal_entries;
+	     i != (void *) ((u64 *) trans->journal_entries + trans->journal_entries_u64s);
+	     i = vstruct_next(i)) {
+		enum bch_validate_flags invalid_flags = 0;
+
+		if (!(flags & BCH_TRANS_COMMIT_no_journal_res))
+			invalid_flags |= BCH_VALIDATE_write|BCH_VALIDATE_commit;
+
+		ret = bch2_journal_entry_validate(c, NULL, i,
+						  bcachefs_metadata_version_current,
+						  CPU_BIG_ENDIAN, invalid_flags);
+		if (unlikely(ret)) {
+			bch2_trans_inconsistent(trans, "invalid journal entry on insert from %s\n",
+						trans->fn);
+			goto fatal_err;
+		}
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (likely(!(flags & BCH_TRANS_COMMIT_no_journal_res))) {
 		struct journal *j = &c->journal;
 		struct jset_entry *entry;
@@ -794,11 +870,20 @@ revert_fs_usage:
 	for (struct jset_entry *entry2 = trans->journal_entries;
 	     entry2 != entry;
 	     entry2 = vstruct_next(entry2))
+<<<<<<< HEAD
 		if (jset_entry_is_key(entry2) && entry2->start->k.type == KEY_TYPE_accounting) {
 			struct bkey_s_accounting a = bkey_i_to_s_accounting(entry2->start);
 
 			bch2_accounting_neg(a);
 			bch2_accounting_mem_mod_locked(trans, a.c, false, false);
+=======
+		if (entry2->type == BCH_JSET_ENTRY_write_buffer_keys &&
+		    entry2->start->k.type == KEY_TYPE_accounting) {
+			struct bkey_s_accounting a = bkey_i_to_s_accounting(entry2->start);
+
+			bch2_accounting_neg(a);
+			bch2_accounting_mem_mod_locked(trans, a.c, BCH_ACCOUNTING_normal);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			bch2_accounting_neg(a);
 		}
 	percpu_up_read(&c->mark_lock);
@@ -1019,6 +1104,7 @@ int __bch2_trans_commit(struct btree_trans *trans, unsigned flags)
 	if (ret)
 		goto out_reset;
 
+<<<<<<< HEAD
 	trans_for_each_update(trans, i) {
 		enum bch_validate_flags invalid_flags = 0;
 
@@ -1053,6 +1139,8 @@ int __bch2_trans_commit(struct btree_trans *trans, unsigned flags)
 		}
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (unlikely(!test_bit(BCH_FS_may_go_rw, &c->flags))) {
 		ret = do_bch2_trans_commit_to_journal_replay(trans);
 		goto out_reset;

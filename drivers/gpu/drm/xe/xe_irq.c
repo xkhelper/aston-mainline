@@ -459,6 +459,11 @@ static irqreturn_t dg1_irq_handler(int irq, void *arg)
 		 * the primary tile.
 		 */
 		if (id == 0) {
+<<<<<<< HEAD
+=======
+			if (HAS_HECI_CSCFI(xe))
+				xe_heci_csc_irq_handler(xe, master_ctl);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			xe_display_irq_handler(xe, master_ctl);
 			gu_misc_iir = gu_misc_irq_ack(xe, master_ctl);
 		}

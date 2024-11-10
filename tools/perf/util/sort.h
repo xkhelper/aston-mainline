@@ -71,6 +71,10 @@ enum sort_type {
 	SORT_ANNOTATE_DATA_TYPE,
 	SORT_ANNOTATE_DATA_TYPE_OFFSET,
 	SORT_SYM_OFFSET,
+<<<<<<< HEAD
+=======
+	SORT_ANNOTATE_DATA_TYPE_CACHELINE,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* branch stack specific sort keys */
 	__SORT_BRANCH_STACK,
@@ -130,7 +134,11 @@ void reset_output_field(void);
 void sort__setup_elide(FILE *fp);
 void perf_hpp__set_elide(int idx, bool elide);
 
+<<<<<<< HEAD
 char *sort_help(const char *prefix);
+=======
+char *sort_help(const char *prefix, enum sort_mode mode);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int report_parse_ignore_callees_opt(const struct option *opt, const char *arg, int unset);
 

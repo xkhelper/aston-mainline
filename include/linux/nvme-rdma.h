@@ -25,6 +25,10 @@ enum nvme_rdma_cm_status {
 	NVME_RDMA_CM_NO_RSC		= 0x06,
 	NVME_RDMA_CM_INVALID_IRD	= 0x07,
 	NVME_RDMA_CM_INVALID_ORD	= 0x08,
+<<<<<<< HEAD
+=======
+	NVME_RDMA_CM_INVALID_CNTLID	= 0x09,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static inline const char *nvme_rdma_cm_msg(enum nvme_rdma_cm_status status)
@@ -46,6 +50,11 @@ static inline const char *nvme_rdma_cm_msg(enum nvme_rdma_cm_status status)
 		return "invalid IRD";
 	case NVME_RDMA_CM_INVALID_ORD:
 		return "Invalid ORD";
+<<<<<<< HEAD
+=======
+	case NVME_RDMA_CM_INVALID_CNTLID:
+		return "invalid controller ID";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		return "unrecognized reason";
 	}
@@ -64,7 +73,12 @@ struct nvme_rdma_cm_req {
 	__le16		qid;
 	__le16		hrqsize;
 	__le16		hsqsize;
+<<<<<<< HEAD
 	u8		rsvd[24];
+=======
+	__le16		cntlid;
+	u8		rsvd[22];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**

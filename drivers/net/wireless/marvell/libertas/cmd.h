@@ -116,11 +116,14 @@ int lbs_set_power_adapt_cfg(struct lbs_private *priv, int enable, int8_t p0,
 int lbs_set_tpc_cfg(struct lbs_private *priv, int enable, int8_t p0, int8_t p1,
 		int8_t p2, int usesnr);
 
+<<<<<<< HEAD
 int lbs_set_data_rate(struct lbs_private *priv, u8 rate);
 
 int lbs_cmd_802_11_rate_adapt_rateset(struct lbs_private *priv,
 				      uint16_t cmd_action);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int lbs_set_tx_power(struct lbs_private *priv, s16 dbm);
 
 int lbs_set_deep_sleep(struct lbs_private *priv, int deep_sleep);

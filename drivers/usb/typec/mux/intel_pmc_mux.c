@@ -8,6 +8,10 @@
 
 #include <linux/acpi.h>
 #include <linux/module.h>
+<<<<<<< HEAD
+=======
+#include <linux/platform_data/x86/intel_scu_ipc.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/platform_device.h>
 #include <linux/property.h>
 #include <linux/usb/pd.h>
@@ -18,8 +22,11 @@
 #include <linux/debugfs.h>
 #include <linux/usb.h>
 
+<<<<<<< HEAD
 #include <asm/intel_scu_ipc.h>
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define PMC_USBC_CMD		0xa7
 
 /* Response status bits */

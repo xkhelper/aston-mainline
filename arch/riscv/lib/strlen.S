@@ -131,3 +131,7 @@ strlen_zbb:
 #endif
 SYM_FUNC_END(strlen)
 SYM_FUNC_ALIAS(__pi_strlen, strlen)
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(strlen)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

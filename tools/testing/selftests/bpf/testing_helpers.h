@@ -38,6 +38,11 @@ int unload_bpf_testmod(bool verbose);
 int kern_sync_rcu(void);
 int finit_module(int fd, const char *param_values, int flags);
 int delete_module(const char *name, int flags);
+<<<<<<< HEAD
+=======
+int load_module(const char *path, bool verbose);
+int unload_module(const char *name, bool verbose);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline __u64 get_time_ns(void)
 {

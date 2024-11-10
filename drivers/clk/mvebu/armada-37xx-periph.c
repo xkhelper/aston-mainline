@@ -792,7 +792,11 @@ static void armada_3700_periph_clock_remove(struct platform_device *pdev)
 
 static struct platform_driver armada_3700_periph_clock_driver = {
 	.probe = armada_3700_periph_clock_probe,
+<<<<<<< HEAD
 	.remove_new = armada_3700_periph_clock_remove,
+=======
+	.remove = armada_3700_periph_clock_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver		= {
 		.name	= "marvell-armada-3700-periph-clock",
 		.of_match_table = armada_3700_periph_clock_of_match,

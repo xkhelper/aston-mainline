@@ -213,7 +213,11 @@ struct amd_sriov_msg_pf2vf_info {
 	uint32_t gpu_capacity;
 	/* reserved */
 	uint32_t reserved[256 - AMD_SRIOV_MSG_PF2VF_INFO_FILLED_SIZE];
+<<<<<<< HEAD
 };
+=======
+} __packed;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct amd_sriov_msg_vf2pf_info_header {
 	/* the total structure size in byte */
@@ -273,7 +277,11 @@ struct amd_sriov_msg_vf2pf_info {
 	uint32_t mes_info_size;
 	/* reserved */
 	uint32_t reserved[256 - AMD_SRIOV_MSG_VF2PF_INFO_FILLED_SIZE];
+<<<<<<< HEAD
 };
+=======
+} __packed;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* mailbox message send from guest to host  */
 enum amd_sriov_mailbox_request_message {

@@ -9,14 +9,21 @@
 #ifndef _DMA_HEAPS_H
 #define _DMA_HEAPS_H
 
+<<<<<<< HEAD
 #include <linux/cdev.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/types.h>
 
 struct dma_heap;
 
 /**
  * struct dma_heap_ops - ops to operate on a given heap
+<<<<<<< HEAD
  * @allocate:		allocate dmabuf and return struct dma_buf ptr
+=======
+ * @allocate:	allocate dmabuf and return struct dma_buf ptr
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * allocate returns dmabuf on success, ERR_PTR(-errno) on error.
  */
@@ -41,6 +48,7 @@ struct dma_heap_export_info {
 	void *priv;
 };
 
+<<<<<<< HEAD
 /**
  * dma_heap_get_drvdata() - get per-heap driver data
  * @heap: DMA-Heap to retrieve private data for
@@ -63,6 +71,12 @@ const char *dma_heap_get_name(struct dma_heap *heap);
  * dma_heap_add - adds a heap to dmabuf heaps
  * @exp_info:		information needed to register this heap
  */
+=======
+void *dma_heap_get_drvdata(struct dma_heap *heap);
+
+const char *dma_heap_get_name(struct dma_heap *heap);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct dma_heap *dma_heap_add(const struct dma_heap_export_info *exp_info);
 
 #endif /* _DMA_HEAPS_H */

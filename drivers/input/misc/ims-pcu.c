@@ -17,7 +17,11 @@
 #include <linux/types.h>
 #include <linux/usb/input.h>
 #include <linux/usb/cdc.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define IMS_PCU_KEYMAP_LEN		32
 
@@ -1067,7 +1071,11 @@ static ssize_t ims_pcu_attribute_store(struct device *dev,
 	if (data_len > attr->field_length)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	scoped_cond_guard(mutex, return -EINTR, &pcu->cmd_mutex) {
+=======
+	scoped_cond_guard(mutex_intr, return -EINTR, &pcu->cmd_mutex) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		memset(field, 0, attr->field_length);
 		memcpy(field, buf, data_len);
 

@@ -391,7 +391,11 @@ MODULE_DEVICE_TABLE(of, ocfb_match);
 
 static struct platform_driver ocfb_driver = {
 	.probe  = ocfb_probe,
+<<<<<<< HEAD
 	.remove_new = ocfb_remove,
+=======
+	.remove = ocfb_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "ocfb_fb",
 		.of_match_table = ocfb_match,

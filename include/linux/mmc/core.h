@@ -11,6 +11,7 @@
 struct mmc_data;
 struct mmc_request;
 
+<<<<<<< HEAD
 enum mmc_blk_status {
 	MMC_BLK_SUCCESS = 0,
 	MMC_BLK_PARTIAL,
@@ -23,6 +24,8 @@ enum mmc_blk_status {
 	MMC_BLK_NEW_REQUEST,
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct mmc_command {
 	u32			opcode;
 	u32			arg;

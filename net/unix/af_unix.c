@@ -693,10 +693,14 @@ static void unix_release_sock(struct sock *sk, int embrion)
 	unix_state_unlock(sk);
 
 #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+<<<<<<< HEAD
 	if (u->oob_skb) {
 		kfree_skb(u->oob_skb);
 		u->oob_skb = NULL;
 	}
+=======
+	u->oob_skb = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 	wake_up_interruptible_all(&u->peer_wait);
@@ -2226,6 +2230,7 @@ static int queue_oob(struct socket *sock, struct msghdr *msg, struct sock *other
 	}
 
 	maybe_add_creds(skb, sock, other);
+<<<<<<< HEAD
 	skb_get(skb);
 
 	scm_stat_add(other, skb);
@@ -2233,6 +2238,11 @@ static int queue_oob(struct socket *sock, struct msghdr *msg, struct sock *other
 	spin_lock(&other->sk_receive_queue.lock);
 	if (ousk->oob_skb)
 		consume_skb(ousk->oob_skb);
+=======
+	scm_stat_add(other, skb);
+
+	spin_lock(&other->sk_receive_queue.lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	WRITE_ONCE(ousk->oob_skb, skb);
 	__skb_queue_tail(&other->sk_receive_queue, skb);
 	spin_unlock(&other->sk_receive_queue.lock);
@@ -2640,8 +2650,11 @@ static int unix_stream_recv_urg(struct unix_stream_read_state *state)
 
 	if (!(state->flags & MSG_PEEK))
 		WRITE_ONCE(u->oob_skb, NULL);
+<<<<<<< HEAD
 	else
 		skb_get(oob_skb);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	spin_unlock(&sk->sk_receive_queue.lock);
 	unix_state_unlock(sk);
@@ -2651,8 +2664,11 @@ static int unix_stream_recv_urg(struct unix_stream_read_state *state)
 	if (!(state->flags & MSG_PEEK))
 		UNIXCB(oob_skb).consumed += 1;
 
+<<<<<<< HEAD
 	consume_skb(oob_skb);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_unlock(&u->iolock);
 
 	if (chunk < 0)
@@ -2665,6 +2681,7 @@ static int unix_stream_recv_urg(struct unix_stream_read_state *state)
 static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
 				  int flags, int copied)
 {
+<<<<<<< HEAD
 	struct unix_sock *u = unix_sk(sk);
 
 	if (!unix_skb_len(skb)) {
@@ -2672,11 +2689,23 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
 
 		spin_lock(&sk->sk_receive_queue.lock);
 
+=======
+	struct sk_buff *read_skb = NULL, *unread_skb = NULL;
+	struct unix_sock *u = unix_sk(sk);
+
+	if (likely(unix_skb_len(skb) && skb != READ_ONCE(u->oob_skb)))
+		return skb;
+
+	spin_lock(&sk->sk_receive_queue.lock);
+
+	if (!unix_skb_len(skb)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (copied && (!u->oob_skb || skb == u->oob_skb)) {
 			skb = NULL;
 		} else if (flags & MSG_PEEK) {
 			skb = skb_peek_next(skb, &sk->sk_receive_queue);
 		} else {
+<<<<<<< HEAD
 			unlinked_skb = skb;
 			skb = skb_peek_next(skb, &sk->sk_receive_queue);
 			__skb_unlink(unlinked_skb, &sk->sk_receive_queue);
@@ -2715,6 +2744,40 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
 			kfree_skb(unlinked_skb);
 		}
 	}
+=======
+			read_skb = skb;
+			skb = skb_peek_next(skb, &sk->sk_receive_queue);
+			__skb_unlink(read_skb, &sk->sk_receive_queue);
+		}
+
+		if (!skb)
+			goto unlock;
+	}
+
+	if (skb != u->oob_skb)
+		goto unlock;
+
+	if (copied) {
+		skb = NULL;
+	} else if (!(flags & MSG_PEEK)) {
+		WRITE_ONCE(u->oob_skb, NULL);
+
+		if (!sock_flag(sk, SOCK_URGINLINE)) {
+			__skb_unlink(skb, &sk->sk_receive_queue);
+			unread_skb = skb;
+			skb = skb_peek(&sk->sk_receive_queue);
+		}
+	} else if (!sock_flag(sk, SOCK_URGINLINE)) {
+		skb = skb_peek_next(skb, &sk->sk_receive_queue);
+	}
+
+unlock:
+	spin_unlock(&sk->sk_receive_queue.lock);
+
+	consume_skb(read_skb);
+	kfree_skb(unread_skb);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return skb;
 }
 #endif
@@ -2756,7 +2819,10 @@ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
 		unix_state_unlock(sk);
 
 		if (drop) {
+<<<<<<< HEAD
 			WARN_ON_ONCE(skb_unref(skb));
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			kfree_skb(skb);
 			return -EAGAIN;
 		}
@@ -3192,9 +3258,19 @@ static int unix_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
 			skb = skb_peek(&sk->sk_receive_queue);
 			if (skb) {
 				struct sk_buff *oob_skb = READ_ONCE(u->oob_skb);
+<<<<<<< HEAD
 
 				if (skb == oob_skb ||
 				    (!oob_skb && !unix_skb_len(skb)))
+=======
+				struct sk_buff *next_skb;
+
+				next_skb = skb_peek_next(skb, &sk->sk_receive_queue);
+
+				if (skb == oob_skb ||
+				    (!unix_skb_len(skb) &&
+				     (!oob_skb || next_skb == oob_skb)))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					answ = 1;
 			}
 

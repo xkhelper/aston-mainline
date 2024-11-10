@@ -230,7 +230,10 @@ static int __init loop_init(void)
 	rc->min_timeout		= 1;
 	rc->max_timeout		= IR_MAX_TIMEOUT;
 	rc->rx_resolution	= 1;
+<<<<<<< HEAD
 	rc->tx_resolution	= 1;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rc->s_tx_mask		= loop_set_tx_mask;
 	rc->s_tx_carrier	= loop_set_tx_carrier;
 	rc->s_tx_duty_cycle	= loop_set_tx_duty_cycle;

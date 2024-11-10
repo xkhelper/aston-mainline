@@ -9,6 +9,11 @@
 #include <asm/unwind_hints.h>
 #include <asm/segment.h>
 #include <asm/cache.h>
+<<<<<<< HEAD
+=======
+#include <asm/cpufeatures.h>
+#include <asm/nospec-branch.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "calling.h"
 
@@ -19,6 +24,12 @@ SYM_FUNC_START(entry_ibpb)
 	movl	$PRED_CMD_IBPB, %eax
 	xorl	%edx, %edx
 	wrmsr
+<<<<<<< HEAD
+=======
+
+	/* Make sure IBPB clears return stack preductions too. */
+	FILL_RETURN_BUFFER %rax, RSB_CLEAR_LOOPS, X86_BUG_IBPB_NO_RET
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	RET
 SYM_FUNC_END(entry_ibpb)
 /* For KVM */

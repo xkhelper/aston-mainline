@@ -313,6 +313,7 @@ static void xt_ct_tg_destroy_v1(const struct xt_tgdtor_param *par)
 	xt_ct_tg_destroy(par, par->targinfo);
 }
 
+<<<<<<< HEAD
 static struct xt_target xt_ct_tg_reg[] __read_mostly = {
 	{
 		.name		= "CT",
@@ -351,6 +352,8 @@ static struct xt_target xt_ct_tg_reg[] __read_mostly = {
 	},
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static unsigned int
 notrack_tg(struct sk_buff *skb, const struct xt_action_param *par)
 {
@@ -363,6 +366,7 @@ notrack_tg(struct sk_buff *skb, const struct xt_action_param *par)
 	return XT_CONTINUE;
 }
 
+<<<<<<< HEAD
 static struct xt_target notrack_tg_reg __read_mostly = {
 	.name		= "NOTRACK",
 	.revision	= 0,
@@ -370,10 +374,102 @@ static struct xt_target notrack_tg_reg __read_mostly = {
 	.target		= notrack_tg,
 	.table		= "raw",
 	.me		= THIS_MODULE,
+=======
+static struct xt_target xt_ct_tg_reg[] __read_mostly = {
+	{
+		.name		= "NOTRACK",
+		.revision	= 0,
+		.family		= NFPROTO_IPV4,
+		.target		= notrack_tg,
+		.table		= "raw",
+		.me		= THIS_MODULE,
+	},
+	{
+		.name		= "CT",
+		.family		= NFPROTO_IPV4,
+		.targetsize	= sizeof(struct xt_ct_target_info),
+		.usersize	= offsetof(struct xt_ct_target_info, ct),
+		.checkentry	= xt_ct_tg_check_v0,
+		.destroy	= xt_ct_tg_destroy_v0,
+		.target		= xt_ct_target_v0,
+		.table		= "raw",
+		.me		= THIS_MODULE,
+	},
+	{
+		.name		= "CT",
+		.family		= NFPROTO_IPV4,
+		.revision	= 1,
+		.targetsize	= sizeof(struct xt_ct_target_info_v1),
+		.usersize	= offsetof(struct xt_ct_target_info, ct),
+		.checkentry	= xt_ct_tg_check_v1,
+		.destroy	= xt_ct_tg_destroy_v1,
+		.target		= xt_ct_target_v1,
+		.table		= "raw",
+		.me		= THIS_MODULE,
+	},
+	{
+		.name		= "CT",
+		.family		= NFPROTO_IPV4,
+		.revision	= 2,
+		.targetsize	= sizeof(struct xt_ct_target_info_v1),
+		.usersize	= offsetof(struct xt_ct_target_info, ct),
+		.checkentry	= xt_ct_tg_check_v2,
+		.destroy	= xt_ct_tg_destroy_v1,
+		.target		= xt_ct_target_v1,
+		.table		= "raw",
+		.me		= THIS_MODULE,
+	},
+#if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
+	{
+		.name		= "NOTRACK",
+		.revision	= 0,
+		.family		= NFPROTO_IPV6,
+		.target		= notrack_tg,
+		.table		= "raw",
+		.me		= THIS_MODULE,
+	},
+	{
+		.name		= "CT",
+		.family		= NFPROTO_IPV6,
+		.targetsize	= sizeof(struct xt_ct_target_info),
+		.usersize	= offsetof(struct xt_ct_target_info, ct),
+		.checkentry	= xt_ct_tg_check_v0,
+		.destroy	= xt_ct_tg_destroy_v0,
+		.target		= xt_ct_target_v0,
+		.table		= "raw",
+		.me		= THIS_MODULE,
+	},
+	{
+		.name		= "CT",
+		.family		= NFPROTO_IPV6,
+		.revision	= 1,
+		.targetsize	= sizeof(struct xt_ct_target_info_v1),
+		.usersize	= offsetof(struct xt_ct_target_info, ct),
+		.checkentry	= xt_ct_tg_check_v1,
+		.destroy	= xt_ct_tg_destroy_v1,
+		.target		= xt_ct_target_v1,
+		.table		= "raw",
+		.me		= THIS_MODULE,
+	},
+	{
+		.name		= "CT",
+		.family		= NFPROTO_IPV6,
+		.revision	= 2,
+		.targetsize	= sizeof(struct xt_ct_target_info_v1),
+		.usersize	= offsetof(struct xt_ct_target_info, ct),
+		.checkentry	= xt_ct_tg_check_v2,
+		.destroy	= xt_ct_tg_destroy_v1,
+		.target		= xt_ct_target_v1,
+		.table		= "raw",
+		.me		= THIS_MODULE,
+	},
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int __init xt_ct_tg_init(void)
 {
+<<<<<<< HEAD
 	int ret;
 
 	ret = xt_register_target(&notrack_tg_reg);
@@ -386,12 +482,18 @@ static int __init xt_ct_tg_init(void)
 		return ret;
 	}
 	return 0;
+=======
+	return xt_register_targets(xt_ct_tg_reg, ARRAY_SIZE(xt_ct_tg_reg));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void __exit xt_ct_tg_exit(void)
 {
 	xt_unregister_targets(xt_ct_tg_reg, ARRAY_SIZE(xt_ct_tg_reg));
+<<<<<<< HEAD
 	xt_unregister_target(&notrack_tg_reg);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 module_init(xt_ct_tg_init);

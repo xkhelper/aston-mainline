@@ -5,10 +5,16 @@
  *
  ******************************************************************************/
 #include <drv_types.h>
+<<<<<<< HEAD
 #include <rtw_debug.h>
 #include <linux/jiffies.h>
 #include <net/cfg80211.h>
 #include <asm/unaligned.h>
+=======
+#include <linux/jiffies.h>
+#include <net/cfg80211.h>
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void rtw_os_free_recvframe(union recv_frame *precvframe)
 {

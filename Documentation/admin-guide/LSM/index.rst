@@ -47,3 +47,7 @@ subdirectories.
    tomoyo
    Yama
    SafeSetID
+<<<<<<< HEAD
+=======
+   ipe
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

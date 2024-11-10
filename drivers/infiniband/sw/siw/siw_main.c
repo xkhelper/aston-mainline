@@ -364,6 +364,7 @@ error:
 	return NULL;
 }
 
+<<<<<<< HEAD
 /*
  * Network link becomes unavailable. Mark all
  * affected QP's accordingly.
@@ -397,6 +398,8 @@ static void siw_device_goes_down(struct siw_device *sdev)
 	}
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int siw_netdev_event(struct notifier_block *nb, unsigned long event,
 			    void *arg)
 {
@@ -418,10 +421,13 @@ static int siw_netdev_event(struct notifier_block *nb, unsigned long event,
 		siw_port_event(sdev, 1, IB_EVENT_PORT_ACTIVE);
 		break;
 
+<<<<<<< HEAD
 	case NETDEV_GOING_DOWN:
 		siw_device_goes_down(sdev);
 		break;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case NETDEV_DOWN:
 		sdev->state = IB_PORT_DOWN;
 		siw_port_event(sdev, 1, IB_EVENT_PORT_ERR);

@@ -9,6 +9,10 @@
 
 #include <linux/compiler.h>
 #include <linux/types.h>
+<<<<<<< HEAD
+=======
+#include <linux/cmpxchg-emu.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #if defined(CONFIG_GUSA_RB)
 #include <asm/cmpxchg-grb.h>
@@ -56,6 +60,11 @@ static inline unsigned long __cmpxchg(volatile void * ptr, unsigned long old,
 		unsigned long new, int size)
 {
 	switch (size) {
+<<<<<<< HEAD
+=======
+	case 1:
+		return cmpxchg_emu_u8(ptr, old, new);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case 4:
 		return __cmpxchg_u32(ptr, old, new);
 	}

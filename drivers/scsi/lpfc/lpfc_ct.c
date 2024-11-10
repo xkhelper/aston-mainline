@@ -1572,8 +1572,13 @@ lpfc_cmpl_ct_cmd_gft_id(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
 			}
 		}
 	} else
+<<<<<<< HEAD
 		lpfc_printf_vlog(vport, KERN_ERR, LOG_TRACE_EVENT,
 				 "3065 GFT_ID failed x%08x\n", ulp_status);
+=======
+		lpfc_vlog_msg(vport, KERN_WARNING, LOG_DISCOVERY,
+			      "3065 GFT_ID status x%08x\n", ulp_status);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 out:
 	lpfc_ct_free_iocb(phba, cmdiocb);
@@ -1647,6 +1652,21 @@ lpfc_cmpl_ct(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
 	}
 
 out:
+<<<<<<< HEAD
+=======
+	/* If the caller wanted a synchronous DA_ID completion, signal the
+	 * wait obj and clear flag to reset the vport.
+	 */
+	if (ndlp->save_flags & NLP_WAIT_FOR_DA_ID) {
+		if (ndlp->da_id_waitq)
+			wake_up(ndlp->da_id_waitq);
+	}
+
+	spin_lock_irq(&ndlp->lock);
+	ndlp->save_flags &= ~NLP_WAIT_FOR_DA_ID;
+	spin_unlock_irq(&ndlp->lock);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	lpfc_ct_free_iocb(phba, cmdiocb);
 	lpfc_nlp_put(ndlp);
 	return;
@@ -2246,7 +2266,11 @@ lpfc_cmpl_ct_disc_fdmi(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
 		}
 
 		lpfc_printf_vlog(vport, KERN_INFO, LOG_DISCOVERY,
+<<<<<<< HEAD
 				 "0229 FDMI cmd %04x failed, latt = %d "
+=======
+				 "0229 FDMI cmd %04x latt = %d "
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				 "ulp_status: x%x, rid x%x\n",
 				 be16_to_cpu(fdmi_cmd), latt, ulp_status,
 				 ulp_word4);
@@ -2263,9 +2287,15 @@ lpfc_cmpl_ct_disc_fdmi(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
 	/* Check for a CT LS_RJT response */
 	cmd =  be16_to_cpu(fdmi_cmd);
 	if (be16_to_cpu(fdmi_rsp) == SLI_CT_RESPONSE_FS_RJT) {
+<<<<<<< HEAD
 		/* FDMI rsp failed */
 		lpfc_printf_vlog(vport, KERN_INFO, LOG_DISCOVERY | LOG_ELS,
 				 "0220 FDMI cmd failed FS_RJT Data: x%x", cmd);
+=======
+		/* Log FDMI reject */
+		lpfc_printf_vlog(vport, KERN_INFO, LOG_DISCOVERY | LOG_ELS,
+				 "0220 FDMI cmd FS_RJT Data: x%x", cmd);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* Should we fallback to FDMI-2 / FDMI-1 ? */
 		switch (cmd) {

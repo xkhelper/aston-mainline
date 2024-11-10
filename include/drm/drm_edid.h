@@ -440,8 +440,11 @@ int drm_add_modes_noedid(struct drm_connector *connector,
 			 int hdisplay, int vdisplay);
 
 int drm_edid_header_is_valid(const void *edid);
+<<<<<<< HEAD
 bool drm_edid_block_valid(u8 *raw_edid, int block, bool print_bad_edid,
 			  bool *edid_corrupt);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool drm_edid_is_valid(struct edid *edid);
 void drm_edid_get_monitor_name(const struct edid *edid, char *name,
 			       int buflen);

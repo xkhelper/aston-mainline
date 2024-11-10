@@ -21,6 +21,10 @@ Documentation/translations/zh_CN/dev-tools/testing-overview.rst
    testing-overview
    sparse
    kcov
+<<<<<<< HEAD
+=======
+   kcsan
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
    gcov
    kasan
    ubsan
@@ -32,7 +36,10 @@ Todolist:
  - checkpatch
  - coccinelle
  - kmsan
+<<<<<<< HEAD
  - kcsan
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  - kfence
  - kgdb
  - kselftest

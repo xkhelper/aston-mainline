@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+<<<<<<< HEAD
 #include <hashtable.h>
 #include "lkc.h"
 
@@ -21,6 +22,13 @@ unsigned int strhash(const char *s)
 	return hash;
 }
 
+=======
+#include <hash.h>
+#include <hashtable.h>
+#include <xalloc.h>
+#include "lkc.h"
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* hash table of all parsed Kconfig files */
 static HASHTABLE_DEFINE(file_hashtable, 1U << 11);
 
@@ -34,7 +42,11 @@ const char *file_lookup(const char *name)
 {
 	struct file *file;
 	size_t len;
+<<<<<<< HEAD
 	int hash = strhash(name);
+=======
+	int hash = hash_str(name);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	hash_for_each_possible(file_hashtable, file, node, hash)
 		if (!strcmp(name, file->name))
@@ -102,6 +114,7 @@ char *str_get(const struct gstr *gs)
 {
 	return gs->s;
 }
+<<<<<<< HEAD
 
 void *xmalloc(size_t size)
 {
@@ -151,3 +164,5 @@ char *xstrndup(const char *s, size_t n)
 	fprintf(stderr, "Out of memory.\n");
 	exit(1);
 }
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

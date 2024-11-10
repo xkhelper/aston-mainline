@@ -44,7 +44,11 @@ void apei_mce_report_mem_error(int severity, struct cper_sec_mem_err *mem_err)
 	else
 		lsb = PAGE_SHIFT;
 
+<<<<<<< HEAD
 	mce_setup(&m);
+=======
+	mce_prep_record(&m);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	m.bank = -1;
 	/* Fake a memory read error with unknown channel */
 	m.status = MCI_STATUS_VAL | MCI_STATUS_EN | MCI_STATUS_ADDRV | MCI_STATUS_MISCV | 0x9f;
@@ -66,6 +70,10 @@ EXPORT_SYMBOL_GPL(apei_mce_report_mem_error);
 int apei_smca_report_x86_error(struct cper_ia_proc_ctx *ctx_info, u64 lapic_id)
 {
 	const u64 *i_mce = ((const u64 *) (ctx_info + 1));
+<<<<<<< HEAD
+=======
+	bool apicid_found = false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int cpu;
 	struct mce m;
 
@@ -97,6 +105,7 @@ int apei_smca_report_x86_error(struct cper_ia_proc_ctx *ctx_info, u64 lapic_id)
 	if (ctx_info->reg_arr_size < 48)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	mce_setup(&m);
 
 	m.extcpu = -1;
@@ -106,11 +115,25 @@ int apei_smca_report_x86_error(struct cper_ia_proc_ctx *ctx_info, u64 lapic_id)
 		if (cpu_data(cpu).topo.initial_apicid == lapic_id) {
 			m.extcpu = cpu;
 			m.socketid = cpu_data(m.extcpu).topo.pkg_id;
+=======
+	for_each_possible_cpu(cpu) {
+		if (cpu_data(cpu).topo.initial_apicid == lapic_id) {
+			apicid_found = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		}
 	}
 
+<<<<<<< HEAD
 	m.apicid = lapic_id;
+=======
+	if (!apicid_found)
+		return -EINVAL;
+
+	mce_prep_record_common(&m);
+	mce_prep_record_per_cpu(cpu, &m);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	m.bank = (ctx_info->msr_addr >> 4) & 0xFF;
 	m.status = *i_mce;
 	m.addr = *(i_mce + 1);

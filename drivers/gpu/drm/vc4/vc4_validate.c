@@ -65,7 +65,11 @@ utile_width(int cpp)
 	case 8:
 		return 2;
 	default:
+<<<<<<< HEAD
 		DRM_ERROR("unknown cpp: %d\n", cpp);
+=======
+		pr_err("unknown cpp: %d\n", cpp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 1;
 	}
 }
@@ -82,7 +86,11 @@ utile_height(int cpp)
 	case 8:
 		return 4;
 	default:
+<<<<<<< HEAD
 		DRM_ERROR("unknown cpp: %d\n", cpp);
+=======
+		pr_err("unknown cpp: %d\n", cpp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 1;
 	}
 }
@@ -390,8 +398,13 @@ validate_tile_binning_config(VALIDATE_ARGS)
 	bin_slot = vc4_v3d_get_bin_slot(vc4);
 	if (bin_slot < 0) {
 		if (bin_slot != -EINTR && bin_slot != -ERESTARTSYS) {
+<<<<<<< HEAD
 			DRM_ERROR("Failed to allocate binner memory: %d\n",
 				  bin_slot);
+=======
+			drm_err(dev, "Failed to allocate binner memory: %d\n",
+				bin_slot);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		return bin_slot;
 	}

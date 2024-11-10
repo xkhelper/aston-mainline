@@ -2216,7 +2216,11 @@ static int packet_rcv(struct sk_buff *skb, struct net_device *dev,
 		}
 	}
 
+<<<<<<< HEAD
 	snaplen = skb->len;
+=======
+	snaplen = skb_frags_readable(skb) ? skb->len : skb_headlen(skb);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	res = run_filter(skb, sk, snaplen);
 	if (!res)
@@ -2336,7 +2340,11 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
 		}
 	}
 
+<<<<<<< HEAD
 	snaplen = skb->len;
+=======
+	snaplen = skb_frags_readable(skb) ? skb->len : skb_headlen(skb);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	res = run_filter(skb, sk, snaplen);
 	if (!res)

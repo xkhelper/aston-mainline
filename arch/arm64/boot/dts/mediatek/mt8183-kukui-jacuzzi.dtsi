@@ -91,6 +91,7 @@
 
 &dsi0 {
 	status = "okay";
+<<<<<<< HEAD
 	/delete-property/#size-cells;
 	/delete-property/#address-cells;
 	/delete-node/panel@0;
@@ -101,6 +102,13 @@
 			};
 		};
 	};
+=======
+	/delete-node/panel@0;
+};
+
+&dsi_out {
+	remote-endpoint = <&anx7625_in>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &i2c0 {

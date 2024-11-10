@@ -282,7 +282,12 @@ acpi_rs_get_address_common(struct acpi_resource *resource,
 
 	/* Validate the Resource Type */
 
+<<<<<<< HEAD
 	if ((address.resource_type > 2) && (address.resource_type < 0xC0)) {
+=======
+	if ((address.resource_type > 2) &&
+	    (address.resource_type < 0xC0) && (address.resource_type != 0x0A)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return (FALSE);
 	}
 

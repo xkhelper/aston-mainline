@@ -1177,7 +1177,11 @@ static inline ktime_t hrtimer_update_lowres(struct hrtimer *timer, ktime_t tim,
 	/*
 	 * CONFIG_TIME_LOW_RES indicates that the system has no way to return
 	 * granular time values. For relative timers we add hrtimer_resolution
+<<<<<<< HEAD
 	 * (i.e. one jiffie) to prevent short timeouts.
+=======
+	 * (i.e. one jiffy) to prevent short timeouts.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	timer->is_rel = mode & HRTIMER_MODE_REL;
 	if (timer->is_rel)
@@ -1351,11 +1355,19 @@ static void hrtimer_cpu_base_init_expiry_lock(struct hrtimer_cpu_base *base)
 }
 
 static void hrtimer_cpu_base_lock_expiry(struct hrtimer_cpu_base *base)
+<<<<<<< HEAD
+=======
+	__acquires(&base->softirq_expiry_lock)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	spin_lock(&base->softirq_expiry_lock);
 }
 
 static void hrtimer_cpu_base_unlock_expiry(struct hrtimer_cpu_base *base)
+<<<<<<< HEAD
+=======
+	__releases(&base->softirq_expiry_lock)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	spin_unlock(&base->softirq_expiry_lock);
 }
@@ -1757,7 +1769,11 @@ static void __hrtimer_run_queues(struct hrtimer_cpu_base *cpu_base, ktime_t now,
 	}
 }
 
+<<<<<<< HEAD
 static __latent_entropy void hrtimer_run_softirq(struct softirq_action *h)
+=======
+static __latent_entropy void hrtimer_run_softirq(void)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct hrtimer_cpu_base *cpu_base = this_cpu_ptr(&hrtimer_bases);
 	unsigned long flags;
@@ -1975,7 +1991,11 @@ static void __hrtimer_init_sleeper(struct hrtimer_sleeper *sl,
 	 * expiry.
 	 */
 	if (IS_ENABLED(CONFIG_PREEMPT_RT)) {
+<<<<<<< HEAD
 		if (task_is_realtime(current) && !(mode & HRTIMER_MODE_SOFT))
+=======
+		if (rt_or_dl_task_policy(current) && !(mode & HRTIMER_MODE_SOFT))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			mode |= HRTIMER_MODE_HARD;
 	}
 
@@ -2072,6 +2092,7 @@ long hrtimer_nanosleep(ktime_t rqtp, const enum hrtimer_mode mode,
 	struct restart_block *restart;
 	struct hrtimer_sleeper t;
 	int ret = 0;
+<<<<<<< HEAD
 	u64 slack;
 
 	slack = current->timer_slack_ns;
@@ -2080,6 +2101,11 @@ long hrtimer_nanosleep(ktime_t rqtp, const enum hrtimer_mode mode,
 
 	hrtimer_init_sleeper_on_stack(&t, clockid, mode);
 	hrtimer_set_expires_range_ns(&t.timer, rqtp, slack);
+=======
+
+	hrtimer_init_sleeper_on_stack(&t, clockid, mode);
+	hrtimer_set_expires_range_ns(&t.timer, rqtp, current->timer_slack_ns);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = do_nanosleep(&t, mode);
 	if (ret != -ERESTART_RESTARTBLOCK)
 		goto out;
@@ -2249,7 +2275,11 @@ void __init hrtimers_init(void)
 /**
  * schedule_hrtimeout_range_clock - sleep until timeout
  * @expires:	timeout value (ktime_t)
+<<<<<<< HEAD
  * @delta:	slack in expires timeout (ktime_t) for SCHED_OTHER tasks
+=======
+ * @delta:	slack in expires timeout (ktime_t)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @mode:	timer mode
  * @clock_id:	timer clock to be used
  */
@@ -2276,6 +2306,7 @@ schedule_hrtimeout_range_clock(ktime_t *expires, u64 delta,
 		return -EINTR;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Override any slack passed by the user if under
 	 * rt contraints.
@@ -2283,6 +2314,8 @@ schedule_hrtimeout_range_clock(ktime_t *expires, u64 delta,
 	if (rt_task(current))
 		delta = 0;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	hrtimer_init_sleeper_on_stack(&t, clock_id, mode);
 	hrtimer_set_expires_range_ns(&t.timer, *expires, delta);
 	hrtimer_sleeper_start_expires(&t, mode);
@@ -2302,7 +2335,11 @@ EXPORT_SYMBOL_GPL(schedule_hrtimeout_range_clock);
 /**
  * schedule_hrtimeout_range - sleep until timeout
  * @expires:	timeout value (ktime_t)
+<<<<<<< HEAD
  * @delta:	slack in expires timeout (ktime_t) for SCHED_OTHER tasks
+=======
+ * @delta:	slack in expires timeout (ktime_t)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @mode:	timer mode
  *
  * Make the current task sleep until the given expiry time has

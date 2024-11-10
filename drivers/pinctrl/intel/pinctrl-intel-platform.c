@@ -90,7 +90,10 @@ static int intel_platform_pinctrl_prepare_community(struct device *dev,
 						    struct intel_community *community,
 						    struct intel_platform_pins *pins)
 {
+<<<<<<< HEAD
 	struct fwnode_handle *child;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_padgroup *gpps;
 	unsigned int group;
 	size_t ngpps;
@@ -131,7 +134,11 @@ static int intel_platform_pinctrl_prepare_community(struct device *dev,
 		return -ENOMEM;
 
 	group = 0;
+<<<<<<< HEAD
 	device_for_each_child_node(dev, child) {
+=======
+	device_for_each_child_node_scoped(dev, child) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct intel_padgroup *gpp = &gpps[group];
 
 		gpp->reg_num = group;
@@ -159,7 +166,11 @@ static int intel_platform_pinctrl_prepare_soc_data(struct device *dev,
 	int ret;
 
 	/* Version 1.0 of the specification assumes only a single community per device node */
+<<<<<<< HEAD
 	ncommunities = 1,
+=======
+	ncommunities = 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	communities = devm_kcalloc(dev, ncommunities, sizeof(*communities), GFP_KERNEL);
 	if (!communities)
 		return -ENOMEM;

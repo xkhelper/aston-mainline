@@ -6,6 +6,10 @@
 
 /dts-v1/;
 
+<<<<<<< HEAD
+=======
+#include <dt-bindings/phy/phy-imx8-pcie.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <dt-bindings/leds/leds-pca9532.h>
 #include <dt-bindings/pwm/pwm.h>
 #include "imx8mp-phycore-som.dtsi"
@@ -43,6 +47,18 @@
 		};
 	};
 
+<<<<<<< HEAD
+=======
+	reg_vcc_5v_sw: regulator-vcc-5v-sw {
+		compatible = "regulator-fixed";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-max-microvolt = <5000000>;
+		regulator-min-microvolt = <5000000>;
+		regulator-name = "VCC_5V_SW";
+	};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	reg_can1_stby: regulator-can1-stby {
 		compatible = "regulator-fixed";
 		pinctrl-names = "default";
@@ -103,6 +119,25 @@
 	};
 };
 
+<<<<<<< HEAD
+=======
+/* TPM */
+&ecspi1 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	cs-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_ecspi1>;
+	status = "okay";
+
+	tpm: tpm@0 {
+		compatible = "infineon,slb9670", "tcg,tpm_tis-spi";
+		reg = <0>;
+		spi-max-frequency = <38000000>;
+	};
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &eqos {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_eqos>;
@@ -155,6 +190,10 @@
 		compatible = "atmel,24c02";
 		reg = <0x51>;
 		pagesize = <16>;
+<<<<<<< HEAD
+=======
+		vcc-supply = <&reg_vcc_3v3_sw>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	leds@62 {
@@ -191,10 +230,45 @@
 	};
 };
 
+<<<<<<< HEAD
+=======
+&media_blk_ctrl {
+	/*
+	 * The LVDS panel on this device uses 72.4 MHz pixel clock,
+	 * set IMX8MP_VIDEO_PLL1 to 72.4 * 7 = 506.8 MHz so the LDB
+	 * serializer and LCDIFv3 scanout engine can reach accurate
+	 * pixel clock of exactly 72.4 MHz.
+	 */
+	assigned-clock-rates = <500000000>, <200000000>,
+			       <0>, <0>, <500000000>,
+			       <506800000>;
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &snvs_pwrkey {
 	status = "okay";
 };
 
+<<<<<<< HEAD
+=======
+&pcie_phy {
+	clocks = <&hsio_blk_ctrl>;
+	clock-names = "ref";
+	fsl,refclk-pad-mode = <IMX8_PCIE_REFCLK_PAD_OUTPUT>;
+	fsl,clkreq-unsupported;
+	status = "okay";
+};
+
+/* Mini PCIe */
+&pcie {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_pcie0>;
+	reset-gpio = <&gpio1 8 GPIO_ACTIVE_LOW>;
+	vpcie-supply = <&reg_vcc_3v3_sw>;
+	status = "okay";
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &pwm3 {
 	status = "okay";
 	pinctrl-names = "default";
@@ -206,6 +280,10 @@
 	pinctrl-0 = <&pinctrl_rtc>;
 	interrupt-parent = <&gpio4>;
 	interrupts = <19 IRQ_TYPE_LEVEL_LOW>;
+<<<<<<< HEAD
+=======
+	aux-voltage-chargeable = <1>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	wakeup-source;
 	trickle-resistor-ohms = <3000>;
 };
@@ -234,6 +312,10 @@
 
 /* USB2 4-port USB3.0 HUB */
 &usb3_phy1 {
+<<<<<<< HEAD
+=======
+	vbus-supply = <&reg_vcc_5v_sw>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	status = "okay";
 };
 
@@ -267,7 +349,13 @@
 	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_pins>;
 	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_pins>;
 	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
+<<<<<<< HEAD
 	vmmc-supply = <&reg_usdhc2_vmmc>;
+=======
+	disable-wp;
+	vmmc-supply = <&reg_usdhc2_vmmc>;
+	vqmmc-supply = <&ldo5>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bus-width = <4>;
 	status = "okay";
 };
@@ -300,6 +388,18 @@
 };
 
 &iomuxc {
+<<<<<<< HEAD
+=======
+	pinctrl_ecspi1: ecspi1grp {
+		fsl,pins = <
+			MX8MP_IOMUXC_ECSPI1_MISO__ECSPI1_MISO   0x80
+			MX8MP_IOMUXC_ECSPI1_MOSI__ECSPI1_MOSI   0x80
+			MX8MP_IOMUXC_ECSPI1_SCLK__ECSPI1_SCLK   0x80
+			MX8MP_IOMUXC_ECSPI1_SS0__GPIO5_IO09     0x00
+		>;
+	};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pinctrl_eqos: eqosgrp {
 		fsl,pins = <
 			MX8MP_IOMUXC_ENET_MDC__ENET_QOS_MDC			0x2
@@ -366,6 +466,18 @@
 		>;
 	};
 
+<<<<<<< HEAD
+=======
+	pinctrl_pcie0: pcie0grp {
+		fsl,pins = <
+			MX8MP_IOMUXC_GPIO1_IO08__GPIO1_IO08     0x40
+			MX8MP_IOMUXC_GPIO1_IO10__GPIO1_IO10     0x60
+			MX8MP_IOMUXC_GPIO1_IO11__GPIO1_IO11	0x60 /* open drain, pull up */
+			MX8MP_IOMUXC_GPIO1_IO14__GPIO1_IO14     0x40
+		>;
+	};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pinctrl_pwm3: pwm3grp {
 		fsl,pins = <
 			MX8MP_IOMUXC_SPDIF_TX__PWM3_OUT		0x12

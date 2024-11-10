@@ -73,10 +73,16 @@ static int matrix_keypad_parse_keymap(const char *propname,
 	struct device *dev = input_dev->dev.parent;
 	unsigned int row_shift = get_count_order(cols);
 	unsigned int max_keys = rows << row_shift;
+<<<<<<< HEAD
 	u32 *keys;
 	int i;
 	int size;
 	int retval;
+=======
+	int i;
+	int size;
+	int error;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!propname)
 		propname = "linux,keymap";
@@ -94,6 +100,7 @@ static int matrix_keypad_parse_keymap(const char *propname,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	keys = kmalloc_array(size, sizeof(u32), GFP_KERNEL);
 	if (!keys)
 		return -ENOMEM;
@@ -103,10 +110,22 @@ static int matrix_keypad_parse_keymap(const char *propname,
 		dev_err(dev, "failed to read %s property: %d\n",
 			propname, retval);
 		goto out;
+=======
+	u32 *keys __free(kfree) = kmalloc_array(size, sizeof(*keys), GFP_KERNEL);
+	if (!keys)
+		return -ENOMEM;
+
+	error = device_property_read_u32_array(dev, propname, keys, size);
+	if (error) {
+		dev_err(dev, "failed to read %s property: %d\n",
+			propname, error);
+		return error;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	for (i = 0; i < size; i++) {
 		if (!matrix_keypad_map_key(input_dev, rows, cols,
+<<<<<<< HEAD
 					   row_shift, keys[i])) {
 			retval = -EINVAL;
 			goto out;
@@ -118,6 +137,13 @@ static int matrix_keypad_parse_keymap(const char *propname,
 out:
 	kfree(keys);
 	return retval;
+=======
+					   row_shift, keys[i]))
+			return -EINVAL;
+	}
+
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**

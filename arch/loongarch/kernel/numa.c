@@ -27,10 +27,14 @@
 #include <asm/time.h>
 
 int numa_off;
+<<<<<<< HEAD
 struct pglist_data *node_data[MAX_NUMNODES];
 unsigned char node_distances[MAX_NUMNODES][MAX_NUMNODES];
 
 EXPORT_SYMBOL(node_data);
+=======
+unsigned char node_distances[MAX_NUMNODES][MAX_NUMNODES];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 EXPORT_SYMBOL(node_distances);
 
 static struct numa_meminfo numa_meminfo;
@@ -190,6 +194,7 @@ int __init numa_add_memblk(int nid, u64 start, u64 end)
 	return numa_add_memblk_to(nid, start, end, &numa_meminfo);
 }
 
+<<<<<<< HEAD
 static void __init alloc_node_data(int nid)
 {
 	void *nd;
@@ -208,6 +213,8 @@ static void __init alloc_node_data(int nid)
 	memset(nd, 0, sizeof(pg_data_t));
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void __init node_mem_init(unsigned int node)
 {
 	unsigned long start_pfn, end_pfn;

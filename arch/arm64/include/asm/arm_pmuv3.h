@@ -33,6 +33,17 @@ static inline void write_pmevtypern(int n, unsigned long val)
 	PMEVN_SWITCH(n, WRITE_PMEVTYPERN);
 }
 
+<<<<<<< HEAD
+=======
+#define RETURN_READ_PMEVTYPERN(n) \
+	return read_sysreg(pmevtyper##n##_el0)
+static inline unsigned long read_pmevtypern(int n)
+{
+	PMEVN_SWITCH(n, RETURN_READ_PMEVTYPERN);
+	return 0;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline unsigned long read_pmmir(void)
 {
 	return read_cpuid(PMMIR_EL1);
@@ -46,6 +57,17 @@ static inline u32 read_pmuver(void)
 			ID_AA64DFR0_EL1_PMUVer_SHIFT);
 }
 
+<<<<<<< HEAD
+=======
+static inline bool pmuv3_has_icntr(void)
+{
+	u64 dfr1 = read_sysreg(id_aa64dfr1_el1);
+
+	return !!cpuid_feature_extract_unsigned_field(dfr1,
+			ID_AA64DFR1_EL1_PMICNTR_SHIFT);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void write_pmcr(u64 val)
 {
 	write_sysreg(val, pmcr_el0);
@@ -71,22 +93,48 @@ static inline u64 read_pmccntr(void)
 	return read_sysreg(pmccntr_el0);
 }
 
+<<<<<<< HEAD
 static inline void write_pmcntenset(u32 val)
+=======
+static inline void write_pmicntr(u64 val)
+{
+	write_sysreg_s(val, SYS_PMICNTR_EL0);
+}
+
+static inline u64 read_pmicntr(void)
+{
+	return read_sysreg_s(SYS_PMICNTR_EL0);
+}
+
+static inline void write_pmcntenset(u64 val)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	write_sysreg(val, pmcntenset_el0);
 }
 
+<<<<<<< HEAD
 static inline void write_pmcntenclr(u32 val)
+=======
+static inline void write_pmcntenclr(u64 val)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	write_sysreg(val, pmcntenclr_el0);
 }
 
+<<<<<<< HEAD
 static inline void write_pmintenset(u32 val)
+=======
+static inline void write_pmintenset(u64 val)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	write_sysreg(val, pmintenset_el1);
 }
 
+<<<<<<< HEAD
 static inline void write_pmintenclr(u32 val)
+=======
+static inline void write_pmintenclr(u64 val)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	write_sysreg(val, pmintenclr_el1);
 }
@@ -96,12 +144,35 @@ static inline void write_pmccfiltr(u64 val)
 	write_sysreg(val, pmccfiltr_el0);
 }
 
+<<<<<<< HEAD
 static inline void write_pmovsclr(u32 val)
+=======
+static inline u64 read_pmccfiltr(void)
+{
+	return read_sysreg(pmccfiltr_el0);
+}
+
+static inline void write_pmicfiltr(u64 val)
+{
+	write_sysreg_s(val, SYS_PMICFILTR_EL0);
+}
+
+static inline u64 read_pmicfiltr(void)
+{
+	return read_sysreg_s(SYS_PMICFILTR_EL0);
+}
+
+static inline void write_pmovsclr(u64 val)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	write_sysreg(val, pmovsclr_el0);
 }
 
+<<<<<<< HEAD
 static inline u32 read_pmovsclr(void)
+=======
+static inline u64 read_pmovsclr(void)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return read_sysreg(pmovsclr_el0);
 }

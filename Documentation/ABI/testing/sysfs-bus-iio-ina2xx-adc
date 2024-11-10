@@ -13,6 +13,7 @@ Description:
 		available for reading data. However, samples can be occasionally skipped
 		or repeated, depending on the beat between the capture and conversion
 		rates.
+<<<<<<< HEAD
 
 What:		/sys/bus/iio/devices/iio:deviceX/in_shunt_resistor
 Date:		December 2015
@@ -22,3 +23,5 @@ Description:
 		The value of the shunt resistor may be known only at runtime fom an
 		eeprom content read by a client application. This attribute allows to
 		set its value in ohms.
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

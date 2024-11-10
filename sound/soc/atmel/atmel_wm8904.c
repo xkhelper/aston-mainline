@@ -187,7 +187,11 @@ static struct platform_driver atmel_asoc_wm8904_driver = {
 		.pm		= &snd_soc_pm_ops,
 	},
 	.probe = atmel_asoc_wm8904_probe,
+<<<<<<< HEAD
 	.remove_new = atmel_asoc_wm8904_remove,
+=======
+	.remove = atmel_asoc_wm8904_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(atmel_asoc_wm8904_driver);

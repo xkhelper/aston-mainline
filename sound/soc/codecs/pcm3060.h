@@ -2,7 +2,11 @@
 /*
  * PCM3060 codec driver
  *
+<<<<<<< HEAD
  * Copyright (C) 2018 Kirill Marinushkin <kmarinushkin@birdec.com>
+=======
+ * Copyright (C) 2018 Kirill Marinushkin <k.marinushkin@gmail.com>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 #ifndef _SND_SOC_PCM3060_H

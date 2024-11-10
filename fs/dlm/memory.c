@@ -84,10 +84,14 @@ void dlm_memory_exit(void)
 
 char *dlm_allocate_lvb(struct dlm_ls *ls)
 {
+<<<<<<< HEAD
 	char *p;
 
 	p = kzalloc(ls->ls_lvblen, GFP_ATOMIC);
 	return p;
+=======
+	return kzalloc(ls->ls_lvblen, GFP_ATOMIC);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void dlm_free_lvb(char *p)
@@ -95,12 +99,18 @@ void dlm_free_lvb(char *p)
 	kfree(p);
 }
 
+<<<<<<< HEAD
 struct dlm_rsb *dlm_allocate_rsb(struct dlm_ls *ls)
 {
 	struct dlm_rsb *r;
 
 	r = kmem_cache_zalloc(rsb_cache, GFP_ATOMIC);
 	return r;
+=======
+struct dlm_rsb *dlm_allocate_rsb(void)
+{
+	return kmem_cache_zalloc(rsb_cache, GFP_ATOMIC);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void __free_rsb_rcu(struct rcu_head *rcu)
@@ -116,6 +126,7 @@ void dlm_free_rsb(struct dlm_rsb *r)
 	call_rcu(&r->rcu, __free_rsb_rcu);
 }
 
+<<<<<<< HEAD
 struct dlm_lkb *dlm_allocate_lkb(struct dlm_ls *ls)
 {
 	struct dlm_lkb *lkb;
@@ -126,6 +137,17 @@ struct dlm_lkb *dlm_allocate_lkb(struct dlm_ls *ls)
 
 void dlm_free_lkb(struct dlm_lkb *lkb)
 {
+=======
+struct dlm_lkb *dlm_allocate_lkb(void)
+{
+	return kmem_cache_zalloc(lkb_cache, GFP_ATOMIC);
+}
+
+static void __free_lkb_rcu(struct rcu_head *rcu)
+{
+	struct dlm_lkb *lkb = container_of(rcu, struct dlm_lkb, rcu);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (test_bit(DLM_DFL_USER_BIT, &lkb->lkb_dflags)) {
 		struct dlm_user_args *ua;
 		ua = lkb->lkb_ua;
@@ -138,6 +160,14 @@ void dlm_free_lkb(struct dlm_lkb *lkb)
 	kmem_cache_free(lkb_cache, lkb);
 }
 
+<<<<<<< HEAD
+=======
+void dlm_free_lkb(struct dlm_lkb *lkb)
+{
+	call_rcu(&lkb->rcu, __free_lkb_rcu);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct dlm_mhandle *dlm_allocate_mhandle(void)
 {
 	return kmem_cache_alloc(mhandle_cache, GFP_ATOMIC);

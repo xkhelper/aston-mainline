@@ -310,7 +310,11 @@ inet_lhash2_bucket_sk(struct inet_hashinfo *h, struct sock *sk)
 	return inet_lhash2_bucket(h, hash);
 }
 
+<<<<<<< HEAD
 static inline int compute_score(struct sock *sk, struct net *net,
+=======
+static inline int compute_score(struct sock *sk, const struct net *net,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				const unsigned short hnum, const __be32 daddr,
 				const int dif, const int sdif)
 {
@@ -348,7 +352,11 @@ static inline int compute_score(struct sock *sk, struct net *net,
  * Return: NULL if sk doesn't have SO_REUSEPORT set, otherwise a pointer to
  *         the selected sock or an error.
  */
+<<<<<<< HEAD
 struct sock *inet_lookup_reuseport(struct net *net, struct sock *sk,
+=======
+struct sock *inet_lookup_reuseport(const struct net *net, struct sock *sk,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   struct sk_buff *skb, int doff,
 				   __be32 saddr, __be16 sport,
 				   __be32 daddr, unsigned short hnum,
@@ -374,7 +382,11 @@ EXPORT_SYMBOL_GPL(inet_lookup_reuseport);
  */
 
 /* called with rcu_read_lock() : No refcount taken on the socket */
+<<<<<<< HEAD
 static struct sock *inet_lhash2_lookup(struct net *net,
+=======
+static struct sock *inet_lhash2_lookup(const struct net *net,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				struct inet_listen_hashbucket *ilb2,
 				struct sk_buff *skb, int doff,
 				const __be32 saddr, __be16 sport,
@@ -401,7 +413,11 @@ static struct sock *inet_lhash2_lookup(struct net *net,
 	return result;
 }
 
+<<<<<<< HEAD
 struct sock *inet_lookup_run_sk_lookup(struct net *net,
+=======
+struct sock *inet_lookup_run_sk_lookup(const struct net *net,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       int protocol,
 				       struct sk_buff *skb, int doff,
 				       __be32 saddr, __be16 sport,
@@ -423,7 +439,11 @@ struct sock *inet_lookup_run_sk_lookup(struct net *net,
 	return sk;
 }
 
+<<<<<<< HEAD
 struct sock *__inet_lookup_listener(struct net *net,
+=======
+struct sock *__inet_lookup_listener(const struct net *net,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    struct inet_hashinfo *hashinfo,
 				    struct sk_buff *skb, int doff,
 				    const __be32 saddr, __be16 sport,
@@ -488,7 +508,11 @@ void sock_edemux(struct sk_buff *skb)
 }
 EXPORT_SYMBOL(sock_edemux);
 
+<<<<<<< HEAD
 struct sock *__inet_lookup_established(struct net *net,
+=======
+struct sock *__inet_lookup_established(const struct net *net,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				  struct inet_hashinfo *hashinfo,
 				  const __be32 saddr, const __be16 sport,
 				  const __be32 daddr, const u16 hnum,

@@ -99,7 +99,11 @@ static void dumpstat(const char *name, int fd)
 		return;
 	}
 
+<<<<<<< HEAD
 	printf("%s: spi mode 0x%x, %d bits %sper word, %d Hz max\n",
+=======
+	printf("%s: spi mode 0x%x, %d bits %sper word, %u Hz max\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		name, mode, bits, lsb ? "(lsb first) " : "", speed);
 }
 

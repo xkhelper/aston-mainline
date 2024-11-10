@@ -483,7 +483,11 @@ static struct attribute *paths_subsys_attrs[] = {
 ATTRIBUTE_GROUPS(paths_subsys);
 
 /* Specific kobject type for our PDC paths */
+<<<<<<< HEAD
 static struct kobj_type ktype_pdcspath = {
+=======
+static const struct kobj_type ktype_pdcspath = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sysfs_ops = &pdcspath_attr_ops,
 	.default_groups = paths_subsys_groups,
 };

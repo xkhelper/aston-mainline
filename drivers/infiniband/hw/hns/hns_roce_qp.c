@@ -1460,6 +1460,7 @@ void hns_roce_lock_cqs(struct hns_roce_cq *send_cq, struct hns_roce_cq *recv_cq)
 		__acquire(&send_cq->lock);
 		__acquire(&recv_cq->lock);
 	} else if (unlikely(send_cq != NULL && recv_cq == NULL)) {
+<<<<<<< HEAD
 		spin_lock_irq(&send_cq->lock);
 		__acquire(&recv_cq->lock);
 	} else if (unlikely(send_cq == NULL && recv_cq != NULL)) {
@@ -1473,6 +1474,21 @@ void hns_roce_lock_cqs(struct hns_roce_cq *send_cq, struct hns_roce_cq *recv_cq)
 		spin_lock_nested(&recv_cq->lock, SINGLE_DEPTH_NESTING);
 	} else {
 		spin_lock_irq(&recv_cq->lock);
+=======
+		spin_lock(&send_cq->lock);
+		__acquire(&recv_cq->lock);
+	} else if (unlikely(send_cq == NULL && recv_cq != NULL)) {
+		spin_lock(&recv_cq->lock);
+		__acquire(&send_cq->lock);
+	} else if (send_cq == recv_cq) {
+		spin_lock(&send_cq->lock);
+		__acquire(&recv_cq->lock);
+	} else if (send_cq->cqn < recv_cq->cqn) {
+		spin_lock(&send_cq->lock);
+		spin_lock_nested(&recv_cq->lock, SINGLE_DEPTH_NESTING);
+	} else {
+		spin_lock(&recv_cq->lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		spin_lock_nested(&send_cq->lock, SINGLE_DEPTH_NESTING);
 	}
 }
@@ -1492,6 +1508,7 @@ void hns_roce_unlock_cqs(struct hns_roce_cq *send_cq,
 		spin_unlock(&recv_cq->lock);
 	} else if (send_cq == recv_cq) {
 		__release(&recv_cq->lock);
+<<<<<<< HEAD
 		spin_unlock_irq(&send_cq->lock);
 	} else if (send_cq->cqn < recv_cq->cqn) {
 		spin_unlock(&recv_cq->lock);
@@ -1499,6 +1516,15 @@ void hns_roce_unlock_cqs(struct hns_roce_cq *send_cq,
 	} else {
 		spin_unlock(&send_cq->lock);
 		spin_unlock_irq(&recv_cq->lock);
+=======
+		spin_unlock(&send_cq->lock);
+	} else if (send_cq->cqn < recv_cq->cqn) {
+		spin_unlock(&recv_cq->lock);
+		spin_unlock(&send_cq->lock);
+	} else {
+		spin_unlock(&send_cq->lock);
+		spin_unlock(&recv_cq->lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 

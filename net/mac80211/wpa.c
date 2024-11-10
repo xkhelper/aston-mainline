@@ -12,7 +12,11 @@
 #include <linux/compiler.h>
 #include <linux/ieee80211.h>
 #include <linux/gfp.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <net/mac80211.h>
 #include <crypto/aes.h>
 #include <crypto/utils.h>

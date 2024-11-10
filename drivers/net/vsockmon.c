@@ -83,13 +83,21 @@ static void vsockmon_setup(struct net_device *dev)
 {
 	dev->type = ARPHRD_VSOCKMON;
 	dev->priv_flags |= IFF_NO_QUEUE;
+<<<<<<< HEAD
+=======
+	dev->lltx = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dev->netdev_ops	= &vsockmon_ops;
 	dev->ethtool_ops = &vsockmon_ethtool_ops;
 	dev->needs_free_netdev = true;
 
+<<<<<<< HEAD
 	dev->features = NETIF_F_SG | NETIF_F_FRAGLIST |
 			NETIF_F_HIGHDMA | NETIF_F_LLTX;
+=======
+	dev->features = NETIF_F_SG | NETIF_F_FRAGLIST | NETIF_F_HIGHDMA;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dev->flags = IFF_NOARP;
 

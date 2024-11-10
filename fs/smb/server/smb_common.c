@@ -9,7 +9,11 @@
 #include "smb_common.h"
 #include "server.h"
 #include "misc.h"
+<<<<<<< HEAD
 #include "smbstatus.h"
+=======
+#include "../common/smb2status.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "connection.h"
 #include "ksmbd_work.h"
 #include "mgmt/user_session.h"
@@ -388,6 +392,13 @@ static struct smb_version_ops smb1_server_ops = {
 	.set_rsp_status = set_smb1_rsp_status,
 };
 
+<<<<<<< HEAD
+=======
+static struct smb_version_values smb1_server_values = {
+	.max_credits = SMB2_MAX_CREDITS,
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int smb1_negotiate(struct ksmbd_work *work)
 {
 	return ksmbd_smb_negotiate_common(work, SMB_COM_NEGOTIATE);
@@ -399,18 +410,30 @@ static struct smb_version_cmds smb1_server_cmds[1] = {
 
 static int init_smb1_server(struct ksmbd_conn *conn)
 {
+<<<<<<< HEAD
+=======
+	conn->vals = &smb1_server_values;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	conn->ops = &smb1_server_ops;
 	conn->cmds = smb1_server_cmds;
 	conn->max_cmds = ARRAY_SIZE(smb1_server_cmds);
 	return 0;
 }
 
+<<<<<<< HEAD
 int ksmbd_init_smb_server(struct ksmbd_work *work)
 {
 	struct ksmbd_conn *conn = work->conn;
 	__le32 proto;
 
 	proto = *(__le32 *)((struct smb_hdr *)work->request_buf)->Protocol;
+=======
+int ksmbd_init_smb_server(struct ksmbd_conn *conn)
+{
+	__le32 proto;
+
+	proto = *(__le32 *)((struct smb_hdr *)conn->request_buf)->Protocol;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (conn->need_neg == false) {
 		if (proto == SMB1_PROTO_NUMBER)
 			return -EINVAL;
@@ -488,7 +511,11 @@ int ksmbd_populate_dot_dotdot_entries(struct ksmbd_work *work, int info_level,
  * @shortname:	destination short filename
  *
  * Return:	shortname length or 0 when source long name is '.' or '..'
+<<<<<<< HEAD
  * TODO: Though this function comforms the restriction of 8.3 Filename spec,
+=======
+ * TODO: Though this function conforms the restriction of 8.3 Filename spec,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * but the result is different with Windows 7's one. need to check.
  */
 int ksmbd_extract_shortname(struct ksmbd_conn *conn, const char *longname,
@@ -736,13 +763,24 @@ int __ksmbd_override_fsids(struct ksmbd_work *work,
 		struct ksmbd_share_config *share)
 {
 	struct ksmbd_session *sess = work->sess;
+<<<<<<< HEAD
+=======
+	struct ksmbd_user *user = sess->user;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cred *cred;
 	struct group_info *gi;
 	unsigned int uid;
 	unsigned int gid;
+<<<<<<< HEAD
 
 	uid = user_uid(sess->user);
 	gid = user_gid(sess->user);
+=======
+	int i;
+
+	uid = user_uid(user);
+	gid = user_gid(user);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (share->force_uid != KSMBD_SHARE_INVALID_UID)
 		uid = share->force_uid;
 	if (share->force_gid != KSMBD_SHARE_INVALID_GID)
@@ -755,11 +793,25 @@ int __ksmbd_override_fsids(struct ksmbd_work *work,
 	cred->fsuid = make_kuid(&init_user_ns, uid);
 	cred->fsgid = make_kgid(&init_user_ns, gid);
 
+<<<<<<< HEAD
 	gi = groups_alloc(0);
+=======
+	gi = groups_alloc(user->ngroups);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!gi) {
 		abort_creds(cred);
 		return -ENOMEM;
 	}
+<<<<<<< HEAD
+=======
+
+	for (i = 0; i < user->ngroups; i++)
+		gi->gid[i] = make_kgid(&init_user_ns, user->sgid[i]);
+
+	if (user->ngroups)
+		groups_sort(gi);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	set_groups(cred, gi);
 	put_group_info(gi);
 

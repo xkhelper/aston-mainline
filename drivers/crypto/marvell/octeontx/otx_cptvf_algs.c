@@ -17,7 +17,10 @@
 #include <crypto/sha2.h>
 #include <crypto/xts.h>
 #include <crypto/scatterwalk.h>
+<<<<<<< HEAD
 #include <linux/rtnetlink.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/sort.h>
 #include <linux/module.h>
 #include "otx_cptvf.h"
@@ -66,6 +69,11 @@ static struct cpt_device_table ae_devices = {
 	.count = ATOMIC_INIT(0)
 };
 
+<<<<<<< HEAD
+=======
+static struct otx_cpt_sdesc *alloc_sdesc(struct crypto_shash *alg);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int get_se_device(struct pci_dev **pdev, int *cpu_num)
 {
 	int count, ret = 0;
@@ -509,12 +517,42 @@ static int cpt_aead_init(struct crypto_aead *tfm, u8 cipher_type, u8 mac_type)
 	ctx->cipher_type = cipher_type;
 	ctx->mac_type = mac_type;
 
+<<<<<<< HEAD
+=======
+	switch (ctx->mac_type) {
+	case OTX_CPT_SHA1:
+		ctx->hashalg = crypto_alloc_shash("sha1", 0, 0);
+		break;
+
+	case OTX_CPT_SHA256:
+		ctx->hashalg = crypto_alloc_shash("sha256", 0, 0);
+		break;
+
+	case OTX_CPT_SHA384:
+		ctx->hashalg = crypto_alloc_shash("sha384", 0, 0);
+		break;
+
+	case OTX_CPT_SHA512:
+		ctx->hashalg = crypto_alloc_shash("sha512", 0, 0);
+		break;
+	}
+
+	if (IS_ERR(ctx->hashalg))
+		return PTR_ERR(ctx->hashalg);
+
+	crypto_aead_set_reqsize_dma(tfm, sizeof(struct otx_cpt_req_ctx));
+
+	if (!ctx->hashalg)
+		return 0;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * When selected cipher is NULL we use HMAC opcode instead of
 	 * FLEXICRYPTO opcode therefore we don't need to use HASH algorithms
 	 * for calculating ipad and opad
 	 */
 	if (ctx->cipher_type != OTX_CPT_CIPHER_NULL) {
+<<<<<<< HEAD
 		switch (ctx->mac_type) {
 		case OTX_CPT_SHA1:
 			ctx->hashalg = crypto_alloc_shash("sha1", 0,
@@ -547,6 +585,31 @@ static int cpt_aead_init(struct crypto_aead *tfm, u8 cipher_type, u8 mac_type)
 	}
 
 	crypto_aead_set_reqsize_dma(tfm, sizeof(struct otx_cpt_req_ctx));
+=======
+		int ss = crypto_shash_statesize(ctx->hashalg);
+
+		ctx->ipad = kzalloc(ss, GFP_KERNEL);
+		if (!ctx->ipad) {
+			crypto_free_shash(ctx->hashalg);
+			return -ENOMEM;
+		}
+
+		ctx->opad = kzalloc(ss, GFP_KERNEL);
+		if (!ctx->opad) {
+			kfree(ctx->ipad);
+			crypto_free_shash(ctx->hashalg);
+			return -ENOMEM;
+		}
+	}
+
+	ctx->sdesc = alloc_sdesc(ctx->hashalg);
+	if (!ctx->sdesc) {
+		kfree(ctx->opad);
+		kfree(ctx->ipad);
+		crypto_free_shash(ctx->hashalg);
+		return -ENOMEM;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -602,8 +665,12 @@ static void otx_cpt_aead_exit(struct crypto_aead *tfm)
 
 	kfree(ctx->ipad);
 	kfree(ctx->opad);
+<<<<<<< HEAD
 	if (ctx->hashalg)
 		crypto_free_shash(ctx->hashalg);
+=======
+	crypto_free_shash(ctx->hashalg);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(ctx->sdesc);
 }
 
@@ -699,7 +766,11 @@ static inline void swap_data64(void *buf, u32 len)
 		*dst = cpu_to_be64p(src);
 }
 
+<<<<<<< HEAD
 static int copy_pad(u8 mac_type, u8 *out_pad, u8 *in_pad)
+=======
+static int swap_pad(u8 mac_type, u8 *pad)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct sha512_state *sha512;
 	struct sha256_state *sha256;
@@ -707,6 +778,7 @@ static int copy_pad(u8 mac_type, u8 *out_pad, u8 *in_pad)
 
 	switch (mac_type) {
 	case OTX_CPT_SHA1:
+<<<<<<< HEAD
 		sha1 = (struct sha1_state *) in_pad;
 		swap_data32(sha1->state, SHA1_DIGEST_SIZE);
 		memcpy(out_pad, &sha1->state, SHA1_DIGEST_SIZE);
@@ -716,13 +788,27 @@ static int copy_pad(u8 mac_type, u8 *out_pad, u8 *in_pad)
 		sha256 = (struct sha256_state *) in_pad;
 		swap_data32(sha256->state, SHA256_DIGEST_SIZE);
 		memcpy(out_pad, &sha256->state, SHA256_DIGEST_SIZE);
+=======
+		sha1 = (struct sha1_state *)pad;
+		swap_data32(sha1->state, SHA1_DIGEST_SIZE);
+		break;
+
+	case OTX_CPT_SHA256:
+		sha256 = (struct sha256_state *)pad;
+		swap_data32(sha256->state, SHA256_DIGEST_SIZE);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 
 	case OTX_CPT_SHA384:
 	case OTX_CPT_SHA512:
+<<<<<<< HEAD
 		sha512 = (struct sha512_state *) in_pad;
 		swap_data64(sha512->state, SHA512_DIGEST_SIZE);
 		memcpy(out_pad, &sha512->state, SHA512_DIGEST_SIZE);
+=======
+		sha512 = (struct sha512_state *)pad;
+		swap_data64(sha512->state, SHA512_DIGEST_SIZE);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 
 	default:
@@ -732,6 +818,7 @@ static int copy_pad(u8 mac_type, u8 *out_pad, u8 *in_pad)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int aead_hmac_init(struct crypto_aead *cipher)
 {
 	struct otx_cpt_aead_ctx *ctx = crypto_aead_ctx_dma(cipher);
@@ -781,6 +868,55 @@ static int aead_hmac_init(struct crypto_aead *cipher)
 		memcpy(ipad, ctx->key, authkeylen);
 	}
 
+=======
+static int aead_hmac_init(struct crypto_aead *cipher,
+			  struct crypto_authenc_keys *keys)
+{
+	struct otx_cpt_aead_ctx *ctx = crypto_aead_ctx_dma(cipher);
+	int ds = crypto_shash_digestsize(ctx->hashalg);
+	int bs = crypto_shash_blocksize(ctx->hashalg);
+	int authkeylen = keys->authkeylen;
+	u8 *ipad = NULL, *opad = NULL;
+	int icount = 0;
+	int ret;
+
+	if (authkeylen > bs) {
+		ret = crypto_shash_digest(&ctx->sdesc->shash, keys->authkey,
+					  authkeylen, ctx->key);
+		if (ret)
+			return ret;
+		authkeylen = ds;
+	} else
+		memcpy(ctx->key, keys->authkey, authkeylen);
+
+	ctx->enc_key_len = keys->enckeylen;
+	ctx->auth_key_len = authkeylen;
+
+	if (ctx->cipher_type == OTX_CPT_CIPHER_NULL)
+		return keys->enckeylen ? -EINVAL : 0;
+
+	switch (keys->enckeylen) {
+	case AES_KEYSIZE_128:
+		ctx->key_type = OTX_CPT_AES_128_BIT;
+		break;
+	case AES_KEYSIZE_192:
+		ctx->key_type = OTX_CPT_AES_192_BIT;
+		break;
+	case AES_KEYSIZE_256:
+		ctx->key_type = OTX_CPT_AES_256_BIT;
+		break;
+	default:
+		/* Invalid key length */
+		return -EINVAL;
+	}
+
+	memcpy(ctx->key + authkeylen, keys->enckey, keys->enckeylen);
+
+	ipad = ctx->ipad;
+	opad = ctx->opad;
+
+	memcpy(ipad, ctx->key, authkeylen);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	memset(ipad + authkeylen, 0, bs - authkeylen);
 	memcpy(opad, ipad, bs);
 
@@ -798,7 +934,11 @@ static int aead_hmac_init(struct crypto_aead *cipher)
 	crypto_shash_init(&ctx->sdesc->shash);
 	crypto_shash_update(&ctx->sdesc->shash, ipad, bs);
 	crypto_shash_export(&ctx->sdesc->shash, ipad);
+<<<<<<< HEAD
 	ret = copy_pad(ctx->mac_type, ctx->ipad, ipad);
+=======
+	ret = swap_pad(ctx->mac_type, ipad);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		goto calc_fail;
 
@@ -806,6 +946,7 @@ static int aead_hmac_init(struct crypto_aead *cipher)
 	crypto_shash_init(&ctx->sdesc->shash);
 	crypto_shash_update(&ctx->sdesc->shash, opad, bs);
 	crypto_shash_export(&ctx->sdesc->shash, opad);
+<<<<<<< HEAD
 	ret = copy_pad(ctx->mac_type, ctx->opad, opad);
 	if (ret)
 		goto calc_fail;
@@ -825,6 +966,11 @@ calc_fail:
 	kfree(ctx->sdesc);
 	ctx->sdesc = NULL;
 
+=======
+	ret = swap_pad(ctx->mac_type, opad);
+
+calc_fail:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -832,6 +978,7 @@ static int otx_cpt_aead_cbc_aes_sha_setkey(struct crypto_aead *cipher,
 					   const unsigned char *key,
 					   unsigned int keylen)
 {
+<<<<<<< HEAD
 	struct otx_cpt_aead_ctx *ctx = crypto_aead_ctx_dma(cipher);
 	struct crypto_authenc_key_param *param;
 	int enckeylen = 0, authkeylen = 0;
@@ -883,6 +1030,17 @@ static int otx_cpt_aead_cbc_aes_sha_setkey(struct crypto_aead *cipher,
 		goto badkey;
 
 	return 0;
+=======
+	struct crypto_authenc_keys authenc_keys;
+	int status;
+
+	status = crypto_authenc_extractkeys(&authenc_keys, key, keylen);
+	if (status)
+		goto badkey;
+
+	status = aead_hmac_init(cipher, &authenc_keys);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 badkey:
 	return status;
 }
@@ -891,6 +1049,7 @@ static int otx_cpt_aead_ecb_null_sha_setkey(struct crypto_aead *cipher,
 					    const unsigned char *key,
 					    unsigned int keylen)
 {
+<<<<<<< HEAD
 	struct otx_cpt_aead_ctx *ctx = crypto_aead_ctx_dma(cipher);
 	struct crypto_authenc_key_param *param;
 	struct rtattr *rta = (void *)key;
@@ -921,6 +1080,9 @@ static int otx_cpt_aead_ecb_null_sha_setkey(struct crypto_aead *cipher,
 	return 0;
 badkey:
 	return -EINVAL;
+=======
+	return otx_cpt_aead_cbc_aes_sha_setkey(cipher, key, keylen);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int otx_cpt_aead_gcm_aes_setkey(struct crypto_aead *cipher,
@@ -1613,6 +1775,7 @@ static int compare_func(const void *lptr, const void *rptr)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void swap_func(void *lptr, void *rptr, int size)
 {
 	struct cpt_device_desc *ldesc = (struct cpt_device_desc *) lptr;
@@ -1621,6 +1784,8 @@ static void swap_func(void *lptr, void *rptr, int size)
 	swap(*ldesc, *rdesc);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int otx_cpt_crypto_init(struct pci_dev *pdev, struct module *mod,
 			enum otx_cptpf_type pf_type,
 			enum otx_cptvf_type engine_type,
@@ -1655,7 +1820,11 @@ int otx_cpt_crypto_init(struct pci_dev *pdev, struct module *mod,
 			is_crypto_registered = true;
 		}
 		sort(se_devices.desc, count, sizeof(struct cpt_device_desc),
+<<<<<<< HEAD
 		     compare_func, swap_func);
+=======
+		     compare_func, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 
 	case OTX_CPT_AE_TYPES:
@@ -1670,7 +1839,11 @@ int otx_cpt_crypto_init(struct pci_dev *pdev, struct module *mod,
 		ae_devices.desc[count++].dev = pdev;
 		atomic_inc(&ae_devices.count);
 		sort(ae_devices.desc, count, sizeof(struct cpt_device_desc),
+<<<<<<< HEAD
 		     compare_func, swap_func);
+=======
+		     compare_func, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 
 	default:

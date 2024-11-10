@@ -423,7 +423,11 @@ static void __init net2big_init(void)
 
 	if (gpio_request(NET2BIG_GPIO_POWER_OFF, "power-off") == 0 &&
 	    gpio_direction_output(NET2BIG_GPIO_POWER_OFF, 0) == 0)
+<<<<<<< HEAD
 		pm_power_off = net2big_power_off;
+=======
+		register_platform_power_off(net2big_power_off);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else
 		pr_err("net2big: failed to configure power-off GPIO\n");
 

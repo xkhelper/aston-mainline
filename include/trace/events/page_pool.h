@@ -57,12 +57,21 @@ TRACE_EVENT(page_pool_state_release,
 		__entry->pool		= pool;
 		__entry->netmem		= (__force unsigned long)netmem;
 		__entry->release	= release;
+<<<<<<< HEAD
 		__entry->pfn		= netmem_to_pfn(netmem);
 	),
 
 	TP_printk("page_pool=%p netmem=%p pfn=0x%lx release=%u",
 		  __entry->pool, (void *)__entry->netmem,
 		  __entry->pfn, __entry->release)
+=======
+		__entry->pfn		= netmem_pfn_trace(netmem);
+	),
+
+	TP_printk("page_pool=%p netmem=%p is_net_iov=%lu pfn=0x%lx release=%u",
+		  __entry->pool, (void *)__entry->netmem,
+		  __entry->netmem & NET_IOV, __entry->pfn, __entry->release)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 );
 
 TRACE_EVENT(page_pool_state_hold,
@@ -83,12 +92,21 @@ TRACE_EVENT(page_pool_state_hold,
 		__entry->pool	= pool;
 		__entry->netmem	= (__force unsigned long)netmem;
 		__entry->hold	= hold;
+<<<<<<< HEAD
 		__entry->pfn	= netmem_to_pfn(netmem);
 	),
 
 	TP_printk("page_pool=%p netmem=%p pfn=0x%lx hold=%u",
 		  __entry->pool, (void *)__entry->netmem,
 		  __entry->pfn, __entry->hold)
+=======
+		__entry->pfn	= netmem_pfn_trace(netmem);
+	),
+
+	TP_printk("page_pool=%p netmem=%p is_net_iov=%lu, pfn=0x%lx hold=%u",
+		  __entry->pool, (void *)__entry->netmem,
+		  __entry->netmem & NET_IOV, __entry->pfn, __entry->hold)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 );
 
 TRACE_EVENT(page_pool_update_nid,

@@ -287,7 +287,11 @@ struct batadv_frag_table_entry {
 	/** @lock: lock to protect the list of fragments */
 	spinlock_t lock;
 
+<<<<<<< HEAD
 	/** @timestamp: time (jiffie) of last received fragment */
+=======
+	/** @timestamp: time (jiffy) of last received fragment */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long timestamp;
 
 	/** @seqno: sequence number of the fragments in the list */

@@ -749,7 +749,10 @@ static int pcwd_temp_close(struct inode *inode, struct file *file)
 
 static const struct file_operations pcwd_fops = {
 	.owner		= THIS_MODULE,
+<<<<<<< HEAD
 	.llseek		= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.write		= pcwd_write,
 	.unlocked_ioctl	= pcwd_ioctl,
 	.compat_ioctl	= compat_ptr_ioctl,
@@ -765,7 +768,10 @@ static struct miscdevice pcwd_miscdev = {
 
 static const struct file_operations pcwd_temp_fops = {
 	.owner		= THIS_MODULE,
+<<<<<<< HEAD
 	.llseek		= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.read		= pcwd_temp_read,
 	.open		= pcwd_temp_open,
 	.release	= pcwd_temp_close,

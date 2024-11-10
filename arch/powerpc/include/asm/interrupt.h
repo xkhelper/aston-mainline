@@ -177,7 +177,11 @@ static inline void interrupt_enter_prepare(struct pt_regs *regs)
 
 	if (user_mode(regs)) {
 		kuap_lock();
+<<<<<<< HEAD
 		CT_WARN_ON(ct_state() != CONTEXT_USER);
+=======
+		CT_WARN_ON(ct_state() != CT_STATE_USER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		user_exit_irqoff();
 
 		account_cpu_user_entry();
@@ -189,8 +193,13 @@ static inline void interrupt_enter_prepare(struct pt_regs *regs)
 		 * so avoid recursion.
 		 */
 		if (TRAP(regs) != INTERRUPT_PROGRAM)
+<<<<<<< HEAD
 			CT_WARN_ON(ct_state() != CONTEXT_KERNEL &&
 				   ct_state() != CONTEXT_IDLE);
+=======
+			CT_WARN_ON(ct_state() != CT_STATE_KERNEL &&
+				   ct_state() != CT_STATE_IDLE);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		INT_SOFT_MASK_BUG_ON(regs, is_implicit_soft_masked(regs));
 		INT_SOFT_MASK_BUG_ON(regs, arch_irq_disabled_regs(regs) &&
 					   search_kernel_restart_table(regs->nip));

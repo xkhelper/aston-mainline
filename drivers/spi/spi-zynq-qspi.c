@@ -569,7 +569,11 @@ static int zynq_qspi_exec_mem_op(struct spi_mem *mem,
 	}
 
 	if (op->dummy.nbytes) {
+<<<<<<< HEAD
 		tmpbuf = kzalloc(op->dummy.nbytes, GFP_KERNEL);
+=======
+		tmpbuf = kmalloc(op->dummy.nbytes, GFP_KERNEL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!tmpbuf)
 			return -ENOMEM;
 

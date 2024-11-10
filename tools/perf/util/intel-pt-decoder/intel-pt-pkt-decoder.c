@@ -10,7 +10,11 @@
 #include <byteswap.h>
 #include <linux/kernel.h>
 #include <linux/compiler.h>
+<<<<<<< HEAD
 #include <asm-generic/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "intel-pt-pkt-decoder.h"
 

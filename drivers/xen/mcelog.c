@@ -182,7 +182,10 @@ static const struct file_operations xen_mce_chrdev_ops = {
 	.read			= xen_mce_chrdev_read,
 	.poll			= xen_mce_chrdev_poll,
 	.unlocked_ioctl		= xen_mce_chrdev_ioctl,
+<<<<<<< HEAD
 	.llseek			= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct miscdevice xen_mce_chrdev_device = {

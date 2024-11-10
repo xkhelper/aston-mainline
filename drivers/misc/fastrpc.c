@@ -27,7 +27,12 @@
 #define MDSP_DOMAIN_ID (1)
 #define SDSP_DOMAIN_ID (2)
 #define CDSP_DOMAIN_ID (3)
+<<<<<<< HEAD
 #define FASTRPC_DEV_MAX		4 /* adsp, mdsp, slpi, cdsp*/
+=======
+#define CDSP1_DOMAIN_ID (4)
+#define FASTRPC_DEV_MAX		5 /* adsp, mdsp, slpi, cdsp, cdsp1 */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define FASTRPC_MAX_SESSIONS	14
 #define FASTRPC_MAX_VMIDS	16
 #define FASTRPC_ALIGN		128
@@ -106,7 +111,11 @@
 #define miscdev_to_fdevice(d) container_of(d, struct fastrpc_device, miscdev)
 
 static const char *domains[FASTRPC_DEV_MAX] = { "adsp", "mdsp",
+<<<<<<< HEAD
 						"sdsp", "cdsp"};
+=======
+						"sdsp", "cdsp", "cdsp1" };
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct fastrpc_phy_page {
 	u64 addr;		/* physical address */
 	u64 size;		/* size of contiguous region */
@@ -2269,7 +2278,11 @@ static int fastrpc_rpmsg_probe(struct rpmsg_device *rpdev)
 		return err;
 	}
 
+<<<<<<< HEAD
 	for (i = 0; i <= CDSP_DOMAIN_ID; i++) {
+=======
+	for (i = 0; i < FASTRPC_DEV_MAX; i++) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!strcmp(domains[i], domain)) {
 			domain_id = i;
 			break;
@@ -2327,13 +2340,21 @@ static int fastrpc_rpmsg_probe(struct rpmsg_device *rpdev)
 	case ADSP_DOMAIN_ID:
 	case MDSP_DOMAIN_ID:
 	case SDSP_DOMAIN_ID:
+<<<<<<< HEAD
 		/* Unsigned PD offloading is only supported on CDSP*/
+=======
+		/* Unsigned PD offloading is only supported on CDSP and CDSP1 */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		data->unsigned_support = false;
 		err = fastrpc_device_register(rdev, data, secure_dsp, domains[domain_id]);
 		if (err)
 			goto fdev_error;
 		break;
 	case CDSP_DOMAIN_ID:
+<<<<<<< HEAD
+=======
+	case CDSP1_DOMAIN_ID:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		data->unsigned_support = true;
 		/* Create both device nodes so that we can allow both Signed and Unsigned PD */
 		err = fastrpc_device_register(rdev, data, true, domains[domain_id]);

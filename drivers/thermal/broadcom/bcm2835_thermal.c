@@ -208,8 +208,12 @@ static int bcm2835_thermal_probe(struct platform_device *pdev)
 	 */
 	val = readl(data->regs + BCM2835_TS_TSENSCTL);
 	if (!(val & BCM2835_TS_TSENSCTL_RSTB)) {
+<<<<<<< HEAD
 		struct thermal_trip trip;
 		int offset, slope;
+=======
+		int offset, slope, crit_temp;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		slope = thermal_zone_get_slope(tz);
 		offset = thermal_zone_get_offset(tz);
@@ -217,7 +221,11 @@ static int bcm2835_thermal_probe(struct platform_device *pdev)
 		 * For now we deal only with critical, otherwise
 		 * would need to iterate
 		 */
+<<<<<<< HEAD
 		err = thermal_zone_get_trip(tz, 0, &trip);
+=======
+		err = thermal_zone_get_crit_temp(tz, &crit_temp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err < 0) {
 			dev_err(dev, "Not able to read trip_temp: %d\n", err);
 			return err;
@@ -232,7 +240,11 @@ static int bcm2835_thermal_probe(struct platform_device *pdev)
 		val |= (0xFE << BCM2835_TS_TSENSCTL_RSTDELAY_SHIFT);
 
 		/*  trip_adc value from info */
+<<<<<<< HEAD
 		val |= bcm2835_thermal_temp2adc(trip.temperature,
+=======
+		val |= bcm2835_thermal_temp2adc(crit_temp,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						offset,
 						slope)
 			<< BCM2835_TS_TSENSCTL_THOLD_SHIFT;

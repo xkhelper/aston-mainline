@@ -907,8 +907,13 @@ static void magicmouse_remove(struct hid_device *hdev)
 	hid_hw_stop(hdev);
 }
 
+<<<<<<< HEAD
 static __u8 *magicmouse_report_fixup(struct hid_device *hdev, __u8 *rdesc,
 				     unsigned int *rsize)
+=======
+static const __u8 *magicmouse_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+					   unsigned int *rsize)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	/*
 	 * Change the usage from:

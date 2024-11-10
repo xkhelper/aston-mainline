@@ -84,9 +84,14 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
+<<<<<<< HEAD
 		pmi8950_pwm: pwm@b000 {
 			compatible = "qcom,pmi8950-pwm";
 			reg = <0xb000 0x100>;
+=======
+		pmi8950_pwm: pwm {
+			compatible = "qcom,pmi8950-pwm";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			#pwm-cells = <2>;
 
 			status = "disabled";

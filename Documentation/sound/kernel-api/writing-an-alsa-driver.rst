@@ -4030,6 +4030,7 @@ located in the new subdirectory, sound/pci/xyz.
 Useful Functions
 ================
 
+<<<<<<< HEAD
 :c:func:`snd_printk()` and friends
 ----------------------------------
 
@@ -4055,6 +4056,8 @@ the debugging flag, it's ignored.
 :c:func:`snd_printdd()` is compiled in only when
 ``CONFIG_SND_DEBUG_VERBOSE`` is set.
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 :c:func:`snd_BUG()`
 -------------------
 

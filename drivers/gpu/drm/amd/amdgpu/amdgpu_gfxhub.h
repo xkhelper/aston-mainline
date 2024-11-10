@@ -38,8 +38,11 @@ struct amdgpu_gfxhub_funcs {
 	void (*mode2_save_regs)(struct amdgpu_device *adev);
 	void (*mode2_restore_regs)(struct amdgpu_device *adev);
 	void (*halt)(struct amdgpu_device *adev);
+<<<<<<< HEAD
 	bool (*query_utcl2_poison_status)(struct amdgpu_device *adev,
 			int xcc_id);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct amdgpu_gfxhub {

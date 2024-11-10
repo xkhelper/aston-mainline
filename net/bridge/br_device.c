@@ -487,9 +487,17 @@ void br_dev_setup(struct net_device *dev)
 	dev->ethtool_ops = &br_ethtool_ops;
 	SET_NETDEV_DEVTYPE(dev, &br_type);
 	dev->priv_flags = IFF_EBRIDGE | IFF_NO_QUEUE;
+<<<<<<< HEAD
 
 	dev->features = COMMON_FEATURES | NETIF_F_LLTX | NETIF_F_NETNS_LOCAL |
 			NETIF_F_HW_VLAN_CTAG_TX | NETIF_F_HW_VLAN_STAG_TX;
+=======
+	dev->lltx = true;
+	dev->netns_local = true;
+
+	dev->features = COMMON_FEATURES | NETIF_F_HW_VLAN_CTAG_TX |
+			NETIF_F_HW_VLAN_STAG_TX;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev->hw_features = COMMON_FEATURES | NETIF_F_HW_VLAN_CTAG_TX |
 			   NETIF_F_HW_VLAN_STAG_TX;
 	dev->vlan_features = COMMON_FEATURES;

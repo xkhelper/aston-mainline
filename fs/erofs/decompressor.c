@@ -539,7 +539,11 @@ int __init z_erofs_init_decompressor(void)
 	for (i = 0; i < Z_EROFS_COMPRESSION_MAX; ++i) {
 		err = z_erofs_decomp[i] ? z_erofs_decomp[i]->init() : 0;
 		if (err) {
+<<<<<<< HEAD
 			while (--i)
+=======
+			while (i--)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				if (z_erofs_decomp[i])
 					z_erofs_decomp[i]->exit();
 			return err;

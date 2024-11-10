@@ -311,4 +311,13 @@ u64 callchain_total_hits(struct hists *hists);
 
 s64 callchain_avg_cycles(struct callchain_node *cnode);
 
+<<<<<<< HEAD
+=======
+typedef int (*callchain_iter_fn)(struct callchain_cursor_node *node, void *data);
+
+int sample__for_each_callchain_node(struct thread *thread, struct evsel *evsel,
+				    struct perf_sample *sample, int max_stack,
+				    bool symbols, callchain_iter_fn cb, void *data);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif	/* __PERF_CALLCHAIN_H */

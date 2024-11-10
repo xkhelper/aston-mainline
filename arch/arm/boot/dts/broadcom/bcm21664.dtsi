@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-only
 // Copyright (C) 2014 Broadcom Corporation
 
+<<<<<<< HEAD
 #include <dt-bindings/clock/bcm21664.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 #include <dt-bindings/interrupt-controller/irq.h>
@@ -16,6 +17,13 @@
 		bootargs = "console=ttyS0,115200n8";
 	};
 
+=======
+#include "bcm2166x-common.dtsi"
+
+/ {
+	interrupt-parent = <&gic>;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cpus {
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -34,6 +42,7 @@
 			reg = <1>;
 		};
 	};
+<<<<<<< HEAD
 
 	gic: interrupt-controller@3ff00100 {
 		compatible = "arm,cortex-a9-gic";
@@ -342,4 +351,48 @@
 		#phy-cells = <0>;
 		status = "disabled";
 	};
+=======
+};
+
+&apps {
+		gic: interrupt-controller@1c01000 {
+			compatible = "arm,cortex-a9-gic";
+			#interrupt-cells = <3>;
+			#address-cells = <0>;
+			interrupt-controller;
+			reg = <0x01c01000 0x1000>,
+				  <0x01c00100 0x100>;
+		};
+
+		L2: cache-controller@1c20000 {
+			compatible = "arm,pl310-cache";
+			reg = <0x01c20000 0x1000>;
+			cache-unified;
+			cache-level = <2>;
+		};
+};
+
+&bsc1 {
+	compatible = "brcm,bcm21664-i2c", "brcm,kona-i2c";
+};
+
+&bsc2 {
+	compatible = "brcm,bcm21664-i2c", "brcm,kona-i2c";
+};
+
+&bsc3 {
+	compatible = "brcm,bcm21664-i2c", "brcm,kona-i2c";
+};
+
+&bsc4 {
+	compatible = "brcm,bcm21664-i2c", "brcm,kona-i2c";
+};
+
+&gpio {
+	compatible = "brcm,bcm21664-gpio", "brcm,kona-gpio";
+};
+
+&smc {
+	compatible = "brcm,bcm21664-smc", "brcm,kona-smc";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };

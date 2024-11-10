@@ -79,6 +79,7 @@ static bool bkey_cached_lock_for_evict(struct bkey_cached *ck)
 	return true;
 }
 
+<<<<<<< HEAD
 static void bkey_cached_evict(struct btree_key_cache *c,
 			      struct bkey_cached *ck)
 {
@@ -87,11 +88,34 @@ static void bkey_cached_evict(struct btree_key_cache *c,
 	memset(&ck->key, ~0, sizeof(ck->key));
 
 	atomic_long_dec(&c->nr_keys);
+=======
+static bool bkey_cached_evict(struct btree_key_cache *c,
+			      struct bkey_cached *ck)
+{
+	bool ret = !rhashtable_remove_fast(&c->table, &ck->hash,
+				      bch2_btree_key_cache_params);
+	if (ret) {
+		memset(&ck->key, ~0, sizeof(ck->key));
+		atomic_long_dec(&c->nr_keys);
+	}
+
+	return ret;
+}
+
+static void __bkey_cached_free(struct rcu_pending *pending, struct rcu_head *rcu)
+{
+	struct bch_fs *c = container_of(pending->srcu, struct bch_fs, btree_trans_barrier);
+	struct bkey_cached *ck = container_of(rcu, struct bkey_cached, rcu);
+
+	this_cpu_dec(*c->btree_key_cache.nr_pending);
+	kmem_cache_free(bch2_key_cache, ck);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void bkey_cached_free(struct btree_key_cache *bc,
 			     struct bkey_cached *ck)
 {
+<<<<<<< HEAD
 	struct bch_fs *c = container_of(bc, struct bch_fs, btree_key_cache);
 
 	BUG_ON(test_bit(BKEY_CACHED_DIRTY, &ck->flags));
@@ -108,12 +132,15 @@ static void bkey_cached_free(struct btree_key_cache *bc,
 	}
 	atomic_long_inc(&bc->nr_freed);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(ck->k);
 	ck->k		= NULL;
 	ck->u64s	= 0;
 
 	six_unlock_write(&ck->c.lock);
 	six_unlock_intent(&ck->c.lock);
+<<<<<<< HEAD
 }
 
 #ifdef __KERNEL__
@@ -203,10 +230,21 @@ static void bkey_cached_free_fast(struct btree_key_cache *bc,
 
 	six_unlock_write(&ck->c.lock);
 	six_unlock_intent(&ck->c.lock);
+=======
+
+	bool pcpu_readers = ck->c.lock.readers != NULL;
+	rcu_pending_enqueue(&bc->pending[pcpu_readers], &ck->rcu);
+	this_cpu_inc(*bc->nr_pending);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct bkey_cached *__bkey_cached_alloc(unsigned key_u64s, gfp_t gfp)
 {
+<<<<<<< HEAD
+=======
+	gfp |= __GFP_ACCOUNT|__GFP_RECLAIMABLE;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct bkey_cached *ck = kmem_cache_zalloc(bch2_key_cache, gfp);
 	if (unlikely(!ck))
 		return NULL;
@@ -224,6 +262,7 @@ bkey_cached_alloc(struct btree_trans *trans, struct btree_path *path, unsigned k
 {
 	struct bch_fs *c = trans->c;
 	struct btree_key_cache *bc = &c->btree_key_cache;
+<<<<<<< HEAD
 	struct bkey_cached *ck = NULL;
 	bool pcpu_readers = btree_uses_pcpu_readers(path->btree_id);
 	int ret;
@@ -292,6 +331,16 @@ bkey_cached_alloc(struct btree_trans *trans, struct btree_path *path, unsigned k
 
 		return ck;
 	}
+=======
+	bool pcpu_readers = btree_uses_pcpu_readers(path->btree_id);
+	int ret;
+
+	struct bkey_cached *ck = container_of_or_null(
+				rcu_pending_dequeue(&bc->pending[pcpu_readers]),
+				struct bkey_cached, rcu);
+	if (ck)
+		goto lock;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ck = allocate_dropping_locks(trans, ret,
 				     __bkey_cached_alloc(key_u64s, _gfp));
@@ -302,6 +351,7 @@ bkey_cached_alloc(struct btree_trans *trans, struct btree_path *path, unsigned k
 		return ERR_PTR(ret);
 	}
 
+<<<<<<< HEAD
 	if (!ck)
 		return NULL;
 
@@ -311,6 +361,21 @@ bkey_cached_alloc(struct btree_trans *trans, struct btree_path *path, unsigned k
 	ck->c.cached = true;
 	BUG_ON(!six_trylock_intent(&ck->c.lock));
 	BUG_ON(!six_trylock_write(&ck->c.lock));
+=======
+	if (ck) {
+		bch2_btree_lock_init(&ck->c, pcpu_readers ? SIX_LOCK_INIT_PCPU : 0);
+		ck->c.cached = true;
+		goto lock;
+	}
+
+	ck = container_of_or_null(rcu_pending_dequeue_from_all(&bc->pending[pcpu_readers]),
+				  struct bkey_cached, rcu);
+	if (ck)
+		goto lock;
+lock:
+	six_lock_intent(&ck->c.lock, NULL, NULL);
+	six_lock_write(&ck->c.lock, NULL, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ck;
 }
 
@@ -322,21 +387,34 @@ bkey_cached_reuse(struct btree_key_cache *c)
 	struct bkey_cached *ck;
 	unsigned i;
 
+<<<<<<< HEAD
 	mutex_lock(&c->lock);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rcu_read_lock();
 	tbl = rht_dereference_rcu(c->table.tbl, &c->table);
 	for (i = 0; i < tbl->size; i++)
 		rht_for_each_entry_rcu(ck, pos, tbl, i, hash) {
 			if (!test_bit(BKEY_CACHED_DIRTY, &ck->flags) &&
 			    bkey_cached_lock_for_evict(ck)) {
+<<<<<<< HEAD
 				bkey_cached_evict(c, ck);
 				goto out;
+=======
+				if (bkey_cached_evict(c, ck))
+					goto out;
+				six_unlock_write(&ck->c.lock);
+				six_unlock_intent(&ck->c.lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 		}
 	ck = NULL;
 out:
 	rcu_read_unlock();
+<<<<<<< HEAD
 	mutex_unlock(&c->lock);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ck;
 }
 
@@ -415,7 +493,11 @@ static int btree_key_cache_create(struct btree_trans *trans, struct btree_path *
 	path->uptodate = BTREE_ITER_UPTODATE;
 	return 0;
 err:
+<<<<<<< HEAD
 	bkey_cached_free_fast(bc, ck);
+=======
+	bkey_cached_free(bc, ck);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mark_btree_node_locked_noreset(path, 0, BTREE_NODE_UNLOCKED);
 
 	return ret;
@@ -611,8 +693,17 @@ evict:
 		}
 
 		mark_btree_node_locked_noreset(path, 0, BTREE_NODE_UNLOCKED);
+<<<<<<< HEAD
 		bkey_cached_evict(&c->btree_key_cache, ck);
 		bkey_cached_free_fast(&c->btree_key_cache, ck);
+=======
+		if (bkey_cached_evict(&c->btree_key_cache, ck)) {
+			bkey_cached_free(&c->btree_key_cache, ck);
+		} else {
+			six_unlock_write(&ck->c.lock);
+			six_unlock_intent(&ck->c.lock);
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 out:
 	bch2_trans_iter_exit(trans, &b_iter);
@@ -722,7 +813,11 @@ void bch2_btree_key_cache_drop(struct btree_trans *trans,
 	}
 
 	bkey_cached_evict(bc, ck);
+<<<<<<< HEAD
 	bkey_cached_free_fast(bc, ck);
+=======
+	bkey_cached_free(bc, ck);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mark_btree_node_locked(trans, path, 0, BTREE_NODE_UNLOCKED);
 	btree_path_set_dirty(path, BTREE_ITER_NEED_TRAVERSE);
@@ -735,6 +830,7 @@ static unsigned long bch2_btree_key_cache_scan(struct shrinker *shrink,
 	struct bch_fs *c = shrink->private_data;
 	struct btree_key_cache *bc = &c->btree_key_cache;
 	struct bucket_table *tbl;
+<<<<<<< HEAD
 	struct bkey_cached *ck, *t;
 	size_t scanned = 0, freed = 0, nr = sc->nr_to_scan;
 	unsigned start, flags;
@@ -777,6 +873,16 @@ static unsigned long bch2_btree_key_cache_scan(struct shrinker *shrink,
 	}
 
 	rcu_read_lock();
+=======
+	struct bkey_cached *ck;
+	size_t scanned = 0, freed = 0, nr = sc->nr_to_scan;
+	unsigned iter, start;
+	int srcu_idx;
+
+	srcu_idx = srcu_read_lock(&c->btree_trans_barrier);
+	rcu_read_lock();
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	tbl = rht_dereference_rcu(bc->table.tbl, &bc->table);
 
 	/*
@@ -792,17 +898,31 @@ static unsigned long bch2_btree_key_cache_scan(struct shrinker *shrink,
 		return SHRINK_STOP;
 	}
 
+<<<<<<< HEAD
 	if (bc->shrink_iter >= tbl->size)
 		bc->shrink_iter = 0;
 	start = bc->shrink_iter;
+=======
+	iter = bc->shrink_iter;
+	if (iter >= tbl->size)
+		iter = 0;
+	start = iter;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	do {
 		struct rhash_head *pos, *next;
 
+<<<<<<< HEAD
 		pos = rht_ptr_rcu(&tbl->buckets[bc->shrink_iter]);
 
 		while (!rht_is_a_nulls(pos)) {
 			next = rht_dereference_bucket_rcu(pos->next, tbl, bc->shrink_iter);
+=======
+		pos = rht_ptr_rcu(&tbl->buckets[iter]);
+
+		while (!rht_is_a_nulls(pos)) {
+			next = rht_dereference_bucket_rcu(pos->next, tbl, iter);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ck = container_of(pos, struct bkey_cached, hash);
 
 			if (test_bit(BKEY_CACHED_DIRTY, &ck->flags)) {
@@ -812,20 +932,35 @@ static unsigned long bch2_btree_key_cache_scan(struct shrinker *shrink,
 				bc->skipped_accessed++;
 			} else if (!bkey_cached_lock_for_evict(ck)) {
 				bc->skipped_lock_fail++;
+<<<<<<< HEAD
 			} else {
 				bkey_cached_evict(bc, ck);
 				bkey_cached_free(bc, ck);
 				bc->moved_to_freelist++;
 				freed++;
+=======
+			} else if (bkey_cached_evict(bc, ck)) {
+				bkey_cached_free(bc, ck);
+				bc->freed++;
+				freed++;
+			} else {
+				six_unlock_write(&ck->c.lock);
+				six_unlock_intent(&ck->c.lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 
 			scanned++;
 			if (scanned >= nr)
+<<<<<<< HEAD
 				break;
+=======
+				goto out;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			pos = next;
 		}
 
+<<<<<<< HEAD
 		bc->shrink_iter++;
 		if (bc->shrink_iter >= tbl->size)
 			bc->shrink_iter = 0;
@@ -835,6 +970,17 @@ static unsigned long bch2_btree_key_cache_scan(struct shrinker *shrink,
 	memalloc_nofs_restore(flags);
 	srcu_read_unlock(&c->btree_trans_barrier, srcu_idx);
 	mutex_unlock(&bc->lock);
+=======
+		iter++;
+		if (iter >= tbl->size)
+			iter = 0;
+	} while (scanned < nr && iter != start);
+out:
+	bc->shrink_iter = iter;
+
+	rcu_read_unlock();
+	srcu_read_unlock(&c->btree_trans_barrier, srcu_idx);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return freed;
 }
@@ -862,6 +1008,7 @@ void bch2_fs_btree_key_cache_exit(struct btree_key_cache *bc)
 {
 	struct bch_fs *c = container_of(bc, struct bch_fs, btree_key_cache);
 	struct bucket_table *tbl;
+<<<<<<< HEAD
 	struct bkey_cached *ck, *n;
 	struct rhash_head *pos;
 	LIST_HEAD(items);
@@ -874,6 +1021,15 @@ void bch2_fs_btree_key_cache_exit(struct btree_key_cache *bc)
 
 	mutex_lock(&bc->lock);
 
+=======
+	struct bkey_cached *ck;
+	struct rhash_head *pos;
+	LIST_HEAD(items);
+	unsigned i;
+
+	shrinker_free(bc->shrink);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * The loop is needed to guard against racing with rehash:
 	 */
@@ -892,13 +1048,20 @@ void bch2_fs_btree_key_cache_exit(struct btree_key_cache *bc)
 			for (i = 0; i < tbl->size; i++)
 				while (pos = rht_ptr_rcu(&tbl->buckets[i]), !rht_is_a_nulls(pos)) {
 					ck = container_of(pos, struct bkey_cached, hash);
+<<<<<<< HEAD
 					bkey_cached_evict(bc, ck);
 					list_add(&ck->list, &items);
+=======
+					BUG_ON(!bkey_cached_evict(bc, ck));
+					kfree(ck->k);
+					kmem_cache_free(bch2_key_cache, ck);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				}
 		}
 		rcu_read_unlock();
 	}
 
+<<<<<<< HEAD
 #ifdef __KERNEL__
 	if (bc->pcpu_freed) {
 		for_each_possible_cpu(cpu) {
@@ -930,6 +1093,8 @@ void bch2_fs_btree_key_cache_exit(struct btree_key_cache *bc)
 		kmem_cache_free(bch2_key_cache, ck);
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (atomic_long_read(&bc->nr_dirty) &&
 	    !bch2_journal_error(&c->journal) &&
 	    test_bit(BCH_FS_was_rw, &c->flags))
@@ -943,14 +1108,24 @@ void bch2_fs_btree_key_cache_exit(struct btree_key_cache *bc)
 	if (bc->table_init_done)
 		rhashtable_destroy(&bc->table);
 
+<<<<<<< HEAD
 	free_percpu(bc->pcpu_freed);
+=======
+	rcu_pending_exit(&bc->pending[0]);
+	rcu_pending_exit(&bc->pending[1]);
+
+	free_percpu(bc->nr_pending);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void bch2_fs_btree_key_cache_init_early(struct btree_key_cache *c)
 {
+<<<<<<< HEAD
 	mutex_init(&c->lock);
 	INIT_LIST_HEAD(&c->freed_pcpu);
 	INIT_LIST_HEAD(&c->freed_nonpcpu);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int bch2_fs_btree_key_cache_init(struct btree_key_cache *bc)
@@ -958,11 +1133,21 @@ int bch2_fs_btree_key_cache_init(struct btree_key_cache *bc)
 	struct bch_fs *c = container_of(bc, struct bch_fs, btree_key_cache);
 	struct shrinker *shrink;
 
+<<<<<<< HEAD
 #ifdef __KERNEL__
 	bc->pcpu_freed = alloc_percpu(struct btree_key_cache_freelist);
 	if (!bc->pcpu_freed)
 		return -BCH_ERR_ENOMEM_fs_btree_cache_init;
 #endif
+=======
+	bc->nr_pending = alloc_percpu(size_t);
+	if (!bc->nr_pending)
+		return -BCH_ERR_ENOMEM_fs_btree_cache_init;
+
+	if (rcu_pending_init(&bc->pending[0], &c->btree_trans_barrier, __bkey_cached_free) ||
+	    rcu_pending_init(&bc->pending[1], &c->btree_trans_barrier, __bkey_cached_free))
+		return -BCH_ERR_ENOMEM_fs_btree_cache_init;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (rhashtable_init(&bc->table, &bch2_btree_key_cache_params))
 		return -BCH_ERR_ENOMEM_fs_btree_cache_init;
@@ -984,6 +1169,7 @@ int bch2_fs_btree_key_cache_init(struct btree_key_cache *bc)
 
 void bch2_btree_key_cache_to_text(struct printbuf *out, struct btree_key_cache *bc)
 {
+<<<<<<< HEAD
 	struct bch_fs *c = container_of(bc, struct bch_fs, btree_key_cache);
 
 	printbuf_tabstop_push(out, 24);
@@ -1023,6 +1209,23 @@ void bch2_btree_key_cache_to_text(struct printbuf *out, struct btree_key_cache *
 	}
 	mutex_unlock(&bc->lock);
 	memalloc_flags_restore(flags);
+=======
+	printbuf_tabstop_push(out, 24);
+	printbuf_tabstop_push(out, 12);
+
+	prt_printf(out, "keys:\t%lu\r\n",		atomic_long_read(&bc->nr_keys));
+	prt_printf(out, "dirty:\t%lu\r\n",		atomic_long_read(&bc->nr_dirty));
+	prt_printf(out, "table size:\t%u\r\n",		bc->table.tbl->size);
+	prt_newline(out);
+	prt_printf(out, "shrinker:\n");
+	prt_printf(out, "requested_to_free:\t%lu\r\n",	bc->requested_to_free);
+	prt_printf(out, "freed:\t%lu\r\n",		bc->freed);
+	prt_printf(out, "skipped_dirty:\t%lu\r\n",	bc->skipped_dirty);
+	prt_printf(out, "skipped_accessed:\t%lu\r\n",	bc->skipped_accessed);
+	prt_printf(out, "skipped_lock_fail:\t%lu\r\n",	bc->skipped_lock_fail);
+	prt_newline(out);
+	prt_printf(out, "pending:\t%zu\r\n",		per_cpu_sum(bc->nr_pending));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void bch2_btree_key_cache_exit(void)

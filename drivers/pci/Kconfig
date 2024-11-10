@@ -143,6 +143,18 @@ config PCI_IOV
 
 	  If unsure, say N.
 
+<<<<<<< HEAD
+=======
+config PCI_NPEM
+	bool "Native PCIe Enclosure Management"
+	depends on LEDS_CLASS=y
+	help
+	  Support for Native PCIe Enclosure Management. It allows managing LED
+	  indications in storage enclosures. Enclosure must support following
+	  indications: OK, Locate, Fail, Rebuild, other indications are
+	  optional.
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config PCI_PRI
 	bool "PCI PRI support"
 	select PCI_ATS

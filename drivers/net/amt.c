@@ -3098,9 +3098,15 @@ static void amt_link_setup(struct net_device *dev)
 	dev->hard_header_len	= 0;
 	dev->addr_len		= 0;
 	dev->priv_flags		|= IFF_NO_QUEUE;
+<<<<<<< HEAD
 	dev->features		|= NETIF_F_LLTX;
 	dev->features		|= NETIF_F_GSO_SOFTWARE;
 	dev->features		|= NETIF_F_NETNS_LOCAL;
+=======
+	dev->lltx		= true;
+	dev->netns_local	= true;
+	dev->features		|= NETIF_F_GSO_SOFTWARE;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev->hw_features	|= NETIF_F_SG | NETIF_F_HW_CSUM;
 	dev->hw_features	|= NETIF_F_FRAGLIST | NETIF_F_RXCSUM;
 	dev->hw_features	|= NETIF_F_GSO_SOFTWARE;

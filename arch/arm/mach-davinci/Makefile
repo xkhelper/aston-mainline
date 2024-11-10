@@ -16,7 +16,10 @@ obj-$(CONFIG_ARCH_DAVINCI_DA850)	+= da850.o pdata-quirks.o
 obj-y					+= da8xx-dt.o
 
 # Power Management
+<<<<<<< HEAD
 obj-$(CONFIG_CPU_IDLE)			+= cpuidle.o
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 obj-$(CONFIG_HAVE_CLK)			+= pm_domain.o
 ifeq ($(CONFIG_SUSPEND),y)
 obj-$(CONFIG_ARCH_DAVINCI_DA850)	+= pm.o sleep.o

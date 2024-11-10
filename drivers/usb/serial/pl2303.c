@@ -24,7 +24,11 @@
 #include <linux/uaccess.h>
 #include <linux/usb.h>
 #include <linux/usb/serial.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "pl2303.h"
 
 
@@ -118,6 +122,10 @@ static const struct usb_device_id id_table[] = {
 	{ USB_DEVICE(SMART_VENDOR_ID, SMART_PRODUCT_ID) },
 	{ USB_DEVICE(AT_VENDOR_ID, AT_VTKIT3_PRODUCT_ID) },
 	{ USB_DEVICE(IBM_VENDOR_ID, IBM_PRODUCT_ID) },
+<<<<<<< HEAD
+=======
+	{ USB_DEVICE(MACROSILICON_VENDOR_ID, MACROSILICON_MS3020_PRODUCT_ID) },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }					/* Terminating entry */
 };
 
@@ -1234,7 +1242,10 @@ static void pl2303_process_read_urb(struct urb *urb)
 
 static struct usb_serial_driver pl2303_device = {
 	.driver = {
+<<<<<<< HEAD
 		.owner =	THIS_MODULE,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name =		"pl2303",
 	},
 	.id_table =		id_table,

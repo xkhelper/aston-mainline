@@ -170,6 +170,7 @@ NUMA
     Don't parse the HMAT table for NUMA setup, or soft-reserved memory
     partitioning.
 
+<<<<<<< HEAD
   numa=fake=<size>[MG]
     If given as a memory unit, fills all system RAM with nodes of
     size interleaved over physical nodes.
@@ -182,6 +183,8 @@ NUMA
     If given as an integer followed by 'U', it will divide each
     physical node into N emulated nodes.
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ACPI
 ====
 

@@ -6,6 +6,10 @@
 #include <linux/netdevice.h>
 #include <linux/sysfs.h>
 #include <net/xdp.h>
+<<<<<<< HEAD
+=======
+#include <net/page_pool/types.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* This structure contains an instance of an RX queue. */
 struct netdev_rx_queue {
@@ -25,6 +29,10 @@ struct netdev_rx_queue {
 	 * Readers and writers must hold RTNL
 	 */
 	struct napi_struct		*napi;
+<<<<<<< HEAD
+=======
+	struct pp_memory_provider_params mp_params;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 } ____cacheline_aligned_in_smp;
 
 /*
@@ -43,7 +51,10 @@ __netif_get_rx_queue(struct net_device *dev, unsigned int rxq)
 	return dev->_rx + rxq;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_SYSFS
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline unsigned int
 get_netdev_rx_queue_index(struct netdev_rx_queue *queue)
 {
@@ -53,5 +64,11 @@ get_netdev_rx_queue_index(struct netdev_rx_queue *queue)
 	BUG_ON(index >= dev->num_rx_queues);
 	return index;
 }
+<<<<<<< HEAD
 #endif
+=======
+
+int netdev_rx_queue_restart(struct net_device *dev, unsigned int rxq);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

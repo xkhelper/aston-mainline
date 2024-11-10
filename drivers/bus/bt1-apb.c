@@ -185,6 +185,7 @@ static int bt1_apb_request_rst(struct bt1_apb *apb)
 	return ret;
 }
 
+<<<<<<< HEAD
 static void bt1_apb_disable_clk(void *data)
 {
 	struct bt1_apb *apb = data;
@@ -197,10 +198,16 @@ static int bt1_apb_request_clk(struct bt1_apb *apb)
 	int ret;
 
 	apb->pclk = devm_clk_get(apb->dev, "pclk");
+=======
+static int bt1_apb_request_clk(struct bt1_apb *apb)
+{
+	apb->pclk = devm_clk_get_enabled(apb->dev, "pclk");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(apb->pclk))
 		return dev_err_probe(apb->dev, PTR_ERR(apb->pclk),
 				     "Couldn't get APB clock descriptor\n");
 
+<<<<<<< HEAD
 	ret = clk_prepare_enable(apb->pclk);
 	if (ret) {
 		dev_err(apb->dev, "Couldn't enable the APB clock\n");
@@ -213,6 +220,8 @@ static int bt1_apb_request_clk(struct bt1_apb *apb)
 		return ret;
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	apb->rate = clk_get_rate(apb->pclk);
 	if (!apb->rate) {
 		dev_err(apb->dev, "Invalid clock rate\n");

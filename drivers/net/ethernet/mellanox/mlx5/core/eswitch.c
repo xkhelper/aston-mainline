@@ -1489,7 +1489,11 @@ int mlx5_eswitch_enable_locked(struct mlx5_eswitch *esw, int num_vfs)
 	}
 
 	if (err)
+<<<<<<< HEAD
 		goto abort;
+=======
+		goto err_esw_enable;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	esw->fdb_table.flags |= MLX5_ESW_FDB_CREATED;
 
@@ -1503,7 +1507,12 @@ int mlx5_eswitch_enable_locked(struct mlx5_eswitch *esw, int num_vfs)
 
 	return 0;
 
+<<<<<<< HEAD
 abort:
+=======
+err_esw_enable:
+	mlx5_eq_notifier_unregister(esw->dev, &esw->nb);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mlx5_esw_acls_ns_cleanup(esw);
 	return err;
 }

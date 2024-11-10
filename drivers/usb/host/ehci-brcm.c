@@ -246,6 +246,10 @@ static const struct of_device_id brcm_ehci_of_match[] = {
 	{ .compatible = "brcm,bcm7445-ehci", },
 	{}
 };
+<<<<<<< HEAD
+=======
+MODULE_DEVICE_TABLE(of, brcm_ehci_of_match);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct platform_driver ehci_brcm_driver = {
 	.probe		= ehci_brcm_probe,

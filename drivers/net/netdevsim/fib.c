@@ -1377,10 +1377,19 @@ static ssize_t nsim_nexthop_bucket_activity_write(struct file *file,
 
 	if (pos != 0)
 		return -EINVAL;
+<<<<<<< HEAD
 	if (size > sizeof(buf))
 		return -EINVAL;
 	if (copy_from_user(buf, user_buf, size))
 		return -EFAULT;
+=======
+	if (size > sizeof(buf) - 1)
+		return -EINVAL;
+	if (copy_from_user(buf, user_buf, size))
+		return -EFAULT;
+	buf[size] = 0;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (sscanf(buf, "%u %hu", &nhid, &bucket_index) != 2)
 		return -EINVAL;
 
@@ -1414,7 +1423,10 @@ out:
 static const struct file_operations nsim_nexthop_bucket_activity_fops = {
 	.open = simple_open,
 	.write = nsim_nexthop_bucket_activity_write,
+<<<<<<< HEAD
 	.llseek = no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.owner = THIS_MODULE,
 };
 

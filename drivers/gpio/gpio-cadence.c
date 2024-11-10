@@ -31,7 +31,10 @@
 
 struct cdns_gpio_chip {
 	struct gpio_chip gc;
+<<<<<<< HEAD
 	struct clk *pclk;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void __iomem *regs;
 	u32 bypass_orig;
 };
@@ -155,6 +158,10 @@ static int cdns_gpio_probe(struct platform_device *pdev)
 	int ret, irq;
 	u32 dir_prev;
 	u32 num_gpios = 32;
+<<<<<<< HEAD
+=======
+	struct clk *clk;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	cgpio = devm_kzalloc(&pdev->dev, sizeof(*cgpio), GFP_KERNEL);
 	if (!cgpio)
@@ -203,14 +210,21 @@ static int cdns_gpio_probe(struct platform_device *pdev)
 	cgpio->gc.request = cdns_gpio_request;
 	cgpio->gc.free = cdns_gpio_free;
 
+<<<<<<< HEAD
 	cgpio->pclk = devm_clk_get(&pdev->dev, NULL);
 	if (IS_ERR(cgpio->pclk)) {
 		ret = PTR_ERR(cgpio->pclk);
+=======
+	clk = devm_clk_get_enabled(&pdev->dev, NULL);
+	if (IS_ERR(clk)) {
+		ret = PTR_ERR(clk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_err(&pdev->dev,
 			"Failed to retrieve peripheral clock, %d\n", ret);
 		goto err_revert_dir;
 	}
 
+<<<<<<< HEAD
 	ret = clk_prepare_enable(cgpio->pclk);
 	if (ret) {
 		dev_err(&pdev->dev,
@@ -218,6 +232,8 @@ static int cdns_gpio_probe(struct platform_device *pdev)
 		goto err_revert_dir;
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Optional irq_chip support
 	 */
@@ -234,7 +250,11 @@ static int cdns_gpio_probe(struct platform_device *pdev)
 					     GFP_KERNEL);
 		if (!girq->parents) {
 			ret = -ENOMEM;
+<<<<<<< HEAD
 			goto err_disable_clk;
+=======
+			goto err_revert_dir;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		girq->parents[0] = irq;
 		girq->default_type = IRQ_TYPE_NONE;
@@ -244,7 +264,11 @@ static int cdns_gpio_probe(struct platform_device *pdev)
 	ret = devm_gpiochip_add_data(&pdev->dev, &cgpio->gc, cgpio);
 	if (ret < 0) {
 		dev_err(&pdev->dev, "Could not register gpiochip, %d\n", ret);
+<<<<<<< HEAD
 		goto err_disable_clk;
+=======
+		goto err_revert_dir;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	cgpio->bypass_orig = ioread32(cgpio->regs + CDNS_GPIO_BYPASS_MODE);
@@ -259,9 +283,12 @@ static int cdns_gpio_probe(struct platform_device *pdev)
 	platform_set_drvdata(pdev, cgpio);
 	return 0;
 
+<<<<<<< HEAD
 err_disable_clk:
 	clk_disable_unprepare(cgpio->pclk);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_revert_dir:
 	iowrite32(dir_prev, cgpio->regs + CDNS_GPIO_DIRECTION_MODE);
 
@@ -273,7 +300,10 @@ static void cdns_gpio_remove(struct platform_device *pdev)
 	struct cdns_gpio_chip *cgpio = platform_get_drvdata(pdev);
 
 	iowrite32(cgpio->bypass_orig, cgpio->regs + CDNS_GPIO_BYPASS_MODE);
+<<<<<<< HEAD
 	clk_disable_unprepare(cgpio->pclk);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct of_device_id cdns_of_ids[] = {

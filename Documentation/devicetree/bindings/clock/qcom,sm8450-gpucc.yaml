@@ -14,6 +14,10 @@ description: |
   domains on Qualcomm SoCs.
 
   See also::
+<<<<<<< HEAD
+=======
+    include/dt-bindings/clock/qcom,sm4450-gpucc.h
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     include/dt-bindings/clock/qcom,sm8450-gpucc.h
     include/dt-bindings/clock/qcom,sm8550-gpucc.h
     include/dt-bindings/reset/qcom,sm8450-gpucc.h
@@ -23,6 +27,10 @@ description: |
 properties:
   compatible:
     enum:
+<<<<<<< HEAD
+=======
+      - qcom,sm4450-gpucc
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       - qcom,sm8450-gpucc
       - qcom,sm8550-gpucc
       - qcom,sm8650-gpucc

@@ -35,6 +35,10 @@ DECLARE_RC_STRUCT(map) {
 	enum mapping_type	mapping_type:8;
 	bool			erange_warned;
 	bool			priv;
+<<<<<<< HEAD
+=======
+	bool			hit;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct kmap;
@@ -83,6 +87,14 @@ static inline bool map__priv(const struct map *map)
 	return RC_CHK_ACCESS(map)->priv;
 }
 
+<<<<<<< HEAD
+=======
+static inline bool map__hit(const struct map *map)
+{
+	return RC_CHK_ACCESS(map)->hit;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline refcount_t *map__refcnt(struct map *map)
 {
 	return &RC_CHK_ACCESS(map)->refcnt;
@@ -166,9 +178,12 @@ struct thread;
 #define map__for_each_symbol_by_name(map, sym_name, pos, idx)	\
 	__map__for_each_symbol_by_name(map, sym_name, (pos), idx)
 
+<<<<<<< HEAD
 void map__init(struct map *map,
 	       u64 start, u64 end, u64 pgoff, struct dso *dso);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct dso_id;
 struct build_id;
 
@@ -285,6 +300,7 @@ static inline void map__set_reloc(struct map *map, u64 reloc)
 	RC_CHK_ACCESS(map)->reloc = reloc;
 }
 
+<<<<<<< HEAD
 static inline void map__set_priv(struct map *map, int priv)
 {
 	RC_CHK_ACCESS(map)->priv = priv;
@@ -293,6 +309,21 @@ static inline void map__set_priv(struct map *map, int priv)
 static inline void map__set_erange_warned(struct map *map, bool erange_warned)
 {
 	RC_CHK_ACCESS(map)->erange_warned = erange_warned;
+=======
+static inline void map__set_priv(struct map *map)
+{
+	RC_CHK_ACCESS(map)->priv = true;
+}
+
+static inline void map__set_hit(struct map *map)
+{
+	RC_CHK_ACCESS(map)->hit = true;
+}
+
+static inline void map__set_erange_warned(struct map *map)
+{
+	RC_CHK_ACCESS(map)->erange_warned = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline void map__set_dso(struct map *map, struct dso *dso)

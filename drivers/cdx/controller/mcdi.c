@@ -27,10 +27,13 @@
 #include "bitfield.h"
 #include "mcdi.h"
 
+<<<<<<< HEAD
 struct cdx_mcdi_copy_buffer {
 	struct cdx_dword buffer[DIV_ROUND_UP(MCDI_CTL_SDU_LEN_MAX, 4)];
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void cdx_mcdi_cancel_cmd(struct cdx_mcdi *cdx, struct cdx_mcdi_cmd *cmd);
 static void cdx_mcdi_wait_for_cleanup(struct cdx_mcdi *cdx);
 static int cdx_mcdi_rpc_async_internal(struct cdx_mcdi *cdx,

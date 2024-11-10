@@ -2,7 +2,10 @@
 //
 // Copyright 2024 Advanced Micro Devices, Inc.
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "dml2_mcg_dcn4.h"
 #include "dml_top_soc_parameter_types.h"
 

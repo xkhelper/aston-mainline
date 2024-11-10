@@ -3208,6 +3208,12 @@ lpfc_bsg_diag_loopback_run(struct bsg_job *job)
 	cmdiocbq->num_bdes = num_bde;
 	cmdiocbq->cmd_flag |= LPFC_IO_LIBDFC;
 	cmdiocbq->cmd_flag |= LPFC_IO_LOOPBACK;
+<<<<<<< HEAD
+=======
+	if (phba->cfg_vmid_app_header)
+		cmdiocbq->cmd_flag |= LPFC_IO_VMID;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cmdiocbq->vport = phba->pport;
 	cmdiocbq->cmd_cmpl = NULL;
 	cmdiocbq->bpl_dmabuf = txbmp;

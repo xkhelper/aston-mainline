@@ -640,14 +640,22 @@ static inline void dso__set_text_offset(struct dso *dso, u64 val)
 int dso_id__cmp(const struct dso_id *a, const struct dso_id *b);
 bool dso_id__empty(const struct dso_id *id);
 
+<<<<<<< HEAD
 struct dso *dso__new_id(const char *name, struct dso_id *id);
+=======
+struct dso *dso__new_id(const char *name, const struct dso_id *id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct dso *dso__new(const char *name);
 void dso__delete(struct dso *dso);
 
 int dso__cmp_id(struct dso *a, struct dso *b);
 void dso__set_short_name(struct dso *dso, const char *name, bool name_allocated);
 void dso__set_long_name(struct dso *dso, const char *name, bool name_allocated);
+<<<<<<< HEAD
 void __dso__inject_id(struct dso *dso, struct dso_id *id);
+=======
+void __dso__inject_id(struct dso *dso, const struct dso_id *id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int dso__name_len(const struct dso *dso);
 

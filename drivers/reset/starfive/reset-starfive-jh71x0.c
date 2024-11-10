@@ -94,6 +94,12 @@ static int jh71x0_reset_status(struct reset_controller_dev *rcdev,
 	void __iomem *reg_status = data->status + offset * sizeof(u32);
 	u32 value = readl(reg_status);
 
+<<<<<<< HEAD
+=======
+	if (!data->asserted)
+		return !(value & mask);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return !((value ^ data->asserted[offset]) & mask);
 }
 

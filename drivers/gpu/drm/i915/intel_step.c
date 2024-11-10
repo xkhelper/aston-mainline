@@ -23,8 +23,12 @@
  * use a macro to define these to make it easier to identify the platforms
  * where the two steppings can deviate.
  */
+<<<<<<< HEAD
 #define COMMON_STEP(x)  .graphics_step = STEP_##x, .display_step = STEP_##x, .media_step = STEP_##x
 #define COMMON_GT_MEDIA_STEP(x)  .graphics_step = STEP_##x, .media_step = STEP_##x
+=======
+#define COMMON_STEP(x)  .graphics_step = STEP_##x, .media_step = STEP_##x
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const struct intel_step_info skl_revids[] = {
 	[0x6] = { COMMON_STEP(G0) },
@@ -34,6 +38,7 @@ static const struct intel_step_info skl_revids[] = {
 };
 
 static const struct intel_step_info kbl_revids[] = {
+<<<<<<< HEAD
 	[1] = { COMMON_GT_MEDIA_STEP(B0), .display_step = STEP_B0 },
 	[2] = { COMMON_GT_MEDIA_STEP(C0), .display_step = STEP_B0 },
 	[3] = { COMMON_GT_MEDIA_STEP(D0), .display_step = STEP_B0 },
@@ -41,6 +46,15 @@ static const struct intel_step_info kbl_revids[] = {
 	[5] = { COMMON_GT_MEDIA_STEP(C0), .display_step = STEP_B1 },
 	[6] = { COMMON_GT_MEDIA_STEP(D1), .display_step = STEP_B1 },
 	[7] = { COMMON_GT_MEDIA_STEP(G0), .display_step = STEP_C0 },
+=======
+	[1] = { COMMON_STEP(B0) },
+	[2] = { COMMON_STEP(C0) },
+	[3] = { COMMON_STEP(D0) },
+	[4] = { COMMON_STEP(F0) },
+	[5] = { COMMON_STEP(C0) },
+	[6] = { COMMON_STEP(D1) },
+	[7] = { COMMON_STEP(G0) },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct intel_step_info bxt_revids[] = {
@@ -64,16 +78,28 @@ static const struct intel_step_info jsl_ehl_revids[] = {
 };
 
 static const struct intel_step_info tgl_uy_revids[] = {
+<<<<<<< HEAD
 	[0] = { COMMON_GT_MEDIA_STEP(A0), .display_step = STEP_A0 },
 	[1] = { COMMON_GT_MEDIA_STEP(B0), .display_step = STEP_C0 },
 	[2] = { COMMON_GT_MEDIA_STEP(B1), .display_step = STEP_C0 },
 	[3] = { COMMON_GT_MEDIA_STEP(C0), .display_step = STEP_D0 },
+=======
+	[0] = { COMMON_STEP(A0) },
+	[1] = { COMMON_STEP(B0) },
+	[2] = { COMMON_STEP(B1) },
+	[3] = { COMMON_STEP(C0) },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* Same GT stepping between tgl_uy_revids and tgl_revids don't mean the same HW */
 static const struct intel_step_info tgl_revids[] = {
+<<<<<<< HEAD
 	[0] = { COMMON_GT_MEDIA_STEP(A0), .display_step = STEP_B0 },
 	[1] = { COMMON_GT_MEDIA_STEP(B0), .display_step = STEP_D0 },
+=======
+	[0] = { COMMON_STEP(A0) },
+	[1] = { COMMON_STEP(B0) },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct intel_step_info rkl_revids[] = {
@@ -88,6 +114,7 @@ static const struct intel_step_info dg1_revids[] = {
 };
 
 static const struct intel_step_info adls_revids[] = {
+<<<<<<< HEAD
 	[0x0] = { COMMON_GT_MEDIA_STEP(A0), .display_step = STEP_A0 },
 	[0x1] = { COMMON_GT_MEDIA_STEP(A0), .display_step = STEP_A2 },
 	[0x4] = { COMMON_GT_MEDIA_STEP(B0), .display_step = STEP_B0 },
@@ -131,6 +158,51 @@ static const struct intel_step_info adlp_rplp_revids[] = {
 
 static const struct intel_step_info adlp_n_revids[] = {
 	[0x0] = { COMMON_GT_MEDIA_STEP(A0), .display_step = STEP_D0 },
+=======
+	[0x0] = { COMMON_STEP(A0) },
+	[0x1] = { COMMON_STEP(A0) },
+	[0x4] = { COMMON_STEP(B0) },
+	[0x8] = { COMMON_STEP(C0) },
+	[0xC] = { COMMON_STEP(D0) },
+};
+
+static const struct intel_step_info adlp_revids[] = {
+	[0x0] = { COMMON_STEP(A0) },
+	[0x4] = { COMMON_STEP(B0) },
+	[0x8] = { COMMON_STEP(C0) },
+	[0xC] = { COMMON_STEP(C0) },
+};
+
+static const struct intel_step_info dg2_g10_revid_step_tbl[] = {
+	[0x0] = { COMMON_STEP(A0) },
+	[0x1] = { COMMON_STEP(A1) },
+	[0x4] = { COMMON_STEP(B0) },
+	[0x8] = { COMMON_STEP(C0) },
+};
+
+static const struct intel_step_info dg2_g11_revid_step_tbl[] = {
+	[0x0] = { COMMON_STEP(A0) },
+	[0x4] = { COMMON_STEP(B0) },
+	[0x5] = { COMMON_STEP(B1) },
+};
+
+static const struct intel_step_info dg2_g12_revid_step_tbl[] = {
+	[0x0] = { COMMON_STEP(A0) },
+	[0x1] = { COMMON_STEP(A1) },
+};
+
+static const struct intel_step_info adls_rpls_revids[] = {
+	[0x4] = { COMMON_STEP(D0) },
+	[0xC] = { COMMON_STEP(D0) },
+};
+
+static const struct intel_step_info adlp_rplp_revids[] = {
+	[0x4] = { COMMON_STEP(C0) },
+};
+
+static const struct intel_step_info adlp_n_revids[] = {
+	[0x0] = { COMMON_STEP(A0) },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static u8 gmd_to_intel_step(struct drm_i915_private *i915,
@@ -158,11 +230,14 @@ void intel_step_init(struct drm_i915_private *i915)
 						       &RUNTIME_INFO(i915)->graphics.ip);
 		step.media_step = gmd_to_intel_step(i915,
 						    &RUNTIME_INFO(i915)->media.ip);
+<<<<<<< HEAD
 		step.display_step = STEP_A0 + DISPLAY_RUNTIME_INFO(i915)->ip.step;
 		if (step.display_step >= STEP_FUTURE) {
 			drm_dbg(&i915->drm, "Using future display steppings\n");
 			step.display_step = STEP_FUTURE;
 		}
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		RUNTIME_INFO(i915)->step = step;
 
@@ -252,7 +327,10 @@ void intel_step_init(struct drm_i915_private *i915)
 		} else {
 			drm_dbg(&i915->drm, "Using future steppings\n");
 			step.graphics_step = STEP_FUTURE;
+<<<<<<< HEAD
 			step.display_step = STEP_FUTURE;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -275,8 +353,11 @@ const char *intel_step_name(enum intel_step step)
 		return "**";
 	}
 }
+<<<<<<< HEAD
 
 const char *intel_display_step_name(struct drm_i915_private *i915)
 {
 	return intel_step_name(RUNTIME_INFO(i915)->step.display_step);
 }
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

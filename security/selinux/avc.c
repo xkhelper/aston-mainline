@@ -134,6 +134,7 @@ static inline u32 avc_hash(u32 ssid, u32 tsid, u16 tclass)
  */
 void __init avc_init(void)
 {
+<<<<<<< HEAD
 	avc_node_cachep = kmem_cache_create("avc_node", sizeof(struct avc_node),
 					0, SLAB_PANIC, NULL);
 	avc_xperms_cachep = kmem_cache_create("avc_xperms_node",
@@ -146,6 +147,12 @@ void __init avc_init(void)
 	avc_xperms_data_cachep = kmem_cache_create("avc_xperms_data",
 					sizeof(struct extended_perms_data),
 					0, SLAB_PANIC, NULL);
+=======
+	avc_node_cachep = KMEM_CACHE(avc_node, SLAB_PANIC);
+	avc_xperms_cachep = KMEM_CACHE(avc_xperms_node, SLAB_PANIC);
+	avc_xperms_decision_cachep = KMEM_CACHE(avc_xperms_decision_node, SLAB_PANIC);
+	avc_xperms_data_cachep = KMEM_CACHE(extended_perms_data, SLAB_PANIC);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int avc_get_hash_stats(char *page)
@@ -396,7 +403,11 @@ static inline u32 avc_xperms_audit_required(u32 requested,
 		audited = denied & avd->auditdeny;
 		if (audited && xpd) {
 			if (avc_xperms_has_perm(xpd, perm, XPERMS_DONTAUDIT))
+<<<<<<< HEAD
 				audited &= ~requested;
+=======
+				audited = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	} else if (result) {
 		audited = denied = requested;
@@ -404,7 +415,11 @@ static inline u32 avc_xperms_audit_required(u32 requested,
 		audited = requested & avd->auditallow;
 		if (audited && xpd) {
 			if (!avc_xperms_has_perm(xpd, perm, XPERMS_AUDITALLOW))
+<<<<<<< HEAD
 				audited &= ~requested;
+=======
+				audited = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 

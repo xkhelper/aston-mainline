@@ -27,6 +27,12 @@ properties:
       - const: ref
       - const: apb
 
+<<<<<<< HEAD
+=======
+  "#clock-cells":
+    const: 0
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   "#phy-cells":
     const: 0
 

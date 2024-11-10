@@ -295,6 +295,10 @@ static int btsdio_probe(struct sdio_func *func,
 		case SDIO_DEVICE_ID_BROADCOM_4345:
 		case SDIO_DEVICE_ID_BROADCOM_43455:
 		case SDIO_DEVICE_ID_BROADCOM_4356:
+<<<<<<< HEAD
+=======
+		case SDIO_DEVICE_ID_BROADCOM_CYPRESS_4373:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -ENODEV;
 		}
 	}

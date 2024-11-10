@@ -40,7 +40,11 @@
 #include <linux/execmem.h>
 
 #include <asm/barrier.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Registers */
 #define BPF_R0	regs[BPF_REG_0]
@@ -2302,6 +2306,10 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
 {
 	enum bpf_prog_type prog_type = resolve_prog_type(fp);
 	bool ret;
+<<<<<<< HEAD
+=======
+	struct bpf_prog_aux *aux = fp->aux;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (fp->kprobe_override)
 		return false;
@@ -2311,7 +2319,11 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
 	 * in the case of devmap and cpumap). Until device checks
 	 * are implemented, prohibit adding dev-bound programs to program maps.
 	 */
+<<<<<<< HEAD
 	if (bpf_prog_is_dev_bound(fp->aux))
+=======
+	if (bpf_prog_is_dev_bound(aux))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return false;
 
 	spin_lock(&map->owner.lock);
@@ -2321,12 +2333,34 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
 		 */
 		map->owner.type  = prog_type;
 		map->owner.jited = fp->jited;
+<<<<<<< HEAD
 		map->owner.xdp_has_frags = fp->aux->xdp_has_frags;
+=======
+		map->owner.xdp_has_frags = aux->xdp_has_frags;
+		map->owner.attach_func_proto = aux->attach_func_proto;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = true;
 	} else {
 		ret = map->owner.type  == prog_type &&
 		      map->owner.jited == fp->jited &&
+<<<<<<< HEAD
 		      map->owner.xdp_has_frags == fp->aux->xdp_has_frags;
+=======
+		      map->owner.xdp_has_frags == aux->xdp_has_frags;
+		if (ret &&
+		    map->owner.attach_func_proto != aux->attach_func_proto) {
+			switch (prog_type) {
+			case BPF_PROG_TYPE_TRACING:
+			case BPF_PROG_TYPE_LSM:
+			case BPF_PROG_TYPE_EXT:
+			case BPF_PROG_TYPE_STRUCT_OPS:
+				ret = false;
+				break;
+			default:
+				break;
+			}
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	spin_unlock(&map->owner.lock);
 

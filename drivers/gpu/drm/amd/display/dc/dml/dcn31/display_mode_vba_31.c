@@ -1924,6 +1924,7 @@ static unsigned int CalculateVMAndRowBytes(
 		*PixelPTEReqWidth = 32768.0 / BytePerPixel;
 		*PTERequestSize = 64;
 		FractionOfPTEReturnDrop = 0;
+<<<<<<< HEAD
 	} else if (MacroTileSizeBytes == 4096) {
 		PixelPTEReqHeightPTEs = 1;
 		*PixelPTEReqHeight = MacroTileHeight;
@@ -1933,6 +1934,8 @@ static unsigned int CalculateVMAndRowBytes(
 			FractionOfPTEReturnDrop = 0;
 		else
 			FractionOfPTEReturnDrop = 7.0 / 8;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else if (GPUVMMinPageSize == 4 && MacroTileSizeBytes > 4096) {
 		PixelPTEReqHeightPTEs = 16;
 		*PixelPTEReqHeight = 16 * BlockHeight256Bytes;

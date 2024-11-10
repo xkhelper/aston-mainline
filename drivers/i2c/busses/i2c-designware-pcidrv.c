@@ -9,7 +9,10 @@
  * Copyright (C) 2009 Provigent Ltd.
  * Copyright (C) 2011, 2015, 2016 Intel Corporation.
  */
+<<<<<<< HEAD
 #include <linux/acpi.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/delay.h>
 #include <linux/err.h>
 #include <linux/errno.h>
@@ -19,6 +22,10 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/pci.h>
+<<<<<<< HEAD
+=======
+#include <linux/pm.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/pm_runtime.h>
 #include <linux/power_supply.h>
 #include <linux/sched.h>
@@ -102,7 +109,11 @@ static u32 mfld_get_clk_rate_khz(struct dw_i2c_dev *dev)
 
 static int mfld_setup(struct pci_dev *pdev, struct dw_pci_controller *c)
 {
+<<<<<<< HEAD
 	struct dw_i2c_dev *dev = dev_get_drvdata(&pdev->dev);
+=======
+	struct dw_i2c_dev *dev = pci_get_drvdata(pdev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	switch (pdev->device) {
 	case 0x0817:
@@ -152,7 +163,11 @@ static u32 navi_amd_get_clk_rate_khz(struct dw_i2c_dev *dev)
 
 static int navi_amd_setup(struct pci_dev *pdev, struct dw_pci_controller *c)
 {
+<<<<<<< HEAD
 	struct dw_i2c_dev *dev = dev_get_drvdata(&pdev->dev);
+=======
+	struct dw_i2c_dev *dev = pci_get_drvdata(pdev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dev->flags |= MODEL_AMD_NAVI_GPU | ACCESS_POLLING;
 	dev->timings.bus_freq_hz = I2C_MAX_STANDARD_MODE_FREQ;
@@ -194,6 +209,7 @@ static struct dw_pci_controller dw_pci_controllers[] = {
 	},
 };
 
+<<<<<<< HEAD
 static int __maybe_unused i2c_dw_pci_runtime_suspend(struct device *dev)
 {
 	struct dw_i2c_dev *i_dev = dev_get_drvdata(dev);
@@ -235,6 +251,8 @@ static const struct dev_pm_ops i2c_dw_pm_ops = {
 	SET_RUNTIME_PM_OPS(i2c_dw_pci_runtime_suspend, i2c_dw_pci_runtime_resume, NULL)
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct property_entry dgpu_properties[] = {
 	/* USB-C doesn't power the system */
 	PROPERTY_ENTRY_U8("scope", POWER_SUPPLY_SCOPE_DEVICE),
@@ -253,7 +271,10 @@ static int i2c_dw_pci_probe(struct pci_dev *pdev,
 	int r;
 	struct dw_pci_controller *controller;
 	struct dw_scl_sda_cfg *cfg;
+<<<<<<< HEAD
 	struct i2c_timings *t;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (id->driver_data >= ARRAY_SIZE(dw_pci_controllers))
 		return dev_err_probe(&pdev->dev, -EINVAL,
@@ -288,13 +309,17 @@ static int i2c_dw_pci_probe(struct pci_dev *pdev,
 	dev->irq = pci_irq_vector(pdev, 0);
 	dev->flags |= controller->flags;
 
+<<<<<<< HEAD
 	t = &dev->timings;
 	i2c_parse_fw_timings(&pdev->dev, t, false);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pci_set_drvdata(pdev, dev);
 
 	if (controller->setup) {
 		r = controller->setup(pdev, controller);
+<<<<<<< HEAD
 		if (r) {
 			pci_free_irq_vectors(pdev);
 			return r;
@@ -311,6 +336,15 @@ static int i2c_dw_pci_probe(struct pci_dev *pdev,
 		pci_free_irq_vectors(pdev);
 		return r;
 	}
+=======
+		if (r)
+			return r;
+	}
+
+	r = i2c_dw_fw_parse_and_configure(dev);
+	if (r)
+		return r;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	i2c_dw_configure(dev);
 
@@ -326,6 +360,7 @@ static int i2c_dw_pci_probe(struct pci_dev *pdev,
 	adap = &dev->adapter;
 	adap->owner = THIS_MODULE;
 	adap->class = 0;
+<<<<<<< HEAD
 	ACPI_COMPANION_SET(&adap->dev, ACPI_COMPANION(&pdev->dev));
 	adap->nr = controller->bus_num;
 
@@ -334,6 +369,13 @@ static int i2c_dw_pci_probe(struct pci_dev *pdev,
 		pci_free_irq_vectors(pdev);
 		return r;
 	}
+=======
+	adap->nr = controller->bus_num;
+
+	r = i2c_dw_probe(dev);
+	if (r)
+		return r;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if ((dev->flags & MODEL_MASK) == MODEL_AMD_NAVI_GPU) {
 		dev->slave = i2c_new_ccgx_ucsi(&dev->adapter, dev->irq, &dgpu_node);
@@ -354,16 +396,27 @@ static void i2c_dw_pci_remove(struct pci_dev *pdev)
 {
 	struct dw_i2c_dev *dev = pci_get_drvdata(pdev);
 
+<<<<<<< HEAD
 	dev->disable(dev);
+=======
+	i2c_dw_disable(dev);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pm_runtime_forbid(&pdev->dev);
 	pm_runtime_get_noresume(&pdev->dev);
 
 	i2c_del_adapter(&dev->adapter);
+<<<<<<< HEAD
 	devm_free_irq(&pdev->dev, dev->irq, dev);
 	pci_free_irq_vectors(pdev);
 }
 
 static const struct pci_device_id i2_designware_pci_ids[] = {
+=======
+}
+
+static const struct pci_device_id i2c_designware_pci_ids[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Medfield */
 	{ PCI_VDEVICE(INTEL, 0x0817), medfield },
 	{ PCI_VDEVICE(INTEL, 0x0818), medfield },
@@ -409,6 +462,7 @@ static const struct pci_device_id i2_designware_pci_ids[] = {
 	{ PCI_VDEVICE(ATI,  0x73c4), navi_amd },
 	{ PCI_VDEVICE(ATI,  0x7444), navi_amd },
 	{ PCI_VDEVICE(ATI,  0x7464), navi_amd },
+<<<<<<< HEAD
 	{ 0,}
 };
 MODULE_DEVICE_TABLE(pci, i2_designware_pci_ids);
@@ -421,9 +475,28 @@ static struct pci_driver dw_i2c_driver = {
 	.driver         = {
 		.pm     = &i2c_dw_pm_ops,
 	},
+=======
+	{}
+};
+MODULE_DEVICE_TABLE(pci, i2c_designware_pci_ids);
+
+static struct pci_driver dw_i2c_driver = {
+	.name		= DRIVER_NAME,
+	.probe		= i2c_dw_pci_probe,
+	.remove		= i2c_dw_pci_remove,
+	.driver         = {
+		.pm	= pm_ptr(&i2c_dw_dev_pm_ops),
+	},
+	.id_table	= i2c_designware_pci_ids,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_pci_driver(dw_i2c_driver);
 
 MODULE_AUTHOR("Baruch Siach <baruch@tkos.co.il>");
 MODULE_DESCRIPTION("Synopsys DesignWare PCI I2C bus adapter");
 MODULE_LICENSE("GPL");
+<<<<<<< HEAD
+=======
+MODULE_IMPORT_NS(I2C_DW);
+MODULE_IMPORT_NS(I2C_DW_COMMON);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

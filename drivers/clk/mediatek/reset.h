@@ -60,6 +60,7 @@ struct mtk_clk_rst_data {
 };
 
 /**
+<<<<<<< HEAD
  * mtk_register_reset_controller - Register MediaTek clock reset controller
  * @np: Pointer to device node.
  * @desc: Constant pointer to description of clock reset.
@@ -70,6 +71,8 @@ int mtk_register_reset_controller(struct device_node *np,
 				  const struct mtk_clk_rst_desc *desc);
 
 /**
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * mtk_register_reset_controller - Register mediatek clock reset controller with device
  * @np: Pointer to device.
  * @desc: Constant pointer to description of clock reset.

@@ -64,18 +64,32 @@ struct mctp_serial {
 	u16			txfcs, rxfcs, rxfcs_rcvd;
 	unsigned int		txlen, rxlen;
 	unsigned int		txpos, rxpos;
+<<<<<<< HEAD
 	unsigned char		txbuf[BUFSIZE],
 				rxbuf[BUFSIZE];
 };
 
 static bool needs_escape(unsigned char c)
+=======
+	u8			txbuf[BUFSIZE],
+				rxbuf[BUFSIZE];
+};
+
+static bool needs_escape(u8 c)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return c == BYTE_ESC || c == BYTE_FRAME;
 }
 
+<<<<<<< HEAD
 static int next_chunk_len(struct mctp_serial *dev)
 {
 	int i;
+=======
+static unsigned int next_chunk_len(struct mctp_serial *dev)
+{
+	unsigned int i;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* either we have no bytes to send ... */
 	if (dev->txpos == dev->txlen)
@@ -99,7 +113,11 @@ static int next_chunk_len(struct mctp_serial *dev)
 	return i;
 }
 
+<<<<<<< HEAD
 static int write_chunk(struct mctp_serial *dev, unsigned char *buf, int len)
+=======
+static ssize_t write_chunk(struct mctp_serial *dev, u8 *buf, size_t len)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return dev->tty->ops->write(dev->tty, buf, len);
 }
@@ -108,9 +126,16 @@ static void mctp_serial_tx_work(struct work_struct *work)
 {
 	struct mctp_serial *dev = container_of(work, struct mctp_serial,
 					       tx_work);
+<<<<<<< HEAD
 	unsigned char c, buf[3];
 	unsigned long flags;
 	int len, txlen;
+=======
+	unsigned long flags;
+	ssize_t txlen;
+	unsigned int len;
+	u8 c, buf[3];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	spin_lock_irqsave(&dev->lock, flags);
 
@@ -293,7 +318,11 @@ static void mctp_serial_rx(struct mctp_serial *dev)
 	dev->netdev->stats.rx_bytes += dev->rxlen;
 }
 
+<<<<<<< HEAD
 static void mctp_serial_push_header(struct mctp_serial *dev, unsigned char c)
+=======
+static void mctp_serial_push_header(struct mctp_serial *dev, u8 c)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	switch (dev->rxpos) {
 	case 0:
@@ -323,7 +352,11 @@ static void mctp_serial_push_header(struct mctp_serial *dev, unsigned char c)
 	}
 }
 
+<<<<<<< HEAD
 static void mctp_serial_push_trailer(struct mctp_serial *dev, unsigned char c)
+=======
+static void mctp_serial_push_trailer(struct mctp_serial *dev, u8 c)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	switch (dev->rxpos) {
 	case 0:
@@ -347,7 +380,11 @@ static void mctp_serial_push_trailer(struct mctp_serial *dev, unsigned char c)
 	}
 }
 
+<<<<<<< HEAD
 static void mctp_serial_push(struct mctp_serial *dev, unsigned char c)
+=======
+static void mctp_serial_push(struct mctp_serial *dev, u8 c)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	switch (dev->rxstate) {
 	case STATE_IDLE:
@@ -394,7 +431,11 @@ static void mctp_serial_tty_receive_buf(struct tty_struct *tty, const u8 *c,
 					const u8 *f, size_t len)
 {
 	struct mctp_serial *dev = tty->disc_data;
+<<<<<<< HEAD
 	int i;
+=======
+	size_t i;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!netif_running(dev->netdev))
 		return;

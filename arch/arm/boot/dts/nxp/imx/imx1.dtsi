@@ -134,7 +134,11 @@
 				clock-names = "ipg", "per";
 			};
 
+<<<<<<< HEAD
 			dma: dma@209000 {
+=======
+			dma: dma-controller@209000 {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				compatible = "fsl,imx1-dma";
 				reg = <0x00209000 0x1000>;
 				interrupts = <61 60>;

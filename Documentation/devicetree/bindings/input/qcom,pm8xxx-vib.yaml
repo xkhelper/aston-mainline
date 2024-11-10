@@ -19,6 +19,10 @@ properties:
           - qcom,pmi632-vib
       - items:
           - enum:
+<<<<<<< HEAD
+=======
+              - qcom,pm6150-vib
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - qcom,pm7250b-vib
               - qcom,pm7325b-vib
               - qcom,pm7550ba-vib

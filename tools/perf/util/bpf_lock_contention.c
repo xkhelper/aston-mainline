@@ -46,6 +46,7 @@ int lock_contention_prepare(struct lock_contention *con)
 	else
 		bpf_map__set_max_entries(skel->maps.stacks, 1);
 
+<<<<<<< HEAD
 	if (target__has_cpu(target))
 		ncpus = perf_cpu_map__nr(evlist->core.user_requested_cpus);
 	if (target__has_task(target))
@@ -54,6 +55,24 @@ int lock_contention_prepare(struct lock_contention *con)
 		ntypes = con->filters->nr_types;
 	if (con->filters->nr_cgrps)
 		ncgrps = con->filters->nr_cgrps;
+=======
+	if (target__has_cpu(target)) {
+		skel->rodata->has_cpu = 1;
+		ncpus = perf_cpu_map__nr(evlist->core.user_requested_cpus);
+	}
+	if (target__has_task(target)) {
+		skel->rodata->has_task = 1;
+		ntasks = perf_thread_map__nr(evlist->core.threads);
+	}
+	if (con->filters->nr_types) {
+		skel->rodata->has_type = 1;
+		ntypes = con->filters->nr_types;
+	}
+	if (con->filters->nr_cgrps) {
+		skel->rodata->has_cgroup = 1;
+		ncgrps = con->filters->nr_cgrps;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* resolve lock name filters to addr */
 	if (con->filters->nr_syms) {
@@ -82,6 +101,10 @@ int lock_contention_prepare(struct lock_contention *con)
 			con->filters->addrs = addrs;
 		}
 		naddrs = con->filters->nr_addrs;
+<<<<<<< HEAD
+=======
+		skel->rodata->has_addr = 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	bpf_map__set_max_entries(skel->maps.cpu_filter, ncpus);
@@ -90,6 +113,19 @@ int lock_contention_prepare(struct lock_contention *con)
 	bpf_map__set_max_entries(skel->maps.addr_filter, naddrs);
 	bpf_map__set_max_entries(skel->maps.cgroup_filter, ncgrps);
 
+<<<<<<< HEAD
+=======
+	skel->rodata->stack_skip = con->stack_skip;
+	skel->rodata->aggr_mode = con->aggr_mode;
+	skel->rodata->needs_callstack = con->save_callstack;
+	skel->rodata->lock_owner = con->owner;
+
+	if (con->aggr_mode == LOCK_AGGR_CGROUP || con->filters->nr_cgrps) {
+		if (cgroup_is_v2("perf_event"))
+			skel->rodata->use_cgroup_v2 = 1;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (lock_contention_bpf__load(skel) < 0) {
 		pr_err("Failed to load lock-contention BPF skeleton\n");
 		return -1;
@@ -99,7 +135,10 @@ int lock_contention_prepare(struct lock_contention *con)
 		u32 cpu;
 		u8 val = 1;
 
+<<<<<<< HEAD
 		skel->bss->has_cpu = 1;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fd = bpf_map__fd(skel->maps.cpu_filter);
 
 		for (i = 0; i < ncpus; i++) {
@@ -112,7 +151,10 @@ int lock_contention_prepare(struct lock_contention *con)
 		u32 pid;
 		u8 val = 1;
 
+<<<<<<< HEAD
 		skel->bss->has_task = 1;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fd = bpf_map__fd(skel->maps.task_filter);
 
 		for (i = 0; i < ntasks; i++) {
@@ -125,7 +167,10 @@ int lock_contention_prepare(struct lock_contention *con)
 		u32 pid = evlist->workload.pid;
 		u8 val = 1;
 
+<<<<<<< HEAD
 		skel->bss->has_task = 1;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fd = bpf_map__fd(skel->maps.task_filter);
 		bpf_map_update_elem(fd, &pid, &val, BPF_ANY);
 	}
@@ -133,7 +178,10 @@ int lock_contention_prepare(struct lock_contention *con)
 	if (con->filters->nr_types) {
 		u8 val = 1;
 
+<<<<<<< HEAD
 		skel->bss->has_type = 1;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fd = bpf_map__fd(skel->maps.type_filter);
 
 		for (i = 0; i < con->filters->nr_types; i++)
@@ -143,7 +191,10 @@ int lock_contention_prepare(struct lock_contention *con)
 	if (con->filters->nr_addrs) {
 		u8 val = 1;
 
+<<<<<<< HEAD
 		skel->bss->has_addr = 1;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fd = bpf_map__fd(skel->maps.addr_filter);
 
 		for (i = 0; i < con->filters->nr_addrs; i++)
@@ -153,13 +204,17 @@ int lock_contention_prepare(struct lock_contention *con)
 	if (con->filters->nr_cgrps) {
 		u8 val = 1;
 
+<<<<<<< HEAD
 		skel->bss->has_cgroup = 1;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fd = bpf_map__fd(skel->maps.cgroup_filter);
 
 		for (i = 0; i < con->filters->nr_cgrps; i++)
 			bpf_map_update_elem(fd, &con->filters->cgrps[i], &val, BPF_ANY);
 	}
 
+<<<<<<< HEAD
 	/* these don't work well if in the rodata section */
 	skel->bss->stack_skip = con->stack_skip;
 	skel->bss->aggr_mode = con->aggr_mode;
@@ -172,6 +227,10 @@ int lock_contention_prepare(struct lock_contention *con)
 
 		read_all_cgroups(&con->cgroups);
 	}
+=======
+	if (con->aggr_mode == LOCK_AGGR_CGROUP)
+		read_all_cgroups(&con->cgroups);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	bpf_program__set_autoload(skel->progs.collect_lock_syms, false);
 

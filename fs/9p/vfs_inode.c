@@ -256,12 +256,18 @@ void v9fs_set_netfs_context(struct inode *inode)
 }
 
 int v9fs_init_inode(struct v9fs_session_info *v9ses,
+<<<<<<< HEAD
 		    struct inode *inode, struct p9_qid *qid, umode_t mode, dev_t rdev)
 {
 	int err = 0;
 	struct v9fs_inode *v9inode = V9FS_I(inode);
 
 	memcpy(&v9inode->qid, qid, sizeof(struct p9_qid));
+=======
+		    struct inode *inode, umode_t mode, dev_t rdev)
+{
+	int err = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	inode_init_owner(&nop_mnt_idmap, inode, NULL, mode);
 	inode->i_blocks = 0;
@@ -365,13 +371,61 @@ void v9fs_evict_inode(struct inode *inode)
 		clear_inode(inode);
 }
 
+<<<<<<< HEAD
 struct inode *
 v9fs_fid_iget(struct super_block *sb, struct p9_fid *fid, bool new)
+=======
+static int v9fs_test_inode(struct inode *inode, void *data)
+{
+	int umode;
+	dev_t rdev;
+	struct v9fs_inode *v9inode = V9FS_I(inode);
+	struct p9_wstat *st = (struct p9_wstat *)data;
+	struct v9fs_session_info *v9ses = v9fs_inode2v9ses(inode);
+
+	umode = p9mode2unixmode(v9ses, st, &rdev);
+	/* don't match inode of different type */
+	if (inode_wrong_type(inode, umode))
+		return 0;
+
+	/* compare qid details */
+	if (memcmp(&v9inode->qid.version,
+		   &st->qid.version, sizeof(v9inode->qid.version)))
+		return 0;
+
+	if (v9inode->qid.type != st->qid.type)
+		return 0;
+
+	if (v9inode->qid.path != st->qid.path)
+		return 0;
+	return 1;
+}
+
+static int v9fs_test_new_inode(struct inode *inode, void *data)
+{
+	return 0;
+}
+
+static int v9fs_set_inode(struct inode *inode,  void *data)
+{
+	struct v9fs_inode *v9inode = V9FS_I(inode);
+	struct p9_wstat *st = (struct p9_wstat *)data;
+
+	memcpy(&v9inode->qid, &st->qid, sizeof(st->qid));
+	return 0;
+}
+
+static struct inode *v9fs_qid_iget(struct super_block *sb,
+				   struct p9_qid *qid,
+				   struct p9_wstat *st,
+				   int new)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	dev_t rdev;
 	int retval;
 	umode_t umode;
 	struct inode *inode;
+<<<<<<< HEAD
 	struct p9_wstat *st;
 	struct v9fs_session_info *v9ses = sb->s_fs_info;
 
@@ -391,11 +445,27 @@ v9fs_fid_iget(struct super_block *sb, struct p9_fid *fid, bool new)
 		}
 	}
 
+=======
+	struct v9fs_session_info *v9ses = sb->s_fs_info;
+	int (*test)(struct inode *inode, void *data);
+
+	if (new)
+		test = v9fs_test_new_inode;
+	else
+		test = v9fs_test_inode;
+
+	inode = iget5_locked(sb, QID2INO(qid), test, v9fs_set_inode, st);
+	if (!inode)
+		return ERR_PTR(-ENOMEM);
+	if (!(inode->i_state & I_NEW))
+		return inode;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * initialize the inode with the stat info
 	 * FIXME!! we may need support for stale inodes
 	 * later.
 	 */
+<<<<<<< HEAD
 	st = p9_client_stat(fid);
 	if (IS_ERR(st)) {
 		retval = PTR_ERR(st);
@@ -414,10 +484,43 @@ v9fs_fid_iget(struct super_block *sb, struct p9_fid *fid, bool new)
 	v9fs_cache_inode_get_cookie(inode);
 	unlock_new_inode(inode);
 done:
+=======
+	inode->i_ino = QID2INO(qid);
+	umode = p9mode2unixmode(v9ses, st, &rdev);
+	retval = v9fs_init_inode(v9ses, inode, umode, rdev);
+	if (retval)
+		goto error;
+
+	v9fs_stat2inode(st, inode, sb, 0);
+	v9fs_set_netfs_context(inode);
+	v9fs_cache_inode_get_cookie(inode);
+	unlock_new_inode(inode);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return inode;
 error:
 	iget_failed(inode);
 	return ERR_PTR(retval);
+<<<<<<< HEAD
+=======
+
+}
+
+struct inode *
+v9fs_inode_from_fid(struct v9fs_session_info *v9ses, struct p9_fid *fid,
+		    struct super_block *sb, int new)
+{
+	struct p9_wstat *st;
+	struct inode *inode = NULL;
+
+	st = p9_client_stat(fid);
+	if (IS_ERR(st))
+		return ERR_CAST(st);
+
+	inode = v9fs_qid_iget(sb, &st->qid, st, new);
+	p9stat_free(st);
+	kfree(st);
+	return inode;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -449,6 +552,7 @@ static int v9fs_at_to_dotl_flags(int flags)
  */
 static void v9fs_dec_count(struct inode *inode)
 {
+<<<<<<< HEAD
 	if (!S_ISDIR(inode->i_mode) || inode->i_nlink > 2) {
 		if (inode->i_nlink) {
 			drop_nlink(inode);
@@ -458,6 +562,10 @@ static void v9fs_dec_count(struct inode *inode)
 						inode->i_nlink, inode->i_ino);
 		}
 	}
+=======
+	if (!S_ISDIR(inode->i_mode) || inode->i_nlink > 2)
+		drop_nlink(inode);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -508,9 +616,12 @@ static int v9fs_remove(struct inode *dir, struct dentry *dentry, int flags)
 		} else
 			v9fs_dec_count(inode);
 
+<<<<<<< HEAD
 		if (inode->i_nlink <= 0)	/* no more refs unhash it */
 			remove_inode_hash(inode);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		v9fs_invalidate_inode_attr(inode);
 		v9fs_invalidate_inode_attr(dir);
 
@@ -576,7 +687,11 @@ v9fs_create(struct v9fs_session_info *v9ses, struct inode *dir,
 		/*
 		 * instantiate inode and assign the unopened fid to the dentry
 		 */
+<<<<<<< HEAD
 		inode = v9fs_get_inode_from_fid(v9ses, fid, dir->i_sb, true);
+=======
+		inode = v9fs_get_new_inode_from_fid(v9ses, fid, dir->i_sb);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (IS_ERR(inode)) {
 			err = PTR_ERR(inode);
 			p9_debug(P9_DEBUG_VFS,
@@ -704,8 +819,15 @@ struct dentry *v9fs_vfs_lookup(struct inode *dir, struct dentry *dentry,
 		inode = NULL;
 	else if (IS_ERR(fid))
 		inode = ERR_CAST(fid);
+<<<<<<< HEAD
 	else
 		inode = v9fs_get_inode_from_fid(v9ses, fid, dir->i_sb, false);
+=======
+	else if (v9ses->cache & (CACHE_META|CACHE_LOOSE))
+		inode = v9fs_get_inode_from_fid(v9ses, fid, dir->i_sb);
+	else
+		inode = v9fs_get_new_inode_from_fid(v9ses, fid, dir->i_sb);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * If we had a rename on the server and a parallel lookup
 	 * for the new name, then make sure we instantiate with

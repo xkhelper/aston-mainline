@@ -20,12 +20,15 @@
 
 #ifdef CONFIG_NUMA
 
+<<<<<<< HEAD
 extern struct pglist_data *node_data[];
 /*
  * Return a pointer to the node data for node n.
  */
 #define NODE_DATA(nid)		(node_data[nid])
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Following are specific to this numa platform.
  */

@@ -553,7 +553,11 @@ try_reserve:
 	return ERR_PTR(ret);
 }
 
+<<<<<<< HEAD
 int btrfs_check_trunc_cache_free_space(struct btrfs_fs_info *fs_info,
+=======
+int btrfs_check_trunc_cache_free_space(const struct btrfs_fs_info *fs_info,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       struct btrfs_block_rsv *rsv)
 {
 	u64 needed_bytes;

@@ -52,7 +52,11 @@
 	};
 
 	apb@80000000 {
+<<<<<<< HEAD
 		apbh@80000000 {
+=======
+		apbh-bus@80000000 {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			nand-controller@8000c000 {
 				pinctrl-names = "default";
 				pinctrl-0 = <&gpmi_pins_a &gpmi_pins_fixup>;
@@ -99,7 +103,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		apbx@80040000 {
+=======
+		apbx-bus@80040000 {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			lradc@80050000 {
 				status = "okay";
 				fsl,lradc-touchscreen-wires = <4>;

@@ -753,9 +753,16 @@ static int get_ctrl(struct v4l2_ctrl *ctrl, struct v4l2_ext_control *c)
 		for (i = 0; i < master->ncontrols; i++)
 			cur_to_new(master->cluster[i]);
 		ret = call_op(master, g_volatile_ctrl);
+<<<<<<< HEAD
 		new_to_user(c, ctrl);
 	} else {
 		cur_to_user(c, ctrl);
+=======
+		if (!ret)
+			ret = new_to_user(c, ctrl);
+	} else {
+		ret = cur_to_user(c, ctrl);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	v4l2_ctrl_unlock(master);
 	return ret;
@@ -770,7 +777,14 @@ int v4l2_g_ctrl(struct v4l2_ctrl_handler *hdl, struct v4l2_control *control)
 	if (!ctrl || !ctrl->is_int)
 		return -EINVAL;
 	ret = get_ctrl(ctrl, &c);
+<<<<<<< HEAD
 	control->value = c.value;
+=======
+
+	if (!ret)
+		control->value = c.value;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 EXPORT_SYMBOL(v4l2_g_ctrl);
@@ -811,10 +825,18 @@ static int set_ctrl_lock(struct v4l2_fh *fh, struct v4l2_ctrl *ctrl,
 	int ret;
 
 	v4l2_ctrl_lock(ctrl);
+<<<<<<< HEAD
 	user_to_new(c, ctrl);
 	ret = set_ctrl(fh, ctrl, 0);
 	if (!ret)
 		cur_to_user(c, ctrl);
+=======
+	ret = user_to_new(c, ctrl);
+	if (!ret)
+		ret = set_ctrl(fh, ctrl, 0);
+	if (!ret)
+		ret = cur_to_user(c, ctrl);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	v4l2_ctrl_unlock(ctrl);
 	return ret;
 }

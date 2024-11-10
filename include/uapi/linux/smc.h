@@ -127,6 +127,11 @@ enum {
 	SMC_NLA_LGR_R_NET_COOKIE,	/* u64 */
 	SMC_NLA_LGR_R_PAD,		/* flag */
 	SMC_NLA_LGR_R_BUF_TYPE,		/* u8 */
+<<<<<<< HEAD
+=======
+	SMC_NLA_LGR_R_SNDBUF_ALLOC,	/* uint */
+	SMC_NLA_LGR_R_RMB_ALLOC,	/* uint */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__SMC_NLA_LGR_R_MAX,
 	SMC_NLA_LGR_R_MAX = __SMC_NLA_LGR_R_MAX - 1
 };
@@ -162,6 +167,11 @@ enum {
 	SMC_NLA_LGR_D_V2_COMMON,	/* nest */
 	SMC_NLA_LGR_D_EXT_GID,		/* u64 */
 	SMC_NLA_LGR_D_PEER_EXT_GID,	/* u64 */
+<<<<<<< HEAD
+=======
+	SMC_NLA_LGR_D_SNDBUF_ALLOC,	/* uint */
+	SMC_NLA_LGR_D_DMB_ALLOC,	/* uint */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__SMC_NLA_LGR_D_MAX,
 	SMC_NLA_LGR_D_MAX = __SMC_NLA_LGR_D_MAX - 1
 };
@@ -249,6 +259,11 @@ enum {
 	SMC_NLA_STATS_T_TX_BYTES,	/* u64 */
 	SMC_NLA_STATS_T_RX_CNT,		/* u64 */
 	SMC_NLA_STATS_T_TX_CNT,		/* u64 */
+<<<<<<< HEAD
+=======
+	SMC_NLA_STATS_T_RX_RMB_USAGE,	/* uint */
+	SMC_NLA_STATS_T_TX_RMB_USAGE,	/* uint */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__SMC_NLA_STATS_T_MAX,
 	SMC_NLA_STATS_T_MAX = __SMC_NLA_STATS_T_MAX - 1
 };

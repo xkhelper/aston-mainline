@@ -110,7 +110,11 @@ MODULE_DEVICE_TABLE(of, clk_dvp_dt_ids);
 
 static struct platform_driver clk_dvp_driver = {
 	.probe	= clk_dvp_probe,
+<<<<<<< HEAD
 	.remove_new = clk_dvp_remove,
+=======
+	.remove = clk_dvp_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver	= {
 		.name		= "brcm2711-dvp",
 		.of_match_table	= clk_dvp_dt_ids,

@@ -317,6 +317,7 @@ mpih_sqr_n(mpi_ptr_t prodp, mpi_ptr_t up, mpi_size_t size, mpi_ptr_t tspace)
 	}
 }
 
+<<<<<<< HEAD
 
 void mpihelp_mul_n(mpi_ptr_t prodp,
 		mpi_ptr_t up, mpi_ptr_t vp, mpi_size_t size)
@@ -342,6 +343,8 @@ void mpihelp_mul_n(mpi_ptr_t prodp,
 	}
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int
 mpihelp_mul_karatsuba_case(mpi_ptr_t prodp,
 			   mpi_ptr_t up, mpi_size_t usize,

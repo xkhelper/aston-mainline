@@ -47,6 +47,25 @@ int BPF_PROG(task_kfunc_syscall)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+SEC("tracepoint")
+__success
+int BPF_PROG(task_kfunc_tracepoint)
+{
+	task_kfunc_load_test();
+	return 0;
+}
+
+SEC("perf_event")
+__success
+int BPF_PROG(task_kfunc_perf_event)
+{
+	task_kfunc_load_test();
+	return 0;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*****************
  * cgroup kfuncs *
  *****************/
@@ -85,6 +104,25 @@ int BPF_PROG(cgrp_kfunc_syscall)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+SEC("tracepoint")
+__success
+int BPF_PROG(cgrp_kfunc_tracepoint)
+{
+	cgrp_kfunc_load_test();
+	return 0;
+}
+
+SEC("perf_event")
+__success
+int BPF_PROG(cgrp_kfunc_perf_event)
+{
+	cgrp_kfunc_load_test();
+	return 0;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /******************
  * cpumask kfuncs *
  ******************/
@@ -120,3 +158,22 @@ int BPF_PROG(cpumask_kfunc_syscall)
 	cpumask_kfunc_load_test();
 	return 0;
 }
+<<<<<<< HEAD
+=======
+
+SEC("tracepoint")
+__success
+int BPF_PROG(cpumask_kfunc_tracepoint)
+{
+	cpumask_kfunc_load_test();
+	return 0;
+}
+
+SEC("perf_event")
+__success
+int BPF_PROG(cpumask_kfunc_perf_event)
+{
+	cpumask_kfunc_load_test();
+	return 0;
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

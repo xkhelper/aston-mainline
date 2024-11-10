@@ -196,7 +196,11 @@ static int amdgpu_umc_do_page_retirement(struct amdgpu_device *adev,
 	amdgpu_umc_handle_bad_pages(adev, ras_error_status);
 
 	if ((err_data->ue_count || err_data->de_count) &&
+<<<<<<< HEAD
 	    (reset || (con && con->is_rma))) {
+=======
+	    (reset || amdgpu_ras_is_rma(adev))) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		con->gpu_reset_flags |= reset;
 		amdgpu_ras_reset_gpu(adev);
 	}
@@ -204,6 +208,7 @@ static int amdgpu_umc_do_page_retirement(struct amdgpu_device *adev,
 	return AMDGPU_RAS_SUCCESS;
 }
 
+<<<<<<< HEAD
 int amdgpu_umc_bad_page_polling_timeout(struct amdgpu_device *adev,
 			uint32_t reset, uint32_t timeout_ms)
 {
@@ -253,6 +258,8 @@ int amdgpu_umc_bad_page_polling_timeout(struct amdgpu_device *adev,
 	return 0;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int amdgpu_umc_pasid_poison_handler(struct amdgpu_device *adev,
 			enum amdgpu_ras_block block, uint16_t pasid,
 			pasid_notify pasid_fn, void *data, uint32_t reset)
@@ -472,6 +479,7 @@ int amdgpu_umc_update_ecc_status(struct amdgpu_device *adev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int amdgpu_umc_uint64_cmp(const void *a, const void *b)
 {
 	uint64_t *addr_a = (uint64_t *)a;
@@ -509,6 +517,8 @@ int amdgpu_umc_build_pages_hash(struct amdgpu_device *adev,
 	return 0;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int amdgpu_umc_logs_ecc_err(struct amdgpu_device *adev,
 		struct radix_tree_root *ecc_tree, struct ras_ecc_err *ecc_err)
 {
@@ -519,6 +529,7 @@ int amdgpu_umc_logs_ecc_err(struct amdgpu_device *adev,
 	ecc_log = &con->umc_ecc_log;
 
 	mutex_lock(&ecc_log->lock);
+<<<<<<< HEAD
 	ret = radix_tree_insert(ecc_tree, ecc_err->hash_index, ecc_err);
 	if (!ret) {
 		struct ras_err_pages *err_pages = &ecc_err->err_pages;
@@ -531,6 +542,12 @@ int amdgpu_umc_logs_ecc_err(struct amdgpu_device *adev,
 		radix_tree_tag_set(ecc_tree,
 			ecc_err->hash_index, UMC_ECC_NEW_DETECTED_TAG);
 	}
+=======
+	ret = radix_tree_insert(ecc_tree, ecc_err->pa_pfn, ecc_err);
+	if (!ret)
+		radix_tree_tag_set(ecc_tree,
+			ecc_err->pa_pfn, UMC_ECC_NEW_DETECTED_TAG);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_unlock(&ecc_log->lock);
 
 	return ret;

@@ -146,7 +146,11 @@ static int mv88e6352_g2_scratch_gpio_set_data(struct mv88e6xxx_chip *chip,
  * @chip: chip private data
  * @pin: gpio index
  *
+<<<<<<< HEAD
  * Return: 0 for output, 1 for input (same as GPIOF_DIR_XXX).
+=======
+ * Return: 0 for output, 1 for input.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static int mv88e6352_g2_scratch_gpio_get_dir(struct mv88e6xxx_chip *chip,
 					     unsigned int pin)

@@ -57,8 +57,12 @@
 
 static struct irq_domain *aic_domain;
 
+<<<<<<< HEAD
 static asmlinkage void __exception_irq_entry
 aic_handle(struct pt_regs *regs)
+=======
+static void __exception_irq_entry aic_handle(struct pt_regs *regs)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct irq_domain_chip_generic *dgc = aic_domain->gc;
 	struct irq_chip_generic *gc = dgc->gc[0];

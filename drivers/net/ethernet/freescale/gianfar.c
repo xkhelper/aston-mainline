@@ -754,6 +754,11 @@ static int gfar_of_init(struct platform_device *ofdev, struct net_device **pdev)
 		priv->device_flags |= FSL_GIANFAR_DEV_HAS_BUF_STASHING;
 
 	err = of_get_ethdev_address(np, dev);
+<<<<<<< HEAD
+=======
+	if (err == -EPROBE_DEFER)
+		goto err_grp_init;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err) {
 		eth_hw_addr_random(dev);
 		dev_info(&ofdev->dev, "Using random MAC address: %pM\n", dev->dev_addr);

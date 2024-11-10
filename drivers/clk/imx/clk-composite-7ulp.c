@@ -14,6 +14,10 @@
 #include "../clk-fractional-divider.h"
 #include "clk.h"
 
+<<<<<<< HEAD
+=======
+#define PCG_PR_MASK		BIT(31)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define PCG_PCS_SHIFT	24
 #define PCG_PCS_MASK	0x7
 #define PCG_CGC_SHIFT	30
@@ -78,6 +82,15 @@ static struct clk_hw *imx_ulp_clk_hw_composite(const char *name,
 	struct clk_hw *hw;
 	u32 val;
 
+<<<<<<< HEAD
+=======
+	val = readl(reg);
+	if (!(val & PCG_PR_MASK)) {
+		pr_info("PCC PR is 0 for clk:%s, bypass\n", name);
+		return NULL;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (mux_present) {
 		mux = kzalloc(sizeof(*mux), GFP_KERNEL);
 		if (!mux)

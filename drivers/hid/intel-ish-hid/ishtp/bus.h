@@ -46,7 +46,10 @@ struct ishtp_cl_device {
 };
 
 int	ishtp_bus_new_client(struct ishtp_device *dev);
+<<<<<<< HEAD
 void	ishtp_remove_all_clients(struct ishtp_device *dev);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int	ishtp_cl_device_bind(struct ishtp_cl *cl);
 void	ishtp_cl_bus_rx_event(struct ishtp_cl_device *device);
 

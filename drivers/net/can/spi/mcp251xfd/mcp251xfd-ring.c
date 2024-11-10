@@ -2,7 +2,11 @@
 //
 // mcp251xfd - Microchip MCP251xFD Family CAN controller driver
 //
+<<<<<<< HEAD
 // Copyright (c) 2019, 2020, 2021 Pengutronix,
+=======
+// Copyright (c) 2019, 2020, 2021, 2024 Pengutronix,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 //               Marc Kleine-Budde <kernel@pengutronix.de>
 //
 // Based on:
@@ -12,7 +16,11 @@
 // Copyright (c) 2019 Martin Sperl <kernel@martin.sperl.org>
 //
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "mcp251xfd.h"
 #include "mcp251xfd-ram.h"
@@ -483,9 +491,17 @@ int mcp251xfd_ring_alloc(struct mcp251xfd_priv *priv)
 		};
 		const struct ethtool_coalesce ec = {
 			.rx_coalesce_usecs_irq = priv->rx_coalesce_usecs_irq,
+<<<<<<< HEAD
 			.rx_max_coalesced_frames_irq = priv->rx_obj_num_coalesce_irq,
 			.tx_coalesce_usecs_irq = priv->tx_coalesce_usecs_irq,
 			.tx_max_coalesced_frames_irq = priv->tx_obj_num_coalesce_irq,
+=======
+			.rx_max_coalesced_frames_irq = priv->rx_obj_num_coalesce_irq == 0 ?
+				1 : priv->rx_obj_num_coalesce_irq,
+			.tx_coalesce_usecs_irq = priv->tx_coalesce_usecs_irq,
+			.tx_max_coalesced_frames_irq = priv->tx_obj_num_coalesce_irq == 0 ?
+				1 : priv->tx_obj_num_coalesce_irq,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 		struct can_ram_layout layout;
 

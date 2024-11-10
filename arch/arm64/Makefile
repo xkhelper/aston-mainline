@@ -10,7 +10,11 @@
 #
 # Copyright (C) 1995-2001 by Russell King
 
+<<<<<<< HEAD
 LDFLAGS_vmlinux	:=--no-undefined -X
+=======
+LDFLAGS_vmlinux	:=--no-undefined -X --pic-veneer
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 ifeq ($(CONFIG_RELOCATABLE), y)
 # Pass --no-apply-dynamic-relocs to restore pre-binutils-2.27 behaviour
@@ -57,9 +61,17 @@ KBUILD_AFLAGS	+= $(call cc-option,-mabi=lp64)
 ifneq ($(CONFIG_UNWIND_TABLES),y)
 KBUILD_CFLAGS	+= -fno-asynchronous-unwind-tables -fno-unwind-tables
 KBUILD_AFLAGS	+= -fno-asynchronous-unwind-tables -fno-unwind-tables
+<<<<<<< HEAD
 else
 KBUILD_CFLAGS	+= -fasynchronous-unwind-tables
 KBUILD_AFLAGS	+= -fasynchronous-unwind-tables
+=======
+KBUILD_RUSTFLAGS += -Cforce-unwind-tables=n
+else
+KBUILD_CFLAGS	+= -fasynchronous-unwind-tables
+KBUILD_AFLAGS	+= -fasynchronous-unwind-tables
+KBUILD_RUSTFLAGS += -Cforce-unwind-tables=y -Zuse-sync-unwind=n
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 endif
 
 ifeq ($(CONFIG_STACKPROTECTOR_PER_TASK),y)
@@ -114,6 +126,10 @@ endif
 
 ifeq ($(CONFIG_SHADOW_CALL_STACK), y)
 KBUILD_CFLAGS	+= -ffixed-x18
+<<<<<<< HEAD
+=======
+KBUILD_RUSTFLAGS += -Zfixed-x18
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 endif
 
 ifeq ($(CONFIG_CPU_BIG_ENDIAN), y)

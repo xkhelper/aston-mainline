@@ -75,29 +75,46 @@ enum {
  * The division portion of the average operation.
  */
 #define __AVERAGE_PTFV(dev)						\
+<<<<<<< HEAD
 	({ next->ptfv_list[PTFV_DQSOSC_MOVAVG_ ## dev ## _INDEX] =	\
 	   next->ptfv_list[PTFV_DQSOSC_MOVAVG_ ## dev ## _INDEX] /	\
+=======
+	({ next->ptfv_list[(dev)] =					\
+	   next->ptfv_list[(dev)] /					\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	   next->ptfv_list[PTFV_DVFS_SAMPLES_INDEX]; })
 
 /*
  * Convert val to fixed point and add it to the temporary average.
  */
 #define __INCREMENT_PTFV(dev, val)					\
+<<<<<<< HEAD
 	({ next->ptfv_list[PTFV_DQSOSC_MOVAVG_ ## dev ## _INDEX] +=	\
+=======
+	({ next->ptfv_list[(dev)] +=					\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	   ((val) * MOVAVG_PRECISION_FACTOR); })
 
 /*
  * Convert a moving average back to integral form and return the value.
  */
 #define __MOVAVG_AC(timing, dev)					\
+<<<<<<< HEAD
 	((timing)->ptfv_list[PTFV_DQSOSC_MOVAVG_ ## dev ## _INDEX] /	\
+=======
+	((timing)->ptfv_list[(dev)] /					\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 MOVAVG_PRECISION_FACTOR)
 
 /* Weighted update. */
 #define __WEIGHTED_UPDATE_PTFV(dev, nval)				\
 	do {								\
 		int w = PTFV_MOVAVG_WEIGHT_INDEX;			\
+<<<<<<< HEAD
 		int dqs = PTFV_DQSOSC_MOVAVG_ ## dev ## _INDEX;		\
+=======
+		int dqs = (dev);						\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 									\
 		next->ptfv_list[dqs] =					\
 			((nval * MOVAVG_PRECISION_FACTOR) +		\
@@ -105,12 +122,17 @@ enum {
 			  next->ptfv_list[w])) /			\
 			(next->ptfv_list[w] + 1);			\
 									\
+<<<<<<< HEAD
 		emc_dbg(emc, EMA_UPDATES, "%s: (s=%lu) EMA: %u\n",	\
+=======
+		emc_dbg(emc, EMA_UPDATES, "%s: (s=%u) EMA: %u\n",	\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			__stringify(dev), nval, next->ptfv_list[dqs]);	\
 	} while (0)
 
 /* Access a particular average. */
 #define __MOVAVG(timing, dev)                      \
+<<<<<<< HEAD
 	((timing)->ptfv_list[PTFV_DQSOSC_MOVAVG_ ## dev ## _INDEX])
 
 static u32 update_clock_tree_delay(struct tegra210_emc *emc, int type)
@@ -403,17 +425,96 @@ done:
 static u32 periodic_compensation_handler(struct tegra210_emc *emc, u32 type,
 					 struct tegra210_emc_timing *last,
 					 struct tegra210_emc_timing *next)
+=======
+	((timing)->ptfv_list[(dev)])
+
+static bool tegra210_emc_compare_update_delay(struct tegra210_emc_timing *timing,
+					      u32 measured, u32 idx)
+{
+	u32 *curr = &timing->current_dram_clktree[idx];
+	u32 rate_mhz = timing->rate / 1000;
+	u32 tmdel;
+
+	tmdel = abs(*curr - measured);
+
+	if (tmdel * 128 * rate_mhz / 1000000 > timing->tree_margin) {
+		*curr = measured;
+		return true;
+	}
+
+	return false;
+}
+
+static void tegra210_emc_get_clktree_delay(struct tegra210_emc *emc,
+					   u32 delay[DRAM_CLKTREE_NUM])
+{
+	struct tegra210_emc_timing *curr = emc->last;
+	u32 rate_mhz = curr->rate / 1000;
+	u32 msb, lsb, dqsosc, delay_us;
+	unsigned int c, d, idx;
+	unsigned long clocks;
+
+	clocks = tegra210_emc_actual_osc_clocks(curr->run_clocks);
+	delay_us = 2 + (clocks / rate_mhz);
+
+	tegra210_emc_start_periodic_compensation(emc);
+	udelay(delay_us);
+
+	for (d = 0; d < emc->num_devices; d++) {
+		/* Read DQSOSC from MRR18/19 */
+		msb = tegra210_emc_mrr_read(emc, 2 - d, 19);
+		lsb = tegra210_emc_mrr_read(emc, 2 - d, 18);
+
+		for (c = 0; c < emc->num_channels; c++) {
+			/* C[c]D[d]U[0] */
+			idx = c * 4 + d * 2;
+
+			dqsosc = (msb & 0x00ff) << 8;
+			dqsosc |= (lsb & 0x00ff) >> 0;
+
+			/* Check for unpopulated channels */
+			if (dqsosc)
+				delay[idx] = (clocks * 1000000) /
+					     (rate_mhz * 2 * dqsosc);
+
+			/* C[c]D[d]U[1] */
+			idx++;
+
+			dqsosc = (msb & 0xff00) << 0;
+			dqsosc |= (lsb & 0xff00) >> 8;
+
+			/* Check for unpopulated channels */
+			if (dqsosc)
+				delay[idx] = (clocks * 1000000) /
+					     (rate_mhz * 2 * dqsosc);
+
+			msb >>= 16;
+			lsb >>= 16;
+		}
+	}
+}
+
+static bool periodic_compensation_handler(struct tegra210_emc *emc, u32 type,
+					  struct tegra210_emc_timing *last,
+					  struct tegra210_emc_timing *next)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 #define __COPY_EMA(nt, lt, dev)						\
 	({ __MOVAVG(nt, dev) = __MOVAVG(lt, dev) *			\
 	   (nt)->ptfv_list[PTFV_DVFS_SAMPLES_INDEX]; })
 
+<<<<<<< HEAD
 	u32 i, adel = 0, samples = next->ptfv_list[PTFV_DVFS_SAMPLES_INDEX];
 	u32 delay;
 
 	delay = tegra210_emc_actual_osc_clocks(last->run_clocks);
 	delay *= 1000;
 	delay = 2 + (delay / last->rate);
+=======
+	u32 i, samples = next->ptfv_list[PTFV_DVFS_SAMPLES_INDEX];
+	u32 delay[DRAM_CLKTREE_NUM], idx;
+	bool over = false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!next->periodic_training)
 		return 0;
@@ -427,6 +528,7 @@ static u32 periodic_compensation_handler(struct tegra210_emc *emc, u32 type,
 			 * calibration then we can reuse the previous
 			 * frequencies EMA data.
 			 */
+<<<<<<< HEAD
 			__COPY_EMA(next, last, C0D0U0);
 			__COPY_EMA(next, last, C0D0U1);
 			__COPY_EMA(next, last, C1D0U0);
@@ -473,11 +575,52 @@ static u32 periodic_compensation_handler(struct tegra210_emc *emc, u32 type,
 	}
 
 	return adel;
+=======
+			for (idx = 0; idx < DRAM_CLKTREE_NUM; idx++)
+				__COPY_EMA(next, last, idx);
+		} else {
+			/* Reset the EMA.*/
+			for (idx = 0; idx < DRAM_CLKTREE_NUM; idx++)
+				__MOVAVG(next, idx) = 0;
+
+			for (i = 0; i < samples; i++) {
+				/* Generate next sample of data. */
+				tegra210_emc_get_clktree_delay(emc, delay);
+
+				for (idx = 0; idx < DRAM_CLKTREE_NUM; idx++)
+					__INCREMENT_PTFV(idx, delay[idx]);
+			}
+		}
+
+		for (idx = 0; idx < DRAM_CLKTREE_NUM; idx++) {
+			/* Do the division part of the moving average */
+			__AVERAGE_PTFV(idx);
+			over |= tegra210_emc_compare_update_delay(next,
+						__MOVAVG_AC(next, idx), idx);
+		}
+	}
+
+	if (type == PERIODIC_TRAINING_SEQUENCE) {
+		tegra210_emc_get_clktree_delay(emc, delay);
+
+		for (idx = 0; idx < DRAM_CLKTREE_NUM; idx++) {
+			__WEIGHTED_UPDATE_PTFV(idx, delay[idx]);
+			over |= tegra210_emc_compare_update_delay(next,
+						__MOVAVG_AC(next, idx), idx);
+		}
+	}
+
+	return over;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static u32 tegra210_emc_r21021_periodic_compensation(struct tegra210_emc *emc)
 {
+<<<<<<< HEAD
 	u32 emc_cfg, emc_cfg_o, emc_cfg_update, del, value;
+=======
+	u32 emc_cfg, emc_cfg_o, emc_cfg_update, value;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	static const u32 list[] = {
 		EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_0,
 		EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_1,
@@ -492,7 +635,10 @@ static u32 tegra210_emc_r21021_periodic_compensation(struct tegra210_emc *emc)
 	};
 	struct tegra210_emc_timing *last = emc->last;
 	unsigned int items = ARRAY_SIZE(list), i;
+<<<<<<< HEAD
 	unsigned long delay;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (last->periodic_training) {
 		emc_dbg(emc, PER_TRAIN, "Periodic training starting\n");
@@ -530,6 +676,7 @@ static u32 tegra210_emc_r21021_periodic_compensation(struct tegra210_emc *emc)
 		/*
 		 * 2. osc kick off - this assumes training and dvfs have set
 		 *    correct MR23.
+<<<<<<< HEAD
 		 */
 		tegra210_emc_start_periodic_compensation(emc);
 
@@ -549,11 +696,24 @@ static u32 tegra210_emc_r21021_periodic_compensation(struct tegra210_emc *emc)
 						    PERIODIC_TRAINING_SEQUENCE,
 						    last, last);
 
+=======
+		 *
+		 * 3. Let dram capture its clock tree delays.
+		 *
+		 * 4. Check delta wrt previous values (save value if margin
+		 *    exceeds what is set in table).
+		 */
+		if (periodic_compensation_handler(emc, PERIODIC_TRAINING_SEQUENCE,
+						  last, last)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * 5. Apply compensation w.r.t. trained values (if clock tree
 		 *    has drifted more than the set margin).
 		 */
+<<<<<<< HEAD
 		if (last->tree_margin < ((del * 128 * (last->rate / 1000)) / 1000000)) {
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			for (i = 0; i < items; i++) {
 				value = tegra210_emc_compensate(last, list[i]);
 				emc_dbg(emc, EMA_WRITES, "0x%08x <= 0x%08x\n",
@@ -734,6 +894,7 @@ static void tegra210_emc_r21021_set_clock(struct tegra210_emc *emc, u32 clksrc)
 						     EMC_EMC_STATUS_DRAM_IN_SELF_REFRESH_MASK,
 						     0);
 
+<<<<<<< HEAD
 		tegra210_emc_start_periodic_compensation(emc);
 
 		delay = 1000 * tegra210_emc_actual_osc_clocks(last->run_clocks);
@@ -744,6 +905,9 @@ static void tegra210_emc_r21021_set_clock(struct tegra210_emc *emc, u32 clksrc)
 		value = (value * 128 * next->rate / 1000) / 1000000;
 
 		if (next->periodic_training && value > next->tree_margin)
+=======
+		if (periodic_compensation_handler(emc, DVFS_SEQUENCE, fake, next))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			compensate_trimmer_applicable = true;
 	}
 

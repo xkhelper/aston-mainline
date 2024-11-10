@@ -220,7 +220,10 @@ static const struct file_operations qat_vf_save_fops = {
 	.unlocked_ioctl = qat_vf_precopy_ioctl,
 	.compat_ioctl = compat_ptr_ioctl,
 	.release = qat_vf_release_file,
+<<<<<<< HEAD
 	.llseek = no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int qat_vf_save_state(struct qat_vf_core_device *qat_vdev,
@@ -345,7 +348,10 @@ static const struct file_operations qat_vf_resume_fops = {
 	.owner = THIS_MODULE,
 	.write = qat_vf_resume_write,
 	.release = qat_vf_release_file,
+<<<<<<< HEAD
 	.llseek = no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct qat_vf_migration_file *

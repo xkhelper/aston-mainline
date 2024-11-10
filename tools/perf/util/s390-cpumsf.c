@@ -912,7 +912,11 @@ static int
 s390_cpumsf_process_event(struct perf_session *session,
 			  union perf_event *event,
 			  struct perf_sample *sample,
+<<<<<<< HEAD
 			  struct perf_tool *tool)
+=======
+			  const struct perf_tool *tool)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct s390_cpumsf *sf = container_of(session->auxtrace,
 					      struct s390_cpumsf,
@@ -952,6 +956,7 @@ s390_cpumsf_process_event(struct perf_session *session,
 	return err;
 }
 
+<<<<<<< HEAD
 struct s390_cpumsf_synth {
 	struct perf_tool cpumsf_tool;
 	struct perf_session *session;
@@ -961,6 +966,12 @@ static int
 s390_cpumsf_process_auxtrace_event(struct perf_session *session,
 				   union perf_event *event __maybe_unused,
 				   struct perf_tool *tool __maybe_unused)
+=======
+static int
+s390_cpumsf_process_auxtrace_event(struct perf_session *session,
+				   union perf_event *event __maybe_unused,
+				   const struct perf_tool *tool __maybe_unused)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct s390_cpumsf *sf = container_of(session->auxtrace,
 					      struct s390_cpumsf,
@@ -1003,7 +1014,11 @@ static void s390_cpumsf_free_events(struct perf_session *session __maybe_unused)
 }
 
 static int s390_cpumsf_flush(struct perf_session *session __maybe_unused,
+<<<<<<< HEAD
 			     struct perf_tool *tool __maybe_unused)
+=======
+			     const struct perf_tool *tool __maybe_unused)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return 0;
 }

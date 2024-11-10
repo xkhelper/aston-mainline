@@ -27,6 +27,10 @@ properties:
           - renesas,fcpf # FCP for FDP
       - items:
           - enum:
+<<<<<<< HEAD
+=======
+              - renesas,r9a07g043u-fcpvd # RZ/G2UL
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - renesas,r9a07g044-fcpvd # RZ/G2{L,LC}
               - renesas,r9a07g054-fcpvd # RZ/V2L
           - const: renesas,fcpv         # Generic FCP for VSP fallback
@@ -62,6 +66,10 @@ allOf:
         compatible:
           contains:
             enum:
+<<<<<<< HEAD
+=======
+              - renesas,r9a07g043u-fcpvd
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - renesas,r9a07g044-fcpvd
               - renesas,r9a07g054-fcpvd
     then:

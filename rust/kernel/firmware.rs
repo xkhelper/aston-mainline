@@ -44,7 +44,11 @@ impl FwFunc {
 ///
 /// # fn no_run() -> Result<(), Error> {
 /// # // SAFETY: *NOT* safe, just for the example to get an `ARef<Device>` instance
+<<<<<<< HEAD
 /// # let dev = unsafe { Device::from_raw(core::ptr::null_mut()) };
+=======
+/// # let dev = unsafe { Device::get_device(core::ptr::null_mut()) };
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ///
 /// let fw = Firmware::request(c_str!("path/to/firmware.bin"), &dev)?;
 /// let blob = fw.data();

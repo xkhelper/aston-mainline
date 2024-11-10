@@ -334,7 +334,11 @@ static u8 bcma_find_pci_capability(struct bcma_drv_pci *pc, unsigned int dev,
 }
 
 /* If the root port is capable of returning Config Request
+<<<<<<< HEAD
  * Retry Status (CRS) Completion Status to software then
+=======
+ * Retry Status (RRS) Completion Status to software then
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * enable the feature.
  */
 static void bcma_core_pci_enable_crs(struct bcma_drv_pci *pc)
@@ -348,10 +352,17 @@ static void bcma_core_pci_enable_crs(struct bcma_drv_pci *pc)
 					   NULL);
 	root_cap = cap_ptr + PCI_EXP_RTCAP;
 	bcma_extpci_read_config(pc, 0, 0, root_cap, &val16, sizeof(u16));
+<<<<<<< HEAD
 	if (val16 & BCMA_CORE_PCI_RC_CRS_VISIBILITY) {
 		/* Enable CRS software visibility */
 		root_ctrl = cap_ptr + PCI_EXP_RTCTL;
 		val16 = PCI_EXP_RTCTL_CRSSVE;
+=======
+	if (val16 & BCMA_CORE_PCI_RC_RRS_VISIBILITY) {
+		/* Enable Configuration RRS Software Visibility */
+		root_ctrl = cap_ptr + PCI_EXP_RTCTL;
+		val16 = PCI_EXP_RTCTL_RRS_SVE;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		bcma_extpci_read_config(pc, 0, 0, root_ctrl, &val16,
 					sizeof(u16));
 
@@ -360,7 +371,11 @@ static void bcma_core_pci_enable_crs(struct bcma_drv_pci *pc)
 		 * 100 ms wait time from the end of Reset. If the device is
 		 * not done with its internal initialization, it must at
 		 * least return a completion TLP, with a completion status
+<<<<<<< HEAD
 		 * of "Configuration Request Retry Status (CRS)". The root
+=======
+		 * of "Configuration Request Retry Status (RRS)". The root
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 * complex must complete the request to the host by returning
 		 * a read-data value of 0001h for the Vendor ID field and
 		 * all 1s for any additional bytes included in the request.

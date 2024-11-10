@@ -1025,7 +1025,11 @@ static struct platform_driver ti_hecc_driver = {
 		.of_match_table = ti_hecc_dt_ids,
 	},
 	.probe = ti_hecc_probe,
+<<<<<<< HEAD
 	.remove_new = ti_hecc_remove,
+=======
+	.remove = ti_hecc_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.suspend = ti_hecc_suspend,
 	.resume = ti_hecc_resume,
 };

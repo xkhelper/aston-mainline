@@ -161,7 +161,11 @@
  * 2) The deepest stack frame should be zero (the %rbp).
  *
  */
+<<<<<<< HEAD
 void __attribute__((weak, noreturn, optimize("Os", "omit-frame-pointer"))) __no_stack_protector _start(void)
+=======
+void __attribute__((weak, noreturn)) __nolibc_entrypoint __no_stack_protector _start(void)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	__asm__ volatile (
 		"xor  %ebp, %ebp\n"       /* zero the stack frame                            */
@@ -170,7 +174,11 @@ void __attribute__((weak, noreturn, optimize("Os", "omit-frame-pointer"))) __no_
 		"call _start_c\n"         /* transfer to c runtime                           */
 		"hlt\n"                   /* ensure it does not return                       */
 	);
+<<<<<<< HEAD
 	__builtin_unreachable();
+=======
+	__nolibc_entrypoint_epilogue();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #define NOLIBC_ARCH_HAS_MEMMOVE
@@ -193,10 +201,17 @@ __asm__ (
 	"movq %rdi, %rdx\n\t"
 	"subq %rsi, %rdx\n\t"
 	"cmpq %rcx, %rdx\n\t"
+<<<<<<< HEAD
 	"jb   .Lbackward_copy\n\t"
 	"rep movsb\n\t"
 	"retq\n"
 ".Lbackward_copy:"
+=======
+	"jb   1f\n\t"
+	"rep movsb\n\t"
+	"retq\n"
+"1:" /* backward copy */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	"leaq -1(%rdi, %rcx, 1), %rdi\n\t"
 	"leaq -1(%rsi, %rcx, 1), %rsi\n\t"
 	"std\n\t"

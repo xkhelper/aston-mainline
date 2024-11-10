@@ -167,11 +167,31 @@ static void event_interrupt_poison_consumption_v9(struct kfd_node *dev,
 	case SOC15_IH_CLIENTID_SE3SH:
 	case SOC15_IH_CLIENTID_UTCL2:
 		block = AMDGPU_RAS_BLOCK__GFX;
+<<<<<<< HEAD
 		if (amdgpu_ip_version(dev->adev, GC_HWIP, 0) == IP_VERSION(9, 4, 3) ||
 			amdgpu_ip_version(dev->adev, GC_HWIP, 0) == IP_VERSION(9, 4, 4))
 			reset = AMDGPU_RAS_GPU_RESET_MODE1_RESET;
 		else
 			reset = AMDGPU_RAS_GPU_RESET_MODE2_RESET;
+=======
+		if (amdgpu_ip_version(dev->adev, GC_HWIP, 0) == IP_VERSION(9, 4, 3)) {
+			/* driver mode-2 for gfx poison is only supported by
+			 * pmfw 0x00557300 and onwards */
+			if (dev->adev->pm.fw_version < 0x00557300)
+				reset = AMDGPU_RAS_GPU_RESET_MODE1_RESET;
+			else
+				reset = AMDGPU_RAS_GPU_RESET_MODE2_RESET;
+		} else if (amdgpu_ip_version(dev->adev, GC_HWIP, 0) == IP_VERSION(9, 4, 4)) {
+			/* driver mode-2 for gfx poison is only supported by
+			 * pmfw 0x05550C00 and onwards */
+			if (dev->adev->pm.fw_version < 0x05550C00)
+				reset = AMDGPU_RAS_GPU_RESET_MODE1_RESET;
+			else
+				reset = AMDGPU_RAS_GPU_RESET_MODE2_RESET;
+		} else {
+			reset = AMDGPU_RAS_GPU_RESET_MODE2_RESET;
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case SOC15_IH_CLIENTID_VMC:
 	case SOC15_IH_CLIENTID_VMC1:
@@ -184,11 +204,31 @@ static void event_interrupt_poison_consumption_v9(struct kfd_node *dev,
 	case SOC15_IH_CLIENTID_SDMA3:
 	case SOC15_IH_CLIENTID_SDMA4:
 		block = AMDGPU_RAS_BLOCK__SDMA;
+<<<<<<< HEAD
 		if (amdgpu_ip_version(dev->adev, GC_HWIP, 0) == IP_VERSION(9, 4, 3) ||
 			amdgpu_ip_version(dev->adev, GC_HWIP, 0) == IP_VERSION(9, 4, 4))
 			reset = AMDGPU_RAS_GPU_RESET_MODE1_RESET;
 		else
 			reset = AMDGPU_RAS_GPU_RESET_MODE2_RESET;
+=======
+		if (amdgpu_ip_version(dev->adev, SDMA0_HWIP, 0) == IP_VERSION(4, 4, 2)) {
+			/* driver mode-2 for gfx poison is only supported by
+			 * pmfw 0x00557300 and onwards */
+			if (dev->adev->pm.fw_version < 0x00557300)
+				reset = AMDGPU_RAS_GPU_RESET_MODE1_RESET;
+			else
+				reset = AMDGPU_RAS_GPU_RESET_MODE2_RESET;
+		} else if (amdgpu_ip_version(dev->adev, SDMA0_HWIP, 0) == IP_VERSION(4, 4, 5)) {
+			/* driver mode-2 for gfx poison is only supported by
+			 * pmfw 0x05550C00 and onwards */
+			if (dev->adev->pm.fw_version < 0x05550C00)
+				reset = AMDGPU_RAS_GPU_RESET_MODE1_RESET;
+			else
+				reset = AMDGPU_RAS_GPU_RESET_MODE2_RESET;
+		} else {
+			reset = AMDGPU_RAS_GPU_RESET_MODE2_RESET;
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		dev_warn(dev->adev->dev,
@@ -431,6 +471,7 @@ static void event_interrupt_wq_v9(struct kfd_node *dev,
 		   client_id == SOC15_IH_CLIENTID_UTCL2) {
 		struct kfd_vm_fault_info info = {0};
 		uint16_t ring_id = SOC15_RING_ID_FROM_IH_ENTRY(ih_ring_entry);
+<<<<<<< HEAD
 		uint32_t node_id = SOC15_NODEID_FROM_IH_ENTRY(ih_ring_entry);
 		uint32_t vmid_type = SOC15_VMID_TYPE_FROM_IH_ENTRY(ih_ring_entry);
 		int hub_inst = 0;
@@ -450,6 +491,11 @@ static void event_interrupt_wq_v9(struct kfd_node *dev,
 
 		if (amdgpu_amdkfd_ras_query_utcl2_poison_status(dev->adev,
 					hub_inst, vmid_type)) {
+=======
+		struct kfd_hsa_memory_exception_data exception_data;
+
+		if (source_id == SOC15_INTSRC_VMC_UTCL2_POISON) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			event_interrupt_poison_consumption_v9(dev, pasid, client_id);
 			return;
 		}

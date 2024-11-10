@@ -151,6 +151,10 @@ static int qcom_a53pll_probe(struct platform_device *pdev)
 }
 
 static const struct of_device_id qcom_a53pll_match_table[] = {
+<<<<<<< HEAD
+=======
+	{ .compatible = "qcom,msm8226-a7pll" },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .compatible = "qcom,msm8916-a53pll" },
 	{ .compatible = "qcom,msm8939-a53pll" },
 	{ }

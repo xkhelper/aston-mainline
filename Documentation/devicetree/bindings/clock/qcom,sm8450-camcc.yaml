@@ -21,9 +21,12 @@ description: |
     include/dt-bindings/clock/qcom,sm8650-camcc.h
     include/dt-bindings/clock/qcom,x1e80100-camcc.h
 
+<<<<<<< HEAD
 allOf:
   - $ref: qcom,gcc.yaml#
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 properties:
   compatible:
     enum:
@@ -57,7 +60,25 @@ required:
   - compatible
   - clocks
   - power-domains
+<<<<<<< HEAD
   - required-opps
+=======
+
+allOf:
+  - $ref: qcom,gcc.yaml#
+  - if:
+      properties:
+        compatible:
+          contains:
+            enum:
+              - qcom,sc8280xp-camcc
+              - qcom,sm8450-camcc
+              - qcom,sm8550-camcc
+              - qcom,x1e80100-camcc
+    then:
+      required:
+        - required-opps
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 unevaluatedProperties: false
 

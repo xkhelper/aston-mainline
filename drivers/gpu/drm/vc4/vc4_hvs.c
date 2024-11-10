@@ -191,8 +191,13 @@ static int vc4_hvs_upload_linear_kernel(struct vc4_hvs *hvs,
 
 	ret = drm_mm_insert_node(&hvs->dlist_mm, space, VC4_KERNEL_DWORDS);
 	if (ret) {
+<<<<<<< HEAD
 		DRM_ERROR("Failed to allocate space for filter kernel: %d\n",
 			  ret);
+=======
+		drm_err(&hvs->vc4->base, "Failed to allocate space for filter kernel: %d\n",
+			ret);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return ret;
 	}
 

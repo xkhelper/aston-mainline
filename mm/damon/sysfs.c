@@ -1882,4 +1882,8 @@ out:
 }
 subsys_initcall(damon_sysfs_init);
 
+<<<<<<< HEAD
 #include "sysfs-test.h"
+=======
+#include "tests/sysfs-kunit.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

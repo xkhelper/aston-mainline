@@ -676,7 +676,10 @@ static void keyspan_pda_port_remove(struct usb_serial_port *port)
 
 static struct usb_serial_driver keyspan_pda_fake_device = {
 	.driver = {
+<<<<<<< HEAD
 		.owner =	THIS_MODULE,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name =		"keyspan_pda_pre",
 	},
 	.description =		"Keyspan PDA - (prerenumeration)",
@@ -687,7 +690,10 @@ static struct usb_serial_driver keyspan_pda_fake_device = {
 
 static struct usb_serial_driver keyspan_pda_device = {
 	.driver = {
+<<<<<<< HEAD
 		.owner =	THIS_MODULE,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name =		"keyspan_pda",
 	},
 	.description =		"Keyspan PDA",

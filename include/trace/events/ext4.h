@@ -91,7 +91,10 @@ TRACE_DEFINE_ENUM(ES_REFERENCED_B);
 #define show_falloc_mode(mode) __print_flags(mode, "|",		\
 	{ FALLOC_FL_KEEP_SIZE,		"KEEP_SIZE"},		\
 	{ FALLOC_FL_PUNCH_HOLE,		"PUNCH_HOLE"},		\
+<<<<<<< HEAD
 	{ FALLOC_FL_NO_HIDE_STALE,	"NO_HIDE_STALE"},	\
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ FALLOC_FL_COLLAPSE_RANGE,	"COLLAPSE_RANGE"},	\
 	{ FALLOC_FL_ZERO_RANGE,		"ZERO_RANGE"})
 

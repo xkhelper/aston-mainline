@@ -1110,13 +1110,19 @@ EXPORT_SYMBOL(__cfg80211_radar_event);
 
 void cfg80211_cac_event(struct net_device *netdev,
 			const struct cfg80211_chan_def *chandef,
+<<<<<<< HEAD
 			enum nl80211_radar_event event, gfp_t gfp)
+=======
+			enum nl80211_radar_event event, gfp_t gfp,
+			unsigned int link_id)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct wireless_dev *wdev = netdev->ieee80211_ptr;
 	struct wiphy *wiphy = wdev->wiphy;
 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
 	unsigned long timeout;
 
+<<<<<<< HEAD
 	/* not yet supported */
 	if (wdev->valid_links)
 		return;
@@ -1124,12 +1130,27 @@ void cfg80211_cac_event(struct net_device *netdev,
 	trace_cfg80211_cac_event(netdev, event);
 
 	if (WARN_ON(!wdev->cac_started && event != NL80211_RADAR_CAC_STARTED))
+=======
+	if (WARN_ON(wdev->valid_links &&
+		    !(wdev->valid_links & BIT(link_id))))
+		return;
+
+	trace_cfg80211_cac_event(netdev, event, link_id);
+
+	if (WARN_ON(!wdev->links[link_id].cac_started &&
+		    event != NL80211_RADAR_CAC_STARTED))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	switch (event) {
 	case NL80211_RADAR_CAC_FINISHED:
+<<<<<<< HEAD
 		timeout = wdev->cac_start_time +
 			  msecs_to_jiffies(wdev->cac_time_ms);
+=======
+		timeout = wdev->links[link_id].cac_start_time +
+			  msecs_to_jiffies(wdev->links[link_id].cac_time_ms);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		WARN_ON(!time_after_eq(jiffies, timeout));
 		cfg80211_set_dfs_state(wiphy, chandef, NL80211_DFS_AVAILABLE);
 		memcpy(&rdev->cac_done_chandef, chandef,
@@ -1138,10 +1159,17 @@ void cfg80211_cac_event(struct net_device *netdev,
 		cfg80211_sched_dfs_chan_update(rdev);
 		fallthrough;
 	case NL80211_RADAR_CAC_ABORTED:
+<<<<<<< HEAD
 		wdev->cac_started = false;
 		break;
 	case NL80211_RADAR_CAC_STARTED:
 		wdev->cac_started = true;
+=======
+		wdev->links[link_id].cac_started = false;
+		break;
+	case NL80211_RADAR_CAC_STARTED:
+		wdev->links[link_id].cac_started = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		WARN_ON(1);

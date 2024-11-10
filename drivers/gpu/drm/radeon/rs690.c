@@ -845,7 +845,11 @@ int rs690_init(struct radeon_device *rdev)
 		return -EINVAL;
 
 	/* Initialize clocks */
+<<<<<<< HEAD
 	radeon_get_clock_info(rdev->ddev);
+=======
+	radeon_get_clock_info(rdev_to_drm(rdev));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* initialize memory controller */
 	rs690_mc_init(rdev);
 	rv515_debugfs(rdev);

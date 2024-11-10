@@ -180,6 +180,11 @@ static void stf_channel_set(struct stfcamss_video *video)
 	u32 val;
 
 	if (cap->type == STF_CAPTURE_RAW) {
+<<<<<<< HEAD
+=======
+		const struct v4l2_pix_format *pix = &video->active_fmt.fmt.pix;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		val = stf_syscon_reg_read(stfcamss, VIN_CHANNEL_SEL_EN);
 		val &= ~U0_VIN_CHANNEL_SEL_MASK;
 		val |= CHANNEL(0);
@@ -193,7 +198,11 @@ static void stf_channel_set(struct stfcamss_video *video)
 		val |= PIXEL_HEIGH_BIT_SEL(0);
 
 		val &= ~U0_VIN_PIX_CNT_END_MASK;
+<<<<<<< HEAD
 		val |= PIX_CNT_END(IMAGE_MAX_WIDTH / 4 - 1);
+=======
+		val |= PIX_CNT_END(pix->width / 4 - 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		stf_syscon_reg_write(stfcamss, VIN_INRT_PIX_CFG, val);
 	} else if (cap->type == STF_CAPTURE_YUV) {

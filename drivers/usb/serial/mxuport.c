@@ -25,7 +25,11 @@
 #include <linux/uaccess.h>
 #include <linux/usb.h>
 #include <linux/usb/serial.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Definitions for the vendor ID and device ID */
 #define MX_USBSERIAL_VID	0x110A
@@ -1278,7 +1282,10 @@ static int mxuport_resume(struct usb_serial *serial)
 
 static struct usb_serial_driver mxuport_device = {
 	.driver = {
+<<<<<<< HEAD
 		.owner =	THIS_MODULE,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name =		"mxuport",
 	},
 	.description		= "MOXA UPort",

@@ -134,9 +134,14 @@ allOf:
           properties:
             fsl,weim-cs-timing:
               items:
+<<<<<<< HEAD
                 items:
                   - description: CSxU
                   - description: CSxL
+=======
+                - description: CSxU
+                - description: CSxL
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - if:
       properties:
         compatible:
@@ -151,10 +156,16 @@ allOf:
           properties:
             fsl,weim-cs-timing:
               items:
+<<<<<<< HEAD
                 items:
                   - description: CSCRxU
                   - description: CSCRxL
                   - description: CSCRxA
+=======
+                - description: CSCRxU
+                - description: CSCRxL
+                - description: CSCRxA
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - if:
       properties:
         compatible:
@@ -171,6 +182,7 @@ allOf:
           properties:
             fsl,weim-cs-timing:
               items:
+<<<<<<< HEAD
                 items:
                   - description: CSxGCR1
                   - description: CSxGCR2
@@ -178,6 +190,14 @@ allOf:
                   - description: CSxRCR2
                   - description: CSxWCR1
                   - description: CSxWCR2
+=======
+                - description: CSxGCR1
+                - description: CSxGCR2
+                - description: CSxRCR1
+                - description: CSxRCR2
+                - description: CSxWCR1
+                - description: CSxWCR2
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 additionalProperties: false
 

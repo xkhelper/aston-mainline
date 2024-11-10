@@ -127,11 +127,18 @@ do {								\
  */
 #define IDPF_TX_COMPLQ_PENDING(txq)	\
 	(((txq)->num_completions_pending >= (txq)->complq->num_completions ? \
+<<<<<<< HEAD
 	0 : U64_MAX) + \
 	(txq)->num_completions_pending - (txq)->complq->num_completions)
 
 #define IDPF_TX_SPLITQ_COMPL_TAG_WIDTH	16
 #define IDPF_SPLITQ_TX_INVAL_COMPL_TAG	-1
+=======
+	0 : U32_MAX) + \
+	(txq)->num_completions_pending - (txq)->complq->num_completions)
+
+#define IDPF_TX_SPLITQ_COMPL_TAG_WIDTH	16
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Adjust the generation for the completion tag and wrap if necessary */
 #define IDPF_TX_ADJ_COMPL_TAG_GEN(txq) \
 	((++(txq)->compl_tag_cur_gen) >= (txq)->compl_tag_gen_max ? \
@@ -149,6 +156,7 @@ union idpf_tx_flex_desc {
 	struct idpf_flex_tx_sched_desc flow; /* flow based scheduling */
 };
 
+<<<<<<< HEAD
 /**
  * struct idpf_tx_buf
  * @next_to_watch: Next descriptor to clean
@@ -190,6 +198,9 @@ struct idpf_tx_stash {
 	struct hlist_node hlist;
 	struct idpf_tx_buf buf;
 };
+=======
+#define idpf_tx_buf libeth_sqe
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * struct idpf_buf_lifo - LIFO for managing OOO completions
@@ -390,9 +401,17 @@ struct idpf_vec_regs {
  * struct idpf_intr_reg
  * @dyn_ctl: Dynamic control interrupt register
  * @dyn_ctl_intena_m: Mask for dyn_ctl interrupt enable
+<<<<<<< HEAD
  * @dyn_ctl_itridx_s: Register bit offset for ITR index
  * @dyn_ctl_itridx_m: Mask for ITR index
  * @dyn_ctl_intrvl_s: Register bit offset for ITR interval
+=======
+ * @dyn_ctl_intena_msk_m: Mask for dyn_ctl interrupt enable mask
+ * @dyn_ctl_itridx_s: Register bit offset for ITR index
+ * @dyn_ctl_itridx_m: Mask for ITR index
+ * @dyn_ctl_intrvl_s: Register bit offset for ITR interval
+ * @dyn_ctl_wb_on_itr_m: Mask for WB on ITR feature
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @rx_itr: RX ITR register
  * @tx_itr: TX ITR register
  * @icr_ena: Interrupt cause register offset
@@ -401,9 +420,17 @@ struct idpf_vec_regs {
 struct idpf_intr_reg {
 	void __iomem *dyn_ctl;
 	u32 dyn_ctl_intena_m;
+<<<<<<< HEAD
 	u32 dyn_ctl_itridx_s;
 	u32 dyn_ctl_itridx_m;
 	u32 dyn_ctl_intrvl_s;
+=======
+	u32 dyn_ctl_intena_msk_m;
+	u32 dyn_ctl_itridx_s;
+	u32 dyn_ctl_itridx_m;
+	u32 dyn_ctl_intrvl_s;
+	u32 dyn_ctl_wb_on_itr_m;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void __iomem *rx_itr;
 	void __iomem *tx_itr;
 	void __iomem *icr_ena;
@@ -424,6 +451,10 @@ struct idpf_intr_reg {
  * @intr_reg: See struct idpf_intr_reg
  * @napi: napi handler
  * @total_events: Number of interrupts processed
+<<<<<<< HEAD
+=======
+ * @wb_on_itr: whether WB on ITR is enabled
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @tx_dim: Data for TX net_dim algorithm
  * @tx_itr_value: TX interrupt throttling rate
  * @tx_intr_mode: Dynamic ITR or not
@@ -454,6 +485,10 @@ struct idpf_q_vector {
 	__cacheline_group_begin_aligned(read_write);
 	struct napi_struct napi;
 	u16 total_events;
+<<<<<<< HEAD
+=======
+	bool wb_on_itr;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	struct dim tx_dim;
 	u16 tx_itr_value;
@@ -472,7 +507,11 @@ struct idpf_q_vector {
 	cpumask_var_t affinity_mask;
 	__cacheline_group_end_aligned(cold);
 };
+<<<<<<< HEAD
 libeth_cacheline_set_assert(struct idpf_q_vector, 104,
+=======
+libeth_cacheline_set_assert(struct idpf_q_vector, 112,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    424 + 2 * sizeof(struct dim),
 			    8 + sizeof(cpumask_var_t));
 
@@ -496,11 +535,14 @@ struct idpf_tx_queue_stats {
 	u64_stats_t dma_map_errs;
 };
 
+<<<<<<< HEAD
 struct idpf_cleaned_stats {
 	u32 packets;
 	u32 bytes;
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define IDPF_ITR_DYNAMIC	1
 #define IDPF_ITR_MAX		0x1FE0
 #define IDPF_ITR_20K		0x0032
@@ -688,7 +730,11 @@ struct idpf_tx_queue {
 
 		void *desc_ring;
 	};
+<<<<<<< HEAD
 	struct idpf_tx_buf *tx_buf;
+=======
+	struct libeth_sqe *tx_buf;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct idpf_txq_group *txq_grp;
 	struct device *dev;
 	void __iomem *tail;
@@ -831,7 +877,11 @@ struct idpf_compl_queue {
 	u32 next_to_use;
 	u32 next_to_clean;
 
+<<<<<<< HEAD
 	u32 num_completions;
+=======
+	aligned_u64 num_completions;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__cacheline_group_end_aligned(read_write);
 
 	__cacheline_group_begin_aligned(cold);
@@ -963,7 +1013,11 @@ struct idpf_txq_group {
 
 	struct idpf_compl_queue *complq;
 
+<<<<<<< HEAD
 	u32 num_completions_pending;
+=======
+	aligned_u64 num_completions_pending;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static inline int idpf_q_vector_to_mem(const struct idpf_q_vector *q_vector)
@@ -1033,6 +1087,28 @@ static inline void idpf_tx_splitq_build_desc(union idpf_tx_flex_desc *desc,
 		idpf_tx_splitq_build_flow_desc(desc, params, td_cmd, size);
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * idpf_vport_intr_set_wb_on_itr - enable descriptor writeback on disabled interrupts
+ * @q_vector: pointer to queue vector struct
+ */
+static inline void idpf_vport_intr_set_wb_on_itr(struct idpf_q_vector *q_vector)
+{
+	struct idpf_intr_reg *reg;
+
+	if (q_vector->wb_on_itr)
+		return;
+
+	q_vector->wb_on_itr = true;
+	reg = &q_vector->intr_reg;
+
+	writel(reg->dyn_ctl_wb_on_itr_m | reg->dyn_ctl_intena_msk_m |
+	       (IDPF_NO_ITR_UPDATE_IDX << reg->dyn_ctl_itridx_s),
+	       reg->dyn_ctl);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int idpf_vport_singleq_napi_poll(struct napi_struct *napi, int budget);
 void idpf_vport_init_num_qs(struct idpf_vport *vport,
 			    struct virtchnl2_create_vport *vport_msg);
@@ -1064,7 +1140,10 @@ void idpf_tx_dma_map_error(struct idpf_tx_queue *txq, struct sk_buff *skb,
 			   struct idpf_tx_buf *first, u16 ring_idx);
 unsigned int idpf_tx_desc_count_required(struct idpf_tx_queue *txq,
 					 struct sk_buff *skb);
+<<<<<<< HEAD
 int idpf_tx_maybe_stop_common(struct idpf_tx_queue *tx_q, unsigned int size);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void idpf_tx_timeout(struct net_device *netdev, unsigned int txqueue);
 netdev_tx_t idpf_tx_singleq_frame(struct sk_buff *skb,
 				  struct idpf_tx_queue *tx_q);
@@ -1073,4 +1152,15 @@ bool idpf_rx_singleq_buf_hw_alloc_all(struct idpf_rx_queue *rxq,
 				      u16 cleaned_count);
 int idpf_tso(struct sk_buff *skb, struct idpf_tx_offload_params *off);
 
+<<<<<<< HEAD
+=======
+static inline bool idpf_tx_maybe_stop_common(struct idpf_tx_queue *tx_q,
+					     u32 needed)
+{
+	return !netif_subqueue_maybe_stop(tx_q->netdev, tx_q->idx,
+					  IDPF_DESC_UNUSED(tx_q),
+					  needed, needed);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* !_IDPF_TXRX_H_ */

@@ -10,8 +10,17 @@
 #define __XFS_EXCHANGE_RANGE_UPD_CMTIME1	(1ULL << 63)
 #define __XFS_EXCHANGE_RANGE_UPD_CMTIME2	(1ULL << 62)
 
+<<<<<<< HEAD
 #define XFS_EXCHANGE_RANGE_PRIV_FLAGS	(__XFS_EXCHANGE_RANGE_UPD_CMTIME1 | \
 					 __XFS_EXCHANGE_RANGE_UPD_CMTIME2)
+=======
+/* Freshness check required */
+#define __XFS_EXCHANGE_RANGE_CHECK_FRESH2	(1ULL << 61)
+
+#define XFS_EXCHANGE_RANGE_PRIV_FLAGS	(__XFS_EXCHANGE_RANGE_UPD_CMTIME1 | \
+					 __XFS_EXCHANGE_RANGE_UPD_CMTIME2 | \
+					 __XFS_EXCHANGE_RANGE_CHECK_FRESH2)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct xfs_exchrange {
 	struct file		*file1;
@@ -22,10 +31,26 @@ struct xfs_exchrange {
 	u64			length;
 
 	u64			flags;	/* XFS_EXCHANGE_RANGE flags */
+<<<<<<< HEAD
+=======
+
+	/* file2 metadata for freshness checks */
+	u64			file2_ino;
+	struct timespec64	file2_mtime;
+	struct timespec64	file2_ctime;
+	u32			file2_gen;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 long xfs_ioc_exchange_range(struct file *file,
 		struct xfs_exchange_range __user *argp);
+<<<<<<< HEAD
+=======
+long xfs_ioc_start_commit(struct file *file,
+		struct xfs_commit_range __user *argp);
+long xfs_ioc_commit_range(struct file *file,
+		struct xfs_commit_range __user	*argp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct xfs_exchmaps_req;
 

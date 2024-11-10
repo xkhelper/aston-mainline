@@ -8,6 +8,10 @@
 #include <drm/drm_debugfs.h>
 
 #include "xe_gt.h"
+<<<<<<< HEAD
+=======
+#include "xe_gsc_debugfs.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "xe_guc_debugfs.h"
 #include "xe_huc_debugfs.h"
 #include "xe_macros.h"
@@ -23,6 +27,10 @@ void xe_uc_debugfs_register(struct xe_uc *uc, struct dentry *parent)
 		return;
 	}
 
+<<<<<<< HEAD
+=======
+	xe_gsc_debugfs_register(&uc->gsc, root);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xe_guc_debugfs_register(&uc->guc, root);
 	xe_huc_debugfs_register(&uc->huc, root);
 }

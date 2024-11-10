@@ -26,7 +26,11 @@
 #include <linux/export.h>
 #include <linux/list.h>
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <scsi/fc/fc_gs.h>
 

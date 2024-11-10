@@ -567,12 +567,21 @@ static int do_acpi_entry(const char *filename,
 			void *symval, char *alias)
 {
 	DEF_FIELD_ADDR(symval, acpi_device_id, id);
+<<<<<<< HEAD
 	DEF_FIELD_ADDR(symval, acpi_device_id, cls);
 	DEF_FIELD_ADDR(symval, acpi_device_id, cls_msk);
 
 	if (id && strlen((const char *)*id))
 		sprintf(alias, "acpi*:%s:*", *id);
 	else if (cls) {
+=======
+	DEF_FIELD(symval, acpi_device_id, cls);
+	DEF_FIELD(symval, acpi_device_id, cls_msk);
+
+	if (id && strlen((const char *)*id))
+		sprintf(alias, "acpi*:%s:*", *id);
+	else {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		int i, byte_shift, cnt = 0;
 		unsigned int msk;
 
@@ -580,10 +589,17 @@ static int do_acpi_entry(const char *filename,
 		cnt = 6;
 		for (i = 1; i <= 3; i++) {
 			byte_shift = 8 * (3-i);
+<<<<<<< HEAD
 			msk = (*cls_msk >> byte_shift) & 0xFF;
 			if (msk)
 				sprintf(&alias[cnt], "%02x",
 					(*cls >> byte_shift) & 0xFF);
+=======
+			msk = (cls_msk >> byte_shift) & 0xFF;
+			if (msk)
+				sprintf(&alias[cnt], "%02x",
+					(cls >> byte_shift) & 0xFF);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			else
 				sprintf(&alias[cnt], "??");
 			cnt += 2;
@@ -743,7 +759,11 @@ static void do_input(char *alias,
 	for (i = min / BITS_PER_LONG; i < max / BITS_PER_LONG + 1; i++)
 		arr[i] = TO_NATIVE(arr[i]);
 	for (i = min; i < max; i++)
+<<<<<<< HEAD
 		if (arr[i / BITS_PER_LONG] & (1L << (i%BITS_PER_LONG)))
+=======
+		if (arr[i / BITS_PER_LONG] & (1ULL << (i%BITS_PER_LONG)))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			sprintf(alias + strlen(alias), "%X,*", i);
 }
 
@@ -960,6 +980,19 @@ static int do_i3c_entry(const char *filename, void *symval,
 	return 1;
 }
 
+<<<<<<< HEAD
+=======
+static int do_slim_entry(const char *filename, void *symval, char *alias)
+{
+	DEF_FIELD(symval, slim_device_id, manf_id);
+	DEF_FIELD(symval, slim_device_id, prod_code);
+
+	sprintf(alias, "slim:%x:%x:*", manf_id, prod_code);
+
+	return 1;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Looks like: spi:S */
 static int do_spi_entry(const char *filename, void *symval,
 			char *alias)
@@ -1555,6 +1588,10 @@ static const struct devtable devtable[] = {
 	{"rpmsg", SIZE_rpmsg_device_id, do_rpmsg_entry},
 	{"i2c", SIZE_i2c_device_id, do_i2c_entry},
 	{"i3c", SIZE_i3c_device_id, do_i3c_entry},
+<<<<<<< HEAD
+=======
+	{"slim", SIZE_slim_device_id, do_slim_entry},
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{"spi", SIZE_spi_device_id, do_spi_entry},
 	{"dmi", SIZE_dmi_system_id, do_dmi_entry},
 	{"platform", SIZE_platform_device_id, do_platform_entry},

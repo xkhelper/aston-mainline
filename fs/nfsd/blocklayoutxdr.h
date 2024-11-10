@@ -47,7 +47,11 @@ struct pnfs_block_volume {
 
 struct pnfs_block_deviceaddr {
 	u32				nr_volumes;
+<<<<<<< HEAD
 	struct pnfs_block_volume	volumes[];
+=======
+	struct pnfs_block_volume	volumes[] __counted_by(nr_volumes);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 __be32 nfsd4_block_encode_getdeviceinfo(struct xdr_stream *xdr,

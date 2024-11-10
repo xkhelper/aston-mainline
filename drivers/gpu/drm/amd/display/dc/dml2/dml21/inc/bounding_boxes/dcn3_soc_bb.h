@@ -72,7 +72,11 @@ static const struct dml2_soc_qos_parameters dml_dcn31_soc_qos_params = {
 		.scaling_factor_mhz = 0,
 	},
 	.qos_params = {
+<<<<<<< HEAD
 		.dcn4 = {
+=======
+		.dcn4x = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			.df_qos_response_time_fclk_cycles = 300,
 			.max_round_trip_to_furthest_cs_fclk_cycles = 350,
 			.mall_overhead_fclk_cycles = 50,
@@ -128,7 +132,11 @@ static const struct dml2_soc_qos_parameters dml_dcn31_soc_qos_params = {
 			},
 		},
 	},
+<<<<<<< HEAD
 	.qos_type = dml2_qos_param_type_dcn4,
+=======
+	.qos_type = dml2_qos_param_type_dcn4x,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct dml2_soc_bb dml2_socbb_dcn31 = {
@@ -228,7 +236,11 @@ static const struct dml2_soc_bb dml2_socbb_dcn31 = {
 			.scaling_factor_mhz = 0,
 		},
 		.qos_params = {
+<<<<<<< HEAD
 			.dcn4 = {
+=======
+			.dcn4x = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				.df_qos_response_time_fclk_cycles = 300,
 				.max_round_trip_to_furthest_cs_fclk_cycles = 350,
 				.mall_overhead_fclk_cycles = 50,
@@ -332,7 +344,11 @@ static const struct dml2_soc_bb dml2_socbb_dcn31 = {
 				},
 			},
 		},
+<<<<<<< HEAD
 		.qos_type = dml2_qos_param_type_dcn4,
+=======
+		.qos_type = dml2_qos_param_type_dcn4x,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 
 	.power_management_parameters = {

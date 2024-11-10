@@ -1,7 +1,11 @@
 // SPDX-License-Identifier: GPL-2.0
 #define pr_fmt(fmt)				"bcmasp_ethtool: " fmt
 
+<<<<<<< HEAD
 #include <asm-generic/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/ethtool.h>
 #include <linux/netdevice.h>
 #include <linux/platform_device.h>

@@ -294,6 +294,7 @@ int hda_cl_copy_fw(struct snd_sof_dev *sdev, struct hdac_ext_stream *hext_stream
 {
 	struct sof_intel_hda_dev *hda = sdev->pdata->hw_pdata;
 	const struct sof_intel_dsp_desc *chip = hda->desc;
+<<<<<<< HEAD
 	struct sof_intel_hda_stream *hda_stream;
 	unsigned long time_left;
 	unsigned int reg;
@@ -302,6 +303,11 @@ int hda_cl_copy_fw(struct snd_sof_dev *sdev, struct hdac_ext_stream *hext_stream
 	hda_stream = container_of(hext_stream, struct sof_intel_hda_stream,
 				  hext_stream);
 
+=======
+	unsigned int reg;
+	int ret, status;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev_dbg(sdev->dev, "Code loader DMA starting\n");
 
 	ret = hda_cl_trigger(sdev->dev, hext_stream, SNDRV_PCM_TRIGGER_START);
@@ -310,6 +316,7 @@ int hda_cl_copy_fw(struct snd_sof_dev *sdev, struct hdac_ext_stream *hext_stream
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (sdev->pdata->ipc_type == SOF_IPC_TYPE_4) {
 		/* Wait for completion of transfer */
 		time_left = wait_for_completion_timeout(&hda_stream->ioc,
@@ -322,6 +329,8 @@ int hda_cl_copy_fw(struct snd_sof_dev *sdev, struct hdac_ext_stream *hext_stream
 		dev_dbg(sdev->dev, "Code loader DMA done\n");
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev_dbg(sdev->dev, "waiting for FW_ENTERED status\n");
 
 	status = snd_sof_dsp_read_poll_timeout(sdev, HDA_DSP_BAR,

@@ -19,8 +19,19 @@ static inline void tlb_flush_pgtable(struct mmu_gather *tlb,
 
 static inline pgd_t *pgd_alloc(struct mm_struct *mm)
 {
+<<<<<<< HEAD
 	return kmem_cache_alloc(PGT_CACHE(PGD_INDEX_SIZE),
 			pgtable_gfp_flags(mm, GFP_KERNEL));
+=======
+	pgd_t *pgd = kmem_cache_alloc(PGT_CACHE(PGD_INDEX_SIZE),
+			pgtable_gfp_flags(mm, GFP_KERNEL));
+
+#if defined(CONFIG_PPC_8xx) || defined(CONFIG_PPC_BOOK3S_603)
+	memcpy(pgd + USER_PTRS_PER_PGD, swapper_pg_dir + USER_PTRS_PER_PGD,
+	       (MAX_PTRS_PER_PGD - USER_PTRS_PER_PGD) * sizeof(pgd_t));
+#endif
+	return pgd;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline void pgd_free(struct mm_struct *mm, pgd_t *pgd)

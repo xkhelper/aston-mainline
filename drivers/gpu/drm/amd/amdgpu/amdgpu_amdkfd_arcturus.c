@@ -20,7 +20,10 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/fdtable.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/uaccess.h>
 #include <linux/firmware.h>
 #include "amdgpu.h"
@@ -300,7 +303,11 @@ static int suspend_resume_compute_scheduler(struct amdgpu_device *adev, bool sus
 			if (r)
 				goto out;
 		} else {
+<<<<<<< HEAD
 			drm_sched_start(&ring->sched, false);
+=======
+			drm_sched_start(&ring->sched);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -418,5 +425,11 @@ const struct kfd2kgd_calls arcturus_kfd2kgd = {
 	.get_iq_wait_times = kgd_gfx_v9_get_iq_wait_times,
 	.build_grace_period_packet_info = kgd_gfx_v9_build_grace_period_packet_info,
 	.get_cu_occupancy = kgd_gfx_v9_get_cu_occupancy,
+<<<<<<< HEAD
 	.program_trap_handler_settings = kgd_gfx_v9_program_trap_handler_settings
+=======
+	.program_trap_handler_settings = kgd_gfx_v9_program_trap_handler_settings,
+	.hqd_get_pq_addr = kgd_gfx_v9_hqd_get_pq_addr,
+	.hqd_reset = kgd_gfx_v9_hqd_reset
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };

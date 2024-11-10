@@ -9,6 +9,7 @@
 #include <asm/sclp.h>
 #include "boot.h"
 
+<<<<<<< HEAD
 /*
  * The code within this file will be called very early. It may _not_
  * access anything within the bss section, since that is not cleared
@@ -45,6 +46,10 @@ static void print_machine_type(void)
 	sclp_early_printk(mach_str);
 }
 
+=======
+static unsigned long als[] = { FACILITIES_ALS };
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void u16_to_decimal(char *str, u16 val)
 {
 	int div = 1;
@@ -80,8 +85,12 @@ void print_missing_facilities(void)
 			 * z/VM adds a four character prefix.
 			 */
 			if (strlen(als_str) > 70) {
+<<<<<<< HEAD
 				strcat(als_str, "\n");
 				sclp_early_printk(als_str);
+=======
+				boot_printk("%s\n", als_str);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				*als_str = '\0';
 			}
 			u16_to_decimal(val_str, i * BITS_PER_LONG + j);
@@ -89,16 +98,30 @@ void print_missing_facilities(void)
 			first = 0;
 		}
 	}
+<<<<<<< HEAD
 	strcat(als_str, "\n");
 	sclp_early_printk(als_str);
+=======
+	boot_printk("%s\n", als_str);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void facility_mismatch(void)
 {
+<<<<<<< HEAD
 	sclp_early_printk("The Linux kernel requires more recent processor hardware\n");
 	print_machine_type();
 	print_missing_facilities();
 	sclp_early_printk("See Principles of Operations for facility bits\n");
+=======
+	struct cpuid id;
+
+	get_cpu_id(&id);
+	boot_printk("The Linux kernel requires more recent processor hardware\n");
+	boot_printk("Detected machine-type number: %4x\n", id.machine);
+	print_missing_facilities();
+	boot_printk("See Principles of Operations for facility bits\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	disabled_wait();
 }
 

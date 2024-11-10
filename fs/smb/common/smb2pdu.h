@@ -6,7 +6,11 @@
  * Note that, due to trying to use names similar to the protocol specifications,
  * there are many mixed case field names in the structures below.  Although
  * this does not match typical Linux kernel style, it is necessary to be
+<<<<<<< HEAD
  * able to match against the protocol specfication.
+=======
+ * able to match against the protocol specification.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * SMB2 commands
  * Some commands have minimal (wct=0,bcc=0), or uninteresting, responses
@@ -491,7 +495,11 @@ struct smb2_encryption_neg_context {
 	__le16	ContextType; /* 2 */
 	__le16	DataLength;
 	__le32	Reserved;
+<<<<<<< HEAD
 	/* CipherCount usally 2, but can be 3 when AES256-GCM enabled */
+=======
+	/* CipherCount usually 2, but can be 3 when AES256-GCM enabled */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__le16	CipherCount; /* AES128-GCM and AES128-CCM by default */
 	__le16	Ciphers[];
 } __packed;
@@ -1061,7 +1069,11 @@ struct smb2_server_client_notification {
 #define IL_IMPERSONATION	cpu_to_le32(0x00000002)
 #define IL_DELEGATE		cpu_to_le32(0x00000003)
 
+<<<<<<< HEAD
 /* File Attrubutes */
+=======
+/* File Attributes */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define FILE_ATTRIBUTE_READONLY			0x00000001
 #define FILE_ATTRIBUTE_HIDDEN			0x00000002
 #define FILE_ATTRIBUTE_SYSTEM			0x00000004

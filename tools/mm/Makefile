@@ -23,7 +23,11 @@ $(LIBS):
 	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS)
 
 clean:
+<<<<<<< HEAD
 	$(RM) page-types slabinfo page_owner_sort
+=======
+	$(RM) page-types slabinfo page_owner_sort thp_swap_allocator_test
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	make -C $(LIB_DIR) clean
 
 sbindir ?= /usr/sbin

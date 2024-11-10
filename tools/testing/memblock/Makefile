@@ -8,7 +8,11 @@ LDFLAGS += -fsanitize=address -fsanitize=undefined
 TARGETS = main
 TEST_OFILES = tests/alloc_nid_api.o tests/alloc_helpers_api.o tests/alloc_api.o \
 		  tests/basic_api.o tests/common.o tests/alloc_exact_nid_api.o
+<<<<<<< HEAD
 DEP_OFILES = memblock.o lib/slab.o mmzone.o slab.o
+=======
+DEP_OFILES = memblock.o lib/slab.o mmzone.o slab.o cmdline.o
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 OFILES = main.o $(DEP_OFILES) $(TEST_OFILES)
 EXTR_SRC = ../../../mm/memblock.c
 

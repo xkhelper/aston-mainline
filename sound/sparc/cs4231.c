@@ -292,9 +292,15 @@ static void snd_cs4231_dout(struct snd_cs4231 *chip, unsigned char reg,
 	snd_cs4231_ready(chip);
 #ifdef CONFIG_SND_DEBUG
 	if (__cs4231_readb(chip, CS4231U(chip, REGSEL)) & CS4231_INIT)
+<<<<<<< HEAD
 		snd_printdd("out: auto calibration time out - reg = 0x%x, "
 			    "value = 0x%x\n",
 			    reg, value);
+=======
+		dev_dbg(chip->card->dev,
+			"out: auto calibration time out - reg = 0x%x, value = 0x%x\n",
+			reg, value);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	__cs4231_writeb(chip, chip->mce_bit | reg, CS4231U(chip, REGSEL));
 	wmb();
@@ -325,8 +331,14 @@ static unsigned char snd_cs4231_in(struct snd_cs4231 *chip, unsigned char reg)
 	snd_cs4231_ready(chip);
 #ifdef CONFIG_SND_DEBUG
 	if (__cs4231_readb(chip, CS4231U(chip, REGSEL)) & CS4231_INIT)
+<<<<<<< HEAD
 		snd_printdd("in: auto calibration time out - reg = 0x%x\n",
 			    reg);
+=======
+		dev_dbg(chip->card->dev,
+			"in: auto calibration time out - reg = 0x%x\n",
+			reg);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	__cs4231_writeb(chip, chip->mce_bit | reg, CS4231U(chip, REGSEL));
 	mb();
@@ -363,14 +375,25 @@ static void snd_cs4231_mce_up(struct snd_cs4231 *chip)
 	snd_cs4231_ready(chip);
 #ifdef CONFIG_SND_DEBUG
 	if (__cs4231_readb(chip, CS4231U(chip, REGSEL)) & CS4231_INIT)
+<<<<<<< HEAD
 		snd_printdd("mce_up - auto calibration time out (0)\n");
+=======
+		dev_dbg(chip->card->dev,
+			"mce_up - auto calibration time out (0)\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	chip->mce_bit |= CS4231_MCE;
 	timeout = __cs4231_readb(chip, CS4231U(chip, REGSEL));
 	if (timeout == 0x80)
+<<<<<<< HEAD
 		snd_printdd("mce_up [%p]: serious init problem - "
 			    "codec still busy\n",
 			    chip->port);
+=======
+		dev_dbg(chip->card->dev,
+			"mce_up [%p]: serious init problem - codec still busy\n",
+			chip->port);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!(timeout & CS4231_MCE))
 		__cs4231_writeb(chip, chip->mce_bit | (timeout & 0x1f),
 				CS4231U(chip, REGSEL));
@@ -386,16 +409,28 @@ static void snd_cs4231_mce_down(struct snd_cs4231 *chip)
 	spin_lock_irqsave(&chip->lock, flags);
 #ifdef CONFIG_SND_DEBUG
 	if (__cs4231_readb(chip, CS4231U(chip, REGSEL)) & CS4231_INIT)
+<<<<<<< HEAD
 		snd_printdd("mce_down [%p] - auto calibration time out (0)\n",
 			    CS4231U(chip, REGSEL));
+=======
+		dev_dbg(chip->card->dev,
+			"mce_down [%p] - auto calibration time out (0)\n",
+			CS4231U(chip, REGSEL));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	chip->mce_bit &= ~CS4231_MCE;
 	reg = __cs4231_readb(chip, CS4231U(chip, REGSEL));
 	__cs4231_writeb(chip, chip->mce_bit | (reg & 0x1f),
 			CS4231U(chip, REGSEL));
 	if (reg == 0x80)
+<<<<<<< HEAD
 		snd_printdd("mce_down [%p]: serious init problem "
 			    "- codec still busy\n", chip->port);
+=======
+		dev_dbg(chip->card->dev,
+			"mce_down [%p]: serious init problem - codec still busy\n",
+			chip->port);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if ((reg & CS4231_MCE) == 0) {
 		spin_unlock_irqrestore(&chip->lock, flags);
 		return;
@@ -415,8 +450,13 @@ static void snd_cs4231_mce_down(struct snd_cs4231 *chip)
 	spin_unlock_irqrestore(&chip->lock, flags);
 
 	if (reg)
+<<<<<<< HEAD
 		snd_printk(KERN_ERR
 			   "mce_down - auto calibration time out (2)\n");
+=======
+		dev_err(chip->card->dev,
+			"mce_down - auto calibration time out (2)\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void snd_cs4231_advance_dma(struct cs4231_dma_control *dma_cont,
@@ -710,7 +750,11 @@ static void snd_cs4231_init(struct snd_cs4231 *chip)
 	snd_cs4231_mce_down(chip);
 
 #ifdef SNDRV_DEBUG_MCE
+<<<<<<< HEAD
 	snd_printdd("init: (1)\n");
+=======
+	pr_debug("init: (1)\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	snd_cs4231_mce_up(chip);
 	spin_lock_irqsave(&chip->lock, flags);
@@ -725,7 +769,11 @@ static void snd_cs4231_init(struct snd_cs4231 *chip)
 	snd_cs4231_mce_down(chip);
 
 #ifdef SNDRV_DEBUG_MCE
+<<<<<<< HEAD
 	snd_printdd("init: (2)\n");
+=======
+	pr_debug("init: (2)\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 	snd_cs4231_mce_up(chip);
@@ -736,8 +784,13 @@ static void snd_cs4231_init(struct snd_cs4231 *chip)
 	snd_cs4231_mce_down(chip);
 
 #ifdef SNDRV_DEBUG_MCE
+<<<<<<< HEAD
 	snd_printdd("init: (3) - afei = 0x%x\n",
 		    chip->image[CS4231_ALT_FEATURE_1]);
+=======
+	pr_debug("init: (3) - afei = 0x%x\n",
+		 chip->image[CS4231_ALT_FEATURE_1]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 	spin_lock_irqsave(&chip->lock, flags);
@@ -753,7 +806,11 @@ static void snd_cs4231_init(struct snd_cs4231 *chip)
 	snd_cs4231_mce_down(chip);
 
 #ifdef SNDRV_DEBUG_MCE
+<<<<<<< HEAD
 	snd_printdd("init: (4)\n");
+=======
+	pr_debug("init: (4)\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 	snd_cs4231_mce_up(chip);
@@ -763,7 +820,11 @@ static void snd_cs4231_init(struct snd_cs4231 *chip)
 	snd_cs4231_mce_down(chip);
 
 #ifdef SNDRV_DEBUG_MCE
+<<<<<<< HEAD
 	snd_printdd("init: (5)\n");
+=======
+	pr_debug("init: (5)\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 }
 
@@ -1038,7 +1099,12 @@ static int snd_cs4231_probe(struct snd_cs4231 *chip)
 				break;	/* this is valid value */
 		}
 	}
+<<<<<<< HEAD
 	snd_printdd("cs4231: port = %p, id = 0x%x\n", chip->port, id);
+=======
+	dev_dbg(chip->card->dev,
+		"cs4231: port = %p, id = 0x%x\n", chip->port, id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (id != 0x0a)
 		return -ENODEV;	/* no valid device found */
 
@@ -1794,7 +1860,12 @@ static int snd_cs4231_sbus_create(struct snd_card *card,
 	chip->port = of_ioremap(&op->resource[0], 0,
 				chip->regs_size, "cs4231");
 	if (!chip->port) {
+<<<<<<< HEAD
 		snd_printdd("cs4231-%d: Unable to map chip registers.\n", dev);
+=======
+		dev_dbg(chip->card->dev,
+			"cs4231-%d: Unable to map chip registers.\n", dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EIO;
 	}
 
@@ -1815,8 +1886,14 @@ static int snd_cs4231_sbus_create(struct snd_card *card,
 
 	if (request_irq(op->archdata.irqs[0], snd_cs4231_sbus_interrupt,
 			IRQF_SHARED, "cs4231", chip)) {
+<<<<<<< HEAD
 		snd_printdd("cs4231-%d: Unable to grab SBUS IRQ %d\n",
 			    dev, op->archdata.irqs[0]);
+=======
+		dev_dbg(chip->card->dev,
+			"cs4231-%d: Unable to grab SBUS IRQ %d\n",
+			dev, op->archdata.irqs[0]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		snd_cs4231_sbus_free(chip);
 		return -EBUSY;
 	}
@@ -1986,32 +2063,60 @@ static int snd_cs4231_ebus_create(struct snd_card *card,
 	if (!chip->port || !chip->p_dma.ebus_info.regs ||
 	    !chip->c_dma.ebus_info.regs) {
 		snd_cs4231_ebus_free(chip);
+<<<<<<< HEAD
 		snd_printdd("cs4231-%d: Unable to map chip registers.\n", dev);
+=======
+		dev_dbg(chip->card->dev,
+			"cs4231-%d: Unable to map chip registers.\n", dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EIO;
 	}
 
 	if (ebus_dma_register(&chip->c_dma.ebus_info)) {
 		snd_cs4231_ebus_free(chip);
+<<<<<<< HEAD
 		snd_printdd("cs4231-%d: Unable to register EBUS capture DMA\n",
 			    dev);
+=======
+		dev_dbg(chip->card->dev,
+			"cs4231-%d: Unable to register EBUS capture DMA\n",
+			dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 	}
 	if (ebus_dma_irq_enable(&chip->c_dma.ebus_info, 1)) {
 		snd_cs4231_ebus_free(chip);
+<<<<<<< HEAD
 		snd_printdd("cs4231-%d: Unable to enable EBUS capture IRQ\n",
 			    dev);
+=======
+		dev_dbg(chip->card->dev,
+			"cs4231-%d: Unable to enable EBUS capture IRQ\n",
+			dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 	}
 
 	if (ebus_dma_register(&chip->p_dma.ebus_info)) {
 		snd_cs4231_ebus_free(chip);
+<<<<<<< HEAD
 		snd_printdd("cs4231-%d: Unable to register EBUS play DMA\n",
 			    dev);
+=======
+		dev_dbg(chip->card->dev,
+			"cs4231-%d: Unable to register EBUS play DMA\n",
+			dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 	}
 	if (ebus_dma_irq_enable(&chip->p_dma.ebus_info, 1)) {
 		snd_cs4231_ebus_free(chip);
+<<<<<<< HEAD
 		snd_printdd("cs4231-%d: Unable to enable EBUS play IRQ\n", dev);
+=======
+		dev_dbg(chip->card->dev,
+			"cs4231-%d: Unable to enable EBUS play IRQ\n", dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 	}
 

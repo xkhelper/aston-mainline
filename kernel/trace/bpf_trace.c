@@ -24,7 +24,10 @@
 #include <linux/key.h>
 #include <linux/verification.h>
 #include <linux/namei.h>
+<<<<<<< HEAD
 #include <linux/fileattr.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <net/bpf_sk_storage.h>
 
@@ -798,6 +801,7 @@ const struct bpf_func_proto bpf_task_pt_regs_proto = {
 	.ret_btf_id	= &bpf_task_pt_regs_ids[0],
 };
 
+<<<<<<< HEAD
 BPF_CALL_2(bpf_current_task_under_cgroup, struct bpf_map *, map, u32, idx)
 {
 	struct bpf_array *array = container_of(map, struct bpf_array, map);
@@ -821,6 +825,8 @@ static const struct bpf_func_proto bpf_current_task_under_cgroup_proto = {
 	.arg2_type      = ARG_ANYTHING,
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct send_signal_irq_work {
 	struct irq_work irq_work;
 	struct task_struct *task;
@@ -1226,7 +1232,12 @@ static const struct bpf_func_proto bpf_get_func_arg_proto = {
 	.ret_type	= RET_INTEGER,
 	.arg1_type	= ARG_PTR_TO_CTX,
 	.arg2_type	= ARG_ANYTHING,
+<<<<<<< HEAD
 	.arg3_type	= ARG_PTR_TO_LONG,
+=======
+	.arg3_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
+	.arg3_size	= sizeof(u64),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 BPF_CALL_2(get_func_ret, void *, ctx, u64 *, value)
@@ -1242,7 +1253,12 @@ static const struct bpf_func_proto bpf_get_func_ret_proto = {
 	.func		= get_func_ret,
 	.ret_type	= RET_INTEGER,
 	.arg1_type	= ARG_PTR_TO_CTX,
+<<<<<<< HEAD
 	.arg2_type	= ARG_PTR_TO_LONG,
+=======
+	.arg2_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
+	.arg2_size	= sizeof(u64),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 BPF_CALL_1(get_func_arg_cnt, void *, ctx)
@@ -1439,6 +1455,7 @@ static int __init bpf_key_sig_kfuncs_init(void)
 late_initcall(bpf_key_sig_kfuncs_init);
 #endif /* CONFIG_KEYS */
 
+<<<<<<< HEAD
 /* filesystem kfuncs */
 __bpf_kfunc_start_defs();
 
@@ -1506,6 +1523,8 @@ static int __init bpf_fs_kfuncs_init(void)
 
 late_initcall(bpf_fs_kfuncs_init);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct bpf_func_proto *
 bpf_tracing_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
 {
@@ -1548,8 +1567,11 @@ bpf_tracing_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
 		return &bpf_get_numa_node_id_proto;
 	case BPF_FUNC_perf_event_read:
 		return &bpf_perf_event_read_proto;
+<<<<<<< HEAD
 	case BPF_FUNC_current_task_under_cgroup:
 		return &bpf_current_task_under_cgroup_proto;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case BPF_FUNC_get_prandom_u32:
 		return &bpf_get_prandom_u32_proto;
 	case BPF_FUNC_probe_write_user:
@@ -1578,6 +1600,11 @@ bpf_tracing_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
 		return &bpf_cgrp_storage_get_proto;
 	case BPF_FUNC_cgrp_storage_delete:
 		return &bpf_cgrp_storage_delete_proto;
+<<<<<<< HEAD
+=======
+	case BPF_FUNC_current_task_under_cgroup:
+		return &bpf_current_task_under_cgroup_proto;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	case BPF_FUNC_send_signal:
 		return &bpf_send_signal_proto;
@@ -1598,7 +1625,12 @@ bpf_tracing_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
 	case BPF_FUNC_jiffies64:
 		return &bpf_jiffies64_proto;
 	case BPF_FUNC_get_task_stack:
+<<<<<<< HEAD
 		return &bpf_get_task_stack_proto;
+=======
+		return prog->sleepable ? &bpf_get_task_stack_sleepable_proto
+				       : &bpf_get_task_stack_proto;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case BPF_FUNC_copy_from_user:
 		return &bpf_copy_from_user_proto;
 	case BPF_FUNC_copy_from_user_task:
@@ -1654,7 +1686,11 @@ kprobe_prog_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
 	case BPF_FUNC_get_stackid:
 		return &bpf_get_stackid_proto;
 	case BPF_FUNC_get_stack:
+<<<<<<< HEAD
 		return &bpf_get_stack_proto;
+=======
+		return prog->sleepable ? &bpf_get_stack_sleepable_proto : &bpf_get_stack_proto;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_BPF_KPROBE_OVERRIDE
 	case BPF_FUNC_override_return:
 		return &bpf_override_return_proto;
@@ -2304,8 +2340,11 @@ void perf_event_detach_bpf_prog(struct perf_event *event)
 
 	old_array = bpf_event_rcu_dereference(event->tp_event->prog_array);
 	ret = bpf_prog_array_copy(old_array, event->prog, NULL, 0, &new_array);
+<<<<<<< HEAD
 	if (ret == -ENOENT)
 		goto unlock;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret < 0) {
 		bpf_prog_array_delete_safe(old_array, event->prog);
 	} else {
@@ -3160,6 +3199,10 @@ struct bpf_uprobe {
 	loff_t offset;
 	unsigned long ref_ctr_offset;
 	u64 cookie;
+<<<<<<< HEAD
+=======
+	struct uprobe *uprobe;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct uprobe_consumer consumer;
 };
 
@@ -3178,6 +3221,7 @@ struct bpf_uprobe_multi_run_ctx {
 	struct bpf_uprobe *uprobe;
 };
 
+<<<<<<< HEAD
 static void bpf_uprobe_unregister(struct path *path, struct bpf_uprobe *uprobes,
 				  u32 cnt)
 {
@@ -3187,6 +3231,17 @@ static void bpf_uprobe_unregister(struct path *path, struct bpf_uprobe *uprobes,
 		uprobe_unregister(d_real_inode(path->dentry), uprobes[i].offset,
 				  &uprobes[i].consumer);
 	}
+=======
+static void bpf_uprobe_unregister(struct bpf_uprobe *uprobes, u32 cnt)
+{
+	u32 i;
+
+	for (i = 0; i < cnt; i++)
+		uprobe_unregister_nosync(uprobes[i].uprobe, &uprobes[i].consumer);
+
+	if (cnt)
+		uprobe_unregister_sync();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void bpf_uprobe_multi_link_release(struct bpf_link *link)
@@ -3194,7 +3249,11 @@ static void bpf_uprobe_multi_link_release(struct bpf_link *link)
 	struct bpf_uprobe_multi_link *umulti_link;
 
 	umulti_link = container_of(link, struct bpf_uprobe_multi_link, link);
+<<<<<<< HEAD
 	bpf_uprobe_unregister(&umulti_link->path, umulti_link->uprobes, umulti_link->cnt);
+=======
+	bpf_uprobe_unregister(umulti_link->uprobes, umulti_link->cnt);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (umulti_link->task)
 		put_task_struct(umulti_link->task);
 	path_put(&umulti_link->path);
@@ -3220,7 +3279,12 @@ static int bpf_uprobe_multi_link_fill_link_info(const struct bpf_link *link,
 	struct bpf_uprobe_multi_link *umulti_link;
 	u32 ucount = info->uprobe_multi.count;
 	int err = 0, i;
+<<<<<<< HEAD
 	long left;
+=======
+	char *p, *buf;
+	long left = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!upath ^ !upath_size)
 		return -EINVAL;
@@ -3234,6 +3298,7 @@ static int bpf_uprobe_multi_link_fill_link_info(const struct bpf_link *link,
 	info->uprobe_multi.pid = umulti_link->task ?
 				 task_pid_nr_ns(umulti_link->task, task_active_pid_ns(current)) : 0;
 
+<<<<<<< HEAD
 	if (upath) {
 		char *p, *buf;
 
@@ -3254,6 +3319,25 @@ static int bpf_uprobe_multi_link_fill_link_info(const struct bpf_link *link,
 			return -EFAULT;
 		info->uprobe_multi.path_size = upath_size;
 	}
+=======
+	upath_size = upath_size ? min_t(u32, upath_size, PATH_MAX) : PATH_MAX;
+	buf = kmalloc(upath_size, GFP_KERNEL);
+	if (!buf)
+		return -ENOMEM;
+	p = d_path(&umulti_link->path, buf, upath_size);
+	if (IS_ERR(p)) {
+		kfree(buf);
+		return PTR_ERR(p);
+	}
+	upath_size = buf + upath_size - p;
+
+	if (upath)
+		left = copy_to_user(upath, p, upath_size);
+	kfree(buf);
+	if (left)
+		return -EFAULT;
+	info->uprobe_multi.path_size = upath_size;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!uoffsets && !ucookies && !uref_ctr_offsets)
 		return 0;
@@ -3298,7 +3382,11 @@ static int uprobe_prog_run(struct bpf_uprobe *uprobe,
 	struct bpf_run_ctx *old_run_ctx;
 	int err = 0;
 
+<<<<<<< HEAD
 	if (link->task && current->mm != link->task->mm)
+=======
+	if (link->task && !same_thread_group(current, link->task))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	if (sleepable)
@@ -3322,8 +3410,12 @@ static int uprobe_prog_run(struct bpf_uprobe *uprobe,
 }
 
 static bool
+<<<<<<< HEAD
 uprobe_multi_link_filter(struct uprobe_consumer *con, enum uprobe_filter_ctx ctx,
 			 struct mm_struct *mm)
+=======
+uprobe_multi_link_filter(struct uprobe_consumer *con, struct mm_struct *mm)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct bpf_uprobe *uprobe;
 
@@ -3480,6 +3572,7 @@ int bpf_uprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
 		      &bpf_uprobe_multi_link_lops, prog);
 
 	for (i = 0; i < cnt; i++) {
+<<<<<<< HEAD
 		err = uprobe_register_refctr(d_real_inode(link->path.dentry),
 					     uprobes[i].offset,
 					     uprobes[i].ref_ctr_offset,
@@ -3487,15 +3580,35 @@ int bpf_uprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
 		if (err) {
 			bpf_uprobe_unregister(&path, uprobes, i);
 			goto error_free;
+=======
+		uprobes[i].uprobe = uprobe_register(d_real_inode(link->path.dentry),
+						    uprobes[i].offset,
+						    uprobes[i].ref_ctr_offset,
+						    &uprobes[i].consumer);
+		if (IS_ERR(uprobes[i].uprobe)) {
+			err = PTR_ERR(uprobes[i].uprobe);
+			link->cnt = i;
+			goto error_unregister;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
 	err = bpf_link_prime(&link->link, &link_primer);
 	if (err)
+<<<<<<< HEAD
 		goto error_free;
 
 	return bpf_link_settle(&link_primer);
 
+=======
+		goto error_unregister;
+
+	return bpf_link_settle(&link_primer);
+
+error_unregister:
+	bpf_uprobe_unregister(uprobes, link->cnt);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 error_free:
 	kvfree(uprobes);
 	kfree(link);

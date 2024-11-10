@@ -109,7 +109,10 @@ struct nvkm_device_chip {
 };
 
 struct nvkm_device *nvkm_device_find(u64 name);
+<<<<<<< HEAD
 int nvkm_device_list(u64 *name, int size);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* privileged register interface accessor macros */
 #define nvkm_rd08(d,a) ioread8((d)->pri + (a))

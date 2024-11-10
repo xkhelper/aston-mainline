@@ -432,6 +432,7 @@ static enum mod_hdcp_status authenticated_dp(struct mod_hdcp *hdcp,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	if (!mod_hdcp_execute_and_set(mod_hdcp_read_bstatus,
 			&input->bstatus_read, &status,
 			hdcp, "bstatus_read"))
@@ -444,6 +445,20 @@ static enum mod_hdcp_status authenticated_dp(struct mod_hdcp *hdcp,
 			&input->reauth_request_check, &status,
 			hdcp, "reauth_request_check"))
 		goto out;
+=======
+	mod_hdcp_execute_and_set(mod_hdcp_read_bstatus,
+			&input->bstatus_read, &status,
+			hdcp, "bstatus_read");
+
+	mod_hdcp_execute_and_set(check_link_integrity_dp,
+			&input->link_integrity_check, &status,
+			hdcp, "link_integrity_check");
+
+	mod_hdcp_execute_and_set(check_no_reauthentication_request_dp,
+			&input->reauth_request_check, &status,
+			hdcp, "reauth_request_check");
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out:
 	return status;
 }

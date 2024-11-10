@@ -97,9 +97,15 @@
 	status = "okay";
 	clock-frequency = <400000>;
 
+<<<<<<< HEAD
 	stlm75@49 {
 		status = "okay";
 		compatible = "lm75";
+=======
+	temperature-sensor@49 {
+		status = "okay";
+		compatible = "st,stlm75";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		reg = <0x49>;
 	};
 

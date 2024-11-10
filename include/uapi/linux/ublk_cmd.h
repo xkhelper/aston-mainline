@@ -175,7 +175,17 @@
 /* use ioctl encoding for uring command */
 #define UBLK_F_CMD_IOCTL_ENCODE	(1UL << 6)
 
+<<<<<<< HEAD
 /* Copy between request and user buffer by pread()/pwrite() */
+=======
+/*
+ *  Copy between request and user buffer by pread()/pwrite()
+ *
+ *  Not available for UBLK_F_UNPRIVILEGED_DEV, otherwise userspace may
+ *  deceive us by not filling request buffer, then kernel uninitialized
+ *  data may be leaked.
+ */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define UBLK_F_USER_COPY	(1UL << 7)
 
 /*

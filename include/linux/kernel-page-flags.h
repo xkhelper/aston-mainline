@@ -10,12 +10,19 @@
  */
 #define KPF_RESERVED		32
 #define KPF_MLOCKED		33
+<<<<<<< HEAD
 #define KPF_MAPPEDTODISK	34
+=======
+#define KPF_OWNER_2		34
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define KPF_PRIVATE		35
 #define KPF_PRIVATE_2		36
 #define KPF_OWNER_PRIVATE	37
 #define KPF_ARCH		38
+<<<<<<< HEAD
 #define KPF_UNCACHED		39
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define KPF_SOFTDIRTY		40
 #define KPF_ARCH_2		41
 #define KPF_ARCH_3		42

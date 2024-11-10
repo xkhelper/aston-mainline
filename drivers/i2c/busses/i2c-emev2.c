@@ -67,7 +67,10 @@ struct em_i2c_device {
 	void __iomem *base;
 	struct i2c_adapter adap;
 	struct completion msg_done;
+<<<<<<< HEAD
 	struct clk *sclk;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct i2c_client *slave;
 	int irq;
 };
@@ -361,6 +364,10 @@ static const struct i2c_algorithm em_i2c_algo = {
 static int em_i2c_probe(struct platform_device *pdev)
 {
 	struct em_i2c_device *priv;
+<<<<<<< HEAD
+=======
+	struct clk *sclk;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
@@ -373,6 +380,7 @@ static int em_i2c_probe(struct platform_device *pdev)
 
 	strscpy(priv->adap.name, "EMEV2 I2C", sizeof(priv->adap.name));
 
+<<<<<<< HEAD
 	priv->sclk = devm_clk_get(&pdev->dev, "sclk");
 	if (IS_ERR(priv->sclk))
 		return PTR_ERR(priv->sclk);
@@ -380,6 +388,11 @@ static int em_i2c_probe(struct platform_device *pdev)
 	ret = clk_prepare_enable(priv->sclk);
 	if (ret)
 		return ret;
+=======
+	sclk = devm_clk_get_enabled(&pdev->dev, "sclk");
+	if (IS_ERR(sclk))
+		return PTR_ERR(sclk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	priv->adap.timeout = msecs_to_jiffies(100);
 	priv->adap.retries = 5;
@@ -397,6 +410,7 @@ static int em_i2c_probe(struct platform_device *pdev)
 
 	ret = platform_get_irq(pdev, 0);
 	if (ret < 0)
+<<<<<<< HEAD
 		goto err_clk;
 	priv->irq = ret;
 	ret = devm_request_irq(&pdev->dev, priv->irq, em_i2c_irq_handler, 0,
@@ -408,15 +422,31 @@ static int em_i2c_probe(struct platform_device *pdev)
 
 	if (ret)
 		goto err_clk;
+=======
+		return ret;
+	priv->irq = ret;
+
+	ret = devm_request_irq(&pdev->dev, priv->irq, em_i2c_irq_handler, 0,
+				"em_i2c", priv);
+	if (ret)
+		return ret;
+
+	ret = i2c_add_adapter(&priv->adap);
+	if (ret)
+		return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dev_info(&pdev->dev, "Added i2c controller %d, irq %d\n", priv->adap.nr,
 		 priv->irq);
 
 	return 0;
+<<<<<<< HEAD
 
 err_clk:
 	clk_disable_unprepare(priv->sclk);
 	return ret;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void em_i2c_remove(struct platform_device *dev)
@@ -424,7 +454,10 @@ static void em_i2c_remove(struct platform_device *dev)
 	struct em_i2c_device *priv = platform_get_drvdata(dev);
 
 	i2c_del_adapter(&priv->adap);
+<<<<<<< HEAD
 	clk_disable_unprepare(priv->sclk);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct of_device_id em_i2c_ids[] = {

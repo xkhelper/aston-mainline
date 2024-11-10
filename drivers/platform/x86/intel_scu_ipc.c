@@ -23,7 +23,11 @@
 #include <linux/module.h>
 #include <linux/slab.h>
 
+<<<<<<< HEAD
 #include <asm/intel_scu_ipc.h>
+=======
+#include <linux/platform_data/x86/intel_scu_ipc.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* IPC defines the following message types */
 #define IPCMSG_PCNTRL         0xff /* Power controller unit read/write */

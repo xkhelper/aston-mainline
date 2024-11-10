@@ -19,6 +19,10 @@ static inline u64 paravirt_steal_clock(int cpu)
 
 int __init pv_ipi_init(void);
 int __init pv_time_init(void);
+<<<<<<< HEAD
+=======
+int __init pv_spinlock_init(void);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #else
 
@@ -31,5 +35,14 @@ static inline int pv_time_init(void)
 {
 	return 0;
 }
+<<<<<<< HEAD
+=======
+
+static inline int pv_spinlock_init(void)
+{
+	return 0;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif // CONFIG_PARAVIRT
 #endif

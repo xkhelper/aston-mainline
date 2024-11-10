@@ -37,6 +37,7 @@ static __always_inline const struct vdso_rng_data *__arch_get_vdso_rng_data(void
 	return &__vdso_rng_data;
 }
 
+<<<<<<< HEAD
 /**
  * __arch_chacha20_blocks_nostack - Generate ChaCha20 stream without using the stack.
  * @dst_bytes:	Destination buffer to hold @nblocks * 64 bytes of output.
@@ -50,6 +51,8 @@ static __always_inline const struct vdso_rng_data *__arch_get_vdso_rng_data(void
  */
 extern void __arch_chacha20_blocks_nostack(u8 *dst_bytes, const u32 *key, u32 *counter, size_t nblocks);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* !__ASSEMBLY__ */
 
 #endif /* __ASM_VDSO_GETRANDOM_H */

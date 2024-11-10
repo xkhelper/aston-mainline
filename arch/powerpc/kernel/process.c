@@ -72,8 +72,11 @@
 #define TM_DEBUG(x...) do { } while(0)
 #endif
 
+<<<<<<< HEAD
 extern unsigned long _get_SP(void);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 /*
  * Are we running in "Suspend disabled" mode? If so we have to block any
@@ -2177,10 +2180,17 @@ static inline int valid_irq_stack(unsigned long sp, struct task_struct *p,
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline int valid_emergency_stack(unsigned long sp, struct task_struct *p,
 					unsigned long nbytes)
 {
 #ifdef CONFIG_PPC64
+=======
+#ifdef CONFIG_PPC64
+static inline int valid_emergency_stack(unsigned long sp, struct task_struct *p,
+					unsigned long nbytes)
+{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long stack_page;
 	unsigned long cpu = task_cpu(p);
 
@@ -2208,10 +2218,33 @@ static inline int valid_emergency_stack(unsigned long sp, struct task_struct *p,
 	if (sp >= stack_page && sp <= stack_page + THREAD_SIZE - nbytes)
 		return 1;
 # endif
+<<<<<<< HEAD
 #endif
 
 	return 0;
 }
+=======
+
+	return 0;
+}
+#else
+static inline int valid_emergency_stack(unsigned long sp, struct task_struct *p,
+					unsigned long nbytes)
+{
+	unsigned long stack_page;
+	unsigned long cpu = task_cpu(p);
+
+	if (!IS_ENABLED(CONFIG_VMAP_STACK))
+		return 0;
+
+	stack_page = (unsigned long)emergency_ctx[cpu] - THREAD_SIZE;
+	if (sp >= stack_page && sp <= stack_page + THREAD_SIZE - nbytes)
+		return 1;
+
+	return 0;
+}
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * validate the stack frame of a particular minimum size, used for when we are

@@ -12,6 +12,7 @@
 #include <linux/memblock.h>
 #include <linux/module.h>
 #include <linux/of.h>
+<<<<<<< HEAD
 
 #include <asm/sections.h>
 
@@ -22,6 +23,14 @@ static int cpu_to_node_map[NR_CPUS] = { [0 ... NR_CPUS-1] = NUMA_NO_NODE };
 
 static int numa_distance_cnt;
 static u8 *numa_distance;
+=======
+#include <linux/numa_memblks.h>
+
+#include <asm/sections.h>
+
+static int cpu_to_node_map[NR_CPUS] = { [0 ... NR_CPUS-1] = NUMA_NO_NODE };
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool numa_off;
 
 static __init int numa_parse_early_param(char *opt)
@@ -30,6 +39,11 @@ static __init int numa_parse_early_param(char *opt)
 		return -EINVAL;
 	if (str_has_prefix(opt, "off"))
 		numa_off = true;
+<<<<<<< HEAD
+=======
+	if (!strncmp(opt, "fake=", 5))
+		return numa_emu_cmdline(opt + 5);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -61,6 +75,10 @@ EXPORT_SYMBOL(cpumask_of_node);
 
 #endif
 
+<<<<<<< HEAD
+=======
+#ifndef CONFIG_NUMA_EMU
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void numa_update_cpu(unsigned int cpu, bool remove)
 {
 	int nid = cpu_to_node(cpu);
@@ -83,6 +101,10 @@ void numa_remove_cpu(unsigned int cpu)
 {
 	numa_update_cpu(cpu, true);
 }
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void numa_clear_node(unsigned int cpu)
 {
@@ -144,7 +166,11 @@ void __init early_map_cpu_to_node(unsigned int cpu, int nid)
 unsigned long __per_cpu_offset[NR_CPUS] __read_mostly;
 EXPORT_SYMBOL(__per_cpu_offset);
 
+<<<<<<< HEAD
 int __init early_cpu_to_node(int cpu)
+=======
+int early_cpu_to_node(int cpu)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return cpu_to_node_map[cpu];
 }
@@ -189,6 +215,7 @@ void __init setup_per_cpu_areas(void)
 }
 #endif
 
+<<<<<<< HEAD
 /**
  * numa_add_memblk() - Set node id to memblk
  * @nid: NUMA node ID of the new memblk
@@ -213,11 +240,14 @@ int __init numa_add_memblk(int nid, u64 start, u64 end)
 	return ret;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Initialize NODE_DATA for a node on the local memory
  */
 static void __init setup_node_data(int nid, u64 start_pfn, u64 end_pfn)
 {
+<<<<<<< HEAD
 	const size_t nd_size = roundup(sizeof(pg_data_t), SMP_CACHE_BYTES);
 	u64 nd_pa;
 	void *nd;
@@ -242,11 +272,19 @@ static void __init setup_node_data(int nid, u64 start_pfn, u64 end_pfn)
 
 	node_data[nid] = nd;
 	memset(NODE_DATA(nid), 0, sizeof(pg_data_t));
+=======
+	if (start_pfn >= end_pfn)
+		pr_info("Initmem setup node %d [<memory-less node>]\n", nid);
+
+	alloc_node_data(nid);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	NODE_DATA(nid)->node_id = nid;
 	NODE_DATA(nid)->node_start_pfn = start_pfn;
 	NODE_DATA(nid)->node_spanned_pages = end_pfn - start_pfn;
 }
 
+<<<<<<< HEAD
 /*
  * numa_free_distance
  *
@@ -357,6 +395,11 @@ static int __init numa_register_nodes(void)
 			return -EINVAL;
 		}
 	}
+=======
+static int __init numa_register_nodes(void)
+{
+	int nid;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Finally register nodes. */
 	for_each_node_mask(nid, numa_nodes_parsed) {
@@ -381,11 +424,15 @@ static int __init numa_init(int (*init_func)(void))
 	nodes_clear(node_possible_map);
 	nodes_clear(node_online_map);
 
+<<<<<<< HEAD
 	ret = numa_alloc_distance();
 	if (ret < 0)
 		return ret;
 
 	ret = init_func();
+=======
+	ret = numa_memblks_init(init_func, /* memblock_force_top_down */ false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret < 0)
 		goto out_free_distance;
 
@@ -403,7 +450,11 @@ static int __init numa_init(int (*init_func)(void))
 
 	return 0;
 out_free_distance:
+<<<<<<< HEAD
 	numa_free_distance();
+=======
+	numa_reset_distance();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -433,6 +484,10 @@ static int __init dummy_numa_init(void)
 		pr_err("NUMA init failed\n");
 		return ret;
 	}
+<<<<<<< HEAD
+=======
+	node_set(0, numa_nodes_parsed);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	numa_off = true;
 	return 0;
@@ -475,3 +530,57 @@ void __init arch_numa_init(void)
 
 	numa_init(dummy_numa_init);
 }
+<<<<<<< HEAD
+=======
+
+#ifdef CONFIG_NUMA_EMU
+void __init numa_emu_update_cpu_to_node(int *emu_nid_to_phys,
+					unsigned int nr_emu_nids)
+{
+	int i, j;
+
+	/*
+	 * Transform cpu_to_node_map table to use emulated nids by
+	 * reverse-mapping phys_nid.  The maps should always exist but fall
+	 * back to zero just in case.
+	 */
+	for (i = 0; i < ARRAY_SIZE(cpu_to_node_map); i++) {
+		if (cpu_to_node_map[i] == NUMA_NO_NODE)
+			continue;
+		for (j = 0; j < nr_emu_nids; j++)
+			if (cpu_to_node_map[i] == emu_nid_to_phys[j])
+				break;
+		cpu_to_node_map[i] = j < nr_emu_nids ? j : 0;
+	}
+}
+
+u64 __init numa_emu_dma_end(void)
+{
+	return memblock_start_of_DRAM() + SZ_4G;
+}
+
+void debug_cpumask_set_cpu(unsigned int cpu, int node, bool enable)
+{
+	struct cpumask *mask;
+
+	if (node == NUMA_NO_NODE)
+		return;
+
+	mask = node_to_cpumask_map[node];
+	if (!cpumask_available(mask)) {
+		pr_err("node_to_cpumask_map[%i] NULL\n", node);
+		dump_stack();
+		return;
+	}
+
+	if (enable)
+		cpumask_set_cpu(cpu, mask);
+	else
+		cpumask_clear_cpu(cpu, mask);
+
+	pr_debug("%s cpu %d node %d: mask now %*pbl\n",
+		 enable ? "numa_add_cpu" : "numa_remove_cpu",
+		 cpu, node, cpumask_pr_args(mask));
+}
+#endif /* CONFIG_NUMA_EMU */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -14,7 +14,11 @@
  *      3) V4L2_CID_JPEG_ACTIVE_MARKER
  */
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/clk.h>
 #include <linux/err.h>
 #include <linux/interrupt.h>

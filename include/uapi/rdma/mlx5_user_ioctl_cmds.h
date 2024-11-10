@@ -274,6 +274,13 @@ enum mlx5_ib_create_cq_attrs {
 	MLX5_IB_ATTR_CREATE_CQ_UAR_INDEX = UVERBS_ID_DRIVER_NS_WITH_UHW,
 };
 
+<<<<<<< HEAD
+=======
+enum mlx5_ib_reg_dmabuf_mr_attrs {
+	MLX5_IB_ATTR_REG_DMABUF_MR_ACCESS_FLAGS = (1U << UVERBS_ID_NS_SHIFT),
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define MLX5_IB_DW_MATCH_PARAM 0xA0
 
 struct mlx5_ib_match_params {
@@ -344,6 +351,10 @@ enum mlx5_ib_pd_methods {
 
 enum mlx5_ib_device_methods {
 	MLX5_IB_METHOD_QUERY_PORT = (1U << UVERBS_ID_NS_SHIFT),
+<<<<<<< HEAD
+=======
+	MLX5_IB_METHOD_GET_DATA_DIRECT_SYSFS_PATH,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum mlx5_ib_query_port_attrs {
@@ -351,4 +362,11 @@ enum mlx5_ib_query_port_attrs {
 	MLX5_IB_ATTR_QUERY_PORT,
 };
 
+<<<<<<< HEAD
+=======
+enum mlx5_ib_get_data_direct_sysfs_path_attrs {
+	MLX5_IB_ATTR_GET_DATA_DIRECT_SYSFS_PATH = (1U << UVERBS_ID_NS_SHIFT),
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

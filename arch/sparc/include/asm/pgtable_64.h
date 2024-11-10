@@ -783,6 +783,10 @@ static inline pmd_t pmd_mkwrite_novma(pmd_t pmd)
 	return __pmd(pte_val(pte));
 }
 
+<<<<<<< HEAD
+=======
+#define pmd_pgprot pmd_pgprot
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline pgprot_t pmd_pgprot(pmd_t entry)
 {
 	unsigned long val = pmd_val(entry);

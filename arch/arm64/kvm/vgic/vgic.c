@@ -922,10 +922,20 @@ void kvm_vgic_flush_hwstate(struct kvm_vcpu *vcpu)
 
 void kvm_vgic_load(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	if (unlikely(!vgic_initialized(vcpu->kvm)))
 		return;
 
 	if (kvm_vgic_global_state.type == VGIC_V2)
+=======
+	if (unlikely(!irqchip_in_kernel(vcpu->kvm) || !vgic_initialized(vcpu->kvm))) {
+		if (has_vhe() && static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif))
+			__vgic_v3_activate_traps(&vcpu->arch.vgic_cpu.vgic_v3);
+		return;
+	}
+
+	if (!static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		vgic_v2_load(vcpu);
 	else
 		vgic_v3_load(vcpu);
@@ -933,10 +943,20 @@ void kvm_vgic_load(struct kvm_vcpu *vcpu)
 
 void kvm_vgic_put(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	if (unlikely(!vgic_initialized(vcpu->kvm)))
 		return;
 
 	if (kvm_vgic_global_state.type == VGIC_V2)
+=======
+	if (unlikely(!irqchip_in_kernel(vcpu->kvm) || !vgic_initialized(vcpu->kvm))) {
+		if (has_vhe() && static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif))
+			__vgic_v3_deactivate_traps(&vcpu->arch.vgic_cpu.vgic_v3);
+		return;
+	}
+
+	if (!static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		vgic_v2_put(vcpu);
 	else
 		vgic_v3_put(vcpu);

@@ -51,7 +51,11 @@ which has only two fields::
 
 	struct completion {
 		unsigned int done;
+<<<<<<< HEAD
 		wait_queue_head_t wait;
+=======
+		struct swait_queue_head wait;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 This provides the ->wait waitqueue to place tasks on for waiting (if any), and

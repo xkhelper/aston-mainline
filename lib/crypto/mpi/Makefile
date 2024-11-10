@@ -13,14 +13,20 @@ mpi-y = \
 	generic_mpih-rshift.o		\
 	generic_mpih-sub1.o		\
 	generic_mpih-add1.o		\
+<<<<<<< HEAD
 	ec.o				\
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mpicoder.o			\
 	mpi-add.o			\
 	mpi-bit.o			\
 	mpi-cmp.o			\
 	mpi-sub-ui.o			\
 	mpi-div.o			\
+<<<<<<< HEAD
 	mpi-inv.o			\
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mpi-mod.o			\
 	mpi-mul.o			\
 	mpih-cmp.o			\

@@ -47,7 +47,11 @@
  */
 STATIC int xfs_attr3_leaf_create(struct xfs_da_args *args,
 				 xfs_dablk_t which_block, struct xfs_buf **bpp);
+<<<<<<< HEAD
 STATIC int xfs_attr3_leaf_add_work(struct xfs_buf *leaf_buffer,
+=======
+STATIC void xfs_attr3_leaf_add_work(struct xfs_buf *leaf_buffer,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   struct xfs_attr3_icleaf_hdr *ichdr,
 				   struct xfs_da_args *args, int freemap_index);
 STATIC void xfs_attr3_leaf_compact(struct xfs_da_args *args,
@@ -686,7 +690,11 @@ xfs_attr_shortform_bytesfit(
 		 */
 		if (!dp->i_forkoff && dp->i_df.if_bytes >
 		    xfs_default_attroffset(dp))
+<<<<<<< HEAD
 			dsize = XFS_BMDR_SPACE_CALC(MINDBTPTRS);
+=======
+			dsize = xfs_bmdr_space_calc(MINDBTPTRS);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case XFS_DINODE_FMT_BTREE:
 		/*
@@ -700,7 +708,11 @@ xfs_attr_shortform_bytesfit(
 				return 0;
 			return dp->i_forkoff;
 		}
+<<<<<<< HEAD
 		dsize = XFS_BMAP_BROOT_SPACE(mp, dp->i_df.if_broot);
+=======
+		dsize = xfs_bmap_bmdr_space(dp->i_df.if_broot);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	}
 
@@ -708,11 +720,19 @@ xfs_attr_shortform_bytesfit(
 	 * A data fork btree root must have space for at least
 	 * MINDBTPTRS key/ptr pairs if the data fork is small or empty.
 	 */
+<<<<<<< HEAD
 	minforkoff = max_t(int64_t, dsize, XFS_BMDR_SPACE_CALC(MINDBTPTRS));
 	minforkoff = roundup(minforkoff, 8) >> 3;
 
 	/* attr fork btree root can have at least this many key/ptr pairs */
 	maxforkoff = XFS_LITINO(mp) - XFS_BMDR_SPACE_CALC(MINABTPTRS);
+=======
+	minforkoff = max_t(int64_t, dsize, xfs_bmdr_space_calc(MINDBTPTRS));
+	minforkoff = roundup(minforkoff, 8) >> 3;
+
+	/* attr fork btree root can have at least this many key/ptr pairs */
+	maxforkoff = XFS_LITINO(mp) - xfs_bmdr_space_calc(MINABTPTRS);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	maxforkoff = maxforkoff >> 3;	/* rounded down */
 
 	if (offset >= maxforkoff)
@@ -995,10 +1015,15 @@ xfs_attr_shortform_to_leaf(
 		xfs_attr_sethash(&nargs);
 		error = xfs_attr3_leaf_lookup_int(bp, &nargs); /* set a->index */
 		ASSERT(error == -ENOATTR);
+<<<<<<< HEAD
 		error = xfs_attr3_leaf_add(bp, &nargs);
 		ASSERT(error != -ENOSPC);
 		if (error)
 			goto out;
+=======
+		if (!xfs_attr3_leaf_add(bp, &nargs))
+			ASSERT(0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		sfe = xfs_attr_sf_nextentry(sfe);
 	}
 	error = 0;
@@ -1138,10 +1163,14 @@ xfs_attr3_leaf_to_shortform(
 
 	trace_xfs_attr_leaf_to_sf(args);
 
+<<<<<<< HEAD
 	tmpbuffer = kmalloc(args->geo->blksize, GFP_KERNEL | __GFP_NOFAIL);
 	if (!tmpbuffer)
 		return -ENOMEM;
 
+=======
+	tmpbuffer = kvmalloc(args->geo->blksize, GFP_KERNEL | __GFP_NOFAIL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	memcpy(tmpbuffer, bp->b_addr, args->geo->blksize);
 
 	leaf = (xfs_attr_leafblock_t *)tmpbuffer;
@@ -1205,7 +1234,11 @@ xfs_attr3_leaf_to_shortform(
 	error = 0;
 
 out:
+<<<<<<< HEAD
 	kfree(tmpbuffer);
+=======
+	kvfree(tmpbuffer);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return error;
 }
 
@@ -1336,6 +1369,12 @@ xfs_attr3_leaf_create(
 
 /*
  * Split the leaf node, rebalance, then add the new entry.
+<<<<<<< HEAD
+=======
+ *
+ * Returns 0 if the entry was added, 1 if a further split is needed or a
+ * negative error number otherwise.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int
 xfs_attr3_leaf_split(
@@ -1343,8 +1382,14 @@ xfs_attr3_leaf_split(
 	struct xfs_da_state_blk	*oldblk,
 	struct xfs_da_state_blk	*newblk)
 {
+<<<<<<< HEAD
 	xfs_dablk_t blkno;
 	int error;
+=======
+	bool			added;
+	xfs_dablk_t		blkno;
+	int			error;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	trace_xfs_attr_leaf_split(state->args);
 
@@ -1379,10 +1424,17 @@ xfs_attr3_leaf_split(
 	 */
 	if (state->inleaf) {
 		trace_xfs_attr_leaf_add_old(state->args);
+<<<<<<< HEAD
 		error = xfs_attr3_leaf_add(oldblk->bp, state->args);
 	} else {
 		trace_xfs_attr_leaf_add_new(state->args);
 		error = xfs_attr3_leaf_add(newblk->bp, state->args);
+=======
+		added = xfs_attr3_leaf_add(oldblk->bp, state->args);
+	} else {
+		trace_xfs_attr_leaf_add_new(state->args);
+		added = xfs_attr3_leaf_add(newblk->bp, state->args);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/*
@@ -1390,13 +1442,23 @@ xfs_attr3_leaf_split(
 	 */
 	oldblk->hashval = xfs_attr_leaf_lasthash(oldblk->bp, NULL);
 	newblk->hashval = xfs_attr_leaf_lasthash(newblk->bp, NULL);
+<<<<<<< HEAD
 	return error;
+=======
+	if (!added)
+		return 1;
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
  * Add a name to the leaf attribute list structure.
  */
+<<<<<<< HEAD
 int
+=======
+bool
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 xfs_attr3_leaf_add(
 	struct xfs_buf		*bp,
 	struct xfs_da_args	*args)
@@ -1405,6 +1467,10 @@ xfs_attr3_leaf_add(
 	struct xfs_attr3_icleaf_hdr ichdr;
 	int			tablesize;
 	int			entsize;
+<<<<<<< HEAD
+=======
+	bool			added = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int			sum;
 	int			tmp;
 	int			i;
@@ -1433,7 +1499,11 @@ xfs_attr3_leaf_add(
 		if (ichdr.freemap[i].base < ichdr.firstused)
 			tmp += sizeof(xfs_attr_leaf_entry_t);
 		if (ichdr.freemap[i].size >= tmp) {
+<<<<<<< HEAD
 			tmp = xfs_attr3_leaf_add_work(bp, &ichdr, args, i);
+=======
+			xfs_attr3_leaf_add_work(bp, &ichdr, args, i);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto out_log_hdr;
 		}
 		sum += ichdr.freemap[i].size;
@@ -1445,7 +1515,11 @@ xfs_attr3_leaf_add(
 	 * no good and we should just give up.
 	 */
 	if (!ichdr.holes && sum < entsize)
+<<<<<<< HEAD
 		return -ENOSPC;
+=======
+		return false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Compact the entries to coalesce free space.
@@ -1458,24 +1532,40 @@ xfs_attr3_leaf_add(
 	 * free region, in freemap[0].  If it is not big enough, give up.
 	 */
 	if (ichdr.freemap[0].size < (entsize + sizeof(xfs_attr_leaf_entry_t))) {
+<<<<<<< HEAD
 		tmp = -ENOSPC;
 		goto out_log_hdr;
 	}
 
 	tmp = xfs_attr3_leaf_add_work(bp, &ichdr, args, 0);
+=======
+		added = false;
+		goto out_log_hdr;
+	}
+
+	xfs_attr3_leaf_add_work(bp, &ichdr, args, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 out_log_hdr:
 	xfs_attr3_leaf_hdr_to_disk(args->geo, leaf, &ichdr);
 	xfs_trans_log_buf(args->trans, bp,
 		XFS_DA_LOGRANGE(leaf, &leaf->hdr,
 				xfs_attr3_leaf_hdr_size(leaf)));
+<<<<<<< HEAD
 	return tmp;
+=======
+	return added;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
  * Add a name to a leaf attribute list structure.
  */
+<<<<<<< HEAD
 STATIC int
+=======
+STATIC void
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 xfs_attr3_leaf_add_work(
 	struct xfs_buf		*bp,
 	struct xfs_attr3_icleaf_hdr *ichdr,
@@ -1593,7 +1683,10 @@ xfs_attr3_leaf_add_work(
 		}
 	}
 	ichdr->usedbytes += xfs_attr_leaf_entsize(leaf, args->index);
+<<<<<<< HEAD
 	return 0;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1613,7 +1706,11 @@ xfs_attr3_leaf_compact(
 
 	trace_xfs_attr_leaf_compact(args);
 
+<<<<<<< HEAD
 	tmpbuffer = kmalloc(args->geo->blksize, GFP_KERNEL | __GFP_NOFAIL);
+=======
+	tmpbuffer = kvmalloc(args->geo->blksize, GFP_KERNEL | __GFP_NOFAIL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	memcpy(tmpbuffer, bp->b_addr, args->geo->blksize);
 	memset(bp->b_addr, 0, args->geo->blksize);
 	leaf_src = (xfs_attr_leafblock_t *)tmpbuffer;
@@ -1651,7 +1748,11 @@ xfs_attr3_leaf_compact(
 	 */
 	xfs_trans_log_buf(trans, bp, 0, args->geo->blksize - 1);
 
+<<<<<<< HEAD
 	kfree(tmpbuffer);
+=======
+	kvfree(tmpbuffer);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -2330,7 +2431,11 @@ xfs_attr3_leaf_unbalance(
 		struct xfs_attr_leafblock *tmp_leaf;
 		struct xfs_attr3_icleaf_hdr tmphdr;
 
+<<<<<<< HEAD
 		tmp_leaf = kzalloc(state->args->geo->blksize,
+=======
+		tmp_leaf = kvzalloc(state->args->geo->blksize,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				GFP_KERNEL | __GFP_NOFAIL);
 
 		/*
@@ -2371,7 +2476,11 @@ xfs_attr3_leaf_unbalance(
 		}
 		memcpy(save_leaf, tmp_leaf, state->args->geo->blksize);
 		savehdr = tmphdr; /* struct copy */
+<<<<<<< HEAD
 		kfree(tmp_leaf);
+=======
+		kvfree(tmp_leaf);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	xfs_attr3_leaf_hdr_to_disk(state->args->geo, save_leaf, &savehdr);

@@ -23,6 +23,7 @@
 #define TEST_BYTE		0xae
 
 /*
+<<<<<<< HEAD
  * Wrappers to avoid an explicit type casting when passing action
  * functions to kunit_add_action().
  */
@@ -46,6 +47,18 @@ static void drm_gem_shmem_free_wrapper(void *ptr)
 
 	drm_gem_shmem_free(shmem);
 }
+=======
+ * Wrappers to avoid cast warnings when passing action functions
+ * directly to kunit_add_action().
+ */
+KUNIT_DEFINE_ACTION_WRAPPER(kfree_wrapper, kfree, const void *);
+
+KUNIT_DEFINE_ACTION_WRAPPER(sg_free_table_wrapper, sg_free_table,
+			    struct sg_table *);
+
+KUNIT_DEFINE_ACTION_WRAPPER(drm_gem_shmem_free_wrapper, drm_gem_shmem_free,
+			    struct drm_gem_shmem_object *);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Test creating a shmem GEM object backed by shmem buffer. The test

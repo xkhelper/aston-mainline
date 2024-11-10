@@ -190,12 +190,20 @@ static void hpfs_write_failed(struct address_space *mapping, loff_t to)
 
 static int hpfs_write_begin(struct file *file, struct address_space *mapping,
 			loff_t pos, unsigned len,
+<<<<<<< HEAD
 			struct page **pagep, void **fsdata)
 {
 	int ret;
 
 	*pagep = NULL;
 	ret = cont_write_begin(file, mapping, pos, len, pagep, fsdata,
+=======
+			struct folio **foliop, void **fsdata)
+{
+	int ret;
+
+	ret = cont_write_begin(file, mapping, pos, len, foliop, fsdata,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				hpfs_get_block,
 				&hpfs_i(mapping->host)->mmu_private);
 	if (unlikely(ret))
@@ -206,11 +214,19 @@ static int hpfs_write_begin(struct file *file, struct address_space *mapping,
 
 static int hpfs_write_end(struct file *file, struct address_space *mapping,
 			loff_t pos, unsigned len, unsigned copied,
+<<<<<<< HEAD
 			struct page *pagep, void *fsdata)
 {
 	struct inode *inode = mapping->host;
 	int err;
 	err = generic_write_end(file, mapping, pos, len, copied, pagep, fsdata);
+=======
+			struct folio *folio, void *fsdata)
+{
+	struct inode *inode = mapping->host;
+	int err;
+	err = generic_write_end(file, mapping, pos, len, copied, folio, fsdata);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err < len)
 		hpfs_write_failed(mapping, pos + len);
 	if (!(err < 0)) {

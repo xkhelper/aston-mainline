@@ -8,6 +8,7 @@
  * SHM_HUGETLB in the shmget system call to inform the kernel that it is
  * requesting huge pages.
  *
+<<<<<<< HEAD
  * For the ia64 architecture, the Linux kernel reserves Region number 4 for
  * huge pages.  That means that if one requires a fixed address, a huge page
  * aligned address starting with 0x800000... will be required.  If a fixed
@@ -15,6 +16,8 @@
  * range.
  * Other architectures, such as ppc64, i386 or x86_64 are not so constrained.
  *
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Note: The default shared memory limit is quite low on many kernels,
  * you may need to increase it via:
  *
@@ -39,6 +42,7 @@
 
 #define dprintf(x)  printf(x)
 
+<<<<<<< HEAD
 /* Only ia64 requires this */
 #ifdef __ia64__
 #define ADDR (void *)(0x8000000000000000UL)
@@ -48,6 +52,8 @@
 #define SHMAT_FLAGS (0)
 #endif
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int main(void)
 {
 	int shmid;
@@ -61,7 +67,11 @@ int main(void)
 	}
 	printf("shmid: 0x%x\n", shmid);
 
+<<<<<<< HEAD
 	shmaddr = shmat(shmid, ADDR, SHMAT_FLAGS);
+=======
+	shmaddr = shmat(shmid, NULL, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (shmaddr == (char *)-1) {
 		perror("Shared memory attach failure");
 		shmctl(shmid, IPC_RMID, NULL);

@@ -46,6 +46,10 @@ static int rtw8822b_read_efuse(struct rtw_dev *rtwdev, u8 *log_map)
 
 	map = (struct rtw8822b_efuse *)log_map;
 
+<<<<<<< HEAD
+=======
+	efuse->usb_mode_switch = u8_get_bits(map->usb_mode, BIT(7));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	efuse->rfe_option = map->rfe_option;
 	efuse->rf_board_option = map->rf_board_option;
 	efuse->crystal_cap = map->xtal_k;

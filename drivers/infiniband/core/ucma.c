@@ -1624,6 +1624,7 @@ static ssize_t ucma_migrate_id(struct ucma_file *new_file,
 
 	/* Get current fd to protect against it being closed */
 	f = fdget(cmd.fd);
+<<<<<<< HEAD
 	if (!f.file)
 		return -ENOENT;
 	if (f.file->f_op != &ucma_fops) {
@@ -1631,6 +1632,15 @@ static ssize_t ucma_migrate_id(struct ucma_file *new_file,
 		goto file_put;
 	}
 	cur_file = f.file->private_data;
+=======
+	if (!fd_file(f))
+		return -ENOENT;
+	if (fd_file(f)->f_op != &ucma_fops) {
+		ret = -EINVAL;
+		goto file_put;
+	}
+	cur_file = fd_file(f)->private_data;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Validate current fd and prevent destruction of id. */
 	ctx = ucma_get_ctx(cur_file, cmd.id);
@@ -1817,7 +1827,10 @@ static const struct file_operations ucma_fops = {
 	.release = ucma_close,
 	.write	 = ucma_write,
 	.poll    = ucma_poll,
+<<<<<<< HEAD
 	.llseek	 = no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct miscdevice ucma_misc = {

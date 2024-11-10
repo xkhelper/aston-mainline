@@ -10,7 +10,11 @@
 #include <crypto/internal/poly1305.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void poly1305_init_generic(struct poly1305_desc_ctx *desc,
 			   const u8 key[POLY1305_KEY_SIZE])

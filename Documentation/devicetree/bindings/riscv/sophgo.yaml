@@ -28,6 +28,14 @@ properties:
           - const: sophgo,cv1812h
       - items:
           - enum:
+<<<<<<< HEAD
+=======
+              - sipeed,licheerv-nano-b
+          - const: sipeed,licheerv-nano
+          - const: sophgo,sg2002
+      - items:
+          - enum:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - milkv,pioneer
           - const: sophgo,sg2042
 

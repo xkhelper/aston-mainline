@@ -1662,12 +1662,21 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
 	ieee80211_link_info_change_notify(sdata, link,
 					  BSS_CHANGED_BEACON_ENABLED);
 
+<<<<<<< HEAD
 	if (sdata->wdev.cac_started) {
 		chandef = link_conf->chanreq.oper;
 		wiphy_delayed_work_cancel(wiphy, &sdata->dfs_cac_timer_work);
 		cfg80211_cac_event(sdata->dev, &chandef,
 				   NL80211_RADAR_CAC_ABORTED,
 				   GFP_KERNEL);
+=======
+	if (sdata->wdev.links[link_id].cac_started) {
+		chandef = link_conf->chanreq.oper;
+		wiphy_delayed_work_cancel(wiphy, &link->dfs_cac_timer_work);
+		cfg80211_cac_event(sdata->dev, &chandef,
+				   NL80211_RADAR_CAC_ABORTED,
+				   GFP_KERNEL, link_id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	drv_stop_ap(sdata->local, sdata, link_conf);
@@ -3046,6 +3055,10 @@ static int ieee80211_set_tx_power(struct wiphy *wiphy,
 	enum nl80211_tx_power_setting txp_type = type;
 	bool update_txp_type = false;
 	bool has_monitor = false;
+<<<<<<< HEAD
+=======
+	int old_power = local->user_power_level;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	lockdep_assert_wiphy(local->hw.wiphy);
 
@@ -3128,6 +3141,13 @@ static int ieee80211_set_tx_power(struct wiphy *wiphy,
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	if (local->emulate_chanctx &&
+	    (old_power != local->user_power_level))
+		ieee80211_hw_conf_chan(local);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -3138,7 +3158,12 @@ static int ieee80211_get_tx_power(struct wiphy *wiphy,
 	struct ieee80211_local *local = wiphy_priv(wiphy);
 	struct ieee80211_sub_if_data *sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
 
+<<<<<<< HEAD
 	if (local->ops->get_txpower)
+=======
+	if (local->ops->get_txpower &&
+	    (sdata->flags & IEEE80211_SDATA_IN_DRIVER))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return drv_get_txpower(local, sdata, dbm);
 
 	if (local->emulate_chanctx)
@@ -3462,15 +3487,24 @@ static int ieee80211_set_bitrate_mask(struct wiphy *wiphy,
 static int ieee80211_start_radar_detection(struct wiphy *wiphy,
 					   struct net_device *dev,
 					   struct cfg80211_chan_def *chandef,
+<<<<<<< HEAD
 					   u32 cac_time_ms)
+=======
+					   u32 cac_time_ms, int link_id)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
 	struct ieee80211_chan_req chanreq = { .oper = *chandef };
 	struct ieee80211_local *local = sdata->local;
+<<<<<<< HEAD
+=======
+	struct ieee80211_link_data *link_data;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 
 	lockdep_assert_wiphy(local->hw.wiphy);
 
+<<<<<<< HEAD
 	if (!list_empty(&local->roc_list) || local->scanning) {
 		err = -EBUSY;
 		goto out_unlock;
@@ -3497,16 +3531,59 @@ static void ieee80211_end_cac(struct wiphy *wiphy,
 {
 	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
 	struct ieee80211_local *local = sdata->local;
+=======
+	if (!list_empty(&local->roc_list) || local->scanning)
+		return -EBUSY;
+
+	link_data = sdata_dereference(sdata->link[link_id], sdata);
+	if (!link_data)
+		return -ENOLINK;
+
+	/* whatever, but channel contexts should not complain about that one */
+	link_data->smps_mode = IEEE80211_SMPS_OFF;
+	link_data->needed_rx_chains = local->rx_chains;
+
+	err = ieee80211_link_use_channel(link_data, &chanreq,
+					 IEEE80211_CHANCTX_SHARED);
+	if (err)
+		return err;
+
+	wiphy_delayed_work_queue(wiphy, &link_data->dfs_cac_timer_work,
+				 msecs_to_jiffies(cac_time_ms));
+
+	return 0;
+}
+
+static void ieee80211_end_cac(struct wiphy *wiphy,
+			      struct net_device *dev, unsigned int link_id)
+{
+	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
+	struct ieee80211_local *local = sdata->local;
+	struct ieee80211_link_data *link_data;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	lockdep_assert_wiphy(local->hw.wiphy);
 
 	list_for_each_entry(sdata, &local->interfaces, list) {
+<<<<<<< HEAD
 		wiphy_delayed_work_cancel(wiphy,
 					  &sdata->dfs_cac_timer_work);
 
 		if (sdata->wdev.cac_started) {
 			ieee80211_link_release_channel(&sdata->deflink);
 			sdata->wdev.cac_started = false;
+=======
+		link_data = sdata_dereference(sdata->link[link_id], sdata);
+		if (!link_data)
+			continue;
+
+		wiphy_delayed_work_cancel(wiphy,
+					  &link_data->dfs_cac_timer_work);
+
+		if (sdata->wdev.links[link_id].cac_started) {
+			ieee80211_link_release_channel(link_data);
+			sdata->wdev.links[link_id].cac_started = false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 }
@@ -3961,7 +4038,11 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
 	if (!list_empty(&local->roc_list) || local->scanning)
 		return -EBUSY;
 
+<<<<<<< HEAD
 	if (sdata->wdev.cac_started)
+=======
+	if (sdata->wdev.links[link_id].cac_started)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 
 	if (WARN_ON(link_id >= IEEE80211_MLD_MAX_NUM_LINKS))
@@ -4819,12 +4900,21 @@ void ieee80211_color_change_finalize_work(struct wiphy *wiphy,
 	ieee80211_color_change_finalize(link);
 }
 
+<<<<<<< HEAD
 void ieee80211_color_collision_detection_work(struct work_struct *work)
 {
 	struct delayed_work *delayed_work = to_delayed_work(work);
 	struct ieee80211_link_data *link =
 		container_of(delayed_work, struct ieee80211_link_data,
 			     color_collision_detect_work);
+=======
+void ieee80211_color_collision_detection_work(struct wiphy *wiphy,
+					      struct wiphy_work *work)
+{
+	struct ieee80211_link_data *link =
+		container_of(work, struct ieee80211_link_data,
+			     color_collision_detect_work.work);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ieee80211_sub_if_data *sdata = link->sdata;
 
 	cfg80211_obss_color_collision_notify(sdata->dev, link->color_bitmap,
@@ -4877,7 +4967,12 @@ ieee80211_obss_color_collision_notify(struct ieee80211_vif *vif,
 		return;
 	}
 
+<<<<<<< HEAD
 	if (delayed_work_pending(&link->color_collision_detect_work)) {
+=======
+	if (wiphy_delayed_work_pending(sdata->local->hw.wiphy,
+				       &link->color_collision_detect_work)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rcu_read_unlock();
 		return;
 	}
@@ -4886,9 +4981,15 @@ ieee80211_obss_color_collision_notify(struct ieee80211_vif *vif,
 	/* queue the color collision detection event every 500 ms in order to
 	 * avoid sending too much netlink messages to userspace.
 	 */
+<<<<<<< HEAD
 	ieee80211_queue_delayed_work(&sdata->local->hw,
 				     &link->color_collision_detect_work,
 				     msecs_to_jiffies(500));
+=======
+	wiphy_delayed_work_queue(sdata->local->hw.wiphy,
+				 &link->color_collision_detect_work,
+				 msecs_to_jiffies(500));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rcu_read_unlock();
 }

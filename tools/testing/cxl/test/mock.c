@@ -228,7 +228,11 @@ int __wrap_cxl_hdm_decode_init(struct cxl_dev_state *cxlds,
 }
 EXPORT_SYMBOL_NS_GPL(__wrap_cxl_hdm_decode_init, CXL);
 
+<<<<<<< HEAD
 int __wrap_cxl_dvsec_rr_decode(struct device *dev, int dvsec,
+=======
+int __wrap_cxl_dvsec_rr_decode(struct device *dev, struct cxl_port *port,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       struct cxl_endpoint_dvsec_info *info)
 {
 	int rc = 0, index;
@@ -237,7 +241,11 @@ int __wrap_cxl_dvsec_rr_decode(struct device *dev, int dvsec,
 	if (ops && ops->is_mock_dev(dev))
 		rc = 0;
 	else
+<<<<<<< HEAD
 		rc = cxl_dvsec_rr_decode(dev, dvsec, info);
+=======
+		rc = cxl_dvsec_rr_decode(dev, port, info);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	put_cxl_mock_ops(index);
 
 	return rc;
@@ -299,17 +307,29 @@ void __wrap_cxl_endpoint_parse_cdat(struct cxl_port *port)
 }
 EXPORT_SYMBOL_NS_GPL(__wrap_cxl_endpoint_parse_cdat, CXL);
 
+<<<<<<< HEAD
 void __wrap_cxl_setup_parent_dport(struct device *host, struct cxl_dport *dport)
+=======
+void __wrap_cxl_dport_init_ras_reporting(struct cxl_dport *dport, struct device *host)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int index;
 	struct cxl_mock_ops *ops = get_cxl_mock_ops(&index);
 
 	if (!ops || !ops->is_mock_port(dport->dport_dev))
+<<<<<<< HEAD
 		cxl_setup_parent_dport(host, dport);
 
 	put_cxl_mock_ops(index);
 }
 EXPORT_SYMBOL_NS_GPL(__wrap_cxl_setup_parent_dport, CXL);
+=======
+		cxl_dport_init_ras_reporting(dport, host);
+
+	put_cxl_mock_ops(index);
+}
+EXPORT_SYMBOL_NS_GPL(__wrap_cxl_dport_init_ras_reporting, CXL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 MODULE_LICENSE("GPL v2");
 MODULE_IMPORT_NS(ACPI);

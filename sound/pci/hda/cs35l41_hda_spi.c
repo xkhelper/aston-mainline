@@ -38,6 +38,10 @@ static const struct spi_device_id cs35l41_hda_spi_id[] = {
 	{ "cs35l41-hda", 0 },
 	{}
 };
+<<<<<<< HEAD
+=======
+MODULE_DEVICE_TABLE(spi, cs35l41_hda_spi_id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const struct acpi_device_id cs35l41_acpi_hda_match[] = {
 	{ "CSC3551", 0 },

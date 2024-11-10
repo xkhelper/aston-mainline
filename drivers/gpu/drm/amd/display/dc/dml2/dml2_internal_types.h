@@ -101,6 +101,10 @@ struct dml2_wrapper_scratch {
 	struct dml2_dml_to_dc_pipe_mapping dml_to_dc_pipe_mapping;
 	bool enable_flexible_pipe_mapping;
 	bool plane_duplicate_exists;
+<<<<<<< HEAD
+=======
+	int hpo_stream_to_link_encoder_mapping[MAX_HPO_DP2_ENCODERS];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct dml2_helper_det_policy_scratch {

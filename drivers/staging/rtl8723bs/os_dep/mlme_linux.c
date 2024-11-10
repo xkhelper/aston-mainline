@@ -5,7 +5,10 @@
  *
  ******************************************************************************/
 #include <drv_types.h>
+<<<<<<< HEAD
 #include <rtw_debug.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void _dynamic_check_timer_handler(struct timer_list *t)
 {

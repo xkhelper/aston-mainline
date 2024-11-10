@@ -199,9 +199,12 @@ struct vmw_kms_dirty {
 	s32 unit_y2;
 };
 
+<<<<<<< HEAD
 #define VMWGFX_NUM_DISPLAY_UNITS 8
 
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define vmw_framebuffer_to_vfb(x) \
 	container_of(x, struct vmw_framebuffer, base)
 #define vmw_framebuffer_to_vfbs(x) \

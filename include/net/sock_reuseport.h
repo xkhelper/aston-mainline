@@ -26,7 +26,11 @@ struct sock_reuseport {
 	unsigned int		bind_inany:1;
 	unsigned int		has_conns:1;
 	struct bpf_prog __rcu	*prog;		/* optional BPF sock selector */
+<<<<<<< HEAD
 	struct sock		*socks[];	/* array of sock pointers */
+=======
+	struct sock		*socks[] __counted_by(max_socks);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 extern int reuseport_alloc(struct sock *sk, bool bind_inany);

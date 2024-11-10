@@ -1297,6 +1297,7 @@ static void rnandc_chips_cleanup(struct rnandc *rnandc)
 
 static int rnandc_chips_init(struct rnandc *rnandc)
 {
+<<<<<<< HEAD
 	struct device_node *np;
 	int ret;
 
@@ -1305,15 +1306,27 @@ static int rnandc_chips_init(struct rnandc *rnandc)
 		if (ret) {
 			of_node_put(np);
 			goto cleanup_chips;
+=======
+	int ret;
+
+	for_each_child_of_node_scoped(rnandc->dev->of_node, np) {
+		ret = rnandc_chip_init(rnandc, np);
+		if (ret) {
+			rnandc_chips_cleanup(rnandc);
+			return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
 	return 0;
+<<<<<<< HEAD
 
 cleanup_chips:
 	rnandc_chips_cleanup(rnandc);
 
 	return ret;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int rnandc_probe(struct platform_device *pdev)

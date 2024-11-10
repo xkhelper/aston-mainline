@@ -8,6 +8,7 @@
  * Copyright (C) 2008, 2010 Davide Rizzo <elpa.rizzo@gmail.com>
  */
 
+<<<<<<< HEAD
 #include <linux/module.h>
 #include <linux/init.h>
 #include <linux/slab.h>
@@ -18,6 +19,17 @@
 #include <linux/err.h>
 #include <linux/mutex.h>
 #include <linux/sysfs.h>
+=======
+#include <linux/err.h>
+#include <linux/hwmon.h>
+#include <linux/i2c.h>
+#include <linux/init.h>
+#include <linux/module.h>
+#include <linux/slab.h>
+#include <linux/mutex.h>
+#include <linux/regmap.h>
+#include <linux/util_macros.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define DRVNAME "lm95234"
 
@@ -32,6 +44,11 @@ static const unsigned short normal_i2c[] = {
 #define LM95234_REG_STATUS		0x02
 #define LM95234_REG_CONFIG		0x03
 #define LM95234_REG_CONVRATE		0x04
+<<<<<<< HEAD
+=======
+#define LM95234_REG_ENABLE		0x05
+#define LM95234_REG_FILTER		0x06
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define LM95234_REG_STS_FAULT		0x07
 #define LM95234_REG_STS_TCRIT1		0x08
 #define LM95234_REG_STS_TCRIT2		0x09
@@ -52,6 +69,7 @@ static const unsigned short normal_i2c[] = {
 
 /* Client data (each client gets its own) */
 struct lm95234_data {
+<<<<<<< HEAD
 	struct i2c_client *client;
 	const struct attribute_group *groups[3];
 	struct mutex update_lock;
@@ -85,12 +103,33 @@ static int lm95234_read_temp(struct i2c_client *client, int index, int *t)
 			return val;
 		temp |= val;
 		*t = temp;
+=======
+	struct regmap *regmap;
+	struct mutex update_lock;
+	enum chips type;
+};
+
+static int lm95234_read_temp(struct regmap *regmap, int index, long *t)
+{
+	unsigned int regs[2];
+	int temp = 0, ret;
+	u8 regvals[2];
+
+	if (index) {
+		regs[0] = LM95234_REG_UTEMPH(index - 1);
+		regs[1] = LM95234_REG_UTEMPL(index - 1);
+		ret = regmap_multi_reg_read(regmap, regs, regvals, 2);
+		if (ret)
+			return ret;
+		temp = (regvals[0] << 8) | regvals[1];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	/*
 	 * Read signed temperature if unsigned temperature is 0,
 	 * or if this is the local sensor.
 	 */
 	if (!temp) {
+<<<<<<< HEAD
 		val = i2c_smbus_read_byte_data(client,
 					       LM95234_REG_TEMPH(index));
 		if (val < 0)
@@ -102,12 +141,174 @@ static int lm95234_read_temp(struct i2c_client *client, int index, int *t)
 			return val;
 		temp |= val;
 		*t = (s16)temp;
+=======
+		regs[0] = LM95234_REG_TEMPH(index);
+		regs[1] = LM95234_REG_TEMPL(index);
+		ret = regmap_multi_reg_read(regmap, regs, regvals, 2);
+		if (ret)
+			return ret;
+		temp = (regvals[0] << 8) | regvals[1];
+		temp = sign_extend32(temp, 15);
+	}
+	*t = DIV_ROUND_CLOSEST(temp * 125, 32);
+	return 0;
+}
+
+static int lm95234_hyst_get(struct regmap *regmap, int reg, long *val)
+{
+	unsigned int regs[2] = {reg, LM95234_REG_TCRIT_HYST};
+	u8 regvals[2];
+	int ret;
+
+	ret = regmap_multi_reg_read(regmap, regs, regvals, 2);
+	if (ret)
+		return ret;
+	*val = (regvals[0] - regvals[1]) * 1000;
+	return 0;
+}
+
+static ssize_t lm95234_hyst_set(struct lm95234_data *data, long val)
+{
+	u32 tcrit;
+	int ret;
+
+	mutex_lock(&data->update_lock);
+
+	ret = regmap_read(data->regmap, LM95234_REG_TCRIT1(0), &tcrit);
+	if (ret)
+		goto unlock;
+
+	val = DIV_ROUND_CLOSEST(clamp_val(val, -255000, 255000), 1000);
+	val = clamp_val((int)tcrit - val, 0, 31);
+
+	ret = regmap_write(data->regmap, LM95234_REG_TCRIT_HYST, val);
+unlock:
+	mutex_unlock(&data->update_lock);
+	return ret;
+}
+
+static int lm95234_crit_reg(int channel)
+{
+	if (channel == 1 || channel == 2)
+		return LM95234_REG_TCRIT2(channel - 1);
+	return LM95234_REG_TCRIT1(channel);
+}
+
+static int lm95234_temp_write(struct device *dev, u32 attr, int channel, long val)
+{
+	struct lm95234_data *data = dev_get_drvdata(dev);
+	struct regmap *regmap = data->regmap;
+
+	switch (attr) {
+	case hwmon_temp_enable:
+		if (val && val != 1)
+			return -EINVAL;
+		return regmap_update_bits(regmap, LM95234_REG_ENABLE,
+					  BIT(channel), val ? BIT(channel) : 0);
+	case hwmon_temp_type:
+		if (val != 1 && val != 2)
+			return -EINVAL;
+		return regmap_update_bits(regmap, LM95234_REG_REM_MODEL,
+					  BIT(channel),
+					  val == 1 ? BIT(channel) : 0);
+	case hwmon_temp_offset:
+		val = DIV_ROUND_CLOSEST(clamp_val(val, -64000, 63500), 500);
+		return regmap_write(regmap, LM95234_REG_OFFSET(channel - 1), val);
+	case hwmon_temp_max:
+		val = clamp_val(val, 0, channel == 1 ? 127000 : 255000);
+		val = DIV_ROUND_CLOSEST(val, 1000);
+		return regmap_write(regmap, lm95234_crit_reg(channel), val);
+	case hwmon_temp_max_hyst:
+		return lm95234_hyst_set(data, val);
+	case hwmon_temp_crit:
+		val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 255000), 1000);
+		return regmap_write(regmap, LM95234_REG_TCRIT1(channel), val);
+	default:
+		return -EOPNOTSUPP;
+	}
+	return 0;
+}
+
+static int lm95234_alarm_reg(int channel)
+{
+	if (channel == 1 || channel == 2)
+		return LM95234_REG_STS_TCRIT2;
+	return LM95234_REG_STS_TCRIT1;
+}
+
+static int lm95234_temp_read(struct device *dev, u32 attr, int channel, long *val)
+{
+	struct lm95234_data *data = dev_get_drvdata(dev);
+	struct regmap *regmap = data->regmap;
+	u32 regval, mask;
+	int ret;
+
+	switch (attr) {
+	case hwmon_temp_enable:
+		ret = regmap_read(regmap, LM95234_REG_ENABLE, &regval);
+		if (ret)
+			return ret;
+		*val = !!(regval & BIT(channel));
+		break;
+	case hwmon_temp_input:
+		return lm95234_read_temp(regmap, channel, val);
+	case hwmon_temp_max_alarm:
+		ret =  regmap_read(regmap, lm95234_alarm_reg(channel), &regval);
+		if (ret)
+			return ret;
+		*val = !!(regval & BIT(channel));
+		break;
+	case hwmon_temp_crit_alarm:
+		ret =  regmap_read(regmap, LM95234_REG_STS_TCRIT1, &regval);
+		if (ret)
+			return ret;
+		*val = !!(regval & BIT(channel));
+		break;
+	case hwmon_temp_crit_hyst:
+		return lm95234_hyst_get(regmap, LM95234_REG_TCRIT1(channel), val);
+	case hwmon_temp_type:
+		ret = regmap_read(regmap, LM95234_REG_REM_MODEL, &regval);
+		if (ret)
+			return ret;
+		*val = (regval & BIT(channel)) ? 1 : 2;
+		break;
+	case hwmon_temp_offset:
+		ret = regmap_read(regmap, LM95234_REG_OFFSET(channel - 1), &regval);
+		if (ret)
+			return ret;
+		*val = sign_extend32(regval, 7) * 500;
+		break;
+	case hwmon_temp_fault:
+		ret = regmap_read(regmap, LM95234_REG_STS_FAULT, &regval);
+		if (ret)
+			return ret;
+		mask = (BIT(0) | BIT(1)) << ((channel - 1) << 1);
+		*val = !!(regval & mask);
+		break;
+	case hwmon_temp_max:
+		ret = regmap_read(regmap, lm95234_crit_reg(channel), &regval);
+		if (ret)
+			return ret;
+		*val = regval * 1000;
+		break;
+	case hwmon_temp_max_hyst:
+		return lm95234_hyst_get(regmap, lm95234_crit_reg(channel), val);
+	case hwmon_temp_crit:
+		ret = regmap_read(regmap, LM95234_REG_TCRIT1(channel), &regval);
+		if (ret)
+			return ret;
+		*val = regval * 1000;
+		break;
+	default:
+		return -EOPNOTSUPP;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return 0;
 }
 
 static u16 update_intervals[] = { 143, 364, 1000, 2500 };
 
+<<<<<<< HEAD
 /* Fill value cache. Must be called with update lock held. */
 
 static int lm95234_fill_cache(struct lm95234_data *data,
@@ -587,6 +788,185 @@ static struct attribute *lm95234_attrs[] = {
 
 static const struct attribute_group lm95234_group = {
 	.attrs = lm95234_attrs,
+=======
+static int lm95234_chip_write(struct device *dev, u32 attr, long val)
+{
+	struct lm95234_data *data = dev_get_drvdata(dev);
+
+	switch (attr) {
+	case hwmon_chip_update_interval:
+		val = find_closest(val, update_intervals, ARRAY_SIZE(update_intervals));
+		return regmap_write(data->regmap, LM95234_REG_CONVRATE, val);
+	default:
+		return -EOPNOTSUPP;
+	}
+	return 0;
+}
+
+static int lm95234_chip_read(struct device *dev, u32 attr, long *val)
+{
+	struct lm95234_data *data = dev_get_drvdata(dev);
+	u32 convrate;
+	int ret;
+
+	switch (attr) {
+	case hwmon_chip_update_interval:
+		ret = regmap_read(data->regmap, LM95234_REG_CONVRATE, &convrate);
+		if (ret)
+			return ret;
+
+		*val = update_intervals[convrate & 0x03];
+		break;
+	default:
+		return -EOPNOTSUPP;
+	}
+	return 0;
+}
+
+static int lm95234_write(struct device *dev, enum hwmon_sensor_types type,
+			 u32 attr, int channel, long val)
+{
+	switch (type) {
+	case hwmon_chip:
+		return lm95234_chip_write(dev, attr, val);
+	case hwmon_temp:
+		return lm95234_temp_write(dev, attr, channel, val);
+	default:
+		return -EOPNOTSUPP;
+	}
+}
+
+static int lm95234_read(struct device *dev, enum hwmon_sensor_types type,
+			u32 attr, int channel, long *val)
+{
+	switch (type) {
+	case hwmon_chip:
+		return lm95234_chip_read(dev, attr, val);
+	case hwmon_temp:
+		return lm95234_temp_read(dev, attr, channel, val);
+	default:
+		return -EOPNOTSUPP;
+	}
+}
+
+static umode_t lm95234_is_visible(const void *_data, enum hwmon_sensor_types type,
+				  u32 attr, int channel)
+{
+	const struct lm95234_data *data = _data;
+
+	if (data->type == lm95233 && channel > 2)
+		return 0;
+
+	switch (type) {
+	case hwmon_chip:
+		switch (attr) {
+		case hwmon_chip_update_interval:
+			return 0644;
+		default:
+			break;
+		}
+		break;
+	case hwmon_temp:
+		switch (attr) {
+		case hwmon_temp_input:
+		case hwmon_temp_max_alarm:
+			return 0444;
+		case hwmon_temp_crit_alarm:
+		case hwmon_temp_crit_hyst:
+			return (channel && channel < 3) ? 0444 : 0;
+		case hwmon_temp_type:
+		case hwmon_temp_offset:
+			return channel ? 0644 : 0;
+		case hwmon_temp_fault:
+			return channel ? 0444 : 0;
+		case hwmon_temp_max:
+		case hwmon_temp_enable:
+			return 0644;
+		case hwmon_temp_max_hyst:
+			return channel ? 0444 : 0644;
+		case hwmon_temp_crit:
+			return (channel && channel < 3) ? 0644 : 0;
+		default:
+			break;
+		}
+		break;
+	default:
+		break;
+	}
+	return 0;
+}
+
+static const struct hwmon_channel_info * const lm95234_info[] = {
+	HWMON_CHANNEL_INFO(chip, HWMON_C_UPDATE_INTERVAL),
+	HWMON_CHANNEL_INFO(temp,
+			   HWMON_T_INPUT | HWMON_T_MAX | HWMON_T_MAX_HYST |
+			   HWMON_T_MAX_ALARM | HWMON_T_ENABLE,
+			   HWMON_T_INPUT | HWMON_T_MAX | HWMON_T_MAX_HYST |
+			   HWMON_T_MAX_ALARM | HWMON_T_FAULT | HWMON_T_TYPE |
+			   HWMON_T_CRIT | HWMON_T_CRIT_HYST |
+			   HWMON_T_CRIT_ALARM | HWMON_T_OFFSET | HWMON_T_ENABLE,
+			   HWMON_T_INPUT | HWMON_T_MAX | HWMON_T_MAX_HYST |
+			   HWMON_T_MAX_ALARM | HWMON_T_FAULT | HWMON_T_TYPE |
+			   HWMON_T_CRIT | HWMON_T_CRIT_HYST |
+			   HWMON_T_CRIT_ALARM | HWMON_T_OFFSET | HWMON_T_ENABLE,
+			   HWMON_T_INPUT | HWMON_T_MAX | HWMON_T_MAX_HYST |
+			   HWMON_T_MAX_ALARM | HWMON_T_FAULT | HWMON_T_TYPE |
+			   HWMON_T_OFFSET | HWMON_T_ENABLE,
+			   HWMON_T_INPUT | HWMON_T_MAX | HWMON_T_MAX_HYST |
+			   HWMON_T_MAX_ALARM | HWMON_T_FAULT | HWMON_T_TYPE |
+			   HWMON_T_OFFSET | HWMON_T_ENABLE),
+	NULL
+};
+
+static const struct hwmon_ops lm95234_hwmon_ops = {
+	.is_visible = lm95234_is_visible,
+	.read = lm95234_read,
+	.write = lm95234_write,
+};
+
+static const struct hwmon_chip_info lm95234_chip_info = {
+	.ops = &lm95234_hwmon_ops,
+	.info = lm95234_info,
+};
+
+static bool lm95234_volatile_reg(struct device *dev, unsigned int reg)
+{
+	switch (reg) {
+	case LM95234_REG_TEMPH(0) ... LM95234_REG_TEMPH(4):
+	case LM95234_REG_TEMPL(0) ... LM95234_REG_TEMPL(4):
+	case LM95234_REG_UTEMPH(0) ... LM95234_REG_UTEMPH(3):
+	case LM95234_REG_UTEMPL(0) ... LM95234_REG_UTEMPL(3):
+	case LM95234_REG_STS_FAULT:
+	case LM95234_REG_STS_TCRIT1:
+	case LM95234_REG_STS_TCRIT2:
+	case LM95234_REG_REM_MODEL_STS:
+		return true;
+	default:
+		return false;
+	}
+}
+
+static bool lm95234_writeable_reg(struct device *dev, unsigned int reg)
+{
+	switch (reg) {
+	case LM95234_REG_CONFIG ... LM95234_REG_FILTER:
+	case LM95234_REG_REM_MODEL ... LM95234_REG_OFFSET(3):
+	case LM95234_REG_TCRIT1(0) ... LM95234_REG_TCRIT1(4):
+	case LM95234_REG_TCRIT2(0) ... LM95234_REG_TCRIT2(1):
+	case LM95234_REG_TCRIT_HYST:
+		return true;
+	default:
+		return false;
+	}
+}
+
+static const struct regmap_config lm95234_regmap_config = {
+	.reg_bits = 8,
+	.val_bits = 8,
+	.writeable_reg = lm95234_writeable_reg,
+	.volatile_reg = lm95234_volatile_reg,
+	.cache_type = REGCACHE_MAPLE,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int lm95234_detect(struct i2c_client *client,
@@ -649,6 +1029,7 @@ static int lm95234_detect(struct i2c_client *client,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int lm95234_init_client(struct i2c_client *client)
 {
 	int val, model;
@@ -676,20 +1057,54 @@ static int lm95234_init_client(struct i2c_client *client)
 					  model & ~val);
 	}
 	return 0;
+=======
+static int lm95234_init_client(struct device *dev, struct regmap *regmap)
+{
+	u32 val, model;
+	int ret;
+
+	/* start conversion if necessary */
+	ret = regmap_clear_bits(regmap, LM95234_REG_CONFIG, 0x40);
+	if (ret)
+		return ret;
+
+	/* If diode type status reports an error, try to fix it */
+	ret = regmap_read(regmap, LM95234_REG_REM_MODEL_STS, &val);
+	if (ret < 0)
+		return ret;
+	ret = regmap_read(regmap, LM95234_REG_REM_MODEL, &model);
+	if (ret < 0)
+		return ret;
+	if (model & val) {
+		dev_notice(dev,
+			   "Fixing remote diode type misconfiguration (0x%x)\n",
+			   val);
+		ret = regmap_write(regmap, LM95234_REG_REM_MODEL, model & ~val);
+	}
+	return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int lm95234_probe(struct i2c_client *client)
 {
+<<<<<<< HEAD
 	enum chips type = (uintptr_t)i2c_get_match_data(client);
 	struct device *dev = &client->dev;
 	struct lm95234_data *data;
 	struct device *hwmon_dev;
+=======
+	struct device *dev = &client->dev;
+	struct lm95234_data *data;
+	struct device *hwmon_dev;
+	struct regmap *regmap;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 
 	data = devm_kzalloc(dev, sizeof(struct lm95234_data), GFP_KERNEL);
 	if (!data)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	data->client = client;
 	mutex_init(&data->update_lock);
 
@@ -704,6 +1119,24 @@ static int lm95234_probe(struct i2c_client *client)
 
 	hwmon_dev = devm_hwmon_device_register_with_groups(dev, client->name,
 							   data, data->groups);
+=======
+	data->type = (uintptr_t)i2c_get_match_data(client);
+
+	regmap = devm_regmap_init_i2c(client, &lm95234_regmap_config);
+	if (IS_ERR(regmap))
+		return PTR_ERR(regmap);
+
+	data->regmap = regmap;
+	mutex_init(&data->update_lock);
+
+	/* Initialize the LM95234 chip */
+	err = lm95234_init_client(dev, regmap);
+	if (err < 0)
+		return err;
+
+	hwmon_dev = devm_hwmon_device_register_with_info(dev, client->name,
+							 data, &lm95234_chip_info, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return PTR_ERR_OR_ZERO(hwmon_dev);
 }
 

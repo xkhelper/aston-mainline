@@ -44,7 +44,11 @@ struct RR_PN_s {
 struct SL_component {
 	__u8 flags;
 	__u8 len;
+<<<<<<< HEAD
 	__u8 text[];
+=======
+	__u8 text[] __counted_by(len);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 } __attribute__ ((packed));
 
 struct RR_SL_s {

@@ -130,11 +130,18 @@ out:
 
 int dt_idle_pd_init_topology(struct device_node *np)
 {
+<<<<<<< HEAD
 	struct device_node *node;
 	struct of_phandle_args child, parent;
 	int ret;
 
 	for_each_child_of_node(np, node) {
+=======
+	struct of_phandle_args child, parent;
+	int ret;
+
+	for_each_child_of_node_scoped(np, node) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (of_parse_phandle_with_args(node, "power-domains",
 					"#power-domain-cells", 0, &parent))
 			continue;
@@ -143,10 +150,15 @@ int dt_idle_pd_init_topology(struct device_node *np)
 		child.args_count = 0;
 		ret = of_genpd_add_subdomain(&parent, &child);
 		of_node_put(parent.np);
+<<<<<<< HEAD
 		if (ret) {
 			of_node_put(node);
 			return ret;
 		}
+=======
+		if (ret)
+			return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
@@ -154,11 +166,18 @@ int dt_idle_pd_init_topology(struct device_node *np)
 
 int dt_idle_pd_remove_topology(struct device_node *np)
 {
+<<<<<<< HEAD
 	struct device_node *node;
 	struct of_phandle_args child, parent;
 	int ret;
 
 	for_each_child_of_node(np, node) {
+=======
+	struct of_phandle_args child, parent;
+	int ret;
+
+	for_each_child_of_node_scoped(np, node) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (of_parse_phandle_with_args(node, "power-domains",
 					"#power-domain-cells", 0, &parent))
 			continue;
@@ -167,10 +186,15 @@ int dt_idle_pd_remove_topology(struct device_node *np)
 		child.args_count = 0;
 		ret = of_genpd_remove_subdomain(&parent, &child);
 		of_node_put(parent.np);
+<<<<<<< HEAD
 		if (ret) {
 			of_node_put(node);
 			return ret;
 		}
+=======
+		if (ret)
+			return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;

@@ -34,7 +34,11 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&key_pins>;
 
+<<<<<<< HEAD
 		uid {
+=======
+		button-uid {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			label = "UID button";
 			linux,code = <KEY_HOME>;
 			gpios = <&gpio0 14 GPIO_ACTIVE_HIGH>;
@@ -46,12 +50,20 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&led_pins>;
 
+<<<<<<< HEAD
 		uid {
+=======
+		led-uid {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			label = "UID";
 			gpios = <&gpio1 7 GPIO_ACTIVE_HIGH>;
 		};
 
+<<<<<<< HEAD
 		heartbeat {
+=======
+		led-heartbeat {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			label = "heartbeat";
 			gpios = <&gpio1 4 GPIO_ACTIVE_LOW>;
 		};

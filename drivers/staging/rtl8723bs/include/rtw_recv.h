@@ -444,6 +444,7 @@ static inline u8 *recvframe_pull_tail(union recv_frame *precvframe, signed int s
 
 }
 
+<<<<<<< HEAD
 static inline union recv_frame *rxmem_to_recvframe(u8 *rxmem)
 {
 	/* due to the design of 2048 bytes alignment of recv_frame, we can reference the union recv_frame */
@@ -454,6 +455,8 @@ static inline union recv_frame *rxmem_to_recvframe(u8 *rxmem)
 
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline signed int get_recvframe_len(union recv_frame *precvframe)
 {
 	return precvframe->u.hdr.len;

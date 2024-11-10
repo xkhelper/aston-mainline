@@ -322,7 +322,11 @@ static ssize_t name##_show(struct device *dev,				\
 			   struct device_attribute *attr,		\
 			   char *buf)					\
 {									\
+<<<<<<< HEAD
 	struct screen_info *si = dev_get_platdata(dev);			\
+=======
+	struct screen_info *si = dev_get_drvdata(dev);			\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!si)							\
 		return -ENODEV;						\
 	return sprintf(buf, fmt "\n", (si->lfb_##name));		\
@@ -369,6 +373,11 @@ static int efifb_probe(struct platform_device *dev)
 	if (!si)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	dev_set_drvdata(&dev->dev, si);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (si->orig_video_isVGA != VIDEO_TYPE_EFI)
 		return -ENODEV;
 
@@ -449,7 +458,10 @@ static int efifb_probe(struct platform_device *dev)
 		err = -ENOMEM;
 		goto err_release_mem;
 	}
+<<<<<<< HEAD
 	platform_set_drvdata(dev, info);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	par = info->par;
 	info->pseudo_palette = par->pseudo_palette;
 
@@ -561,6 +573,7 @@ static int efifb_probe(struct platform_device *dev)
 		break;
 	}
 
+<<<<<<< HEAD
 	err = sysfs_create_groups(&dev->dev.kobj, efifb_groups);
 	if (err) {
 		pr_err("efifb: cannot add sysfs attrs\n");
@@ -570,6 +583,12 @@ static int efifb_probe(struct platform_device *dev)
 	if (err < 0) {
 		pr_err("efifb: cannot allocate colormap\n");
 		goto err_groups;
+=======
+	err = fb_alloc_cmap(&info->cmap, 256, 0);
+	if (err < 0) {
+		pr_err("efifb: cannot allocate colormap\n");
+		goto err_unmap;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	err = devm_aperture_acquire_for_platform_device(dev, par->base, par->size);
@@ -577,7 +596,11 @@ static int efifb_probe(struct platform_device *dev)
 		pr_err("efifb: cannot acquire aperture\n");
 		goto err_fb_dealloc_cmap;
 	}
+<<<<<<< HEAD
 	err = register_framebuffer(info);
+=======
+	err = devm_register_framebuffer(&dev->dev, info);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err < 0) {
 		pr_err("efifb: cannot register framebuffer\n");
 		goto err_fb_dealloc_cmap;
@@ -587,8 +610,11 @@ static int efifb_probe(struct platform_device *dev)
 
 err_fb_dealloc_cmap:
 	fb_dealloc_cmap(&info->cmap);
+<<<<<<< HEAD
 err_groups:
 	sysfs_remove_groups(&dev->dev.kobj, efifb_groups);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_unmap:
 	if (mem_flags & (EFI_MEMORY_UC | EFI_MEMORY_WC))
 		iounmap(info->screen_base);
@@ -602,6 +628,7 @@ err_release_mem:
 	return err;
 }
 
+<<<<<<< HEAD
 static void efifb_remove(struct platform_device *pdev)
 {
 	struct fb_info *info = platform_get_drvdata(pdev);
@@ -617,6 +644,14 @@ static struct platform_driver efifb_driver = {
 	},
 	.probe = efifb_probe,
 	.remove_new = efifb_remove,
+=======
+static struct platform_driver efifb_driver = {
+	.driver = {
+		.name = "efi-framebuffer",
+		.dev_groups = efifb_groups,
+	},
+	.probe = efifb_probe,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 builtin_platform_driver(efifb_driver);

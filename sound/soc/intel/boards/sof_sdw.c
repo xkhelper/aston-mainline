@@ -5,24 +5,37 @@
  *  sof_sdw - ASOC Machine driver for Intel SoundWire platforms
  */
 
+<<<<<<< HEAD
+=======
+#include <linux/acpi.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/bitmap.h>
 #include <linux/device.h>
 #include <linux/dmi.h>
 #include <linux/module.h>
 #include <linux/soundwire/sdw.h>
 #include <linux/soundwire/sdw_type.h>
+<<<<<<< HEAD
 #include <sound/soc.h>
+=======
+#include <linux/soundwire/sdw_intel.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <sound/soc-acpi.h>
 #include "sof_sdw_common.h"
 #include "../../codecs/rt711.h"
 
+<<<<<<< HEAD
 unsigned long sof_sdw_quirk = RT711_JD1;
+=======
+static unsigned long sof_sdw_quirk = RT711_JD1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int quirk_override = -1;
 module_param_named(quirk, quirk_override, int, 0444);
 MODULE_PARM_DESC(quirk, "Board-specific quirk override");
 
 static void log_quirks(struct device *dev)
 {
+<<<<<<< HEAD
 	if (SOF_JACK_JDSRC(sof_sdw_quirk))
 		dev_dbg(dev, "quirk realtek,jack-detect-source %ld\n",
 			SOF_JACK_JDSRC(sof_sdw_quirk));
@@ -41,6 +54,26 @@ static void log_quirks(struct device *dev)
 		dev_dbg(dev, "quirk SOF_CODEC_SPKR enabled\n");
 	if (sof_sdw_quirk & SOF_SIDECAR_AMPS)
 		dev_dbg(dev, "quirk SOF_SIDECAR_AMPS enabled\n");
+=======
+	if (SOC_SDW_JACK_JDSRC(sof_sdw_quirk))
+		dev_dbg(dev, "quirk realtek,jack-detect-source %ld\n",
+			SOC_SDW_JACK_JDSRC(sof_sdw_quirk));
+	if (sof_sdw_quirk & SOC_SDW_FOUR_SPK)
+		dev_err(dev, "quirk SOC_SDW_FOUR_SPK enabled but no longer supported\n");
+	if (sof_sdw_quirk & SOF_SDW_TGL_HDMI)
+		dev_dbg(dev, "quirk SOF_SDW_TGL_HDMI enabled\n");
+	if (sof_sdw_quirk & SOC_SDW_PCH_DMIC)
+		dev_dbg(dev, "quirk SOC_SDW_PCH_DMIC enabled\n");
+	if (SOF_SSP_GET_PORT(sof_sdw_quirk))
+		dev_dbg(dev, "SSP port %ld\n",
+			SOF_SSP_GET_PORT(sof_sdw_quirk));
+	if (sof_sdw_quirk & SOC_SDW_NO_AGGREGATION)
+		dev_err(dev, "quirk SOC_SDW_NO_AGGREGATION enabled but no longer supported\n");
+	if (sof_sdw_quirk & SOC_SDW_CODEC_SPKR)
+		dev_dbg(dev, "quirk SOC_SDW_CODEC_SPKR enabled\n");
+	if (sof_sdw_quirk & SOC_SDW_SIDECAR_AMPS)
+		dev_dbg(dev, "quirk SOC_SDW_SIDECAR_AMPS enabled\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int sof_sdw_quirk_cb(const struct dmi_system_id *id)
@@ -57,7 +90,11 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
 			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
 			DMI_MATCH(DMI_PRODUCT_NAME, "CometLake Client"),
 		},
+<<<<<<< HEAD
 		.driver_data = (void *)SOF_SDW_PCH_DMIC,
+=======
+		.driver_data = (void *)SOC_SDW_PCH_DMIC,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{
 		.callback = sof_sdw_quirk_cb,
@@ -99,7 +136,11 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
 			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
 			DMI_MATCH(DMI_PRODUCT_NAME, "Ice Lake Client"),
 		},
+<<<<<<< HEAD
 		.driver_data = (void *)SOF_SDW_PCH_DMIC,
+=======
+		.driver_data = (void *)SOC_SDW_PCH_DMIC,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	/* TigerLake devices */
 	{
@@ -111,7 +152,11 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
 		},
 		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
 					RT711_JD1 |
+<<<<<<< HEAD
 					SOF_SDW_PCH_DMIC |
+=======
+					SOC_SDW_PCH_DMIC |
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					SOF_SSP_PORT(SOF_I2S_SSP2)),
 	},
 	{
@@ -159,7 +204,11 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
 			DMI_MATCH(DMI_PRODUCT_NAME, "Volteer"),
 		},
 		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
+<<<<<<< HEAD
 					SOF_SDW_PCH_DMIC |
+=======
+					SOC_SDW_PCH_DMIC |
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					SOF_BT_OFFLOAD_SSP(2) |
 					SOF_SSP_BT_OFFLOAD_PRESENT),
 	},
@@ -170,7 +219,11 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
 			DMI_MATCH(DMI_PRODUCT_NAME, "Ripto"),
 		},
 		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
+<<<<<<< HEAD
 					SOF_SDW_PCH_DMIC),
+=======
+					SOC_SDW_PCH_DMIC),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{
 		/*
@@ -185,7 +238,11 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
 			DMI_MATCH(DMI_PRODUCT_NAME, "HP Spectre x360 Conv"),
 		},
 		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
+<<<<<<< HEAD
 					SOF_SDW_PCH_DMIC |
+=======
+					SOC_SDW_PCH_DMIC |
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					RT711_JD1),
 	},
 	{
@@ -199,7 +256,11 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
 			DMI_MATCH(DMI_BOARD_NAME, "8709"),
 		},
 		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
+<<<<<<< HEAD
 					SOF_SDW_PCH_DMIC |
+=======
+					SOC_SDW_PCH_DMIC |
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					RT711_JD1),
 	},
 	{
@@ -210,7 +271,11 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
 			DMI_MATCH(DMI_PRODUCT_NAME, "LAPBC"),
 		},
 		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
+<<<<<<< HEAD
 					SOF_SDW_PCH_DMIC |
+=======
+					SOC_SDW_PCH_DMIC |
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					RT711_JD1),
 	},
 	{
@@ -221,7 +286,11 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
 			DMI_MATCH(DMI_BOARD_NAME, "LAPBC710"),
 		},
 		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
+<<<<<<< HEAD
 					SOF_SDW_PCH_DMIC |
+=======
+					SOC_SDW_PCH_DMIC |
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					RT711_JD1),
 	},
 	{
@@ -232,7 +301,11 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
 			DMI_MATCH(DMI_PRODUCT_NAME, "LAPRC"),
 		},
 		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
+<<<<<<< HEAD
 					SOF_SDW_PCH_DMIC |
+=======
+					SOC_SDW_PCH_DMIC |
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					RT711_JD2_100K),
 	},
 	{
@@ -243,7 +316,11 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
 			DMI_MATCH(DMI_BOARD_NAME, "LAPRC710"),
 		},
 		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
+<<<<<<< HEAD
 					SOF_SDW_PCH_DMIC |
+=======
+					SOC_SDW_PCH_DMIC |
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					RT711_JD2_100K),
 	},
 	/* TigerLake-SDCA devices */
@@ -293,7 +370,11 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
 			DMI_MATCH(DMI_PRODUCT_NAME, "Brya"),
 		},
 		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
+<<<<<<< HEAD
 					SOF_SDW_PCH_DMIC |
+=======
+					SOC_SDW_PCH_DMIC |
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					SOF_BT_OFFLOAD_SSP(2) |
 					SOF_SSP_BT_OFFLOAD_PRESENT),
 	},
@@ -479,6 +560,17 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
 		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
 					RT711_JD2),
 	},
+<<<<<<< HEAD
+=======
+	{
+		.callback = sof_sdw_quirk_cb,
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "0CF9")
+		},
+		.driver_data = (void *)(SOC_SDW_CODEC_SPKR),
+	},
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* MeteorLake devices */
 	{
 		.callback = sof_sdw_quirk_cb,
@@ -501,7 +593,11 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
 			DMI_MATCH(DMI_SYS_VENDOR, "Google"),
 			DMI_MATCH(DMI_PRODUCT_NAME, "Rex"),
 		},
+<<<<<<< HEAD
 		.driver_data = (void *)(SOF_SDW_PCH_DMIC |
+=======
+		.driver_data = (void *)(SOC_SDW_PCH_DMIC |
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					SOF_BT_OFFLOAD_SSP(1) |
 					SOF_SSP_BT_OFFLOAD_PRESENT),
 	},
@@ -529,7 +625,11 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
 			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "0CE3")
 		},
+<<<<<<< HEAD
 		.driver_data = (void *)(SOF_SIDECAR_AMPS),
+=======
+		.driver_data = (void *)(SOC_SDW_SIDECAR_AMPS),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{
 		.callback = sof_sdw_quirk_cb,
@@ -537,7 +637,61 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
 			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "0CE4")
 		},
+<<<<<<< HEAD
 		.driver_data = (void *)(SOF_SIDECAR_AMPS),
+=======
+		.driver_data = (void *)(SOC_SDW_SIDECAR_AMPS),
+	},
+	{
+		.callback = sof_sdw_quirk_cb,
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "0CDB")
+		},
+		.driver_data = (void *)(SOC_SDW_CODEC_SPKR),
+	},
+	{
+		.callback = sof_sdw_quirk_cb,
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "0CDC")
+		},
+		.driver_data = (void *)(SOC_SDW_CODEC_SPKR),
+	},
+	{
+		.callback = sof_sdw_quirk_cb,
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "0CDD")
+		},
+		.driver_data = (void *)(SOC_SDW_CODEC_SPKR),
+	},
+	{
+		.callback = sof_sdw_quirk_cb,
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "0CF8")
+		},
+		.driver_data = (void *)(SOC_SDW_CODEC_SPKR),
+	},
+
+	/* ArrowLake devices */
+	{
+		.callback = sof_sdw_quirk_cb,
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "0CE8")
+		},
+		.driver_data = (void *)(SOC_SDW_CODEC_SPKR),
+	},
+	{
+		.callback = sof_sdw_quirk_cb,
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "0CF7")
+		},
+		.driver_data = (void *)(SOC_SDW_CODEC_SPKR),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{}
 };
@@ -549,6 +703,7 @@ static struct snd_soc_dai_link_component platform_component[] = {
 	}
 };
 
+<<<<<<< HEAD
 static const struct snd_soc_dapm_widget generic_dmic_widgets[] = {
 	SND_SOC_DAPM_MIC("DMIC", NULL),
 };
@@ -1462,10 +1617,20 @@ struct sof_sdw_dailink {
 	u32 link_mask[SNDRV_PCM_STREAM_LAST + 1];
 	int num_devs[SNDRV_PCM_STREAM_LAST + 1];
 	struct list_head endpoints;
+=======
+static const struct snd_soc_ops sdw_ops = {
+	.startup = asoc_sdw_startup,
+	.prepare = asoc_sdw_prepare,
+	.trigger = asoc_sdw_trigger,
+	.hw_params = asoc_sdw_hw_params,
+	.hw_free = asoc_sdw_hw_free,
+	.shutdown = asoc_sdw_shutdown,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const char * const type_strings[] = {"SimpleJack", "SmartAmp", "SmartMic"};
 
+<<<<<<< HEAD
 static int count_sdw_endpoints(struct snd_soc_card *card, int *num_devs, int *num_ends)
 {
 	struct device *dev = card->dev;
@@ -1626,12 +1791,22 @@ static int parse_sdw_endpoints(struct snd_soc_card *card,
 
 static int create_sdw_dailink(struct snd_soc_card *card,
 			      struct sof_sdw_dailink *sof_dai,
+=======
+static int create_sdw_dailink(struct snd_soc_card *card,
+			      struct asoc_sdw_dailink *sof_dai,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      struct snd_soc_dai_link **dai_links,
 			      int *be_id, struct snd_soc_codec_conf **codec_conf)
 {
 	struct device *dev = card->dev;
+<<<<<<< HEAD
 	struct mc_private *ctx = snd_soc_card_get_drvdata(card);
 	struct sof_sdw_endpoint *sof_end;
+=======
+	struct asoc_sdw_mc_private *ctx = snd_soc_card_get_drvdata(card);
+	struct intel_mc_ctx *intel_ctx = (struct intel_mc_ctx *)ctx->private;
+	struct asoc_sdw_endpoint *sof_end;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int stream;
 	int ret;
 
@@ -1670,7 +1845,11 @@ static int create_sdw_dailink(struct snd_soc_card *card,
 			continue;
 
 		sof_end = list_first_entry(&sof_dai->endpoints,
+<<<<<<< HEAD
 					   struct sof_sdw_endpoint, list);
+=======
+					   struct asoc_sdw_endpoint, list);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		*be_id = sof_end->dai_info->dailink[stream];
 		if (*be_id < 0) {
@@ -1709,7 +1888,11 @@ static int create_sdw_dailink(struct snd_soc_card *card,
 
 			if (cur_link != sof_end->link_mask) {
 				int link_num = ffs(sof_end->link_mask) - 1;
+<<<<<<< HEAD
 				int pin_num = ctx->sdw_pin_index[link_num]++;
+=======
+				int pin_num = intel_ctx->sdw_pin_index[link_num]++;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 				cur_link = sof_end->link_mask;
 
@@ -1734,9 +1917,16 @@ static int create_sdw_dailink(struct snd_soc_card *card,
 		playback = (stream == SNDRV_PCM_STREAM_PLAYBACK);
 		capture = (stream == SNDRV_PCM_STREAM_CAPTURE);
 
+<<<<<<< HEAD
 		init_dai_link(dev, *dai_links, be_id, name, playback, capture,
 			      cpus, num_cpus, codecs, num_codecs,
 			      sof_sdw_rtd_init, &sdw_ops);
+=======
+		asoc_sdw_init_dai_link(dev, *dai_links, be_id, name, playback, capture,
+				       cpus, num_cpus, platform_component,
+				       ARRAY_SIZE(platform_component), codecs, num_codecs,
+				       asoc_sdw_rtd_init, &sdw_ops);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * SoundWire DAILINKs use 'stream' functions and Bank Switch operations
@@ -1760,6 +1950,7 @@ static int create_sdw_dailink(struct snd_soc_card *card,
 
 static int create_sdw_dailinks(struct snd_soc_card *card,
 			       struct snd_soc_dai_link **dai_links, int *be_id,
+<<<<<<< HEAD
 			       struct sof_sdw_dailink *sof_dais,
 			       struct snd_soc_codec_conf **codec_conf)
 {
@@ -1768,6 +1959,17 @@ static int create_sdw_dailinks(struct snd_soc_card *card,
 
 	for (i = 0; i < SDW_MAX_LINKS; i++)
 		ctx->sdw_pin_index[i] = SDW_INTEL_BIDIR_PDI_BASE;
+=======
+			       struct asoc_sdw_dailink *sof_dais,
+			       struct snd_soc_codec_conf **codec_conf)
+{
+	struct asoc_sdw_mc_private *ctx = snd_soc_card_get_drvdata(card);
+	struct intel_mc_ctx *intel_ctx = (struct intel_mc_ctx *)ctx->private;
+	int ret, i;
+
+	for (i = 0; i < SDW_INTEL_MAX_LINKS; i++)
+		intel_ctx->sdw_pin_index[i] = SOC_SDW_INTEL_BIDIR_PDI_BASE;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* generate DAI links by each sdw link */
 	while (sof_dais->initialised) {
@@ -1790,7 +1992,11 @@ static int create_sdw_dailinks(struct snd_soc_card *card,
 
 static int create_ssp_dailinks(struct snd_soc_card *card,
 			       struct snd_soc_dai_link **dai_links, int *be_id,
+<<<<<<< HEAD
 			       struct sof_sdw_codec_info *ssp_info,
+=======
+			       struct asoc_sdw_codec_info *ssp_info,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       unsigned long ssp_mask)
 {
 	struct device *dev = card->dev;
@@ -1802,6 +2008,7 @@ static int create_ssp_dailinks(struct snd_soc_card *card,
 		char *cpu_dai_name = devm_kasprintf(dev, GFP_KERNEL, "SSP%d Pin", i);
 		char *codec_name = devm_kasprintf(dev, GFP_KERNEL, "i2c-%s:0%d",
 						  ssp_info->acpi_id, j++);
+<<<<<<< HEAD
 		int playback = ssp_info->dais[0].direction[SNDRV_PCM_STREAM_PLAYBACK];
 		int capture = ssp_info->dais[0].direction[SNDRV_PCM_STREAM_CAPTURE];
 
@@ -1809,6 +2016,20 @@ static int create_ssp_dailinks(struct snd_soc_card *card,
 					   playback, capture, cpu_dai_name,
 					   codec_name, ssp_info->dais[0].dai_name,
 					   NULL, ssp_info->ops);
+=======
+		if (!name || !cpu_dai_name || !codec_name)
+			return -ENOMEM;
+
+		int playback = ssp_info->dais[0].direction[SNDRV_PCM_STREAM_PLAYBACK];
+		int capture = ssp_info->dais[0].direction[SNDRV_PCM_STREAM_CAPTURE];
+
+		ret = asoc_sdw_init_simple_dai_link(dev, *dai_links, be_id, name,
+						    playback, capture, cpu_dai_name,
+						    platform_component->name,
+						    ARRAY_SIZE(platform_component), codec_name,
+						    ssp_info->dais[0].dai_name, NULL,
+						    ssp_info->ops);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret)
 			return ret;
 
@@ -1828,20 +2049,39 @@ static int create_dmic_dailinks(struct snd_soc_card *card,
 	struct device *dev = card->dev;
 	int ret;
 
+<<<<<<< HEAD
 	ret = init_simple_dai_link(dev, *dai_links, be_id, "dmic01",
 				   0, 1, // DMIC only supports capture
 				   "DMIC01 Pin", "dmic-codec", "dmic-hifi",
 				   sof_sdw_dmic_init, NULL);
+=======
+	ret = asoc_sdw_init_simple_dai_link(dev, *dai_links, be_id, "dmic01",
+					    0, 1, // DMIC only supports capture
+					    "DMIC01 Pin", platform_component->name,
+					    ARRAY_SIZE(platform_component),
+					    "dmic-codec", "dmic-hifi",
+					    asoc_sdw_dmic_init, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
 	(*dai_links)++;
 
+<<<<<<< HEAD
 	ret = init_simple_dai_link(dev, *dai_links, be_id, "dmic16k",
 				   0, 1, // DMIC only supports capture
 				   "DMIC16k Pin", "dmic-codec", "dmic-hifi",
 				   /* don't call sof_sdw_dmic_init() twice */
 				   NULL, NULL);
+=======
+	ret = asoc_sdw_init_simple_dai_link(dev, *dai_links, be_id, "dmic16k",
+					    0, 1, // DMIC only supports capture
+					    "DMIC16k Pin", platform_component->name,
+					    ARRAY_SIZE(platform_component),
+					    "dmic-codec", "dmic-hifi",
+					    /* don't call asoc_sdw_dmic_init() twice */
+					    NULL, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -1855,15 +2095,29 @@ static int create_hdmi_dailinks(struct snd_soc_card *card,
 				int hdmi_num)
 {
 	struct device *dev = card->dev;
+<<<<<<< HEAD
 	struct mc_private *ctx = snd_soc_card_get_drvdata(card);
+=======
+	struct asoc_sdw_mc_private *ctx = snd_soc_card_get_drvdata(card);
+	struct intel_mc_ctx *intel_ctx = (struct intel_mc_ctx *)ctx->private;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int i, ret;
 
 	for (i = 0; i < hdmi_num; i++) {
 		char *name = devm_kasprintf(dev, GFP_KERNEL, "iDisp%d", i + 1);
 		char *cpu_dai_name = devm_kasprintf(dev, GFP_KERNEL, "iDisp%d Pin", i + 1);
+<<<<<<< HEAD
 		char *codec_name, *codec_dai_name;
 
 		if (ctx->hdmi.idisp_codec) {
+=======
+		if (!name || !cpu_dai_name)
+			return -ENOMEM;
+
+		char *codec_name, *codec_dai_name;
+
+		if (intel_ctx->hdmi.idisp_codec) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			codec_name = "ehdaudio0D2";
 			codec_dai_name = devm_kasprintf(dev, GFP_KERNEL,
 							"intel-hdmi-hifi%d", i + 1);
@@ -1872,10 +2126,22 @@ static int create_hdmi_dailinks(struct snd_soc_card *card,
 			codec_dai_name = "snd-soc-dummy-dai";
 		}
 
+<<<<<<< HEAD
 		ret = init_simple_dai_link(dev, *dai_links, be_id, name,
 					   1, 0, // HDMI only supports playback
 					   cpu_dai_name, codec_name, codec_dai_name,
 					   i == 0 ? sof_sdw_hdmi_init : NULL, NULL);
+=======
+		if (!codec_dai_name)
+			return -ENOMEM;
+
+		ret = asoc_sdw_init_simple_dai_link(dev, *dai_links, be_id, name,
+						    1, 0, // HDMI only supports playback
+						    cpu_dai_name, platform_component->name,
+						    ARRAY_SIZE(platform_component),
+						    codec_name, codec_dai_name,
+						    i == 0 ? sof_sdw_hdmi_init : NULL, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret)
 			return ret;
 
@@ -1893,11 +2159,24 @@ static int create_bt_dailinks(struct snd_soc_card *card,
 			SOF_BT_OFFLOAD_SSP_SHIFT;
 	char *name = devm_kasprintf(dev, GFP_KERNEL, "SSP%d-BT", port);
 	char *cpu_dai_name = devm_kasprintf(dev, GFP_KERNEL, "SSP%d Pin", port);
+<<<<<<< HEAD
 	int ret;
 
 	ret = init_simple_dai_link(dev, *dai_links, be_id, name,
 				   1, 1, cpu_dai_name, snd_soc_dummy_dlc.name,
 				   snd_soc_dummy_dlc.dai_name, NULL, NULL);
+=======
+	if (!name || !cpu_dai_name)
+		return -ENOMEM;
+
+	int ret;
+
+	ret = asoc_sdw_init_simple_dai_link(dev, *dai_links, be_id, name,
+					    1, 1, cpu_dai_name, platform_component->name,
+					    ARRAY_SIZE(platform_component),
+					    snd_soc_dummy_dlc.name, snd_soc_dummy_dlc.dai_name,
+					    NULL, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -1911,12 +2190,22 @@ static int sof_card_dai_links_create(struct snd_soc_card *card)
 	struct device *dev = card->dev;
 	struct snd_soc_acpi_mach *mach = dev_get_platdata(card->dev);
 	int sdw_be_num = 0, ssp_num = 0, dmic_num = 0, bt_num = 0;
+<<<<<<< HEAD
 	struct mc_private *ctx = snd_soc_card_get_drvdata(card);
 	struct snd_soc_acpi_mach_params *mach_params = &mach->mach_params;
 	struct snd_soc_codec_conf *codec_conf;
 	struct sof_sdw_codec_info *ssp_info;
 	struct sof_sdw_endpoint *sof_ends;
 	struct sof_sdw_dailink *sof_dais;
+=======
+	struct asoc_sdw_mc_private *ctx = snd_soc_card_get_drvdata(card);
+	struct intel_mc_ctx *intel_ctx = (struct intel_mc_ctx *)ctx->private;
+	struct snd_soc_acpi_mach_params *mach_params = &mach->mach_params;
+	struct snd_soc_codec_conf *codec_conf;
+	struct asoc_sdw_codec_info *ssp_info;
+	struct asoc_sdw_endpoint *sof_ends;
+	struct asoc_sdw_dailink *sof_dais;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int num_devs = 0;
 	int num_ends = 0;
 	struct snd_soc_dai_link *dai_links;
@@ -1926,7 +2215,11 @@ static int sof_card_dai_links_create(struct snd_soc_card *card)
 	unsigned long ssp_mask;
 	int ret;
 
+<<<<<<< HEAD
 	ret = count_sdw_endpoints(card, &num_devs, &num_ends);
+=======
+	ret = asoc_sdw_count_sdw_endpoints(card, &num_devs, &num_ends);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret < 0) {
 		dev_err(dev, "failed to count devices/endpoints: %d\n", ret);
 		return ret;
@@ -1944,7 +2237,11 @@ static int sof_card_dai_links_create(struct snd_soc_card *card)
 		goto err_dai;
 	}
 
+<<<<<<< HEAD
 	ret = parse_sdw_endpoints(card, sof_dais, sof_ends, &num_devs);
+=======
+	ret = asoc_sdw_parse_sdw_endpoints(card, sof_dais, sof_ends, &num_devs);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret < 0)
 		goto err_end;
 
@@ -1956,14 +2253,22 @@ static int sof_card_dai_links_create(struct snd_soc_card *card)
 	 * system only when I2S mode is supported, not sdw mode.
 	 * Here check ACPI ID to confirm I2S is supported.
 	 */
+<<<<<<< HEAD
 	ssp_info = find_codec_info_acpi(mach->id);
+=======
+	ssp_info = asoc_sdw_find_codec_info_acpi(mach->id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ssp_info) {
 		ssp_mask = SOF_SSP_GET_PORT(sof_sdw_quirk);
 		ssp_num = hweight_long(ssp_mask);
 	}
 
 	if (mach_params->codec_mask & IDISP_CODEC_MASK)
+<<<<<<< HEAD
 		ctx->hdmi.idisp_codec = true;
+=======
+		intel_ctx->hdmi.idisp_codec = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (sof_sdw_quirk & SOF_SDW_TGL_HDMI)
 		hdmi_num = SOF_TGL_HDMI_COUNT;
@@ -1971,15 +2276,33 @@ static int sof_card_dai_links_create(struct snd_soc_card *card)
 		hdmi_num = SOF_PRE_TGL_HDMI_COUNT;
 
 	/* enable dmic01 & dmic16k */
+<<<<<<< HEAD
 	if (sof_sdw_quirk & SOF_SDW_PCH_DMIC || mach_params->dmic_num)
 		dmic_num = 2;
+=======
+	if (sof_sdw_quirk & SOC_SDW_PCH_DMIC || mach_params->dmic_num) {
+		if (ctx->ignore_internal_dmic)
+			dev_warn(dev, "Ignoring PCH DMIC\n");
+		else
+			dmic_num = 2;
+	}
+	/*
+	 * mach_params->dmic_num will be used to set the cfg-mics value of card->components
+	 * string. Overwrite it to the actual number of PCH DMICs used in the device.
+	 */
+	mach_params->dmic_num = dmic_num;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (sof_sdw_quirk & SOF_SSP_BT_OFFLOAD_PRESENT)
 		bt_num = 1;
 
 	dev_dbg(dev, "sdw %d, ssp %d, dmic %d, hdmi %d, bt: %d\n",
 		sdw_be_num, ssp_num, dmic_num,
+<<<<<<< HEAD
 		ctx->hdmi.idisp_codec ? hdmi_num : 0, bt_num);
+=======
+		intel_ctx->hdmi.idisp_codec ? hdmi_num : 0, bt_num);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	codec_conf = devm_kcalloc(dev, num_devs, sizeof(*codec_conf), GFP_KERNEL);
 	if (!codec_conf) {
@@ -2017,6 +2340,7 @@ static int sof_card_dai_links_create(struct snd_soc_card *card)
 	}
 
 	/* dmic */
+<<<<<<< HEAD
 	if (dmic_num > 0) {
 		if (ctx->ignore_pch_dmic) {
 			dev_warn(dev, "Ignoring PCH DMIC\n");
@@ -2025,6 +2349,12 @@ static int sof_card_dai_links_create(struct snd_soc_card *card)
 			if (ret)
 				goto err_end;
 		}
+=======
+	if (dmic_num) {
+		ret = create_dmic_dailinks(card, &dai_links, &be_id);
+		if (ret)
+			goto err_end;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* HDMI */
@@ -2052,6 +2382,7 @@ err_dai:
 
 static int sof_sdw_card_late_probe(struct snd_soc_card *card)
 {
+<<<<<<< HEAD
 	struct mc_private *ctx = snd_soc_card_get_drvdata(card);
 	int ret = 0;
 	int i;
@@ -2066,11 +2397,23 @@ static int sof_sdw_card_late_probe(struct snd_soc_card *card)
 	}
 
 	if (ctx->hdmi.idisp_codec)
+=======
+	struct asoc_sdw_mc_private *ctx = snd_soc_card_get_drvdata(card);
+	struct intel_mc_ctx *intel_ctx = (struct intel_mc_ctx *)ctx->private;
+	int ret = 0;
+
+	ret = asoc_sdw_card_late_probe(card);
+	if (ret < 0)
+		return ret;
+
+	if (intel_ctx->hdmi.idisp_codec)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = sof_sdw_hdmi_card_late_probe(card);
 
 	return ret;
 }
 
+<<<<<<< HEAD
 /* helper to get the link that the codec DAI is used */
 static struct snd_soc_dai_link *mc_find_codec_dai_used(struct snd_soc_card *card,
 						       const char *dai_name)
@@ -2120,20 +2463,39 @@ static void mc_dailink_exit_loop(struct snd_soc_card *card)
 	}
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int mc_probe(struct platform_device *pdev)
 {
 	struct snd_soc_acpi_mach *mach = dev_get_platdata(&pdev->dev);
 	struct snd_soc_card *card;
+<<<<<<< HEAD
 	struct mc_private *ctx;
+=======
+	struct asoc_sdw_mc_private *ctx;
+	struct intel_mc_ctx *intel_ctx;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int amp_num = 0, i;
 	int ret;
 
 	dev_dbg(&pdev->dev, "Entry\n");
 
+<<<<<<< HEAD
+=======
+	intel_ctx = devm_kzalloc(&pdev->dev, sizeof(*intel_ctx), GFP_KERNEL);
+	if (!intel_ctx)
+		return -ENOMEM;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ctx = devm_kzalloc(&pdev->dev, sizeof(*ctx), GFP_KERNEL);
 	if (!ctx)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	ctx->private = intel_ctx;
+	ctx->codec_info_list_count = asoc_sdw_get_codec_info_list_count();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	card = &ctx->card;
 	card->dev = &pdev->dev;
 	card->name = "soundwire";
@@ -2152,8 +2514,14 @@ static int mc_probe(struct platform_device *pdev)
 
 	log_quirks(card->dev);
 
+<<<<<<< HEAD
 	/* reset amp_num to ensure amp_num++ starts from 0 in each probe */
 	for (i = 0; i < ARRAY_SIZE(codec_info_list); i++)
+=======
+	ctx->mc_quirk = sof_sdw_quirk;
+	/* reset amp_num to ensure amp_num++ starts from 0 in each probe */
+	for (i = 0; i < ctx->codec_info_list_count; i++)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		codec_info_list[i].amp_num = 0;
 
 	if (mach->mach_params.subsystem_id_set) {
@@ -2171,7 +2539,11 @@ static int mc_probe(struct platform_device *pdev)
 	 * amp_num will only be increased for active amp
 	 * codecs on used platform
 	 */
+<<<<<<< HEAD
 	for (i = 0; i < ARRAY_SIZE(codec_info_list); i++)
+=======
+	for (i = 0; i < ctx->codec_info_list_count; i++)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		amp_num += codec_info_list[i].amp_num;
 
 	card->components = devm_kasprintf(card->dev, GFP_KERNEL,
@@ -2192,7 +2564,11 @@ static int mc_probe(struct platform_device *pdev)
 	ret = devm_snd_soc_register_card(card->dev, card);
 	if (ret) {
 		dev_err_probe(card->dev, ret, "snd_soc_register_card failed %d\n", ret);
+<<<<<<< HEAD
 		mc_dailink_exit_loop(card);
+=======
+		asoc_sdw_mc_dailink_exit_loop(card);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return ret;
 	}
 
@@ -2205,7 +2581,11 @@ static void mc_remove(struct platform_device *pdev)
 {
 	struct snd_soc_card *card = platform_get_drvdata(pdev);
 
+<<<<<<< HEAD
 	mc_dailink_exit_loop(card);
+=======
+	asoc_sdw_mc_dailink_exit_loop(card);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct platform_device_id mc_id_table[] = {
@@ -2220,7 +2600,11 @@ static struct platform_driver sof_sdw_driver = {
 		.pm = &snd_soc_pm_ops,
 	},
 	.probe = mc_probe,
+<<<<<<< HEAD
 	.remove_new = mc_remove,
+=======
+	.remove = mc_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.id_table = mc_id_table,
 };
 
@@ -2232,3 +2616,7 @@ MODULE_AUTHOR("Rander Wang <rander.wang@linux.intel.com>");
 MODULE_AUTHOR("Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>");
 MODULE_LICENSE("GPL v2");
 MODULE_IMPORT_NS(SND_SOC_INTEL_HDA_DSP_COMMON);
+<<<<<<< HEAD
+=======
+MODULE_IMPORT_NS(SND_SOC_SDW_UTILS);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

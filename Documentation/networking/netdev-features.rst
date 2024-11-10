@@ -139,6 +139,7 @@ chained skbs (skb->next/prev list).
 Features contained in NETIF_F_SOFT_FEATURES are features of networking
 stack. Driver should not change behaviour based on them.
 
+<<<<<<< HEAD
  * LLTX driver (deprecated for hardware drivers)
 
 NETIF_F_LLTX is meant to be used by drivers that don't need locking at all,
@@ -154,6 +155,8 @@ network namespaces (e.g. loopback).
 
 Don't use it in drivers.
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * VLAN challenged
 
 NETIF_F_VLAN_CHALLENGED should be set for devices which can't cope with VLAN

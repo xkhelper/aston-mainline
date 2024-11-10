@@ -438,16 +438,33 @@ static int k10temp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 		data->disp_negative = true;
 	}
 
+<<<<<<< HEAD
 	if (boot_cpu_data.x86 == 0x15 &&
+=======
+	data->is_zen = cpu_feature_enabled(X86_FEATURE_ZEN);
+	if (data->is_zen) {
+		data->temp_adjust_mask = ZEN_CUR_TEMP_RANGE_SEL_MASK;
+		data->read_tempreg = read_tempreg_nb_zen;
+	} else if (boot_cpu_data.x86 == 0x15 &&
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    ((boot_cpu_data.x86_model & 0xf0) == 0x60 ||
 	     (boot_cpu_data.x86_model & 0xf0) == 0x70)) {
 		data->read_htcreg = read_htcreg_nb_f15;
 		data->read_tempreg = read_tempreg_nb_f15;
+<<<<<<< HEAD
 	} else if (boot_cpu_data.x86 == 0x17 || boot_cpu_data.x86 == 0x18) {
 		data->temp_adjust_mask = ZEN_CUR_TEMP_RANGE_SEL_MASK;
 		data->read_tempreg = read_tempreg_nb_zen;
 		data->is_zen = true;
 
+=======
+	} else {
+		data->read_htcreg = read_htcreg_pci;
+		data->read_tempreg = read_tempreg_pci;
+	}
+
+	if (boot_cpu_data.x86 == 0x17 || boot_cpu_data.x86 == 0x18) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		switch (boot_cpu_data.x86_model) {
 		case 0x1:	/* Zen */
 		case 0x8:	/* Zen+ */
@@ -469,10 +486,13 @@ static int k10temp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 			break;
 		}
 	} else if (boot_cpu_data.x86 == 0x19) {
+<<<<<<< HEAD
 		data->temp_adjust_mask = ZEN_CUR_TEMP_RANGE_SEL_MASK;
 		data->read_tempreg = read_tempreg_nb_zen;
 		data->is_zen = true;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		switch (boot_cpu_data.x86_model) {
 		case 0x0 ... 0x1:	/* Zen3 SP3/TR */
 		case 0x8:		/* Zen3 TR Chagall */
@@ -496,6 +516,7 @@ static int k10temp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 			k10temp_get_ccd_support(data, 12);
 			break;
 		}
+<<<<<<< HEAD
 	} else if (boot_cpu_data.x86 == 0x1a) {
 		data->temp_adjust_mask = ZEN_CUR_TEMP_RANGE_SEL_MASK;
 		data->read_tempreg = read_tempreg_nb_zen;
@@ -503,6 +524,8 @@ static int k10temp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 	} else {
 		data->read_htcreg = read_htcreg_pci;
 		data->read_tempreg = read_tempreg_pci;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	for (i = 0; i < ARRAY_SIZE(tctl_offset_table); i++) {
@@ -548,6 +571,10 @@ static const struct pci_device_id k10temp_id_table[] = {
 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_19H_M78H_DF_F3) },
 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_1AH_M00H_DF_F3) },
 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_1AH_M20H_DF_F3) },
+<<<<<<< HEAD
+=======
+	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_1AH_M60H_DF_F3) },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ PCI_VDEVICE(HYGON, PCI_DEVICE_ID_AMD_17H_DF_F3) },
 	{}
 };

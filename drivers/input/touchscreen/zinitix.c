@@ -10,6 +10,10 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/of.h>
+<<<<<<< HEAD
+=======
+#include <linux/property.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/regulator/consumer.h>
 #include <linux/slab.h>
 
@@ -34,7 +38,17 @@
 #define ZINITIX_DEBUG_REG			0x0115 /* 0~7 */
 
 #define ZINITIX_TOUCH_MODE			0x0010
+<<<<<<< HEAD
 #define ZINITIX_CHIP_REVISION			0x0011
+=======
+
+#define ZINITIX_CHIP_REVISION			0x0011
+#define ZINITIX_CHIP_BTX0X_MASK			0xF0F0
+#define ZINITIX_CHIP_BT4X2			0x4020
+#define ZINITIX_CHIP_BT4X3			0x4030
+#define ZINITIX_CHIP_BT4X4			0x4040
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define ZINITIX_FIRMWARE_VERSION		0x0012
 
 #define ZINITIX_USB_DETECT			0x116
@@ -62,7 +76,15 @@
 #define ZINITIX_Y_RESOLUTION			0x00C1
 
 #define ZINITIX_POINT_STATUS_REG		0x0080
+<<<<<<< HEAD
 #define ZINITIX_ICON_STATUS_REG			0x00AA
+=======
+
+#define ZINITIX_BT4X2_ICON_STATUS_REG		0x009A
+#define ZINITIX_BT4X3_ICON_STATUS_REG		0x00A0
+#define ZINITIX_BT4X4_ICON_STATUS_REG		0x00A0
+#define ZINITIX_BT5XX_ICON_STATUS_REG		0x00AA
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define ZINITIX_POINT_COORD_REG			(ZINITIX_POINT_STATUS_REG + 2)
 
@@ -119,6 +141,10 @@
 
 #define DEFAULT_TOUCH_POINT_MODE		2
 #define MAX_SUPPORTED_FINGER_NUM		5
+<<<<<<< HEAD
+=======
+#define MAX_SUPPORTED_BUTTON_NUM		8
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define CHIP_ON_DELAY				15 // ms
 #define FIRMWARE_ON_DELAY			40 // ms
@@ -146,6 +172,16 @@ struct bt541_ts_data {
 	struct touchscreen_properties prop;
 	struct regulator_bulk_data supplies[2];
 	u32 zinitix_mode;
+<<<<<<< HEAD
+=======
+	u32 keycodes[MAX_SUPPORTED_BUTTON_NUM];
+	int num_keycodes;
+	bool have_versioninfo;
+	u16 chip_revision;
+	u16 firmware_version;
+	u16 regdata_version;
+	u16 icon_status_reg;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int zinitix_read_data(struct i2c_client *client,
@@ -190,11 +226,31 @@ static int zinitix_write_cmd(struct i2c_client *client, u16 reg)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static u16 zinitix_get_u16_reg(struct bt541_ts_data *bt541, u16 vreg)
+{
+	struct i2c_client *client = bt541->client;
+	int error;
+	__le16 val;
+
+	error = zinitix_read_data(client, vreg, (void *)&val, 2);
+	if (error)
+		return U8_MAX;
+
+	return le16_to_cpu(val);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int zinitix_init_touch(struct bt541_ts_data *bt541)
 {
 	struct i2c_client *client = bt541->client;
 	int i;
 	int error;
+<<<<<<< HEAD
+=======
+	u16 int_flags;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	error = zinitix_write_cmd(client, ZINITIX_SWRESET_CMD);
 	if (error) {
@@ -202,6 +258,50 @@ static int zinitix_init_touch(struct bt541_ts_data *bt541)
 		return error;
 	}
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Read and cache the chip revision and firmware version the first time
+	 * we get here.
+	 */
+	if (!bt541->have_versioninfo) {
+		bt541->chip_revision = zinitix_get_u16_reg(bt541,
+						ZINITIX_CHIP_REVISION);
+		bt541->firmware_version = zinitix_get_u16_reg(bt541,
+						ZINITIX_FIRMWARE_VERSION);
+		bt541->regdata_version = zinitix_get_u16_reg(bt541,
+						ZINITIX_DATA_VERSION_REG);
+		bt541->have_versioninfo = true;
+
+		dev_dbg(&client->dev,
+			"chip revision %04x firmware version %04x regdata version %04x\n",
+			bt541->chip_revision, bt541->firmware_version,
+			bt541->regdata_version);
+
+		/*
+		 * Determine the "icon" status register which varies by the
+		 * chip.
+		 */
+		switch (bt541->chip_revision & ZINITIX_CHIP_BTX0X_MASK) {
+		case ZINITIX_CHIP_BT4X2:
+			bt541->icon_status_reg = ZINITIX_BT4X2_ICON_STATUS_REG;
+			break;
+
+		case ZINITIX_CHIP_BT4X3:
+			bt541->icon_status_reg = ZINITIX_BT4X3_ICON_STATUS_REG;
+			break;
+
+		case ZINITIX_CHIP_BT4X4:
+			bt541->icon_status_reg = ZINITIX_BT4X4_ICON_STATUS_REG;
+			break;
+
+		default:
+			bt541->icon_status_reg = ZINITIX_BT5XX_ICON_STATUS_REG;
+			break;
+		}
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	error = zinitix_write_u16(client, ZINITIX_INT_ENABLE_FLAG, 0x0);
 	if (error) {
 		dev_err(&client->dev,
@@ -225,6 +325,14 @@ static int zinitix_init_touch(struct bt541_ts_data *bt541)
 	if (error)
 		return error;
 
+<<<<<<< HEAD
+=======
+	error = zinitix_write_u16(client, ZINITIX_BUTTON_SUPPORTED_NUM,
+				  bt541->num_keycodes);
+	if (error)
+		return error;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	error = zinitix_write_u16(client, ZINITIX_INITIAL_TOUCH_MODE,
 				  bt541->zinitix_mode);
 	if (error)
@@ -235,9 +343,17 @@ static int zinitix_init_touch(struct bt541_ts_data *bt541)
 	if (error)
 		return error;
 
+<<<<<<< HEAD
 	error = zinitix_write_u16(client, ZINITIX_INT_ENABLE_FLAG,
 				  BIT_PT_CNT_CHANGE | BIT_DOWN | BIT_MOVE |
 					BIT_UP);
+=======
+	int_flags = BIT_PT_CNT_CHANGE | BIT_DOWN | BIT_MOVE | BIT_UP;
+	if (bt541->num_keycodes)
+		int_flags |= BIT_ICON_EVENT;
+
+	error = zinitix_write_u16(client, ZINITIX_INT_ENABLE_FLAG, int_flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (error)
 		return error;
 
@@ -350,12 +466,28 @@ static void zinitix_report_finger(struct bt541_ts_data *bt541, int slot,
 	}
 }
 
+<<<<<<< HEAD
+=======
+static void zinitix_report_keys(struct bt541_ts_data *bt541, u16 icon_events)
+{
+	int i;
+
+	for (i = 0; i < bt541->num_keycodes; i++)
+		input_report_key(bt541->input_dev,
+				 bt541->keycodes[i], icon_events & BIT(i));
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static irqreturn_t zinitix_ts_irq_handler(int irq, void *bt541_handler)
 {
 	struct bt541_ts_data *bt541 = bt541_handler;
 	struct i2c_client *client = bt541->client;
 	struct touch_event touch_event;
 	unsigned long finger_mask;
+<<<<<<< HEAD
+=======
+	__le16 icon_events;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int error;
 	int i;
 
@@ -368,6 +500,20 @@ static irqreturn_t zinitix_ts_irq_handler(int irq, void *bt541_handler)
 		goto out;
 	}
 
+<<<<<<< HEAD
+=======
+	if (le16_to_cpu(touch_event.status) & BIT_ICON_EVENT) {
+		error = zinitix_read_data(bt541->client, bt541->icon_status_reg,
+					  &icon_events, sizeof(icon_events));
+		if (error) {
+			dev_err(&client->dev, "Failed to read icon events\n");
+			goto out;
+		}
+
+		zinitix_report_keys(bt541, le16_to_cpu(icon_events));
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	finger_mask = touch_event.finger_mask;
 	for_each_set_bit(i, &finger_mask, MAX_SUPPORTED_FINGER_NUM) {
 		const struct point_coord *p = &touch_event.point_coord[i];
@@ -453,6 +599,10 @@ static int zinitix_init_input_dev(struct bt541_ts_data *bt541)
 {
 	struct input_dev *input_dev;
 	int error;
+<<<<<<< HEAD
+=======
+	int i;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	input_dev = devm_input_allocate_device(&bt541->client->dev);
 	if (!input_dev) {
@@ -470,6 +620,17 @@ static int zinitix_init_input_dev(struct bt541_ts_data *bt541)
 	input_dev->open = zinitix_input_open;
 	input_dev->close = zinitix_input_close;
 
+<<<<<<< HEAD
+=======
+	if (bt541->num_keycodes) {
+		input_dev->keycode = bt541->keycodes;
+		input_dev->keycodemax = bt541->num_keycodes;
+		input_dev->keycodesize = sizeof(bt541->keycodes[0]);
+		for (i = 0; i < bt541->num_keycodes; i++)
+			input_set_capability(input_dev, EV_KEY, bt541->keycodes[i]);
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	input_set_capability(input_dev, EV_ABS, ABS_MT_POSITION_X);
 	input_set_capability(input_dev, EV_ABS, ABS_MT_POSITION_Y);
 	input_set_abs_params(input_dev, ABS_MT_WIDTH_MAJOR, 0, 255, 0, 0);
@@ -534,6 +695,34 @@ static int zinitix_ts_probe(struct i2c_client *client)
 		return error;
 	}
 
+<<<<<<< HEAD
+=======
+	if (device_property_present(&client->dev, "linux,keycodes")) {
+		bt541->num_keycodes = device_property_count_u32(&client->dev,
+								"linux,keycodes");
+		if (bt541->num_keycodes < 0) {
+			dev_err(&client->dev, "Failed to count keys (%d)\n",
+				bt541->num_keycodes);
+			return bt541->num_keycodes;
+		} else if (bt541->num_keycodes > ARRAY_SIZE(bt541->keycodes)) {
+			dev_err(&client->dev, "Too many keys defined (%d)\n",
+				bt541->num_keycodes);
+			return -EINVAL;
+		}
+
+		error = device_property_read_u32_array(&client->dev,
+						       "linux,keycodes",
+						       bt541->keycodes,
+						       bt541->num_keycodes);
+		if (error) {
+			dev_err(&client->dev,
+				"Unable to parse \"linux,keycodes\" property: %d\n",
+				error);
+			return error;
+		}
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	error = zinitix_init_input_dev(bt541);
 	if (error) {
 		dev_err(&client->dev,

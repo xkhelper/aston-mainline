@@ -4,7 +4,11 @@
  *
  * Copyright (C) 2021 Intel Corporation
  */
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/clk.h>
 #include <linux/delay.h>
@@ -997,7 +1001,11 @@ static int imx335_parse_hw_config(struct imx335 *imx335)
 
 	/* Request optional reset pin */
 	imx335->reset_gpio = devm_gpiod_get_optional(imx335->dev, "reset",
+<<<<<<< HEAD
 						     GPIOD_OUT_LOW);
+=======
+						     GPIOD_OUT_HIGH);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(imx335->reset_gpio)) {
 		dev_err(imx335->dev, "failed to get reset gpio %ld\n",
 			PTR_ERR(imx335->reset_gpio));
@@ -1110,8 +1118,12 @@ static int imx335_power_on(struct device *dev)
 
 	usleep_range(500, 550); /* Tlow */
 
+<<<<<<< HEAD
 	/* Set XCLR */
 	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
+=======
+	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = clk_prepare_enable(imx335->inclk);
 	if (ret) {
@@ -1124,7 +1136,11 @@ static int imx335_power_on(struct device *dev)
 	return 0;
 
 error_reset:
+<<<<<<< HEAD
 	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
+=======
+	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	regulator_bulk_disable(ARRAY_SIZE(imx335_supply_name), imx335->supplies);
 
 	return ret;
@@ -1141,7 +1157,11 @@ static int imx335_power_off(struct device *dev)
 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
 	struct imx335 *imx335 = to_imx335(sd);
 
+<<<<<<< HEAD
 	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
+=======
+	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	clk_disable_unprepare(imx335->inclk);
 	regulator_bulk_disable(ARRAY_SIZE(imx335_supply_name), imx335->supplies);
 

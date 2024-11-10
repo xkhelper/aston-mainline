@@ -21,7 +21,10 @@
 #include "common.h"
 #include "cputype.h"
 #include "da8xx.h"
+<<<<<<< HEAD
 #include "cpuidle.h"
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "irqs.h"
 #include "sram.h"
 

@@ -63,11 +63,16 @@
 		its: msi-controller@6020000 {
 			compatible = "arm,gic-v3-its";
 			msi-controller;
+<<<<<<< HEAD
+=======
+			#msi-cells = <1>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0x0 0x6020000 0 0x20000>;
 		};
 	};
 
 	rstcr: syscon@1e60000 {
+<<<<<<< HEAD
 		compatible = "fsl,ls2080a-rstcr", "syscon";
 		reg = <0x0 0x1e60000 0x0 0x4>;
 	};
@@ -77,6 +82,16 @@
 		regmap = <&rstcr>;
 		offset = <0x0>;
 		mask = <0x2>;
+=======
+		compatible = "fsl,ls1028a-reset", "syscon", "simple-mfd";
+		reg = <0x0 0x1e60000 0x0 0x4>;
+
+		reboot {
+			compatible = "syscon-reboot";
+			offset = <0x0>;
+			mask = <0x2>;
+		};
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	thermal-zones {
@@ -758,7 +773,11 @@
 			compatible = "fsl,qoriq-mc";
 			reg = <0x00000008 0x0c000000 0 0x40>,	 /* MC portal base */
 			      <0x00000000 0x08340000 0 0x40000>; /* MC control reg */
+<<<<<<< HEAD
 			msi-parent = <&its>;
+=======
+			msi-parent = <&its 0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			iommu-map = <0 &smmu 0 0>;	/* This is fixed-up by u-boot */
 			dma-coherent;
 			#address-cells = <3>;
@@ -1075,7 +1094,11 @@
 		};
 
 		pcie1: pcie@3400000 {
+<<<<<<< HEAD
 			compatible = "fsl,ls2080a-pcie", "fsl,ls2085a-pcie";
+=======
+			compatible = "fsl,ls2080a-pcie";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg-names = "regs", "config";
 			interrupts = <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>;
 			interrupt-names = "intr";
@@ -1085,7 +1108,11 @@
 			dma-coherent;
 			num-viewport = <6>;
 			bus-range = <0x0 0xff>;
+<<<<<<< HEAD
 			msi-parent = <&its>;
+=======
+			msi-parent = <&its 0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			#interrupt-cells = <1>;
 			interrupt-map-mask = <0 0 0 7>;
 			interrupt-map = <0000 0 0 1 &gic 0 0 0 109 4>,
@@ -1097,7 +1124,11 @@
 		};
 
 		pcie2: pcie@3500000 {
+<<<<<<< HEAD
 			compatible = "fsl,ls2080a-pcie", "fsl,ls2085a-pcie";
+=======
+			compatible = "fsl,ls2080a-pcie";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg-names = "regs", "config";
 			interrupts = <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>;
 			interrupt-names = "intr";
@@ -1107,7 +1138,11 @@
 			dma-coherent;
 			num-viewport = <6>;
 			bus-range = <0x0 0xff>;
+<<<<<<< HEAD
 			msi-parent = <&its>;
+=======
+			msi-parent = <&its 0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			#interrupt-cells = <1>;
 			interrupt-map-mask = <0 0 0 7>;
 			interrupt-map = <0000 0 0 1 &gic 0 0 0 114 4>,
@@ -1119,7 +1154,11 @@
 		};
 
 		pcie3: pcie@3600000 {
+<<<<<<< HEAD
 			compatible = "fsl,ls2080a-pcie", "fsl,ls2085a-pcie";
+=======
+			compatible = "fsl,ls2080a-pcie";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg-names = "regs", "config";
 			interrupts = <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>;
 			interrupt-names = "intr";
@@ -1129,7 +1168,11 @@
 			dma-coherent;
 			num-viewport = <256>;
 			bus-range = <0x0 0xff>;
+<<<<<<< HEAD
 			msi-parent = <&its>;
+=======
+			msi-parent = <&its 0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			#interrupt-cells = <1>;
 			interrupt-map-mask = <0 0 0 7>;
 			interrupt-map = <0000 0 0 1 &gic 0 0 0 119 4>,
@@ -1141,7 +1184,11 @@
 		};
 
 		pcie4: pcie@3700000 {
+<<<<<<< HEAD
 			compatible = "fsl,ls2080a-pcie", "fsl,ls2085a-pcie";
+=======
+			compatible = "fsl,ls2080a-pcie";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg-names = "regs", "config";
 			interrupts = <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>;
 			interrupt-names = "intr";
@@ -1151,7 +1198,11 @@
 			dma-coherent;
 			num-viewport = <6>;
 			bus-range = <0x0 0xff>;
+<<<<<<< HEAD
 			msi-parent = <&its>;
+=======
+			msi-parent = <&its 0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			#interrupt-cells = <1>;
 			interrupt-map-mask = <0 0 0 7>;
 			interrupt-map = <0000 0 0 1 &gic 0 0 0 124 4>,
@@ -1218,7 +1269,11 @@
 			interrupts = <GIC_SPI 12 IRQ_TYPE_LEVEL_HIGH>;
 		};
 
+<<<<<<< HEAD
 		rcpm: power-controller@1e34040 {
+=======
+		rcpm: wakeup-controller@1e34040 {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			compatible = "fsl,ls208xa-rcpm", "fsl,qoriq-rcpm-2.1+";
 			reg = <0x0 0x1e34040 0x0 0x18>;
 			#fsl,rcpm-wakeup-cells = <6>;

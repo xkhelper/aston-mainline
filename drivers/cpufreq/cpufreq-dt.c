@@ -69,7 +69,10 @@ static int set_target(struct cpufreq_policy *policy, unsigned int index)
 static const char *find_supply_name(struct device *dev)
 {
 	struct device_node *np __free(device_node) = of_node_get(dev->of_node);
+<<<<<<< HEAD
 	struct property *pp;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int cpu = dev->id;
 
 	/* This must be valid for sure */
@@ -77,6 +80,7 @@ static const char *find_supply_name(struct device *dev)
 		return NULL;
 
 	/* Try "cpu0" for older DTs */
+<<<<<<< HEAD
 	if (!cpu) {
 		pp = of_find_property(np, "cpu0-supply", NULL);
 		if (pp)
@@ -85,6 +89,12 @@ static const char *find_supply_name(struct device *dev)
 
 	pp = of_find_property(np, "cpu-supply", NULL);
 	if (pp)
+=======
+	if (!cpu && of_property_present(np, "cpu0-supply"))
+		return "cpu0";
+
+	if (of_property_present(np, "cpu-supply"))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return "cpu";
 
 	dev_dbg(dev, "no regulator for cpu%d\n", cpu);

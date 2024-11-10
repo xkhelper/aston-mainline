@@ -32,12 +32,24 @@ properties:
   reg:
     maxItems: 1
 
+<<<<<<< HEAD
   clocks: true
+=======
+  clocks:
+    minItems: 1
+    maxItems: 3
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   '#clock-cells':
     const: 1
 
+<<<<<<< HEAD
   clock-output-names: true
+=======
+  clock-output-names:
+    minItems: 3
+    maxItems: 17
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   renesas,mode:
     description: Board-specific settings of the MD_CK* bits on R-Mobile A1

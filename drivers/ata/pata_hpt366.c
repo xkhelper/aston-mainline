@@ -170,8 +170,13 @@ static const char * const bad_ata66_3[] = {
 	NULL
 };
 
+<<<<<<< HEAD
 static int hpt_dma_blacklisted(const struct ata_device *dev, char *modestr,
 			       const char * const list[])
+=======
+static int hpt_dma_broken(const struct ata_device *dev, char *modestr,
+			  const char * const list[])
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned char model_num[ATA_ID_PROD_LEN + 1];
 	int i;
@@ -197,11 +202,19 @@ static int hpt_dma_blacklisted(const struct ata_device *dev, char *modestr,
 static unsigned int hpt366_filter(struct ata_device *adev, unsigned int mask)
 {
 	if (adev->class == ATA_DEV_ATA) {
+<<<<<<< HEAD
 		if (hpt_dma_blacklisted(adev, "UDMA",  bad_ata33))
 			mask &= ~ATA_MASK_UDMA;
 		if (hpt_dma_blacklisted(adev, "UDMA3", bad_ata66_3))
 			mask &= ~(0xF8 << ATA_SHIFT_UDMA);
 		if (hpt_dma_blacklisted(adev, "UDMA4", bad_ata66_4))
+=======
+		if (hpt_dma_broken(adev, "UDMA",  bad_ata33))
+			mask &= ~ATA_MASK_UDMA;
+		if (hpt_dma_broken(adev, "UDMA3", bad_ata66_3))
+			mask &= ~(0xF8 << ATA_SHIFT_UDMA);
+		if (hpt_dma_broken(adev, "UDMA4", bad_ata66_4))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			mask &= ~(0xF0 << ATA_SHIFT_UDMA);
 	} else if (adev->class == ATA_DEV_ATAPI)
 		mask &= ~(ATA_MASK_MWDMA | ATA_MASK_UDMA);

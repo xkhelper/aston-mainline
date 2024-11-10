@@ -105,6 +105,14 @@
     "BriefDescription": "Processor cycles gated by the run latch."
   },
   {
+<<<<<<< HEAD
+=======
+    "EventCode": "0x200F8",
+    "EventName": "PM_EXT_INT",
+    "BriefDescription": "Cycles an external interrupt was active."
+  },
+  {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     "EventCode": "0x30010",
     "EventName": "PM_PMC2_OVERFLOW",
     "BriefDescription": "The event selected for PMC2 caused the event counter to overflow."
@@ -125,6 +133,14 @@
     "BriefDescription": "The event selected for PMC6 caused the event counter to overflow."
   },
   {
+<<<<<<< HEAD
+=======
+    "EventCode": "0x3405A",
+    "EventName": "PM_PRIVILEGED_INST_CMPL",
+    "BriefDescription": "PowerPC instruction completed while the thread was in Privileged state."
+  },
+  {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     "EventCode": "0x3006C",
     "EventName": "PM_RUN_CYC_SMT2_MODE",
     "BriefDescription": "Cycles when this thread's run latch is set and the core is in SMT2 mode."

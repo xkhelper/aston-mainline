@@ -295,6 +295,10 @@ struct dlm_lkb {
 		void			*lkb_astparam;	/* caller's ast arg */
 		struct dlm_user_args	*lkb_ua;
 	};
+<<<<<<< HEAD
+=======
+	struct rcu_head		rcu;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
@@ -660,6 +664,11 @@ struct dlm_ls {
 	const struct dlm_lockspace_ops *ls_ops;
 	void			*ls_ops_arg;
 
+<<<<<<< HEAD
+=======
+	struct work_struct	ls_free_work;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int			ls_namelen;
 	char			ls_name[DLM_LOCKSPACE_LEN + 1];
 };
@@ -803,6 +812,11 @@ static inline void dlm_set_sbflags_val(struct dlm_lkb *lkb, uint32_t val)
 			  __DLM_SBF_MAX_BIT);
 }
 
+<<<<<<< HEAD
+=======
+extern struct workqueue_struct *dlm_wq;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int dlm_plock_init(void);
 void dlm_plock_exit(void);
 

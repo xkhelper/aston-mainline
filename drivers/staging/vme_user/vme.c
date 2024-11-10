@@ -416,10 +416,13 @@ void vme_slave_free(struct vme_resource *resource)
 
 	slave_image = list_entry(resource->entry, struct vme_slave_resource,
 				 list);
+<<<<<<< HEAD
 	if (!slave_image) {
 		dev_err(bridge->parent, "Can't find slave resource\n");
 		return;
 	}
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Unlock image */
 	mutex_lock(&slave_image->mtx);
@@ -794,10 +797,13 @@ void vme_master_free(struct vme_resource *resource)
 
 	master_image = list_entry(resource->entry, struct vme_master_resource,
 				  list);
+<<<<<<< HEAD
 	if (!master_image) {
 		dev_err(bridge->parent, "Can't find master resource\n");
 		return;
 	}
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Unlock image */
 	spin_lock(&master_image->lock);
@@ -1265,7 +1271,11 @@ EXPORT_SYMBOL(vme_unregister_error_handler);
 
 void vme_irq_handler(struct vme_bridge *bridge, int level, int statid)
 {
+<<<<<<< HEAD
 	void (*call)(int, int, void *);
+=======
+	void (*call)(int level, int statid, void *priv_data);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void *priv_data;
 
 	call = bridge->irq[level - 1].callback[statid].func;

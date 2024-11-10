@@ -378,6 +378,12 @@ S: 1549 Hiironen Rd.
 S: Brimson, MN  55602
 S: USA
 
+<<<<<<< HEAD
+=======
+N: Arnd Bergmann
+D: Maintainer of Cell Broadband Engine Architecture
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 N: Hennus Bergman
 P: 1024/77D50909 76 99 FD 31 91 E1 96 1C  90 BB 22 80 62 F6 BD 63
 D: Author and maintainer of the QIC-02 tape driver
@@ -1201,6 +1207,13 @@ S: Dreisbachstrasse 24
 S: D-57250 Netphen
 S: Germany
 
+<<<<<<< HEAD
+=======
+N: Florian Fainelli
+E: f.fainelli@gmail.com
+D: DSA
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 N: Rik Faith
 E: faith@acm.org
 D: Future Domain TMC-16x0 SCSI driver (author)
@@ -1355,10 +1368,13 @@ D: Major kbuild rework during the 2.5 cycle
 D: ISDN Maintainer
 S: USA
 
+<<<<<<< HEAD
 N: Gerrit Renker
 E: gerrit@erg.abdn.ac.uk
 D: DCCP protocol support.
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 N: Philip Gladstone
 E: philip@gladstonefamily.net
 D: Kernel / timekeeping stuff
@@ -1674,11 +1690,14 @@ W: http://www.carumba.com/
 D: bug toaster (A1 sauce makes all the difference)
 D: Random linux hacker
 
+<<<<<<< HEAD
 N: James Hogan
 E: jhogan@kernel.org
 D: Metag architecture maintainer
 D: TZ1090 SoC maintainer
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 N: Tim Hockin
 E: thockin@hockin.org
 W: http://www.hockin.org/~thockin
@@ -1694,6 +1713,14 @@ D: hwmon subsystem maintainer
 D: i2c-sis96x and i2c-stub SMBus drivers
 S: USA
 
+<<<<<<< HEAD
+=======
+N: James Hogan
+E: jhogan@kernel.org
+D: Metag architecture maintainer
+D: TZ1090 SoC maintainer
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 N: Dirk Hohndel
 E: hohndel@suse.de
 D: The XFree86[tm] Project
@@ -1869,6 +1896,16 @@ S: K osmidomkum 723
 S: 160 00 Praha 6
 S: Czech Republic
 
+<<<<<<< HEAD
+=======
+N: Seth Jennings
+E: sjenning@redhat.com
+D: Creation and maintenance of zswap
+
+N: Jeremy Kerr
+D: Maintainer of SPU File System
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 N: Michael Kerrisk
 E: mtk.manpages@gmail.com
 W: https://man7.org/
@@ -2182,6 +2219,7 @@ N: Mike Kravetz
 E: mike.kravetz@oracle.com
 D: Maintenance and development of the hugetlb subsystem
 
+<<<<<<< HEAD
 N: Seth Jennings
 E: sjenning@redhat.com
 D: Creation and maintenance of zswap
@@ -2195,6 +2233,8 @@ N: Vitaly Wool
 E: vitaly.wool@konsulko.com
 D: Maintenance and development of zswap
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 N: Andreas S. Krebs
 E: akrebs@altavista.net
 D: CYPRESS CY82C693 chipset IDE, Digital's PC-Alpha 164SX boards
@@ -3185,6 +3225,14 @@ N: Ken Pizzini
 E: ken@halcyon.com
 D: CDROM driver "sonycd535" (Sony CDU-535/531)
 
+<<<<<<< HEAD
+=======
+N: Mathieu Poirier
+E: mathieu.poirier@linaro.org
+D: CoreSight kernel subsystem, Maintainer 2014-2022
+D: Perf tool support for CoreSight
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 N: Stelian Pop
 E: stelian@popies.net
 P: 1024D/EDBB6147 7B36 0E07 04BC 11DC A7A0  D3F7 7185 9E7A EDBB 6147
@@ -3294,6 +3342,13 @@ S: Schlossbergring 9
 S: 79098 Freiburg
 S: Germany
 
+<<<<<<< HEAD
+=======
+N: Gerrit Renker
+E: gerrit@erg.abdn.ac.uk
+D: DCCP protocol support.
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 N: Thomas Renninger
 E: trenn@suse.de
 D: cpupowerutils
@@ -3570,11 +3625,14 @@ D: several improvements to system programs
 S: Oldenburg
 S: Germany
 
+<<<<<<< HEAD
 N: Mathieu Poirier
 E: mathieu.poirier@linaro.org
 D: CoreSight kernel subsystem, Maintainer 2014-2022
 D: Perf tool support for CoreSight
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 N: Robert Schwebel
 E: robert@schwebel.de
 W: https://www.schwebel.de
@@ -3765,6 +3823,14 @@ S: Chr. Winthersvej 1 B, st.th.
 S: DK-1860 Frederiksberg C
 S: Denmark
 
+<<<<<<< HEAD
+=======
+N: Dan Streetman
+E: ddstreet@ieee.org
+D: Maintenance and development of zswap
+D: Creation and maintenance of the zpool API
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 N: Drew Sullivan
 E: drew@ss.org
 W: http://www.ss.org/
@@ -4280,6 +4346,13 @@ S: Pipers Way
 S: Swindon. SN3 1RJ
 S: England
 
+<<<<<<< HEAD
+=======
+N: Vitaly Wool
+E: vitaly.wool@konsulko.com
+D: Maintenance and development of zswap
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 N: Chris Wright
 E: chrisw@sous-sol.org
 D: hacking on LSM framework and security modules.

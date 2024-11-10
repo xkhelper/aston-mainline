@@ -1289,7 +1289,10 @@ static int mon_bin_mmap(struct file *filp, struct vm_area_struct *vma)
 static const struct file_operations mon_fops_binary = {
 	.owner =	THIS_MODULE,
 	.open =		mon_bin_open,
+<<<<<<< HEAD
 	.llseek =	no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.read =		mon_bin_read,
 	/* .write =	mon_text_write, */
 	.poll =		mon_bin_poll,

@@ -32,7 +32,10 @@
 #include <linux/ethtool.h>
 #include <linux/mii.h>
 #include <linux/bitops.h>
+<<<<<<< HEAD
 #include <linux/workqueue.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/of.h>
 #include <linux/of_address.h>
 #include <linux/of_irq.h>
@@ -96,11 +99,14 @@ MODULE_LICENSE("GPL");
 static u32 busy_phy_map;
 static DEFINE_MUTEX(emac_phy_map_lock);
 
+<<<<<<< HEAD
 /* This is the wait queue used to wait on any event related to probe, that
  * is discovery of MALs, other EMACs, ZMII/RGMIIs, etc...
  */
 static DECLARE_WAIT_QUEUE_HEAD(emac_probe_wait);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Having stable interface names is a doomed idea. However, it would be nice
  * if we didn't have completely random interface names at boot too :-) It's
  * just a matter of making everybody's life easier. Since we are doing
@@ -116,9 +122,12 @@ static DECLARE_WAIT_QUEUE_HEAD(emac_probe_wait);
 #define EMAC_BOOT_LIST_SIZE	4
 static struct device_node *emac_boot_list[EMAC_BOOT_LIST_SIZE];
 
+<<<<<<< HEAD
 /* How long should I wait for dependent devices ? */
 #define EMAC_PROBE_DEP_TIMEOUT	(HZ * 5)
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* I don't want to litter system log with timeout errors
  * when we have brain-damaged PHY.
  */
@@ -418,8 +427,13 @@ do_retry:
 
 static void emac_hash_mc(struct emac_instance *dev)
 {
+<<<<<<< HEAD
 	const int regs = EMAC_XAHT_REGS(dev);
 	u32 *gaht_base = emac_gaht_base(dev);
+=======
+	u32 __iomem *gaht_base = emac_gaht_base(dev);
+	const int regs = EMAC_XAHT_REGS(dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 gaht_temp[EMAC_XAHT_MAX_REGS];
 	struct netdev_hw_addr *ha;
 	int i;
@@ -973,8 +987,11 @@ static void __emac_set_multicast_list(struct emac_instance *dev)
 	 * we need is just to stop RX channel. This seems to work on all
 	 * tested SoCs.                                                --ebs
 	 *
+<<<<<<< HEAD
 	 * If we need the full reset, we might just trigger the workqueue
 	 * and do it async... a bit nasty but should work --BenH
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	dev->mcast_pending = 0;
 	emac_rx_disable(dev);
@@ -1228,6 +1245,7 @@ static void emac_print_link_status(struct emac_instance *dev)
 static int emac_open(struct net_device *ndev)
 {
 	struct emac_instance *dev = netdev_priv(ndev);
+<<<<<<< HEAD
 	int err, i;
 
 	DBG(dev, "open" NL);
@@ -1240,6 +1258,12 @@ static int emac_open(struct net_device *ndev)
 		return err;
 	}
 
+=======
+	int i;
+
+	DBG(dev, "open" NL);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Allocate RX ring */
 	for (i = 0; i < NUM_RX_BUFF; ++i)
 		if (emac_alloc_rx_skb(dev, i)) {
@@ -1293,8 +1317,11 @@ static int emac_open(struct net_device *ndev)
 	return 0;
  oom:
 	emac_clean_rx_ring(dev);
+<<<<<<< HEAD
 	free_irq(dev->emac_irq, dev);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return -ENOMEM;
 }
 
@@ -1408,8 +1435,11 @@ static int emac_close(struct net_device *ndev)
 	emac_clean_tx_ring(dev);
 	emac_clean_rx_ring(dev);
 
+<<<<<<< HEAD
 	free_irq(dev->emac_irq, dev);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	netif_carrier_off(ndev);
 
 	return 0;
@@ -2390,7 +2420,13 @@ static int emac_check_deps(struct emac_instance *dev,
 		if (deps[i].drvdata != NULL)
 			there++;
 	}
+<<<<<<< HEAD
 	return there == EMAC_DEP_COUNT;
+=======
+	if (there != EMAC_DEP_COUNT)
+		return -EPROBE_DEFER;
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void emac_put_deps(struct emac_instance *dev)
@@ -2402,6 +2438,7 @@ static void emac_put_deps(struct emac_instance *dev)
 	platform_device_put(dev->tah_dev);
 }
 
+<<<<<<< HEAD
 static int emac_of_bus_notify(struct notifier_block *nb, unsigned long action,
 			      void *data)
 {
@@ -2415,6 +2452,8 @@ static struct notifier_block emac_of_bus_notifier = {
 	.notifier_call = emac_of_bus_notify
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int emac_wait_deps(struct emac_instance *dev)
 {
 	struct emac_depentry deps[EMAC_DEP_COUNT];
@@ -2431,18 +2470,26 @@ static int emac_wait_deps(struct emac_instance *dev)
 		deps[EMAC_DEP_MDIO_IDX].phandle = dev->mdio_ph;
 	if (dev->blist && dev->blist > emac_boot_list)
 		deps[EMAC_DEP_PREV_IDX].phandle = 0xffffffffu;
+<<<<<<< HEAD
 	bus_register_notifier(&platform_bus_type, &emac_of_bus_notifier);
 	wait_event_timeout(emac_probe_wait,
 			   emac_check_deps(dev, deps),
 			   EMAC_PROBE_DEP_TIMEOUT);
 	bus_unregister_notifier(&platform_bus_type, &emac_of_bus_notifier);
 	err = emac_check_deps(dev, deps) ? 0 : -ENODEV;
+=======
+	err = emac_check_deps(dev, deps);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < EMAC_DEP_COUNT; i++) {
 		of_node_put(deps[i].node);
 		if (err)
 			platform_device_put(deps[i].ofdev);
 	}
+<<<<<<< HEAD
 	if (err == 0) {
+=======
+	if (!err) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev->mal_dev = deps[EMAC_DEP_MAL_IDX].ofdev;
 		dev->zmii_dev = deps[EMAC_DEP_ZMII_IDX].ofdev;
 		dev->rgmii_dev = deps[EMAC_DEP_RGMII_IDX].ofdev;
@@ -2456,6 +2503,7 @@ static int emac_wait_deps(struct emac_instance *dev)
 static int emac_read_uint_prop(struct device_node *np, const char *name,
 			       u32 *val, int fatal)
 {
+<<<<<<< HEAD
 	int len;
 	const u32 *prop = of_get_property(np, name, &len);
 	if (prop == NULL || len < sizeof(u32)) {
@@ -2465,13 +2513,27 @@ static int emac_read_uint_prop(struct device_node *np, const char *name,
 		return -ENODEV;
 	}
 	*val = *prop;
+=======
+	int err;
+
+	err = of_property_read_u32(np, name, val);
+	if (err) {
+		if (fatal)
+			pr_err("%pOF: missing %s property", np, name);
+		return err;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
 static void emac_adjust_link(struct net_device *ndev)
 {
 	struct emac_instance *dev = netdev_priv(ndev);
+<<<<<<< HEAD
 	struct phy_device *phy = dev->phy_dev;
+=======
+	struct phy_device *phy = ndev->phydev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dev->phy.autoneg = phy->autoneg;
 	dev->phy.speed = phy->speed;
@@ -2522,22 +2584,36 @@ static int emac_mdio_phy_start_aneg(struct mii_phy *phy,
 static int emac_mdio_setup_aneg(struct mii_phy *phy, u32 advertise)
 {
 	struct net_device *ndev = phy->dev;
+<<<<<<< HEAD
 	struct emac_instance *dev = netdev_priv(ndev);
 
 	phy->autoneg = AUTONEG_ENABLE;
 	phy->advertising = advertise;
 	return emac_mdio_phy_start_aneg(phy, dev->phy_dev);
+=======
+
+	phy->autoneg = AUTONEG_ENABLE;
+	phy->advertising = advertise;
+	return emac_mdio_phy_start_aneg(phy, ndev->phydev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int emac_mdio_setup_forced(struct mii_phy *phy, int speed, int fd)
 {
 	struct net_device *ndev = phy->dev;
+<<<<<<< HEAD
 	struct emac_instance *dev = netdev_priv(ndev);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	phy->autoneg = AUTONEG_DISABLE;
 	phy->speed = speed;
 	phy->duplex = fd;
+<<<<<<< HEAD
 	return emac_mdio_phy_start_aneg(phy, dev->phy_dev);
+=======
+	return emac_mdio_phy_start_aneg(phy, ndev->phydev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int emac_mdio_poll_link(struct mii_phy *phy)
@@ -2546,20 +2622,32 @@ static int emac_mdio_poll_link(struct mii_phy *phy)
 	struct emac_instance *dev = netdev_priv(ndev);
 	int res;
 
+<<<<<<< HEAD
 	res = phy_read_status(dev->phy_dev);
+=======
+	res = phy_read_status(ndev->phydev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (res) {
 		dev_err(&dev->ofdev->dev, "link update failed (%d).", res);
 		return ethtool_op_get_link(ndev);
 	}
 
+<<<<<<< HEAD
 	return dev->phy_dev->link;
+=======
+	return ndev->phydev->link;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int emac_mdio_read_link(struct mii_phy *phy)
 {
 	struct net_device *ndev = phy->dev;
+<<<<<<< HEAD
 	struct emac_instance *dev = netdev_priv(ndev);
 	struct phy_device *phy_dev = dev->phy_dev;
+=======
+	struct phy_device *phy_dev = ndev->phydev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int res;
 
 	res = phy_read_status(phy_dev);
@@ -2576,10 +2664,16 @@ static int emac_mdio_read_link(struct mii_phy *phy)
 static int emac_mdio_init_phy(struct mii_phy *phy)
 {
 	struct net_device *ndev = phy->dev;
+<<<<<<< HEAD
 	struct emac_instance *dev = netdev_priv(ndev);
 
 	phy_start(dev->phy_dev);
 	return phy_init_hw(dev->phy_dev);
+=======
+
+	phy_start(ndev->phydev);
+	return phy_init_hw(ndev->phydev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct mii_phy_ops emac_dt_mdio_phy_ops = {
@@ -2593,6 +2687,10 @@ static const struct mii_phy_ops emac_dt_mdio_phy_ops = {
 static int emac_dt_mdio_probe(struct emac_instance *dev)
 {
 	struct device_node *mii_np;
+<<<<<<< HEAD
+=======
+	struct mii_bus *bus;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int res;
 
 	mii_np = of_get_child_by_name(dev->ofdev->dev.of_node, "mdio");
@@ -2606,12 +2704,18 @@ static int emac_dt_mdio_probe(struct emac_instance *dev)
 		goto put_node;
 	}
 
+<<<<<<< HEAD
 	dev->mii_bus = devm_mdiobus_alloc(&dev->ofdev->dev);
 	if (!dev->mii_bus) {
+=======
+	bus = devm_mdiobus_alloc(&dev->ofdev->dev);
+	if (!bus) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		res = -ENOMEM;
 		goto put_node;
 	}
 
+<<<<<<< HEAD
 	dev->mii_bus->priv = dev->ndev;
 	dev->mii_bus->parent = dev->ndev->dev.parent;
 	dev->mii_bus->name = "emac_mdio";
@@ -2623,6 +2727,19 @@ static int emac_dt_mdio_probe(struct emac_instance *dev)
 	if (res) {
 		dev_err(&dev->ofdev->dev, "cannot register MDIO bus %s (%d)",
 			dev->mii_bus->name, res);
+=======
+	bus->priv = dev->ndev;
+	bus->parent = dev->ndev->dev.parent;
+	bus->name = "emac_mdio";
+	bus->read = &emac_mii_bus_read;
+	bus->write = &emac_mii_bus_write;
+	bus->reset = &emac_mii_bus_reset;
+	snprintf(bus->id, MII_BUS_ID_SIZE, "%s", dev->ofdev->name);
+	res = devm_of_mdiobus_register(&dev->ofdev->dev, bus, mii_np);
+	if (res) {
+		dev_err(&dev->ofdev->dev, "cannot register MDIO bus %s (%d)",
+			bus->name, res);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
  put_node:
@@ -2633,18 +2750,30 @@ static int emac_dt_mdio_probe(struct emac_instance *dev)
 static int emac_dt_phy_connect(struct emac_instance *dev,
 			       struct device_node *phy_handle)
 {
+<<<<<<< HEAD
+=======
+	struct phy_device *phy_dev;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev->phy.def = devm_kzalloc(&dev->ofdev->dev, sizeof(*dev->phy.def),
 				    GFP_KERNEL);
 	if (!dev->phy.def)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	dev->phy_dev = of_phy_connect(dev->ndev, phy_handle, &emac_adjust_link,
 				      0, dev->phy_mode);
 	if (!dev->phy_dev) {
+=======
+	phy_dev = of_phy_connect(dev->ndev, phy_handle, &emac_adjust_link, 0,
+				 dev->phy_mode);
+	if (!phy_dev) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_err(&dev->ofdev->dev, "failed to connect to PHY.\n");
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
 	dev->phy.def->phy_id = dev->phy_dev->drv->phy_id;
 	dev->phy.def->phy_id_mask = dev->phy_dev->drv->phy_id_mask;
 	dev->phy.def->name = dev->phy_dev->drv->name;
@@ -2653,6 +2782,16 @@ static int emac_dt_phy_connect(struct emac_instance *dev,
 						dev->phy_dev->supported);
 	dev->phy.address = dev->phy_dev->mdio.addr;
 	dev->phy.mode = dev->phy_dev->interface;
+=======
+	dev->phy.def->phy_id = phy_dev->drv->phy_id;
+	dev->phy.def->phy_id_mask = phy_dev->drv->phy_id_mask;
+	dev->phy.def->name = phy_dev->drv->name;
+	dev->phy.def->ops = &emac_dt_mdio_phy_ops;
+	ethtool_convert_link_mode_to_legacy_u32(&dev->phy.features,
+						phy_dev->supported);
+	dev->phy.address = phy_dev->mdio.addr;
+	dev->phy.mode = phy_dev->interface;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -2668,8 +2807,11 @@ static int emac_dt_phy_probe(struct emac_instance *dev)
 		res = emac_dt_mdio_probe(dev);
 		if (!res) {
 			res = emac_dt_phy_connect(dev, phy_handle);
+<<<<<<< HEAD
 			if (res)
 				mdiobus_unregister(dev->mii_bus);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -2708,6 +2850,7 @@ static int emac_init_phy(struct emac_instance *dev)
 				return res;
 
 			res = of_phy_register_fixed_link(np);
+<<<<<<< HEAD
 			dev->phy_dev = of_phy_find_device(np);
 			if (res || !dev->phy_dev) {
 				mdiobus_unregister(dev->mii_bus);
@@ -2715,6 +2858,13 @@ static int emac_init_phy(struct emac_instance *dev)
 			}
 			emac_adjust_link(dev->ndev);
 			put_device(&dev->phy_dev->mdio.dev);
+=======
+			ndev->phydev = of_phy_find_device(np);
+			if (res || !ndev->phydev)
+				return res ? res : -EINVAL;
+			emac_adjust_link(dev->ndev);
+			put_device(&ndev->phydev->mdio.dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		return 0;
 	}
@@ -3053,7 +3203,11 @@ static int emac_probe(struct platform_device *ofdev)
 
 	/* Allocate our net_device structure */
 	err = -ENOMEM;
+<<<<<<< HEAD
 	ndev = alloc_etherdev(sizeof(struct emac_instance));
+=======
+	ndev = devm_alloc_etherdev(&ofdev->dev, sizeof(struct emac_instance));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ndev)
 		goto err_gone;
 
@@ -3072,6 +3226,7 @@ static int emac_probe(struct platform_device *ofdev)
 	/* Init various config data based on device-tree */
 	err = emac_init_config(dev);
 	if (err)
+<<<<<<< HEAD
 		goto err_free;
 
 	/* Get interrupts. EMAC irq is mandatory, WOL irq is optional */
@@ -3082,25 +3237,59 @@ static int emac_probe(struct platform_device *ofdev)
 		err = -ENODEV;
 		goto err_free;
 	}
+=======
+		goto err_gone;
+
+	/* Get interrupts. EMAC irq is mandatory */
+	dev->emac_irq = irq_of_parse_and_map(np, 0);
+	if (!dev->emac_irq) {
+		printk(KERN_ERR "%pOF: Can't map main interrupt\n", np);
+		err = -ENODEV;
+		goto err_gone;
+	}
+
+	/* Setup error IRQ handler */
+	err = devm_request_irq(&ofdev->dev, dev->emac_irq, emac_irq, 0, "EMAC",
+			       dev);
+	if (err) {
+		dev_err_probe(&ofdev->dev, err, "failed to request IRQ %d",
+			      dev->emac_irq);
+		goto err_gone;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ndev->irq = dev->emac_irq;
 
 	/* Map EMAC regs */
 	// TODO : platform_get_resource() and devm_ioremap_resource()
+<<<<<<< HEAD
 	dev->emacp = of_iomap(np, 0);
 	if (dev->emacp == NULL) {
 		printk(KERN_ERR "%pOF: Can't map device registers!\n", np);
 		err = -ENOMEM;
 		goto err_irq_unmap;
+=======
+	dev->emacp = devm_of_iomap(&ofdev->dev, np, 0, NULL);
+	if (!dev->emacp) {
+		dev_err(&ofdev->dev, "can't map device registers");
+		err = -ENOMEM;
+		goto err_gone;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* Wait for dependent devices */
 	err = emac_wait_deps(dev);
+<<<<<<< HEAD
 	if (err) {
 		printk(KERN_ERR
 		       "%pOF: Timeout waiting for dependent devices\n", np);
 		/*  display more info about what's missing ? */
 		goto err_reg_unmap;
 	}
+=======
+	if (err)
+		goto err_gone;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev->mal = platform_get_drvdata(dev->mal_dev);
 	if (dev->mdio_dev != NULL)
 		dev->mdio_instance = platform_get_drvdata(dev->mdio_dev);
@@ -3187,7 +3376,11 @@ static int emac_probe(struct platform_device *ofdev)
 
 	netif_carrier_off(ndev);
 
+<<<<<<< HEAD
 	err = register_netdev(ndev);
+=======
+	err = devm_register_netdev(&ofdev->dev, ndev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err) {
 		printk(KERN_ERR "%pOF: failed to register net device (%d)!\n",
 		       np, err);
@@ -3200,10 +3393,13 @@ static int emac_probe(struct platform_device *ofdev)
 	wmb();
 	platform_set_drvdata(ofdev, dev);
 
+<<<<<<< HEAD
 	/* There's a new kid in town ! Let's tell everybody */
 	wake_up_all(&emac_probe_wait);
 
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	printk(KERN_INFO "%s: EMAC-%d %pOF, MAC %pM\n",
 	       ndev->name, dev->cell_index, np, ndev->dev_addr);
 
@@ -3232,6 +3428,7 @@ static int emac_probe(struct platform_device *ofdev)
 	mal_unregister_commac(dev->mal, &dev->commac);
  err_rel_deps:
 	emac_put_deps(dev);
+<<<<<<< HEAD
  err_reg_unmap:
 	iounmap(dev->emacp);
  err_irq_unmap:
@@ -3250,6 +3447,11 @@ static int emac_probe(struct platform_device *ofdev)
 		*blist = NULL;
 		wake_up_all(&emac_probe_wait);
 	}
+=======
+ err_gone:
+	if (blist)
+		*blist = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
@@ -3259,8 +3461,11 @@ static void emac_remove(struct platform_device *ofdev)
 
 	DBG(dev, "remove" NL);
 
+<<<<<<< HEAD
 	unregister_netdev(dev->ndev);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cancel_work_sync(&dev->reset_work);
 
 	if (emac_has_feature(dev, EMAC_FTR_HAS_TAH))
@@ -3270,17 +3475,21 @@ static void emac_remove(struct platform_device *ofdev)
 	if (emac_has_feature(dev, EMAC_FTR_HAS_ZMII))
 		zmii_detach(dev->zmii_dev, dev->zmii_port);
 
+<<<<<<< HEAD
 	if (dev->phy_dev)
 		phy_disconnect(dev->phy_dev);
 
 	if (dev->mii_bus)
 		mdiobus_unregister(dev->mii_bus);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	busy_phy_map &= ~(1 << dev->phy.address);
 	DBG(dev, "busy_phy_map now %#x" NL, busy_phy_map);
 
 	mal_unregister_commac(dev->mal, &dev->commac);
 	emac_put_deps(dev);
+<<<<<<< HEAD
 
 	iounmap(dev->emacp);
 
@@ -3290,6 +3499,8 @@ static void emac_remove(struct platform_device *ofdev)
 		irq_dispose_mapping(dev->emac_irq);
 
 	free_netdev(dev->ndev);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* XXX Features in here should be replaced by properties... */
@@ -3328,16 +3539,26 @@ static void __init emac_make_bootlist(void)
 
 	/* Collect EMACs */
 	while((np = of_find_all_nodes(np)) != NULL) {
+<<<<<<< HEAD
 		const u32 *idx;
+=======
+		u32 idx;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (of_match_node(emac_match, np) == NULL)
 			continue;
 		if (of_property_read_bool(np, "unused"))
 			continue;
+<<<<<<< HEAD
 		idx = of_get_property(np, "cell-index", NULL);
 		if (idx == NULL)
 			continue;
 		cell_indices[i] = *idx;
+=======
+		if (of_property_read_u32(np, "cell-index", &idx))
+			continue;
+		cell_indices[i] = idx;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		emac_boot_list[i++] = of_node_get(np);
 		if (i >= EMAC_BOOT_LIST_SIZE) {
 			of_node_put(np);

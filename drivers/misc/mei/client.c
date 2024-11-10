@@ -321,7 +321,11 @@ void mei_io_cb_free(struct mei_cl_cb *cb)
 		return;
 
 	list_del(&cb->list);
+<<<<<<< HEAD
 	kfree(cb->buf.data);
+=======
+	kvfree(cb->buf.data);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(cb->ext_hdr);
 	kfree(cb);
 }
@@ -497,7 +501,11 @@ struct mei_cl_cb *mei_cl_alloc_cb(struct mei_cl *cl, size_t length,
 	if (length == 0)
 		return cb;
 
+<<<<<<< HEAD
 	cb->buf.data = kmalloc(roundup(length, MEI_SLOT_SIZE), GFP_KERNEL);
+=======
+	cb->buf.data = kvmalloc(roundup(length, MEI_SLOT_SIZE), GFP_KERNEL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!cb->buf.data) {
 		mei_io_cb_free(cb);
 		return NULL;

@@ -1423,7 +1423,11 @@ static const struct dev_pm_ops rockchip_i2s_tdm_pm_ops = {
 
 static struct platform_driver rockchip_i2s_tdm_driver = {
 	.probe = rockchip_i2s_tdm_probe,
+<<<<<<< HEAD
 	.remove_new = rockchip_i2s_tdm_remove,
+=======
+	.remove = rockchip_i2s_tdm_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = DRV_NAME,
 		.of_match_table = rockchip_i2s_tdm_match,

@@ -79,7 +79,22 @@ extern void abort_hooks(void);
 	}					\
 } while (0)
 
+<<<<<<< HEAD
 __attribute__((noinline)) int read_ptr(int *ptr);
+=======
+#define barrier() __asm__ __volatile__("": : :"memory")
+#ifndef noinline
+# define noinline __attribute__((noinline))
+#endif
+
+noinline int read_ptr(int *ptr)
+{
+	/* Keep GCC from optimizing this away somehow */
+	barrier();
+	return *ptr;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void expected_pkey_fault(int pkey);
 int sys_pkey_alloc(unsigned long flags, unsigned long init_val);
 int sys_pkey_free(unsigned long pkey);
@@ -91,12 +106,25 @@ void record_pkey_malloc(void *ptr, long size, int prot);
 #include "pkey-x86.h"
 #elif defined(__powerpc64__) /* arch */
 #include "pkey-powerpc.h"
+<<<<<<< HEAD
+=======
+#elif defined(__aarch64__) /* arch */
+#include "pkey-arm64.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else /* arch */
 #error Architecture not supported
 #endif /* arch */
 
+<<<<<<< HEAD
 #define PKEY_MASK	(PKEY_DISABLE_ACCESS | PKEY_DISABLE_WRITE)
 
+=======
+#ifndef PKEY_MASK
+#define PKEY_MASK	(PKEY_DISABLE_ACCESS | PKEY_DISABLE_WRITE)
+#endif
+
+#ifndef set_pkey_bits
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline u64 set_pkey_bits(u64 reg, int pkey, u64 flags)
 {
 	u32 shift = pkey_bit_position(pkey);
@@ -106,7 +134,13 @@ static inline u64 set_pkey_bits(u64 reg, int pkey, u64 flags)
 	reg |= (flags & PKEY_MASK) << shift;
 	return reg;
 }
+<<<<<<< HEAD
 
+=======
+#endif
+
+#ifndef get_pkey_bits
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline u64 get_pkey_bits(u64 reg, int pkey)
 {
 	u32 shift = pkey_bit_position(pkey);
@@ -116,6 +150,10 @@ static inline u64 get_pkey_bits(u64 reg, int pkey)
 	 */
 	return ((reg >> shift) & PKEY_MASK);
 }
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 extern u64 shadow_pkey_reg;
 

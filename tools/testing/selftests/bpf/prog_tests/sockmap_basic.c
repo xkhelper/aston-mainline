@@ -451,11 +451,19 @@ out:
 #define MAX_EVENTS 10
 static void test_sockmap_skb_verdict_shutdown(void)
 {
+<<<<<<< HEAD
 	struct epoll_event ev, events[MAX_EVENTS];
 	int n, err, map, verdict, s, c1 = -1, p1 = -1;
 	struct test_sockmap_pass_prog *skel;
 	int epollfd;
 	int zero = 0;
+=======
+	int n, err, map, verdict, c1 = -1, p1 = -1;
+	struct epoll_event ev, events[MAX_EVENTS];
+	struct test_sockmap_pass_prog *skel;
+	int zero = 0;
+	int epollfd;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char b;
 
 	skel = test_sockmap_pass_prog__open_and_load();
@@ -469,10 +477,14 @@ static void test_sockmap_skb_verdict_shutdown(void)
 	if (!ASSERT_OK(err, "bpf_prog_attach"))
 		goto out;
 
+<<<<<<< HEAD
 	s = socket_loopback(AF_INET, SOCK_STREAM);
 	if (s < 0)
 		goto out;
 	err = create_pair(s, AF_INET, SOCK_STREAM, &c1, &p1);
+=======
+	err = create_pair(AF_INET, SOCK_STREAM, &c1, &p1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err < 0)
 		goto out;
 
@@ -506,8 +518,13 @@ out:
 
 static void test_sockmap_skb_verdict_fionread(bool pass_prog)
 {
+<<<<<<< HEAD
 	int expected, zero = 0, sent, recvd, avail;
 	int err, map, verdict, s, c0 = -1, c1 = -1, p0 = -1, p1 = -1;
+=======
+	int err, map, verdict, c0 = -1, c1 = -1, p0 = -1, p1 = -1;
+	int expected, zero = 0, sent, recvd, avail;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct test_sockmap_pass_prog *pass = NULL;
 	struct test_sockmap_drop_prog *drop = NULL;
 	char buf[256] = "0123456789";
@@ -534,11 +551,16 @@ static void test_sockmap_skb_verdict_fionread(bool pass_prog)
 	if (!ASSERT_OK(err, "bpf_prog_attach"))
 		goto out;
 
+<<<<<<< HEAD
 	s = socket_loopback(AF_INET, SOCK_STREAM);
 	if (!ASSERT_GT(s, -1, "socket_loopback(s)"))
 		goto out;
 	err = create_socket_pairs(s, AF_INET, SOCK_STREAM, &c0, &c1, &p0, &p1);
 	if (!ASSERT_OK(err, "create_socket_pairs(s)"))
+=======
+	err = create_socket_pairs(AF_INET, SOCK_STREAM, &c0, &c1, &p0, &p1);
+	if (!ASSERT_OK(err, "create_socket_pairs()"))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 
 	err = bpf_map_update_elem(map, &zero, &c1, BPF_NOEXIST);
@@ -570,6 +592,7 @@ out:
 
 static void test_sockmap_skb_verdict_peek_helper(int map)
 {
+<<<<<<< HEAD
 	int err, s, c1, p1, zero = 0, sent, recvd, avail;
 	char snd[256] = "0123456789";
 	char rcv[256] = "0";
@@ -580,6 +603,14 @@ static void test_sockmap_skb_verdict_peek_helper(int map)
 
 	err = create_pair(s, AF_INET, SOCK_STREAM, &c1, &p1);
 	if (!ASSERT_OK(err, "create_pairs(s)"))
+=======
+	int err, c1, p1, zero = 0, sent, recvd, avail;
+	char snd[256] = "0123456789";
+	char rcv[256] = "0";
+
+	err = create_pair(AF_INET, SOCK_STREAM, &c1, &p1);
+	if (!ASSERT_OK(err, "create_pair()"))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	err = bpf_map_update_elem(map, &zero, &c1, BPF_NOEXIST);

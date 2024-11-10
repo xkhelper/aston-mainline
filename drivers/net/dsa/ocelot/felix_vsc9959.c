@@ -1736,7 +1736,11 @@ struct felix_stream_gate {
 	u64 cycletime;
 	u64 cycletime_ext;
 	u32 num_entries;
+<<<<<<< HEAD
 	struct action_gate_entry entries[];
+=======
+	struct action_gate_entry entries[] __counted_by(num_entries);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct felix_stream_gate_entry {

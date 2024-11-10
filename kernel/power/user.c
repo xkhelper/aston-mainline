@@ -447,7 +447,10 @@ static const struct file_operations snapshot_fops = {
 	.release = snapshot_release,
 	.read = snapshot_read,
 	.write = snapshot_write,
+<<<<<<< HEAD
 	.llseek = no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.unlocked_ioctl = snapshot_ioctl,
 #ifdef CONFIG_COMPAT
 	.compat_ioctl = snapshot_compat_ioctl,

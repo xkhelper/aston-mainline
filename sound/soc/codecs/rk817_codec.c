@@ -529,7 +529,11 @@ static struct platform_driver rk817_codec_driver = {
 		   .name = "rk817-codec",
 		   },
 	.probe = rk817_platform_probe,
+<<<<<<< HEAD
 	.remove_new = rk817_platform_remove,
+=======
+	.remove = rk817_platform_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(rk817_codec_driver);

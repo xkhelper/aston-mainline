@@ -130,6 +130,10 @@ struct afs_call {
 	wait_queue_head_t	waitq;		/* processes awaiting completion */
 	struct work_struct	async_work;	/* async I/O processor */
 	struct work_struct	work;		/* actual work processor */
+<<<<<<< HEAD
+=======
+	struct work_struct	free_work;	/* Deferred free processor */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct rxrpc_call	*rxcall;	/* RxRPC call handle */
 	struct rxrpc_peer	*peer;		/* Remote endpoint */
 	struct key		*key;		/* security for this call */
@@ -1072,6 +1076,11 @@ extern void afs_check_for_remote_deletion(struct afs_operation *);
 extern void afs_edit_dir_add(struct afs_vnode *, struct qstr *, struct afs_fid *,
 			     enum afs_edit_dir_reason);
 extern void afs_edit_dir_remove(struct afs_vnode *, struct qstr *, enum afs_edit_dir_reason);
+<<<<<<< HEAD
+=======
+void afs_edit_dir_update_dotdot(struct afs_vnode *vnode, struct afs_vnode *new_dvnode,
+				enum afs_edit_dir_reason why);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * dir_silly.c
@@ -1331,6 +1340,10 @@ extern int __net_init afs_open_socket(struct afs_net *);
 extern void __net_exit afs_close_socket(struct afs_net *);
 extern void afs_charge_preallocation(struct work_struct *);
 extern void afs_put_call(struct afs_call *);
+<<<<<<< HEAD
+=======
+void afs_deferred_put_call(struct afs_call *call);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void afs_make_call(struct afs_call *call, gfp_t gfp);
 void afs_wait_for_call_to_complete(struct afs_call *call);
 extern struct afs_call *afs_alloc_flat_call(struct afs_net *,

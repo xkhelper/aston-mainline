@@ -904,8 +904,11 @@
 };
 
 &xhci1 {
+<<<<<<< HEAD
 	phys = <&u2port1 PHY_TYPE_USB2>,
 	       <&u3port1 PHY_TYPE_USB3>;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	vusb33-supply = <&mt6359_vusb_ldo_reg>;
 	status = "okay";
 };

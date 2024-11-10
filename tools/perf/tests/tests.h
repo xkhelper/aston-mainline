@@ -205,6 +205,10 @@ DECLARE_WORKLOAD(leafloop);
 DECLARE_WORKLOAD(sqrtloop);
 DECLARE_WORKLOAD(brstack);
 DECLARE_WORKLOAD(datasym);
+<<<<<<< HEAD
+=======
+DECLARE_WORKLOAD(landlock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 extern const char *dso_to_test;
 extern const char *test_objdump_path;

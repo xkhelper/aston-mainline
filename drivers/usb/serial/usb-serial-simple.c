@@ -24,7 +24,10 @@ static const struct usb_device_id vendor##_id_table[] = {	\
 };								\
 static struct usb_serial_driver vendor##_device = {		\
 	.driver = {						\
+<<<<<<< HEAD
 		.owner =	THIS_MODULE,			\
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name =		#vendor,			\
 	},							\
 	.id_table =		vendor##_id_table,		\

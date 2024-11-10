@@ -626,7 +626,11 @@ static void nv04_tmds_slave_init(struct drm_encoder *encoder)
 	struct drm_device *dev = encoder->dev;
 	struct dcb_output *dcb = nouveau_encoder(encoder)->dcb;
 	struct nouveau_drm *drm = nouveau_drm(dev);
+<<<<<<< HEAD
 	struct nvkm_i2c *i2c = nvxx_i2c(&drm->client.device);
+=======
+	struct nvkm_i2c *i2c = nvxx_i2c(drm);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct nvkm_i2c_bus *bus = nvkm_i2c_bus_find(i2c, NVKM_I2C_BUS_PRI);
 	struct nvkm_i2c_bus_probe info[] = {
 		{

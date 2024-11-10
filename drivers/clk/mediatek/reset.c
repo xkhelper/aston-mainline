@@ -110,6 +110,7 @@ static int reset_xlate(struct reset_controller_dev *rcdev,
 	return data->desc->rst_idx_map[reset_spec->args[0]];
 }
 
+<<<<<<< HEAD
 int mtk_register_reset_controller(struct device_node *np,
 				  const struct mtk_clk_rst_desc *desc)
 {
@@ -169,6 +170,8 @@ int mtk_register_reset_controller(struct device_node *np,
 	return 0;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int mtk_register_reset_controller_with_dev(struct device *dev,
 					   const struct mtk_clk_rst_desc *desc)
 {
@@ -198,7 +201,11 @@ int mtk_register_reset_controller_with_dev(struct device *dev,
 	regmap = device_node_to_regmap(np);
 	if (IS_ERR(regmap)) {
 		dev_err(dev, "Cannot find regmap %pe\n", regmap);
+<<<<<<< HEAD
 		return -EINVAL;
+=======
+		return PTR_ERR(regmap);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);

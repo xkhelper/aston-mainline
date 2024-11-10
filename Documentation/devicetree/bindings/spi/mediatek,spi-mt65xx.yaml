@@ -33,6 +33,10 @@ properties:
           - const: mediatek,mt6765-spi
       - items:
           - enum:
+<<<<<<< HEAD
+=======
+              - mediatek,mt7981-spi-ipm
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - mediatek,mt7986-spi-ipm
               - mediatek,mt8188-spi-ipm
           - const: mediatek,spi-ipm

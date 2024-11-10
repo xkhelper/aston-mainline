@@ -12,8 +12,11 @@
 #include <drm/drm_auth.h>
 #include <drm/drm_syncobj.h>
 
+<<<<<<< HEAD
 #include "display/intel_frontbuffer.h"
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "gem/i915_gem_ioctls.h"
 #include "gt/intel_context.h"
 #include "gt/intel_gpu_commands.h"
@@ -827,7 +830,11 @@ static int eb_select_context(struct i915_execbuffer *eb)
 	struct i915_gem_context *ctx;
 
 	ctx = i915_gem_context_lookup(eb->file->driver_priv, eb->args->rsvd1);
+<<<<<<< HEAD
 	if (unlikely(IS_ERR(ctx)))
+=======
+	if (IS_ERR(ctx))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return PTR_ERR(ctx);
 
 	eb->gem_context = ctx;
@@ -1533,7 +1540,11 @@ static int eb_relocate_vma(struct i915_execbuffer *eb, struct eb_vma *ev)
 		u64_to_user_ptr(entry->relocs_ptr);
 	unsigned long remain = entry->relocation_count;
 
+<<<<<<< HEAD
 	if (unlikely(remain > N_RELOC(ULONG_MAX)))
+=======
+	if (unlikely(remain > N_RELOC(INT_MAX)))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	/*
@@ -1641,7 +1652,11 @@ static int check_relocations(const struct drm_i915_gem_exec_object2 *entry)
 	if (size == 0)
 		return 0;
 
+<<<<<<< HEAD
 	if (size > N_RELOC(ULONG_MAX))
+=======
+	if (size > N_RELOC(INT_MAX))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	addr = u64_to_user_ptr(entry->relocs_ptr);

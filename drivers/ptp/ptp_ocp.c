@@ -1558,6 +1558,7 @@ ptp_ocp_watchdog(struct timer_list *t)
 static void
 ptp_ocp_estimate_pci_timing(struct ptp_ocp *bp)
 {
+<<<<<<< HEAD
 	ktime_t start, end;
 	ktime_t delay;
 	u32 ctrl;
@@ -1574,6 +1575,26 @@ ptp_ocp_estimate_pci_timing(struct ptp_ocp *bp)
 	end = ktime_get_ns();
 
 	delay = end - start;
+=======
+	ktime_t start, end, delay = U64_MAX;
+	u32 ctrl;
+	int i;
+
+	for (i = 0; i < 3; i++) {
+		ctrl = ioread32(&bp->reg->ctrl);
+		ctrl = OCP_CTRL_READ_TIME_REQ | OCP_CTRL_ENABLE;
+
+		iowrite32(ctrl, &bp->reg->ctrl);
+
+		start = ktime_get_raw_ns();
+
+		ctrl = ioread32(&bp->reg->ctrl);
+
+		end = ktime_get_raw_ns();
+
+		delay = min(delay, end - start);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bp->ts_window_adjust = (delay >> 5) * 3;
 }
 

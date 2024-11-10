@@ -156,6 +156,15 @@ static void pmull_sigill(void)
 	asm volatile(".inst 0x0ee0e000" : : : );
 }
 
+<<<<<<< HEAD
+=======
+static void poe_sigill(void)
+{
+	/* mrs x0, POR_EL0 */
+	asm volatile("mrs x0, S3_3_C10_C2_4" : : : "x0");
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void rng_sigill(void)
 {
 	asm volatile("mrs x0, S3_3_C2_C4_0" : : : "x0");
@@ -602,6 +611,17 @@ static const struct hwcap_data {
 		.sigill_fn = pmull_sigill,
 	},
 	{
+<<<<<<< HEAD
+=======
+		.name = "POE",
+		.at_hwcap = AT_HWCAP2,
+		.hwcap_bit = HWCAP2_POE,
+		.cpuinfo = "poe",
+		.sigill_fn = poe_sigill,
+		.sigill_reliable = true,
+	},
+	{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name = "RNG",
 		.at_hwcap = AT_HWCAP2,
 		.hwcap_bit = HWCAP2_RNG,

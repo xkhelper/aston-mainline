@@ -1327,7 +1327,11 @@ bool dso_id__empty(const struct dso_id *id)
 	return !id->maj && !id->min && !id->ino && !id->ino_generation;
 }
 
+<<<<<<< HEAD
 void __dso__inject_id(struct dso *dso, struct dso_id *id)
+=======
+void __dso__inject_id(struct dso *dso, const struct dso_id *id)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct dsos *dsos = dso__dsos(dso);
 	struct dso_id *dso_id = dso__id(dso);
@@ -1417,7 +1421,11 @@ void dso__set_sorted_by_name(struct dso *dso)
 	RC_CHK_ACCESS(dso)->sorted_by_name = true;
 }
 
+<<<<<<< HEAD
 struct dso *dso__new_id(const char *name, struct dso_id *id)
+=======
+struct dso *dso__new_id(const char *name, const struct dso_id *id)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	RC_STRUCT(dso) *dso = zalloc(sizeof(*dso) + strlen(name) + 1);
 	struct dso *res;

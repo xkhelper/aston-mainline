@@ -2673,7 +2673,10 @@ static const struct file_operations devx_async_cmd_event_fops = {
 	.read	 = devx_async_cmd_event_read,
 	.poll    = devx_async_cmd_event_poll,
 	.release = uverbs_uobject_fd_release,
+<<<<<<< HEAD
 	.llseek	 = no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static ssize_t devx_async_event_read(struct file *filp, char __user *buf,
@@ -2788,7 +2791,10 @@ static const struct file_operations devx_async_event_fops = {
 	.read	 = devx_async_event_read,
 	.poll    = devx_async_event_poll,
 	.release = uverbs_uobject_fd_release,
+<<<<<<< HEAD
 	.llseek	 = no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void devx_async_cmd_event_destroy_uobj(struct ib_uobject *uobj,

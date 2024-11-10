@@ -83,7 +83,11 @@ static int nilfs_prepare_chunk(struct folio *folio, unsigned int from,
 {
 	loff_t pos = folio_pos(folio) + from;
 
+<<<<<<< HEAD
 	return __block_write_begin(&folio->page, pos, to - from, nilfs_get_block);
+=======
+	return __block_write_begin(folio, pos, to - from, nilfs_get_block);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void nilfs_commit_chunk(struct folio *folio,
@@ -96,7 +100,11 @@ static void nilfs_commit_chunk(struct folio *folio,
 	int err;
 
 	nr_dirty = nilfs_page_count_clean_buffers(&folio->page, from, to);
+<<<<<<< HEAD
 	copied = block_write_end(NULL, mapping, pos, len, len, &folio->page, NULL);
+=======
+	copied = block_write_end(NULL, mapping, pos, len, len, folio, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (pos + copied > dir->i_size)
 		i_size_write(dir, pos + copied);
 	if (IS_DIRSYNC(dir))
@@ -231,6 +239,7 @@ static struct nilfs_dir_entry *nilfs_next_entry(struct nilfs_dir_entry *p)
 					  nilfs_rec_len_from_disk(p->rec_len));
 }
 
+<<<<<<< HEAD
 static unsigned char
 nilfs_filetype_table[NILFS_FT_MAX] = {
 	[NILFS_FT_UNKNOWN]	= DT_UNKNOWN,
@@ -262,6 +271,8 @@ static void nilfs_set_de_type(struct nilfs_dir_entry *de, struct inode *inode)
 	de->file_type = nilfs_type_by_mode[(mode & S_IFMT)>>S_SHIFT];
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int nilfs_readdir(struct file *file, struct dir_context *ctx)
 {
 	loff_t pos = ctx->pos;
@@ -297,10 +308,14 @@ static int nilfs_readdir(struct file *file, struct dir_context *ctx)
 			if (de->inode) {
 				unsigned char t;
 
+<<<<<<< HEAD
 				if (de->file_type < NILFS_FT_MAX)
 					t = nilfs_filetype_table[de->file_type];
 				else
 					t = DT_UNKNOWN;
+=======
+				t = fs_ftype_to_dtype(de->file_type);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 				if (!dir_emit(ctx, de->name, de->name_len,
 						le64_to_cpu(de->inode), t)) {
@@ -323,7 +338,11 @@ static int nilfs_readdir(struct file *file, struct dir_context *ctx)
  * The folio is mapped and unlocked.  When the caller is finished with
  * the entry, it should call folio_release_kmap().
  *
+<<<<<<< HEAD
  * On failure, returns NULL and the caller should ignore foliop.
+=======
+ * On failure, returns an error pointer and the caller should ignore foliop.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct nilfs_dir_entry *nilfs_find_entry(struct inode *dir,
 		const struct qstr *qstr, struct folio **foliop)
@@ -346,6 +365,7 @@ struct nilfs_dir_entry *nilfs_find_entry(struct inode *dir,
 	do {
 		char *kaddr = nilfs_get_folio(dir, n, foliop);
 
+<<<<<<< HEAD
 		if (!IS_ERR(kaddr)) {
 			de = (struct nilfs_dir_entry *)kaddr;
 			kaddr += nilfs_last_byte(dir, n) - reclen;
@@ -362,6 +382,26 @@ struct nilfs_dir_entry *nilfs_find_entry(struct inode *dir,
 			}
 			folio_release_kmap(*foliop, kaddr);
 		}
+=======
+		if (IS_ERR(kaddr))
+			return ERR_CAST(kaddr);
+
+		de = (struct nilfs_dir_entry *)kaddr;
+		kaddr += nilfs_last_byte(dir, n) - reclen;
+		while ((char *)de <= kaddr) {
+			if (de->rec_len == 0) {
+				nilfs_error(dir->i_sb,
+					    "zero-length directory entry");
+				folio_release_kmap(*foliop, kaddr);
+				goto out;
+			}
+			if (nilfs_match(namelen, name, de))
+				goto found;
+			de = nilfs_next_entry(de);
+		}
+		folio_release_kmap(*foliop, kaddr);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (++n >= npages)
 			n = 0;
 		/* next folio is past the blocks we've got */
@@ -374,7 +414,11 @@ struct nilfs_dir_entry *nilfs_find_entry(struct inode *dir,
 		}
 	} while (n != start);
 out:
+<<<<<<< HEAD
 	return NULL;
+=======
+	return ERR_PTR(-ENOENT);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 found:
 	ei->i_dir_start_lookup = n;
@@ -418,18 +462,32 @@ fail:
 	return NULL;
 }
 
+<<<<<<< HEAD
 ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
 {
 	ino_t res = 0;
+=======
+int nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr, ino_t *ino)
+{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct nilfs_dir_entry *de;
 	struct folio *folio;
 
 	de = nilfs_find_entry(dir, qstr, &folio);
+<<<<<<< HEAD
 	if (de) {
 		res = le64_to_cpu(de->inode);
 		folio_release_kmap(folio, de);
 	}
 	return res;
+=======
+	if (IS_ERR(de))
+		return PTR_ERR(de);
+
+	*ino = le64_to_cpu(de->inode);
+	folio_release_kmap(folio, de);
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
@@ -444,7 +502,11 @@ void nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
 	err = nilfs_prepare_chunk(folio, from, to);
 	BUG_ON(err);
 	de->inode = cpu_to_le64(inode->i_ino);
+<<<<<<< HEAD
 	nilfs_set_de_type(de, inode);
+=======
+	de->file_type = fs_umode_to_ftype(inode->i_mode);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	nilfs_commit_chunk(folio, mapping, from, to);
 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
 }
@@ -531,7 +593,11 @@ got_it:
 	de->name_len = namelen;
 	memcpy(de->name, name, namelen);
 	de->inode = cpu_to_le64(inode->i_ino);
+<<<<<<< HEAD
 	nilfs_set_de_type(de, inode);
+=======
+	de->file_type = fs_umode_to_ftype(inode->i_mode);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	nilfs_commit_chunk(folio, folio->mapping, from, to);
 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
 	nilfs_mark_inode_dirty(dir);
@@ -612,14 +678,22 @@ int nilfs_make_empty(struct inode *inode, struct inode *parent)
 	de->rec_len = nilfs_rec_len_to_disk(NILFS_DIR_REC_LEN(1));
 	memcpy(de->name, ".\0\0", 4);
 	de->inode = cpu_to_le64(inode->i_ino);
+<<<<<<< HEAD
 	nilfs_set_de_type(de, inode);
+=======
+	de->file_type = fs_umode_to_ftype(inode->i_mode);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	de = (struct nilfs_dir_entry *)(kaddr + NILFS_DIR_REC_LEN(1));
 	de->name_len = 2;
 	de->rec_len = nilfs_rec_len_to_disk(chunk_size - NILFS_DIR_REC_LEN(1));
 	de->inode = cpu_to_le64(parent->i_ino);
 	memcpy(de->name, "..\0", 4);
+<<<<<<< HEAD
 	nilfs_set_de_type(de, inode);
+=======
+	de->file_type = fs_umode_to_ftype(inode->i_mode);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kunmap_local(kaddr);
 	nilfs_commit_chunk(folio, mapping, 0, chunk_size);
 fail:

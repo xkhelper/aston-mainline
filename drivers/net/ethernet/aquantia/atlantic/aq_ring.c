@@ -557,7 +557,11 @@ static int __aq_ring_rx_clean(struct aq_ring_s *self, struct napi_struct *napi,
 				}
 
 				frag_cnt++;
+<<<<<<< HEAD
 				next_ = buff_->next,
+=======
+				next_ = buff_->next;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				buff_ = &self->buff_ring[next_];
 				is_rsc_completed =
 					aq_ring_dx_in_range(self->sw_head,
@@ -583,7 +587,11 @@ static int __aq_ring_rx_clean(struct aq_ring_s *self, struct napi_struct *napi,
 						err = -EIO;
 						goto err_exit;
 					}
+<<<<<<< HEAD
 					next_ = buff_->next,
+=======
+					next_ = buff_->next;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					buff_ = &self->buff_ring[next_];
 
 					buff_->is_cleaned = true;

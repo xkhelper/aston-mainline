@@ -266,7 +266,11 @@ static void aq_ethtool_get_strings(struct net_device *ndev,
 		const int rx_stat_cnt = ARRAY_SIZE(aq_ethtool_queue_rx_stat_names);
 		const int tx_stat_cnt = ARRAY_SIZE(aq_ethtool_queue_tx_stat_names);
 		char tc_string[8];
+<<<<<<< HEAD
 		int tc;
+=======
+		unsigned int tc;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		memset(tc_string, 0, sizeof(tc_string));
 		memcpy(p, aq_ethtool_stat_names,
@@ -275,6 +279,7 @@ static void aq_ethtool_get_strings(struct net_device *ndev,
 
 		for (tc = 0; tc < cfg->tcs; tc++) {
 			if (cfg->is_qos)
+<<<<<<< HEAD
 				snprintf(tc_string, 8, "TC%d ", tc);
 
 			for (i = 0; i < cfg->vecs; i++) {
@@ -291,6 +296,22 @@ static void aq_ethtool_get_strings(struct net_device *ndev,
 					     tc_string,
 					     AQ_NIC_CFG_TCVEC2RING(cfg, tc, i));
 					p += ETH_GSTRING_LEN;
+=======
+				snprintf(tc_string, 8, "TC%u ", tc);
+
+			for (i = 0; i < cfg->vecs; i++) {
+				for (si = 0; si < rx_stat_cnt; si++) {
+					ethtool_sprintf(&p,
+					     aq_ethtool_queue_rx_stat_names[si],
+					     tc_string,
+					     AQ_NIC_CFG_TCVEC2RING(cfg, tc, i));
+				}
+				for (si = 0; si < tx_stat_cnt; si++) {
+					ethtool_sprintf(&p,
+					     aq_ethtool_queue_tx_stat_names[si],
+					     tc_string,
+					     AQ_NIC_CFG_TCVEC2RING(cfg, tc, i));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				}
 			}
 		}
@@ -305,20 +326,34 @@ static void aq_ethtool_get_strings(struct net_device *ndev,
 
 			for (i = 0; i < max(rx_ring_cnt, tx_ring_cnt); i++) {
 				for (si = 0; si < rx_stat_cnt; si++) {
+<<<<<<< HEAD
 					snprintf(p, ETH_GSTRING_LEN,
 						 aq_ethtool_queue_rx_stat_names[si],
 						 tc_string,
 						 i ? PTP_HWST_RING_IDX : ptp_ring_idx);
 					p += ETH_GSTRING_LEN;
+=======
+					ethtool_sprintf(&p,
+						 aq_ethtool_queue_rx_stat_names[si],
+						 tc_string,
+						 i ? PTP_HWST_RING_IDX : ptp_ring_idx);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				}
 				if (i >= tx_ring_cnt)
 					continue;
 				for (si = 0; si < tx_stat_cnt; si++) {
+<<<<<<< HEAD
 					snprintf(p, ETH_GSTRING_LEN,
 						 aq_ethtool_queue_tx_stat_names[si],
 						 tc_string,
 						 i ? PTP_HWST_RING_IDX : ptp_ring_idx);
 					p += ETH_GSTRING_LEN;
+=======
+					ethtool_sprintf(&p,
+						 aq_ethtool_queue_tx_stat_names[si],
+						 tc_string,
+						 i ? PTP_HWST_RING_IDX : ptp_ring_idx);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				}
 			}
 		}
@@ -338,9 +373,14 @@ static void aq_ethtool_get_strings(struct net_device *ndev,
 			for (si = 0;
 				si < ARRAY_SIZE(aq_macsec_txsc_stat_names);
 				si++) {
+<<<<<<< HEAD
 				snprintf(p, ETH_GSTRING_LEN,
 					 aq_macsec_txsc_stat_names[si], i);
 				p += ETH_GSTRING_LEN;
+=======
+				ethtool_sprintf(&p,
+					 aq_macsec_txsc_stat_names[si], i);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 			aq_txsc = &nic->macsec_cfg->aq_txsc[i];
 			for (sa = 0; sa < MACSEC_NUM_AN; sa++) {
@@ -349,10 +389,16 @@ static void aq_ethtool_get_strings(struct net_device *ndev,
 				for (si = 0;
 				     si < ARRAY_SIZE(aq_macsec_txsa_stat_names);
 				     si++) {
+<<<<<<< HEAD
 					snprintf(p, ETH_GSTRING_LEN,
 						 aq_macsec_txsa_stat_names[si],
 						 i, sa);
 					p += ETH_GSTRING_LEN;
+=======
+					ethtool_sprintf(&p,
+						 aq_macsec_txsa_stat_names[si],
+						 i, sa);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				}
 			}
 		}
@@ -369,10 +415,16 @@ static void aq_ethtool_get_strings(struct net_device *ndev,
 				for (si = 0;
 				     si < ARRAY_SIZE(aq_macsec_rxsa_stat_names);
 				     si++) {
+<<<<<<< HEAD
 					snprintf(p, ETH_GSTRING_LEN,
 						 aq_macsec_rxsa_stat_names[si],
 						 i, sa);
 					p += ETH_GSTRING_LEN;
+=======
+					ethtool_sprintf(&p,
+						 aq_macsec_rxsa_stat_names[si],
+						 i, sa);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				}
 			}
 		}

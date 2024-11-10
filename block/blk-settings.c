@@ -437,6 +437,7 @@ int queue_limits_set(struct request_queue *q, struct queue_limits *lim)
 }
 EXPORT_SYMBOL_GPL(queue_limits_set);
 
+<<<<<<< HEAD
 /**
  * blk_limits_io_min - set minimum request size for a device
  * @limits: the queue limits
@@ -479,6 +480,8 @@ void blk_limits_io_opt(struct queue_limits *limits, unsigned int opt)
 }
 EXPORT_SYMBOL(blk_limits_io_opt);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int queue_limit_alignment_offset(const struct queue_limits *lim,
 		sector_t sector)
 {

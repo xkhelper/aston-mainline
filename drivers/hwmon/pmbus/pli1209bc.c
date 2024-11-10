@@ -54,6 +54,7 @@ static int pli1209bc_read_word_data(struct i2c_client *client, int page,
 	}
 }
 
+<<<<<<< HEAD
 static int pli1209bc_write_byte(struct i2c_client *client, int page, u8 reg)
 {
 	int ret;
@@ -78,6 +79,8 @@ static int pli1209bc_write_byte(struct i2c_client *client, int page, u8 reg)
 	return ret;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if IS_ENABLED(CONFIG_SENSORS_PLI1209BC_REGULATOR)
 static const struct regulator_desc pli1209bc_reg_desc = {
 	.name = "vout2",
@@ -127,7 +130,11 @@ static struct pmbus_driver_info pli1209bc_info = {
 	    | PMBUS_HAVE_TEMP | PMBUS_HAVE_STATUS_TEMP
 	    | PMBUS_HAVE_STATUS_IOUT | PMBUS_HAVE_STATUS_INPUT,
 	.read_word_data = pli1209bc_read_word_data,
+<<<<<<< HEAD
 	.write_byte = pli1209bc_write_byte,
+=======
+	.write_delay = 250,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if IS_ENABLED(CONFIG_SENSORS_PLI1209BC_REGULATOR)
 	.num_regulators = 1,
 	.reg_desc = &pli1209bc_reg_desc,

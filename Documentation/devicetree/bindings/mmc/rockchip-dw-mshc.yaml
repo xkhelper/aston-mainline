@@ -43,6 +43,11 @@ properties:
               - rockchip,rv1108-dw-mshc
               - rockchip,rv1126-dw-mshc
           - const: rockchip,rk3288-dw-mshc
+<<<<<<< HEAD
+=======
+      # for Rockchip RK3576 with phase tuning inside the controller
+      - const: rockchip,rk3576-dw-mshc
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   reg:
     maxItems: 1

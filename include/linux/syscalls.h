@@ -870,7 +870,11 @@ asmlinkage long sys_fanotify_mark(int fanotify_fd, unsigned int flags,
 #endif
 asmlinkage long sys_name_to_handle_at(int dfd, const char __user *name,
 				      struct file_handle __user *handle,
+<<<<<<< HEAD
 				      int __user *mnt_id, int flag);
+=======
+				      void __user *mnt_id, int flag);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 asmlinkage long sys_open_by_handle_at(int mountdirfd,
 				      struct file_handle __user *handle,
 				      int flags);

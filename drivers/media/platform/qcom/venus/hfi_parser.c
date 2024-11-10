@@ -157,7 +157,11 @@ static void
 parse_raw_formats(struct venus_core *core, u32 codecs, u32 domain, void *data)
 {
 	struct hfi_uncompressed_format_supported *fmt = data;
+<<<<<<< HEAD
 	struct hfi_uncompressed_plane_info *pinfo = fmt->plane_info;
+=======
+	struct hfi_uncompressed_plane_info *pinfo = &fmt->plane_info;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct hfi_uncompressed_plane_constraints *constr;
 	struct raw_formats rawfmts[MAX_FMT_ENTRIES] = {};
 	u32 entries = fmt->format_entries;

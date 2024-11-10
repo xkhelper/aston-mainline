@@ -1639,6 +1639,23 @@ struct dentry *lookup_one_qstr_excl(const struct qstr *name,
 }
 EXPORT_SYMBOL(lookup_one_qstr_excl);
 
+<<<<<<< HEAD
+=======
+/**
+ * lookup_fast - do fast lockless (but racy) lookup of a dentry
+ * @nd: current nameidata
+ *
+ * Do a fast, but racy lookup in the dcache for the given dentry, and
+ * revalidate it. Returns a valid dentry pointer or NULL if one wasn't
+ * found. On error, an ERR_PTR will be returned.
+ *
+ * If this function returns a valid dentry and the walk is no longer
+ * lazy, the dentry will carry a reference that must later be put. If
+ * RCU mode is still in force, then this is not the case and the dentry
+ * must be legitimized before use. If this returns NULL, then the walk
+ * will no longer be in RCU mode.
+ */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct dentry *lookup_fast(struct nameidata *nd)
 {
 	struct dentry *dentry, *parent = nd->path.dentry;
@@ -2492,25 +2509,42 @@ static const char *path_init(struct nameidata *nd, unsigned flags)
 		struct fd f = fdget_raw(nd->dfd);
 		struct dentry *dentry;
 
+<<<<<<< HEAD
 		if (!f.file)
 			return ERR_PTR(-EBADF);
 
 		if (flags & LOOKUP_LINKAT_EMPTY) {
 			if (f.file->f_cred != current_cred() &&
 			    !ns_capable(f.file->f_cred->user_ns, CAP_DAC_READ_SEARCH)) {
+=======
+		if (!fd_file(f))
+			return ERR_PTR(-EBADF);
+
+		if (flags & LOOKUP_LINKAT_EMPTY) {
+			if (fd_file(f)->f_cred != current_cred() &&
+			    !ns_capable(fd_file(f)->f_cred->user_ns, CAP_DAC_READ_SEARCH)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				fdput(f);
 				return ERR_PTR(-ENOENT);
 			}
 		}
 
+<<<<<<< HEAD
 		dentry = f.file->f_path.dentry;
+=======
+		dentry = fd_file(f)->f_path.dentry;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (*s && unlikely(!d_can_lookup(dentry))) {
 			fdput(f);
 			return ERR_PTR(-ENOTDIR);
 		}
 
+<<<<<<< HEAD
 		nd->path = f.file->f_path;
+=======
+		nd->path = fd_file(f)->f_path;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (flags & LOOKUP_RCU) {
 			nd->inode = nd->path.dentry->d_inode;
 			nd->seq = read_seqcount_begin(&nd->path.dentry->d_seq);
@@ -3521,6 +3555,12 @@ static struct dentry *lookup_open(struct nameidata *nd, struct file *file,
 		return dentry;
 	}
 
+<<<<<<< HEAD
+=======
+	if (open_flag & O_CREAT)
+		audit_inode(nd->name, dir, AUDIT_INODE_PARENT);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Checking write permission is tricky, bacuse we don't know if we are
 	 * going to actually need it: O_CREAT opens should work as long as the
@@ -3591,6 +3631,45 @@ out_dput:
 	return ERR_PTR(error);
 }
 
+<<<<<<< HEAD
+=======
+static inline bool trailing_slashes(struct nameidata *nd)
+{
+	return (bool)nd->last.name[nd->last.len];
+}
+
+static struct dentry *lookup_fast_for_open(struct nameidata *nd, int open_flag)
+{
+	struct dentry *dentry;
+
+	if (open_flag & O_CREAT) {
+		if (trailing_slashes(nd))
+			return ERR_PTR(-EISDIR);
+
+		/* Don't bother on an O_EXCL create */
+		if (open_flag & O_EXCL)
+			return NULL;
+	}
+
+	if (trailing_slashes(nd))
+		nd->flags |= LOOKUP_FOLLOW | LOOKUP_DIRECTORY;
+
+	dentry = lookup_fast(nd);
+	if (IS_ERR_OR_NULL(dentry))
+		return dentry;
+
+	if (open_flag & O_CREAT) {
+		/* Discard negative dentries. Need inode_lock to do the create */
+		if (!dentry->d_inode) {
+			if (!(nd->flags & LOOKUP_RCU))
+				dput(dentry);
+			dentry = NULL;
+		}
+	}
+	return dentry;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const char *open_last_lookups(struct nameidata *nd,
 		   struct file *file, const struct open_flags *op)
 {
@@ -3608,6 +3687,7 @@ static const char *open_last_lookups(struct nameidata *nd,
 		return handle_dots(nd, nd->last_type);
 	}
 
+<<<<<<< HEAD
 	if (!(open_flag & O_CREAT)) {
 		if (nd->last.name[nd->last.len])
 			nd->flags |= LOOKUP_FOLLOW | LOOKUP_DIRECTORY;
@@ -3622,14 +3702,31 @@ static const char *open_last_lookups(struct nameidata *nd,
 			return ERR_PTR(-ECHILD);
 	} else {
 		/* create side of things */
+=======
+	/* We _can_ be in RCU mode here */
+	dentry = lookup_fast_for_open(nd, open_flag);
+	if (IS_ERR(dentry))
+		return ERR_CAST(dentry);
+
+	if (likely(dentry))
+		goto finish_lookup;
+
+	if (!(open_flag & O_CREAT)) {
+		if (WARN_ON_ONCE(nd->flags & LOOKUP_RCU))
+			return ERR_PTR(-ECHILD);
+	} else {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (nd->flags & LOOKUP_RCU) {
 			if (!try_to_unlazy(nd))
 				return ERR_PTR(-ECHILD);
 		}
+<<<<<<< HEAD
 		audit_inode(nd->name, dir, AUDIT_INODE_PARENT);
 		/* trailing slashes? */
 		if (unlikely(nd->last.name[nd->last.len]))
 			return ERR_PTR(-EISDIR);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (open_flag & (O_CREAT | O_TRUNC | O_WRONLY | O_RDWR)) {
@@ -5304,7 +5401,11 @@ int page_symlink(struct inode *inode, const char *symname, int len)
 	struct address_space *mapping = inode->i_mapping;
 	const struct address_space_operations *aops = mapping->a_ops;
 	bool nofs = !mapping_gfp_constraint(mapping, __GFP_FS);
+<<<<<<< HEAD
 	struct page *page;
+=======
+	struct folio *folio;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void *fsdata = NULL;
 	int err;
 	unsigned int flags;
@@ -5312,16 +5413,27 @@ int page_symlink(struct inode *inode, const char *symname, int len)
 retry:
 	if (nofs)
 		flags = memalloc_nofs_save();
+<<<<<<< HEAD
 	err = aops->write_begin(NULL, mapping, 0, len-1, &page, &fsdata);
+=======
+	err = aops->write_begin(NULL, mapping, 0, len-1, &folio, &fsdata);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (nofs)
 		memalloc_nofs_restore(flags);
 	if (err)
 		goto fail;
 
+<<<<<<< HEAD
 	memcpy(page_address(page), symname, len-1);
 
 	err = aops->write_end(NULL, mapping, 0, len-1, len-1,
 							page, fsdata);
+=======
+	memcpy(folio_address(folio), symname, len - 1);
+
+	err = aops->write_end(NULL, mapping, 0, len - 1, len - 1,
+						folio, fsdata);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err < 0)
 		goto fail;
 	if (err < len-1)

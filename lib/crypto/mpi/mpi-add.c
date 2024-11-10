@@ -13,6 +13,7 @@
 
 #include "mpi-internal.h"
 
+<<<<<<< HEAD
 /****************
  * Add the unsigned integer V to the mpi-integer U and store the
  * result in W. U and V may be the same.
@@ -65,10 +66,17 @@ void mpi_add_ui(MPI w, MPI u, unsigned long v)
 
 
 void mpi_add(MPI w, MPI u, MPI v)
+=======
+int mpi_add(MPI w, MPI u, MPI v)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	mpi_ptr_t wp, up, vp;
 	mpi_size_t usize, vsize, wsize;
 	int usign, vsign, wsign;
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (u->nlimbs < v->nlimbs) { /* Swap U and V. */
 		usize = v->nlimbs;
@@ -76,7 +84,13 @@ void mpi_add(MPI w, MPI u, MPI v)
 		vsize = u->nlimbs;
 		vsign = u->sign;
 		wsize = usize + 1;
+<<<<<<< HEAD
 		RESIZE_IF_NEEDED(w, wsize);
+=======
+		err = RESIZE_IF_NEEDED(w, wsize);
+		if (err)
+			return err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* These must be after realloc (u or v may be the same as w).  */
 		up = v->d;
 		vp = u->d;
@@ -86,7 +100,13 @@ void mpi_add(MPI w, MPI u, MPI v)
 		vsize = v->nlimbs;
 		vsign = v->sign;
 		wsize = usize + 1;
+<<<<<<< HEAD
 		RESIZE_IF_NEEDED(w, wsize);
+=======
+		err = RESIZE_IF_NEEDED(w, wsize);
+		if (err)
+			return err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* These must be after realloc (u or v may be the same as w).  */
 		up = u->d;
 		vp = v->d;
@@ -128,6 +148,7 @@ void mpi_add(MPI w, MPI u, MPI v)
 
 	w->nlimbs = wsize;
 	w->sign = wsign;
+<<<<<<< HEAD
 }
 EXPORT_SYMBOL_GPL(mpi_add);
 
@@ -151,5 +172,39 @@ void mpi_subm(MPI w, MPI u, MPI v, MPI m)
 {
 	mpi_sub(w, u, v);
 	mpi_mod(w, w, m);
+=======
+	return 0;
+}
+EXPORT_SYMBOL_GPL(mpi_add);
+
+int mpi_sub(MPI w, MPI u, MPI v)
+{
+	int err;
+	MPI vv;
+
+	vv = mpi_copy(v);
+	if (!vv)
+		return -ENOMEM;
+
+	vv->sign = !vv->sign;
+	err = mpi_add(w, u, vv);
+	mpi_free(vv);
+
+	return err;
+}
+EXPORT_SYMBOL_GPL(mpi_sub);
+
+int mpi_addm(MPI w, MPI u, MPI v, MPI m)
+{
+	return mpi_add(w, u, v) ?:
+	       mpi_mod(w, w, m);
+}
+EXPORT_SYMBOL_GPL(mpi_addm);
+
+int mpi_subm(MPI w, MPI u, MPI v, MPI m)
+{
+	return mpi_sub(w, u, v) ?:
+	       mpi_mod(w, w, m);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(mpi_subm);

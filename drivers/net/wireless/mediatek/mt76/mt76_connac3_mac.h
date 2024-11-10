@@ -28,8 +28,11 @@ enum {
 #define MT_RXD0_MESH			BIT(18)
 #define MT_RXD0_MHCP			BIT(19)
 #define MT_RXD0_NORMAL_ETH_TYPE_OFS	GENMASK(22, 16)
+<<<<<<< HEAD
 #define MT_RXD0_NORMAL_IP_SUM		BIT(23)
 #define MT_RXD0_NORMAL_UDP_TCP_SUM	BIT(24)
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define MT_RXD0_SW_PKT_TYPE_MASK	GENMASK(31, 16)
 #define MT_RXD0_SW_PKT_TYPE_MAP		0x380F
@@ -80,6 +83,11 @@ enum {
 #define MT_RXD3_NORMAL_BEACON_UC	BIT(21)
 #define MT_RXD3_NORMAL_CO_ANT		BIT(22)
 #define MT_RXD3_NORMAL_FCS_ERR		BIT(24)
+<<<<<<< HEAD
+=======
+#define MT_RXD3_NORMAL_IP_SUM		BIT(26)
+#define MT_RXD3_NORMAL_UDP_TCP_SUM	BIT(27)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define MT_RXD3_NORMAL_VLAN2ETH		BIT(31)
 
 /* RXD DW4 */
@@ -197,6 +205,16 @@ enum tx_mgnt_type {
 	MT_TX_ADDBA,
 };
 
+<<<<<<< HEAD
+=======
+enum tx_frag_idx {
+	MT_TX_FRAG_NONE,
+	MT_TX_FRAG_FIRST,
+	MT_TX_FRAG_MID,
+	MT_TX_FRAG_LAST
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define MT_CT_INFO_APPLY_TXD		BIT(0)
 #define MT_CT_INFO_COPY_HOST_TXD_ALL	BIT(1)
 #define MT_CT_INFO_MGMT_FRAME		BIT(2)

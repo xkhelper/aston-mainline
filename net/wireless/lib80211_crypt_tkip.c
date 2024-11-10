@@ -705,7 +705,11 @@ static void lib80211_tkip_print_stats(struct seq_file *m, void *priv)
 		   tkip->dot11RSNAStatsTKIPLocalMICFailures);
 }
 
+<<<<<<< HEAD
 static struct lib80211_crypto_ops lib80211_crypt_tkip = {
+=======
+static const struct lib80211_crypto_ops lib80211_crypt_tkip = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name = "TKIP",
 	.init = lib80211_tkip_init,
 	.deinit = lib80211_tkip_deinit,

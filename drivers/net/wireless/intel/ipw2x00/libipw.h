@@ -345,6 +345,7 @@ struct libipw_hdr_2addr {
 } __packed;
 
 struct libipw_hdr_3addr {
+<<<<<<< HEAD
 	__le16 frame_ctl;
 	__le16 duration_id;
 	u8 addr1[ETH_ALEN];
@@ -353,6 +354,21 @@ struct libipw_hdr_3addr {
 	__le16 seq_ctl;
 	u8 payload[];
 } __packed;
+=======
+	/* New members MUST be added within the __struct_group() macro below. */
+	__struct_group(libipw_hdr_3addr_hdr, hdr, __packed,
+		__le16 frame_ctl;
+		__le16 duration_id;
+		u8 addr1[ETH_ALEN];
+		u8 addr2[ETH_ALEN];
+		u8 addr3[ETH_ALEN];
+		__le16 seq_ctl;
+	);
+	u8 payload[];
+} __packed;
+static_assert(offsetof(struct libipw_hdr_3addr, payload) == sizeof(struct libipw_hdr_3addr_hdr),
+	      "struct member likely outside of __struct_group()");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct libipw_hdr_4addr {
 	__le16 frame_ctl;
@@ -400,7 +416,11 @@ struct libipw_info_element {
 */
 
 struct libipw_auth {
+<<<<<<< HEAD
 	struct libipw_hdr_3addr header;
+=======
+	struct libipw_hdr_3addr_hdr header;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__le16 algorithm;
 	__le16 transaction;
 	__le16 status;
@@ -417,7 +437,11 @@ struct libipw_channel_switch {
 } __packed;
 
 struct libipw_action {
+<<<<<<< HEAD
 	struct libipw_hdr_3addr header;
+=======
+	struct libipw_hdr_3addr_hdr header;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 category;
 	u8 action;
 	union {
@@ -430,7 +454,11 @@ struct libipw_action {
 } __packed;
 
 struct libipw_disassoc {
+<<<<<<< HEAD
 	struct libipw_hdr_3addr header;
+=======
+	struct libipw_hdr_3addr_hdr header;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__le16 reason;
 } __packed;
 
@@ -438,13 +466,21 @@ struct libipw_disassoc {
 #define libipw_deauth libipw_disassoc
 
 struct libipw_probe_request {
+<<<<<<< HEAD
 	struct libipw_hdr_3addr header;
+=======
+	struct libipw_hdr_3addr_hdr header;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* SSID, supported rates */
 	u8 variable[];
 } __packed;
 
 struct libipw_probe_response {
+<<<<<<< HEAD
 	struct libipw_hdr_3addr header;
+=======
+	struct libipw_hdr_3addr_hdr header;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__le32 time_stamp[2];
 	__le16 beacon_interval;
 	__le16 capability;
@@ -456,6 +492,7 @@ struct libipw_probe_response {
 /* Alias beacon for probe_response */
 #define libipw_beacon libipw_probe_response
 
+<<<<<<< HEAD
 struct libipw_assoc_request {
 	struct libipw_hdr_3addr header;
 	__le16 capability;
@@ -466,6 +503,10 @@ struct libipw_assoc_request {
 
 struct libipw_reassoc_request {
 	struct libipw_hdr_3addr header;
+=======
+struct libipw_reassoc_request {
+	struct libipw_hdr_3addr_hdr header;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__le16 capability;
 	__le16 listen_interval;
 	u8 current_ap[ETH_ALEN];
@@ -473,7 +514,11 @@ struct libipw_reassoc_request {
 } __packed;
 
 struct libipw_assoc_response {
+<<<<<<< HEAD
 	struct libipw_hdr_3addr header;
+=======
+	struct libipw_hdr_3addr_hdr header;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__le16 capability;
 	__le16 status;
 	__le16 aid;
@@ -588,6 +633,7 @@ struct libipw_channel_map {
 	u8 map;
 } __packed;
 
+<<<<<<< HEAD
 struct libipw_ibss_dfs {
 	struct libipw_info_element ie;
 	u8 owner[ETH_ALEN];
@@ -595,6 +641,8 @@ struct libipw_ibss_dfs {
 	struct libipw_channel_map channel_map[];
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct libipw_csa {
 	u8 mode;
 	u8 channel;

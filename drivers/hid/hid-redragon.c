@@ -33,7 +33,11 @@
  * key codes are generated.
  */
 
+<<<<<<< HEAD
 static __u8 *redragon_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+=======
+static const __u8 *redragon_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int *rsize)
 {
 	if (*rsize >= 102 && rdesc[100] == 0x81 && rdesc[101] == 0x00) {

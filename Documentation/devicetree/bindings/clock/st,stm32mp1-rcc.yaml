@@ -60,8 +60,19 @@ properties:
           - st,stm32mp1-rcc
           - st,stm32mp13-rcc
       - const: syscon
+<<<<<<< HEAD
   clocks: true
   clock-names: true
+=======
+
+  clocks:
+    minItems: 1
+    maxItems: 5
+
+  clock-names:
+    minItems: 1
+    maxItems: 5
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   reg:
     maxItems: 1

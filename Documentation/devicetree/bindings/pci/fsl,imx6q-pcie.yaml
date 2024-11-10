@@ -30,6 +30,10 @@ properties:
       - fsl,imx8mm-pcie
       - fsl,imx8mp-pcie
       - fsl,imx95-pcie
+<<<<<<< HEAD
+=======
+      - fsl,imx8q-pcie
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   clocks:
     minItems: 3
@@ -184,6 +188,24 @@ allOf:
             - const: pcie_bus
             - const: pcie_aux
 
+<<<<<<< HEAD
+=======
+  - if:
+      properties:
+        compatible:
+          enum:
+            - fsl,imx8q-pcie
+    then:
+      properties:
+        clocks:
+          maxItems: 3
+        clock-names:
+          items:
+            - const: dbi
+            - const: mstr
+            - const: slv
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 unevaluatedProperties: false
 
 examples:

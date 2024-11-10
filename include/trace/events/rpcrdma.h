@@ -2172,6 +2172,32 @@ TRACE_EVENT(svcrdma_qp_error,
 	)
 );
 
+<<<<<<< HEAD
+=======
+TRACE_EVENT(svcrdma_device_removal,
+	TP_PROTO(
+		const struct rdma_cm_id *id
+	),
+
+	TP_ARGS(id),
+
+	TP_STRUCT__entry(
+		__string(name, id->device->name)
+		__array(unsigned char, addr, sizeof(struct sockaddr_in6))
+	),
+
+	TP_fast_assign(
+		__assign_str(name);
+		memcpy(__entry->addr, &id->route.addr.dst_addr,
+		       sizeof(struct sockaddr_in6));
+	),
+
+	TP_printk("device %s to be removed, disconnecting %pISpc\n",
+		__get_str(name), __entry->addr
+	)
+);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 DECLARE_EVENT_CLASS(svcrdma_sendqueue_class,
 	TP_PROTO(
 		const struct svcxprt_rdma *rdma,

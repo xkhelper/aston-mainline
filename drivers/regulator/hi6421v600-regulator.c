@@ -118,7 +118,11 @@ static int hi6421_spmi_regulator_enable(struct regulator_dev *rdev)
 
 static unsigned int hi6421_spmi_regulator_get_mode(struct regulator_dev *rdev)
 {
+<<<<<<< HEAD
 	struct hi6421_spmi_reg_info *sreg;
+=======
+	const struct hi6421_spmi_reg_info *sreg;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int reg_val;
 
 	sreg = container_of(rdev->desc, struct hi6421_spmi_reg_info, desc);
@@ -133,7 +137,11 @@ static unsigned int hi6421_spmi_regulator_get_mode(struct regulator_dev *rdev)
 static int hi6421_spmi_regulator_set_mode(struct regulator_dev *rdev,
 					  unsigned int mode)
 {
+<<<<<<< HEAD
 	struct hi6421_spmi_reg_info *sreg;
+=======
+	const struct hi6421_spmi_reg_info *sreg;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int val;
 
 	sreg = container_of(rdev->desc, struct hi6421_spmi_reg_info, desc);
@@ -160,7 +168,11 @@ hi6421_spmi_regulator_get_optimum_mode(struct regulator_dev *rdev,
 				       int input_uV, int output_uV,
 				       int load_uA)
 {
+<<<<<<< HEAD
 	struct hi6421_spmi_reg_info *sreg;
+=======
+	const struct hi6421_spmi_reg_info *sreg;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	sreg = container_of(rdev->desc, struct hi6421_spmi_reg_info, desc);
 
@@ -195,7 +207,11 @@ enum hi6421_spmi_regulator_id {
 	hi6421v600_ldo34,
 };
 
+<<<<<<< HEAD
 static struct hi6421_spmi_reg_info regulator_info[] = {
+=======
+static const struct hi6421_spmi_reg_info regulator_info[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	HI6421V600_LDO(ldo3, range_1v5_to_2v0,
 		       0x16, 0x01, 0x51,
 		       20000, 120,
@@ -235,7 +251,11 @@ static int hi6421_spmi_regulator_probe(struct platform_device *pdev)
 	struct device *pmic_dev = pdev->dev.parent;
 	struct regulator_config config = { };
 	struct hi6421_spmi_reg_priv *priv;
+<<<<<<< HEAD
 	struct hi6421_spmi_reg_info *info;
+=======
+	const struct hi6421_spmi_reg_info *info;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct device *dev = &pdev->dev;
 	struct regmap *regmap;
 	struct regulator_dev *rdev;

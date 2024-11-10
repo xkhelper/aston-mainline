@@ -967,7 +967,10 @@ static int f81232_resume(struct usb_serial *serial)
 
 static struct usb_serial_driver f81232_device = {
 	.driver = {
+<<<<<<< HEAD
 		.owner =	THIS_MODULE,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name =		"f81232",
 	},
 	.id_table =		f81232_id_table,
@@ -994,7 +997,10 @@ static struct usb_serial_driver f81232_device = {
 
 static struct usb_serial_driver f81534a_device = {
 	.driver = {
+<<<<<<< HEAD
 		.owner =	THIS_MODULE,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name =		"f81534a",
 	},
 	.id_table =		f81534a_id_table,

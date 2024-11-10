@@ -39,6 +39,7 @@ ccflags-y := -I$(FULL_AMD_PATH)/include/asic_reg \
 	-I$(FULL_AMD_DISPLAY_PATH)/amdgpu_dm \
 	-I$(FULL_AMD_PATH)/amdkfd
 
+<<<<<<< HEAD
 subdir-ccflags-y := -Wextra
 subdir-ccflags-y += -Wunused
 subdir-ccflags-y += -Wmissing-prototypes
@@ -56,6 +57,9 @@ subdir-ccflags-y += -Wno-unused-parameter
 subdir-ccflags-y += -Wno-type-limits
 subdir-ccflags-y += -Wno-sign-compare
 subdir-ccflags-y += -Wno-missing-field-initializers
+=======
+# Locally disable W=1 warnings enabled in drm subsystem Makefile
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 subdir-ccflags-y += -Wno-override-init
 subdir-ccflags-$(CONFIG_DRM_AMDGPU_WERROR) += -Werror
 

@@ -5,7 +5,11 @@
 
 # These are called from save_stack_trace() on slub debug path,
 # and produce insane amounts of uninteresting coverage.
+<<<<<<< HEAD
 KCOV_INSTRUMENT_module.o := n
+=======
+KCOV_INSTRUMENT_main.o := n
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 obj-y += main.o
 obj-y += strict_rwx.o

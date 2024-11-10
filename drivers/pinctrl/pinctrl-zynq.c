@@ -1202,6 +1202,10 @@ static const struct of_device_id zynq_pinctrl_of_match[] = {
 	{ .compatible = "xlnx,pinctrl-zynq" },
 	{ }
 };
+<<<<<<< HEAD
+=======
+MODULE_DEVICE_TABLE(of, zynq_pinctrl_of_match);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct platform_driver zynq_pinctrl_driver = {
 	.driver = {

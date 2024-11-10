@@ -4,14 +4,21 @@
  *             https://www.huawei.com/
  */
 #include "internal.h"
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <trace/events/erofs.h>
 
 struct z_erofs_maprecorder {
 	struct inode *inode;
 	struct erofs_map_blocks *map;
+<<<<<<< HEAD
 	void *kaddr;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long lcn;
 	/* compression extent information gathered */
 	u8  type, headtype;
@@ -33,6 +40,7 @@ static int z_erofs_load_full_lcluster(struct z_erofs_maprecorder *m,
 	struct z_erofs_lcluster_index *di;
 	unsigned int advise;
 
+<<<<<<< HEAD
 	m->kaddr = erofs_read_metabuf(&m->map->buf, inode->i_sb,
 				      pos, EROFS_KMAP);
 	if (IS_ERR(m->kaddr))
@@ -41,6 +49,13 @@ static int z_erofs_load_full_lcluster(struct z_erofs_maprecorder *m,
 	m->nextpackoff = pos + sizeof(struct z_erofs_lcluster_index);
 	m->lcn = lcn;
 	di = m->kaddr;
+=======
+	di = erofs_read_metabuf(&m->map->buf, inode->i_sb, pos, EROFS_KMAP);
+	if (IS_ERR(di))
+		return PTR_ERR(di);
+	m->lcn = lcn;
+	m->nextpackoff = pos + sizeof(struct z_erofs_lcluster_index);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	advise = le16_to_cpu(di->di_advise);
 	m->type = advise & Z_EROFS_LI_LCLUSTER_TYPE_MASK;
@@ -53,8 +68,12 @@ static int z_erofs_load_full_lcluster(struct z_erofs_maprecorder *m,
 				DBG_BUGON(1);
 				return -EFSCORRUPTED;
 			}
+<<<<<<< HEAD
 			m->compressedblks = m->delta[0] &
 				~Z_EROFS_LI_D0_CBLKCNT;
+=======
+			m->compressedblks = m->delta[0] & ~Z_EROFS_LI_D0_CBLKCNT;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			m->delta[0] = 1;
 		}
 		m->delta[1] = le16_to_cpu(di->di_u.delta[1]);
@@ -110,9 +129,15 @@ static int unpack_compacted_index(struct z_erofs_maprecorder *m,
 	struct erofs_inode *const vi = EROFS_I(m->inode);
 	const unsigned int lclusterbits = vi->z_logical_clusterbits;
 	unsigned int vcnt, lo, lobits, encodebits, nblk, bytes;
+<<<<<<< HEAD
 	int i;
 	u8 *in, type;
 	bool big_pcluster;
+=======
+	bool big_pcluster;
+	u8 *in, type;
+	int i;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (1 << amortizedshift == 4 && lclusterbits <= 14)
 		vcnt = 2;
@@ -121,6 +146,13 @@ static int unpack_compacted_index(struct z_erofs_maprecorder *m,
 	else
 		return -EOPNOTSUPP;
 
+<<<<<<< HEAD
+=======
+	in = erofs_read_metabuf(&m->map->buf, m->inode->i_sb, pos, EROFS_KMAP);
+	if (IS_ERR(in))
+		return PTR_ERR(in);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* it doesn't equal to round_up(..) */
 	m->nextpackoff = round_down(pos, vcnt << amortizedshift) +
 			 (vcnt << amortizedshift);
@@ -128,9 +160,13 @@ static int unpack_compacted_index(struct z_erofs_maprecorder *m,
 	lobits = max(lclusterbits, ilog2(Z_EROFS_LI_D0_CBLKCNT) + 1U);
 	encodebits = ((vcnt << amortizedshift) - sizeof(__le32)) * 8 / vcnt;
 	bytes = pos & ((vcnt << amortizedshift) - 1);
+<<<<<<< HEAD
 
 	in = m->kaddr - bytes;
 
+=======
+	in -= bytes;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	i = bytes >> amortizedshift;
 
 	lo = decode_compactedbits(lobits, in, encodebits * i, &type);
@@ -255,10 +291,13 @@ static int z_erofs_load_compact_lcluster(struct z_erofs_maprecorder *m,
 	amortizedshift = 2;
 out:
 	pos += lcn * (1 << amortizedshift);
+<<<<<<< HEAD
 	m->kaddr = erofs_read_metabuf(&m->map->buf, inode->i_sb,
 				      pos, EROFS_KMAP);
 	if (IS_ERR(m->kaddr))
 		return PTR_ERR(m->kaddr);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return unpack_compacted_index(m, amortizedshift, pos, lookahead);
 }
 
@@ -687,6 +726,7 @@ int z_erofs_map_blocks_iter(struct inode *inode, struct erofs_map_blocks *map,
 	int err = 0;
 
 	trace_erofs_map_blocks_enter(inode, map, flags);
+<<<<<<< HEAD
 
 	/* when trying to read beyond EOF, leave it unmapped */
 	if (map->m_la >= inode->i_size) {
@@ -713,6 +753,32 @@ int z_erofs_map_blocks_iter(struct inode *inode, struct erofs_map_blocks *map,
 out:
 	if (err)
 		map->m_llen = 0;
+=======
+	if (map->m_la >= inode->i_size) {	/* post-EOF unmapped extent */
+		map->m_llen = map->m_la + 1 - inode->i_size;
+		map->m_la = inode->i_size;
+		map->m_flags = 0;
+	} else {
+		err = z_erofs_fill_inode_lazy(inode);
+		if (!err) {
+			if ((vi->z_advise & Z_EROFS_ADVISE_FRAGMENT_PCLUSTER) &&
+			    !vi->z_tailextent_headlcn) {
+				map->m_la = 0;
+				map->m_llen = inode->i_size;
+				map->m_flags = EROFS_MAP_MAPPED |
+					EROFS_MAP_FULL_MAPPED | EROFS_MAP_FRAGMENT;
+			} else {
+				err = z_erofs_do_map_blocks(inode, map, flags);
+			}
+		}
+		if (!err && (map->m_flags & EROFS_MAP_ENCODED) &&
+		    unlikely(map->m_plen > Z_EROFS_PCLUSTER_MAX_SIZE ||
+			     map->m_llen > Z_EROFS_PCLUSTER_MAX_DSIZE))
+			err = -EOPNOTSUPP;
+		if (err)
+			map->m_llen = 0;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	trace_erofs_map_blocks_exit(inode, map, flags, err);
 	return err;
 }

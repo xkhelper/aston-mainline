@@ -132,6 +132,16 @@ static void subflow_add_reset_reason(struct sk_buff *skb, u8 reason)
 	}
 }
 
+<<<<<<< HEAD
+=======
+static int subflow_reset_req_endp(struct request_sock *req, struct sk_buff *skb)
+{
+	SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_MPCAPABLEENDPATTEMPT);
+	subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
+	return -EPERM;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Init mptcp request socket.
  *
  * Returns an error code if a JOIN has failed and a TCP reset
@@ -165,6 +175,11 @@ static int subflow_check_req(struct request_sock *req,
 	if (opt_mp_capable) {
 		SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_MPCAPABLEPASSIVE);
 
+<<<<<<< HEAD
+=======
+		if (unlikely(listener->pm_listener))
+			return subflow_reset_req_endp(req, skb);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (opt_mp_join)
 			return 0;
 	} else if (opt_mp_join) {
@@ -172,6 +187,11 @@ static int subflow_check_req(struct request_sock *req,
 
 		if (mp_opt.backup)
 			SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINSYNBACKUPRX);
+<<<<<<< HEAD
+=======
+	} else if (unlikely(listener->pm_listener)) {
+		return subflow_reset_req_endp(req, skb);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (opt_mp_capable && listener->request_mptcp) {
@@ -546,6 +566,10 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
 		subflow->mp_capable = 1;
 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_MPCAPABLEACTIVEACK);
 		mptcp_finish_connect(sk);
+<<<<<<< HEAD
+=======
+		mptcp_active_enable(parent);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mptcp_propagate_state(parent, sk, subflow, &mp_opt);
 	} else if (subflow->request_join) {
 		u8 hmac[SHA256_DIGEST_SIZE];
@@ -591,6 +615,12 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
 			MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_JOINPORTSYNACKRX);
 		}
 	} else if (mptcp_check_fallback(sk)) {
+<<<<<<< HEAD
+=======
+		/* It looks like MPTCP is blocked, while TCP is not */
+		if (subflow->mpc_drop)
+			mptcp_active_disable(parent);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 fallback:
 		mptcp_propagate_state(parent, sk, subflow, NULL);
 	}
@@ -971,8 +1001,15 @@ static bool skb_is_fully_mapped(struct sock *ssk, struct sk_buff *skb)
 	unsigned int skb_consumed;
 
 	skb_consumed = tcp_sk(ssk)->copied_seq - TCP_SKB_CB(skb)->seq;
+<<<<<<< HEAD
 	if (WARN_ON_ONCE(skb_consumed >= skb->len))
 		return true;
+=======
+	if (unlikely(skb_consumed >= skb->len)) {
+		DEBUG_NET_WARN_ON_ONCE(1);
+		return true;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return skb->len - skb_consumed <= subflow->map_data_len -
 					  mptcp_subflow_get_map_offset(subflow);
@@ -1276,7 +1313,11 @@ static bool subflow_can_fallback(struct mptcp_subflow_context *subflow)
 	else if (READ_ONCE(msk->csum_enabled))
 		return !subflow->valid_csum_seen;
 	else
+<<<<<<< HEAD
 		return !subflow->fully_established;
+=======
+		return READ_ONCE(msk->allow_infinite_fallback);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void mptcp_subflow_fail(struct mptcp_sock *msk, struct sock *ssk)
@@ -1565,19 +1606,30 @@ void mptcp_info2sockaddr(const struct mptcp_addr_info *info,
 #endif
 }
 
+<<<<<<< HEAD
 int __mptcp_subflow_connect(struct sock *sk, const struct mptcp_addr_info *loc,
+=======
+int __mptcp_subflow_connect(struct sock *sk, const struct mptcp_pm_local *local,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    const struct mptcp_addr_info *remote)
 {
 	struct mptcp_sock *msk = mptcp_sk(sk);
 	struct mptcp_subflow_context *subflow;
+<<<<<<< HEAD
 	struct sockaddr_storage addr;
 	int remote_id = remote->id;
 	int local_id = loc->id;
+=======
+	int local_id = local->addr.id;
+	struct sockaddr_storage addr;
+	int remote_id = remote->id;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err = -ENOTCONN;
 	struct socket *sf;
 	struct sock *ssk;
 	u32 remote_token;
 	int addrlen;
+<<<<<<< HEAD
 	int ifindex;
 	u8 flags;
 
@@ -1587,6 +1639,20 @@ int __mptcp_subflow_connect(struct sock *sk, const struct mptcp_addr_info *loc,
 	err = mptcp_subflow_create_socket(sk, loc->family, &sf);
 	if (err)
 		goto err_out;
+=======
+
+	/* The userspace PM sent the request too early? */
+	if (!mptcp_is_fully_established(sk))
+		goto err_out;
+
+	err = mptcp_subflow_create_socket(sk, local->addr.family, &sf);
+	if (err) {
+		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_JOINSYNTXCREATSKERR);
+		pr_debug("msk=%p local=%d remote=%d create sock error: %d\n",
+			 msk, local_id, remote_id, err);
+		goto err_out;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ssk = sf->sk;
 	subflow = mptcp_subflow_ctx(ssk);
@@ -1594,26 +1660,58 @@ int __mptcp_subflow_connect(struct sock *sk, const struct mptcp_addr_info *loc,
 		get_random_bytes(&subflow->local_nonce, sizeof(u32));
 	} while (!subflow->local_nonce);
 
+<<<<<<< HEAD
 	if (local_id)
 		subflow_set_local_id(subflow, local_id);
 
 	mptcp_pm_get_flags_and_ifindex_by_id(msk, local_id,
 					     &flags, &ifindex);
+=======
+	/* if 'IPADDRANY', the ID will be set later, after the routing */
+	if (local->addr.family == AF_INET) {
+		if (!local->addr.addr.s_addr)
+			local_id = -1;
+#if IS_ENABLED(CONFIG_MPTCP_IPV6)
+	} else if (sk->sk_family == AF_INET6) {
+		if (ipv6_addr_any(&local->addr.addr6))
+			local_id = -1;
+#endif
+	}
+
+	if (local_id >= 0)
+		subflow_set_local_id(subflow, local_id);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	subflow->remote_key_valid = 1;
 	subflow->remote_key = READ_ONCE(msk->remote_key);
 	subflow->local_key = READ_ONCE(msk->local_key);
 	subflow->token = msk->token;
+<<<<<<< HEAD
 	mptcp_info2sockaddr(loc, &addr, ssk->sk_family);
+=======
+	mptcp_info2sockaddr(&local->addr, &addr, ssk->sk_family);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	addrlen = sizeof(struct sockaddr_in);
 #if IS_ENABLED(CONFIG_MPTCP_IPV6)
 	if (addr.ss_family == AF_INET6)
 		addrlen = sizeof(struct sockaddr_in6);
 #endif
+<<<<<<< HEAD
 	ssk->sk_bound_dev_if = ifindex;
 	err = kernel_bind(sf, (struct sockaddr *)&addr, addrlen);
 	if (err)
 		goto failed;
+=======
+	ssk->sk_bound_dev_if = local->ifindex;
+	err = kernel_bind(sf, (struct sockaddr *)&addr, addrlen);
+	if (err) {
+		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_JOINSYNTXBINDERR);
+		pr_debug("msk=%p local=%d remote=%d bind error: %d\n",
+			 msk, local_id, remote_id, err);
+		goto failed;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mptcp_crypto_key_sha(subflow->remote_key, &remote_token, NULL);
 	pr_debug("msk=%p remote_token=%u local_id=%d remote_id=%d\n", msk,
@@ -1621,15 +1719,30 @@ int __mptcp_subflow_connect(struct sock *sk, const struct mptcp_addr_info *loc,
 	subflow->remote_token = remote_token;
 	WRITE_ONCE(subflow->remote_id, remote_id);
 	subflow->request_join = 1;
+<<<<<<< HEAD
 	subflow->request_bkup = !!(flags & MPTCP_PM_ADDR_FLAG_BACKUP);
+=======
+	subflow->request_bkup = !!(local->flags & MPTCP_PM_ADDR_FLAG_BACKUP);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	subflow->subflow_id = msk->subflow_id++;
 	mptcp_info2sockaddr(remote, &addr, ssk->sk_family);
 
 	sock_hold(ssk);
 	list_add_tail(&subflow->node, &msk->conn_list);
 	err = kernel_connect(sf, (struct sockaddr *)&addr, addrlen, O_NONBLOCK);
+<<<<<<< HEAD
 	if (err && err != -EINPROGRESS)
 		goto failed_unlink;
+=======
+	if (err && err != -EINPROGRESS) {
+		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_JOINSYNTXCONNECTERR);
+		pr_debug("msk=%p local=%d remote=%d connect error: %d\n",
+			 msk, local_id, remote_id, err);
+		goto failed_unlink;
+	}
+
+	MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_JOINSYNTX);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* discard the subflow socket */
 	mptcp_sock_graft(ssk, sk->sk_socket);

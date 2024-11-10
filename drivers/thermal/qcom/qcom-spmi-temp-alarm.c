@@ -291,6 +291,7 @@ static irqreturn_t qpnp_tm_isr(int irq, void *data)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 static int qpnp_tm_get_critical_trip_temp(struct qpnp_tm_chip *chip)
 {
 	struct thermal_trip trip;
@@ -309,6 +310,8 @@ static int qpnp_tm_get_critical_trip_temp(struct qpnp_tm_chip *chip)
 	return THERMAL_TEMP_INVALID;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * This function initializes the internal temp value based on only the
  * current thermal stage and threshold. Setup threshold control and
@@ -343,7 +346,13 @@ static int qpnp_tm_init(struct qpnp_tm_chip *chip)
 
 	mutex_unlock(&chip->lock);
 
+<<<<<<< HEAD
 	crit_temp = qpnp_tm_get_critical_trip_temp(chip);
+=======
+	ret = thermal_zone_get_crit_temp(chip->tz_dev, &crit_temp);
+	if (ret)
+		crit_temp = THERMAL_TEMP_INVALID;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_lock(&chip->lock);
 

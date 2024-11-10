@@ -38,6 +38,10 @@
 #include <linux/pci.h>
 #include <linux/poll.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
+=======
+#include <linux/vga_switcheroo.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <drm/drm_client.h>
 #include <drm/drm_drv.h>
@@ -62,6 +66,7 @@ bool drm_dev_needs_global_mutex(struct drm_device *dev)
 	if (dev->driver->load || dev->driver->unload)
 		return true;
 
+<<<<<<< HEAD
 	/*
 	 * Drivers with the lastclose callback assume that it's synchronized
 	 * against concurrent opens, which again needs the BKL. The proper fix
@@ -71,6 +76,8 @@ bool drm_dev_needs_global_mutex(struct drm_device *dev)
 	if (dev->driver->lastclose)
 		return true;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return false;
 }
 
@@ -111,7 +118,10 @@ bool drm_dev_needs_global_mutex(struct drm_device *dev)
  *             .compat_ioctl = drm_compat_ioctl, // NULL if CONFIG_COMPAT=n
  *             .poll = drm_poll,
  *             .read = drm_read,
+<<<<<<< HEAD
  *             .llseek = no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *             .mmap = drm_gem_mmap,
  *     };
  *
@@ -318,6 +328,11 @@ int drm_open_helper(struct file *filp, struct drm_minor *minor)
 	if (dev->switch_power_state != DRM_SWITCH_POWER_ON &&
 	    dev->switch_power_state != DRM_SWITCH_POWER_DYNAMIC_OFF)
 		return -EINVAL;
+<<<<<<< HEAD
+=======
+	if (WARN_ON_ONCE(!(filp->f_op->fop_flags & FOP_UNSIGNED_OFFSET)))
+		return -EINVAL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	drm_dbg_core(dev, "comm=\"%s\", pid=%d, minor=%d\n",
 		     current->comm, task_pid_nr(current), minor->index);
@@ -335,7 +350,10 @@ int drm_open_helper(struct file *filp, struct drm_minor *minor)
 	}
 
 	filp->private_data = priv;
+<<<<<<< HEAD
 	filp->f_mode |= FMODE_UNSIGNED_OFFSET;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	priv->filp = filp;
 
 	mutex_lock(&dev->filelist_mutex);
@@ -355,7 +373,10 @@ int drm_open_helper(struct file *filp, struct drm_minor *minor)
  * resources for it. It also calls the &drm_driver.open driver callback.
  *
  * RETURNS:
+<<<<<<< HEAD
  *
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * 0 on success or negative errno value on failure.
  */
 int drm_open(struct inode *inode, struct file *filp)
@@ -364,7 +385,11 @@ int drm_open(struct inode *inode, struct file *filp)
 	struct drm_minor *minor;
 	int retcode;
 
+<<<<<<< HEAD
 	minor = drm_minor_acquire(iminor(inode));
+=======
+	minor = drm_minor_acquire(&drm_minors_xa, iminor(inode));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(minor))
 		return PTR_ERR(minor);
 
@@ -395,6 +420,7 @@ err_undo:
 }
 EXPORT_SYMBOL(drm_open);
 
+<<<<<<< HEAD
 void drm_lastclose(struct drm_device * dev)
 {
 	drm_dbg_core(dev, "\n");
@@ -404,6 +430,14 @@ void drm_lastclose(struct drm_device * dev)
 	drm_dbg_core(dev, "driver lastclose completed\n");
 
 	drm_client_dev_restore(dev);
+=======
+static void drm_lastclose(struct drm_device *dev)
+{
+	drm_client_dev_restore(dev);
+
+	if (dev_is_pci(dev->dev))
+		vga_switcheroo_process_delayed_switch();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -412,12 +446,20 @@ void drm_lastclose(struct drm_device * dev)
  * @filp: file pointer.
  *
  * This function must be used by drivers as their &file_operations.release
+<<<<<<< HEAD
  * method. It frees any resources associated with the open file, and calls the
  * &drm_driver.postclose driver callback. If this is the last open file for the
  * DRM device also proceeds to call the &drm_driver.lastclose driver callback.
  *
  * RETURNS:
  *
+=======
+ * method. It frees any resources associated with the open file. If this
+ * is the last open file for the DRM device, it also restores the active
+ * in-kernel DRM client.
+ *
+ * RETURNS:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Always succeeds and returns 0.
  */
 int drm_release(struct inode *inode, struct file *filp)
@@ -484,12 +526,19 @@ void drm_file_update_pid(struct drm_file *filp)
  *
  * This function may be used by drivers as their &file_operations.release
  * method. It frees any resources associated with the open file prior to taking
+<<<<<<< HEAD
  * the drm_global_mutex, which then calls the &drm_driver.postclose driver
  * callback. If this is the last open file for the DRM device also proceeds to
  * call the &drm_driver.lastclose driver callback.
  *
  * RETURNS:
  *
+=======
+ * the drm_global_mutex. If this is the last open file for the DRM device, it
+ * then restores the active in-kernel DRM client.
+ *
+ * RETURNS:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Always succeeds and returns 0.
  */
 int drm_release_noglobal(struct inode *inode, struct file *filp)
@@ -532,7 +581,10 @@ EXPORT_SYMBOL(drm_release_noglobal);
  * safety.
  *
  * RETURNS:
+<<<<<<< HEAD
  *
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Number of bytes read (always aligned to full events, and can be 0) or a
  * negative error code on failure.
  */
@@ -618,7 +670,10 @@ EXPORT_SYMBOL(drm_read);
  * See also drm_read().
  *
  * RETURNS:
+<<<<<<< HEAD
  *
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Mask of POLL flags indicating the current status of the file.
  */
 __poll_t drm_poll(struct file *filp, struct poll_table_struct *wait)
@@ -656,7 +711,10 @@ EXPORT_SYMBOL(drm_poll);
  * already hold &drm_device.event_lock.
  *
  * RETURNS:
+<<<<<<< HEAD
  *
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * 0 on success or a negative error code on failure.
  */
 int drm_event_reserve_init_locked(struct drm_device *dev,
@@ -698,7 +756,10 @@ EXPORT_SYMBOL(drm_event_reserve_init_locked);
  * drm_event_reserve_init_locked() instead.
  *
  * RETURNS:
+<<<<<<< HEAD
  *
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * 0 on success or a negative error code on failure.
  */
 int drm_event_reserve_init(struct drm_device *dev,

@@ -20,6 +20,7 @@
 
 /***   functions parsing device tree nodes   ***/
 
+<<<<<<< HEAD
 static int of_find_trip_id(struct device_node *np, struct device_node *trip)
 {
 	struct device_node *trips;
@@ -51,6 +52,8 @@ out:
 	return i;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * It maps 'enum thermal_trip_type' found in include/linux/thermal.h
  * into the device tree binding of 'trip', property type.
@@ -119,6 +122,11 @@ static int thermal_of_populate_trip(struct device_node *np,
 
 	trip->flags = THERMAL_TRIP_FLAG_RW_TEMP;
 
+<<<<<<< HEAD
+=======
+	trip->priv = np;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -128,6 +136,7 @@ static struct thermal_trip *thermal_of_trips_init(struct device_node *np, int *n
 	struct device_node *trips;
 	int ret, count;
 
+<<<<<<< HEAD
 	trips = of_get_child_by_name(np, "trips");
 	if (!trips) {
 		pr_err("Failed to find 'trips' node\n");
@@ -140,6 +149,17 @@ static struct thermal_trip *thermal_of_trips_init(struct device_node *np, int *n
 		ret = -EINVAL;
 		goto out_of_node_put;
 	}
+=======
+	*ntrips = 0;
+	
+	trips = of_get_child_by_name(np, "trips");
+	if (!trips)
+		return NULL;
+
+	count = of_get_child_count(trips);
+	if (!count)
+		return NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	tt = kzalloc(sizeof(*tt) * count, GFP_KERNEL);
 	if (!tt) {
@@ -162,7 +182,10 @@ static struct thermal_trip *thermal_of_trips_init(struct device_node *np, int *n
 
 out_kfree:
 	kfree(tt);
+<<<<<<< HEAD
 	*ntrips = 0;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out_of_node_put:
 	of_node_put(trips);
 
@@ -291,6 +314,7 @@ static struct device_node *thermal_of_zone_get_by_name(struct thermal_zone_devic
 	return tz_np;
 }
 
+<<<<<<< HEAD
 static int __thermal_of_unbind(struct device_node *map_np, int index, int trip_id,
 			       struct thermal_zone_device *tz, struct thermal_cooling_device *cdev)
 {
@@ -324,6 +348,11 @@ static int __thermal_of_unbind(struct device_node *map_np, int index, int trip_i
 
 static int __thermal_of_bind(struct device_node *map_np, int index, int trip_id,
 			     struct thermal_zone_device *tz, struct thermal_cooling_device *cdev)
+=======
+static bool thermal_of_get_cooling_spec(struct device_node *map_np, int index,
+					struct thermal_cooling_device *cdev,
+					struct cooling_spec *c)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct of_phandle_args cooling_spec;
 	int ret, weight = THERMAL_WEIGHT_DEFAULT;
@@ -335,13 +364,18 @@ static int __thermal_of_bind(struct device_node *map_np, int index, int trip_id,
 
 	if (ret < 0) {
 		pr_err("Invalid cooling-device entry\n");
+<<<<<<< HEAD
 		return ret;
+=======
+		return false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	of_node_put(cooling_spec.np);
 
 	if (cooling_spec.args_count < 2) {
 		pr_err("wrong reference to cooling device, missing limits\n");
+<<<<<<< HEAD
 		return -EINVAL;
 	}
 
@@ -397,29 +431,81 @@ static int thermal_of_for_each_cooling_maps(struct thermal_zone_device *tz,
 {
 	struct device_node *tz_np, *cm_np, *child;
 	int ret = 0;
+=======
+		return false;
+	}
+
+	if (cooling_spec.np != cdev->np)
+		return false;
+
+	c->lower = cooling_spec.args[0];
+	c->upper = cooling_spec.args[1];
+	c->weight = weight;
+
+	return true;
+}
+
+static bool thermal_of_should_bind(struct thermal_zone_device *tz,
+				   const struct thermal_trip *trip,
+				   struct thermal_cooling_device *cdev,
+				   struct cooling_spec *c)
+{
+	struct device_node *tz_np, *cm_np, *child;
+	bool result = false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	tz_np = thermal_of_zone_get_by_name(tz);
 	if (IS_ERR(tz_np)) {
 		pr_err("Failed to get node tz by name\n");
+<<<<<<< HEAD
 		return PTR_ERR(tz_np);
+=======
+		return false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	cm_np = of_get_child_by_name(tz_np, "cooling-maps");
 	if (!cm_np)
 		goto out;
 
+<<<<<<< HEAD
 	for_each_child_of_node(cm_np, child) {
 		ret = thermal_of_for_each_cooling_device(tz_np, child, tz, cdev, action);
 		if (ret) {
 			of_node_put(child);
 			break;
 		}
+=======
+	/* Look up the trip and the cdev in the cooling maps. */
+	for_each_child_of_node(cm_np, child) {
+		struct device_node *tr_np;
+		int count, i;
+
+		tr_np = of_parse_phandle(child, "trip", 0);
+		if (tr_np != trip->priv)
+			continue;
+
+		/* The trip has been found, look up the cdev. */
+		count = of_count_phandle_with_args(child, "cooling-device", "#cooling-cells");
+		if (count <= 0)
+			pr_err("Add a cooling_device property with at least one device\n");
+
+		for (i = 0; i < count; i++) {
+			result = thermal_of_get_cooling_spec(child, i, cdev, c);
+			if (result)
+				break;
+		}
+
+		of_node_put(child);
+		break;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	of_node_put(cm_np);
 out:
 	of_node_put(tz_np);
 
+<<<<<<< HEAD
 	return ret;
 }
 
@@ -433,6 +519,9 @@ static int thermal_of_unbind(struct thermal_zone_device *tz,
 			     struct thermal_cooling_device *cdev)
 {
 	return thermal_of_for_each_cooling_maps(tz, cdev, __thermal_of_unbind);
+=======
+	return result;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -491,11 +580,21 @@ static struct thermal_zone_device *thermal_of_zone_register(struct device_node *
 
 	trips = thermal_of_trips_init(np, &ntrips);
 	if (IS_ERR(trips)) {
+<<<<<<< HEAD
 		pr_err("Failed to find trip points for %pOFn id=%d\n", sensor, id);
+=======
+		pr_err("Failed to parse trip points for %pOFn id=%d\n", sensor, id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = PTR_ERR(trips);
 		goto out_of_node_put;
 	}
 
+<<<<<<< HEAD
+=======
+	if (!trips)
+		pr_info("No trip points found for %pOFn id=%d\n", sensor, id);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = thermal_of_monitor_init(np, &delay, &pdelay);
 	if (ret) {
 		pr_err("Failed to initialize monitoring delays from %pOFn\n", np);
@@ -504,8 +603,12 @@ static struct thermal_zone_device *thermal_of_zone_register(struct device_node *
 
 	thermal_of_parameters_init(np, &tzp);
 
+<<<<<<< HEAD
 	of_ops.bind = thermal_of_bind;
 	of_ops.unbind = thermal_of_unbind;
+=======
+	of_ops.should_bind = thermal_of_should_bind;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = of_property_read_string(np, "critical-action", &action);
 	if (!ret)

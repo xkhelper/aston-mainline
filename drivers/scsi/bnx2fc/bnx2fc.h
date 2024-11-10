@@ -358,18 +358,24 @@ struct bnx2fc_rport {
 	dma_addr_t lcq_dma;
 	u32 lcq_mem_size;
 
+<<<<<<< HEAD
 	void *ofld_req[4];
 	dma_addr_t ofld_req_dma[4];
 	void *enbl_req;
 	dma_addr_t enbl_req_dma;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spinlock_t tgt_lock;
 	spinlock_t cq_lock;
 	atomic_t num_active_ios;
 	u32 flush_in_prog;
 	unsigned long timestamp;
 	unsigned long retry_delay_timestamp;
+<<<<<<< HEAD
 	struct list_head free_task_list;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct bnx2fc_cmd *pending_queue[BNX2FC_SQ_WQES_MAX+1];
 	struct list_head active_cmd_queue;
 	struct list_head els_queue;

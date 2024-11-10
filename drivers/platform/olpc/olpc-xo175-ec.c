@@ -536,7 +536,11 @@ static int olpc_xo175_ec_cmd(u8 cmd, u8 *inbuf, size_t inlen, u8 *resp,
 		dev_err(dev, "EC cmd error: timeout in STATE %d\n",
 				priv->cmd_state);
 		gpiod_set_value_cansleep(priv->gpio_cmd, 0);
+<<<<<<< HEAD
 		spi_slave_abort(priv->spi);
+=======
+		spi_target_abort(priv->spi);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		olpc_xo175_ec_read_packet(priv);
 		return -ETIMEDOUT;
 	}
@@ -653,7 +657,11 @@ static void olpc_xo175_ec_remove(struct spi_device *spi)
 	if (pm_power_off == olpc_xo175_ec_power_off)
 		pm_power_off = NULL;
 
+<<<<<<< HEAD
 	spi_slave_abort(spi);
+=======
+	spi_target_abort(spi);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	platform_device_unregister(olpc_ec);
 	olpc_ec = NULL;

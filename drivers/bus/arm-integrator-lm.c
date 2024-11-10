@@ -85,6 +85,10 @@ static int integrator_ap_lm_probe(struct platform_device *pdev)
 		return -ENODEV;
 	}
 	map = syscon_node_to_regmap(syscon);
+<<<<<<< HEAD
+=======
+	of_node_put(syscon);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(map)) {
 		dev_err(dev,
 			"could not find Integrator/AP system controller\n");

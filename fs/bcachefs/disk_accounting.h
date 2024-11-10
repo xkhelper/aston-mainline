@@ -36,8 +36,13 @@ static inline void bch2_accounting_accumulate(struct bkey_i_accounting *dst,
 
 	for (unsigned i = 0; i < bch2_accounting_counters(&dst->k); i++)
 		dst->v.d[i] += src.v->d[i];
+<<<<<<< HEAD
 	if (bversion_cmp(dst->k.version, src.k->version) < 0)
 		dst->k.version = src.k->version;
+=======
+	if (bversion_cmp(dst->k.bversion, src.k->bversion) < 0)
+		dst->k.bversion = src.k->bversion;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline void fs_usage_data_type_to_base(struct bch_fs_usage_base *fs_usage,
@@ -103,23 +108,51 @@ static inline int accounting_pos_cmp(const void *_l, const void *_r)
 	return bpos_cmp(*l, *r);
 }
 
+<<<<<<< HEAD
 int bch2_accounting_mem_insert(struct bch_fs *, struct bkey_s_c_accounting, bool);
+=======
+enum bch_accounting_mode {
+	BCH_ACCOUNTING_normal,
+	BCH_ACCOUNTING_gc,
+	BCH_ACCOUNTING_read,
+};
+
+int bch2_accounting_mem_insert(struct bch_fs *, struct bkey_s_c_accounting, enum bch_accounting_mode);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void bch2_accounting_mem_gc(struct bch_fs *);
 
 /*
  * Update in memory counters so they match the btree update we're doing; called
  * from transaction commit path
  */
+<<<<<<< HEAD
 static inline int bch2_accounting_mem_mod_locked(struct btree_trans *trans, struct bkey_s_c_accounting a, bool gc, bool read)
 {
 	struct bch_fs *c = trans->c;
 	struct disk_accounting_pos acc_k;
 	bpos_to_disk_accounting_pos(&acc_k, a.k->p);
+=======
+static inline int bch2_accounting_mem_mod_locked(struct btree_trans *trans,
+						 struct bkey_s_c_accounting a,
+						 enum bch_accounting_mode mode)
+{
+	struct bch_fs *c = trans->c;
+	struct bch_accounting_mem *acc = &c->accounting;
+	struct disk_accounting_pos acc_k;
+	bpos_to_disk_accounting_pos(&acc_k, a.k->p);
+	bool gc = mode == BCH_ACCOUNTING_gc;
+
+	EBUG_ON(gc && !acc->gc_running);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (acc_k.type == BCH_DISK_ACCOUNTING_inum)
 		return 0;
 
+<<<<<<< HEAD
 	if (!gc && !read) {
+=======
+	if (mode == BCH_ACCOUNTING_normal) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		switch (acc_k.type) {
 		case BCH_DISK_ACCOUNTING_persistent_reserved:
 			trans->fs_usage_delta.reserved += acc_k.persistent_reserved.nr_replicas * a.v->d[0];
@@ -140,6 +173,7 @@ static inline int bch2_accounting_mem_mod_locked(struct btree_trans *trans, stru
 		}
 	}
 
+<<<<<<< HEAD
 	struct bch_accounting_mem *acc = &c->accounting;
 	unsigned idx;
 
@@ -148,6 +182,13 @@ static inline int bch2_accounting_mem_mod_locked(struct btree_trans *trans, stru
 	while ((idx = eytzinger0_find(acc->k.data, acc->k.nr, sizeof(acc->k.data[0]),
 				      accounting_pos_cmp, &a.k->p)) >= acc->k.nr) {
 		int ret = bch2_accounting_mem_insert(c, a, gc);
+=======
+	unsigned idx;
+
+	while ((idx = eytzinger0_find(acc->k.data, acc->k.nr, sizeof(acc->k.data[0]),
+				      accounting_pos_cmp, &a.k->p)) >= acc->k.nr) {
+		int ret = bch2_accounting_mem_insert(c, a, mode);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret)
 			return ret;
 	}
@@ -164,7 +205,11 @@ static inline int bch2_accounting_mem_mod_locked(struct btree_trans *trans, stru
 static inline int bch2_accounting_mem_add(struct btree_trans *trans, struct bkey_s_c_accounting a, bool gc)
 {
 	percpu_down_read(&trans->c->mark_lock);
+<<<<<<< HEAD
 	int ret = bch2_accounting_mem_mod_locked(trans, a, gc, false);
+=======
+	int ret = bch2_accounting_mem_mod_locked(trans, a, gc ? BCH_ACCOUNTING_gc : BCH_ACCOUNTING_normal);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	percpu_up_read(&trans->c->mark_lock);
 	return ret;
 }

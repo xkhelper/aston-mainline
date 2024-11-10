@@ -108,7 +108,11 @@ static void dln2_adc_update_demux(struct dln2_adc *dln2)
 	dln2->demux_count = 0;
 
 	/* Optimize all 8-channels case */
+<<<<<<< HEAD
 	if (indio_dev->masklength &&
+=======
+	if (iio_get_masklength(indio_dev) &&
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    (*indio_dev->active_scan_mask & 0xff) == 0xff) {
 		dln2_adc_add_demux(dln2, 0, 0, 16);
 		dln2->ts_pad_offset = 0;
@@ -117,9 +121,13 @@ static void dln2_adc_update_demux(struct dln2_adc *dln2)
 	}
 
 	/* Build demux table from fixed 8-channels to active_scan_mask */
+<<<<<<< HEAD
 	for_each_set_bit(out_ind,
 			 indio_dev->active_scan_mask,
 			 indio_dev->masklength) {
+=======
+	iio_for_each_active_channel(indio_dev, out_ind) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Handle timestamp separately */
 		if (out_ind == DLN2_ADC_MAX_CHANNELS)
 			break;
@@ -541,7 +549,11 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
 
 	/* Assign trigger channel based on first enabled channel */
 	trigger_chan = find_first_bit(indio_dev->active_scan_mask,
+<<<<<<< HEAD
 				      indio_dev->masklength);
+=======
+				      iio_get_masklength(indio_dev));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (trigger_chan < DLN2_ADC_MAX_CHANNELS) {
 		dln2->trigger_chan = trigger_chan;
 		ret = dln2_adc_set_chan_period(dln2, dln2->trigger_chan,

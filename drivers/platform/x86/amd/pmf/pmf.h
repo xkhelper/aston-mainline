@@ -19,6 +19,15 @@
 #define POLICY_SIGN_COOKIE		0x31535024
 #define POLICY_COOKIE_OFFSET		0x10
 
+<<<<<<< HEAD
+=======
+/* List of supported CPU ids */
+#define AMD_CPU_ID_RMB                  0x14b5
+#define AMD_CPU_ID_PS                   0x14e8
+#define PCI_DEVICE_ID_AMD_1AH_M20H_ROOT 0x1507
+#define PCI_DEVICE_ID_AMD_1AH_M60H_ROOT 0x1122
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct cookie_header {
 	u32 sign;
 	u32 length;
@@ -35,6 +44,10 @@ struct cookie_header {
 #define APMF_FUNC_STATIC_SLIDER_GRANULAR       9
 #define APMF_FUNC_DYN_SLIDER_AC				11
 #define APMF_FUNC_DYN_SLIDER_DC				12
+<<<<<<< HEAD
+=======
+#define APMF_FUNC_NOTIFY_SMART_PC_UPDATES		14
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define APMF_FUNC_SBIOS_HEARTBEAT_V2			16
 
 /* Message Definitions */
@@ -82,7 +95,21 @@ struct cookie_header {
 #define PMF_POLICY_STT_SKINTEMP_APU				7
 #define PMF_POLICY_STT_SKINTEMP_HS2				8
 #define PMF_POLICY_SYSTEM_STATE					9
+<<<<<<< HEAD
 #define PMF_POLICY_P3T						38
+=======
+#define PMF_POLICY_BIOS_OUTPUT_1				10
+#define PMF_POLICY_BIOS_OUTPUT_2				11
+#define PMF_POLICY_P3T						38
+#define PMF_POLICY_BIOS_OUTPUT_3				57
+#define PMF_POLICY_BIOS_OUTPUT_4				58
+#define PMF_POLICY_BIOS_OUTPUT_5				59
+#define PMF_POLICY_BIOS_OUTPUT_6				60
+#define PMF_POLICY_BIOS_OUTPUT_7				61
+#define PMF_POLICY_BIOS_OUTPUT_8				62
+#define PMF_POLICY_BIOS_OUTPUT_9				63
+#define PMF_POLICY_BIOS_OUTPUT_10				64
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* TA macros */
 #define PMF_TA_IF_VERSION_MAJOR				1
@@ -181,6 +208,56 @@ struct apmf_fan_idx {
 	u32 fan_ctl_idx;
 } __packed;
 
+<<<<<<< HEAD
+=======
+struct smu_pmf_metrics_v2 {
+	u16 core_frequency[16];		/* MHz */
+	u16 core_power[16];		/* mW */
+	u16 core_temp[16];		/* centi-C */
+	u16 gfx_temp;			/* centi-C */
+	u16 soc_temp;			/* centi-C */
+	u16 stapm_opn_limit;		/* mW */
+	u16 stapm_cur_limit;		/* mW */
+	u16 infra_cpu_maxfreq;		/* MHz */
+	u16 infra_gfx_maxfreq;		/* MHz */
+	u16 skin_temp;			/* centi-C */
+	u16 gfxclk_freq;		/* MHz */
+	u16 fclk_freq;			/* MHz */
+	u16 gfx_activity;		/* GFX busy % [0-100] */
+	u16 socclk_freq;		/* MHz */
+	u16 vclk_freq;			/* MHz */
+	u16 vcn_activity;		/* VCN busy % [0-100] */
+	u16 vpeclk_freq;		/* MHz */
+	u16 ipuclk_freq;		/* MHz */
+	u16 ipu_busy[8];		/* NPU busy % [0-100] */
+	u16 dram_reads;			/* MB/sec */
+	u16 dram_writes;		/* MB/sec */
+	u16 core_c0residency[16];	/* C0 residency % [0-100] */
+	u16 ipu_power;			/* mW */
+	u32 apu_power;			/* mW */
+	u32 gfx_power;			/* mW */
+	u32 dgpu_power;			/* mW */
+	u32 socket_power;		/* mW */
+	u32 all_core_power;		/* mW */
+	u32 filter_alpha_value;		/* time constant [us] */
+	u32 metrics_counter;
+	u16 memclk_freq;		/* MHz */
+	u16 mpipuclk_freq;		/* MHz */
+	u16 ipu_reads;			/* MB/sec */
+	u16 ipu_writes;			/* MB/sec */
+	u32 throttle_residency_prochot;
+	u32 throttle_residency_spl;
+	u32 throttle_residency_fppt;
+	u32 throttle_residency_sppt;
+	u32 throttle_residency_thm_core;
+	u32 throttle_residency_thm_gfx;
+	u32 throttle_residency_thm_soc;
+	u16 psys;
+	u16 spare1;
+	u32 spare[6];
+} __packed;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct smu_pmf_metrics {
 	u16 gfxclk_freq; /* in MHz */
 	u16 socclk_freq; /* in MHz */
@@ -278,6 +355,10 @@ struct amd_pmf_dev {
 	int hb_interval; /* SBIOS heartbeat interval */
 	struct delayed_work heart_beat;
 	struct smu_pmf_metrics m_table;
+<<<<<<< HEAD
+=======
+	struct smu_pmf_metrics_v2 m_table_v2;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct delayed_work work_buffer;
 	ktime_t start_time;
 	int socket_power_history[AVG_SAMPLE_SIZE];
@@ -302,6 +383,10 @@ struct amd_pmf_dev {
 	bool smart_pc_enabled;
 	u16 pmf_if_version;
 	struct input_dev *pmf_idev;
+<<<<<<< HEAD
+=======
+	size_t mtable_size;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct apmf_sps_prop_granular_v2 {
@@ -344,6 +429,15 @@ struct os_power_slider {
 	u8 slider_event;
 } __packed;
 
+<<<<<<< HEAD
+=======
+struct amd_pmf_notify_smart_pc_update {
+	u16 size;
+	u32 pending_req;
+	u32 custom_bios[10];
+} __packed;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct fan_table_control {
 	bool manual;
 	unsigned long fan_id;
@@ -717,6 +811,10 @@ extern const struct attribute_group cnqf_feature_attribute_group;
 int amd_pmf_init_smart_pc(struct amd_pmf_dev *dev);
 void amd_pmf_deinit_smart_pc(struct amd_pmf_dev *dev);
 int apmf_check_smart_pc(struct amd_pmf_dev *pmf_dev);
+<<<<<<< HEAD
+=======
+int amd_pmf_smartpc_apply_bios_output(struct amd_pmf_dev *dev, u32 val, u32 preq, u32 idx);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Smart PC - TA interfaces */
 void amd_pmf_populate_ta_inputs(struct amd_pmf_dev *dev, struct ta_pmf_enact_table *in);

@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
 //
+<<<<<<< HEAD
 // TAS2781 Common functions for HDA and ASoC Audio drivers
+=======
+// TAS2563/TAS2781 Common functions for HDA and ASoC Audio drivers
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 //
 // Copyright 2023 - 2024 Texas Instruments, Inc.
 //
@@ -14,7 +18,10 @@
 #include <linux/interrupt.h>
 #include <linux/module.h>
 #include <linux/of.h>
+<<<<<<< HEAD
 #include <linux/of_gpio.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/of_irq.h>
 #include <linux/regmap.h>
 #include <linux/slab.h>
@@ -64,8 +71,13 @@ static int tasdevice_change_chn_book(struct tasdevice_priv *tas_priv,
 			 */
 			ret = regmap_write(map, TASDEVICE_PAGE_SELECT, 0);
 			if (ret < 0) {
+<<<<<<< HEAD
 				dev_err(tas_priv->dev, "%s, E=%d\n",
 					__func__, ret);
+=======
+				dev_err(tas_priv->dev, "%s, E=%d channel:%d\n",
+					__func__, ret, chn);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				goto out;
 			}
 		}
@@ -89,6 +101,35 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+int tasdev_chn_switch(struct tasdevice_priv *tas_priv,
+	unsigned short chn)
+{
+	struct i2c_client *client = (struct i2c_client *)tas_priv->client;
+	struct tasdevice *tasdev = &tas_priv->tasdevice[chn];
+	struct regmap *map = tas_priv->regmap;
+	int ret;
+
+	if (client->addr != tasdev->dev_addr) {
+		client->addr = tasdev->dev_addr;
+		/* All devices share the same regmap, clear the page
+		 * inside regmap once switching to another device.
+		 * Register 0 at any pages and any books inside tas2781
+		 * is the same one for page-switching.
+		 */
+		ret = regmap_write(map, TASDEVICE_PAGE_SELECT, 0);
+		if (ret < 0) {
+			dev_err(tas_priv->dev, "%s, E=%d\n", __func__, ret);
+			return ret;
+		}
+		return 1;
+	}
+	return 0;
+}
+EXPORT_SYMBOL_GPL(tasdev_chn_switch);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int tasdevice_dev_read(struct tasdevice_priv *tas_priv,
 	unsigned short chn, unsigned int reg, unsigned int *val)
 {
@@ -411,8 +452,11 @@ EXPORT_SYMBOL_GPL(tasdevice_dsp_remove);
 
 void tasdevice_remove(struct tasdevice_priv *tas_priv)
 {
+<<<<<<< HEAD
 	if (gpio_is_valid(tas_priv->irq_info.irq_gpio))
 		gpio_free(tas_priv->irq_info.irq_gpio);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_destroy(&tas_priv->codec_lock);
 }
 EXPORT_SYMBOL_GPL(tasdevice_remove);

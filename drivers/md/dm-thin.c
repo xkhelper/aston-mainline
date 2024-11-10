@@ -2948,7 +2948,11 @@ static struct pool *pool_create(struct mapped_device *pool_md,
 	pmd = dm_pool_metadata_open(metadata_dev, block_size, format_device);
 	if (IS_ERR(pmd)) {
 		*error = "Error creating metadata object";
+<<<<<<< HEAD
 		return (struct pool *)pmd;
+=======
+		return ERR_CAST(pmd);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	pool = kzalloc(sizeof(*pool), GFP_KERNEL);

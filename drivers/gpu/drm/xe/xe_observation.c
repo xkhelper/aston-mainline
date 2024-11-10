@@ -6,7 +6,11 @@
 #include <linux/errno.h>
 #include <linux/sysctl.h>
 
+<<<<<<< HEAD
 #include <drm/xe_drm.h>
+=======
+#include <uapi/drm/xe_drm.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "xe_oa.h"
 #include "xe_observation.h"

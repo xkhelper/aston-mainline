@@ -9,6 +9,10 @@
 
 struct usb_stream_kernel {
 	struct usb_stream *s;
+<<<<<<< HEAD
+=======
+	struct usb_device *dev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	void *write_page;
 

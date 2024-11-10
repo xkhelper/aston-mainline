@@ -18,6 +18,10 @@
 #include <linux/sunrpc/svc.h>
 #include <linux/module.h>
 #include <linux/fsnotify.h>
+<<<<<<< HEAD
+=======
+#include <linux/nfslocalio.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "idmap.h"
 #include "nfsd.h"
@@ -174,6 +178,16 @@ static int export_features_show(struct seq_file *m, void *v)
 
 DEFINE_SHOW_ATTRIBUTE(export_features);
 
+<<<<<<< HEAD
+=======
+static int nfsd_pool_stats_open(struct inode *inode, struct file *file)
+{
+	struct nfsd_net *nn = net_generic(inode->i_sb->s_fs_info, nfsd_net_id);
+
+	return svc_pool_stats_open(&nn->nfsd_info, file);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct file_operations pool_stats_operations = {
 	.open		= nfsd_pool_stats_open,
 	.read		= seq_read,
@@ -1762,7 +1776,11 @@ int nfsd_nl_threads_get_doit(struct sk_buff *skb, struct genl_info *info)
 			struct svc_pool *sp = &nn->nfsd_serv->sv_pools[i];
 
 			err = nla_put_u32(skb, NFSD_A_SERVER_THREADS,
+<<<<<<< HEAD
 					  atomic_read(&sp->sp_nrthreads));
+=======
+					  sp->sp_nrthreads);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (err)
 				goto err_unlock;
 		}
@@ -2224,8 +2242,14 @@ err_free_msg:
  */
 static __net_init int nfsd_net_init(struct net *net)
 {
+<<<<<<< HEAD
 	int retval;
 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
+=======
+	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
+	int retval;
+	int i;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	retval = nfsd_export_init(net);
 	if (retval)
@@ -2238,16 +2262,30 @@ static __net_init int nfsd_net_init(struct net *net)
 	if (retval)
 		goto out_repcache_error;
 	memset(&nn->nfsd_svcstats, 0, sizeof(nn->nfsd_svcstats));
+<<<<<<< HEAD
 	nn->nfsd_svcstats.program = &nfsd_program;
 	nn->nfsd_versions = NULL;
 	nn->nfsd4_minorversions = NULL;
+=======
+	nn->nfsd_svcstats.program = &nfsd_programs[0];
+	for (i = 0; i < sizeof(nn->nfsd_versions); i++)
+		nn->nfsd_versions[i] = nfsd_support_version(i);
+	for (i = 0; i < sizeof(nn->nfsd4_minorversions); i++)
+		nn->nfsd4_minorversions[i] = nfsd_support_version(4);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	nn->nfsd_info.mutex = &nfsd_mutex;
 	nn->nfsd_serv = NULL;
 	nfsd4_init_leases_net(nn);
 	get_random_bytes(&nn->siphash_key, sizeof(nn->siphash_key));
 	seqlock_init(&nn->writeverf_lock);
 	nfsd_proc_stat_init(net);
+<<<<<<< HEAD
 
+=======
+#if IS_ENABLED(CONFIG_NFS_LOCALIO)
+	INIT_LIST_HEAD(&nn->local_clients);
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 
 out_repcache_error:
@@ -2258,6 +2296,25 @@ out_export_error:
 	return retval;
 }
 
+<<<<<<< HEAD
+=======
+#if IS_ENABLED(CONFIG_NFS_LOCALIO)
+/**
+ * nfsd_net_pre_exit - Disconnect localio clients from net namespace
+ * @net: a network namespace that is about to be destroyed
+ *
+ * This invalidated ->net pointers held by localio clients
+ * while they can still safely access nn->counter.
+ */
+static __net_exit void nfsd_net_pre_exit(struct net *net)
+{
+	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
+
+	nfs_uuid_invalidate_clients(&nn->local_clients);
+}
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * nfsd_net_exit - Release the nfsd_net portion of a net namespace
  * @net: a network namespace that is about to be destroyed
@@ -2271,11 +2328,20 @@ static __net_exit void nfsd_net_exit(struct net *net)
 	percpu_counter_destroy_many(nn->counter, NFSD_STATS_COUNTERS_NUM);
 	nfsd_idmap_shutdown(net);
 	nfsd_export_shutdown(net);
+<<<<<<< HEAD
 	nfsd_netns_free_versions(nn);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct pernet_operations nfsd_net_ops = {
 	.init = nfsd_net_init,
+<<<<<<< HEAD
+=======
+#if IS_ENABLED(CONFIG_NFS_LOCALIO)
+	.pre_exit = nfsd_net_pre_exit,
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.exit = nfsd_net_exit,
 	.id   = &nfsd_net_id,
 	.size = sizeof(struct nfsd_net),
@@ -2313,6 +2379,10 @@ static int __init init_nfsd(void)
 	retval = genl_register_family(&nfsd_nl_family);
 	if (retval)
 		goto out_free_all;
+<<<<<<< HEAD
+=======
+	nfsd_localio_ops_init();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 out_free_all:

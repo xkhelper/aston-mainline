@@ -211,10 +211,23 @@ struct dc_state *dc_state_create(struct dc *dc, struct dc_state_create_params *p
 #ifdef CONFIG_DRM_AMD_DC_FP
 	if (dc->debug.using_dml2) {
 		dml2_opt->use_clock_dc_limits = false;
+<<<<<<< HEAD
 		dml2_create(dc, dml2_opt, &state->bw_ctx.dml2);
 
 		dml2_opt->use_clock_dc_limits = true;
 		dml2_create(dc, dml2_opt, &state->bw_ctx.dml2_dc_power_source);
+=======
+		if (!dml2_create(dc, dml2_opt, &state->bw_ctx.dml2)) {
+			dc_state_release(state);
+			return NULL;
+		}
+
+		dml2_opt->use_clock_dc_limits = true;
+		if (!dml2_create(dc, dml2_opt, &state->bw_ctx.dml2_dc_power_source)) {
+			dc_state_release(state);
+			return NULL;
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 #endif
 
@@ -961,10 +974,17 @@ bool dc_state_is_fams2_in_use(
 	bool is_fams2_in_use = false;
 
 	if (state)
+<<<<<<< HEAD
 		is_fams2_in_use |= state->bw_ctx.bw.dcn.fams2_stream_count > 0;
 
 	if (dc->current_state)
 		is_fams2_in_use |= dc->current_state->bw_ctx.bw.dcn.fams2_stream_count > 0;
+=======
+		is_fams2_in_use |= state->bw_ctx.bw.dcn.fams2_global_config.features.bits.enable;
+
+	if (dc->current_state)
+		is_fams2_in_use |= dc->current_state->bw_ctx.bw.dcn.fams2_global_config.features.bits.enable;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return is_fams2_in_use;
 }

@@ -23,6 +23,7 @@
 #
 #
 
+<<<<<<< HEAD
 DCN30 := dcn30_mpc.o dcn30_vpg.o \
 	dcn30_afmt.o \
 	dcn30_dwb.o \
@@ -32,6 +33,13 @@ DCN30 := dcn30_mpc.o dcn30_vpg.o \
 
 
 
+=======
+DCN30 := dcn30_vpg.o \
+	dcn30_afmt.o \
+	dcn30_cm_common.o \
+	dcn30_mmhubbub.o \
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 AMD_DAL_DCN30 = $(addprefix $(AMDDALPATH)/dc/dcn30/,$(DCN30))
 
 AMD_DISPLAY_FILES += $(AMD_DAL_DCN30)

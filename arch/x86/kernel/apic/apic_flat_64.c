@@ -8,15 +8,21 @@
  * Martin Bligh, Andi Kleen, James Bottomley, John Stultz, and
  * James Cleverdon.
  */
+<<<<<<< HEAD
 #include <linux/cpumask.h>
 #include <linux/export.h>
 #include <linux/acpi.h>
 
 #include <asm/jailhouse_para.h>
+=======
+#include <linux/export.h>
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/apic.h>
 
 #include "local.h"
 
+<<<<<<< HEAD
 static struct apic apic_physflat;
 static struct apic apic_flat;
 
@@ -57,15 +63,23 @@ flat_send_IPI_mask_allbutself(const struct cpumask *cpumask, int vector)
 }
 
 static u32 flat_get_apic_id(u32 x)
+=======
+static u32 physflat_get_apic_id(u32 x)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return (x >> 24) & 0xFF;
 }
 
+<<<<<<< HEAD
 static int flat_probe(void)
+=======
+static int physflat_probe(void)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return 1;
 }
 
+<<<<<<< HEAD
 static struct apic apic_flat __ro_after_init = {
 	.name				= "flat",
 	.probe				= flat_probe,
@@ -131,6 +145,11 @@ static int physflat_acpi_madt_oem_check(char *oem_id, char *oem_table_id)
 static int physflat_probe(void)
 {
 	return apic == &apic_physflat || num_possible_cpus() > 8 || jailhouse_paravirt();
+=======
+static int physflat_acpi_madt_oem_check(char *oem_id, char *oem_table_id)
+{
+	return 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct apic apic_physflat __ro_after_init = {
@@ -146,7 +165,11 @@ static struct apic apic_physflat __ro_after_init = {
 	.cpu_present_to_apicid		= default_cpu_present_to_apicid,
 
 	.max_apic_id			= 0xFE,
+<<<<<<< HEAD
 	.get_apic_id			= flat_get_apic_id,
+=======
+	.get_apic_id			= physflat_get_apic_id,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	.calc_dest_apicid		= apic_default_calc_apicid,
 
@@ -166,8 +189,15 @@ static struct apic apic_physflat __ro_after_init = {
 	.wait_icr_idle			= apic_mem_wait_icr_idle,
 	.safe_wait_icr_idle		= apic_mem_wait_icr_idle_timeout,
 };
+<<<<<<< HEAD
 
 /*
  * We need to check for physflat first, so this order is important.
  */
 apic_drivers(apic_physflat, apic_flat);
+=======
+apic_driver(apic_physflat);
+
+struct apic *apic __ro_after_init = &apic_physflat;
+EXPORT_SYMBOL_GPL(apic);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

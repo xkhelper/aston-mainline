@@ -34,9 +34,13 @@
 
 &display0 {
 	status = "okay";
+<<<<<<< HEAD
 };
 
 &display0 {
+=======
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	port@1 {
 		display0_out: endpoint {
 			remote-endpoint = <&sii9022_in>;
@@ -83,7 +87,10 @@
 &panel_dpi {
 	status = "disabled";
 };
+<<<<<<< HEAD
 
 &tve {
 	status = "disabled";
 };
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

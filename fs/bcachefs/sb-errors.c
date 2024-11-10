@@ -7,12 +7,21 @@
 const char * const bch2_sb_error_strs[] = {
 #define x(t, n, ...) [n] = #t,
 	BCH_SB_ERRS()
+<<<<<<< HEAD
 	NULL
 };
 
 static void bch2_sb_error_id_to_text(struct printbuf *out, enum bch_sb_error_id id)
 {
 	if (id < BCH_SB_ERR_MAX)
+=======
+#undef x
+};
+
+void bch2_sb_error_id_to_text(struct printbuf *out, enum bch_sb_error_id id)
+{
+	if (id < BCH_FSCK_ERR_MAX)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		prt_str(out, bch2_sb_error_strs[id]);
 	else
 		prt_printf(out, "(unknown error %u)", id);

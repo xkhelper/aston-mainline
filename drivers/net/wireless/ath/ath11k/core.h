@@ -399,6 +399,10 @@ struct ath11k_vif {
 	u8 bssid[ETH_ALEN];
 	struct cfg80211_bitrate_mask bitrate_mask;
 	struct delayed_work connection_loss_work;
+<<<<<<< HEAD
+=======
+	struct work_struct bcn_tx_work;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int num_legacy_stations;
 	int rtscts_prot_mode;
 	int txpower;
@@ -406,11 +410,24 @@ struct ath11k_vif {
 	bool wpaie_present;
 	bool bcca_zero_sent;
 	bool do_not_send_tmpl;
+<<<<<<< HEAD
 	struct ieee80211_chanctx_conf chanctx;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ath11k_arp_ns_offload arp_ns_offload;
 	struct ath11k_rekey_data rekey_data;
 
 	struct ath11k_reg_tpc_power_info reg_tpc_info;
+<<<<<<< HEAD
+=======
+
+	/* Must be last - ends in a flexible-array member.
+	 *
+	 * FIXME: Driver should not copy struct ieee80211_chanctx_conf,
+	 * especially because it has a flexible array. Find a better way.
+	 */
+	struct ieee80211_chanctx_conf chanctx;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct ath11k_vif_iter {

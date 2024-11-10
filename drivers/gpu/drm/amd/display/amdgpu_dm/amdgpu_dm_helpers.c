@@ -44,6 +44,10 @@
 
 #include "dm_helpers.h"
 #include "ddc_service_types.h"
+<<<<<<< HEAD
+=======
+#include "clk_mgr.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static u32 edid_extract_panel_id(struct edid *edid)
 {
@@ -73,6 +77,13 @@ static void apply_edid_quirks(struct edid *edid, struct dc_edid_caps *edid_caps)
 		DRM_DEBUG_DRIVER("Clearing DPCD 0x317 on monitor with panel id %X\n", panel_id);
 		edid_caps->panel_patch.remove_sink_ext_caps = true;
 		break;
+<<<<<<< HEAD
+=======
+	case drm_edid_encode_panel_id('S', 'D', 'C', 0x4154):
+		DRM_DEBUG_DRIVER("Disabling VSC on monitor with panel id %X\n", panel_id);
+		edid_caps->panel_patch.disable_colorimetry = true;
+		break;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		return;
 	}
@@ -759,7 +770,11 @@ static uint8_t write_dsc_enable_synaptics_non_virtual_dpcd_mst(
 	uint8_t ret = 0;
 
 	drm_dbg_dp(aux->drm_dev,
+<<<<<<< HEAD
 		   "Configure DSC to non-virtual dpcd synaptics\n");
+=======
+		   "MST_DSC Configure DSC to non-virtual dpcd synaptics\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (enable) {
 		/* When DSC is enabled on previous boot and reboot with the hub,
@@ -772,7 +787,11 @@ static uint8_t write_dsc_enable_synaptics_non_virtual_dpcd_mst(
 			apply_synaptics_fifo_reset_wa(aux);
 
 		ret = drm_dp_dpcd_write(aux, DP_DSC_ENABLE, &enable, 1);
+<<<<<<< HEAD
 		DRM_INFO("Send DSC enable to synaptics\n");
+=======
+		DRM_INFO("MST_DSC Send DSC enable to synaptics\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	} else {
 		/* Synaptics hub not support virtual dpcd,
@@ -781,7 +800,11 @@ static uint8_t write_dsc_enable_synaptics_non_virtual_dpcd_mst(
 		 */
 		if (!stream->link->link_status.link_active) {
 			ret = drm_dp_dpcd_write(aux, DP_DSC_ENABLE, &enable, 1);
+<<<<<<< HEAD
 			DRM_INFO("Send DSC disable to synaptics\n");
+=======
+			DRM_INFO("MST_DSC Send DSC disable to synaptics\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -823,14 +846,22 @@ bool dm_helpers_dp_write_dsc_enable(
 							DP_DSC_ENABLE,
 							&enable_passthrough, 1);
 				drm_dbg_dp(dev,
+<<<<<<< HEAD
 					   "Sent DSC pass-through enable to virtual dpcd port, ret = %u\n",
+=======
+					   "MST_DSC Sent DSC pass-through enable to virtual dpcd port, ret = %u\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					   ret);
 			}
 
 			ret = drm_dp_dpcd_write(aconnector->dsc_aux,
 						DP_DSC_ENABLE, &enable_dsc, 1);
 			drm_dbg_dp(dev,
+<<<<<<< HEAD
 				   "Sent DSC decoding enable to %s port, ret = %u\n",
+=======
+				   "MST_DSC Sent DSC decoding enable to %s port, ret = %u\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   (port->passthrough_aux) ? "remote RX" :
 				   "virtual dpcd",
 				   ret);
@@ -838,7 +869,11 @@ bool dm_helpers_dp_write_dsc_enable(
 			ret = drm_dp_dpcd_write(aconnector->dsc_aux,
 						DP_DSC_ENABLE, &enable_dsc, 1);
 			drm_dbg_dp(dev,
+<<<<<<< HEAD
 				   "Sent DSC decoding disable to %s port, ret = %u\n",
+=======
+				   "MST_DSC Sent DSC decoding disable to %s port, ret = %u\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   (port->passthrough_aux) ? "remote RX" :
 				   "virtual dpcd",
 				   ret);
@@ -848,7 +883,11 @@ bool dm_helpers_dp_write_dsc_enable(
 							DP_DSC_ENABLE,
 							&enable_passthrough, 1);
 				drm_dbg_dp(dev,
+<<<<<<< HEAD
 					   "Sent DSC pass-through disable to virtual dpcd port, ret = %u\n",
+=======
+					   "MST_DSC Sent DSC pass-through disable to virtual dpcd port, ret = %u\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					   ret);
 			}
 		}
@@ -858,12 +897,20 @@ bool dm_helpers_dp_write_dsc_enable(
 		if (stream->sink->link->dpcd_caps.dongle_type == DISPLAY_DONGLE_NONE) {
 			ret = dm_helpers_dp_write_dpcd(ctx, stream->link, DP_DSC_ENABLE, &enable_dsc, 1);
 			drm_dbg_dp(dev,
+<<<<<<< HEAD
 				   "Send DSC %s to SST RX\n",
+=======
+				   "SST_DSC Send DSC %s to SST RX\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   enable_dsc ? "enable" : "disable");
 		} else if (stream->sink->link->dpcd_caps.dongle_type == DISPLAY_DONGLE_DP_HDMI_CONVERTER) {
 			ret = dm_helpers_dp_write_dpcd(ctx, stream->link, DP_DSC_ENABLE, &enable_dsc, 1);
 			drm_dbg_dp(dev,
+<<<<<<< HEAD
 				   "Send DSC %s to DP-HDMI PCON\n",
+=======
+				   "SST_DSC Send DSC %s to DP-HDMI PCON\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   enable_dsc ? "enable" : "disable");
 		}
 	}
@@ -1117,6 +1164,11 @@ bool dm_helpers_dp_handle_test_pattern_request(
 	struct pipe_ctx *pipe_ctx = NULL;
 	struct amdgpu_dm_connector *aconnector = link->priv;
 	struct drm_device *dev = aconnector->base.dev;
+<<<<<<< HEAD
+=======
+	struct dc_state *dc_state = ctx->dc->current_state;
+	struct clk_mgr *clk_mgr = ctx->dc->clk_mgr;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int i;
 
 	for (i = 0; i < MAX_PIPES; i++) {
@@ -1217,6 +1269,19 @@ bool dm_helpers_dp_handle_test_pattern_request(
 	pipe_ctx->stream->test_pattern.type = test_pattern;
 	pipe_ctx->stream->test_pattern.color_space = test_pattern_color_space;
 
+<<<<<<< HEAD
+=======
+	/* Temp W/A for compliance test failure */
+	dc_state->bw_ctx.bw.dcn.clk.p_state_change_support = false;
+	dc_state->bw_ctx.bw.dcn.clk.dramclk_khz = clk_mgr->dc_mode_softmax_enabled ?
+		clk_mgr->bw_params->dc_mode_softmax_memclk : clk_mgr->bw_params->max_memclk_mhz;
+	dc_state->bw_ctx.bw.dcn.clk.idle_dramclk_khz = dc_state->bw_ctx.bw.dcn.clk.dramclk_khz;
+	ctx->dc->clk_mgr->funcs->update_clocks(
+			ctx->dc->clk_mgr,
+			dc_state,
+			false);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dc_link_dp_set_test_pattern(
 		(struct dc_link *) link,
 		test_pattern,
@@ -1286,3 +1351,18 @@ enum adaptive_sync_type dm_get_adaptive_sync_support_type(struct dc_link *link)
 
 	return as_type;
 }
+<<<<<<< HEAD
+=======
+
+bool dm_helpers_is_fullscreen(struct dc_context *ctx, struct dc_stream_state *stream)
+{
+	// TODO
+	return false;
+}
+
+bool dm_helpers_is_hdr_on(struct dc_context *ctx, struct dc_stream_state *stream)
+{
+	// TODO
+	return false;
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

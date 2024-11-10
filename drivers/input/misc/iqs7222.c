@@ -20,7 +20,11 @@
 #include <linux/module.h>
 #include <linux/property.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define IQS7222_PROD_NUM			0x00
 #define IQS7222_PROD_NUM_A			840

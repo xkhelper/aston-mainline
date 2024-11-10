@@ -10,6 +10,10 @@
 #include <linux/writeback.h>
 #include <linux/iversion.h>
 #include <linux/filelock.h>
+<<<<<<< HEAD
+=======
+#include <linux/jiffies.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "super.h"
 #include "mds_client.h"
@@ -4149,7 +4153,11 @@ retry:
 		ceph_remove_cap(mdsc, cap, false);
 		goto out_unlock;
 	} else if (tsession) {
+<<<<<<< HEAD
 		/* add placeholder for the export tagert */
+=======
+		/* add placeholder for the export target */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		int flag = (cap == ci->i_auth_cap) ? CEPH_CAP_FLAG_AUTH : 0;
 		tcap = new_cap;
 		ceph_add_cap(inode, tsession, t_cap_id, issued, 0,
@@ -4602,7 +4610,11 @@ flush_cap_releases:
 		__ceph_queue_cap_release(session, cap);
 		spin_unlock(&session->s_cap_lock);
 	}
+<<<<<<< HEAD
 	ceph_flush_cap_releases(mdsc, session);
+=======
+	ceph_flush_session_cap_releases(mdsc, session);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	goto done;
 
 bad:
@@ -4659,7 +4671,11 @@ unsigned long ceph_check_delayed_caps(struct ceph_mds_client *mdsc)
 		 * slowness doesn't block mdsc delayed work,
 		 * preventing send_renew_caps() from running.
 		 */
+<<<<<<< HEAD
 		if (jiffies - loop_start >= 5 * HZ)
+=======
+		if (time_after_eq(jiffies, loop_start + 5 * HZ))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 	}
 	spin_unlock(&mdsc->cap_delay_lock);
@@ -4701,6 +4717,31 @@ void ceph_flush_dirty_caps(struct ceph_mds_client *mdsc)
 	ceph_mdsc_iterate_sessions(mdsc, flush_dirty_session_caps, true);
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * Flush all cap releases to the mds
+ */
+static void flush_cap_releases(struct ceph_mds_session *s)
+{
+	struct ceph_mds_client *mdsc = s->s_mdsc;
+	struct ceph_client *cl = mdsc->fsc->client;
+
+	doutc(cl, "begin\n");
+	spin_lock(&s->s_cap_lock);
+	if (s->s_num_cap_releases)
+		ceph_flush_session_cap_releases(mdsc, s);
+	spin_unlock(&s->s_cap_lock);
+	doutc(cl, "done\n");
+
+}
+
+void ceph_flush_cap_releases(struct ceph_mds_client *mdsc)
+{
+	ceph_mdsc_iterate_sessions(mdsc, flush_cap_releases, true);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void __ceph_touch_fmode(struct ceph_inode_info *ci,
 			struct ceph_mds_client *mdsc, int fmode)
 {

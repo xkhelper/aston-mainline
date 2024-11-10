@@ -30,9 +30,15 @@
 #include <linux/compat.h>
 #include <asm/ucontext.h>
 #include <linux/uaccess.h>
+<<<<<<< HEAD
 #include <asm/access-regs.h>
 #include <asm/lowcore.h>
 #include <asm/vdso.h>
+=======
+#include <asm/vdso-symbols.h>
+#include <asm/access-regs.h>
+#include <asm/lowcore.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "entry.h"
 
 /*

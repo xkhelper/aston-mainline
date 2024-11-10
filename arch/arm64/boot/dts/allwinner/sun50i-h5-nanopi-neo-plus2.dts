@@ -45,16 +45,52 @@
 		startup-delay-us = <100000>;
 		enable-active-high;
 		gpio = <&pio 3 6 GPIO_ACTIVE_HIGH>;
+<<<<<<< HEAD
 	};
 
 	reg_vcc3v3: vcc3v3 {
+=======
+		vin-supply = <&reg_vcc3v3>;
+	};
+
+	reg_gmac_2v5: gmac-2v5 {
+		/* 2V5 supply for GMAC PHY IO */
+		compatible = "regulator-fixed";
+		regulator-name = "gmac-2v5";
+		regulator-min-microvolt = <2500000>;
+		regulator-max-microvolt = <2500000>;
+		regulator-always-on;
+		vin-supply = <&reg_vcc3v3>;
+	};
+
+	reg_vcc5v: regulator-vcc5v {
+		/* board 5V supply from micro USB or pin headers */
+		compatible = "regulator-fixed";
+		regulator-name = "vcc-5v";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		regulator-always-on;
+	};
+
+	reg_vcc3v3: vcc3v3 {
+		/* board 3V3 supply by SY8089A */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		compatible = "regulator-fixed";
 		regulator-name = "vcc3v3";
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
+<<<<<<< HEAD
 	};
 
 	vdd_cpux: gpio-regulator {
+=======
+		regulator-always-on;
+		vin-supply = <&reg_vcc5v>;
+	};
+
+	vdd_cpux: gpio-regulator {
+		/* cpu voltage regulator MP2143DJ */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		compatible = "regulator-gpio";
 		regulator-name = "vdd-cpux";
 		regulator-type = "voltage";
@@ -66,6 +102,10 @@
 		gpios = <&r_pio 0 6 GPIO_ACTIVE_HIGH>;
 		gpios-states = <0x1>;
 		states = <1100000 0>, <1300000 1>;
+<<<<<<< HEAD
+=======
+		vin-supply = <&reg_vcc5v>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	wifi_pwrseq: pwrseq {
@@ -146,6 +186,21 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
+=======
+&pio {
+	vcc-pa-supply = <&reg_vcc3v3>;
+	vcc-pc-supply = <&reg_vcc3v3>;
+	vcc-pd-supply = <&reg_gmac_2v5>;
+	vcc-pf-supply = <&reg_vcc3v3>;
+	vcc-pg-supply = <&reg_vcc3v3>;
+};
+
+&r_pio {
+	vcc-pl-supply = <&reg_vcc3v3>;
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_pa_pins>;

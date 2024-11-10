@@ -1057,6 +1057,10 @@ static netdev_tx_t rtsn_start_xmit(struct sk_buff *skb, struct net_device *ndev)
 	if (skb->len >= TX_DS) {
 		priv->stats.tx_dropped++;
 		priv->stats.tx_errors++;
+<<<<<<< HEAD
+=======
+		dev_kfree_skb_any(skb);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 	}
 
@@ -1219,8 +1223,11 @@ static int rtsn_get_ts_info(struct net_device *ndev,
 
 	info->phc_index = ptp_clock_index(priv->ptp_priv->clock);
 	info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE |
+<<<<<<< HEAD
 		SOF_TIMESTAMPING_RX_SOFTWARE |
 		SOF_TIMESTAMPING_SOFTWARE |
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		SOF_TIMESTAMPING_TX_HARDWARE |
 		SOF_TIMESTAMPING_RX_HARDWARE |
 		SOF_TIMESTAMPING_RAW_HARDWARE;

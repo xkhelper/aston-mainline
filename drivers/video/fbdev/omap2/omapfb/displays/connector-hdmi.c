@@ -272,7 +272,11 @@ MODULE_DEVICE_TABLE(of, hdmic_of_match);
 
 static struct platform_driver hdmi_connector_driver = {
 	.probe	= hdmic_probe,
+<<<<<<< HEAD
 	.remove_new = hdmic_remove,
+=======
+	.remove	= hdmic_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver	= {
 		.name	= "connector-hdmi",
 		.of_match_table = hdmic_of_match,

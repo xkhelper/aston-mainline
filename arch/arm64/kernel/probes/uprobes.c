@@ -42,7 +42,11 @@ int arch_uprobe_analyze_insn(struct arch_uprobe *auprobe, struct mm_struct *mm,
 	else if (!IS_ALIGNED(addr, AARCH64_INSN_SIZE))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	insn = *(probe_opcode_t *)(&auprobe->insn[0]);
+=======
+	insn = le32_to_cpu(auprobe->insn);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	switch (arm_probe_decode_insn(insn, &auprobe->api)) {
 	case INSN_REJECTED:
@@ -108,7 +112,11 @@ bool arch_uprobe_skip_sstep(struct arch_uprobe *auprobe, struct pt_regs *regs)
 	if (!auprobe->simulate)
 		return false;
 
+<<<<<<< HEAD
 	insn = *(probe_opcode_t *)(&auprobe->insn[0]);
+=======
+	insn = le32_to_cpu(auprobe->insn);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	addr = instruction_pointer(regs);
 
 	if (auprobe->api.handler)

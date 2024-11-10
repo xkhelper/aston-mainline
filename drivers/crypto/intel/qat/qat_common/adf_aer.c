@@ -44,7 +44,11 @@ static pci_ers_result_t adf_error_detected(struct pci_dev *pdev,
 	adf_pf2vf_notify_restarting(accel_dev);
 	adf_pf2vf_wait_for_restarting_complete(accel_dev);
 	pci_clear_master(pdev);
+<<<<<<< HEAD
 	adf_dev_down(accel_dev, false);
+=======
+	adf_dev_down(accel_dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return PCI_ERS_RESULT_NEED_RESET;
 }

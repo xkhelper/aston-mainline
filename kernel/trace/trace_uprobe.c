@@ -17,6 +17,10 @@
 #include <linux/string.h>
 #include <linux/rculist.h>
 #include <linux/filter.h>
+<<<<<<< HEAD
+=======
+#include <linux/percpu.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "trace_dynevent.h"
 #include "trace_probe.h"
@@ -58,11 +62,19 @@ struct trace_uprobe {
 	struct dyn_event		devent;
 	struct uprobe_consumer		consumer;
 	struct path			path;
+<<<<<<< HEAD
 	struct inode			*inode;
 	char				*filename;
 	unsigned long			offset;
 	unsigned long			ref_ctr_offset;
 	unsigned long			nhit;
+=======
+	char				*filename;
+	struct uprobe			*uprobe;
+	unsigned long			offset;
+	unsigned long			ref_ctr_offset;
+	unsigned long __percpu		*nhits;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct trace_probe		tp;
 };
 
@@ -337,6 +349,15 @@ alloc_trace_uprobe(const char *group, const char *event, int nargs, bool is_ret)
 	if (!tu)
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
+=======
+	tu->nhits = alloc_percpu(unsigned long);
+	if (!tu->nhits) {
+		ret = -ENOMEM;
+		goto error;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = trace_probe_init(&tu->tp, event, group, true, nargs);
 	if (ret < 0)
 		goto error;
@@ -349,6 +370,10 @@ alloc_trace_uprobe(const char *group, const char *event, int nargs, bool is_ret)
 	return tu;
 
 error:
+<<<<<<< HEAD
+=======
+	free_percpu(tu->nhits);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(tu);
 
 	return ERR_PTR(ret);
@@ -362,6 +387,10 @@ static void free_trace_uprobe(struct trace_uprobe *tu)
 	path_put(&tu->path);
 	trace_probe_cleanup(&tu->tp);
 	kfree(tu->filename);
+<<<<<<< HEAD
+=======
+	free_percpu(tu->nhits);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(tu);
 }
 
@@ -556,6 +585,11 @@ static int __trace_uprobe_create(int argc, const char **argv)
 
 	if (argc < 2)
 		return -ECANCELED;
+<<<<<<< HEAD
+=======
+	if (argc - 2 > MAX_TRACE_ARGS)
+		return -E2BIG;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (argv[0][1] == ':')
 		event = &argv[0][2];
@@ -681,7 +715,11 @@ static int __trace_uprobe_create(int argc, const char **argv)
 	tu->filename = filename;
 
 	/* parse arguments */
+<<<<<<< HEAD
 	for (i = 0; i < argc && i < MAX_TRACE_ARGS; i++) {
+=======
+	for (i = 0; i < argc; i++) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct traceprobe_parse_context ctx = {
 			.flags = (is_return ? TPARG_FL_RETURN : 0) | TPARG_FL_USER,
 		};
@@ -815,13 +853,29 @@ static int probes_profile_seq_show(struct seq_file *m, void *v)
 {
 	struct dyn_event *ev = v;
 	struct trace_uprobe *tu;
+<<<<<<< HEAD
+=======
+	unsigned long nhits;
+	int cpu;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!is_trace_uprobe(ev))
 		return 0;
 
 	tu = to_trace_uprobe(ev);
+<<<<<<< HEAD
 	seq_printf(m, "  %s %-44s %15lu\n", tu->filename,
 			trace_probe_name(&tu->tp), tu->nhit);
+=======
+
+	nhits = 0;
+	for_each_possible_cpu(cpu) {
+		nhits += per_cpu(*tu->nhits, cpu);
+	}
+
+	seq_printf(m, "  %s %-44s %15lu\n", tu->filename,
+		   trace_probe_name(&tu->tp), nhits);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -858,6 +912,10 @@ struct uprobe_cpu_buffer {
 };
 static struct uprobe_cpu_buffer __percpu *uprobe_cpu_buffer;
 static int uprobe_buffer_refcnt;
+<<<<<<< HEAD
+=======
+#define MAX_UCB_BUFFER_SIZE PAGE_SIZE
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int uprobe_buffer_init(void)
 {
@@ -962,6 +1020,14 @@ static struct uprobe_cpu_buffer *prepare_uprobe_buffer(struct trace_uprobe *tu,
 	ucb = uprobe_buffer_get();
 	ucb->dsize = tu->tp.size + dsize;
 
+<<<<<<< HEAD
+=======
+	if (WARN_ON_ONCE(ucb->dsize > MAX_UCB_BUFFER_SIZE)) {
+		ucb->dsize = MAX_UCB_BUFFER_SIZE;
+		dsize = MAX_UCB_BUFFER_SIZE - tu->tp.size;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	store_trace_args(ucb->buf, &tu->tp, regs, NULL, esize, dsize);
 
 	*ucbp = ucb;
@@ -981,9 +1047,12 @@ static void __uprobe_trace_func(struct trace_uprobe *tu,
 
 	WARN_ON(call != trace_file->event_call);
 
+<<<<<<< HEAD
 	if (WARN_ON_ONCE(ucb->dsize > PAGE_SIZE))
 		return;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (trace_trigger_soft_disabled(trace_file))
 		return;
 
@@ -1078,6 +1147,7 @@ print_uprobe_event(struct trace_iterator *iter, int flags, struct trace_event *e
 	return trace_handle_return(s);
 }
 
+<<<<<<< HEAD
 typedef bool (*filter_func_t)(struct uprobe_consumer *self,
 				enum uprobe_filter_ctx ctx,
 				struct mm_struct *mm);
@@ -1099,22 +1169,54 @@ static int trace_uprobe_enable(struct trace_uprobe *tu, filter_func_t filter)
 		tu->inode = NULL;
 
 	return ret;
+=======
+typedef bool (*filter_func_t)(struct uprobe_consumer *self, struct mm_struct *mm);
+
+static int trace_uprobe_enable(struct trace_uprobe *tu, filter_func_t filter)
+{
+	struct inode *inode = d_real_inode(tu->path.dentry);
+	struct uprobe *uprobe;
+
+	tu->consumer.filter = filter;
+	uprobe = uprobe_register(inode, tu->offset, tu->ref_ctr_offset, &tu->consumer);
+	if (IS_ERR(uprobe))
+		return PTR_ERR(uprobe);
+
+	tu->uprobe = uprobe;
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void __probe_event_disable(struct trace_probe *tp)
 {
 	struct trace_uprobe *tu;
+<<<<<<< HEAD
+=======
+	bool sync = false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	tu = container_of(tp, struct trace_uprobe, tp);
 	WARN_ON(!uprobe_filter_is_empty(tu->tp.event->filter));
 
 	list_for_each_entry(tu, trace_probe_probe_list(tp), tp.list) {
+<<<<<<< HEAD
 		if (!tu->inode)
 			continue;
 
 		uprobe_unregister(tu->inode, tu->offset, &tu->consumer);
 		tu->inode = NULL;
 	}
+=======
+		if (!tu->uprobe)
+			continue;
+
+		uprobe_unregister_nosync(tu->uprobe, &tu->consumer);
+		sync = true;
+		tu->uprobe = NULL;
+	}
+	if (sync)
+		uprobe_unregister_sync();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int probe_event_enable(struct trace_event_call *call,
@@ -1310,7 +1412,11 @@ static int uprobe_perf_close(struct trace_event_call *call,
 		return 0;
 
 	list_for_each_entry(tu, trace_probe_probe_list(tp), tp.list) {
+<<<<<<< HEAD
 		ret = uprobe_apply(tu->inode, tu->offset, &tu->consumer, false);
+=======
+		ret = uprobe_apply(tu->uprobe, &tu->consumer, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret)
 			break;
 	}
@@ -1334,7 +1440,11 @@ static int uprobe_perf_open(struct trace_event_call *call,
 		return 0;
 
 	list_for_each_entry(tu, trace_probe_probe_list(tp), tp.list) {
+<<<<<<< HEAD
 		err = uprobe_apply(tu->inode, tu->offset, &tu->consumer, true);
+=======
+		err = uprobe_apply(tu->uprobe, &tu->consumer, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err) {
 			uprobe_perf_close(call, event);
 			break;
@@ -1344,8 +1454,12 @@ static int uprobe_perf_open(struct trace_event_call *call,
 	return err;
 }
 
+<<<<<<< HEAD
 static bool uprobe_perf_filter(struct uprobe_consumer *uc,
 				enum uprobe_filter_ctx ctx, struct mm_struct *mm)
+=======
+static bool uprobe_perf_filter(struct uprobe_consumer *uc, struct mm_struct *mm)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct trace_uprobe_filter *filter;
 	struct trace_uprobe *tu;
@@ -1431,7 +1545,11 @@ static void __uprobe_perf_func(struct trace_uprobe *tu,
 static int uprobe_perf_func(struct trace_uprobe *tu, struct pt_regs *regs,
 			    struct uprobe_cpu_buffer **ucbp)
 {
+<<<<<<< HEAD
 	if (!uprobe_perf_filter(&tu->consumer, 0, current->mm))
+=======
+	if (!uprobe_perf_filter(&tu->consumer, current->mm))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return UPROBE_HANDLER_REMOVE;
 
 	if (!is_ret_probe(tu))
@@ -1512,7 +1630,12 @@ static int uprobe_dispatcher(struct uprobe_consumer *con, struct pt_regs *regs)
 	int ret = 0;
 
 	tu = container_of(con, struct trace_uprobe, consumer);
+<<<<<<< HEAD
 	tu->nhit++;
+=======
+
+	this_cpu_inc(*tu->nhits);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	udd.tu = tu;
 	udd.bp_addr = instruction_pointer(regs);

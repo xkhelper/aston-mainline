@@ -2,7 +2,11 @@
 /*
  * Core driver for the S32 CC (Common Chassis) pin controller
  *
+<<<<<<< HEAD
  * Copyright 2017-2022 NXP
+=======
+ * Copyright 2017-2022,2024 NXP
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Copyright (C) 2022 SUSE LLC
  * Copyright 2015-2016 Freescale Semiconductor, Inc.
  */
@@ -39,6 +43,14 @@
 #define S32_MSCR_ODE		BIT(20)
 #define S32_MSCR_OBE		BIT(21)
 
+<<<<<<< HEAD
+=======
+enum s32_write_type {
+	S32_PINCONF_UPDATE_ONLY,
+	S32_PINCONF_OVERWRITE,
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct regmap_config s32_regmap_config = {
 	.reg_bits = 32,
 	.val_bits = 32,
@@ -431,6 +443,7 @@ static int s32_pmx_gpio_set_direction(struct pinctrl_dev *pctldev,
 				      unsigned int offset,
 				      bool input)
 {
+<<<<<<< HEAD
 	unsigned int config;
 	unsigned int mask = S32_MSCR_IBE | S32_MSCR_OBE;
 
@@ -441,6 +454,17 @@ static int s32_pmx_gpio_set_direction(struct pinctrl_dev *pctldev,
 		/* Disable input buffer and enable output buffer */
 		config = S32_MSCR_OBE;
 	}
+=======
+	/* Always enable IBE for GPIOs. This allows us to read the
+	 * actual line value and compare it with the one set.
+	 */
+	unsigned int config = S32_MSCR_IBE;
+	unsigned int mask = S32_MSCR_IBE | S32_MSCR_OBE;
+
+	/* Enable output buffer */
+	if (!input)
+		config |= S32_MSCR_OBE;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return s32_regmap_update(pctldev, offset, mask, config);
 }
@@ -511,6 +535,13 @@ static int s32_parse_pincfg(unsigned long pincfg, unsigned int *mask,
 		*config |= S32_MSCR_ODE;
 		*mask |= S32_MSCR_ODE;
 		break;
+<<<<<<< HEAD
+=======
+	case PIN_CONFIG_DRIVE_PUSH_PULL:
+		*config &= ~S32_MSCR_ODE;
+		*mask |= S32_MSCR_ODE;
+		break;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case PIN_CONFIG_OUTPUT_ENABLE:
 		if (arg)
 			*config |= S32_MSCR_OBE;
@@ -549,10 +580,18 @@ static int s32_parse_pincfg(unsigned long pincfg, unsigned int *mask,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int s32_pinconf_mscr_update(struct pinctrl_dev *pctldev,
 				   unsigned int pin_id,
 				   unsigned long *configs,
 				   unsigned int num_configs)
+=======
+static int s32_pinconf_mscr_write(struct pinctrl_dev *pctldev,
+				   unsigned int pin_id,
+				   unsigned long *configs,
+				   unsigned int num_configs,
+				   enum s32_write_type write_type)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct s32_pinctrl *ipctl = pinctrl_dev_get_drvdata(pctldev);
 	unsigned int config = 0, mask = 0;
@@ -571,10 +610,27 @@ static int s32_pinconf_mscr_update(struct pinctrl_dev *pctldev,
 			return ret;
 	}
 
+<<<<<<< HEAD
 	if (!config && !mask)
 		return 0;
 
 	dev_dbg(ipctl->dev, "update: pin %u cfg 0x%x\n", pin_id, config);
+=======
+	/* If the MSCR configuration has to be written,
+	 * the SSS field should not be touched.
+	 */
+	if (write_type == S32_PINCONF_OVERWRITE)
+		mask = (unsigned int)~S32_MSCR_SSS_MASK;
+
+	if (!config && !mask)
+		return 0;
+
+	if (write_type == S32_PINCONF_OVERWRITE)
+		dev_dbg(ipctl->dev, "set: pin %u cfg 0x%x\n", pin_id, config);
+	else
+		dev_dbg(ipctl->dev, "update: pin %u cfg 0x%x\n", pin_id,
+			config);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return s32_regmap_update(pctldev, pin_id, mask, config);
 }
@@ -590,8 +646,13 @@ static int s32_pinconf_set(struct pinctrl_dev *pctldev,
 			   unsigned int pin_id, unsigned long *configs,
 			   unsigned int num_configs)
 {
+<<<<<<< HEAD
 	return s32_pinconf_mscr_update(pctldev, pin_id, configs,
 				       num_configs);
+=======
+	return s32_pinconf_mscr_write(pctldev, pin_id, configs,
+				       num_configs, S32_PINCONF_UPDATE_ONLY);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int s32_pconf_group_set(struct pinctrl_dev *pctldev, unsigned int selector,
@@ -604,8 +665,13 @@ static int s32_pconf_group_set(struct pinctrl_dev *pctldev, unsigned int selecto
 
 	grp = &info->groups[selector];
 	for (i = 0; i < grp->data.npins; i++) {
+<<<<<<< HEAD
 		ret = s32_pinconf_mscr_update(pctldev, grp->data.pins[i],
 					      configs, num_configs);
+=======
+		ret = s32_pinconf_mscr_write(pctldev, grp->data.pins[i],
+					      configs, num_configs, S32_PINCONF_OVERWRITE);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret)
 			return ret;
 	}

@@ -620,6 +620,21 @@ static bool mptcp_check_data_fin(struct sock *sk)
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static void mptcp_dss_corruption(struct mptcp_sock *msk, struct sock *ssk)
+{
+	if (READ_ONCE(msk->allow_infinite_fallback)) {
+		MPTCP_INC_STATS(sock_net(ssk),
+				MPTCP_MIB_DSSCORRUPTIONFALLBACK);
+		mptcp_do_fallback(ssk);
+	} else {
+		MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_DSSCORRUPTIONRESET);
+		mptcp_subflow_reset(ssk);
+	}
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool __mptcp_move_skbs_from_subflow(struct mptcp_sock *msk,
 					   struct sock *ssk,
 					   unsigned int *bytes)
@@ -692,10 +707,23 @@ static bool __mptcp_move_skbs_from_subflow(struct mptcp_sock *msk,
 				moved += len;
 			seq += len;
 
+<<<<<<< HEAD
 			if (WARN_ON_ONCE(map_remaining < len))
 				break;
 		} else {
 			WARN_ON_ONCE(!fin);
+=======
+			if (unlikely(map_remaining < len)) {
+				DEBUG_NET_WARN_ON_ONCE(1);
+				mptcp_dss_corruption(msk, ssk);
+			}
+		} else {
+			if (unlikely(!fin)) {
+				DEBUG_NET_WARN_ON_ONCE(1);
+				mptcp_dss_corruption(msk, ssk);
+			}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			sk_eat_skb(ssk, skb);
 			done = true;
 		}
@@ -2846,8 +2874,15 @@ static int mptcp_init_sock(struct sock *sk)
 	if (unlikely(!net->mib.mptcp_statistics) && !mptcp_mib_alloc(net))
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	ret = mptcp_init_sched(mptcp_sk(sk),
 			       mptcp_sched_find(mptcp_get_scheduler(net)));
+=======
+	rcu_read_lock();
+	ret = mptcp_init_sched(mptcp_sk(sk),
+			       mptcp_sched_find(mptcp_get_scheduler(net)));
+	rcu_read_unlock();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -3717,6 +3752,7 @@ static int mptcp_ioctl(struct sock *sk, int cmd, int *karg)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void mptcp_subflow_early_fallback(struct mptcp_sock *msk,
 					 struct mptcp_subflow_context *subflow)
 {
@@ -3724,6 +3760,8 @@ static void mptcp_subflow_early_fallback(struct mptcp_sock *msk,
 	__mptcp_do_fallback(msk);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int mptcp_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
 {
 	struct mptcp_subflow_context *subflow;
@@ -3744,9 +3782,20 @@ static int mptcp_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
 	if (rcu_access_pointer(tcp_sk(ssk)->md5sig_info))
 		mptcp_subflow_early_fallback(msk, subflow);
 #endif
+<<<<<<< HEAD
 	if (subflow->request_mptcp && mptcp_token_new_connect(ssk)) {
 		MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_TOKENFALLBACKINIT);
 		mptcp_subflow_early_fallback(msk, subflow);
+=======
+	if (subflow->request_mptcp) {
+		if (mptcp_active_should_disable(sk)) {
+			MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_MPCAPABLEACTIVEDISABLED);
+			mptcp_subflow_early_fallback(msk, subflow);
+		} else if (mptcp_token_new_connect(ssk) < 0) {
+			MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_TOKENFALLBACKINIT);
+			mptcp_subflow_early_fallback(msk, subflow);
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	WRITE_ONCE(msk->write_seq, subflow->idsn);

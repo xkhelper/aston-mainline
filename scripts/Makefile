@@ -55,6 +55,10 @@ targets += module.lds
 subdir-$(CONFIG_GCC_PLUGINS) += gcc-plugins
 subdir-$(CONFIG_MODVERSIONS) += genksyms
 subdir-$(CONFIG_SECURITY_SELINUX) += selinux
+<<<<<<< HEAD
+=======
+subdir-$(CONFIG_SECURITY_IPE) += ipe
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 # Let clean descend into subdirs
 subdir-	+= basic dtc gdb kconfig mod

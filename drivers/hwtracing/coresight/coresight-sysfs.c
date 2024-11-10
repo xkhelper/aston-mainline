@@ -9,6 +9,10 @@
 #include <linux/kernel.h>
 
 #include "coresight-priv.h"
+<<<<<<< HEAD
+=======
+#include "coresight-trace-id.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Use IDR to map the hash of the source's device name
@@ -63,7 +67,11 @@ static int coresight_enable_source_sysfs(struct coresight_device *csdev,
 	 */
 	lockdep_assert_held(&coresight_mutex);
 	if (coresight_get_mode(csdev) != CS_MODE_SYSFS) {
+<<<<<<< HEAD
 		ret = source_ops(csdev)->enable(csdev, data, mode);
+=======
+		ret = source_ops(csdev)->enable(csdev, data, mode, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret)
 			return ret;
 	}

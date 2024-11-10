@@ -1,7 +1,13 @@
 #ifndef PERF_UTIL_BPF_SKEL_SAMPLE_FILTER_H
 #define PERF_UTIL_BPF_SKEL_SAMPLE_FILTER_H
 
+<<<<<<< HEAD
 #define MAX_FILTERS  64
+=======
+#define MAX_FILTERS   64
+#define MAX_IDX_HASH  (16 * 1024)
+#define MAX_EVT_HASH  (1024 * 1024)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* supported filter operations */
 enum perf_bpf_filter_op {
@@ -14,6 +20,10 @@ enum perf_bpf_filter_op {
 	PBF_OP_AND,
 	PBF_OP_GROUP_BEGIN,
 	PBF_OP_GROUP_END,
+<<<<<<< HEAD
+=======
+	PBF_OP_DONE,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum perf_bpf_filter_term {
@@ -42,7 +52,11 @@ enum perf_bpf_filter_term {
 	__PBF_UNUSED_TERM18	= PBF_TERM_SAMPLE_START + 18, /* SAMPLE_REGS_INTR = 1U << 18 */
 	PBF_TERM_PHYS_ADDR	= PBF_TERM_SAMPLE_START + 19, /* SAMPLE_PHYS_ADDR = 1U << 19 */
 	__PBF_UNUSED_TERM20	= PBF_TERM_SAMPLE_START + 20, /* SAMPLE_AUX = 1U << 20 */
+<<<<<<< HEAD
 	__PBF_UNUSED_TERM21	= PBF_TERM_SAMPLE_START + 21, /* SAMPLE_CGROUP = 1U << 21 */
+=======
+	PBF_TERM_CGROUP		= PBF_TERM_SAMPLE_START + 21, /* SAMPLE_CGROUP = 1U << 21 */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	PBF_TERM_DATA_PAGE_SIZE	= PBF_TERM_SAMPLE_START + 22, /* SAMPLE_DATA_PAGE_SIZE = 1U << 22 */
 	PBF_TERM_CODE_PAGE_SIZE	= PBF_TERM_SAMPLE_START + 23, /* SAMPLE_CODE_PAGE_SIZE = 1U << 23 */
 	PBF_TERM_WEIGHT_STRUCT	= PBF_TERM_SAMPLE_START + 24, /* SAMPLE_WEIGHT_STRUCT = 1U << 24 */
@@ -60,4 +74,13 @@ struct perf_bpf_filter_entry {
 	__u64 value;
 };
 
+<<<<<<< HEAD
+=======
+struct idx_hash_key {
+	__u64 evt_id;
+	__u32 tgid;
+	__u32 reserved;
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* PERF_UTIL_BPF_SKEL_SAMPLE_FILTER_H */

@@ -53,7 +53,12 @@ struct xfs_btree_cur *xfs_bnobt_init_cursor(struct xfs_mount *mp,
 struct xfs_btree_cur *xfs_cntbt_init_cursor(struct xfs_mount *mp,
 		struct xfs_trans *tp, struct xfs_buf *bp,
 		struct xfs_perag *pag);
+<<<<<<< HEAD
 extern int xfs_allocbt_maxrecs(struct xfs_mount *, int, int);
+=======
+unsigned int xfs_allocbt_maxrecs(struct xfs_mount *mp, unsigned int blocklen,
+		bool leaf);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern xfs_extlen_t xfs_allocbt_calc_size(struct xfs_mount *mp,
 		unsigned long long len);
 

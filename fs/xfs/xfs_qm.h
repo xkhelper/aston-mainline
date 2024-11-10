@@ -184,4 +184,10 @@ xfs_get_defquota(struct xfs_quotainfo *qi, xfs_dqtype_t type)
 	}
 }
 
+<<<<<<< HEAD
+=======
+int xfs_qm_qino_load(struct xfs_mount *mp, xfs_dqtype_t type,
+		struct xfs_inode **ipp);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __XFS_QM_H__ */

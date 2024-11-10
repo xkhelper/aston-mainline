@@ -179,6 +179,11 @@ struct mgag200_crtc_state {
 	const struct drm_format_info *format;
 
 	struct mgag200_pll_values pixpllc;
+<<<<<<< HEAD
+=======
+
+	bool set_vidrst;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static inline struct mgag200_crtc_state *to_mgag200_crtc_state(struct drm_crtc_state *base)
@@ -186,11 +191,14 @@ static inline struct mgag200_crtc_state *to_mgag200_crtc_state(struct drm_crtc_s
 	return container_of(base, struct mgag200_crtc_state, base);
 }
 
+<<<<<<< HEAD
 struct mgag200_bmc_connector {
 	struct drm_connector base;
 	struct drm_connector *physical_connector;
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum mga_type {
 	G200_PCI,
 	G200_AGP,
@@ -214,8 +222,13 @@ struct mgag200_device_info {
 	 */
 	unsigned long max_mem_bandwidth;
 
+<<<<<<< HEAD
 	/* HW has external source (e.g., BMC) to synchronize with */
 	bool has_vidrst:1;
+=======
+	/* Synchronize scanout with BMC */
+	bool sync_bmc:1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	struct {
 		unsigned data_bit:3;
@@ -230,13 +243,21 @@ struct mgag200_device_info {
 };
 
 #define MGAG200_DEVICE_INFO_INIT(_max_hdisplay, _max_vdisplay, _max_mem_bandwidth, \
+<<<<<<< HEAD
 				 _has_vidrst, _i2c_data_bit, _i2c_clock_bit, \
+=======
+				 _sync_bmc, _i2c_data_bit, _i2c_clock_bit, \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				 _bug_no_startadd) \
 	{ \
 		.max_hdisplay = (_max_hdisplay), \
 		.max_vdisplay = (_max_vdisplay), \
 		.max_mem_bandwidth = (_max_mem_bandwidth), \
+<<<<<<< HEAD
 		.has_vidrst = (_has_vidrst), \
+=======
+		.sync_bmc = (_sync_bmc), \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.i2c = { \
 			.data_bit = (_i2c_data_bit), \
 			.clock_bit = (_i2c_clock_bit), \
@@ -246,6 +267,7 @@ struct mgag200_device_info {
 
 struct mgag200_device_funcs {
 	/*
+<<<<<<< HEAD
 	 * Disables an external reset source (i.e., BMC) before programming
 	 * a new display mode.
 	 */
@@ -258,6 +280,8 @@ struct mgag200_device_funcs {
 	void (*enable_vidrst)(struct mga_device *mdev);
 
 	/*
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * Validate that the given state can be programmed into PIXPLLC. On
 	 * success, the calculated parameters should be stored in the CRTC's
 	 * state in struct @mgag200_crtc_state.pixpllc.
@@ -293,10 +317,13 @@ struct mga_device {
 			struct drm_encoder encoder;
 			struct drm_connector connector;
 		} vga;
+<<<<<<< HEAD
 		struct {
 			struct drm_encoder encoder;
 			struct mgag200_bmc_connector bmc_connector;
 		} bmc;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} output;
 };
 
@@ -430,12 +457,18 @@ void mgag200_crtc_atomic_destroy_state(struct drm_crtc *crtc, struct drm_crtc_st
 	.atomic_duplicate_state = mgag200_crtc_atomic_duplicate_state, \
 	.atomic_destroy_state = mgag200_crtc_atomic_destroy_state
 
+<<<<<<< HEAD
 void mgag200_set_mode_regs(struct mga_device *mdev, const struct drm_display_mode *mode);
+=======
+void mgag200_set_mode_regs(struct mga_device *mdev, const struct drm_display_mode *mode,
+			   bool set_vidrst);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void mgag200_set_format_regs(struct mga_device *mdev, const struct drm_format_info *format);
 void mgag200_enable_display(struct mga_device *mdev);
 void mgag200_init_registers(struct mga_device *mdev);
 int mgag200_mode_config_init(struct mga_device *mdev, resource_size_t vram_available);
 
+<<<<<<< HEAD
 /* mgag200_vga.c */
 int mgag200_vga_output_init(struct mga_device *mdev);
 
@@ -443,5 +476,16 @@ int mgag200_vga_output_init(struct mga_device *mdev);
 void mgag200_bmc_disable_vidrst(struct mga_device *mdev);
 void mgag200_bmc_enable_vidrst(struct mga_device *mdev);
 int mgag200_bmc_output_init(struct mga_device *mdev, struct drm_connector *physical_connector);
+=======
+/* mgag200_vga_bmc.c */
+int mgag200_vga_bmc_output_init(struct mga_device *mdev);
+
+/* mgag200_vga.c */
+int mgag200_vga_output_init(struct mga_device *mdev);
+
+/* mgag200_bmc.c */
+void mgag200_bmc_stop_scanout(struct mga_device *mdev);
+void mgag200_bmc_start_scanout(struct mga_device *mdev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif				/* __MGAG200_DRV_H__ */

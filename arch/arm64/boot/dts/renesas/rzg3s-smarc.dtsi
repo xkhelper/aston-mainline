@@ -11,6 +11,10 @@
 
 / {
 	aliases {
+<<<<<<< HEAD
+=======
+		i2c0 = &i2c0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		serial0 = &scif0;
 		mmc1 = &sdhi1;
 	};
@@ -66,6 +70,15 @@
 	};
 };
 
+<<<<<<< HEAD
+=======
+&i2c0 {
+	status = "okay";
+
+	clock-frequency = <1000000>;
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &pinctrl {
 	key-1-gpio-hog {
 		gpio-hog;

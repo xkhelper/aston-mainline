@@ -16,7 +16,11 @@
 #include <net/llc.h>
 #include <net/llc_pdu.h>
 #include <net/garp.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static unsigned int garp_join_time __read_mostly = 200;
 module_param(garp_join_time, uint, 0644);

@@ -105,8 +105,12 @@ static void ixp4xx_irq_unmask(struct irq_data *d)
 	}
 }
 
+<<<<<<< HEAD
 static asmlinkage void __exception_irq_entry
 ixp4xx_handle_irq(struct pt_regs *regs)
+=======
+static void __exception_irq_entry ixp4xx_handle_irq(struct pt_regs *regs)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ixp4xx_irq *ixi = &ixirq;
 	unsigned long status;

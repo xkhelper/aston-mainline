@@ -7,7 +7,11 @@
 
 #include <drm/drm_managed.h>
 
+<<<<<<< HEAD
 #include "regs/xe_sriov_regs.h"
+=======
+#include "regs/xe_gt_regs.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "xe_assert.h"
 #include "xe_bo.h"
@@ -71,7 +75,11 @@ static struct xe_lmtt_pt *lmtt_pt_alloc(struct xe_lmtt *lmtt, unsigned int level
 					     lmtt->ops->lmtt_pte_num(level)),
 				  ttm_bo_type_kernel,
 				  XE_BO_FLAG_VRAM_IF_DGFX(lmtt_to_tile(lmtt)) |
+<<<<<<< HEAD
 				  XE_BO_NEEDS_64K | XE_BO_FLAG_PINNED);
+=======
+				  XE_BO_FLAG_NEEDS_64K | XE_BO_FLAG_PINNED);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(bo)) {
 		err = PTR_ERR(bo);
 		goto out_free_pt;

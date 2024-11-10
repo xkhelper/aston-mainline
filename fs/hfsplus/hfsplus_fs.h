@@ -472,7 +472,11 @@ extern const struct address_space_operations hfsplus_btree_aops;
 extern const struct dentry_operations hfsplus_dentry_operations;
 
 int hfsplus_write_begin(struct file *file, struct address_space *mapping,
+<<<<<<< HEAD
 		loff_t pos, unsigned len, struct page **pagep, void **fsdata);
+=======
+		loff_t pos, unsigned len, struct folio **foliop, void **fsdata);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct inode *hfsplus_new_inode(struct super_block *sb, struct inode *dir,
 				umode_t mode);
 void hfsplus_delete_inode(struct inode *inode);

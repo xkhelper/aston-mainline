@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+// SPDX-License-Identifier: GPL-2.0-only
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Freescale Ethernet controllers
  *
@@ -6,10 +10,13 @@
  *
  * 2005 (c) MontaVista Software, Inc.
  * Vitaly Bordug <vbordug@ru.mvista.com>
+<<<<<<< HEAD
  *
  * This file is licensed under the terms of the GNU General Public License
  * version 2. This program is licensed "as is" without any warranty of any
  * kind, whether express or implied.
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 #include <linux/module.h>
@@ -26,7 +33,10 @@
 #include <linux/etherdevice.h>
 #include <linux/skbuff.h>
 #include <linux/spinlock.h>
+<<<<<<< HEAD
 #include <linux/mii.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/ethtool.h>
 #include <linux/bitops.h>
 #include <linux/fs.h>
@@ -224,7 +234,12 @@ static void set_multicast_list(struct net_device *dev)
 		set_promiscuous_mode(dev);
 }
 
+<<<<<<< HEAD
 static void restart(struct net_device *dev)
+=======
+static void restart(struct net_device *dev, phy_interface_t interface,
+		    int speed, int duplex)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct fs_enet_private *fep = netdev_priv(dev);
 	struct fec __iomem *fecp = fep->fec.fecp;
@@ -306,13 +321,22 @@ static void restart(struct net_device *dev)
 	 * Only set MII/RMII mode - do not touch maximum frame length
 	 * configured before.
 	 */
+<<<<<<< HEAD
 	FS(fecp, r_cntrl, fpi->use_rmii ?
 			FEC_RCNTRL_RMII_MODE : FEC_RCNTRL_MII_MODE);
+=======
+	FS(fecp, r_cntrl, interface == PHY_INTERFACE_MODE_RMII ?
+			  FEC_RCNTRL_RMII_MODE : FEC_RCNTRL_MII_MODE);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	/*
 	 * adjust to duplex mode
 	 */
+<<<<<<< HEAD
 	if (dev->phydev->duplex) {
+=======
+	if (duplex == DUPLEX_FULL) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		FC(fecp, r_cntrl, FEC_RCNTRL_DRT);
 		FS(fecp, x_cntrl, FEC_TCNTRL_FDEN);	/* FD enable */
 	} else {

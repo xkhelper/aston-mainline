@@ -189,7 +189,10 @@ static void
 nv04_display_destroy(struct drm_device *dev)
 {
 	struct nv04_display *disp = nv04_display(dev);
+<<<<<<< HEAD
 	struct nouveau_drm *drm = nouveau_drm(dev);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct nouveau_encoder *encoder;
 	struct nouveau_crtc *nv_crtc;
 
@@ -206,15 +209,22 @@ nv04_display_destroy(struct drm_device *dev)
 
 	nouveau_display(dev)->priv = NULL;
 	vfree(disp);
+<<<<<<< HEAD
 
 	nvif_object_unmap(&drm->client.device.object);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int
 nv04_display_create(struct drm_device *dev)
 {
 	struct nouveau_drm *drm = nouveau_drm(dev);
+<<<<<<< HEAD
 	struct nvkm_i2c *i2c = nvxx_i2c(&drm->client.device);
+=======
+	struct nvkm_i2c *i2c = nvxx_i2c(drm);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct dcb_table *dcb = &drm->vbios.dcb;
 	struct drm_connector *connector, *ct;
 	struct drm_encoder *encoder;
@@ -229,8 +239,11 @@ nv04_display_create(struct drm_device *dev)
 
 	disp->drm = drm;
 
+<<<<<<< HEAD
 	nvif_object_map(&drm->client.device.object, NULL, 0);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	nouveau_display(dev)->priv = disp;
 	nouveau_display(dev)->dtor = nv04_display_destroy;
 	nouveau_display(dev)->init = nv04_display_init;

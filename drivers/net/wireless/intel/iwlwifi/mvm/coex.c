@@ -208,7 +208,11 @@ static int iwl_mvm_bt_coex_reduced_txp(struct iwl_mvm *mvm, u8 sta_id,
 }
 
 struct iwl_bt_iterator_data {
+<<<<<<< HEAD
 	struct iwl_bt_coex_profile_notif *notif;
+=======
+	struct iwl_bt_coex_prof_old_notif *notif;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct iwl_mvm *mvm;
 	struct ieee80211_chanctx_conf *primary;
 	struct ieee80211_chanctx_conf *secondary;
@@ -266,10 +270,33 @@ iwl_mvm_bt_coex_calculate_esr_mode(struct iwl_mvm *mvm,
 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
 	bool have_wifi_loss_rate =
 		iwl_fw_lookup_notif_ver(mvm->fw, LEGACY_GROUP,
+<<<<<<< HEAD
 					BT_PROFILE_NOTIFICATION, 0) > 4;
 	u8 wifi_loss_rate;
 
 	if (mvm->last_bt_notif.wifi_loss_low_rssi == BT_OFF)
+=======
+					BT_PROFILE_NOTIFICATION, 0) > 4 ||
+		iwl_fw_lookup_notif_ver(mvm->fw, BT_COEX_GROUP,
+					PROFILE_NOTIF, 0) >= 1;
+	u8 wifi_loss_mid_high_rssi;
+	u8 wifi_loss_low_rssi;
+	u8 wifi_loss_rate;
+
+	if (iwl_fw_lookup_notif_ver(mvm->fw, BT_COEX_GROUP,
+				    PROFILE_NOTIF, 0) >= 1) {
+		/* For now, we consider 2.4 GHz band / ANT_A only */
+		wifi_loss_mid_high_rssi =
+			mvm->last_bt_wifi_loss.wifi_loss_mid_high_rssi[PHY_BAND_24][0];
+		wifi_loss_low_rssi =
+			mvm->last_bt_wifi_loss.wifi_loss_low_rssi[PHY_BAND_24][0];
+	} else {
+		wifi_loss_mid_high_rssi = mvm->last_bt_notif.wifi_loss_mid_high_rssi;
+		wifi_loss_low_rssi = mvm->last_bt_notif.wifi_loss_low_rssi;
+	}
+
+	if (wifi_loss_low_rssi == BT_OFF)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return true;
 
 	if (primary)
@@ -286,20 +313,34 @@ iwl_mvm_bt_coex_calculate_esr_mode(struct iwl_mvm *mvm,
 	 * we will get an update on this and exit eSR.
 	 */
 	if (!link_rssi)
+<<<<<<< HEAD
 		wifi_loss_rate = mvm->last_bt_notif.wifi_loss_mid_high_rssi;
+=======
+		wifi_loss_rate = wifi_loss_mid_high_rssi;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	else if (mvmvif->esr_active)
 		 /* RSSI needs to get really low to disable eSR... */
 		wifi_loss_rate =
 			link_rssi <= -IWL_MVM_BT_COEX_DISABLE_ESR_THRESH ?
+<<<<<<< HEAD
 				mvm->last_bt_notif.wifi_loss_low_rssi :
 				mvm->last_bt_notif.wifi_loss_mid_high_rssi;
+=======
+				wifi_loss_low_rssi :
+				wifi_loss_mid_high_rssi;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else
 		/* ...And really high before we enable it back */
 		wifi_loss_rate =
 			link_rssi <= -IWL_MVM_BT_COEX_ENABLE_ESR_THRESH ?
+<<<<<<< HEAD
 				mvm->last_bt_notif.wifi_loss_low_rssi :
 				mvm->last_bt_notif.wifi_loss_mid_high_rssi;
+=======
+				wifi_loss_low_rssi :
+				wifi_loss_mid_high_rssi;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return wifi_loss_rate <= IWL_MVM_BT_COEX_WIFI_LOSS_THRESH;
 }
@@ -509,6 +550,38 @@ static void iwl_mvm_bt_notif_iterator(void *_data, u8 *mac,
 		iwl_mvm_bt_notif_per_link(mvm, vif, data, link_id);
 }
 
+<<<<<<< HEAD
+=======
+/* must be called under rcu_read_lock */
+static void iwl_mvm_bt_coex_notif_iterator(void *_data, u8 *mac,
+					   struct ieee80211_vif *vif)
+{
+	struct iwl_mvm *mvm = _data;
+
+	lockdep_assert_held(&mvm->mutex);
+
+	if (vif->type != NL80211_IFTYPE_STATION)
+		return;
+
+	for (int link_id = 0;
+	     link_id < IEEE80211_MLD_MAX_NUM_LINKS;
+	     link_id++) {
+		struct ieee80211_bss_conf *link_conf =
+			rcu_dereference_check(vif->link_conf[link_id],
+					      lockdep_is_held(&mvm->mutex));
+		struct ieee80211_chanctx_conf *chanctx_conf =
+			rcu_dereference_check(link_conf->chanctx_conf,
+					      lockdep_is_held(&mvm->mutex));
+
+		if ((!chanctx_conf ||
+		     chanctx_conf->def.chan->band != NL80211_BAND_2GHZ))
+			continue;
+
+		iwl_mvm_bt_coex_update_link_esr(mvm, vif, link_id);
+	}
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void iwl_mvm_bt_coex_notif_handle(struct iwl_mvm *mvm)
 {
 	struct iwl_bt_iterator_data data = {
@@ -591,11 +664,19 @@ static void iwl_mvm_bt_coex_notif_handle(struct iwl_mvm *mvm)
 	}
 }
 
+<<<<<<< HEAD
 void iwl_mvm_rx_bt_coex_notif(struct iwl_mvm *mvm,
 			      struct iwl_rx_cmd_buffer *rxb)
 {
 	struct iwl_rx_packet *pkt = rxb_addr(rxb);
 	struct iwl_bt_coex_profile_notif *notif = (void *)pkt->data;
+=======
+void iwl_mvm_rx_bt_coex_old_notif(struct iwl_mvm *mvm,
+				  struct iwl_rx_cmd_buffer *rxb)
+{
+	struct iwl_rx_packet *pkt = rxb_addr(rxb);
+	struct iwl_bt_coex_prof_old_notif *notif = (void *)pkt->data;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	IWL_DEBUG_COEX(mvm, "BT Coex Notification received\n");
 	IWL_DEBUG_COEX(mvm, "\tBT ci compliance %d\n", notif->bt_ci_compliance);
@@ -612,6 +693,25 @@ void iwl_mvm_rx_bt_coex_notif(struct iwl_mvm *mvm,
 	iwl_mvm_bt_coex_notif_handle(mvm);
 }
 
+<<<<<<< HEAD
+=======
+void iwl_mvm_rx_bt_coex_notif(struct iwl_mvm *mvm,
+			      struct iwl_rx_cmd_buffer *rxb)
+{
+	const struct iwl_rx_packet *pkt = rxb_addr(rxb);
+	const struct iwl_bt_coex_profile_notif *notif = (const void *)pkt->data;
+
+	lockdep_assert_held(&mvm->mutex);
+
+	mvm->last_bt_wifi_loss = *notif;
+
+	ieee80211_iterate_active_interfaces(mvm->hw,
+					    IEEE80211_IFACE_ITER_NORMAL,
+					    iwl_mvm_bt_coex_notif_iterator,
+					    mvm);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void iwl_mvm_bt_rssi_event(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 			   enum ieee80211_rssi_event_data rssi_event)
 {

@@ -55,6 +55,12 @@
 #define PCI_DEVICE_ID_INTEL_ALDER_LAKE_PCH_XHCI		0x51ed
 #define PCI_DEVICE_ID_INTEL_ALDER_LAKE_N_PCH_XHCI	0x54ed
 
+<<<<<<< HEAD
+=======
+#define PCI_VENDOR_ID_PHYTIUM		0x1db7
+#define PCI_DEVICE_ID_PHYTIUM_XHCI			0xdc27
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Thunderbolt */
 #define PCI_DEVICE_ID_INTEL_MAPLE_RIDGE_XHCI		0x1138
 #define PCI_DEVICE_ID_INTEL_ALPINE_RIDGE_2C_XHCI	0x15b5
@@ -76,8 +82,17 @@
 #define PCI_DEVICE_ID_ASMEDIA_1042A_XHCI		0x1142
 #define PCI_DEVICE_ID_ASMEDIA_1142_XHCI			0x1242
 #define PCI_DEVICE_ID_ASMEDIA_2142_XHCI			0x2142
+<<<<<<< HEAD
 #define PCI_DEVICE_ID_ASMEDIA_3242_XHCI			0x3242
 
+=======
+#define PCI_DEVICE_ID_ASMEDIA_3042_XHCI			0x3042
+#define PCI_DEVICE_ID_ASMEDIA_3242_XHCI			0x3242
+
+#define PCI_DEVICE_ID_CADENCE				0x17CD
+#define PCI_DEVICE_ID_CADENCE_SSP			0x0200
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const char hcd_name[] = "xhci_hcd";
 
 static struct hc_driver __read_mostly xhci_pci_hc_driver;
@@ -93,6 +108,13 @@ static const struct xhci_driver_overrides xhci_pci_overrides __initconst = {
 	.update_hub_device = xhci_pci_update_hub_device,
 };
 
+<<<<<<< HEAD
+=======
+/*
+ * Primary Legacy and MSI IRQ are synced in suspend_common().
+ * All MSI-X IRQs and secondary MSI IRQs should be synced here.
+ */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void xhci_msix_sync_irqs(struct xhci_hcd *xhci)
 {
 	struct usb_hcd *hcd = xhci_to_hcd(xhci);
@@ -105,13 +127,20 @@ static void xhci_msix_sync_irqs(struct xhci_hcd *xhci)
 	}
 }
 
+<<<<<<< HEAD
 /* Free any IRQs and disable MSI-X */
+=======
+/* Legacy IRQ is freed by usb_remove_hcd() or usb_hcd_pci_shutdown() */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void xhci_cleanup_msix(struct xhci_hcd *xhci)
 {
 	struct usb_hcd *hcd = xhci_to_hcd(xhci);
 	struct pci_dev *pdev = to_pci_dev(hcd->self.controller);
 
+<<<<<<< HEAD
 	/* return if using legacy interrupt */
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (hcd->irq > 0)
 		return;
 
@@ -235,6 +264,7 @@ static int xhci_pci_reinit(struct xhci_hcd *xhci, struct pci_dev *pdev)
 static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
 {
 	struct pci_dev                  *pdev = to_pci_dev(dev);
+<<<<<<< HEAD
 	struct xhci_driver_data         *driver_data;
 	const struct pci_device_id      *id;
 
@@ -244,6 +274,8 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
 		driver_data = (struct xhci_driver_data *)id->driver_data;
 		xhci->quirks |= driver_data->quirks;
 	}
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Look for vendor-specific quirks */
 	if (pdev->vendor == PCI_VENDOR_ID_FRESCO_LOGIC &&
@@ -416,6 +448,13 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
 	if (pdev->vendor == PCI_VENDOR_ID_VIA)
 		xhci->quirks |= XHCI_RESET_ON_RESUME;
 
+<<<<<<< HEAD
+=======
+	if (pdev->vendor == PCI_VENDOR_ID_PHYTIUM &&
+	    pdev->device == PCI_DEVICE_ID_PHYTIUM_XHCI)
+		xhci->quirks |= XHCI_RESET_ON_RESUME;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* See https://bugzilla.kernel.org/show_bug.cgi?id=79511 */
 	if (pdev->vendor == PCI_VENDOR_ID_VIA &&
 			pdev->device == 0x3432)
@@ -447,6 +486,13 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
 		pdev->device == PCI_DEVICE_ID_ASMEDIA_1042A_XHCI)
 		xhci->quirks |= XHCI_ASMEDIA_MODIFY_FLOWCONTROL;
 
+<<<<<<< HEAD
+=======
+	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA &&
+	    pdev->device == PCI_DEVICE_ID_ASMEDIA_3042_XHCI)
+		xhci->quirks |= XHCI_RESET_ON_RESUME;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (pdev->vendor == PCI_VENDOR_ID_TI && pdev->device == 0x8241)
 		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_7;
 
@@ -473,6 +519,13 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
 			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
 	}
 
+<<<<<<< HEAD
+=======
+	if (pdev->vendor == PCI_DEVICE_ID_CADENCE &&
+	    pdev->device == PCI_DEVICE_ID_CADENCE_SSP)
+		xhci->quirks |= XHCI_CDNS_SCTX_QUIRK;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* xHC spec requires PCI devices to support D3hot and D3cold */
 	if (xhci->hci_version >= 0x120)
 		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
@@ -534,10 +587,16 @@ static int xhci_pci_setup(struct usb_hcd *hcd)
 	struct xhci_hcd		*xhci;
 	struct pci_dev		*pdev = to_pci_dev(hcd->self.controller);
 	int			retval;
+<<<<<<< HEAD
 
 	xhci = hcd_to_xhci(hcd);
 	if (!xhci->sbrn)
 		pci_read_config_byte(pdev, XHCI_SBRN_OFFSET, &xhci->sbrn);
+=======
+	u8			sbrn;
+
+	xhci = hcd_to_xhci(hcd);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* imod_interval is the interrupt moderation value in nanoseconds. */
 	xhci->imod_interval = 40000;
@@ -552,7 +611,12 @@ static int xhci_pci_setup(struct usb_hcd *hcd)
 	if (xhci->quirks & XHCI_PME_STUCK_QUIRK)
 		xhci_pme_acpi_rtd3_enable(pdev);
 
+<<<<<<< HEAD
 	xhci_dbg(xhci, "Got SBRN %u\n", (unsigned int) xhci->sbrn);
+=======
+	pci_read_config_byte(pdev, XHCI_SBRN_OFFSET, &sbrn);
+	xhci_dbg(xhci, "Got SBRN %u\n", (unsigned int)sbrn);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Find any debug ports */
 	return xhci_pci_reinit(xhci, pdev);
@@ -572,11 +636,16 @@ static int xhci_pci_update_hub_device(struct usb_hcd *hcd, struct usb_device *hd
  * We need to register our own PCI probe function (instead of the USB core's
  * function) in order to create a second roothub under xHCI.
  */
+<<<<<<< HEAD
 static int xhci_pci_probe(struct pci_dev *dev, const struct pci_device_id *id)
+=======
+int xhci_pci_common_probe(struct pci_dev *dev, const struct pci_device_id *id)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int retval;
 	struct xhci_hcd *xhci;
 	struct usb_hcd *hcd;
+<<<<<<< HEAD
 	struct xhci_driver_data *driver_data;
 	struct reset_control *reset;
 
@@ -587,6 +656,10 @@ static int xhci_pci_probe(struct pci_dev *dev, const struct pci_device_id *id)
 			return retval;
 	}
 
+=======
+	struct reset_control *reset;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	reset = devm_reset_control_get_optional_exclusive(&dev->dev, NULL);
 	if (IS_ERR(reset))
 		return PTR_ERR(reset);
@@ -635,7 +708,11 @@ static int xhci_pci_probe(struct pci_dev *dev, const struct pci_device_id *id)
 	pm_runtime_put_noidle(&dev->dev);
 
 	if (pci_choose_state(dev, PMSG_SUSPEND) == PCI_D0)
+<<<<<<< HEAD
 		pm_runtime_forbid(&dev->dev);
+=======
+		pm_runtime_get(&dev->dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else if (xhci->quirks & XHCI_DEFAULT_PM_RUNTIME_ALLOW)
 		pm_runtime_allow(&dev->dev);
 
@@ -651,6 +728,7 @@ put_runtime_pm:
 	pm_runtime_put_noidle(&dev->dev);
 	return retval;
 }
+<<<<<<< HEAD
 
 static void xhci_pci_remove(struct pci_dev *dev)
 {
@@ -661,6 +739,38 @@ static void xhci_pci_remove(struct pci_dev *dev)
 	xhci->xhc_state |= XHCI_STATE_REMOVING;
 
 	if (xhci->quirks & XHCI_DEFAULT_PM_RUNTIME_ALLOW)
+=======
+EXPORT_SYMBOL_NS_GPL(xhci_pci_common_probe, xhci);
+
+static const struct pci_device_id pci_ids_reject[] = {
+	/* handled by xhci-pci-renesas */
+	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, 0x0014) },
+	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, 0x0015) },
+	{ /* end: all zeroes */ }
+};
+
+static int xhci_pci_probe(struct pci_dev *dev, const struct pci_device_id *id)
+{
+	if (pci_match_id(pci_ids_reject, dev))
+		return -ENODEV;
+
+	return xhci_pci_common_probe(dev, id);
+}
+
+void xhci_pci_remove(struct pci_dev *dev)
+{
+	struct xhci_hcd *xhci;
+	bool set_power_d3;
+
+	xhci = hcd_to_xhci(pci_get_drvdata(dev));
+	set_power_d3 = xhci->quirks & XHCI_SPURIOUS_WAKEUP;
+
+	xhci->xhc_state |= XHCI_STATE_REMOVING;
+
+	if (pci_choose_state(dev, PMSG_SUSPEND) == PCI_D0)
+		pm_runtime_put(&dev->dev);
+	else if (xhci->quirks & XHCI_DEFAULT_PM_RUNTIME_ALLOW)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pm_runtime_forbid(&dev->dev);
 
 	if (xhci->shared_hcd) {
@@ -669,12 +779,22 @@ static void xhci_pci_remove(struct pci_dev *dev)
 		xhci->shared_hcd = NULL;
 	}
 
+<<<<<<< HEAD
 	/* Workaround for spurious wakeups at shutdown with HSW */
 	if (xhci->quirks & XHCI_SPURIOUS_WAKEUP)
 		pci_set_power_state(dev, PCI_D3hot);
 
 	usb_hcd_pci_remove(dev);
 }
+=======
+	usb_hcd_pci_remove(dev);
+
+	/* Workaround for spurious wakeups at shutdown with HSW */
+	if (set_power_d3)
+		pci_set_power_state(dev, PCI_D3hot);
+}
+EXPORT_SYMBOL_NS_GPL(xhci_pci_remove, xhci);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * In some Intel xHCI controllers, in order to get D3 working,
@@ -783,7 +903,10 @@ static int xhci_pci_resume(struct usb_hcd *hcd, pm_message_t msg)
 {
 	struct xhci_hcd		*xhci = hcd_to_xhci(hcd);
 	struct pci_dev		*pdev = to_pci_dev(hcd->self.controller);
+<<<<<<< HEAD
 	int			retval = 0;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	reset_control_reset(xhci->reset);
 
@@ -814,8 +937,12 @@ static int xhci_pci_resume(struct usb_hcd *hcd, pm_message_t msg)
 	if (xhci->quirks & XHCI_PME_STUCK_QUIRK)
 		xhci_pme_quirk(hcd);
 
+<<<<<<< HEAD
 	retval = xhci_resume(xhci, msg);
 	return retval;
+=======
+	return xhci_resume(xhci, msg);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int xhci_pci_poweroff_late(struct usb_hcd *hcd, bool do_wakeup)
@@ -882,6 +1009,7 @@ static void xhci_pci_shutdown(struct usb_hcd *hcd)
 
 /*-------------------------------------------------------------------------*/
 
+<<<<<<< HEAD
 static const struct xhci_driver_data reneses_data = {
 	.quirks  = XHCI_RENESAS_FW_QUIRK,
 	.firmware = "renesas_usb_fw.mem",
@@ -895,6 +1023,10 @@ static const struct pci_device_id pci_ids[] = {
 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, 0x0015),
 		.driver_data =  (unsigned long)&reneses_data,
 	},
+=======
+/* PCI driver selection metadata; PCI hotplugging uses this */
+static const struct pci_device_id pci_ids[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* handle any USB 3.0 xHCI controller */
 	{ PCI_DEVICE_CLASS(PCI_CLASS_SERIAL_USB_XHCI, ~0),
 	},
@@ -902,6 +1034,7 @@ static const struct pci_device_id pci_ids[] = {
 };
 MODULE_DEVICE_TABLE(pci, pci_ids);
 
+<<<<<<< HEAD
 /*
  * Without CONFIG_USB_XHCI_PCI_RENESAS renesas_xhci_check_request_fw() won't
  * load firmware, so don't encumber the xhci-pci driver with it.
@@ -910,6 +1043,8 @@ MODULE_DEVICE_TABLE(pci, pci_ids);
 MODULE_FIRMWARE("renesas_usb_fw.mem");
 #endif
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* pci driver glue; this is a "new style" PCI driver module */
 static struct pci_driver xhci_pci_driver = {
 	.name =		hcd_name,

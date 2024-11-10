@@ -643,6 +643,10 @@ static const struct file_operations __maybe_unused mem_fops = {
 	.get_unmapped_area = get_unmapped_area_mem,
 	.mmap_capabilities = memory_mmap_capabilities,
 #endif
+<<<<<<< HEAD
+=======
+	.fop_flags	= FOP_UNSIGNED_OFFSET,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct file_operations null_fops = {
@@ -693,7 +697,11 @@ static const struct memdev {
 	umode_t mode;
 } devlist[] = {
 #ifdef CONFIG_DEVMEM
+<<<<<<< HEAD
 	[DEVMEM_MINOR] = { "mem", &mem_fops, FMODE_UNSIGNED_OFFSET, 0 },
+=======
+	[DEVMEM_MINOR] = { "mem", &mem_fops, 0, 0 },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	[3] = { "null", &null_fops, FMODE_NOWAIT, 0666 },
 #ifdef CONFIG_DEVPORT

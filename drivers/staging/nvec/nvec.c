@@ -175,7 +175,11 @@ static struct nvec_msg *nvec_msg_alloc(struct nvec_chip *nvec,
 		}
 	}
 
+<<<<<<< HEAD
 	dev_err(nvec->dev, "could not allocate %s buffer\n",
+=======
+	dev_err(nvec->dev, "Could not allocate %s buffer\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		(category == NVEC_MSG_TX) ? "TX" : "RX");
 
 	return NULL;
@@ -315,7 +319,11 @@ int nvec_write_sync(struct nvec_chip *nvec,
 	if (!(wait_for_completion_timeout(&nvec->sync_write,
 					  msecs_to_jiffies(2000)))) {
 		dev_warn(nvec->dev,
+<<<<<<< HEAD
 			 "timeout waiting for sync write to complete\n");
+=======
+			 "Timeout waiting for sync write to complete\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mutex_unlock(&nvec->sync_write_mutex);
 		return -ETIMEDOUT;
 	}
@@ -392,7 +400,11 @@ static void nvec_request_master(struct work_struct *work)
 								msecs_to_jiffies(5000));
 
 		if (err == 0) {
+<<<<<<< HEAD
 			dev_warn(nvec->dev, "timeout waiting for ec transfer\n");
+=======
+			dev_warn(nvec->dev, "Timeout waiting for ec transfer\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			nvec_gpio_set_value(nvec, 1);
 			msg->pos = 0;
 		}
@@ -454,7 +466,11 @@ static void nvec_dispatch(struct work_struct *work)
 
 		if (nvec->sync_write_pending ==
 		      (msg->data[2] << 8) + msg->data[0]) {
+<<<<<<< HEAD
 			dev_dbg(nvec->dev, "sync write completed!\n");
+=======
+			dev_dbg(nvec->dev, "Sync write completed!\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			nvec->sync_write_pending = 0;
 			nvec->last_sync_msg = msg;
 			complete(&nvec->sync_write);
@@ -477,7 +493,11 @@ static void nvec_tx_completed(struct nvec_chip *nvec)
 {
 	/* We got an END_TRANS, let's skip this, maybe there's an event */
 	if (nvec->tx->pos != nvec->tx->size) {
+<<<<<<< HEAD
 		dev_err(nvec->dev, "premature END_TRANS, resending\n");
+=======
+		dev_err(nvec->dev, "Premature END_TRANS, resending\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		nvec->tx->pos = 0;
 		nvec_gpio_set_value(nvec, 0);
 	} else {
@@ -608,7 +628,11 @@ static irqreturn_t nvec_interrupt(int irq, void *dev)
 
 	/* Filter out some errors */
 	if ((status & irq_mask) == 0 && (status & ~irq_mask) != 0) {
+<<<<<<< HEAD
 		dev_err(nvec->dev, "unexpected irq mask %lx\n", status);
+=======
+		dev_err(nvec->dev, "Unexpected irq mask %lx\n", status);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return IRQ_HANDLED;
 	}
 	if ((status & I2C_SL_IRQ) == 0) {
@@ -631,7 +655,11 @@ static irqreturn_t nvec_interrupt(int irq, void *dev)
 		if (status != (I2C_SL_IRQ | RCVD))
 			nvec_invalid_flags(nvec, status, false);
 		break;
+<<<<<<< HEAD
 	case 1:		/* command byte */
+=======
+	case 1:		/* Command byte */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (status != I2C_SL_IRQ) {
 			nvec_invalid_flags(nvec, status, true);
 		} else {
@@ -845,13 +873,20 @@ static int tegra_nvec_probe(struct platform_device *pdev)
 		return PTR_ERR(nvec->gpiod);
 	}
 
+<<<<<<< HEAD
 	err = devm_request_irq(dev, nvec->irq, nvec_interrupt, 0,
+=======
+	err = devm_request_irq(dev, nvec->irq, nvec_interrupt, IRQF_NO_AUTOEN,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       "nvec", nvec);
 	if (err) {
 		dev_err(dev, "couldn't request irq\n");
 		return -ENODEV;
 	}
+<<<<<<< HEAD
 	disable_irq(nvec->irq);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	tegra_init_i2c_slave(nvec);
 

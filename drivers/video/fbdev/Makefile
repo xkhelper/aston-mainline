@@ -121,10 +121,15 @@ obj-$(CONFIG_FB_VESA)             += vesafb.o
 obj-$(CONFIG_FB_EFI)              += efifb.o
 obj-$(CONFIG_FB_VGA16)            += vga16fb.o
 obj-$(CONFIG_FB_OF)               += offb.o
+<<<<<<< HEAD
 obj-$(CONFIG_FB_DA8XX)		  += da8xx-fb.o
 obj-$(CONFIG_FB_SSD1307)	  += ssd1307fb.o
 obj-$(CONFIG_FB_SIMPLE)           += simplefb.o
 obj-$(CONFIG_FB_EARLY)            += earlycon.o
+=======
+obj-$(CONFIG_FB_SSD1307)	  += ssd1307fb.o
+obj-$(CONFIG_FB_SIMPLE)           += simplefb.o
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 # the test framebuffer is last
 obj-$(CONFIG_FB_VIRTUAL)          += vfb.o

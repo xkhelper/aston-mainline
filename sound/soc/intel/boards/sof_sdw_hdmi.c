@@ -5,10 +5,18 @@
  *  sof_sdw_hdmi - Helpers to handle HDMI from generic machine driver
  */
 
+<<<<<<< HEAD
+=======
+#include <linux/acpi.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/device.h>
 #include <linux/errno.h>
 #include <linux/kernel.h>
 #include <linux/list.h>
+<<<<<<< HEAD
+=======
+#include <linux/soundwire/sdw_intel.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <sound/soc.h>
 #include <sound/soc-acpi.h>
 #include <sound/jack.h>
@@ -17,16 +25,25 @@
 
 int sof_sdw_hdmi_init(struct snd_soc_pcm_runtime *rtd)
 {
+<<<<<<< HEAD
 	struct mc_private *ctx = snd_soc_card_get_drvdata(rtd->card);
 	struct snd_soc_dai *dai = snd_soc_rtd_to_codec(rtd, 0);
 
 	ctx->hdmi.hdmi_comp = dai->component;
+=======
+	struct asoc_sdw_mc_private *ctx = snd_soc_card_get_drvdata(rtd->card);
+	struct intel_mc_ctx *intel_ctx = (struct intel_mc_ctx *)ctx->private;
+	struct snd_soc_dai *dai = snd_soc_rtd_to_codec(rtd, 0);
+
+	intel_ctx->hdmi.hdmi_comp = dai->component;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
 
 int sof_sdw_hdmi_card_late_probe(struct snd_soc_card *card)
 {
+<<<<<<< HEAD
 	struct mc_private *ctx = snd_soc_card_get_drvdata(card);
 
 	if (!ctx->hdmi.idisp_codec)
@@ -36,4 +53,16 @@ int sof_sdw_hdmi_card_late_probe(struct snd_soc_card *card)
 		return -EINVAL;
 
 	return hda_dsp_hdmi_build_controls(card, ctx->hdmi.hdmi_comp);
+=======
+	struct asoc_sdw_mc_private *ctx = snd_soc_card_get_drvdata(card);
+	struct intel_mc_ctx *intel_ctx = (struct intel_mc_ctx *)ctx->private;
+
+	if (!intel_ctx->hdmi.idisp_codec)
+		return 0;
+
+	if (!intel_ctx->hdmi.hdmi_comp)
+		return -EINVAL;
+
+	return hda_dsp_hdmi_build_controls(card, intel_ctx->hdmi.hdmi_comp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

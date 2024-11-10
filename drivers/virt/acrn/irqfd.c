@@ -125,12 +125,20 @@ static int acrn_irqfd_assign(struct acrn_vm *vm, struct acrn_irqfd *args)
 	INIT_WORK(&irqfd->shutdown, hsm_irqfd_shutdown_work);
 
 	f = fdget(args->fd);
+<<<<<<< HEAD
 	if (!f.file) {
+=======
+	if (!fd_file(f)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EBADF;
 		goto out;
 	}
 
+<<<<<<< HEAD
 	eventfd = eventfd_ctx_fileget(f.file);
+=======
+	eventfd = eventfd_ctx_fileget(fd_file(f));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(eventfd)) {
 		ret = PTR_ERR(eventfd);
 		goto fail;
@@ -157,7 +165,11 @@ static int acrn_irqfd_assign(struct acrn_vm *vm, struct acrn_irqfd *args)
 	mutex_unlock(&vm->irqfds_lock);
 
 	/* Check the pending event in this stage */
+<<<<<<< HEAD
 	events = vfs_poll(f.file, &irqfd->pt);
+=======
+	events = vfs_poll(fd_file(f), &irqfd->pt);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (events & EPOLLIN)
 		acrn_irqfd_inject(irqfd);

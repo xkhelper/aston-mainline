@@ -30,6 +30,10 @@ panthor_vm_get_bo_for_va(struct panthor_vm *vm, u64 va, u64 *bo_offset);
 
 int panthor_vm_active(struct panthor_vm *vm);
 void panthor_vm_idle(struct panthor_vm *vm);
+<<<<<<< HEAD
+=======
+u32 panthor_vm_page_size(struct panthor_vm *vm);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int panthor_vm_as(struct panthor_vm *vm);
 int panthor_vm_flush_all(struct panthor_vm *vm);
 

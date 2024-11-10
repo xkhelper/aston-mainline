@@ -15,7 +15,11 @@
 #include <linux/led-class-multicolor.h>
 #include <linux/module.h>
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "hid-ids.h"
 
@@ -2143,6 +2147,29 @@ static void dualshock4_output_worker(struct work_struct *work)
 
 	spin_lock_irqsave(&ds4->base.lock, flags);
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Some 3rd party gamepads expect updates to rumble and lightbar
+	 * together, and setting one may cancel the other.
+	 *
+	 * Let's maximise compatibility by always sending rumble and lightbar
+	 * updates together, even when only one has been scheduled, resulting
+	 * in:
+	 *
+	 *   ds4->valid_flag0 >= 0x03
+	 *
+	 * Hopefully this will maximise compatibility with third-party pads.
+	 *
+	 * Any further update bits, such as 0x04 for lightbar blinking, will
+	 * be or'd on top of this like before.
+	 */
+	if (ds4->update_rumble || ds4->update_lightbar) {
+		ds4->update_rumble = true; /* 0x01 */
+		ds4->update_lightbar = true; /* 0x02 */
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ds4->update_rumble) {
 		/* Select classic rumble style haptics and enable it. */
 		common->valid_flag0 |= DS4_OUTPUT_VALID_FLAG0_MOTOR;

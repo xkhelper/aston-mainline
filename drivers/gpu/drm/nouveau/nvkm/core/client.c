@@ -42,7 +42,11 @@ nvkm_uclient_new(const struct nvkm_oclass *oclass, void *argv, u32 argc,
 
 	if (!(ret = nvif_unpack(ret, &argv, &argc, args->v0, 0, 0, false))){
 		args->v0.name[sizeof(args->v0.name) - 1] = 0;
+<<<<<<< HEAD
 		ret = nvkm_client_new(args->v0.name, args->v0.device, NULL,
+=======
+		ret = nvkm_client_new(args->v0.name, oclass->client->device, NULL,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      NULL, oclass->client->event, &client);
 		if (ret)
 			return ret;
@@ -51,8 +55,11 @@ nvkm_uclient_new(const struct nvkm_oclass *oclass, void *argv, u32 argc,
 
 	client->object.client = oclass->client;
 	client->object.handle = oclass->handle;
+<<<<<<< HEAD
 	client->object.route  = oclass->route;
 	client->object.token  = oclass->token;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	client->object.object = oclass->object;
 	client->debug = oclass->client->debug;
 	*pobject = &client->object;
@@ -67,6 +74,7 @@ nvkm_uclient_sclass = {
 	.ctor = nvkm_uclient_new,
 };
 
+<<<<<<< HEAD
 static const struct nvkm_object_func nvkm_client;
 struct nvkm_client *
 nvkm_client_search(struct nvkm_client *client, u64 handle)
@@ -119,6 +127,8 @@ nvkm_client_mthd(struct nvkm_object *object, u32 mthd, void *data, u32 size)
 	return -EINVAL;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int
 nvkm_client_child_new(const struct nvkm_oclass *oclass,
 		      void *data, u32 size, struct nvkm_object **pobject)
@@ -144,12 +154,15 @@ nvkm_client_child_get(struct nvkm_object *object, int index,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int
 nvkm_client_fini(struct nvkm_object *object, bool suspend)
 {
 	return 0;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void *
 nvkm_client_dtor(struct nvkm_object *object)
 {
@@ -159,8 +172,11 @@ nvkm_client_dtor(struct nvkm_object *object)
 static const struct nvkm_object_func
 nvkm_client = {
 	.dtor = nvkm_client_dtor,
+<<<<<<< HEAD
 	.fini = nvkm_client_fini,
 	.mthd = nvkm_client_mthd,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sclass = nvkm_client_child_get,
 };
 

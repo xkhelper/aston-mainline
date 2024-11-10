@@ -65,7 +65,12 @@ void optc1_program_global_sync(
 		int vready_offset,
 		int vstartup_start,
 		int vupdate_offset,
+<<<<<<< HEAD
 		int vupdate_width)
+=======
+		int vupdate_width,
+		int pstate_keepout)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct optc *optc1 = DCN10TG_FROM_TG(optc);
 
@@ -73,6 +78,10 @@ void optc1_program_global_sync(
 	optc1->vstartup_start = vstartup_start;
 	optc1->vupdate_offset = vupdate_offset;
 	optc1->vupdate_width = vupdate_width;
+<<<<<<< HEAD
+=======
+	optc1->pstate_keepout = pstate_keepout;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (optc1->vstartup_start == 0) {
 		BREAK_TO_DEBUGGER();
@@ -146,6 +155,10 @@ void optc1_setup_vertical_interrupt2(
  * @vstartup_start: Vstartup period.
  * @vupdate_offset: Vupdate starting position.
  * @vupdate_width: Vupdate duration.
+<<<<<<< HEAD
+=======
+ * @pstate_keepout: determines low power mode timing during refresh
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @signal: DC signal types.
  * @use_vbios: to program timings from BIOS command table.
  *
@@ -157,6 +170,10 @@ void optc1_program_timing(
 	int vstartup_start,
 	int vupdate_offset,
 	int vupdate_width,
+<<<<<<< HEAD
+=======
+	int pstate_keepout,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const enum signal_type signal,
 	bool use_vbios)
 {
@@ -177,6 +194,10 @@ void optc1_program_timing(
 	optc1->vstartup_start = vstartup_start;
 	optc1->vupdate_offset = vupdate_offset;
 	optc1->vupdate_width = vupdate_width;
+<<<<<<< HEAD
+=======
+	optc1->pstate_keepout = pstate_keepout;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	patched_crtc_timing = *dc_crtc_timing;
 	apply_front_porch_workaround(&patched_crtc_timing);
 	optc1->orginal_patched_timing = patched_crtc_timing;
@@ -282,7 +303,12 @@ void optc1_program_timing(
 			vready_offset,
 			vstartup_start,
 			vupdate_offset,
+<<<<<<< HEAD
 			vupdate_width);
+=======
+			vupdate_width,
+			pstate_keepout);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	optc->funcs->set_vtg_params(optc, dc_crtc_timing, true);
 

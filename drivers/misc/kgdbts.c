@@ -95,6 +95,10 @@
 #include <linux/kallsyms.h>
 
 #include <asm/sections.h>
+<<<<<<< HEAD
+=======
+#include <asm/rwonce.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define v1printk(a...) do {		\
 	if (verbose)			\
@@ -126,7 +130,10 @@ static int final_ack;
 static int force_hwbrks;
 static int hwbreaks_ok;
 static int hw_break_val;
+<<<<<<< HEAD
 static int hw_break_val2;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int cont_instead_of_sstep;
 static unsigned long cont_thread_id;
 static unsigned long sstep_thread_id;
@@ -284,7 +291,11 @@ static void hw_rem_access_break(char *arg)
 
 static void hw_break_val_access(void)
 {
+<<<<<<< HEAD
 	hw_break_val2 = hw_break_val;
+=======
+	READ_ONCE(hw_break_val);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void hw_break_val_write(void)

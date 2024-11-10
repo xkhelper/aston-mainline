@@ -846,7 +846,11 @@ xrep_dinode_bad_bmbt_fork(
 	nrecs = be16_to_cpu(dfp->bb_numrecs);
 	level = be16_to_cpu(dfp->bb_level);
 
+<<<<<<< HEAD
 	if (nrecs == 0 || XFS_BMDR_SPACE_CALC(nrecs) > dfork_size)
+=======
+	if (nrecs == 0 || xfs_bmdr_space_calc(nrecs) > dfork_size)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return true;
 	if (level == 0 || level >= XFS_BM_MAXLEVELS(sc->mp, whichfork))
 		return true;
@@ -858,12 +862,20 @@ xrep_dinode_bad_bmbt_fork(
 		xfs_fileoff_t		fileoff;
 		xfs_fsblock_t		fsbno;
 
+<<<<<<< HEAD
 		fkp = XFS_BMDR_KEY_ADDR(dfp, i);
+=======
+		fkp = xfs_bmdr_key_addr(dfp, i);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fileoff = be64_to_cpu(fkp->br_startoff);
 		if (!xfs_verify_fileoff(sc->mp, fileoff))
 			return true;
 
+<<<<<<< HEAD
 		fpp = XFS_BMDR_PTR_ADDR(dfp, i, dmxr);
+=======
+		fpp = xfs_bmdr_ptr_addr(dfp, i, dmxr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fsbno = be64_to_cpu(*fpp);
 		if (!xfs_verify_fsbno(sc->mp, fsbno))
 			return true;
@@ -1121,7 +1133,11 @@ xrep_dinode_ensure_forkoff(
 	struct xfs_bmdr_block	*bmdr;
 	struct xfs_scrub	*sc = ri->sc;
 	xfs_extnum_t		attr_extents, data_extents;
+<<<<<<< HEAD
 	size_t			bmdr_minsz = XFS_BMDR_SPACE_CALC(1);
+=======
+	size_t			bmdr_minsz = xfs_bmdr_space_calc(1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int		lit_sz = XFS_LITINO(sc->mp);
 	unsigned int		afork_min, dfork_min;
 
@@ -1173,7 +1189,11 @@ xrep_dinode_ensure_forkoff(
 	case XFS_DINODE_FMT_BTREE:
 		/* Must have space for btree header and key/pointers. */
 		bmdr = XFS_DFORK_PTR(dip, XFS_ATTR_FORK);
+<<<<<<< HEAD
 		afork_min = XFS_BMAP_BROOT_SPACE(sc->mp, bmdr);
+=======
+		afork_min = xfs_bmap_broot_space(sc->mp, bmdr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		/* We should never see any other formats. */
@@ -1223,7 +1243,11 @@ xrep_dinode_ensure_forkoff(
 	case XFS_DINODE_FMT_BTREE:
 		/* Must have space for btree header and key/pointers. */
 		bmdr = XFS_DFORK_PTR(dip, XFS_DATA_FORK);
+<<<<<<< HEAD
 		dfork_min = XFS_BMAP_BROOT_SPACE(sc->mp, bmdr);
+=======
+		dfork_min = xfs_bmap_broot_space(sc->mp, bmdr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		dfork_min = 0;

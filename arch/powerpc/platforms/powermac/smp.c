@@ -827,7 +827,11 @@ static int smp_core99_kick_cpu(int nr)
 	mdelay(1);
 
 	/* Restore our exception vector */
+<<<<<<< HEAD
 	patch_instruction(vector, ppc_inst(save_vector));
+=======
+	patch_uint(vector, save_vector);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	local_irq_restore(flags);
 	if (ppc_md.progress) ppc_md.progress("smp_core99_kick_cpu done", 0x347);

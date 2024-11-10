@@ -26,4 +26,10 @@
 
 extern const struct amdgpu_ip_block_version gfx_v11_0_ip_block;
 
+<<<<<<< HEAD
+=======
+int gfx_v11_0_request_gfx_index_mutex(struct amdgpu_device *adev,
+				      bool req);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

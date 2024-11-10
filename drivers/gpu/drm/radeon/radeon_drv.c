@@ -259,7 +259,12 @@ static int radeon_pci_probe(struct pci_dev *pdev,
 			    const struct pci_device_id *ent)
 {
 	unsigned long flags = 0;
+<<<<<<< HEAD
 	struct drm_device *dev;
+=======
+	struct drm_device *ddev;
+	struct radeon_device *rdev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if (!ent)
@@ -300,14 +305,26 @@ static int radeon_pci_probe(struct pci_dev *pdev,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	dev = drm_dev_alloc(&kms_driver, &pdev->dev);
 	if (IS_ERR(dev))
 		return PTR_ERR(dev);
+=======
+	rdev = devm_drm_dev_alloc(&pdev->dev, &kms_driver, typeof(*rdev), ddev);
+	if (IS_ERR(rdev))
+		return PTR_ERR(rdev);
+
+	rdev->dev = &pdev->dev;
+	rdev->pdev = pdev;
+	ddev = rdev_to_drm(rdev);
+	ddev->dev_private = rdev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = pci_enable_device(pdev);
 	if (ret)
 		goto err_free;
 
+<<<<<<< HEAD
 	pci_set_drvdata(pdev, dev);
 
 	ret = drm_dev_register(dev, ent->driver_data);
@@ -315,13 +332,30 @@ static int radeon_pci_probe(struct pci_dev *pdev,
 		goto err_agp;
 
 	radeon_fbdev_setup(dev->dev_private);
+=======
+	pci_set_drvdata(pdev, ddev);
+
+	ret = radeon_driver_load_kms(ddev, flags);
+	if (ret)
+		goto err_agp;
+
+	ret = drm_dev_register(ddev, flags);
+	if (ret)
+		goto err_agp;
+
+	radeon_fbdev_setup(ddev->dev_private);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 
 err_agp:
 	pci_disable_device(pdev);
 err_free:
+<<<<<<< HEAD
 	drm_dev_put(dev);
+=======
+	drm_dev_put(ddev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -520,6 +554,10 @@ static const struct file_operations radeon_driver_kms_fops = {
 #ifdef CONFIG_COMPAT
 	.compat_ioctl = radeon_kms_compat_ioctl,
 #endif
+<<<<<<< HEAD
+=======
+	.fop_flags = FOP_UNSIGNED_OFFSET,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct drm_ioctl_desc radeon_ioctls_kms[] = {
@@ -569,7 +607,10 @@ static const struct drm_ioctl_desc radeon_ioctls_kms[] = {
 static const struct drm_driver kms_driver = {
 	.driver_features =
 	    DRIVER_GEM | DRIVER_RENDER | DRIVER_MODESET,
+<<<<<<< HEAD
 	.load = radeon_driver_load_kms,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.open = radeon_driver_open_kms,
 	.postclose = radeon_driver_postclose_kms,
 	.unload = radeon_driver_unload_kms,

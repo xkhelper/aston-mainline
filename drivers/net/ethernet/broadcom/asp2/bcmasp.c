@@ -1300,9 +1300,15 @@ static void bcmasp_remove_intfs(struct bcmasp_priv *priv)
 
 static int bcmasp_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct device_node *ports_node, *intf_node;
 	const struct bcmasp_plat_data *pdata;
 	struct device *dev = &pdev->dev;
+=======
+	const struct bcmasp_plat_data *pdata;
+	struct device *dev = &pdev->dev;
+	struct device_node *ports_node;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct bcmasp_priv *priv;
 	struct bcmasp_intf *intf;
 	int ret = 0, count = 0;
@@ -1374,12 +1380,19 @@ static int bcmasp_probe(struct platform_device *pdev)
 	}
 
 	i = 0;
+<<<<<<< HEAD
 	for_each_available_child_of_node(ports_node, intf_node) {
+=======
+	for_each_available_child_of_node_scoped(ports_node, intf_node) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		intf = bcmasp_interface_create(priv, intf_node, i);
 		if (!intf) {
 			dev_err(dev, "Cannot create eth interface %d\n", i);
 			bcmasp_remove_intfs(priv);
+<<<<<<< HEAD
 			of_node_put(intf_node);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ret = -ENOMEM;
 			goto of_put_exit;
 		}

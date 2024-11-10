@@ -10,8 +10,11 @@
 
 #include "intel_display_limits.h"
 
+<<<<<<< HEAD
 struct drm_i915_private;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct intel_atomic_state;
 struct intel_crtc_state;
 

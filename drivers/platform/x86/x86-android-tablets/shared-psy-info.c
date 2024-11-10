@@ -39,7 +39,11 @@ const struct software_node fg_bq25890_supply_node = {
 	.properties = fg_bq25890_supply_props,
 };
 
+<<<<<<< HEAD
 /* LiPo HighVoltage (max 4.35V) settings used by most devs with a HV bat. */
+=======
+/* LiPo HighVoltage (max 4.35V) settings used by most devs with a HV battery */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct property_entry generic_lipo_hv_4v35_battery_props[] = {
 	PROPERTY_ENTRY_STRING("compatible", "simple-battery"),
 	PROPERTY_ENTRY_STRING("device-chemistry", "lithium-ion"),
@@ -80,7 +84,11 @@ const char * const bq24190_modules[] __initconst = {
 	NULL
 };
 
+<<<<<<< HEAD
 /* Generic pdevs array and gpio-lookups for micro USB ID pin handling */
+=======
+/* Generic platform device array and GPIO lookup table for micro USB ID pin handling */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const struct platform_device_info int3496_pdevs[] __initconst = {
 	{
 		/* For micro USB ID pin handling */

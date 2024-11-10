@@ -53,7 +53,11 @@ struct slave;
 
 
 struct tlb_client_info {
+<<<<<<< HEAD
 	struct slave *tx_slave;	/* A pointer to slave used for transmiting
+=======
+	struct slave *tx_slave;	/* A pointer to slave used for transmitting
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				 * packets to a Client that the Hash function
 				 * gave this entry index.
 				 */

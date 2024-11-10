@@ -35,6 +35,10 @@ properties:
               - rockchip,rk3368-spi
               - rockchip,rk3399-spi
               - rockchip,rk3568-spi
+<<<<<<< HEAD
+=======
+              - rockchip,rk3576-spi
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - rockchip,rk3588-spi
               - rockchip,rv1126-spi
           - const: rockchip,rk3066-spi

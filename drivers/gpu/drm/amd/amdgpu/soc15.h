@@ -93,6 +93,13 @@ struct soc15_ras_field_entry {
 
 #define SOC15_REG_ENTRY_OFFSET(entry)	(adev->reg_offset[entry.hwip][entry.inst][entry.seg] + entry.reg_offset)
 
+<<<<<<< HEAD
+=======
+/* Over ride the instance id */
+#define SOC15_REG_ENTRY_OFFSET_INST(entry, inst) \
+	(adev->reg_offset[entry.hwip][inst][entry.seg] + entry.reg_offset)
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define SOC15_REG_GOLDEN_VALUE(ip, inst, reg, and_mask, or_mask) \
 	{ ip##_HWIP, inst, reg##_BASE_IDX, reg, and_mask, or_mask }
 

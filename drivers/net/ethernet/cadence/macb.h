@@ -13,6 +13,10 @@
 #include <linux/net_tstamp.h>
 #include <linux/interrupt.h>
 #include <linux/phy/phy.h>
+<<<<<<< HEAD
+=======
+#include <linux/workqueue.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #if defined(CONFIG_ARCH_DMA_ADDR_T_64BIT) || defined(CONFIG_MACB_USE_HWSTAMP)
 #define MACB_EXT_DESC
@@ -1330,7 +1334,11 @@ struct macb {
 	spinlock_t rx_fs_lock;
 	unsigned int max_tuples;
 
+<<<<<<< HEAD
 	struct tasklet_struct	hresp_err_tasklet;
+=======
+	struct work_struct	hresp_err_bh_work;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	int	rx_bd_rd_prefetch;
 	int	tx_bd_rd_prefetch;

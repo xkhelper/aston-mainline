@@ -14,7 +14,11 @@
 #include "notify.h"
 
 /* Updated only after ALL the mandatory features for that version are merged */
+<<<<<<< HEAD
 #define SCMI_PROTOCOL_SUPPORTED_VERSION		0x20000
+=======
+#define SCMI_PROTOCOL_SUPPORTED_VERSION		0x20001
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define SCMI_SYSTEM_NUM_SOURCES		1
 

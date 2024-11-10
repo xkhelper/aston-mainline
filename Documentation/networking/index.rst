@@ -49,6 +49,10 @@ Contents:
    cdc_mbim
    dccp
    dctcp
+<<<<<<< HEAD
+=======
+   devmem
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
    dns_resolver
    driver
    eql
@@ -87,10 +91,18 @@ Contents:
    nexthop-group-resilient
    nf_conntrack-sysctl
    nf_flowtable
+<<<<<<< HEAD
+=======
+   oa-tc6-framework
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
    openvswitch
    operstates
    packet_mmap
    phonet
+<<<<<<< HEAD
+=======
+   phy-link-topology
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
    pktgen
    plip
    ppp_generic

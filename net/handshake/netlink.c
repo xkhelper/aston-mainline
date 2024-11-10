@@ -153,7 +153,11 @@ int handshake_nl_done_doit(struct sk_buff *skb, struct genl_info *info)
 	if (!req) {
 		err = -EBUSY;
 		trace_handshake_cmd_done_err(net, req, sock->sk, err);
+<<<<<<< HEAD
 		fput(sock->file);
+=======
+		sockfd_put(sock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return err;
 	}
 
@@ -164,7 +168,11 @@ int handshake_nl_done_doit(struct sk_buff *skb, struct genl_info *info)
 		status = nla_get_u32(info->attrs[HANDSHAKE_A_DONE_STATUS]);
 
 	handshake_complete(req, status, info);
+<<<<<<< HEAD
 	fput(sock->file);
+=======
+	sockfd_put(sock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 

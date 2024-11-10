@@ -21,7 +21,11 @@
 #include <linux/mod_devicetable.h>
 #include <linux/module.h>
 #include <linux/regmap.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define CYTTSP5_NAME				"cyttsp5"
 #define CY_I2C_DATA_SIZE			(2 * 256)

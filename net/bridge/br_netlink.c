@@ -1920,7 +1920,14 @@ int __init br_netlink_init(void)
 {
 	int err;
 
+<<<<<<< HEAD
 	br_vlan_rtnl_init();
+=======
+	err = br_vlan_rtnl_init();
+	if (err)
+		goto out;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rtnl_af_register(&br_af_ops);
 
 	err = rtnl_link_register(&br_link_ops);
@@ -1931,6 +1938,10 @@ int __init br_netlink_init(void)
 
 out_af:
 	rtnl_af_unregister(&br_af_ops);
+<<<<<<< HEAD
+=======
+out:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 

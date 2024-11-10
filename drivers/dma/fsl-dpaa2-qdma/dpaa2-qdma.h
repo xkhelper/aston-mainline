@@ -12,8 +12,13 @@ struct dpaa2_qdma_sd_d {
 	u32 rsv:32;
 	union {
 		struct {
+<<<<<<< HEAD
 			u32 ssd:12; /* souce stride distance */
 			u32 sss:12; /* souce stride size */
+=======
+			u32 ssd:12; /* source stride distance */
+			u32 sss:12; /* source stride size */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			u32 rsv1:8;
 		} sdf;
 		struct {
@@ -48,7 +53,11 @@ struct dpaa2_qdma_sd_d {
 #define QDMA_SER_DISABLE	(8) /* no notification */
 #define QDMA_SER_CTX		BIT(8) /* notification by FQD_CTX[fqid] */
 #define QDMA_SER_DEST		(2 << 8) /* notification by destination desc */
+<<<<<<< HEAD
 #define QDMA_SER_BOTH		(3 << 8) /* soruce and dest notification */
+=======
+#define QDMA_SER_BOTH		(3 << 8) /* source and dest notification */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define QDMA_FD_SPF_ENALBE	BIT(30) /* source prefetch enable */
 
 #define QMAN_FD_VA_ENABLE	BIT(14) /* Address used is virtual address */

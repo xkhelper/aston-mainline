@@ -8,11 +8,26 @@
 #ifndef _LINUX_NFS_H
 #define _LINUX_NFS_H
 
+<<<<<<< HEAD
+=======
+#include <linux/cred.h>
+#include <linux/sunrpc/auth.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/sunrpc/msg_prot.h>
 #include <linux/string.h>
 #include <linux/crc32.h>
 #include <uapi/linux/nfs.h>
 
+<<<<<<< HEAD
+=======
+/* The LOCALIO program is entirely private to Linux and is
+ * NOT part of the uapi.
+ */
+#define NFS_LOCALIO_PROGRAM		400122
+#define LOCALIOPROC_NULL		0
+#define LOCALIOPROC_UUID_IS_LOCAL	1
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * This is the kernel NFS client file handle representation
  */

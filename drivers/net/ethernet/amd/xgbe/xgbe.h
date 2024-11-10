@@ -1298,11 +1298,19 @@ struct xgbe_prv_data {
 
 	unsigned int lpm_ctrl;		/* CTRL1 for resume */
 
+<<<<<<< HEAD
 	unsigned int isr_as_tasklet;
 	struct tasklet_struct tasklet_dev;
 	struct tasklet_struct tasklet_ecc;
 	struct tasklet_struct tasklet_i2c;
 	struct tasklet_struct tasklet_an;
+=======
+	unsigned int isr_as_bh_work;
+	struct work_struct dev_bh_work;
+	struct work_struct ecc_bh_work;
+	struct work_struct i2c_bh_work;
+	struct work_struct an_bh_work;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	struct dentry *xgbe_debugfs;
 

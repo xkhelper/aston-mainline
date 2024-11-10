@@ -356,7 +356,11 @@ int asihpi_adapter_probe(struct pci_dev *pci_dev,
 
 	memset(&adapter, 0, sizeof(adapter));
 
+<<<<<<< HEAD
 	dev_printk(KERN_DEBUG, &pci_dev->dev,
+=======
+	dev_dbg(&pci_dev->dev,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"probe %04x:%04x,%04x:%04x,%04x\n", pci_dev->vendor,
 		pci_dev->device, pci_dev->subsystem_vendor,
 		pci_dev->subsystem_device, pci_dev->devfn);

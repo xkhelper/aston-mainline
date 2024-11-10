@@ -1826,10 +1826,21 @@ static void check_graph_port(struct check *c, struct dt_info *dti,
 	if (node->bus != &graph_port_bus)
 		return;
 
+<<<<<<< HEAD
 	if (!strprefixeq(node->name, node->basenamelen, "port"))
 		FAIL(c, dti, node, "graph port node name should be 'port'");
 
 	check_graph_reg(c, dti, node);
+=======
+	check_graph_reg(c, dti, node);
+
+	/* skip checks below for overlays */
+	if (dti->dtsflags & DTSF_PLUGIN)
+		return;
+
+	if (!strprefixeq(node->name, node->basenamelen, "port"))
+		FAIL(c, dti, node, "graph port node name should be 'port'");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 WARNING(graph_port, check_graph_port, NULL, &graph_nodes);
 
@@ -1864,11 +1875,23 @@ static void check_graph_endpoint(struct check *c, struct dt_info *dti,
 	if (!node->parent || node->parent->bus != &graph_port_bus)
 		return;
 
+<<<<<<< HEAD
 	if (!strprefixeq(node->name, node->basenamelen, "endpoint"))
 		FAIL(c, dti, node, "graph endpoint node name should be 'endpoint'");
 
 	check_graph_reg(c, dti, node);
 
+=======
+	check_graph_reg(c, dti, node);
+
+	/* skip checks below for overlays */
+	if (dti->dtsflags & DTSF_PLUGIN)
+		return;
+
+	if (!strprefixeq(node->name, node->basenamelen, "endpoint"))
+		FAIL(c, dti, node, "graph endpoint node name should be 'endpoint'");
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	remote_node = get_remote_endpoint(c, dti, node);
 	if (!remote_node)
 		return;

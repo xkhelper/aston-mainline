@@ -54,9 +54,12 @@
  *					grace-period sequence number.
  */
 
+<<<<<<< HEAD
 #define RCU_SEQ_CTR_SHIFT	2
 #define RCU_SEQ_STATE_MASK	((1 << RCU_SEQ_CTR_SHIFT) - 1)
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Low-order bit definition for polled grace-period APIs. */
 #define RCU_GET_STATE_COMPLETED	0x1
 
@@ -255,6 +258,14 @@ static inline void debug_rcu_head_callback(struct rcu_head *rhp)
 		kmem_dump_obj(rhp);
 }
 
+<<<<<<< HEAD
+=======
+static inline bool rcu_barrier_cb_is_done(struct rcu_head *rhp)
+{
+	return rhp->next == rhp;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern int rcu_cpu_stall_suppress_at_boot;
 
 static inline bool rcu_stall_is_suppressed_at_boot(void)
@@ -606,7 +617,11 @@ void srcutorture_get_gp_data(struct srcu_struct *sp, int *flags,
 #endif
 
 #ifdef CONFIG_TINY_RCU
+<<<<<<< HEAD
 static inline bool rcu_dynticks_zero_in_eqs(int cpu, int *vp) { return false; }
+=======
+static inline bool rcu_watching_zero_in_eqs(int cpu, int *vp) { return false; }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline unsigned long rcu_get_gp_seq(void) { return 0; }
 static inline unsigned long rcu_exp_batches_completed(void) { return 0; }
 static inline unsigned long
@@ -619,7 +634,11 @@ static inline void rcu_fwd_progress_check(unsigned long j) { }
 static inline void rcu_gp_slow_register(atomic_t *rgssp) { }
 static inline void rcu_gp_slow_unregister(atomic_t *rgssp) { }
 #else /* #ifdef CONFIG_TINY_RCU */
+<<<<<<< HEAD
 bool rcu_dynticks_zero_in_eqs(int cpu, int *vp);
+=======
+bool rcu_watching_zero_in_eqs(int cpu, int *vp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 unsigned long rcu_get_gp_seq(void);
 unsigned long rcu_exp_batches_completed(void);
 unsigned long srcu_batches_completed(struct srcu_struct *sp);

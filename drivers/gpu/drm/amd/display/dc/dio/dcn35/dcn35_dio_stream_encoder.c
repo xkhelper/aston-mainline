@@ -22,7 +22,10 @@
  *
  */
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "dc_bios_types.h"
 #include "dcn30/dcn30_dio_stream_encoder.h"
 #include "dcn314/dcn314_dio_stream_encoder.h"
@@ -392,6 +395,17 @@ static void enc35_reset_fifo(struct stream_encoder *enc, bool reset)
 		udelay(10);
 }
 
+<<<<<<< HEAD
+=======
+static bool enc35_is_fifo_enabled(struct stream_encoder *enc)
+{
+	struct dcn10_stream_encoder *enc1 = DCN10STRENC_FROM_STRENC(enc);
+	uint32_t reset_val;
+
+	REG_GET(DIG_FIFO_CTRL0, DIG_FIFO_ENABLE, &reset_val);
+	return (reset_val == 0) ? false : true;
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void enc35_disable_fifo(struct stream_encoder *enc)
 {
 	struct dcn10_stream_encoder *enc1 = DCN10STRENC_FROM_STRENC(enc);
@@ -415,6 +429,27 @@ void enc35_enable_fifo(struct stream_encoder *enc)
 	REG_UPDATE(DIG_FIFO_CTRL0, DIG_FIFO_ENABLE, 1);
 }
 
+<<<<<<< HEAD
+=======
+static uint32_t enc35_get_pixels_per_cycle(struct stream_encoder *enc)
+{
+	struct dcn10_stream_encoder *enc1 = DCN10STRENC_FROM_STRENC(enc);
+	uint32_t value;
+
+	REG_GET(DIG_FIFO_CTRL0, DIG_FIFO_OUTPUT_PIXEL_MODE, &value);
+
+	switch (value) {
+	case 0:
+		return 1;
+	case 1:
+		return 2;
+	default:
+		ASSERT_CRITICAL(false);
+		return 1;
+	}
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct stream_encoder_funcs dcn35_str_enc_funcs = {
 	.dp_set_odm_combine =
 		enc314_dp_set_odm_combine,
@@ -465,7 +500,13 @@ static const struct stream_encoder_funcs dcn35_str_enc_funcs = {
 	.set_input_mode = enc314_set_dig_input_mode,
 	.enable_fifo = enc35_enable_fifo,
 	.disable_fifo = enc35_disable_fifo,
+<<<<<<< HEAD
 	.map_stream_to_link = enc35_stream_encoder_map_to_link,
+=======
+	.is_fifo_enabled = enc35_is_fifo_enabled,
+	.map_stream_to_link = enc35_stream_encoder_map_to_link,
+	.get_pixels_per_cycle = enc35_get_pixels_per_cycle,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 void dcn35_dio_stream_encoder_construct(

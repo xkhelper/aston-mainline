@@ -20,13 +20,20 @@
 #define SBUOVPDIS                               BIT(7)
 #define CCOVPDIS                                BIT(6)
 #define SBURPCTRL                               BIT(5)
+<<<<<<< HEAD
 #define CCLPMODESEL_MASK                        GENMASK(4, 3)
 #define ULTRA_LOW_POWER_MODE                    BIT(3)
 #define CCRPCTRL_MASK                           GENMASK(2, 0)
+=======
+#define CCLPMODESEL                             GENMASK(4, 3)
+#define ULTRA_LOW_POWER_MODE                    1
+#define CCRPCTRL                                GENMASK(2, 0)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define UA_1_SRC                                1
 #define UA_80_SRC                               3
 
 #define TCPC_VENDOR_CC_CTRL3                    0x8e
+<<<<<<< HEAD
 #define CCWTRDEB_MASK                           GENMASK(7, 6)
 #define CCWTRDEB_SHIFT                          6
 #define CCWTRDEB_1MS                            1
@@ -36,12 +43,24 @@
 #define CCLADDERDIS                             BIT(2)
 #define WTRCYCLE_MASK                           BIT(0)
 #define WTRCYCLE_SHIFT                          0
+=======
+#define CCWTRDEB                                GENMASK(7, 6)
+#define CCWTRDEB_1MS                            1
+#define CCWTRSEL                                GENMASK(5, 3)
+#define CCWTRSEL_1V                             0x4
+#define CCLADDERDIS                             BIT(2)
+#define WTRCYCLE                                GENMASK(0, 0)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define WTRCYCLE_2_4_S                          0
 #define WTRCYCLE_4_8_S                          1
 
 #define TCPC_VENDOR_ADC_CTRL1                   0x91
+<<<<<<< HEAD
 #define ADCINSEL_MASK                           GENMASK(7, 5)
 #define ADC_CHANNEL_OFFSET                      5
+=======
+#define ADCINSEL                                GENMASK(7, 5)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define ADCEN                                   BIT(0)
 
 enum contamiant_state {
@@ -85,6 +104,24 @@ static inline int max_tcpci_write8(struct max_tcpci_chip *chip, unsigned int reg
 	return regmap_raw_write(chip->data.regmap, reg, &val, sizeof(u8));
 }
 
+<<<<<<< HEAD
 bool max_contaminant_is_contaminant(struct max_tcpci_chip *chip, bool disconnect_while_debounce);
+=======
+/**
+ * max_contaminant_is_contaminant - Test if CC was toggled due to contaminant
+ *
+ * @chip: Handle to a struct max_tcpci_chip
+ * @disconnect_while_debounce: Whether the disconnect was detected when CC
+ *      		       pins were debouncing
+ * @cc_handled: Returns whether or not update to CC status was handled here
+ *
+ * Determine if a contaminant was detected.
+ *
+ * Returns: true if a contaminant was detected, false otherwise. cc_handled
+ * is updated to reflect whether or not further CC handling is required.
+ */
+bool max_contaminant_is_contaminant(struct max_tcpci_chip *chip, bool disconnect_while_debounce,
+				    bool *cc_handled);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif  // TCPCI_MAXIM_H_

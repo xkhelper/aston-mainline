@@ -126,7 +126,12 @@ static int sched_next_online(int pid, int *next_to_try)
 
 	while (next < nr_cpus) {
 		CPU_ZERO(&cpuset);
+<<<<<<< HEAD
 		CPU_SET(next++, &cpuset);
+=======
+		CPU_SET(next, &cpuset);
+		next++;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!sched_setaffinity(pid, sizeof(cpuset), &cpuset)) {
 			ret = 0;
 			break;

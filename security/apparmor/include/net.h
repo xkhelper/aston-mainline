@@ -51,10 +51,16 @@ struct aa_sk_ctx {
 	struct aa_label *peer;
 };
 
+<<<<<<< HEAD
 #define SK_CTX(X) ((X)->sk_security)
 static inline struct aa_sk_ctx *aa_sock(const struct sock *sk)
 {
 	return sk->sk_security;
+=======
+static inline struct aa_sk_ctx *aa_sock(const struct sock *sk)
+{
+	return sk->sk_security + apparmor_blob_sizes.lbs_sock;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #define DEFINE_AUDIT_NET(NAME, OP, SK, F, T, P)				  \

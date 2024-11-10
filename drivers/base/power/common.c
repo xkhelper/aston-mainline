@@ -195,6 +195,10 @@ int dev_pm_domain_attach_list(struct device *dev,
 	struct device *pd_dev = NULL;
 	int ret, i, num_pds = 0;
 	bool by_id = true;
+<<<<<<< HEAD
+=======
+	size_t size;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 pd_flags = data ? data->pd_flags : 0;
 	u32 link_flags = pd_flags & PD_FLAG_NO_DEV_LINK ? 0 :
 			DL_FLAG_STATELESS | DL_FLAG_PM_RUNTIME;
@@ -217,6 +221,7 @@ int dev_pm_domain_attach_list(struct device *dev,
 	if (num_pds <= 0)
 		return 0;
 
+<<<<<<< HEAD
 	pds = devm_kzalloc(dev, sizeof(*pds), GFP_KERNEL);
 	if (!pds)
 		return -ENOMEM;
@@ -230,6 +235,19 @@ int dev_pm_domain_attach_list(struct device *dev,
 				     GFP_KERNEL);
 	if (!pds->pd_links)
 		return -ENOMEM;
+=======
+	pds = kzalloc(sizeof(*pds), GFP_KERNEL);
+	if (!pds)
+		return -ENOMEM;
+
+	size = sizeof(*pds->pd_devs) + sizeof(*pds->pd_links);
+	pds->pd_devs = kcalloc(num_pds, size, GFP_KERNEL);
+	if (!pds->pd_devs) {
+		ret = -ENOMEM;
+		goto free_pds;
+	}
+	pds->pd_links = (void *)(pds->pd_devs + num_pds);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (link_flags && pd_flags & PD_FLAG_DEV_LINK_ON)
 		link_flags |= DL_FLAG_RPM_ACTIVE;
@@ -272,11 +290,65 @@ err_attach:
 			device_link_del(pds->pd_links[i]);
 		dev_pm_domain_detach(pds->pd_devs[i], true);
 	}
+<<<<<<< HEAD
+=======
+	kfree(pds->pd_devs);
+free_pds:
+	kfree(pds);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 EXPORT_SYMBOL_GPL(dev_pm_domain_attach_list);
 
 /**
+<<<<<<< HEAD
+=======
+ * devm_pm_domain_detach_list - devres-enabled version of dev_pm_domain_detach_list.
+ * @_list: The list of PM domains to detach.
+ *
+ * This function reverse the actions from devm_pm_domain_attach_list().
+ * it will be invoked during the remove phase from drivers implicitly if driver
+ * uses devm_pm_domain_attach_list() to attach the PM domains.
+ */
+static void devm_pm_domain_detach_list(void *_list)
+{
+	struct dev_pm_domain_list *list = _list;
+
+	dev_pm_domain_detach_list(list);
+}
+
+/**
+ * devm_pm_domain_attach_list - devres-enabled version of dev_pm_domain_attach_list
+ * @dev: The device used to lookup the PM domains for.
+ * @data: The data used for attaching to the PM domains.
+ * @list: An out-parameter with an allocated list of attached PM domains.
+ *
+ * NOTE: this will also handle calling devm_pm_domain_detach_list() for
+ * you during remove phase.
+ *
+ * Returns the number of attached PM domains or a negative error code in case of
+ * a failure.
+ */
+int devm_pm_domain_attach_list(struct device *dev,
+			       const struct dev_pm_domain_attach_data *data,
+			       struct dev_pm_domain_list **list)
+{
+	int ret, num_pds;
+
+	num_pds = dev_pm_domain_attach_list(dev, data, list);
+	if (num_pds <= 0)
+		return num_pds;
+
+	ret = devm_add_action_or_reset(dev, devm_pm_domain_detach_list, *list);
+	if (ret)
+		return ret;
+
+	return num_pds;
+}
+EXPORT_SYMBOL_GPL(devm_pm_domain_attach_list);
+
+/**
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * dev_pm_domain_detach - Detach a device from its PM domain.
  * @dev: Device to detach.
  * @power_off: Used to indicate whether we should power off the device.
@@ -318,6 +390,12 @@ void dev_pm_domain_detach_list(struct dev_pm_domain_list *list)
 			device_link_del(list->pd_links[i]);
 		dev_pm_domain_detach(list->pd_devs[i], true);
 	}
+<<<<<<< HEAD
+=======
+
+	kfree(list->pd_devs);
+	kfree(list);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(dev_pm_domain_detach_list);
 

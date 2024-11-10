@@ -16,7 +16,11 @@ ii) transmit network traffic, or any other that needs raw
 
 Howto can be found at:
 
+<<<<<<< HEAD
     https://sites.google.com/site/packetmmap/
+=======
+    https://web.archive.org/web/20220404160947/https://sites.google.com/site/packetmmap/
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Please send your comments to
     - Ulisses Alonso Camaró <uaca@i.hate.spam.alumni.uv.es>
@@ -166,7 +170,12 @@ As capture, each frame contains two parts::
     /* bind socket to eth0 */
     bind(this->socket, (struct sockaddr *)&my_addr, sizeof(struct sockaddr_ll));
 
+<<<<<<< HEAD
  A complete tutorial is available at: https://sites.google.com/site/packetmmap/
+=======
+ A complete tutorial is available at:
+ https://web.archive.org/web/20220404160947/https://sites.google.com/site/packetmmap/
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 By default, the user should put data at::
 

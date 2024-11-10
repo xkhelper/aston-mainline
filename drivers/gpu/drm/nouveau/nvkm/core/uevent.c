@@ -116,9 +116,15 @@ nvkm_uevent_ntfy(struct nvkm_event_ntfy *ntfy, u32 bits)
 	struct nvkm_client *client = uevent->object.client;
 
 	if (uevent->func)
+<<<<<<< HEAD
 		return uevent->func(uevent->parent, uevent->object.token, bits);
 
 	return client->event(uevent->object.token, NULL, 0);
+=======
+		return uevent->func(uevent->parent, uevent->object.object, bits);
+
+	return client->event(uevent->object.object, NULL, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int

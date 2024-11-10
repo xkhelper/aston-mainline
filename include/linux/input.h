@@ -339,12 +339,23 @@ struct input_handler {
  * @name: name given to the handle by handler that created it
  * @dev: input device the handle is attached to
  * @handler: handler that works with the device through this handle
+<<<<<<< HEAD
+=======
+ * @handle_events: event sequence handler. It is set up by the input core
+ *	according to event handling method specified in the @handler. See
+ *	input_handle_setup_event_handler().
+ *	This method is being called by the input core with interrupts disabled
+ *	and dev->event_lock spinlock held and so it may not sleep.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @d_node: used to put the handle on device's list of attached handles
  * @h_node: used to put the handle on handler's list of handles from which
  *	it gets events
  */
 struct input_handle {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void *private;
 
 	int open;
@@ -353,6 +364,13 @@ struct input_handle {
 	struct input_dev *dev;
 	struct input_handler *handler;
 
+<<<<<<< HEAD
+=======
+	unsigned int (*handle_events)(struct input_handle *handle,
+				      struct input_value *vals,
+				      unsigned int count);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct list_head	d_node;
 	struct list_head	h_node;
 };

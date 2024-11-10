@@ -118,7 +118,11 @@ static void output_json_key_format(FILE *out, bool comma, int depth,
 	va_end(args);
 }
 
+<<<<<<< HEAD
 static void output_sample_callchain_entry(struct perf_tool *tool,
+=======
+static void output_sample_callchain_entry(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		u64 ip, struct addr_location *al)
 {
 	struct convert_json *c = container_of(tool, struct convert_json, tool);
@@ -146,7 +150,11 @@ static void output_sample_callchain_entry(struct perf_tool *tool,
 	output_json_format(out, false, 4, "}");
 }
 
+<<<<<<< HEAD
 static int process_sample_event(struct perf_tool *tool,
+=======
+static int process_sample_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				union perf_event *event __maybe_unused,
 				struct perf_sample *sample,
 				struct evsel *evsel __maybe_unused,
@@ -316,6 +324,7 @@ int bt_convert__perf2json(const char *input_name, const char *output_name,
 	struct perf_session *session;
 	int fd;
 	int ret = -1;
+<<<<<<< HEAD
 
 	struct convert_json c = {
 		.tool = {
@@ -343,12 +352,41 @@ int bt_convert__perf2json(const char *input_name, const char *output_name,
 		.events_count = 0,
 	};
 
+=======
+	struct convert_json c = {
+		.first = true,
+		.events_count = 0,
+	};
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct perf_data data = {
 		.mode = PERF_DATA_MODE_READ,
 		.path = input_name,
 		.force = opts->force,
 	};
 
+<<<<<<< HEAD
+=======
+	perf_tool__init(&c.tool, /*ordered_events=*/true);
+	c.tool.sample         = process_sample_event;
+	c.tool.mmap           = perf_event__process_mmap;
+	c.tool.mmap2          = perf_event__process_mmap2;
+	c.tool.comm           = perf_event__process_comm;
+	c.tool.namespaces     = perf_event__process_namespaces;
+	c.tool.cgroup         = perf_event__process_cgroup;
+	c.tool.exit           = perf_event__process_exit;
+	c.tool.fork           = perf_event__process_fork;
+	c.tool.lost           = perf_event__process_lost;
+#ifdef HAVE_LIBTRACEEVENT
+	c.tool.tracing_data   = perf_event__process_tracing_data;
+#endif
+	c.tool.build_id       = perf_event__process_build_id;
+	c.tool.id_index       = perf_event__process_id_index;
+	c.tool.auxtrace_info  = perf_event__process_auxtrace_info;
+	c.tool.auxtrace       = perf_event__process_auxtrace;
+	c.tool.event_update   = perf_event__process_event_update;
+	c.tool.ordering_requires_timestamps = true;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (opts->all) {
 		pr_err("--all is currently unsupported for JSON output.\n");
 		goto err;

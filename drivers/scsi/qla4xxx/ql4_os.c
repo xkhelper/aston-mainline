@@ -8806,7 +8806,11 @@ skip_retry_init:
 	DEBUG2(printk("scsi: %s: Starting kernel thread for "
 		      "qla4xxx_dpc\n", __func__));
 	sprintf(buf, "qla4xxx_%lu_dpc", ha->host_no);
+<<<<<<< HEAD
 	ha->dpc_thread = create_singlethread_workqueue(buf);
+=======
+	ha->dpc_thread = alloc_ordered_workqueue("%s", WQ_MEM_RECLAIM, buf);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ha->dpc_thread) {
 		ql4_printk(KERN_WARNING, ha, "Unable to start DPC thread!\n");
 		ret = -ENODEV;

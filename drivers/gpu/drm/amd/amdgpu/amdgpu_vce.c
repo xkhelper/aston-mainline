@@ -158,7 +158,11 @@ int amdgpu_vce_sw_init(struct amdgpu_device *adev, unsigned long size)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	r = amdgpu_ucode_request(adev, &adev->vce.fw, fw_name);
+=======
+	r = amdgpu_ucode_request(adev, &adev->vce.fw, "%s", fw_name);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (r) {
 		dev_err(adev->dev, "amdgpu_vce: Can't validate firmware \"%s\"\n",
 			fw_name);
@@ -749,7 +753,10 @@ int amdgpu_vce_ring_parse_cs(struct amdgpu_cs_parser *p,
 	int i, r = 0;
 
 	job->vm = NULL;
+<<<<<<< HEAD
 	ib->gpu_addr = amdgpu_sa_bo_gpu_addr(ib->sa_bo);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (idx = 0; idx < ib->length_dw;) {
 		uint32_t len = amdgpu_ib_get_value(ib, idx);
@@ -1044,7 +1051,10 @@ out:
 	if (!r) {
 		/* No error, free all destroyed handle slots */
 		tmp = destroyed;
+<<<<<<< HEAD
 		amdgpu_ib_free(p->adev, ib, NULL);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		/* Error during parsing, free all allocated handle slots */
 		tmp = allocated;

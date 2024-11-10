@@ -346,8 +346,12 @@ attribute_container_device_trigger_safe(struct device *dev,
  * @fn:   the function to execute for each classdev.
  *
  * This function is for executing a trigger when you need to know both
+<<<<<<< HEAD
  * the container and the classdev.  If you only care about the
  * container, then use attribute_container_trigger() instead.
+=======
+ * the container and the classdev.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 void
 attribute_container_device_trigger(struct device *dev,
@@ -379,6 +383,7 @@ attribute_container_device_trigger(struct device *dev,
 }
 
 /**
+<<<<<<< HEAD
  * attribute_container_trigger - trigger a function for each matching container
  *
  * @dev:  The generic device to activate the trigger for
@@ -406,6 +411,8 @@ attribute_container_trigger(struct device *dev,
 }
 
 /**
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * attribute_container_add_attrs - add attributes
  *
  * @classdev: The class device
@@ -459,6 +466,7 @@ attribute_container_add_class_device(struct device *classdev)
 }
 
 /**
+<<<<<<< HEAD
  * attribute_container_add_class_device_adapter - simple adapter for triggers
  *
  * @cont: the container to register.
@@ -477,6 +485,8 @@ attribute_container_add_class_device_adapter(struct attribute_container *cont,
 }
 
 /**
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * attribute_container_remove_attrs - remove any attribute files
  *
  * @classdev: The class device to remove the files from

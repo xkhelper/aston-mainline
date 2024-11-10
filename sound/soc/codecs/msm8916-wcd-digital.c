@@ -1241,7 +1241,11 @@ static struct platform_driver msm8916_wcd_digital_driver = {
 		   .of_match_table = msm8916_wcd_digital_match_table,
 	},
 	.probe = msm8916_wcd_digital_probe,
+<<<<<<< HEAD
 	.remove_new = msm8916_wcd_digital_remove,
+=======
+	.remove = msm8916_wcd_digital_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(msm8916_wcd_digital_driver);

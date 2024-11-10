@@ -15,7 +15,11 @@
 #include <linux/firmware.h>
 #include <linux/property.h>
 #include <linux/wordpart.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define EN8811H_PHY_ID		0x03a2a411
 

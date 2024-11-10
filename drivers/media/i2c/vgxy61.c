@@ -16,7 +16,11 @@
 #include <linux/regulator/consumer.h>
 #include <linux/units.h>
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <media/mipi-csi2.h>
 #include <media/v4l2-async.h>

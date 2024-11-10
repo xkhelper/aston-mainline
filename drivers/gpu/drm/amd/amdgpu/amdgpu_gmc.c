@@ -786,7 +786,12 @@ void amdgpu_gmc_fw_reg_write_reg_wait(struct amdgpu_device *adev,
 		goto failed_kiq;
 
 	might_sleep();
+<<<<<<< HEAD
 	while (r < 1 && cnt++ < MAX_KIQ_REG_TRY) {
+=======
+	while (r < 1 && cnt++ < MAX_KIQ_REG_TRY &&
+	       !amdgpu_reset_pending(adev->reset_domain)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		msleep(MAX_KIQ_REG_BAILOUT_INTERVAL);
 		r = amdgpu_fence_wait_polling(ring, seq, MAX_KIQ_REG_WAIT);

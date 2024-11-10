@@ -52,6 +52,30 @@ struct rtw89_debugfs_priv {
 	};
 };
 
+<<<<<<< HEAD
+=======
+struct rtw89_debugfs {
+	struct rtw89_debugfs_priv read_reg;
+	struct rtw89_debugfs_priv write_reg;
+	struct rtw89_debugfs_priv read_rf;
+	struct rtw89_debugfs_priv write_rf;
+	struct rtw89_debugfs_priv rf_reg_dump;
+	struct rtw89_debugfs_priv txpwr_table;
+	struct rtw89_debugfs_priv mac_reg_dump;
+	struct rtw89_debugfs_priv mac_mem_dump;
+	struct rtw89_debugfs_priv mac_dbg_port_dump;
+	struct rtw89_debugfs_priv send_h2c;
+	struct rtw89_debugfs_priv early_h2c;
+	struct rtw89_debugfs_priv fw_crash;
+	struct rtw89_debugfs_priv btc_info;
+	struct rtw89_debugfs_priv btc_manual;
+	struct rtw89_debugfs_priv fw_log_manual;
+	struct rtw89_debugfs_priv phy_info;
+	struct rtw89_debugfs_priv stations;
+	struct rtw89_debugfs_priv disable_dm;
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const u16 rtw89_rate_info_bw_to_mhz_map[] = {
 	[RATE_INFO_BW_20] = 20,
 	[RATE_INFO_BW_40] = 40,
@@ -851,7 +875,11 @@ static int rtw89_debug_priv_txpwr_table_get(struct seq_file *m, void *v)
 
 	mutex_lock(&rtwdev->mutex);
 	rtw89_leave_ps_mode(rtwdev);
+<<<<<<< HEAD
 	chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
+=======
+	chan = rtw89_chan_get(rtwdev, RTW89_CHANCTX_0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rtw89_debug_priv_txpwr_table_get_regd(m, rtwdev, chan);
 
@@ -3463,9 +3491,15 @@ static ssize_t rtw89_debug_priv_btc_manual_set(struct file *filp,
 	return count;
 }
 
+<<<<<<< HEAD
 static ssize_t rtw89_debug_fw_log_manual_set(struct file *filp,
 					     const char __user *user_buf,
 					     size_t count, loff_t *loff)
+=======
+static ssize_t rtw89_debug_priv_fw_log_manual_set(struct file *filp,
+						  const char __user *user_buf,
+						  size_t count, loff_t *loff)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct rtw89_debugfs_priv *debugfs_priv = filp->private_data;
 	struct rtw89_dev *rtwdev = debugfs_priv->rtwdev;
@@ -3505,7 +3539,11 @@ static void rtw89_sta_info_get_iter(void *data, struct ieee80211_sta *sta)
 	struct rtw89_hal *hal = &rtwdev->hal;
 	u8 ant_num = hal->ant_diversity ? 2 : rtwdev->chip->rf_path_num;
 	bool ant_asterisk = hal->tx_path_diversity || hal->ant_diversity;
+<<<<<<< HEAD
 	u8 evm_min, evm_max;
+=======
+	u8 evm_min, evm_max, evm_1ss;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 rssi;
 	u8 snr;
 	int i;
@@ -3574,7 +3612,12 @@ static void rtw89_sta_info_get_iter(void *data, struct ieee80211_sta *sta)
 	}
 	seq_puts(m, "]\n");
 
+<<<<<<< HEAD
 	seq_puts(m, "EVM: [");
+=======
+	evm_1ss = ewma_evm_read(&rtwsta->evm_1ss);
+	seq_printf(m, "EVM: [%2u.%02u, ", evm_1ss >> 2, (evm_1ss & 0x3) * 25);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < (hal->ant_diversity ? 2 : 1); i++) {
 		evm_min = ewma_evm_read(&rtwsta->evm_min[i]);
 		evm_max = ewma_evm_read(&rtwsta->evm_max[i]);
@@ -3853,6 +3896,7 @@ rtw89_debug_priv_disable_dm_set(struct file *filp, const char __user *user_buf,
 	return count;
 }
 
+<<<<<<< HEAD
 static struct rtw89_debugfs_priv rtw89_debug_priv_read_reg = {
 	.cb_read = rtw89_debug_priv_read_reg_get,
 	.cb_write = rtw89_debug_priv_read_reg_select,
@@ -3931,14 +3975,64 @@ static struct rtw89_debugfs_priv rtw89_debug_priv_stations = {
 static struct rtw89_debugfs_priv rtw89_debug_priv_disable_dm = {
 	.cb_read = rtw89_debug_priv_disable_dm_get,
 	.cb_write = rtw89_debug_priv_disable_dm_set,
+=======
+#define rtw89_debug_priv_get(name)				\
+{								\
+	.cb_read = rtw89_debug_priv_ ##name## _get,		\
+}
+
+#define rtw89_debug_priv_set(name)				\
+{								\
+	.cb_write = rtw89_debug_priv_ ##name## _set,		\
+}
+
+#define rtw89_debug_priv_select_and_get(name)			\
+{								\
+	.cb_write = rtw89_debug_priv_ ##name## _select,		\
+	.cb_read = rtw89_debug_priv_ ##name## _get,		\
+}
+
+#define rtw89_debug_priv_set_and_get(name)			\
+{								\
+	.cb_write = rtw89_debug_priv_ ##name## _set,		\
+	.cb_read = rtw89_debug_priv_ ##name## _get,		\
+}
+
+static const struct rtw89_debugfs rtw89_debugfs_templ = {
+	.read_reg = rtw89_debug_priv_select_and_get(read_reg),
+	.write_reg = rtw89_debug_priv_set(write_reg),
+	.read_rf = rtw89_debug_priv_select_and_get(read_rf),
+	.write_rf = rtw89_debug_priv_set(write_rf),
+	.rf_reg_dump = rtw89_debug_priv_get(rf_reg_dump),
+	.txpwr_table = rtw89_debug_priv_get(txpwr_table),
+	.mac_reg_dump = rtw89_debug_priv_select_and_get(mac_reg_dump),
+	.mac_mem_dump = rtw89_debug_priv_select_and_get(mac_mem_dump),
+	.mac_dbg_port_dump = rtw89_debug_priv_select_and_get(mac_dbg_port_dump),
+	.send_h2c = rtw89_debug_priv_set(send_h2c),
+	.early_h2c = rtw89_debug_priv_set_and_get(early_h2c),
+	.fw_crash = rtw89_debug_priv_set_and_get(fw_crash),
+	.btc_info = rtw89_debug_priv_get(btc_info),
+	.btc_manual = rtw89_debug_priv_set(btc_manual),
+	.fw_log_manual = rtw89_debug_priv_set(fw_log_manual),
+	.phy_info = rtw89_debug_priv_get(phy_info),
+	.stations = rtw89_debug_priv_get(stations),
+	.disable_dm = rtw89_debug_priv_set_and_get(disable_dm),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define rtw89_debugfs_add(name, mode, fopname, parent)				\
 	do {									\
+<<<<<<< HEAD
 		rtw89_debug_priv_ ##name.rtwdev = rtwdev;			\
 		if (!debugfs_create_file(#name, mode,				\
 					 parent, &rtw89_debug_priv_ ##name,	\
 					 &file_ops_ ##fopname))			\
+=======
+		struct rtw89_debugfs_priv *priv = &rtwdev->debugfs->name;	\
+		priv->rtwdev = rtwdev;						\
+		if (IS_ERR(debugfs_create_file(#name, mode, parent, priv,	\
+					       &file_ops_ ##fopname)))		\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			pr_debug("Unable to initialize debugfs:%s\n", #name);	\
 	} while (0)
 
@@ -3949,6 +4043,7 @@ static struct rtw89_debugfs_priv rtw89_debug_priv_disable_dm = {
 #define rtw89_debugfs_add_r(name)						\
 	rtw89_debugfs_add(name, S_IFREG | 0444, single_r, debugfs_topdir)
 
+<<<<<<< HEAD
 void rtw89_debugfs_init(struct rtw89_dev *rtwdev)
 {
 	struct dentry *debugfs_topdir;
@@ -3956,6 +4051,11 @@ void rtw89_debugfs_init(struct rtw89_dev *rtwdev)
 	debugfs_topdir = debugfs_create_dir("rtw89",
 					    rtwdev->hw->wiphy->debugfsdir);
 
+=======
+static
+void rtw89_debugfs_add_sec0(struct rtw89_dev *rtwdev, struct dentry *debugfs_topdir)
+{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rtw89_debugfs_add_rw(read_reg);
 	rtw89_debugfs_add_w(write_reg);
 	rtw89_debugfs_add_rw(read_rf);
@@ -3965,6 +4065,14 @@ void rtw89_debugfs_init(struct rtw89_dev *rtwdev)
 	rtw89_debugfs_add_rw(mac_reg_dump);
 	rtw89_debugfs_add_rw(mac_mem_dump);
 	rtw89_debugfs_add_rw(mac_dbg_port_dump);
+<<<<<<< HEAD
+=======
+}
+
+static
+void rtw89_debugfs_add_sec1(struct rtw89_dev *rtwdev, struct dentry *debugfs_topdir)
+{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rtw89_debugfs_add_w(send_h2c);
 	rtw89_debugfs_add_rw(early_h2c);
 	rtw89_debugfs_add_rw(fw_crash);
@@ -3975,6 +4083,30 @@ void rtw89_debugfs_init(struct rtw89_dev *rtwdev)
 	rtw89_debugfs_add_r(stations);
 	rtw89_debugfs_add_rw(disable_dm);
 }
+<<<<<<< HEAD
+=======
+
+void rtw89_debugfs_init(struct rtw89_dev *rtwdev)
+{
+	struct dentry *debugfs_topdir;
+
+	rtwdev->debugfs = kmemdup(&rtw89_debugfs_templ,
+				  sizeof(rtw89_debugfs_templ), GFP_KERNEL);
+	if (!rtwdev->debugfs)
+		return;
+
+	debugfs_topdir = debugfs_create_dir("rtw89",
+					    rtwdev->hw->wiphy->debugfsdir);
+
+	rtw89_debugfs_add_sec0(rtwdev, debugfs_topdir);
+	rtw89_debugfs_add_sec1(rtwdev, debugfs_topdir);
+}
+
+void rtw89_debugfs_deinit(struct rtw89_dev *rtwdev)
+{
+	kfree(rtwdev->debugfs);
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 #ifdef CONFIG_RTW89_DEBUGMSG

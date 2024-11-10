@@ -13,6 +13,7 @@
 #include <linux/fs.h>
 #include <sound/core.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_SND_DEBUG
 
 #ifdef CONFIG_SND_DEBUG_VERBOSE
@@ -27,6 +28,8 @@ MODULE_PARM_DESC(debug, "Debug level (0 = disable)");
 
 #endif /* CONFIG_SND_DEBUG */
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void release_and_free_resource(struct resource *res)
 {
 	if (res) {
@@ -36,6 +39,7 @@ void release_and_free_resource(struct resource *res)
 }
 EXPORT_SYMBOL(release_and_free_resource);
 
+<<<<<<< HEAD
 #ifdef CONFIG_SND_VERBOSE_PRINTK
 /* strip the leading path if the given path is absolute */
 static const char *sanity_file_name(const char *path)
@@ -93,6 +97,8 @@ void __snd_printk(unsigned int level, const char *path, int line,
 EXPORT_SYMBOL_GPL(__snd_printk);
 #endif
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_PCI
 #include <linux/pci.h>
 /**

@@ -8,7 +8,10 @@ int
 main(int argc, char **argv)
 {
 	unsigned char ei[EI_NIDENT];
+<<<<<<< HEAD
 	union { short s; char c[2]; } endian_test;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (fread(ei, 1, EI_NIDENT, stdin) != EI_NIDENT) {
 		fprintf(stderr, "Error: input truncated\n");
@@ -28,6 +31,7 @@ main(int argc, char **argv)
 	default:
 		exit(1);
 	}
+<<<<<<< HEAD
 	switch (ei[EI_DATA]) {
 	case ELFDATA2LSB:
 		printf("#define KERNEL_ELFDATA ELFDATA2LSB\n");
@@ -52,6 +56,8 @@ main(int argc, char **argv)
 		printf("#define HOST_ELFDATA ELFDATA2LSB\n");
 	else
 		exit(1);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

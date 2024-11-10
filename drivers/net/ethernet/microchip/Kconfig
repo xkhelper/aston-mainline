@@ -46,18 +46,36 @@ config LAN743X
 	tristate "LAN743x support"
 	depends on PCI
 	depends on PTP_1588_CLOCK_OPTIONAL
+<<<<<<< HEAD
 	select PHYLIB
 	select FIXED_PHY
 	select CRC16
 	select CRC32
 	help
 	  Support for the Microchip LAN743x PCI Express Gigabit Ethernet chip
+=======
+	select FIXED_PHY
+	select CRC16
+	select CRC32
+	select PHYLINK
+	help
+	  Support for the Microchip LAN743x and PCI11x1x families of PCI
+	  Express Ethernet devices
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	  To compile this driver as a module, choose M here. The module will be
 	  called lan743x.
 
+<<<<<<< HEAD
 source "drivers/net/ethernet/microchip/lan966x/Kconfig"
 source "drivers/net/ethernet/microchip/sparx5/Kconfig"
 source "drivers/net/ethernet/microchip/vcap/Kconfig"
+=======
+source "drivers/net/ethernet/microchip/lan865x/Kconfig"
+source "drivers/net/ethernet/microchip/lan966x/Kconfig"
+source "drivers/net/ethernet/microchip/sparx5/Kconfig"
+source "drivers/net/ethernet/microchip/vcap/Kconfig"
+source "drivers/net/ethernet/microchip/fdma/Kconfig"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 endif # NET_VENDOR_MICROCHIP

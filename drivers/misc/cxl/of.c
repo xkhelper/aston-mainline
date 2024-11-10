@@ -7,11 +7,16 @@
 #include <linux/module.h>
 #include <linux/platform_device.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
+=======
+#include <linux/of.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/of_address.h>
 #include <linux/of_platform.h>
 
 #include "cxl.h"
 
+<<<<<<< HEAD
 
 static const __be32 *read_prop_string(const struct device_node *np,
 				const char *prop_name)
@@ -66,6 +71,8 @@ static int read_handle(struct device_node *np, u64 *handle)
 	return 0;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int read_phys_addr(struct device_node *np, char *prop_name,
 			struct cxl_afu *afu)
 {
@@ -100,9 +107,12 @@ static int read_phys_addr(struct device_node *np, char *prop_name,
 					type, prop_name);
 				return -EINVAL;
 			}
+<<<<<<< HEAD
 			if (cxl_verbose)
 				pr_info("%s: %#x %#llx (size %#llx)\n",
 					prop_name, type, addr, size);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 	return 0;
@@ -130,23 +140,32 @@ static int read_vpd(struct cxl *adapter, struct cxl_afu *afu)
 
 int cxl_of_read_afu_handle(struct cxl_afu *afu, struct device_node *afu_np)
 {
+<<<<<<< HEAD
 	if (read_handle(afu_np, &afu->guest->handle))
 		return -EINVAL;
 	pr_devel("AFU handle: 0x%.16llx\n", afu->guest->handle);
 
 	return 0;
+=======
+	return of_property_read_reg(afu_np, 0, &afu->guest->handle, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int cxl_of_read_afu_properties(struct cxl_afu *afu, struct device_node *np)
 {
+<<<<<<< HEAD
 	int i, len, rc;
 	char *p;
 	const __be32 *prop;
+=======
+	int i, rc;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u16 device_id, vendor_id;
 	u32 val = 0, class_code;
 
 	/* Properties are read in the same order as listed in PAPR */
 
+<<<<<<< HEAD
 	if (cxl_verbose) {
 		pr_info("Dump of the 'ibm,coherent-platform-function' node properties:\n");
 
@@ -160,6 +179,8 @@ int cxl_of_read_afu_properties(struct cxl_afu *afu, struct device_node *np)
 		read_prop_string(np, "name");
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rc = read_phys_addr(np, "reg", afu);
 	if (rc)
 		return rc;
@@ -173,6 +194,7 @@ int cxl_of_read_afu_properties(struct cxl_afu *afu, struct device_node *np)
 	else
 		afu->psa = true;
 
+<<<<<<< HEAD
 	if (cxl_verbose) {
 		read_prop_string(np, "ibm,loc-code");
 		read_prop_string(np, "device_type");
@@ -192,6 +214,17 @@ int cxl_of_read_afu_properties(struct cxl_afu *afu, struct device_node *np)
 
 	prop = read_prop_dword(np, "ibm,min-ints-per-process", &afu->pp_irqs);
 	if (prop) {
+=======
+	of_property_read_u32(np, "ibm,#processes", &afu->max_procs_virtualised);
+
+	if (cxl_verbose)
+		read_vpd(NULL, afu);
+
+	of_property_read_u32(np, "ibm,max-ints-per-process", &afu->guest->max_ints);
+	afu->irqs_max = afu->guest->max_ints;
+
+	if (!of_property_read_u32(np, "ibm,min-ints-per-process", &afu->pp_irqs)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* One extra interrupt for the PSL interrupt is already
 		 * included. Remove it now to keep only AFU interrupts and
 		 * match the native case.
@@ -199,6 +232,7 @@ int cxl_of_read_afu_properties(struct cxl_afu *afu, struct device_node *np)
 		afu->pp_irqs--;
 	}
 
+<<<<<<< HEAD
 	if (cxl_verbose) {
 		read_prop_dword(np, "ibm,max-ints", &val);
 		read_prop_dword(np, "ibm,vpd-size", &val);
@@ -214,6 +248,15 @@ int cxl_of_read_afu_properties(struct cxl_afu *afu, struct device_node *np)
 	afu->crs_offset = 0;
 
 	read_prop_dword(np, "ibm,#config-records", &afu->crs_num);
+=======
+	of_property_read_u64(np, "ibm,error-buffer-size", &afu->eb_len);
+	afu->eb_offset = 0;
+
+	of_property_read_u64(np, "ibm,config-record-size", &afu->crs_len);
+	afu->crs_offset = 0;
+
+	of_property_read_u32(np, "ibm,#config-records", &afu->crs_num);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (cxl_verbose) {
 		for (i = 0; i < afu->crs_num; i++) {
@@ -235,6 +278,7 @@ int cxl_of_read_afu_properties(struct cxl_afu *afu, struct device_node *np)
 					i, class_code);
 			}
 		}
+<<<<<<< HEAD
 
 		read_prop_dword(np, "ibm,function-number", &val);
 		read_prop_dword(np, "ibm,privileged-function", &val);
@@ -244,18 +288,25 @@ int cxl_of_read_afu_properties(struct cxl_afu *afu, struct device_node *np)
 		read_prop_dword(np, "class-code", &val);
 		read_prop_dword(np, "subsystem-vendor-id", &val);
 		read_prop_dword(np, "subsystem-id", &val);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	/*
 	 * if "ibm,process-mmio" doesn't exist then per-process mmio is
 	 * not supported
 	 */
 	val = 0;
+<<<<<<< HEAD
 	prop = read_prop_dword(np, "ibm,process-mmio", &val);
 	if (prop && val == 1)
+=======
+	if (!of_property_read_u32(np, "ibm,process-mmio", &val) && val == 1)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		afu->pp_psa = true;
 	else
 		afu->pp_psa = false;
 
+<<<<<<< HEAD
 	if (cxl_verbose) {
 		read_prop_dword(np, "ibm,supports-aur", &val);
 		read_prop_dword(np, "ibm,supports-csrp", &val);
@@ -264,6 +315,9 @@ int cxl_of_read_afu_properties(struct cxl_afu *afu, struct device_node *np)
 
 	prop = read_prop_dword(np, "ibm,function-error-interrupt", &val);
 	if (prop)
+=======
+	if (!of_property_read_u32(np, "ibm,function-error-interrupt", &val))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		afu->serr_hwirq = val;
 
 	pr_devel("AFU handle: %#llx\n", afu->guest->handle);
@@ -334,22 +388,32 @@ err:
 
 int cxl_of_read_adapter_handle(struct cxl *adapter, struct device_node *np)
 {
+<<<<<<< HEAD
 	if (read_handle(np, &adapter->guest->handle))
 		return -EINVAL;
 	pr_devel("Adapter handle: 0x%.16llx\n", adapter->guest->handle);
 
 	return 0;
+=======
+	return of_property_read_reg(np, 0, &adapter->guest->handle, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int cxl_of_read_adapter_properties(struct cxl *adapter, struct device_node *np)
 {
+<<<<<<< HEAD
 	int rc, len, naddr, i;
 	char *p;
 	const __be32 *prop;
+=======
+	int rc;
+	const char *p;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 val = 0;
 
 	/* Properties are read in the same order as listed in PAPR */
 
+<<<<<<< HEAD
 	naddr = of_n_addr_cells(np);
 
 	if (cxl_verbose) {
@@ -388,10 +452,17 @@ int cxl_of_read_adapter_properties(struct cxl *adapter, struct device_node *np)
 
 	prop = read_prop_dword(np, "ibm,caia-version", &val);
 	if (prop) {
+=======
+	if ((rc = read_adapter_irq_config(adapter, np)))
+		return rc;
+
+	if (!of_property_read_u32(np, "ibm,caia-version", &val)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		adapter->caia_major = (val & 0xFF00) >> 8;
 		adapter->caia_minor = val & 0xFF;
 	}
 
+<<<<<<< HEAD
 	prop = read_prop_dword(np, "ibm,psl-revision", &val);
 	if (prop)
 		adapter->psl_rev = val;
@@ -399,10 +470,18 @@ int cxl_of_read_adapter_properties(struct cxl *adapter, struct device_node *np)
 	prop = read_prop_string(np, "status");
 	if (prop) {
 		adapter->guest->status = kasprintf(GFP_KERNEL, "%s", (char *) prop);
+=======
+	if (!of_property_read_u32(np, "ibm,psl-revision", &val))
+		adapter->psl_rev = val;
+
+	if (!of_property_read_string(np, "status", &p)) {
+		adapter->guest->status = kasprintf(GFP_KERNEL, "%s", p);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (adapter->guest->status == NULL)
 			return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	prop = read_prop_dword(np, "vendor-id", &val);
 	if (prop)
 		adapter->guest->vendor = val;
@@ -423,6 +502,18 @@ int cxl_of_read_adapter_properties(struct cxl *adapter, struct device_node *np)
 
 	prop = read_prop_dword(np, "subsystem-id", &val);
 	if (prop)
+=======
+	if (!of_property_read_u32(np, "vendor-id", &val))
+		adapter->guest->vendor = val;
+
+	if (!of_property_read_u32(np, "device-id", &val))
+		adapter->guest->device = val;
+
+	if (!of_property_read_u32(np, "subsystem-vendor-id", &val))
+		adapter->guest->subsystem_vendor = val;
+
+	if (!of_property_read_u32(np, "subsystem-id", &val))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		adapter->guest->subsystem = val;
 
 	if (cxl_verbose)

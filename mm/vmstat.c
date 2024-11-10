@@ -1314,6 +1314,10 @@ const char * const vmstat_text[] = {
 	"pgsteal_file",
 
 #ifdef CONFIG_NUMA
+<<<<<<< HEAD
+=======
+	"zone_reclaim_success",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	"zone_reclaim_failed",
 #endif
 	"pginodesteal",
@@ -1384,6 +1388,10 @@ const char * const vmstat_text[] = {
 	"thp_split_page",
 	"thp_split_page_failed",
 	"thp_deferred_split_page",
+<<<<<<< HEAD
+=======
+	"thp_underused_split_page",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	"thp_split_pmd",
 	"thp_scan_exceed_none_pte",
 	"thp_scan_exceed_swap_pte",
@@ -1435,6 +1443,33 @@ const char * const vmstat_text[] = {
 	"vma_lock_retry",
 	"vma_lock_miss",
 #endif
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_DEBUG_STACK_USAGE
+	"kstack_1k",
+#if THREAD_SIZE > 1024
+	"kstack_2k",
+#endif
+#if THREAD_SIZE > 2048
+	"kstack_4k",
+#endif
+#if THREAD_SIZE > 4096
+	"kstack_8k",
+#endif
+#if THREAD_SIZE > 8192
+	"kstack_16k",
+#endif
+#if THREAD_SIZE > 16384
+	"kstack_32k",
+#endif
+#if THREAD_SIZE > 32768
+	"kstack_64k",
+#endif
+#if THREAD_SIZE > 65536
+	"kstack_rest",
+#endif
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* CONFIG_VM_EVENT_COUNTERS || CONFIG_MEMCG */
 };
 #endif /* CONFIG_PROC_FS || CONFIG_SYSFS || CONFIG_NUMA || CONFIG_MEMCG */
@@ -1718,6 +1753,10 @@ static void zoneinfo_show_print(struct seq_file *m, pg_data_t *pgdat,
 		   "\n        min      %lu"
 		   "\n        low      %lu"
 		   "\n        high     %lu"
+<<<<<<< HEAD
+=======
+		   "\n        promo    %lu"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		   "\n        spanned  %lu"
 		   "\n        present  %lu"
 		   "\n        managed  %lu"
@@ -1727,6 +1766,10 @@ static void zoneinfo_show_print(struct seq_file *m, pg_data_t *pgdat,
 		   min_wmark_pages(zone),
 		   low_wmark_pages(zone),
 		   high_wmark_pages(zone),
+<<<<<<< HEAD
+=======
+		   promo_wmark_pages(zone),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		   zone->spanned_pages,
 		   zone->present_pages,
 		   zone_managed_pages(zone),

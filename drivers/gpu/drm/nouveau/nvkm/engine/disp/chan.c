@@ -27,6 +27,7 @@
 #include <nvif/if0014.h>
 
 static int
+<<<<<<< HEAD
 nvkm_disp_chan_rd32(struct nvkm_object *object, u64 addr, u32 *data)
 {
 	struct nvkm_disp_chan *chan = nvkm_disp_chan(object);
@@ -49,6 +50,8 @@ nvkm_disp_chan_wr32(struct nvkm_object *object, u64 addr, u32 data)
 }
 
 static int
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 nvkm_disp_chan_ntfy(struct nvkm_object *object, u32 type, struct nvkm_event **pevent)
 {
 	struct nvkm_disp_chan *chan = nvkm_disp_chan(object);
@@ -188,8 +191,11 @@ nvkm_disp_chan = {
 	.dtor = nvkm_disp_chan_dtor,
 	.init = nvkm_disp_chan_init,
 	.fini = nvkm_disp_chan_fini,
+<<<<<<< HEAD
 	.rd32 = nvkm_disp_chan_rd32,
 	.wr32 = nvkm_disp_chan_wr32,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.ntfy = nvkm_disp_chan_ntfy,
 	.map = nvkm_disp_chan_map,
 	.sclass = nvkm_disp_chan_child_get,

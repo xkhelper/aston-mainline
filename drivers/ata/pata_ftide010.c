@@ -549,6 +549,10 @@ static const struct of_device_id pata_ftide010_of_match[] = {
 	{ .compatible = "faraday,ftide010", },
 	{ /* sentinel */ }
 };
+<<<<<<< HEAD
+=======
+MODULE_DEVICE_TABLE(of, pata_ftide010_of_match);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct platform_driver pata_ftide010_driver = {
 	.driver = {

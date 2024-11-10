@@ -11,7 +11,11 @@
 static unsigned int
 nouveau_vga_set_decode(struct pci_dev *pdev, bool state)
 {
+<<<<<<< HEAD
 	struct nouveau_drm *drm = nouveau_drm(pci_get_drvdata(pdev));
+=======
+	struct nouveau_drm *drm = pci_get_drvdata(pdev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct nvif_object *device = &drm->client.device.object;
 
 	if (drm->client.device.info.family == NV_DEVICE_INFO_V0_CURIE &&
@@ -34,7 +38,12 @@ static void
 nouveau_switcheroo_set_state(struct pci_dev *pdev,
 			     enum vga_switcheroo_state state)
 {
+<<<<<<< HEAD
 	struct drm_device *dev = pci_get_drvdata(pdev);
+=======
+	struct nouveau_drm *drm = pci_get_drvdata(pdev);
+	struct drm_device *dev = drm->dev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if ((nouveau_is_optimus() || nouveau_is_v1_dsm()) && state == VGA_SWITCHEROO_OFF)
 		return;
@@ -56,21 +65,36 @@ nouveau_switcheroo_set_state(struct pci_dev *pdev,
 static void
 nouveau_switcheroo_reprobe(struct pci_dev *pdev)
 {
+<<<<<<< HEAD
 	struct drm_device *dev = pci_get_drvdata(pdev);
 	drm_fb_helper_output_poll_changed(dev);
+=======
+	struct nouveau_drm *drm = pci_get_drvdata(pdev);
+	struct drm_device *dev = drm->dev;
+
+	drm_client_dev_hotplug(dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static bool
 nouveau_switcheroo_can_switch(struct pci_dev *pdev)
 {
+<<<<<<< HEAD
 	struct drm_device *dev = pci_get_drvdata(pdev);
+=======
+	struct nouveau_drm *drm = pci_get_drvdata(pdev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * FIXME: open_count is protected by drm_global_mutex but that would lead to
 	 * locking inversion with the driver load path. And the access here is
 	 * completely racy anyway. So don't bother with locking for now.
 	 */
+<<<<<<< HEAD
 	return atomic_read(&dev->open_count) == 0;
+=======
+	return atomic_read(&drm->dev->open_count) == 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct vga_switcheroo_client_ops
@@ -125,6 +149,7 @@ nouveau_vga_fini(struct nouveau_drm *drm)
 	if (runtime && nouveau_is_v1_dsm() && !nouveau_is_optimus())
 		vga_switcheroo_fini_domain_pm_ops(drm->dev->dev);
 }
+<<<<<<< HEAD
 
 
 void
@@ -132,3 +157,5 @@ nouveau_vga_lastclose(struct drm_device *dev)
 {
 	vga_switcheroo_process_delayed_switch();
 }
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

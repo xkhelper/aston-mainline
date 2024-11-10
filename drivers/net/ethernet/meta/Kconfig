@@ -23,6 +23,11 @@ config FBNIC
 	depends on !S390
 	depends on MAX_SKB_FRAGS < 22
 	depends on PCI_MSI
+<<<<<<< HEAD
+=======
+	select NET_DEVLINK
+	select PAGE_POOL
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select PHYLINK
 	help
 	  This driver supports Meta Platforms Host Network Interface.

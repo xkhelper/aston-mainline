@@ -1012,6 +1012,10 @@ sun3_82586_send_packet(struct sk_buff *skb, struct net_device *dev)
 	if(skb->len > XMIT_BUFF_SIZE)
 	{
 		printk("%s: Sorry, max. framelength is %d bytes. The length of your frame is %d bytes.\n",dev->name,XMIT_BUFF_SIZE,skb->len);
+<<<<<<< HEAD
+=======
+		dev_kfree_skb(skb);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return NETDEV_TX_OK;
 	}
 

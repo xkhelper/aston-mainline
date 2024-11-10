@@ -62,7 +62,11 @@ static vm_fault_t udf_page_mkwrite(struct vm_fault *vmf)
 		end = size & ~PAGE_MASK;
 	else
 		end = PAGE_SIZE;
+<<<<<<< HEAD
 	err = __block_write_begin(&folio->page, 0, end, udf_get_block);
+=======
+	err = __block_write_begin(folio, 0, end, udf_get_block);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err) {
 		folio_unlock(folio);
 		ret = vmf_fs_error(err);

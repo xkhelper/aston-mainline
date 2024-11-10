@@ -28,7 +28,11 @@
 #define __net_sctp_h__
 
 /* Header Strategy.
+<<<<<<< HEAD
  *    Start getting some control over the header file depencies:
+=======
+ *    Start getting some control over the header file dependencies:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *       includes
  *       constants
  *       structs

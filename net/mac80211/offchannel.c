@@ -997,6 +997,10 @@ int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
 	}
 
 	IEEE80211_SKB_CB(skb)->flags = flags;
+<<<<<<< HEAD
+=======
+	IEEE80211_SKB_CB(skb)->control.flags |= IEEE80211_TX_CTRL_DONT_USE_RATE_MASK;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	skb->dev = sdata->dev;
 

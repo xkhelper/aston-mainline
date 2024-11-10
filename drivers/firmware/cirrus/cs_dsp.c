@@ -2161,7 +2161,11 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware,
+=======
+static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     const char *file)
 {
 	LIST_HEAD(buf_list);
@@ -2358,7 +2362,10 @@ out_fw:
 
 	return ret;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cs_dsp_load_coeff);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int cs_dsp_create_name(struct cs_dsp *dsp)
 {

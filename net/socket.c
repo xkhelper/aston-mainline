@@ -153,7 +153,10 @@ static void sock_show_fdinfo(struct seq_file *m, struct file *f)
 
 static const struct file_operations socket_file_ops = {
 	.owner =	THIS_MODULE,
+<<<<<<< HEAD
 	.llseek =	no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.read_iter =	sock_read_iter,
 	.write_iter =	sock_write_iter,
 	.poll =		sock_poll,
@@ -556,10 +559,17 @@ static struct socket *sockfd_lookup_light(int fd, int *err, int *fput_needed)
 	struct socket *sock;
 
 	*err = -EBADF;
+<<<<<<< HEAD
 	if (f.file) {
 		sock = sock_from_file(f.file);
 		if (likely(sock)) {
 			*fput_needed = f.flags & FDPUT_FPUT;
+=======
+	if (fd_file(f)) {
+		sock = sock_from_file(fd_file(f));
+		if (likely(sock)) {
+			*fput_needed = f.word & FDPUT_FPUT;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return sock;
 		}
 		*err = -ENOTSOCK;
@@ -946,11 +956,25 @@ void __sock_recv_timestamp(struct msghdr *msg, struct sock *sk,
 
 	memset(&tss, 0, sizeof(tss));
 	tsflags = READ_ONCE(sk->sk_tsflags);
+<<<<<<< HEAD
 	if ((tsflags & SOF_TIMESTAMPING_SOFTWARE) &&
 	    ktime_to_timespec64_cond(skb->tstamp, tss.ts + 0))
 		empty = 0;
 	if (shhwtstamps &&
 	    (tsflags & SOF_TIMESTAMPING_RAW_HARDWARE) &&
+=======
+	if ((tsflags & SOF_TIMESTAMPING_SOFTWARE &&
+	     (tsflags & SOF_TIMESTAMPING_RX_SOFTWARE ||
+	      skb_is_err_queue(skb) ||
+	      !(tsflags & SOF_TIMESTAMPING_OPT_RX_FILTER))) &&
+	    ktime_to_timespec64_cond(skb->tstamp, tss.ts + 0))
+		empty = 0;
+	if (shhwtstamps &&
+	    (tsflags & SOF_TIMESTAMPING_RAW_HARDWARE &&
+	     (tsflags & SOF_TIMESTAMPING_RX_HARDWARE ||
+	      skb_is_err_queue(skb) ||
+	      !(tsflags & SOF_TIMESTAMPING_OPT_RX_FILTER))) &&
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    !skb_is_swtx_tstamp(skb, false_tstamp)) {
 		if_index = 0;
 		if (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP_NETDEV)
@@ -1569,8 +1593,18 @@ int __sock_create(struct net *net, int family, int type, int protocol,
 	rcu_read_unlock();
 
 	err = pf->create(net, sock, protocol, kern);
+<<<<<<< HEAD
 	if (err < 0)
 		goto out_module_put;
+=======
+	if (err < 0) {
+		/* ->create should release the allocated sock->sk object on error
+		 * but it may leave the dangling pointer
+		 */
+		sock->sk = NULL;
+		goto out_module_put;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Now to bump the refcnt of the [loadable] module that owns this
@@ -2008,8 +2042,13 @@ int __sys_accept4(int fd, struct sockaddr __user *upeer_sockaddr,
 	struct fd f;
 
 	f = fdget(fd);
+<<<<<<< HEAD
 	if (f.file) {
 		ret = __sys_accept4_file(f.file, upeer_sockaddr,
+=======
+	if (fd_file(f)) {
+		ret = __sys_accept4_file(fd_file(f), upeer_sockaddr,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					 upeer_addrlen, flags);
 		fdput(f);
 	}
@@ -2070,12 +2109,20 @@ int __sys_connect(int fd, struct sockaddr __user *uservaddr, int addrlen)
 	struct fd f;
 
 	f = fdget(fd);
+<<<<<<< HEAD
 	if (f.file) {
+=======
+	if (fd_file(f)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct sockaddr_storage address;
 
 		ret = move_addr_to_kernel(uservaddr, addrlen, &address);
 		if (!ret)
+<<<<<<< HEAD
 			ret = __sys_connect_file(f.file, &address, addrlen, 0);
+=======
+			ret = __sys_connect_file(fd_file(f), &address, addrlen, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fdput(f);
 	}
 

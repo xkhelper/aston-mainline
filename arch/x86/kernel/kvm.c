@@ -37,6 +37,10 @@
 #include <asm/apic.h>
 #include <asm/apicdef.h>
 #include <asm/hypervisor.h>
+<<<<<<< HEAD
+=======
+#include <asm/mtrr.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/tlb.h>
 #include <asm/cpuidle_haltpoll.h>
 #include <asm/ptrace.h>
@@ -980,6 +984,12 @@ static void __init kvm_init_platform(void)
 	}
 	kvmclock_init();
 	x86_platform.apic_post_init = kvm_apic_init;
+<<<<<<< HEAD
+=======
+
+	/* Set WB as the default cache mode for SEV-SNP and TDX */
+	mtrr_overwrite_state(NULL, 0, MTRR_TYPE_WRBACK);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #if defined(CONFIG_AMD_MEM_ENCRYPT)

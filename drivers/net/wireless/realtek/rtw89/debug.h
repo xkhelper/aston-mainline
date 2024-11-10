@@ -49,8 +49,15 @@ enum rtw89_debug_mac_reg_sel {
 
 #ifdef CONFIG_RTW89_DEBUGFS
 void rtw89_debugfs_init(struct rtw89_dev *rtwdev);
+<<<<<<< HEAD
 #else
 static inline void rtw89_debugfs_init(struct rtw89_dev *rtwdev) {}
+=======
+void rtw89_debugfs_deinit(struct rtw89_dev *rtwdev);
+#else
+static inline void rtw89_debugfs_init(struct rtw89_dev *rtwdev) {}
+static inline void rtw89_debugfs_deinit(struct rtw89_dev *rtwdev) {}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 #define rtw89_info(rtwdev, a...) dev_info((rtwdev)->dev, ##a)

@@ -1439,8 +1439,13 @@ void mwifiex_check_auto_tdls(struct timer_list *t)
 
 	spin_lock_bh(&priv->auto_tdls_lock);
 	list_for_each_entry(tdls_peer, &priv->auto_tdls_list, list) {
+<<<<<<< HEAD
 		if ((jiffies - tdls_peer->rssi_jiffies) >
 		    (MWIFIEX_AUTO_TDLS_IDLE_TIME * HZ)) {
+=======
+		if (time_after(jiffies, tdls_peer->rssi_jiffies +
+					 MWIFIEX_AUTO_TDLS_IDLE_TIME * HZ)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			tdls_peer->rssi = 0;
 			tdls_peer->do_discover = true;
 			priv->check_tdls_tx = true;

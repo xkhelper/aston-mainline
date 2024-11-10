@@ -55,6 +55,7 @@ int thermal_zone_for_each_trip(struct thermal_zone_device *tz,
 }
 EXPORT_SYMBOL_GPL(thermal_zone_for_each_trip);
 
+<<<<<<< HEAD
 int thermal_zone_get_num_trips(struct thermal_zone_device *tz)
 {
 	return tz->num_trips;
@@ -80,6 +81,10 @@ void thermal_zone_set_trips(struct thermal_zone_device *tz)
 {
 	const struct thermal_trip_desc *td;
 	int low = -INT_MAX, high = INT_MAX;
+=======
+void thermal_zone_set_trips(struct thermal_zone_device *tz, int low, int high)
+{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	lockdep_assert_held(&tz->lock);
@@ -87,6 +92,7 @@ void thermal_zone_set_trips(struct thermal_zone_device *tz)
 	if (!tz->ops.set_trips)
 		return;
 
+<<<<<<< HEAD
 	for_each_trip_desc(tz, td) {
 		if (td->threshold <= tz->temperature && td->threshold > low)
 			low = td->threshold;
@@ -95,6 +101,8 @@ void thermal_zone_set_trips(struct thermal_zone_device *tz)
 			high = td->threshold;
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* No need to change trip points */
 	if (tz->prev_low_trip == low && tz->prev_high_trip == high)
 		return;
@@ -114,6 +122,7 @@ void thermal_zone_set_trips(struct thermal_zone_device *tz)
 		dev_err(&tz->device, "Failed to set trips: %d\n", ret);
 }
 
+<<<<<<< HEAD
 int thermal_zone_get_trip(struct thermal_zone_device *tz, int trip_id,
 			  struct thermal_trip *trip)
 {
@@ -128,6 +137,8 @@ int thermal_zone_get_trip(struct thermal_zone_device *tz, int trip_id,
 }
 EXPORT_SYMBOL_GPL(thermal_zone_get_trip);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int thermal_zone_trip_id(const struct thermal_zone_device *tz,
 			 const struct thermal_trip *trip)
 {
@@ -138,11 +149,19 @@ int thermal_zone_trip_id(const struct thermal_zone_device *tz,
 	return trip_to_trip_desc(trip) - tz->trips;
 }
 
+<<<<<<< HEAD
 void thermal_zone_trip_updated(struct thermal_zone_device *tz,
 			       const struct thermal_trip *trip)
 {
 	thermal_notify_tz_trip_change(tz, trip);
 	__thermal_zone_device_update(tz, THERMAL_TRIP_CHANGED);
+=======
+void thermal_zone_set_trip_hyst(struct thermal_zone_device *tz,
+				struct thermal_trip *trip, int hyst)
+{
+	WRITE_ONCE(trip->hysteresis, hyst);
+	thermal_notify_tz_trip_change(tz, trip);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void thermal_zone_set_trip_temp(struct thermal_zone_device *tz,

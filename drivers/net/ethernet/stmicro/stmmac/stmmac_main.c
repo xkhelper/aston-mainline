@@ -968,6 +968,7 @@ static void stmmac_mac_config(struct phylink_config *config, unsigned int mode,
 
 static void stmmac_fpe_link_state_handle(struct stmmac_priv *priv, bool is_up)
 {
+<<<<<<< HEAD
 	struct stmmac_fpe_cfg *fpe_cfg = priv->plat->fpe_cfg;
 	enum stmmac_fpe_state *lo_state = &fpe_cfg->lo_fpe_state;
 	enum stmmac_fpe_state *lp_state = &fpe_cfg->lp_fpe_state;
@@ -980,6 +981,33 @@ static void stmmac_fpe_link_state_handle(struct stmmac_priv *priv, bool is_up)
 		*lo_state = FPE_STATE_OFF;
 		*lp_state = FPE_STATE_OFF;
 	}
+=======
+	struct stmmac_fpe_cfg *fpe_cfg = &priv->fpe_cfg;
+	unsigned long flags;
+
+	timer_shutdown_sync(&fpe_cfg->verify_timer);
+
+	spin_lock_irqsave(&fpe_cfg->lock, flags);
+
+	if (is_up && fpe_cfg->pmac_enabled) {
+		/* VERIFY process requires pmac enabled when NIC comes up */
+		stmmac_fpe_configure(priv, priv->ioaddr, fpe_cfg,
+				     priv->plat->tx_queues_to_use,
+				     priv->plat->rx_queues_to_use,
+				     false, true);
+
+		/* New link => maybe new partner => new verification process */
+		stmmac_fpe_apply(priv);
+	} else {
+		/* No link => turn off EFPE */
+		stmmac_fpe_configure(priv, priv->ioaddr, fpe_cfg,
+				     priv->plat->tx_queues_to_use,
+				     priv->plat->rx_queues_to_use,
+				     false, false);
+	}
+
+	spin_unlock_irqrestore(&fpe_cfg->lock, flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void stmmac_mac_link_down(struct phylink_config *config,
@@ -2367,9 +2395,17 @@ static void stmmac_dma_operation_mode(struct stmmac_priv *priv)
 	if (txfifosz == 0)
 		txfifosz = priv->dma_cap.tx_fifo_size;
 
+<<<<<<< HEAD
 	/* Adjust for real per queue fifo size */
 	rxfifosz /= rx_channels_count;
 	txfifosz /= tx_channels_count;
+=======
+	/* Split up the shared Tx/Rx FIFO memory on DW QoS Eth and DW XGMAC */
+	if (priv->plat->has_gmac4 || priv->plat->has_xgmac) {
+		rxfifosz /= rx_channels_count;
+		txfifosz /= tx_channels_count;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (priv->plat->force_thresh_dma_mode) {
 		txmode = tc;
@@ -2553,7 +2589,11 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
 				       true, priv->mode, true, true,
 				       xdp_desc.len);
 
+<<<<<<< HEAD
 		stmmac_enable_dma_transmission(priv, priv->ioaddr);
+=======
+		stmmac_enable_dma_transmission(priv, priv->ioaddr, queue);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		xsk_tx_metadata_to_compl(meta,
 					 &tx_q->tx_skbuff_dma[entry].xsk_meta);
@@ -3003,7 +3043,10 @@ static int stmmac_init_dma_engine(struct stmmac_priv *priv)
 	struct stmmac_rx_queue *rx_q;
 	struct stmmac_tx_queue *tx_q;
 	u32 chan = 0;
+<<<<<<< HEAD
 	int atds = 0;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret = 0;
 
 	if (!priv->plat->dma_cfg || !priv->plat->dma_cfg->pbl) {
@@ -3012,7 +3055,11 @@ static int stmmac_init_dma_engine(struct stmmac_priv *priv)
 	}
 
 	if (priv->extend_desc && (priv->mode == STMMAC_RING_MODE))
+<<<<<<< HEAD
 		atds = 1;
+=======
+		priv->plat->dma_cfg->atds = 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = stmmac_reset(priv, priv->ioaddr);
 	if (ret) {
@@ -3021,7 +3068,11 @@ static int stmmac_init_dma_engine(struct stmmac_priv *priv)
 	}
 
 	/* DMA Configuration */
+<<<<<<< HEAD
 	stmmac_dma_init(priv, priv->ioaddr, priv->plat->dma_cfg, atds);
+=======
+	stmmac_dma_init(priv, priv->ioaddr, priv->plat->dma_cfg);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (priv->plat->axi)
 		stmmac_axi(priv, priv->ioaddr, priv->plat->axi);
@@ -3357,6 +3408,7 @@ static void stmmac_safety_feat_configuration(struct stmmac_priv *priv)
 	}
 }
 
+<<<<<<< HEAD
 static int stmmac_fpe_start_wq(struct stmmac_priv *priv)
 {
 	char *name;
@@ -3378,6 +3430,8 @@ static int stmmac_fpe_start_wq(struct stmmac_priv *priv)
 	return 0;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * stmmac_hw_setup - setup mac in a usable state.
  *  @dev : pointer to the device structure.
@@ -3532,6 +3586,7 @@ static int stmmac_hw_setup(struct net_device *dev, bool ptp_register)
 
 	stmmac_set_hw_vlan_mode(priv, priv->hw);
 
+<<<<<<< HEAD
 	if (priv->dma_cap.fpesel) {
 		stmmac_fpe_start_wq(priv);
 
@@ -3539,6 +3594,8 @@ static int stmmac_hw_setup(struct net_device *dev, bool ptp_register)
 			stmmac_fpe_handshake(priv, true);
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -3794,6 +3851,10 @@ static int stmmac_request_irq_single(struct net_device *dev)
 	/* Request the Wake IRQ in case of another line
 	 * is used for WoL
 	 */
+<<<<<<< HEAD
+=======
+	priv->wol_irq_disabled = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (priv->wol_irq > 0 && priv->wol_irq != dev->irq) {
 		ret = request_irq(priv->wol_irq, stmmac_interrupt,
 				  IRQF_SHARED, dev->name, dev);
@@ -4035,6 +4096,7 @@ static int stmmac_open(struct net_device *dev)
 	return ret;
 }
 
+<<<<<<< HEAD
 static void stmmac_fpe_stop_wq(struct stmmac_priv *priv)
 {
 	set_bit(__FPE_REMOVING, &priv->fpe_task_state);
@@ -4047,6 +4109,8 @@ static void stmmac_fpe_stop_wq(struct stmmac_priv *priv)
 	netdev_info(priv->dev, "FPE workqueue stop");
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  *  stmmac_release - close entry point of the driver
  *  @dev : device pointer.
@@ -4094,10 +4158,17 @@ static int stmmac_release(struct net_device *dev)
 
 	stmmac_release_ptp(priv);
 
+<<<<<<< HEAD
 	pm_runtime_put(priv->device);
 
 	if (priv->dma_cap.fpesel)
 		stmmac_fpe_stop_wq(priv);
+=======
+	if (priv->dma_cap.fpesel)
+		timer_shutdown_sync(&priv->fpe_cfg.verify_timer);
+
+	pm_runtime_put(priv->device);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -4330,11 +4401,14 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
 	if (dma_mapping_error(priv->device, des))
 		goto dma_map_err;
 
+<<<<<<< HEAD
 	tx_q->tx_skbuff_dma[first_entry].buf = des;
 	tx_q->tx_skbuff_dma[first_entry].len = skb_headlen(skb);
 	tx_q->tx_skbuff_dma[first_entry].map_as_page = false;
 	tx_q->tx_skbuff_dma[first_entry].buf_type = STMMAC_TXBUF_T_SKB;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (priv->dma_cap.addr64 <= 32) {
 		first->des0 = cpu_to_le32(des);
 
@@ -4353,6 +4427,26 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
 
 	stmmac_tso_allocator(priv, des, tmp_pay_len, (nfrags == 0), queue);
 
+<<<<<<< HEAD
+=======
+	/* In case two or more DMA transmit descriptors are allocated for this
+	 * non-paged SKB data, the DMA buffer address should be saved to
+	 * tx_q->tx_skbuff_dma[].buf corresponding to the last descriptor,
+	 * and leave the other tx_q->tx_skbuff_dma[].buf as NULL to guarantee
+	 * that stmmac_tx_clean() does not unmap the entire DMA buffer too early
+	 * since the tail areas of the DMA buffer can be accessed by DMA engine
+	 * sooner or later.
+	 * By saving the DMA buffer address to tx_q->tx_skbuff_dma[].buf
+	 * corresponding to the last descriptor, stmmac_tx_clean() will unmap
+	 * this DMA buffer right after the DMA engine completely finishes the
+	 * full buffer transmission.
+	 */
+	tx_q->tx_skbuff_dma[tx_q->cur_tx].buf = des;
+	tx_q->tx_skbuff_dma[tx_q->cur_tx].len = skb_headlen(skb);
+	tx_q->tx_skbuff_dma[tx_q->cur_tx].map_as_page = false;
+	tx_q->tx_skbuff_dma[tx_q->cur_tx].buf_type = STMMAC_TXBUF_T_SKB;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Prepare fragments */
 	for (i = 0; i < nfrags; i++) {
 		const skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
@@ -4754,7 +4848,11 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
 
 	netdev_tx_sent_queue(netdev_get_tx_queue(dev, queue), skb->len);
 
+<<<<<<< HEAD
 	stmmac_enable_dma_transmission(priv, priv->ioaddr);
+=======
+	stmmac_enable_dma_transmission(priv, priv->ioaddr, queue);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	stmmac_flush_tx_descriptors(priv, queue);
 	stmmac_tx_timer_arm(priv, queue);
@@ -4981,7 +5079,11 @@ static int stmmac_xdp_xmit_xdpf(struct stmmac_priv *priv, int queue,
 		u64_stats_update_end(&txq_stats->q_syncp);
 	}
 
+<<<<<<< HEAD
 	stmmac_enable_dma_transmission(priv, priv->ioaddr);
+=======
+	stmmac_enable_dma_transmission(priv, priv->ioaddr, queue);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_tx_size);
 	tx_q->cur_tx = entry;
@@ -5981,6 +6083,7 @@ static int stmmac_set_features(struct net_device *netdev,
 
 static void stmmac_fpe_event_status(struct stmmac_priv *priv, int status)
 {
+<<<<<<< HEAD
 	struct stmmac_fpe_cfg *fpe_cfg = priv->plat->fpe_cfg;
 	enum stmmac_fpe_state *lo_state = &fpe_cfg->lo_fpe_state;
 	enum stmmac_fpe_state *lp_state = &fpe_cfg->lp_fpe_state;
@@ -6020,6 +6123,33 @@ static void stmmac_fpe_event_status(struct stmmac_priv *priv, int status)
 	    priv->fpe_wq) {
 		queue_work(priv->fpe_wq, &priv->fpe_task);
 	}
+=======
+	struct stmmac_fpe_cfg *fpe_cfg = &priv->fpe_cfg;
+
+	/* This is interrupt context, just spin_lock() */
+	spin_lock(&fpe_cfg->lock);
+
+	if (!fpe_cfg->pmac_enabled || status == FPE_EVENT_UNKNOWN)
+		goto unlock_out;
+
+	/* LP has sent verify mPacket */
+	if ((status & FPE_EVENT_RVER) == FPE_EVENT_RVER)
+		stmmac_fpe_send_mpacket(priv, priv->ioaddr, fpe_cfg,
+					MPACKET_RESPONSE);
+
+	/* Local has sent verify mPacket */
+	if ((status & FPE_EVENT_TVER) == FPE_EVENT_TVER &&
+	    fpe_cfg->status != ETHTOOL_MM_VERIFY_STATUS_SUCCEEDED)
+		fpe_cfg->status = ETHTOOL_MM_VERIFY_STATUS_VERIFYING;
+
+	/* LP has sent response mPacket */
+	if ((status & FPE_EVENT_RRSP) == FPE_EVENT_RRSP &&
+	    fpe_cfg->status == ETHTOOL_MM_VERIFY_STATUS_VERIFYING)
+		fpe_cfg->status = ETHTOOL_MM_VERIFY_STATUS_SUCCEEDED;
+
+unlock_out:
+	spin_unlock(&fpe_cfg->lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void stmmac_common_interrupt(struct stmmac_priv *priv)
@@ -6256,6 +6386,11 @@ static int stmmac_setup_tc(struct net_device *ndev, enum tc_setup_type type,
 	switch (type) {
 	case TC_QUERY_CAPS:
 		return stmmac_tc_query_caps(priv, priv, type_data);
+<<<<<<< HEAD
+=======
+	case TC_SETUP_QDISC_MQPRIO:
+		return stmmac_tc_setup_mqprio(priv, priv, type_data);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case TC_SETUP_BLOCK:
 		return flow_block_cb_setup_simple(type_data,
 						  &stmmac_block_cb_list,
@@ -7375,6 +7510,7 @@ int stmmac_reinit_ringparam(struct net_device *dev, u32 rx_size, u32 tx_size)
 	return ret;
 }
 
+<<<<<<< HEAD
 #define SEND_VERIFY_MPAKCET_FMT "Send Verify mPacket lo_state=%d lp_state=%d\n"
 static void stmmac_fpe_lp_task(struct work_struct *work)
 {
@@ -7437,6 +7573,89 @@ void stmmac_fpe_handshake(struct stmmac_priv *priv, bool enable)
 		}
 
 		priv->plat->fpe_cfg->hs_enable = enable;
+=======
+/**
+ * stmmac_fpe_verify_timer - Timer for MAC Merge verification
+ * @t:  timer_list struct containing private info
+ *
+ * Verify the MAC Merge capability in the local TX direction, by
+ * transmitting Verify mPackets up to 3 times. Wait until link
+ * partner responds with a Response mPacket, otherwise fail.
+ */
+static void stmmac_fpe_verify_timer(struct timer_list *t)
+{
+	struct stmmac_fpe_cfg *fpe_cfg = from_timer(fpe_cfg, t, verify_timer);
+	struct stmmac_priv *priv = container_of(fpe_cfg, struct stmmac_priv,
+						fpe_cfg);
+	unsigned long flags;
+	bool rearm = false;
+
+	spin_lock_irqsave(&fpe_cfg->lock, flags);
+
+	switch (fpe_cfg->status) {
+	case ETHTOOL_MM_VERIFY_STATUS_INITIAL:
+	case ETHTOOL_MM_VERIFY_STATUS_VERIFYING:
+		if (fpe_cfg->verify_retries != 0) {
+			stmmac_fpe_send_mpacket(priv, priv->ioaddr,
+						fpe_cfg, MPACKET_VERIFY);
+			rearm = true;
+		} else {
+			fpe_cfg->status = ETHTOOL_MM_VERIFY_STATUS_FAILED;
+		}
+
+		fpe_cfg->verify_retries--;
+		break;
+
+	case ETHTOOL_MM_VERIFY_STATUS_SUCCEEDED:
+		stmmac_fpe_configure(priv, priv->ioaddr, fpe_cfg,
+				     priv->plat->tx_queues_to_use,
+				     priv->plat->rx_queues_to_use,
+				     true, true);
+		break;
+
+	default:
+		break;
+	}
+
+	if (rearm) {
+		mod_timer(&fpe_cfg->verify_timer,
+			  jiffies + msecs_to_jiffies(fpe_cfg->verify_time));
+	}
+
+	spin_unlock_irqrestore(&fpe_cfg->lock, flags);
+}
+
+static void stmmac_fpe_verify_timer_arm(struct stmmac_fpe_cfg *fpe_cfg)
+{
+	if (fpe_cfg->pmac_enabled && fpe_cfg->tx_enabled &&
+	    fpe_cfg->verify_enabled &&
+	    fpe_cfg->status != ETHTOOL_MM_VERIFY_STATUS_FAILED &&
+	    fpe_cfg->status != ETHTOOL_MM_VERIFY_STATUS_SUCCEEDED) {
+		timer_setup(&fpe_cfg->verify_timer, stmmac_fpe_verify_timer, 0);
+		mod_timer(&fpe_cfg->verify_timer, jiffies);
+	}
+}
+
+void stmmac_fpe_apply(struct stmmac_priv *priv)
+{
+	struct stmmac_fpe_cfg *fpe_cfg = &priv->fpe_cfg;
+
+	/* If verification is disabled, configure FPE right away.
+	 * Otherwise let the timer code do it.
+	 */
+	if (!fpe_cfg->verify_enabled) {
+		stmmac_fpe_configure(priv, priv->ioaddr, fpe_cfg,
+				     priv->plat->tx_queues_to_use,
+				     priv->plat->rx_queues_to_use,
+				     fpe_cfg->tx_enabled,
+				     fpe_cfg->pmac_enabled);
+	} else {
+		fpe_cfg->status = ETHTOOL_MM_VERIFY_STATUS_INITIAL;
+		fpe_cfg->verify_retries = STMMAC_FPE_MM_MAX_VERIFY_RETRIES;
+
+		if (netif_running(priv->dev))
+			stmmac_fpe_verify_timer_arm(fpe_cfg);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -7554,9 +7773,12 @@ int stmmac_dvr_probe(struct device *device,
 
 	INIT_WORK(&priv->service_task, stmmac_service_task);
 
+<<<<<<< HEAD
 	/* Initialize Link Partner FPE workqueue */
 	INIT_WORK(&priv->fpe_task, stmmac_fpe_lp_task);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Override with kernel parameters if supplied XXX CRS XXX
 	 * this needs to have multiple instances
 	 */
@@ -7721,6 +7943,15 @@ int stmmac_dvr_probe(struct device *device,
 
 	mutex_init(&priv->lock);
 
+<<<<<<< HEAD
+=======
+	priv->fpe_cfg.verify_retries = STMMAC_FPE_MM_MAX_VERIFY_RETRIES;
+	priv->fpe_cfg.verify_time = STMMAC_FPE_MM_MAX_VERIFY_TIME_MS;
+	priv->fpe_cfg.status = ETHTOOL_MM_VERIFY_STATUS_DISABLED;
+	timer_setup(&priv->fpe_cfg.verify_timer, stmmac_fpe_verify_timer, 0);
+	spin_lock_init(&priv->fpe_cfg.lock);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* If a specific clk_csr value is passed from the platform
 	 * this means that the CSR Clock Range selection cannot be
 	 * changed at run-time and it is fixed. Viceversa the driver'll try to
@@ -7894,6 +8125,7 @@ int stmmac_suspend(struct device *dev)
 	}
 	rtnl_unlock();
 
+<<<<<<< HEAD
 	if (priv->dma_cap.fpesel) {
 		/* Disable FPE */
 		stmmac_fpe_configure(priv, priv->ioaddr,
@@ -7904,6 +8136,10 @@ int stmmac_suspend(struct device *dev)
 		stmmac_fpe_handshake(priv, false);
 		stmmac_fpe_stop_wq(priv);
 	}
+=======
+	if (priv->dma_cap.fpesel)
+		timer_shutdown_sync(&priv->fpe_cfg.verify_timer);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	priv->speed = SPEED_UNKNOWN;
 	return 0;

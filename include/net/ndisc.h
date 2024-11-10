@@ -147,11 +147,14 @@ void __ndisc_fill_addr_option(struct sk_buff *skb, int type, const void *data,
  * The following hooks can be defined; unless noted otherwise, they are
  * optional and can be filled with a null pointer.
  *
+<<<<<<< HEAD
  * int (*is_useropt)(u8 nd_opt_type):
  *     This function is called when IPv6 decide RA userspace options. if
  *     this function returns 1 then the option given by nd_opt_type will
  *     be handled as userspace option additional to the IPv6 options.
  *
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * int (*parse_options)(const struct net_device *dev,
  *			struct nd_opt_hdr *nd_opt,
  *			struct ndisc_options *ndopts):
@@ -200,7 +203,10 @@ void __ndisc_fill_addr_option(struct sk_buff *skb, int type, const void *data,
  *     addresses. E.g. 802.15.4 6LoWPAN.
  */
 struct ndisc_ops {
+<<<<<<< HEAD
 	int	(*is_useropt)(u8 nd_opt_type);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int	(*parse_options)(const struct net_device *dev,
 				 struct nd_opt_hdr *nd_opt,
 				 struct ndisc_options *ndopts);
@@ -224,6 +230,7 @@ struct ndisc_ops {
 };
 
 #if IS_ENABLED(CONFIG_IPV6)
+<<<<<<< HEAD
 static inline int ndisc_ops_is_useropt(const struct net_device *dev,
 				       u8 nd_opt_type)
 {
@@ -233,6 +240,8 @@ static inline int ndisc_ops_is_useropt(const struct net_device *dev,
 		return 0;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int ndisc_ops_parse_options(const struct net_device *dev,
 					  struct nd_opt_hdr *nd_opt,
 					  struct ndisc_options *ndopts)

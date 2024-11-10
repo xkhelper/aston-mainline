@@ -37,8 +37,11 @@ static inline bool msg_is_raw(const struct cec_msg *msg)
 
 /* cec-core.c */
 extern int cec_debug;
+<<<<<<< HEAD
 int cec_get_device(struct cec_devnode *devnode);
 void cec_put_device(struct cec_devnode *devnode);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* cec-adap.c */
 int cec_monitor_all_cnt_inc(struct cec_adapter *adap);

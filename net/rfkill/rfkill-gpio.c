@@ -3,6 +3,10 @@
  * Copyright (c) 2011, NVIDIA Corporation.
  */
 
+<<<<<<< HEAD
+=======
+#include <linux/dmi.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/init.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
@@ -72,6 +76,23 @@ static int rfkill_gpio_acpi_probe(struct device *dev,
 	return devm_acpi_dev_add_driver_gpios(dev, acpi_rfkill_default_gpios);
 }
 
+<<<<<<< HEAD
+=======
+/* List of DMI matches for devices on which rfkill-gpio should not load,
+ * to avoid firmware bugs.
+ */
+static const struct dmi_system_id rfkill_gpio_deny_table[] = {
+	{
+		/* Lenovo Yoga Tab 3 Pro YT3-X90, bogus "BCM4752" device in DSDT */
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
+			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
+		},
+	},
+	{ }
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int rfkill_gpio_probe(struct platform_device *pdev)
 {
 	struct rfkill_gpio_data *rfkill;
@@ -81,6 +102,12 @@ static int rfkill_gpio_probe(struct platform_device *pdev)
 	const char *type_name;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	if (dmi_check_system(rfkill_gpio_deny_table))
+		return -ENODEV;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rfkill = devm_kzalloc(&pdev->dev, sizeof(*rfkill), GFP_KERNEL);
 	if (!rfkill)
 		return -ENOMEM;

@@ -48,7 +48,11 @@ static int power_activate(struct led_classdev *led_cdev)
 	htrig = to_hci_basic_led_trigger(led_cdev->trigger);
 	powered = test_bit(HCI_UP, &htrig->hdev->flags);
 
+<<<<<<< HEAD
 	led_trigger_event(led_cdev->trigger, powered ? LED_FULL : LED_OFF);
+=======
+	led_set_brightness(led_cdev, powered ? LED_FULL : LED_OFF);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

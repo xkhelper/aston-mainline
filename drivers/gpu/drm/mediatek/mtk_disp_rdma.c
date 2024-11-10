@@ -341,6 +341,7 @@ static int mtk_disp_rdma_probe(struct platform_device *pdev)
 		dev_dbg(dev, "get mediatek,gce-client-reg fail!\n");
 #endif
 
+<<<<<<< HEAD
 	if (of_find_property(dev->of_node, "mediatek,rdma-fifo-size", &ret)) {
 		ret = of_property_read_u32(dev->of_node,
 					   "mediatek,rdma-fifo-size",
@@ -349,6 +350,13 @@ static int mtk_disp_rdma_probe(struct platform_device *pdev)
 			return dev_err_probe(dev, ret,
 					     "Failed to get rdma fifo size\n");
 	}
+=======
+	ret = of_property_read_u32(dev->of_node,
+				   "mediatek,rdma-fifo-size",
+				   &priv->fifo_size);
+	if (ret && (ret != -EINVAL))
+		return dev_err_probe(dev, ret, "Failed to get rdma fifo size\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Disable and clear pending interrupts */
 	writel(0x0, priv->regs + DISP_REG_RDMA_INT_ENABLE);

@@ -225,7 +225,11 @@ debugfs_write(struct file *file, const char __user *buf, size_t count, loff_t *o
 {
 	char kbuf[KSYM_NAME_LEN];
 	char *arg;
+<<<<<<< HEAD
 	int read_len = count < (sizeof(kbuf) - 1) ? count : (sizeof(kbuf) - 1);
+=======
+	const size_t read_len = min(count, sizeof(kbuf) - 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (copy_from_user(kbuf, buf, read_len))
 		return -EFAULT;

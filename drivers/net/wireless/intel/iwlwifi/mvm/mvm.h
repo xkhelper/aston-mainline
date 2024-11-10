@@ -299,6 +299,10 @@ struct iwl_probe_resp_data {
  * @active: indicates the link is active in FW (for sanity checking)
  * @cab_queue: content-after-beacon (multicast) queue
  * @listen_lmac: indicates this link is allocated to the listen LMAC
+<<<<<<< HEAD
+=======
+ * @csa_block_tx: we got CSA with mode=1
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @mcast_sta: multicast station
  * @phy_ctxt: phy context allocated to this link, if any
  * @bf_data: beacon filtering data
@@ -324,6 +328,10 @@ struct iwl_mvm_vif_link_info {
 	bool he_ru_2mhz_block;
 	bool active;
 	bool listen_lmac;
+<<<<<<< HEAD
+=======
+	bool csa_block_tx;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	u16 cab_queue;
 	/* Assigned while mac80211 has the link in a channel context,
@@ -368,6 +376,10 @@ struct iwl_mvm_vif_link_info {
  *	preventing the enablement of EMLSR
  * @IWL_MVM_ESR_EXIT_CSA: CSA happened, so exit EMLSR
  * @IWL_MVM_ESR_EXIT_LINK_USAGE: Exit EMLSR due to low tpt on secondary link
+<<<<<<< HEAD
+=======
+ * @IWL_MVM_ESR_EXIT_FAIL_ENTRY: Exit EMLSR due to entry failure
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 enum iwl_mvm_esr_state {
 	IWL_MVM_ESR_BLOCKED_PREVENTION	= 0x1,
@@ -382,6 +394,10 @@ enum iwl_mvm_esr_state {
 	IWL_MVM_ESR_EXIT_BANDWIDTH	= 0x80000,
 	IWL_MVM_ESR_EXIT_CSA		= 0x100000,
 	IWL_MVM_ESR_EXIT_LINK_USAGE	= 0x200000,
+<<<<<<< HEAD
+=======
+	IWL_MVM_ESR_EXIT_FAIL_ENTRY	= 0x400000,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define IWL_MVM_BLOCK_ESR_REASONS 0xffff
@@ -508,7 +524,11 @@ struct iwl_mvm_vif {
 	bool bf_enabled;
 	bool ba_enabled;
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM
+=======
+#ifdef CONFIG_PM_SLEEP
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* WoWLAN GTK rekey data */
 	struct {
 		u8 kck[NL80211_KCK_EXT_LEN];
@@ -770,7 +790,10 @@ struct iwl_mvm_tcm {
  * @num_stored: number of mpdus stored in the buffer
  * @queue: queue of this reorder buffer
  * @last_amsdu: track last ASMDU SN for duplication detection
+<<<<<<< HEAD
  * @last_sub_index: track ASMDU sub frame index for duplication detection
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @valid: reordering is valid for this queue
  * @lock: protect reorder buffer internal state
  */
@@ -779,7 +802,10 @@ struct iwl_mvm_reorder_buffer {
 	u16 num_stored;
 	int queue;
 	u16 last_amsdu;
+<<<<<<< HEAD
 	u8 last_sub_index;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool valid;
 	spinlock_t lock;
 } ____cacheline_aligned_in_smp;
@@ -1074,8 +1100,13 @@ struct iwl_mvm {
 
 	/* data related to data path */
 	struct iwl_rx_phy_info last_phy_info;
+<<<<<<< HEAD
 	struct ieee80211_sta __rcu *fw_id_to_mac_id[IWL_MVM_STATION_COUNT_MAX];
 	struct ieee80211_link_sta __rcu *fw_id_to_link_sta[IWL_MVM_STATION_COUNT_MAX];
+=======
+	struct ieee80211_sta __rcu *fw_id_to_mac_id[IWL_STATION_COUNT_MAX];
+	struct ieee80211_link_sta __rcu *fw_id_to_link_sta[IWL_STATION_COUNT_MAX];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 rx_ba_sessions;
 
 	/* configured by mac80211 */
@@ -1164,7 +1195,11 @@ struct iwl_mvm {
 
 	struct ieee80211_vif __rcu *vif_id_to_mac[NUM_MAC_INDEX_DRIVER];
 
+<<<<<<< HEAD
 	struct ieee80211_bss_conf __rcu *link_id_to_link_conf[IWL_MVM_FW_MAX_LINK_ID + 1];
+=======
+	struct ieee80211_bss_conf __rcu *link_id_to_link_conf[IWL_FW_MAX_LINK_ID + 1];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* -1 for always, 0 for never, >0 for that many times */
 	s8 fw_restart;
@@ -1176,7 +1211,11 @@ struct iwl_mvm {
 
 	struct ieee80211_vif *p2p_device_vif;
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM
+=======
+#ifdef CONFIG_PM_SLEEP
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct wiphy_wowlan_support wowlan;
 	int gtk_ivlen, gtk_icvlen, ptk_ivlen, ptk_icvlen;
 
@@ -1200,8 +1239,16 @@ struct iwl_mvm {
 
 	wait_queue_head_t rx_sync_waitq;
 
+<<<<<<< HEAD
 	/* BT-Coex */
 	struct iwl_bt_coex_profile_notif last_bt_notif;
+=======
+	/* BT-Coex - only one of those will be used */
+	union {
+		struct iwl_bt_coex_prof_old_notif last_bt_notif;
+		struct iwl_bt_coex_profile_notif last_bt_wifi_loss;
+	};
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct iwl_bt_coex_ci_cmd last_bt_ci_cmd;
 
 	u8 bt_tx_prio;
@@ -1365,6 +1412,10 @@ struct iwl_mvm {
 	struct iwl_mvm_acs_survey *acs_survey;
 
 	bool statistics_clear;
+<<<<<<< HEAD
+=======
+	u32 bios_enable_puncturing;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* Extract MVM priv from op_mode and _hw */
@@ -1700,9 +1751,15 @@ static inline struct agg_tx_status *
 iwl_mvm_get_agg_status(struct iwl_mvm *mvm, void *tx_resp)
 {
 	if (iwl_mvm_has_new_tx_api(mvm))
+<<<<<<< HEAD
 		return &((struct iwl_mvm_tx_resp *)tx_resp)->status;
 	else
 		return ((struct iwl_mvm_tx_resp_v3 *)tx_resp)->status;
+=======
+		return &((struct iwl_tx_resp *)tx_resp)->status;
+	else
+		return ((struct iwl_tx_resp_v3 *)tx_resp)->status;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline bool iwl_mvm_is_tt_in_fw(struct iwl_mvm *mvm)
@@ -1745,7 +1802,11 @@ static inline int iwl_mvm_max_active_links(struct iwl_mvm *mvm,
 	if (iwl_mvm_is_esr_supported(trans) ||
 	    (CSR_HW_RFID_TYPE(trans->hw_rf_id) == IWL_CFG_RF_TYPE_FM &&
 	     CSR_HW_RFID_IS_CDB(trans->hw_rf_id)))
+<<<<<<< HEAD
 		return IWL_MVM_FW_MAX_ACTIVE_LINKS_NUM;
+=======
+		return IWL_FW_MAX_ACTIVE_LINKS_NUM;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 1;
 }
@@ -1764,6 +1825,16 @@ static inline u8 iwl_mvm_mac_ac_to_tx_fifo(struct iwl_mvm *mvm,
 	return iwl_mvm_ac_to_tx_fifo[ac];
 }
 
+<<<<<<< HEAD
+=======
+static inline bool iwl_mvm_has_rlc_offload(struct iwl_mvm *mvm)
+{
+	return iwl_fw_lookup_cmd_ver(mvm->fw,
+				     WIDE_ID(DATA_PATH_GROUP, RLC_CONFIG_CMD),
+				     0) >= 3;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct iwl_rate_info {
 	u8 plcp;	/* uCode API:  IWL_RATE_6M_PLCP, etc. */
 	u8 plcp_siso;	/* uCode API:  IWL_RATE_SISO_6M_PLCP, etc. */
@@ -2003,7 +2074,11 @@ int iwl_mvm_phy_send_rlc(struct iwl_mvm *mvm, struct iwl_mvm_phy_ctxt *ctxt,
 void iwl_mvm_prepare_mac_removal(struct iwl_mvm *mvm,
 				 struct ieee80211_vif *vif);
 void iwl_mvm_set_fw_basic_rates(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+<<<<<<< HEAD
 				struct ieee80211_bss_conf *link_conf,
+=======
+				struct iwl_mvm_vif_link_info *link_info,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				__le32 *cck_rates, __le32 *ofdm_rates);
 void iwl_mvm_set_fw_protection_flags(struct iwl_mvm *mvm,
 				     struct ieee80211_vif *vif,
@@ -2062,6 +2137,11 @@ void iwl_mvm_rx_beacon_notif(struct iwl_mvm *mvm,
 			     struct iwl_rx_cmd_buffer *rxb);
 void iwl_mvm_rx_missed_beacons_notif(struct iwl_mvm *mvm,
 				     struct iwl_rx_cmd_buffer *rxb);
+<<<<<<< HEAD
+=======
+void iwl_mvm_rx_missed_beacons_notif_legacy(struct iwl_mvm *mvm,
+					    struct iwl_rx_cmd_buffer *rxb);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void iwl_mvm_rx_stored_beacon_notif(struct iwl_mvm *mvm,
 				    struct iwl_rx_cmd_buffer *rxb);
 void iwl_mvm_mu_mimo_grp_notif(struct iwl_mvm *mvm,
@@ -2291,7 +2371,11 @@ void iwl_mvm_ipv6_addr_change(struct ieee80211_hw *hw,
 void iwl_mvm_set_default_unicast_key(struct ieee80211_hw *hw,
 				     struct ieee80211_vif *vif, int idx);
 extern const struct file_operations iwl_dbgfs_d3_test_ops;
+<<<<<<< HEAD
 #ifdef CONFIG_PM
+=======
+#ifdef CONFIG_PM_SLEEP
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void iwl_mvm_set_last_nonqos_seq(struct iwl_mvm *mvm,
 				 struct ieee80211_vif *vif);
 void iwl_mvm_fast_suspend(struct iwl_mvm *mvm);
@@ -2322,6 +2406,11 @@ int iwl_mvm_send_proto_offload(struct iwl_mvm *mvm,
 
 /* BT Coex */
 int iwl_mvm_send_bt_init_conf(struct iwl_mvm *mvm);
+<<<<<<< HEAD
+=======
+void iwl_mvm_rx_bt_coex_old_notif(struct iwl_mvm *mvm,
+				  struct iwl_rx_cmd_buffer *rxb);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void iwl_mvm_rx_bt_coex_notif(struct iwl_mvm *mvm,
 			      struct iwl_rx_cmd_buffer *rxb);
 void iwl_mvm_bt_rssi_event(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
@@ -2570,8 +2659,12 @@ u8 iwl_mvm_tcm_load_percentage(u32 airtime, u32 elapsed);
 
 void iwl_mvm_nic_restart(struct iwl_mvm *mvm, bool fw_error);
 unsigned int iwl_mvm_get_wd_timeout(struct iwl_mvm *mvm,
+<<<<<<< HEAD
 				    struct ieee80211_vif *vif,
 				    bool tdls, bool cmd_q);
+=======
+				    struct ieee80211_vif *vif);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void iwl_mvm_connection_loss(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 			     const char *errmsg);
 void iwl_mvm_event_frame_timeout_callback(struct iwl_mvm *mvm,

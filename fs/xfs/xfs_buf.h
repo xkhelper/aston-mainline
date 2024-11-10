@@ -210,7 +210,11 @@ struct xfs_buf {
 	 * success the write is considered to be failed permanently and the
 	 * iodone handler will take appropriate action.
 	 *
+<<<<<<< HEAD
 	 * For retry timeouts, we record the jiffie of the first failure. This
+=======
+	 * For retry timeouts, we record the jiffy of the first failure. This
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * means that we can change the retry timeout for buffers already under
 	 * I/O and thus avoid getting stuck in a retry loop with a long timeout.
 	 *

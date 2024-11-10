@@ -23,8 +23,11 @@
 #include "bnx2x_cmn.h"
 #include "bnx2x_sriov.h"
 
+<<<<<<< HEAD
 extern const u32 dmae_reg_go_c[];
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Statistics */
 
 /*

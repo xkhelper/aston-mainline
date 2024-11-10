@@ -105,7 +105,11 @@ static inline bool rcu_reclaim_tiny(struct rcu_head *head)
 }
 
 /* Invoke the RCU callbacks whose grace period has elapsed.  */
+<<<<<<< HEAD
 static __latent_entropy void rcu_process_callbacks(struct softirq_action *unused)
+=======
+static __latent_entropy void rcu_process_callbacks(void)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct rcu_head *next, *list;
 	unsigned long flags;

@@ -544,6 +544,11 @@ print_graph_irq(struct trace_iterator *iter, unsigned long addr,
 	struct trace_seq *s = &iter->seq;
 	struct trace_entry *ent = iter->ent;
 
+<<<<<<< HEAD
+=======
+	addr += iter->tr->text_delta;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (addr < (unsigned long)__irqentry_text_start ||
 		addr >= (unsigned long)__irqentry_text_end)
 		return;
@@ -710,6 +715,10 @@ print_graph_entry_leaf(struct trace_iterator *iter,
 	struct ftrace_graph_ret *graph_ret;
 	struct ftrace_graph_ent *call;
 	unsigned long long duration;
+<<<<<<< HEAD
+=======
+	unsigned long func;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int cpu = iter->cpu;
 	int i;
 
@@ -717,6 +726,11 @@ print_graph_entry_leaf(struct trace_iterator *iter,
 	call = &entry->graph_ent;
 	duration = graph_ret->rettime - graph_ret->calltime;
 
+<<<<<<< HEAD
+=======
+	func = call->func + iter->tr->text_delta;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (data) {
 		struct fgraph_cpu_data *cpu_data;
 
@@ -747,10 +761,17 @@ print_graph_entry_leaf(struct trace_iterator *iter,
 	 * enabled.
 	 */
 	if (flags & __TRACE_GRAPH_PRINT_RETVAL)
+<<<<<<< HEAD
 		print_graph_retval(s, graph_ret->retval, true, (void *)call->func,
 				!!(flags & TRACE_GRAPH_PRINT_RETVAL_HEX));
 	else
 		trace_seq_printf(s, "%ps();\n", (void *)call->func);
+=======
+		print_graph_retval(s, graph_ret->retval, true, (void *)func,
+				!!(flags & TRACE_GRAPH_PRINT_RETVAL_HEX));
+	else
+		trace_seq_printf(s, "%ps();\n", (void *)func);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	print_graph_irq(iter, graph_ret->func, TRACE_GRAPH_RET,
 			cpu, iter->ent->pid, flags);
@@ -766,6 +787,10 @@ print_graph_entry_nested(struct trace_iterator *iter,
 	struct ftrace_graph_ent *call = &entry->graph_ent;
 	struct fgraph_data *data = iter->private;
 	struct trace_array *tr = iter->tr;
+<<<<<<< HEAD
+=======
+	unsigned long func;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int i;
 
 	if (data) {
@@ -788,7 +813,13 @@ print_graph_entry_nested(struct trace_iterator *iter,
 	for (i = 0; i < call->depth * TRACE_GRAPH_INDENT; i++)
 		trace_seq_putc(s, ' ');
 
+<<<<<<< HEAD
 	trace_seq_printf(s, "%ps() {\n", (void *)call->func);
+=======
+	func = call->func + iter->tr->text_delta;
+
+	trace_seq_printf(s, "%ps() {\n", (void *)func);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (trace_seq_has_overflowed(s))
 		return TRACE_TYPE_PARTIAL_LINE;
@@ -863,6 +894,11 @@ check_irq_entry(struct trace_iterator *iter, u32 flags,
 	int *depth_irq;
 	struct fgraph_data *data = iter->private;
 
+<<<<<<< HEAD
+=======
+	addr += iter->tr->text_delta;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * If we are either displaying irqs, or we got called as
 	 * a graph event and private data does not exist,
@@ -990,11 +1026,20 @@ print_graph_return(struct ftrace_graph_ret *trace, struct trace_seq *s,
 	unsigned long long duration = trace->rettime - trace->calltime;
 	struct fgraph_data *data = iter->private;
 	struct trace_array *tr = iter->tr;
+<<<<<<< HEAD
+=======
+	unsigned long func;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pid_t pid = ent->pid;
 	int cpu = iter->cpu;
 	int func_match = 1;
 	int i;
 
+<<<<<<< HEAD
+=======
+	func = trace->func + iter->tr->text_delta;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (check_irq_return(iter, flags, trace->depth))
 		return TRACE_TYPE_HANDLED;
 
@@ -1033,7 +1078,11 @@ print_graph_return(struct ftrace_graph_ret *trace, struct trace_seq *s,
 	 * function-retval option is enabled.
 	 */
 	if (flags & __TRACE_GRAPH_PRINT_RETVAL) {
+<<<<<<< HEAD
 		print_graph_retval(s, trace->retval, false, (void *)trace->func,
+=======
+		print_graph_retval(s, trace->retval, false, (void *)func,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			!!(flags & TRACE_GRAPH_PRINT_RETVAL_HEX));
 	} else {
 		/*
@@ -1046,7 +1095,11 @@ print_graph_return(struct ftrace_graph_ret *trace, struct trace_seq *s,
 		if (func_match && !(flags & TRACE_GRAPH_PRINT_TAIL))
 			trace_seq_puts(s, "}\n");
 		else
+<<<<<<< HEAD
 			trace_seq_printf(s, "} /* %ps */\n", (void *)trace->func);
+=======
+			trace_seq_printf(s, "} /* %ps */\n", (void *)func);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* Overrun */

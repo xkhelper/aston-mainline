@@ -2649,8 +2649,12 @@ those that are idle from RCU's perspective) and then Tasks Rude RCU can
 be removed from the kernel.
 
 The tasks-rude-RCU API is also reader-marking-free and thus quite compact,
+<<<<<<< HEAD
 consisting of call_rcu_tasks_rude(), synchronize_rcu_tasks_rude(),
 and rcu_barrier_tasks_rude().
+=======
+consisting solely of synchronize_rcu_tasks_rude().
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Tasks Trace RCU
 ~~~~~~~~~~~~~~~

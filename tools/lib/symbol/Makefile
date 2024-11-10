@@ -31,11 +31,15 @@ CFLAGS := $(EXTRA_WARNINGS) $(EXTRA_CFLAGS)
 CFLAGS += -ggdb3 -Wall -Wextra -std=gnu11 -U_FORTIFY_SOURCE -fPIC
 
 ifeq ($(DEBUG),0)
+<<<<<<< HEAD
 ifeq ($(CC_NO_CLANG), 0)
   CFLAGS += -O3
 else
   CFLAGS += -O6
 endif
+=======
+  CFLAGS += -O3
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 endif
 
 ifeq ($(DEBUG),0)

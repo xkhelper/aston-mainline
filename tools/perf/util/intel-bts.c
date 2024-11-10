@@ -591,7 +591,11 @@ static int intel_bts_process_queues(struct intel_bts *bts, u64 timestamp)
 static int intel_bts_process_event(struct perf_session *session,
 				   union perf_event *event,
 				   struct perf_sample *sample,
+<<<<<<< HEAD
 				   struct perf_tool *tool)
+=======
+				   const struct perf_tool *tool)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct intel_bts *bts = container_of(session->auxtrace, struct intel_bts,
 					     auxtrace);
@@ -634,7 +638,11 @@ static int intel_bts_process_event(struct perf_session *session,
 
 static int intel_bts_process_auxtrace_event(struct perf_session *session,
 					    union perf_event *event,
+<<<<<<< HEAD
 					    struct perf_tool *tool __maybe_unused)
+=======
+					    const struct perf_tool *tool __maybe_unused)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct intel_bts *bts = container_of(session->auxtrace, struct intel_bts,
 					     auxtrace);
@@ -675,7 +683,11 @@ static int intel_bts_process_auxtrace_event(struct perf_session *session,
 }
 
 static int intel_bts_flush(struct perf_session *session,
+<<<<<<< HEAD
 			   struct perf_tool *tool __maybe_unused)
+=======
+			   const struct perf_tool *tool __maybe_unused)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct intel_bts *bts = container_of(session->auxtrace, struct intel_bts,
 					     auxtrace);
@@ -737,6 +749,7 @@ static bool intel_bts_evsel_is_auxtrace(struct perf_session *session,
 	return evsel->core.attr.type == bts->pmu_type;
 }
 
+<<<<<<< HEAD
 struct intel_bts_synth {
 	struct perf_tool dummy_tool;
 	struct perf_session *session;
@@ -766,6 +779,8 @@ static int intel_bts_synth_event(struct perf_session *session,
 					   &id, intel_bts_event_synth);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int intel_bts_synth_events(struct intel_bts *bts,
 				  struct perf_session *session)
 {
@@ -814,7 +829,11 @@ static int intel_bts_synth_events(struct intel_bts *bts,
 		attr.sample_type |= PERF_SAMPLE_ADDR;
 		pr_debug("Synthesizing 'branches' event with id %" PRIu64 " sample type %#" PRIx64 "\n",
 			 id, (u64)attr.sample_type);
+<<<<<<< HEAD
 		err = intel_bts_synth_event(session, &attr, id);
+=======
+		err = perf_session__deliver_synth_attr_event(session, &attr, id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err) {
 			pr_err("%s: failed to synthesize 'branches' event type\n",
 			       __func__);

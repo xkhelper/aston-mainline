@@ -1364,7 +1364,10 @@ static const struct file_operations raw_fops = {
 	.unlocked_ioctl =	raw_ioctl,
 	.compat_ioctl =		raw_ioctl,
 	.release =		raw_release,
+<<<<<<< HEAD
 	.llseek =		no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct miscdevice raw_misc_device = {

@@ -525,10 +525,13 @@ static int tpm_hwrng_read(struct hwrng *rng, void *data, size_t max, bool wait)
 {
 	struct tpm_chip *chip = container_of(rng, struct tpm_chip, hwrng);
 
+<<<<<<< HEAD
 	/* Give back zero bytes, as TPM chip has not yet fully resumed: */
 	if (chip->flags & TPM_CHIP_FLAG_SUSPENDED)
 		return 0;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return tpm_get_random(chip, data, max);
 }
 
@@ -674,6 +677,19 @@ EXPORT_SYMBOL_GPL(tpm_chip_register);
  */
 void tpm_chip_unregister(struct tpm_chip *chip)
 {
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_TCG_TPM2_HMAC
+	int rc;
+
+	rc = tpm_try_get_ops(chip);
+	if (!rc) {
+		tpm2_end_auth_session(chip);
+		tpm_put_ops(chip);
+	}
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	tpm_del_legacy_sysfs(chip);
 	if (tpm_is_hwrng_enabled(chip))
 		hwrng_unregister(&chip->hwrng);

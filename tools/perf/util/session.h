@@ -26,6 +26,7 @@ struct decomp_data {
 	struct zstd_data *zstd_decomp;
 };
 
+<<<<<<< HEAD
 struct perf_session {
 	struct perf_header	header;
 	struct machines		machines;
@@ -46,6 +47,70 @@ struct perf_session {
 	struct perf_tool	*tool;
 	u64			bytes_transferred;
 	u64			bytes_compressed;
+=======
+/**
+ * struct perf_session- A Perf session holds the main state when the program is
+ * working with live perf events or reading data from an input file.
+ *
+ * The rough organization of a perf_session is:
+ * ```
+ * +--------------+           +-----------+           +------------+
+ * |   Session    |1..* ----->|  Machine  |1..* ----->|   Thread   |
+ * +--------------+           +-----------+           +------------+
+ * ```
+ */
+struct perf_session {
+	/**
+	 * @header: The read version of a perf_file_header, or captures global
+	 * information from a live session.
+	 */
+	struct perf_header	header;
+	/** @machines: Machines within the session a host and 0 or more guests. */
+	struct machines		machines;
+	/** @evlist: List of evsels/events of the session. */
+	struct evlist	*evlist;
+	/** @auxtrace: callbacks to allow AUX area data decoding. */
+	const struct auxtrace	*auxtrace;
+	/** @itrace_synth_opts: AUX area tracing synthesis options. */
+	struct itrace_synth_opts *itrace_synth_opts;
+	/** @auxtrace_index: index of AUX area tracing events within a perf.data file. */
+	struct list_head	auxtrace_index;
+#ifdef HAVE_LIBTRACEEVENT
+	/** @tevent: handles for libtraceevent and plugins. */
+	struct trace_event	tevent;
+#endif
+	/** @time_conv: Holds contents of last PERF_RECORD_TIME_CONV event. */
+	struct perf_record_time_conv	time_conv;
+	/** @trace_event_repipe: When set causes read trace events to be written to stdout. */
+	bool			trace_event_repipe;
+	/**
+	 * @one_mmap: The reader will use a single mmap by default. There may be
+	 * multiple data files in particular for aux events. If this is true
+	 * then the single big mmap for the data file can be assumed.
+	 */
+	bool			one_mmap;
+	/** @one_mmap_addr: Address of initial perf data file reader mmap. */
+	void			*one_mmap_addr;
+	/** @one_mmap_offset: File offset in perf.data file when mapped. */
+	u64			one_mmap_offset;
+	/** @ordered_events: Used to turn unordered events into ordered ones. */
+	struct ordered_events	ordered_events;
+	/** @data: Optional perf data file being read from. */
+	struct perf_data	*data;
+	/** @tool: callbacks for event handling. */
+	const struct perf_tool	*tool;
+	/**
+	 * @bytes_transferred: Used by perf record to count written bytes before
+	 * compression.
+	 */
+	u64			bytes_transferred;
+	/**
+	 * @bytes_compressed: Used by perf record to count written bytes after
+	 * compression.
+	 */
+	u64			bytes_compressed;
+	/** @zstd_data: Owner of global compression state, buffers, etc. */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct zstd_data	zstd_data;
 	struct decomp_data	decomp_data;
 	struct decomp_data	*active_decomp;
@@ -64,13 +129,22 @@ struct decomp {
 struct perf_tool;
 
 struct perf_session *__perf_session__new(struct perf_data *data,
+<<<<<<< HEAD
 					 bool repipe, int repipe_fd,
 					 struct perf_tool *tool);
+=======
+					 struct perf_tool *tool,
+					 bool trace_event_repipe);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline struct perf_session *perf_session__new(struct perf_data *data,
 						     struct perf_tool *tool)
 {
+<<<<<<< HEAD
 	return __perf_session__new(data, false, -1, tool);
+=======
+	return __perf_session__new(data, tool, /*trace_event_repipe=*/false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void perf_session__delete(struct perf_session *session);
@@ -92,8 +166,11 @@ int perf_session__process_events(struct perf_session *session);
 int perf_session__queue_event(struct perf_session *s, union perf_event *event,
 			      u64 timestamp, u64 file_offset, const char *file_path);
 
+<<<<<<< HEAD
 void perf_tool__fill_defaults(struct perf_tool *tool);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int perf_session__resolve_callchain(struct perf_session *session,
 				    struct evsel *evsel,
 				    struct thread *thread,
@@ -154,13 +231,23 @@ extern volatile int session_done;
 int perf_session__deliver_synth_event(struct perf_session *session,
 				      union perf_event *event,
 				      struct perf_sample *sample);
+<<<<<<< HEAD
+=======
+int perf_session__deliver_synth_attr_event(struct perf_session *session,
+					   const struct perf_event_attr *attr,
+					   u64 id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int perf_session__dsos_hit_all(struct perf_session *session);
 
 int perf_event__process_id_index(struct perf_session *session,
 				 union perf_event *event);
 
+<<<<<<< HEAD
 int perf_event__process_finished_round(struct perf_tool *tool,
+=======
+int perf_event__process_finished_round(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       union perf_event *event,
 				       struct ordered_events *oe);
 

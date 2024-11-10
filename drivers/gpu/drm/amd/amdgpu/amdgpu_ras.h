@@ -28,7 +28,10 @@
 #include <linux/list.h>
 #include <linux/kfifo.h>
 #include <linux/radix-tree.h>
+<<<<<<< HEAD
 #include <linux/siphash.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "ta_ras_if.h"
 #include "amdgpu_ras_eeprom.h"
 #include "amdgpu_smuio.h"
@@ -47,6 +50,11 @@ struct amdgpu_iv_entry;
 #define AMDGPU_RAS_GPU_ERR_SOCKET_ID(x)			AMDGPU_GET_REG_FIELD(x, 10, 8)
 #define AMDGPU_RAS_GPU_ERR_AID_ID(x)			AMDGPU_GET_REG_FIELD(x, 12, 11)
 #define AMDGPU_RAS_GPU_ERR_HBM_ID(x)			AMDGPU_GET_REG_FIELD(x, 14, 13)
+<<<<<<< HEAD
+=======
+#define AMDGPU_RAS_GPU_ERR_DATA_ABORT(x)		AMDGPU_GET_REG_FIELD(x, 29, 29)
+#define AMDGPU_RAS_GPU_ERR_UNKNOWN(x)			AMDGPU_GET_REG_FIELD(x, 30, 30)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define AMDGPU_RAS_BOOT_STATUS_POLLING_LIMIT	100
 #define AMDGPU_RAS_BOOT_STEADY_STATUS		0xBA
@@ -476,16 +484,26 @@ struct ras_err_pages {
 };
 
 struct ras_ecc_err {
+<<<<<<< HEAD
 	u64 hash_index;
 	uint64_t status;
 	uint64_t ipid;
 	uint64_t addr;
+=======
+	uint64_t status;
+	uint64_t ipid;
+	uint64_t addr;
+	uint64_t pa_pfn;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ras_err_pages err_pages;
 };
 
 struct ras_ecc_log_info {
 	struct mutex lock;
+<<<<<<< HEAD
 	siphash_key_t ecc_key;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct radix_tree_root de_page_tree;
 	uint64_t	de_queried_count;
 	uint64_t	prev_de_queried_count;
@@ -572,6 +590,7 @@ struct ras_fs_data {
 	char debugfs_name[32];
 };
 
+<<<<<<< HEAD
 struct ras_err_addr {
 	struct list_head node;
 	uint64_t err_status;
@@ -579,12 +598,17 @@ struct ras_err_addr {
 	uint64_t err_addr;
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct ras_err_info {
 	struct amdgpu_smuio_mcm_config_info mcm_info;
 	u64 ce_count;
 	u64 ue_count;
 	u64 de_count;
+<<<<<<< HEAD
 	struct list_head err_addr_list;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct ras_err_node {
@@ -941,6 +965,7 @@ void amdgpu_ras_inst_reset_ras_error_count(struct amdgpu_device *adev,
 int amdgpu_ras_error_data_init(struct ras_err_data *err_data);
 void amdgpu_ras_error_data_fini(struct ras_err_data *err_data);
 int amdgpu_ras_error_statistic_ce_count(struct ras_err_data *err_data,
+<<<<<<< HEAD
 		struct amdgpu_smuio_mcm_config_info *mcm_info,
 		struct ras_err_addr *err_addr, u64 count);
 int amdgpu_ras_error_statistic_ue_count(struct ras_err_data *err_data,
@@ -949,6 +974,16 @@ int amdgpu_ras_error_statistic_ue_count(struct ras_err_data *err_data,
 int amdgpu_ras_error_statistic_de_count(struct ras_err_data *err_data,
 		struct amdgpu_smuio_mcm_config_info *mcm_info,
 		struct ras_err_addr *err_addr, u64 count);
+=======
+					struct amdgpu_smuio_mcm_config_info *mcm_info,
+					u64 count);
+int amdgpu_ras_error_statistic_ue_count(struct ras_err_data *err_data,
+					struct amdgpu_smuio_mcm_config_info *mcm_info,
+					u64 count);
+int amdgpu_ras_error_statistic_de_count(struct ras_err_data *err_data,
+					struct amdgpu_smuio_mcm_config_info *mcm_info,
+					u64 count);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void amdgpu_ras_query_boot_status(struct amdgpu_device *adev, u32 num_instances);
 int amdgpu_ras_bind_aca(struct amdgpu_device *adev, enum amdgpu_ras_block blk,
 			       const struct aca_info *aca_info, void *data);
@@ -957,12 +992,15 @@ int amdgpu_ras_unbind_aca(struct amdgpu_device *adev, enum amdgpu_ras_block blk)
 ssize_t amdgpu_ras_aca_sysfs_read(struct device *dev, struct device_attribute *attr,
 				  struct aca_handle *handle, char *buf, void *data);
 
+<<<<<<< HEAD
 void amdgpu_ras_add_mca_err_addr(struct ras_err_info *err_info,
 			struct ras_err_addr *err_addr);
 
 void amdgpu_ras_del_mca_err_addr(struct ras_err_info *err_info,
 		struct ras_err_addr *mca_err_addr);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void amdgpu_ras_set_fed(struct amdgpu_device *adev, bool status);
 bool amdgpu_ras_get_fed_status(struct amdgpu_device *adev);
 
@@ -982,4 +1020,8 @@ __printf(3, 4)
 void amdgpu_ras_event_log_print(struct amdgpu_device *adev, u64 event_id,
 				const char *fmt, ...);
 
+<<<<<<< HEAD
+=======
+bool amdgpu_ras_is_rma(struct amdgpu_device *adev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

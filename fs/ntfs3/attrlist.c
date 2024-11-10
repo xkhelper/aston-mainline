@@ -382,6 +382,7 @@ bool al_remove_le(struct ntfs_inode *ni, struct ATTR_LIST_ENTRY *le)
 	return true;
 }
 
+<<<<<<< HEAD
 /*
  * al_delete_le - Delete first le from the list which matches its parameters.
  */
@@ -435,6 +436,8 @@ next:
 	return true;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int al_update(struct ntfs_inode *ni, int sync)
 {
 	int err;

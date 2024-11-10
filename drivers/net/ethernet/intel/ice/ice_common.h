@@ -10,6 +10,10 @@
 #include "ice_type.h"
 #include "ice_nvm.h"
 #include "ice_flex_pipe.h"
+<<<<<<< HEAD
+=======
+#include "ice_parser.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/avf/virtchnl.h>
 #include "ice_switch.h"
 #include "ice_fdir.h"

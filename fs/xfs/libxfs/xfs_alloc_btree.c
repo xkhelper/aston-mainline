@@ -569,11 +569,19 @@ xfs_allocbt_block_maxrecs(
 /*
  * Calculate number of records in an alloc btree block.
  */
+<<<<<<< HEAD
 int
 xfs_allocbt_maxrecs(
 	struct xfs_mount	*mp,
 	int			blocklen,
 	int			leaf)
+=======
+unsigned int
+xfs_allocbt_maxrecs(
+	struct xfs_mount	*mp,
+	unsigned int		blocklen,
+	bool			leaf)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	blocklen -= XFS_ALLOC_BLOCK_LEN(mp);
 	return xfs_allocbt_block_maxrecs(blocklen, leaf);

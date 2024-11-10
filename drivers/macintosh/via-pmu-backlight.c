@@ -178,7 +178,11 @@ void __init pmu_backlight_init(void)
 	}
 
 	bd->props.brightness = level;
+<<<<<<< HEAD
 	bd->props.power = FB_BLANK_UNBLANK;
+=======
+	bd->props.power = BACKLIGHT_POWER_ON;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	backlight_update_status(bd);
 
 	printk(KERN_INFO "PMU Backlight initialized (%s)\n", name);

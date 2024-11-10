@@ -804,6 +804,7 @@ int octeon_init_consoles(struct octeon_device *oct);
 int octeon_add_console(struct octeon_device *oct, u32 console_num,
 		       char *dbg_enb);
 
+<<<<<<< HEAD
 /** write or read from a console */
 int octeon_console_write(struct octeon_device *oct, u32 console_num,
 			 char *buffer, u32 write_request_size, u32 flags);
@@ -811,6 +812,8 @@ int octeon_console_write_avail(struct octeon_device *oct, u32 console_num);
 
 int octeon_console_read_avail(struct octeon_device *oct, u32 console_num);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /** Removes all attached consoles. */
 void octeon_remove_consoles(struct octeon_device *oct);
 

@@ -78,6 +78,7 @@ void bpf_inode_storage_free(struct inode *inode)
 static void *bpf_fd_inode_storage_lookup_elem(struct bpf_map *map, void *key)
 {
 	struct bpf_local_storage_data *sdata;
+<<<<<<< HEAD
 	struct fd f = fdget_raw(*(int *)key);
 
 	if (!f.file)
@@ -85,6 +86,14 @@ static void *bpf_fd_inode_storage_lookup_elem(struct bpf_map *map, void *key)
 
 	sdata = inode_storage_lookup(file_inode(f.file), map, true);
 	fdput(f);
+=======
+	CLASS(fd_raw, f)(*(int *)key);
+
+	if (fd_empty(f))
+		return ERR_PTR(-EBADF);
+
+	sdata = inode_storage_lookup(file_inode(fd_file(f)), map, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return sdata ? sdata->data : NULL;
 }
 
@@ -92,6 +101,7 @@ static long bpf_fd_inode_storage_update_elem(struct bpf_map *map, void *key,
 					     void *value, u64 map_flags)
 {
 	struct bpf_local_storage_data *sdata;
+<<<<<<< HEAD
 	struct fd f = fdget_raw(*(int *)key);
 
 	if (!f.file)
@@ -105,6 +115,18 @@ static long bpf_fd_inode_storage_update_elem(struct bpf_map *map, void *key,
 					 (struct bpf_local_storage_map *)map,
 					 value, map_flags, GFP_ATOMIC);
 	fdput(f);
+=======
+	CLASS(fd_raw, f)(*(int *)key);
+
+	if (fd_empty(f))
+		return -EBADF;
+	if (!inode_storage_ptr(file_inode(fd_file(f))))
+		return -EBADF;
+
+	sdata = bpf_local_storage_update(file_inode(fd_file(f)),
+					 (struct bpf_local_storage_map *)map,
+					 value, map_flags, GFP_ATOMIC);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return PTR_ERR_OR_ZERO(sdata);
 }
 
@@ -123,6 +145,7 @@ static int inode_storage_delete(struct inode *inode, struct bpf_map *map)
 
 static long bpf_fd_inode_storage_delete_elem(struct bpf_map *map, void *key)
 {
+<<<<<<< HEAD
 	struct fd f = fdget_raw(*(int *)key);
 	int err;
 
@@ -132,6 +155,13 @@ static long bpf_fd_inode_storage_delete_elem(struct bpf_map *map, void *key)
 	err = inode_storage_delete(file_inode(f.file), map);
 	fdput(f);
 	return err;
+=======
+	CLASS(fd_raw, f)(*(int *)key);
+
+	if (fd_empty(f))
+		return -EBADF;
+	return inode_storage_delete(file_inode(fd_file(f)), map);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* *gfp_flags* is a hidden argument provided by the verifier */

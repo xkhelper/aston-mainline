@@ -32,6 +32,10 @@
 #include <trace/events/sunrpc.h>
 
 #include "fail.h"
+<<<<<<< HEAD
+=======
+#include "sunrpc.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define RPCDBG_FACILITY	RPCDBG_SVCDSP
 
@@ -417,7 +421,11 @@ struct svc_pool *svc_pool_for_cpu(struct svc_serv *serv)
 	return &serv->sv_pools[pidx % serv->sv_nrpools];
 }
 
+<<<<<<< HEAD
 int svc_rpcb_setup(struct svc_serv *serv, struct net *net)
+=======
+static int svc_rpcb_setup(struct svc_serv *serv, struct net *net)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int err;
 
@@ -429,7 +437,10 @@ int svc_rpcb_setup(struct svc_serv *serv, struct net *net)
 	svc_unregister(serv, net);
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(svc_rpcb_setup);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void svc_rpcb_cleanup(struct svc_serv *serv, struct net *net)
 {
@@ -440,10 +451,18 @@ EXPORT_SYMBOL_GPL(svc_rpcb_cleanup);
 
 static int svc_uses_rpcbind(struct svc_serv *serv)
 {
+<<<<<<< HEAD
 	struct svc_program	*progp;
 	unsigned int		i;
 
 	for (progp = serv->sv_program; progp; progp = progp->pg_next) {
+=======
+	unsigned int		p, i;
+
+	for (p = 0; p < serv->sv_nprogs; p++) {
+		struct svc_program *progp = &serv->sv_programs[p];
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		for (i = 0; i < progp->pg_nvers; i++) {
 			if (progp->pg_vers[i] == NULL)
 				continue;
@@ -480,7 +499,11 @@ __svc_init_bc(struct svc_serv *serv)
  * Create an RPC service
  */
 static struct svc_serv *
+<<<<<<< HEAD
 __svc_create(struct svc_program *prog, struct svc_stat *stats,
+=======
+__svc_create(struct svc_program *prog, int nprogs, struct svc_stat *stats,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	     unsigned int bufsize, int npools, int (*threadfn)(void *data))
 {
 	struct svc_serv	*serv;
@@ -491,7 +514,12 @@ __svc_create(struct svc_program *prog, struct svc_stat *stats,
 	if (!(serv = kzalloc(sizeof(*serv), GFP_KERNEL)))
 		return NULL;
 	serv->sv_name      = prog->pg_name;
+<<<<<<< HEAD
 	serv->sv_program   = prog;
+=======
+	serv->sv_programs  = prog;
+	serv->sv_nprogs    = nprogs;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	serv->sv_stats     = stats;
 	if (bufsize > RPCSVC_MAXPAYLOAD)
 		bufsize = RPCSVC_MAXPAYLOAD;
@@ -499,6 +527,7 @@ __svc_create(struct svc_program *prog, struct svc_stat *stats,
 	serv->sv_max_mesg  = roundup(serv->sv_max_payload + PAGE_SIZE, PAGE_SIZE);
 	serv->sv_threadfn = threadfn;
 	xdrsize = 0;
+<<<<<<< HEAD
 	while (prog) {
 		prog->pg_lovers = prog->pg_nvers-1;
 		for (vers=0; vers<prog->pg_nvers ; vers++)
@@ -510,6 +539,20 @@ __svc_create(struct svc_program *prog, struct svc_stat *stats,
 					xdrsize = prog->pg_vers[vers]->vs_xdrsize;
 			}
 		prog = prog->pg_next;
+=======
+	for (i = 0; i < nprogs; i++) {
+		struct svc_program *progp = &prog[i];
+
+		progp->pg_lovers = progp->pg_nvers-1;
+		for (vers = 0; vers < progp->pg_nvers ; vers++)
+			if (progp->pg_vers[vers]) {
+				progp->pg_hivers = vers;
+				if (progp->pg_lovers > vers)
+					progp->pg_lovers = vers;
+				if (progp->pg_vers[vers]->vs_xdrsize > xdrsize)
+					xdrsize = progp->pg_vers[vers]->vs_xdrsize;
+			}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	serv->sv_xdrsize   = xdrsize;
 	INIT_LIST_HEAD(&serv->sv_tempsocks);
@@ -558,13 +601,22 @@ __svc_create(struct svc_program *prog, struct svc_stat *stats,
 struct svc_serv *svc_create(struct svc_program *prog, unsigned int bufsize,
 			    int (*threadfn)(void *data))
 {
+<<<<<<< HEAD
 	return __svc_create(prog, NULL, bufsize, 1, threadfn);
+=======
+	return __svc_create(prog, 1, NULL, bufsize, 1, threadfn);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(svc_create);
 
 /**
  * svc_create_pooled - Create an RPC service with pooled threads
+<<<<<<< HEAD
  * @prog: the RPC program the new service will handle
+=======
+ * @prog:  Array of RPC programs the new service will handle
+ * @nprogs: Number of programs in the array
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @stats: the stats struct if desired
  * @bufsize: maximum message size for @prog
  * @threadfn: a function to service RPC requests for @prog
@@ -572,6 +624,10 @@ EXPORT_SYMBOL_GPL(svc_create);
  * Returns an instantiated struct svc_serv object or NULL.
  */
 struct svc_serv *svc_create_pooled(struct svc_program *prog,
+<<<<<<< HEAD
+=======
+				   unsigned int nprogs,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   struct svc_stat *stats,
 				   unsigned int bufsize,
 				   int (*threadfn)(void *data))
@@ -579,7 +635,11 @@ struct svc_serv *svc_create_pooled(struct svc_program *prog,
 	struct svc_serv *serv;
 	unsigned int npools = svc_pool_map_get();
 
+<<<<<<< HEAD
 	serv = __svc_create(prog, stats, bufsize, npools, threadfn);
+=======
+	serv = __svc_create(prog, nprogs, stats, bufsize, npools, threadfn);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!serv)
 		goto out_err;
 	serv->sv_is_pooled = true;
@@ -602,16 +662,26 @@ svc_destroy(struct svc_serv **servp)
 
 	*servp = NULL;
 
+<<<<<<< HEAD
 	dprintk("svc: svc_destroy(%s)\n", serv->sv_program->pg_name);
+=======
+	dprintk("svc: svc_destroy(%s)\n", serv->sv_programs->pg_name);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	timer_shutdown_sync(&serv->sv_temptimer);
 
 	/*
 	 * Remaining transports at this point are not expected.
 	 */
 	WARN_ONCE(!list_empty(&serv->sv_permsocks),
+<<<<<<< HEAD
 		  "SVC: permsocks remain for %s\n", serv->sv_program->pg_name);
 	WARN_ONCE(!list_empty(&serv->sv_tempsocks),
 		  "SVC: tempsocks remain for %s\n", serv->sv_program->pg_name);
+=======
+		  "SVC: permsocks remain for %s\n", serv->sv_programs->pg_name);
+	WARN_ONCE(!list_empty(&serv->sv_tempsocks),
+		  "SVC: tempsocks remain for %s\n", serv->sv_programs->pg_name);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	cache_clean_deferred(serv);
 
@@ -664,8 +734,26 @@ svc_release_buffer(struct svc_rqst *rqstp)
 			put_page(rqstp->rq_pages[i]);
 }
 
+<<<<<<< HEAD
 struct svc_rqst *
 svc_rqst_alloc(struct svc_serv *serv, struct svc_pool *pool, int node)
+=======
+static void
+svc_rqst_free(struct svc_rqst *rqstp)
+{
+	folio_batch_release(&rqstp->rq_fbatch);
+	svc_release_buffer(rqstp);
+	if (rqstp->rq_scratch_page)
+		put_page(rqstp->rq_scratch_page);
+	kfree(rqstp->rq_resp);
+	kfree(rqstp->rq_argp);
+	kfree(rqstp->rq_auth_data);
+	kfree_rcu(rqstp, rq_rcu_head);
+}
+
+static struct svc_rqst *
+svc_prepare_thread(struct svc_serv *serv, struct svc_pool *pool, int node)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct svc_rqst	*rqstp;
 
@@ -693,6 +781,7 @@ svc_rqst_alloc(struct svc_serv *serv, struct svc_pool *pool, int node)
 	if (!svc_init_buffer(rqstp, serv->sv_max_mesg, node))
 		goto out_enomem;
 
+<<<<<<< HEAD
 	return rqstp;
 out_enomem:
 	svc_rqst_free(rqstp);
@@ -714,6 +803,12 @@ svc_prepare_thread(struct svc_serv *serv, struct svc_pool *pool, int node)
 	spin_unlock_bh(&serv->sv_lock);
 
 	atomic_inc(&pool->sp_nrthreads);
+=======
+	rqstp->rq_err = -EAGAIN; /* No error yet */
+
+	serv->sv_nrthreads += 1;
+	pool->sp_nrthreads += 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Protected by whatever lock the service uses when calling
 	 * svc_set_num_threads()
@@ -721,6 +816,13 @@ svc_prepare_thread(struct svc_serv *serv, struct svc_pool *pool, int node)
 	list_add_rcu(&rqstp->rq_all, &pool->sp_all_threads);
 
 	return rqstp;
+<<<<<<< HEAD
+=======
+
+out_enomem:
+	svc_rqst_free(rqstp);
+	return NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -768,6 +870,7 @@ svc_pool_victim(struct svc_serv *serv, struct svc_pool *target_pool,
 	struct svc_pool *pool;
 	unsigned int i;
 
+<<<<<<< HEAD
 retry:
 	pool = target_pool;
 
@@ -793,6 +896,24 @@ found_pool:
 	clear_bit(SP_NEED_VICTIM, &pool->sp_flags);
 	clear_bit(SP_VICTIM_REMAINS, &pool->sp_flags);
 	goto retry;
+=======
+	pool = target_pool;
+
+	if (!pool) {
+		for (i = 0; i < serv->sv_nrpools; i++) {
+			pool = &serv->sv_pools[--(*state) % serv->sv_nrpools];
+			if (pool->sp_nrthreads)
+				break;
+		}
+	}
+
+	if (pool && pool->sp_nrthreads) {
+		set_bit(SP_VICTIM_REMAINS, &pool->sp_flags);
+		set_bit(SP_NEED_VICTIM, &pool->sp_flags);
+		return pool;
+	}
+	return NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int
@@ -803,6 +924,10 @@ svc_start_kthreads(struct svc_serv *serv, struct svc_pool *pool, int nrservs)
 	struct svc_pool *chosen_pool;
 	unsigned int state = serv->sv_nrthreads-1;
 	int node;
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	do {
 		nrservs--;
@@ -810,8 +935,13 @@ svc_start_kthreads(struct svc_serv *serv, struct svc_pool *pool, int nrservs)
 		node = svc_pool_map_get_node(chosen_pool->sp_id);
 
 		rqstp = svc_prepare_thread(serv, chosen_pool, node);
+<<<<<<< HEAD
 		if (IS_ERR(rqstp))
 			return PTR_ERR(rqstp);
+=======
+		if (!rqstp)
+			return -ENOMEM;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		task = kthread_create_on_node(serv->sv_threadfn, rqstp,
 					      node, "%s", serv->sv_name);
 		if (IS_ERR(task)) {
@@ -825,6 +955,16 @@ svc_start_kthreads(struct svc_serv *serv, struct svc_pool *pool, int nrservs)
 
 		svc_sock_update_bufs(serv);
 		wake_up_process(task);
+<<<<<<< HEAD
+=======
+
+		wait_var_event(&rqstp->rq_err, rqstp->rq_err != -EAGAIN);
+		err = rqstp->rq_err;
+		if (err) {
+			svc_exit_thread(rqstp);
+			return err;
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} while (nrservs > 0);
 
 	return 0;
@@ -871,7 +1011,11 @@ svc_set_num_threads(struct svc_serv *serv, struct svc_pool *pool, int nrservs)
 	if (!pool)
 		nrservs -= serv->sv_nrthreads;
 	else
+<<<<<<< HEAD
 		nrservs -= atomic_read(&pool->sp_nrthreads);
+=======
+		nrservs -= pool->sp_nrthreads;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (nrservs > 0)
 		return svc_start_kthreads(serv, pool, nrservs);
@@ -933,6 +1077,7 @@ void svc_rqst_release_pages(struct svc_rqst *rqstp)
 	}
 }
 
+<<<<<<< HEAD
 /*
  * Called from a server thread as it's exiting. Caller must hold the "service
  * mutex" for the service.
@@ -952,6 +1097,23 @@ svc_rqst_free(struct svc_rqst *rqstp)
 EXPORT_SYMBOL_GPL(svc_rqst_free);
 
 void
+=======
+/**
+ * svc_exit_thread - finalise the termination of a sunrpc server thread
+ * @rqstp: the svc_rqst which represents the thread.
+ *
+ * When a thread started with svc_new_thread() exits it must call
+ * svc_exit_thread() as its last act.  This must be done with the
+ * service mutex held.  Normally this is held by a DIFFERENT thread, the
+ * one that is calling svc_set_num_threads() and which will wait for
+ * SP_VICTIM_REMAINS to be cleared before dropping the mutex.  If the
+ * thread exits for any reason other than svc_thread_should_stop()
+ * returning %true (which indicated that svc_set_num_threads() is
+ * waiting for it to exit), then it must take the service mutex itself,
+ * which can only safely be done using mutex_try_lock().
+ */
+void
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 svc_exit_thread(struct svc_rqst *rqstp)
 {
 	struct svc_serv	*serv = rqstp->rq_server;
@@ -959,11 +1121,16 @@ svc_exit_thread(struct svc_rqst *rqstp)
 
 	list_del_rcu(&rqstp->rq_all);
 
+<<<<<<< HEAD
 	atomic_dec(&pool->sp_nrthreads);
 
 	spin_lock_bh(&serv->sv_lock);
 	serv->sv_nrthreads -= 1;
 	spin_unlock_bh(&serv->sv_lock);
+=======
+	pool->sp_nrthreads -= 1;
+	serv->sv_nrthreads -= 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	svc_sock_update_bufs(serv);
 
 	svc_rqst_free(rqstp);
@@ -1098,6 +1265,10 @@ static int __svc_register(struct net *net, const char *progname,
 	return error;
 }
 
+<<<<<<< HEAD
+=======
+static
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int svc_rpcbind_set_version(struct net *net,
 			    const struct svc_program *progp,
 			    u32 version, int family,
@@ -1108,7 +1279,10 @@ int svc_rpcbind_set_version(struct net *net,
 				version, family, proto, port);
 
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(svc_rpcbind_set_version);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int svc_generic_rpcbind_set(struct net *net,
 			    const struct svc_program *progp,
@@ -1156,15 +1330,25 @@ int svc_register(const struct svc_serv *serv, struct net *net,
 		 const int family, const unsigned short proto,
 		 const unsigned short port)
 {
+<<<<<<< HEAD
 	struct svc_program	*progp;
 	unsigned int		i;
+=======
+	unsigned int		p, i;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int			error = 0;
 
 	WARN_ON_ONCE(proto == 0 && port == 0);
 	if (proto == 0 && port == 0)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	for (progp = serv->sv_program; progp; progp = progp->pg_next) {
+=======
+	for (p = 0; p < serv->sv_nprogs; p++) {
+		struct svc_program *progp = &serv->sv_programs[p];
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		for (i = 0; i < progp->pg_nvers; i++) {
 
 			error = progp->pg_rpcbind_set(net, progp, i,
@@ -1216,6 +1400,7 @@ static void __svc_unregister(struct net *net, const u32 program, const u32 versi
 static void svc_unregister(const struct svc_serv *serv, struct net *net)
 {
 	struct sighand_struct *sighand;
+<<<<<<< HEAD
 	struct svc_program *progp;
 	unsigned long flags;
 	unsigned int i;
@@ -1223,6 +1408,16 @@ static void svc_unregister(const struct svc_serv *serv, struct net *net)
 	clear_thread_flag(TIF_SIGPENDING);
 
 	for (progp = serv->sv_program; progp; progp = progp->pg_next) {
+=======
+	unsigned long flags;
+	unsigned int p, i;
+
+	clear_thread_flag(TIF_SIGPENDING);
+
+	for (p = 0; p < serv->sv_nprogs; p++) {
+		struct svc_program *progp = &serv->sv_programs[p];
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		for (i = 0; i < progp->pg_nvers; i++) {
 			if (progp->pg_vers[i] == NULL)
 				continue;
@@ -1322,13 +1517,21 @@ static int
 svc_process_common(struct svc_rqst *rqstp)
 {
 	struct xdr_stream	*xdr = &rqstp->rq_res_stream;
+<<<<<<< HEAD
 	struct svc_program	*progp;
+=======
+	struct svc_program	*progp = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct svc_procedure *procp = NULL;
 	struct svc_serv		*serv = rqstp->rq_server;
 	struct svc_process_info process;
 	enum svc_auth_status	auth_res;
 	unsigned int		aoffset;
+<<<<<<< HEAD
 	int			rc;
+=======
+	int			pr, rc;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__be32			*p;
 
 	/* Will be turned off only when NFSv4 Sessions are used */
@@ -1352,9 +1555,15 @@ svc_process_common(struct svc_rqst *rqstp)
 	rqstp->rq_vers = be32_to_cpup(p++);
 	rqstp->rq_proc = be32_to_cpup(p);
 
+<<<<<<< HEAD
 	for (progp = serv->sv_program; progp; progp = progp->pg_next)
 		if (rqstp->rq_prog == progp->pg_prog)
 			break;
+=======
+	for (pr = 0; pr < serv->sv_nprogs; pr++)
+		if (rqstp->rq_prog == serv->sv_programs[pr].pg_prog)
+			progp = &serv->sv_programs[pr];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Decode auth data, and add verifier to reply buffer.
@@ -1526,6 +1735,17 @@ err_system_err:
 	goto sendit;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * Drop request
+ */
+static void svc_drop(struct svc_rqst *rqstp)
+{
+	trace_svc_drop(rqstp);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * svc_process - Execute one RPC transaction
  * @rqstp: RPC transaction context

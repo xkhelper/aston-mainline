@@ -16,13 +16,20 @@
 #include <linux/ethtool.h>
 #include <linux/interrupt.h>
 #include <linux/moduleparam.h>
+<<<<<<< HEAD
+=======
+#include <linux/of.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/platform_device.h>
 #include <linux/delay.h>
 #include <linux/io.h>
 #include <linux/slab.h>
 
+<<<<<<< HEAD
 #include <linux/platform_data/eth-ep93xx.h>
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define DRV_MODULE_NAME		"ep93xx-eth"
 
 #define RX_QUEUE_ENTRIES	64
@@ -738,6 +745,7 @@ static const struct net_device_ops ep93xx_netdev_ops = {
 	.ndo_set_mac_address	= eth_mac_addr,
 };
 
+<<<<<<< HEAD
 static struct net_device *ep93xx_dev_alloc(struct ep93xx_eth_data *data)
 {
 	struct net_device *dev;
@@ -757,6 +765,8 @@ static struct net_device *ep93xx_dev_alloc(struct ep93xx_eth_data *data)
 }
 
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void ep93xx_eth_remove(struct platform_device *pdev)
 {
 	struct net_device *dev;
@@ -786,27 +796,67 @@ static void ep93xx_eth_remove(struct platform_device *pdev)
 
 static int ep93xx_eth_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct ep93xx_eth_data *data;
 	struct net_device *dev;
 	struct ep93xx_priv *ep;
 	struct resource *mem;
+=======
+	struct net_device *dev;
+	struct ep93xx_priv *ep;
+	struct resource *mem;
+	void __iomem *base_addr;
+	struct device_node *np;
+	u8 addr[ETH_ALEN];
+	u32 phy_id;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int irq;
 	int err;
 
 	if (pdev == NULL)
 		return -ENODEV;
+<<<<<<< HEAD
 	data = dev_get_platdata(&pdev->dev);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	irq = platform_get_irq(pdev, 0);
 	if (!mem || irq < 0)
 		return -ENXIO;
 
+<<<<<<< HEAD
 	dev = ep93xx_dev_alloc(data);
+=======
+	base_addr = ioremap(mem->start, resource_size(mem));
+	if (!base_addr)
+		return dev_err_probe(&pdev->dev, -EIO, "Failed to ioremap ethernet registers\n");
+
+	np = of_parse_phandle(pdev->dev.of_node, "phy-handle", 0);
+	if (!np)
+		return dev_err_probe(&pdev->dev, -ENODEV, "Please provide \"phy-handle\"\n");
+
+	err = of_property_read_u32(np, "reg", &phy_id);
+	of_node_put(np);
+	if (err)
+		return dev_err_probe(&pdev->dev, -ENOENT, "Failed to locate \"phy_id\"\n");
+
+	dev = alloc_etherdev(sizeof(struct ep93xx_priv));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (dev == NULL) {
 		err = -ENOMEM;
 		goto err_out;
 	}
+<<<<<<< HEAD
+=======
+
+	memcpy_fromio(addr, base_addr + 0x50, ETH_ALEN);
+	eth_hw_addr_set(dev, addr);
+	dev->ethtool_ops = &ep93xx_ethtool_ops;
+	dev->netdev_ops = &ep93xx_netdev_ops;
+	dev->features |= NETIF_F_SG | NETIF_F_HW_CSUM;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ep = netdev_priv(dev);
 	ep->dev = dev;
 	SET_NETDEV_DEV(dev, &pdev->dev);
@@ -822,6 +872,7 @@ static int ep93xx_eth_probe(struct platform_device *pdev)
 		goto err_out;
 	}
 
+<<<<<<< HEAD
 	ep->base_addr = ioremap(mem->start, resource_size(mem));
 	if (ep->base_addr == NULL) {
 		dev_err(&pdev->dev, "Failed to ioremap ethernet registers\n");
@@ -831,6 +882,12 @@ static int ep93xx_eth_probe(struct platform_device *pdev)
 	ep->irq = irq;
 
 	ep->mii.phy_id = data->phy_id;
+=======
+	ep->base_addr = base_addr;
+	ep->irq = irq;
+
+	ep->mii.phy_id = phy_id;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ep->mii.phy_id_mask = 0x1f;
 	ep->mii.reg_num_mask = 0x1f;
 	ep->mii.dev = dev;
@@ -857,12 +914,24 @@ err_out:
 	return err;
 }
 
+<<<<<<< HEAD
+=======
+static const struct of_device_id ep93xx_eth_of_ids[] = {
+	{ .compatible = "cirrus,ep9301-eth" },
+	{ /* sentinel */ }
+};
+MODULE_DEVICE_TABLE(of, ep93xx_eth_of_ids);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct platform_driver ep93xx_eth_driver = {
 	.probe		= ep93xx_eth_probe,
 	.remove_new	= ep93xx_eth_remove,
 	.driver		= {
 		.name	= "ep93xx-eth",
+<<<<<<< HEAD
+=======
+		.of_match_table = ep93xx_eth_of_ids,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 };
 

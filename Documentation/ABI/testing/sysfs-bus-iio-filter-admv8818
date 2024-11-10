@@ -3,7 +3,11 @@ KernelVersion:
 Contact:	linux-iio@vger.kernel.org
 Description:
 		Reading this returns the valid values that can be written to the
+<<<<<<< HEAD
 		on_altvoltage0_mode attribute:
+=======
+		filter_mode attribute:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		- auto -> Adjust bandpass filter to track changes in input clock rate.
 		- manual -> disable/unregister the clock rate notifier / input clock tracking.

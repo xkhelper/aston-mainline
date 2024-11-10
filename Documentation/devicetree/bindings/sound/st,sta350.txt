@@ -77,7 +77,11 @@ Optional properties:
 
   -  st,odd-pwm-speed-mode:
 	If present, PWM speed mode run on odd speed mode (341.3 kHz) on all
+<<<<<<< HEAD
 	channels. If not present, normal PWM spped mode (384 kHz) will be used.
+=======
+	channels. If not present, normal PWM speed mode (384 kHz) will be used.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   -  st,distortion-compensation:
 	If present, distortion compensation variable uses DCC coefficient.

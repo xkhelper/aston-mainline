@@ -8,7 +8,11 @@
 #ifndef _SURFACE_AGGREGATOR_SSH_MSGB_H
 #define _SURFACE_AGGREGATOR_SSH_MSGB_H
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/types.h>
 
 #include <linux/surface_aggregator/controller.h>

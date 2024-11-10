@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 /*
+<<<<<<< HEAD
  * Copyright 2021-2023 NXP
+=======
+ * Copyright 2021-2024 NXP
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * NXP S32G3 Reference Design Board 3 (S32G-VNP-RDB3)
  */
@@ -41,5 +45,9 @@
 
 &usdhc0 {
 	bus-width = <8>;
+<<<<<<< HEAD
+=======
+	disable-wp;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	status = "okay";
 };

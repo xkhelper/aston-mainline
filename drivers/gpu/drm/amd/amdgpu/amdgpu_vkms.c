@@ -338,6 +338,10 @@ static int amdgpu_vkms_prepare_fb(struct drm_plane *plane,
 	else
 		domain = AMDGPU_GEM_DOMAIN_VRAM;
 
+<<<<<<< HEAD
+=======
+	rbo->flags |= AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	r = amdgpu_bo_pin(rbo, domain);
 	if (unlikely(r != 0)) {
 		if (r != -ERESTARTSYS)
@@ -549,7 +553,11 @@ static int amdgpu_vkms_sw_fini(void *handle)
 
 	adev->mode_info.mode_config_initialized = false;
 
+<<<<<<< HEAD
 	kfree(adev->mode_info.bios_hardcoded_edid);
+=======
+	drm_edid_free(adev->mode_info.bios_hardcoded_edid);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(adev->amdgpu_vkms_output);
 	return 0;
 }

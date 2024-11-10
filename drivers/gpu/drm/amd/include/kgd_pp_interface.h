@@ -218,6 +218,10 @@ enum pp_mp1_state {
 	PP_MP1_STATE_SHUTDOWN,
 	PP_MP1_STATE_UNLOAD,
 	PP_MP1_STATE_RESET,
+<<<<<<< HEAD
+=======
+	PP_MP1_STATE_FLR,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum pp_df_cstate {

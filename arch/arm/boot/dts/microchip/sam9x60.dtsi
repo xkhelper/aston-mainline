@@ -215,6 +215,11 @@
 					compatible = "microchip,sam9x60-i2c";
 					reg = <0x600 0x200>;
 					interrupts = <13 IRQ_TYPE_LEVEL_HIGH 7>;
+<<<<<<< HEAD
+=======
+					#address-cells = <1>;
+					#size-cells = <0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					clocks = <&pmc PMC_TYPE_PERIPHERAL 13>;
 					dmas = <&dma0
 						(AT91_XDMAC_DT_MEM_IF(0) |
@@ -284,6 +289,11 @@
 					compatible = "microchip,sam9x60-i2c";
 					reg = <0x600 0x200>;
 					interrupts = <14 IRQ_TYPE_LEVEL_HIGH 7>;
+<<<<<<< HEAD
+=======
+					#address-cells = <1>;
+					#size-cells = <0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					clocks = <&pmc PMC_TYPE_PERIPHERAL 14>;
 					dmas = <&dma0
 						(AT91_XDMAC_DT_MEM_IF(0) |
@@ -394,6 +404,11 @@
 					compatible = "microchip,sam9x60-i2c";
 					reg = <0x600 0x200>;
 					interrupts = <32 IRQ_TYPE_LEVEL_HIGH 7>;
+<<<<<<< HEAD
+=======
+					#address-cells = <1>;
+					#size-cells = <0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					clocks = <&pmc PMC_TYPE_PERIPHERAL 32>;
 					dmas = <&dma0
 						(AT91_XDMAC_DT_MEM_IF(0) |
@@ -443,6 +458,11 @@
 					compatible = "microchip,sam9x60-i2c";
 					reg = <0x600 0x200>;
 					interrupts = <33 IRQ_TYPE_LEVEL_HIGH 7>;
+<<<<<<< HEAD
+=======
+					#address-cells = <1>;
+					#size-cells = <0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					clocks = <&pmc PMC_TYPE_PERIPHERAL 33>;
 					dmas = <&dma0
 						(AT91_XDMAC_DT_MEM_IF(0) |
@@ -600,6 +620,11 @@
 					compatible = "microchip,sam9x60-i2c";
 					reg = <0x600 0x200>;
 					interrupts = <9 IRQ_TYPE_LEVEL_HIGH 7>;
+<<<<<<< HEAD
+=======
+					#address-cells = <1>;
+					#size-cells = <0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					clocks = <&pmc PMC_TYPE_PERIPHERAL 9>;
 					dmas = <&dma0
 						(AT91_XDMAC_DT_MEM_IF(0) |
@@ -649,6 +674,11 @@
 					compatible = "microchip,sam9x60-i2c";
 					reg = <0x600 0x200>;
 					interrupts = <10 IRQ_TYPE_LEVEL_HIGH 7>;
+<<<<<<< HEAD
+=======
+					#address-cells = <1>;
+					#size-cells = <0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					clocks = <&pmc PMC_TYPE_PERIPHERAL 10>;
 					dmas = <&dma0
 						(AT91_XDMAC_DT_MEM_IF(0) |
@@ -698,6 +728,11 @@
 					compatible = "microchip,sam9x60-i2c";
 					reg = <0x600 0x200>;
 					interrupts = <11 IRQ_TYPE_LEVEL_HIGH 7>;
+<<<<<<< HEAD
+=======
+					#address-cells = <1>;
+					#size-cells = <0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					clocks = <&pmc PMC_TYPE_PERIPHERAL 11>;
 					dmas = <&dma0
 						(AT91_XDMAC_DT_MEM_IF(0) |
@@ -766,6 +801,11 @@
 					compatible = "microchip,sam9x60-i2c";
 					reg = <0x600 0x200>;
 					interrupts = <5 IRQ_TYPE_LEVEL_HIGH 7>;
+<<<<<<< HEAD
+=======
+					#address-cells = <1>;
+					#size-cells = <0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					clocks = <&pmc PMC_TYPE_PERIPHERAL 5>;
 					dmas = <&dma0
 						(AT91_XDMAC_DT_MEM_IF(0) |
@@ -834,6 +874,11 @@
 					compatible = "microchip,sam9x60-i2c";
 					reg = <0x600 0x200>;
 					interrupts = <6 IRQ_TYPE_LEVEL_HIGH 7>;
+<<<<<<< HEAD
+=======
+					#address-cells = <1>;
+					#size-cells = <0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					clocks = <&pmc PMC_TYPE_PERIPHERAL 6>;
 					dmas = <&dma0
 						(AT91_XDMAC_DT_MEM_IF(0) |
@@ -902,6 +947,11 @@
 					compatible = "microchip,sam9x60-i2c";
 					reg = <0x600 0x200>;
 					interrupts = <7 IRQ_TYPE_LEVEL_HIGH 7>;
+<<<<<<< HEAD
+=======
+					#address-cells = <1>;
+					#size-cells = <0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					clocks = <&pmc PMC_TYPE_PERIPHERAL 7>;
 					dmas = <&dma0
 						(AT91_XDMAC_DT_MEM_IF(0) |
@@ -970,6 +1020,11 @@
 					compatible = "microchip,sam9x60-i2c";
 					reg = <0x600 0x200>;
 					interrupts = <8 IRQ_TYPE_LEVEL_HIGH 7>;
+<<<<<<< HEAD
+=======
+					#address-cells = <1>;
+					#size-cells = <0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					clocks = <&pmc PMC_TYPE_PERIPHERAL 8>;
 					dmas = <&dma0
 						(AT91_XDMAC_DT_MEM_IF(0) |
@@ -1074,6 +1129,11 @@
 					compatible = "microchip,sam9x60-i2c";
 					reg = <0x600 0x200>;
 					interrupts = <15 IRQ_TYPE_LEVEL_HIGH 7>;
+<<<<<<< HEAD
+=======
+					#address-cells = <1>;
+					#size-cells = <0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					clocks = <&pmc PMC_TYPE_PERIPHERAL 15>;
 					dmas = <&dma0
 						(AT91_XDMAC_DT_MEM_IF(0) |
@@ -1123,6 +1183,11 @@
 					compatible = "microchip,sam9x60-i2c";
 					reg = <0x600 0x200>;
 					interrupts = <16 IRQ_TYPE_LEVEL_HIGH 7>;
+<<<<<<< HEAD
+=======
+					#address-cells = <1>;
+					#size-cells = <0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					clocks = <&pmc PMC_TYPE_PERIPHERAL 16>;
 					dmas = <&dma0
 						(AT91_XDMAC_DT_MEM_IF(0) |
@@ -1223,7 +1288,11 @@
 			pinctrl: pinctrl@fffff400 {
 				#address-cells = <1>;
 				#size-cells = <1>;
+<<<<<<< HEAD
 				compatible = "microchip,sam9x60-pinctrl", "atmel,at91sam9x5-pinctrl", "atmel,at91rm9200-pinctrl", "simple-bus";
+=======
+				compatible = "microchip,sam9x60-pinctrl", "simple-mfd";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				ranges = <0xfffff400 0xfffff400 0x800>;
 
 				/* mux-mask corresponding to sam9x60 SoC in TFBGA228L package */
@@ -1236,7 +1305,11 @@
 						 >;
 
 				pioA: gpio@fffff400 {
+<<<<<<< HEAD
 					compatible = "microchip,sam9x60-gpio", "atmel,at91sam9x5-gpio", "atmel,at91rm9200-gpio";
+=======
+					compatible = "microchip,sam9x60-gpio", "atmel,at91rm9200-gpio";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					reg = <0xfffff400 0x200>;
 					interrupts = <2 IRQ_TYPE_LEVEL_HIGH 1>;
 					#gpio-cells = <2>;
@@ -1247,7 +1320,11 @@
 				};
 
 				pioB: gpio@fffff600 {
+<<<<<<< HEAD
 					compatible = "microchip,sam9x60-gpio", "atmel,at91sam9x5-gpio", "atmel,at91rm9200-gpio";
+=======
+					compatible = "microchip,sam9x60-gpio", "atmel,at91rm9200-gpio";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					reg = <0xfffff600 0x200>;
 					interrupts = <3 IRQ_TYPE_LEVEL_HIGH 1>;
 					#gpio-cells = <2>;
@@ -1259,7 +1336,11 @@
 				};
 
 				pioC: gpio@fffff800 {
+<<<<<<< HEAD
 					compatible = "microchip,sam9x60-gpio", "atmel,at91sam9x5-gpio", "atmel,at91rm9200-gpio";
+=======
+					compatible = "microchip,sam9x60-gpio", "atmel,at91rm9200-gpio";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					reg = <0xfffff800 0x200>;
 					interrupts = <4 IRQ_TYPE_LEVEL_HIGH 1>;
 					#gpio-cells = <2>;
@@ -1270,7 +1351,11 @@
 				};
 
 				pioD: gpio@fffffa00 {
+<<<<<<< HEAD
 					compatible = "microchip,sam9x60-gpio", "atmel,at91sam9x5-gpio", "atmel,at91rm9200-gpio";
+=======
+					compatible = "microchip,sam9x60-gpio", "atmel,at91rm9200-gpio";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					reg = <0xfffffa00 0x200>;
 					interrupts = <44 IRQ_TYPE_LEVEL_HIGH 1>;
 					#gpio-cells = <2>;
@@ -1312,7 +1397,11 @@
 				compatible = "microchip,sam9x60-rtt", "atmel,at91sam9260-rtt";
 				reg = <0xfffffe20 0x20>;
 				interrupts = <1 IRQ_TYPE_LEVEL_HIGH 7>;
+<<<<<<< HEAD
 				clocks = <&clk32k 0>;
+=======
+				clocks = <&clk32k 1>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			};
 
 			pit: timer@fffffe40 {
@@ -1338,7 +1427,11 @@
 				compatible = "microchip,sam9x60-rtc", "atmel,at91sam9x5-rtc";
 				reg = <0xfffffea8 0x100>;
 				interrupts = <1 IRQ_TYPE_LEVEL_HIGH 7>;
+<<<<<<< HEAD
 				clocks = <&clk32k 0>;
+=======
+				clocks = <&clk32k 1>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			};
 
 			watchdog: watchdog@ffffff80 {

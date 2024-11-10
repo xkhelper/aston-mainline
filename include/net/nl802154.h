@@ -192,7 +192,11 @@ enum nl802154_iftype {
  * @NL802154_CAP_ATTR_TX_POWERS: a nested attribute for
  *	nl802154_wpan_phy_tx_power
  * @NL802154_CAP_ATTR_MIN_CCA_ED_LEVEL: minimum value for cca_ed_level
+<<<<<<< HEAD
  * @NL802154_CAP_ATTR_MAX_CCA_ED_LEVEL: maxmimum value for cca_ed_level
+=======
+ * @NL802154_CAP_ATTR_MAX_CCA_ED_LEVEL: maximum value for cca_ed_level
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @NL802154_CAP_ATTR_CCA_MODES: nl802154_cca_modes flags
  * @NL802154_CAP_ATTR_CCA_OPTS: nl802154_cca_opts flags
  * @NL802154_CAP_ATTR_MIN_MINBE: minimum of minbe value

@@ -26,7 +26,11 @@
 #include <linux/module.h>
 #include <linux/spinlock.h>
 #include <linux/uaccess.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/usb.h>
 #include <linux/usb/serial.h>
 #include <linux/serial.h>
@@ -69,7 +73,10 @@ MODULE_DEVICE_TABLE(usb, id_table);
 
 static struct usb_serial_driver mct_u232_device = {
 	.driver = {
+<<<<<<< HEAD
 		.owner =	THIS_MODULE,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name =		"mct_u232",
 	},
 	.description =	     "MCT U232",

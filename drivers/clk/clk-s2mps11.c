@@ -263,7 +263,11 @@ static struct platform_driver s2mps11_clk_driver = {
 		.name  = "s2mps11-clk",
 	},
 	.probe = s2mps11_clk_probe,
+<<<<<<< HEAD
 	.remove_new = s2mps11_clk_remove,
+=======
+	.remove = s2mps11_clk_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.id_table = s2mps11_clk_id,
 };
 module_platform_driver(s2mps11_clk_driver);

@@ -95,11 +95,19 @@ static long cmm_alloc_pages(long nr, long *counter,
 		(*counter)++;
 		spin_unlock(&cmm_lock);
 		nr--;
+<<<<<<< HEAD
+=======
+		cond_resched();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return nr;
 }
 
+<<<<<<< HEAD
 static long cmm_free_pages(long nr, long *counter, struct cmm_page_array **list)
+=======
+static long __cmm_free_pages(long nr, long *counter, struct cmm_page_array **list)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct cmm_page_array *pa;
 	unsigned long addr;
@@ -123,6 +131,24 @@ static long cmm_free_pages(long nr, long *counter, struct cmm_page_array **list)
 	return nr;
 }
 
+<<<<<<< HEAD
+=======
+static long cmm_free_pages(long nr, long *counter, struct cmm_page_array **list)
+{
+	long inc = 0;
+
+	while (nr) {
+		inc = min(256L, nr);
+		nr -= inc;
+		inc = __cmm_free_pages(inc, counter, list);
+		if (inc)
+			break;
+		cond_resched();
+	}
+	return nr + inc;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int cmm_oom_notify(struct notifier_block *self,
 			  unsigned long dummy, void *parm)
 {

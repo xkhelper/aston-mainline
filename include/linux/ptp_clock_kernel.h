@@ -47,10 +47,18 @@ struct system_device_crosststamp;
  * struct ptp_system_timestamp - system time corresponding to a PHC timestamp
  * @pre_ts: system timestamp before capturing PHC
  * @post_ts: system timestamp after capturing PHC
+<<<<<<< HEAD
+=======
+ * @clockid: clock-base used for capturing the system timestamps
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct ptp_system_timestamp {
 	struct timespec64 pre_ts;
 	struct timespec64 post_ts;
+<<<<<<< HEAD
+=======
+	clockid_t clockid;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**
@@ -457,14 +465,50 @@ static inline ktime_t ptp_convert_timestamp(const ktime_t *hwtstamp,
 
 static inline void ptp_read_system_prets(struct ptp_system_timestamp *sts)
 {
+<<<<<<< HEAD
 	if (sts)
 		ktime_get_real_ts64(&sts->pre_ts);
+=======
+	if (sts) {
+		switch (sts->clockid) {
+		case CLOCK_REALTIME:
+			ktime_get_real_ts64(&sts->pre_ts);
+			break;
+		case CLOCK_MONOTONIC:
+			ktime_get_ts64(&sts->pre_ts);
+			break;
+		case CLOCK_MONOTONIC_RAW:
+			ktime_get_raw_ts64(&sts->pre_ts);
+			break;
+		default:
+			break;
+		}
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline void ptp_read_system_postts(struct ptp_system_timestamp *sts)
 {
+<<<<<<< HEAD
 	if (sts)
 		ktime_get_real_ts64(&sts->post_ts);
+=======
+	if (sts) {
+		switch (sts->clockid) {
+		case CLOCK_REALTIME:
+			ktime_get_real_ts64(&sts->post_ts);
+			break;
+		case CLOCK_MONOTONIC:
+			ktime_get_ts64(&sts->post_ts);
+			break;
+		case CLOCK_MONOTONIC_RAW:
+			ktime_get_raw_ts64(&sts->post_ts);
+			break;
+		default:
+			break;
+		}
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #endif

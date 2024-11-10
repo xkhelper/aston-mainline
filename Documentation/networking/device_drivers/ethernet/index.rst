@@ -44,6 +44,10 @@ Contents:
    marvell/octeon_ep
    marvell/octeon_ep_vf
    mellanox/mlx5/index
+<<<<<<< HEAD
+=======
+   meta/fbnic
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
    microsoft/netvsc
    neterion/s2io
    netronome/nfp

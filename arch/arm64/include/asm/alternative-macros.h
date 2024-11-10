@@ -230,7 +230,15 @@ alternative_has_cap_likely(const unsigned long cpucap)
 		return false;
 
 	asm goto(
+<<<<<<< HEAD
 	ALTERNATIVE_CB("b	%l[l_no]", %[cpucap], alt_cb_patch_nops)
+=======
+#ifdef BUILD_VDSO
+	ALTERNATIVE("b	%l[l_no]", "nop", %[cpucap])
+#else
+	ALTERNATIVE_CB("b	%l[l_no]", %[cpucap], alt_cb_patch_nops)
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	:
 	: [cpucap] "i" (cpucap)
 	:

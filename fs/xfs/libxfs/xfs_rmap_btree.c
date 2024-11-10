@@ -731,10 +731,18 @@ xfs_rmapbt_block_maxrecs(
 /*
  * Calculate number of records in an rmap btree block.
  */
+<<<<<<< HEAD
 int
 xfs_rmapbt_maxrecs(
 	int			blocklen,
 	int			leaf)
+=======
+unsigned int
+xfs_rmapbt_maxrecs(
+	struct xfs_mount	*mp,
+	unsigned int		blocklen,
+	bool			leaf)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	blocklen -= XFS_RMAP_BLOCK_LEN;
 	return xfs_rmapbt_block_maxrecs(blocklen, leaf);

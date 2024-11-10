@@ -59,7 +59,10 @@
 # while it is forwarded between different vrfs.
 
 source lib.sh
+<<<<<<< HEAD
 PATH=$PWD:$PWD/tools/testing/selftests/net:$PATH
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 VERBOSE=0
 PAUSE_ON_FAIL=no
 DEFAULT_TTYPE=sym
@@ -636,6 +639,11 @@ EOF
 # Some systems don't have a ping6 binary anymore
 command -v ping6 > /dev/null 2>&1 && ping6=$(command -v ping6) || ping6=$(command -v ping)
 
+<<<<<<< HEAD
+=======
+check_gen_prog "nettest"
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 TESTS_IPV4="ipv4_ping_ttl ipv4_traceroute ipv4_ping_frag ipv4_ping_local ipv4_tcp_local
 ipv4_udp_local ipv4_ping_ttl_asym ipv4_traceroute_asym"
 TESTS_IPV6="ipv6_ping_ttl ipv6_traceroute ipv6_ping_local ipv6_tcp_local ipv6_udp_local

@@ -345,6 +345,10 @@ static int hpfb_dio_probe(struct dio_dev *d, const struct dio_device_id *ent)
 	if (hpfb_init_one(paddr, vaddr)) {
 		if (d->scode >= DIOII_SCBASE)
 			iounmap((void *)vaddr);
+<<<<<<< HEAD
+=======
+		release_mem_region(d->resource.start, resource_size(&d->resource));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENOMEM;
 	}
 	return 0;

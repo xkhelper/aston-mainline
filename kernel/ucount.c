@@ -307,7 +307,12 @@ void dec_rlimit_put_ucounts(struct ucounts *ucounts, enum rlimit_type type)
 	do_dec_rlimit_put_ucounts(ucounts, NULL, type);
 }
 
+<<<<<<< HEAD
 long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
+=======
+long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
+			    bool override_rlimit)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	/* Caller must hold a reference to ucounts */
 	struct ucounts *iter;
@@ -317,10 +322,18 @@ long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
 	for (iter = ucounts; iter; iter = iter->ns->ucounts) {
 		long new = atomic_long_add_return(1, &iter->rlimit[type]);
 		if (new < 0 || new > max)
+<<<<<<< HEAD
 			goto unwind;
 		if (iter == ucounts)
 			ret = new;
 		max = get_userns_rlimit_max(iter->ns, type);
+=======
+			goto dec_unwind;
+		if (iter == ucounts)
+			ret = new;
+		if (!override_rlimit)
+			max = get_userns_rlimit_max(iter->ns, type);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * Grab an extra ucount reference for the caller when
 		 * the rlimit count was previously 0.
@@ -334,7 +347,10 @@ long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
 dec_unwind:
 	dec = atomic_long_sub_return(1, &iter->rlimit[type]);
 	WARN_ON_ONCE(dec < 0);
+<<<<<<< HEAD
 unwind:
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	do_dec_rlimit_put_ucounts(ucounts, iter, type);
 	return 0;
 }

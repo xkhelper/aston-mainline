@@ -694,6 +694,7 @@ enum v4l2_memory
       - 4
       - The buffer is used for :ref:`DMA shared buffer <dmabuf>` I/O.
 
+<<<<<<< HEAD
 .. _memory-flags:
 
 Memory Consistency Flags
@@ -729,6 +730,8 @@ Memory Consistency Flags
 	queue reports the :ref:`V4L2_BUF_CAP_SUPPORTS_MMAP_CACHE_HINTS
 	<V4L2-BUF-CAP-SUPPORTS-MMAP-CACHE-HINTS>` capability.
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 .. raw:: latex
 
     \normalsize

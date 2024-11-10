@@ -25,4 +25,9 @@ TEST_PROGS += debugfs_target_ids_pid_leak.sh
 TEST_PROGS += sysfs_update_removed_scheme_dir.sh
 TEST_PROGS += sysfs_update_schemes_tried_regions_hang.py
 
+<<<<<<< HEAD
+=======
+EXTRA_CLEAN = __pycache__
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 include ../lib.mk

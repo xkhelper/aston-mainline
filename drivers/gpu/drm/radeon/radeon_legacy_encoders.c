@@ -450,7 +450,11 @@ void radeon_legacy_backlight_init(struct radeon_encoder *radeon_encoder,
 	}
 
 	bd->props.brightness = radeon_legacy_backlight_get_brightness(bd);
+<<<<<<< HEAD
 	bd->props.power = FB_BLANK_UNBLANK;
+=======
+	bd->props.power = BACKLIGHT_POWER_ON;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	backlight_update_status(bd);
 
 	DRM_INFO("radeon legacy LVDS backlight initialized\n");

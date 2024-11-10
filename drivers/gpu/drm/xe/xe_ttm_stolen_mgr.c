@@ -5,7 +5,10 @@
  */
 
 #include <drm/drm_managed.h>
+<<<<<<< HEAD
 #include <drm/drm_mm.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <drm/ttm/ttm_device.h>
 #include <drm/ttm/ttm_placement.h>

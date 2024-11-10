@@ -504,7 +504,11 @@ static void __ieee80211_scan_completed(struct ieee80211_hw *hw, bool aborted)
 	 * the scan was in progress; if there was none this will
 	 * just be a no-op for the particular interface.
 	 */
+<<<<<<< HEAD
 	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
+=======
+	list_for_each_entry(sdata, &local->interfaces, list) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ieee80211_sdata_running(sdata))
 			wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
 	}
@@ -575,6 +579,10 @@ static bool __ieee80211_can_leave_ch(struct ieee80211_sub_if_data *sdata)
 {
 	struct ieee80211_local *local = sdata->local;
 	struct ieee80211_sub_if_data *sdata_iter;
+<<<<<<< HEAD
+=======
+	unsigned int link_id;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	lockdep_assert_wiphy(local->hw.wiphy);
 
@@ -585,8 +593,14 @@ static bool __ieee80211_can_leave_ch(struct ieee80211_sub_if_data *sdata)
 		return false;
 
 	list_for_each_entry(sdata_iter, &local->interfaces, list) {
+<<<<<<< HEAD
 		if (sdata_iter->wdev.cac_started)
 			return false;
+=======
+		for_each_valid_link(&sdata_iter->wdev, link_id)
+			if (sdata_iter->wdev.links[link_id].cac_started)
+				return false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return true;
@@ -649,7 +663,11 @@ static void ieee80211_send_scan_probe_req(struct ieee80211_sub_if_data *sdata,
 				cpu_to_le16(IEEE80211_SN_TO_SEQ(sn));
 		}
 		IEEE80211_SKB_CB(skb)->flags |= tx_flags;
+<<<<<<< HEAD
 		IEEE80211_SKB_CB(skb)->control.flags |= IEEE80211_TX_CTRL_SCAN_TX;
+=======
+		IEEE80211_SKB_CB(skb)->control.flags |= IEEE80211_TX_CTRL_DONT_USE_RATE_MASK;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ieee80211_tx_skb_tid_band(sdata, skb, 7, channel->band);
 	}
 }
@@ -1013,10 +1031,15 @@ set_channel:
 	 */
 	if ((chan->flags & (IEEE80211_CHAN_NO_IR | IEEE80211_CHAN_RADAR)) ||
 	    !scan_req->n_ssids) {
+<<<<<<< HEAD
 		*next_delay = msecs_to_jiffies(scan_req->duration) >
 			      IEEE80211_PASSIVE_CHANNEL_TIME ?
 			      msecs_to_jiffies(scan_req->duration) :
 			      IEEE80211_PASSIVE_CHANNEL_TIME;
+=======
+		*next_delay = max(msecs_to_jiffies(scan_req->duration),
+				  IEEE80211_PASSIVE_CHANNEL_TIME);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		local->next_scan_state = SCAN_DECISION;
 		if (scan_req->n_ssids)
 			set_bit(SCAN_BEACON_WAIT, &local->scanning);

@@ -349,9 +349,15 @@ struct eventfd_ctx *eventfd_ctx_fdget(int fd)
 {
 	struct eventfd_ctx *ctx;
 	struct fd f = fdget(fd);
+<<<<<<< HEAD
 	if (!f.file)
 		return ERR_PTR(-EBADF);
 	ctx = eventfd_ctx_fileget(f.file);
+=======
+	if (!fd_file(f))
+		return ERR_PTR(-EBADF);
+	ctx = eventfd_ctx_fileget(fd_file(f));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fdput(f);
 	return ctx;
 }

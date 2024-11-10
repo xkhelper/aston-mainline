@@ -15,7 +15,11 @@
 
 #define XMITBUF_ALIGN_SZ 512
 
+<<<<<<< HEAD
 /*  xmit extension buff defination */
+=======
+/*  xmit extension buff definition */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define MAX_XMIT_EXTBUF_SZ	(1536)
 #define NR_XMIT_EXTBUFF	(32)
 

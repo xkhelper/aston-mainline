@@ -914,7 +914,11 @@ static int simple_read_folio(struct file *file, struct folio *folio)
 
 int simple_write_begin(struct file *file, struct address_space *mapping,
 			loff_t pos, unsigned len,
+<<<<<<< HEAD
 			struct page **pagep, void **fsdata)
+=======
+			struct folio **foliop, void **fsdata)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct folio *folio;
 
@@ -923,7 +927,11 @@ int simple_write_begin(struct file *file, struct address_space *mapping,
 	if (IS_ERR(folio))
 		return PTR_ERR(folio);
 
+<<<<<<< HEAD
 	*pagep = &folio->page;
+=======
+	*foliop = folio;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!folio_test_uptodate(folio) && (len != folio_size(folio))) {
 		size_t from = offset_in_folio(folio, pos);
@@ -942,11 +950,19 @@ EXPORT_SYMBOL(simple_write_begin);
  * @pos: 		"
  * @len: 		"
  * @copied: 		"
+<<<<<<< HEAD
  * @page: 		"
  * @fsdata: 		"
  *
  * simple_write_end does the minimum needed for updating a page after writing is
  * done. It has the same API signature as the .write_end of
+=======
+ * @folio: 		"
+ * @fsdata: 		"
+ *
+ * simple_write_end does the minimum needed for updating a folio after
+ * writing is done. It has the same API signature as the .write_end of
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * address_space_operations vector. So it can just be set onto .write_end for
  * FSes that don't need any other processing. i_mutex is assumed to be held.
  * Block based filesystems should use generic_write_end().
@@ -959,9 +975,14 @@ EXPORT_SYMBOL(simple_write_begin);
  */
 static int simple_write_end(struct file *file, struct address_space *mapping,
 			loff_t pos, unsigned len, unsigned copied,
+<<<<<<< HEAD
 			struct page *page, void *fsdata)
 {
 	struct folio *folio = page_folio(page);
+=======
+			struct folio *folio, void *fsdata)
+{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct inode *inode = folio->mapping->host;
 	loff_t last_pos = pos + copied;
 
@@ -2003,6 +2024,7 @@ bool inode_maybe_inc_iversion(struct inode *inode, bool force)
 	 * information, but the legacy inode_inc_iversion code used a spinlock
 	 * to serialize increments.
 	 *
+<<<<<<< HEAD
 	 * Here, we add full memory barriers to ensure that any de-facto
 	 * ordering with other info is preserved.
 	 *
@@ -2010,6 +2032,21 @@ bool inode_maybe_inc_iversion(struct inode *inode, bool force)
 	 */
 	smp_mb();
 	cur = inode_peek_iversion_raw(inode);
+=======
+	 * We add a full memory barrier to ensure that any de facto ordering
+	 * with other state is preserved (either implicitly coming from cmpxchg
+	 * or explicitly from smp_mb if we don't know upfront if we will execute
+	 * the former).
+	 *
+	 * These barriers pair with inode_query_iversion().
+	 */
+	cur = inode_peek_iversion_raw(inode);
+	if (!force && !(cur & I_VERSION_QUERIED)) {
+		smp_mb();
+		cur = inode_peek_iversion_raw(inode);
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	do {
 		/* If flag is clear then we needn't do anything */
 		if (!force && !(cur & I_VERSION_QUERIED))
@@ -2038,11 +2075,21 @@ EXPORT_SYMBOL(inode_maybe_inc_iversion);
 u64 inode_query_iversion(struct inode *inode)
 {
 	u64 cur, new;
+<<<<<<< HEAD
 
+=======
+	bool fenced = false;
+
+	/*
+	 * Memory barriers (implicit in cmpxchg, explicit in smp_mb) pair with
+	 * inode_maybe_inc_iversion(), see that routine for more details.
+	 */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cur = inode_peek_iversion_raw(inode);
 	do {
 		/* If flag is already set, then no need to swap */
 		if (cur & I_VERSION_QUERIED) {
+<<<<<<< HEAD
 			/*
 			 * This barrier (and the implicit barrier in the
 			 * cmpxchg below) pairs with the barrier in
@@ -2052,6 +2099,14 @@ u64 inode_query_iversion(struct inode *inode)
 			break;
 		}
 
+=======
+			if (!fenced)
+				smp_mb();
+			break;
+		}
+
+		fenced = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		new = cur | I_VERSION_QUERIED;
 	} while (!atomic64_try_cmpxchg(&inode->i_version, &cur, new));
 	return cur >> I_VERSION_QUERIED_SHIFT;

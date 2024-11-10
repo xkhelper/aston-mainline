@@ -20,7 +20,11 @@ static int dwxgmac2_dma_reset(void __iomem *ioaddr)
 }
 
 static void dwxgmac2_dma_init(void __iomem *ioaddr,
+<<<<<<< HEAD
 			      struct stmmac_dma_cfg *dma_cfg, int atds)
+=======
+			      struct stmmac_dma_cfg *dma_cfg)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 value = readl(ioaddr + XGMAC_DMA_SYSBUS_MODE);
 

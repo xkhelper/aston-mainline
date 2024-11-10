@@ -14,7 +14,11 @@
 
 /* Number of elements in the array with statical CDBs */
 #define	MAX_STAT_DMA_CDBS	16
+<<<<<<< HEAD
 /* Number of DMA engines available on the contoller */
+=======
+/* Number of DMA engines available on the controller */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define DMA_ENGINES_NUM		2
 
 /* Maximum h/w supported number of destinations */

@@ -23,7 +23,11 @@
 #include <linux/platform_data/cros_ec_proto.h>
 #include <linux/platform_device.h>
 #include <linux/pm_wakeup.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "hid-ids.h"
 #include "hid-vivaldi-common.h"
@@ -418,6 +422,7 @@ static int hammer_event(struct hid_device *hid, struct hid_field *field,
 	return 0;
 }
 
+<<<<<<< HEAD
 static bool hammer_has_usage(struct hid_device *hdev, unsigned int report_type,
 			unsigned application, unsigned usage)
 {
@@ -444,12 +449,21 @@ static bool hammer_has_usage(struct hid_device *hdev, unsigned int report_type,
 static bool hammer_has_folded_event(struct hid_device *hdev)
 {
 	return hammer_has_usage(hdev, HID_INPUT_REPORT,
+=======
+static bool hammer_has_folded_event(struct hid_device *hdev)
+{
+	return !!hid_find_field(hdev, HID_INPUT_REPORT,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				HID_GD_KEYBOARD, HID_USAGE_KBD_FOLDED);
 }
 
 static bool hammer_has_backlight_control(struct hid_device *hdev)
 {
+<<<<<<< HEAD
 	return hammer_has_usage(hdev, HID_OUTPUT_REPORT,
+=======
+	return !!hid_find_field(hdev, HID_OUTPUT_REPORT,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				HID_GD_KEYBOARD, HID_AD_BRIGHTNESS);
 }
 

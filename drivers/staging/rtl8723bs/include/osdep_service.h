@@ -81,9 +81,13 @@ static inline void thread_enter(char *name)
 static inline void flush_signals_thread(void)
 {
 	if (signal_pending(current))
+<<<<<<< HEAD
 	{
 		flush_signals(current);
 	}
+=======
+		flush_signals(current);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #define rtw_warn_on(condition) WARN_ON(condition)
@@ -102,7 +106,11 @@ static inline int rtw_bug_check(void *parg1, void *parg2, void *parg3, void *par
 #define MAC_ARG(x) (x)
 #endif
 
+<<<<<<< HEAD
 extern void rtw_free_netdev(struct net_device * netdev);
+=======
+extern void rtw_free_netdev(struct net_device *netdev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Macros for handling unaligned memory accesses */
 

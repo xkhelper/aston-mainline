@@ -92,11 +92,14 @@ static irqreturn_t mt6779_keypad_irq_handler(int irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 static void mt6779_keypad_clk_disable(void *data)
 {
 	clk_disable_unprepare(data);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void mt6779_keypad_calc_row_col_single(unsigned int key,
 					      unsigned int *row,
 					      unsigned int *col)
@@ -213,6 +216,7 @@ static int mt6779_keypad_pdrv_probe(struct platform_device *pdev)
 	regmap_update_bits(keypad->regmap, MTK_KPD_SEL, MTK_KPD_SEL_COL,
 			   MTK_KPD_SEL_COLMASK(keypad->n_cols));
 
+<<<<<<< HEAD
 	keypad->clk = devm_clk_get(&pdev->dev, "kpd");
 	if (IS_ERR(keypad->clk))
 		return PTR_ERR(keypad->clk);
@@ -228,6 +232,12 @@ static int mt6779_keypad_pdrv_probe(struct platform_device *pdev)
 	if (error)
 		return error;
 
+=======
+	keypad->clk = devm_clk_get_enabled(&pdev->dev, "kpd");
+	if (IS_ERR(keypad->clk))
+		return PTR_ERR(keypad->clk);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	irq = platform_get_irq(pdev, 0);
 	if (irq < 0)
 		return irq;
@@ -260,6 +270,10 @@ static const struct of_device_id mt6779_keypad_of_match[] = {
 	{ .compatible = "mediatek,mt6873-keypad" },
 	{ /* sentinel */ }
 };
+<<<<<<< HEAD
+=======
+MODULE_DEVICE_TABLE(of, mt6779_keypad_of_match);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct platform_driver mt6779_keypad_pdrv = {
 	.probe = mt6779_keypad_pdrv_probe,

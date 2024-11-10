@@ -41,6 +41,10 @@ config NVME_HWMON
 
 config NVME_FABRICS
 	select NVME_CORE
+<<<<<<< HEAD
+=======
+	select NVME_KEYRING if NVME_TCP_TLS
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	tristate
 
 config NVME_RDMA
@@ -94,7 +98,10 @@ config NVME_TCP
 config NVME_TCP_TLS
 	bool "NVMe over Fabrics TCP TLS encryption support"
 	depends on NVME_TCP
+<<<<<<< HEAD
 	select NVME_KEYRING
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select NET_HANDSHAKE
 	select KEYS
 	help
@@ -109,6 +116,10 @@ config NVME_HOST_AUTH
 	bool "NVMe over Fabrics In-Band Authentication in host side"
 	depends on NVME_CORE
 	select NVME_AUTH
+<<<<<<< HEAD
+=======
+	select NVME_KEYRING if NVME_TCP_TLS
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  This provides support for NVMe over Fabrics In-Band Authentication in
 	  host side.

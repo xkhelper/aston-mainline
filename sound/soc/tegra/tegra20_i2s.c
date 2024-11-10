@@ -500,7 +500,11 @@ static struct platform_driver tegra20_i2s_driver = {
 		.pm = &tegra20_i2s_pm_ops,
 	},
 	.probe = tegra20_i2s_platform_probe,
+<<<<<<< HEAD
 	.remove_new = tegra20_i2s_platform_remove,
+=======
+	.remove = tegra20_i2s_platform_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(tegra20_i2s_driver);
 

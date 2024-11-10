@@ -36,6 +36,7 @@ enum sandbox_type {
 	TCP_SANDBOX,
 };
 
+<<<<<<< HEAD
 struct protocol_variant {
 	int domain;
 	int type;
@@ -60,6 +61,8 @@ static pid_t sys_gettid(void)
 	return syscall(__NR_gettid);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int set_service(struct service_fixture *const srv,
 		       const struct protocol_variant prot,
 		       const unsigned short index)
@@ -92,12 +95,16 @@ static int set_service(struct service_fixture *const srv,
 		return 0;
 
 	case AF_UNIX:
+<<<<<<< HEAD
 		srv->unix_addr.sun_family = prot.domain;
 		sprintf(srv->unix_addr.sun_path,
 			"_selftests-landlock-net-tid%d-index%d", sys_gettid(),
 			index);
 		srv->unix_addr_len = SUN_LEN(&srv->unix_addr);
 		srv->unix_addr.sun_path[0] = '\0';
+=======
+		set_unix_address(srv, index);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 	return 1;

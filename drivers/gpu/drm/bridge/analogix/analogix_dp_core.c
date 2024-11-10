@@ -36,11 +36,14 @@
 
 static const bool verify_fast_training;
 
+<<<<<<< HEAD
 struct bridge_init {
 	struct i2c_client *client;
 	struct device_node *node;
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void analogix_dp_init_dp(struct analogix_dp_device *dp)
 {
 	analogix_dp_reset(dp);

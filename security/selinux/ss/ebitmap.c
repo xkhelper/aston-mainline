@@ -572,7 +572,11 @@ u32 ebitmap_hash(const struct ebitmap *e, u32 hash)
 
 void __init ebitmap_cache_init(void)
 {
+<<<<<<< HEAD
 	ebitmap_node_cachep = kmem_cache_create("ebitmap_node",
 						sizeof(struct ebitmap_node), 0,
 						SLAB_PANIC, NULL);
+=======
+	ebitmap_node_cachep = KMEM_CACHE(ebitmap_node, SLAB_PANIC);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

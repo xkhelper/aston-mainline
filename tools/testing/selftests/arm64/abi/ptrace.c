@@ -163,10 +163,17 @@ static void test_hw_debug(pid_t child, int type, const char *type_name)
 static int do_child(void)
 {
 	if (ptrace(PTRACE_TRACEME, -1, NULL, NULL))
+<<<<<<< HEAD
 		ksft_exit_fail_msg("PTRACE_TRACEME", strerror(errno));
 
 	if (raise(SIGSTOP))
 		ksft_exit_fail_msg("raise(SIGSTOP)", strerror(errno));
+=======
+		ksft_exit_fail_perror("PTRACE_TRACEME");
+
+	if (raise(SIGSTOP))
+		ksft_exit_fail_perror("raise(SIGSTOP)");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return EXIT_SUCCESS;
 }

@@ -66,6 +66,11 @@ int dlm_debug_add_lkb_to_waiters(struct dlm_ls *ls, uint32_t lkb_id,
 
 static inline int is_master(struct dlm_rsb *r)
 {
+<<<<<<< HEAD
+=======
+	WARN_ON_ONCE(r->res_nodeid == -1);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return !r->res_nodeid;
 }
 

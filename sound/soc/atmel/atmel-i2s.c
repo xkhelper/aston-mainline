@@ -733,7 +733,11 @@ static struct platform_driver atmel_i2s_driver = {
 		.of_match_table	= atmel_i2s_dt_ids,
 	},
 	.probe		= atmel_i2s_probe,
+<<<<<<< HEAD
 	.remove_new	= atmel_i2s_remove,
+=======
+	.remove		= atmel_i2s_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(atmel_i2s_driver);
 

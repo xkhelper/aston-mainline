@@ -10,9 +10,12 @@
 #ifndef MDEV_PRIVATE_H
 #define MDEV_PRIVATE_H
 
+<<<<<<< HEAD
 int  mdev_bus_register(void);
 void mdev_bus_unregister(void);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern const struct bus_type mdev_bus_type;
 extern const struct attribute_group *mdev_device_groups[];
 

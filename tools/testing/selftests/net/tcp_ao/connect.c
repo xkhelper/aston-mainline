@@ -67,14 +67,22 @@ static void *client_fn(void *arg)
 	netstat_free(ns_after);
 
 	if (nr_packets > (after_aogood - before_aogood)) {
+<<<<<<< HEAD
 		test_fail("TCPAOGood counter mismatch: %zu > (%zu - %zu)",
+=======
+		test_fail("TCPAOGood counter mismatch: %zu > (%" PRIu64 " - %" PRIu64 ")",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				nr_packets, after_aogood, before_aogood);
 		return NULL;
 	}
 	if (test_tcp_ao_counters_cmp("connect", &ao1, &ao2, TEST_CNT_GOOD))
 		return NULL;
 
+<<<<<<< HEAD
 	test_ok("connect TCPAOGood %" PRIu64 "/%" PRIu64 "/%" PRIu64 " => %" PRIu64 "/%" PRIu64 "/%" PRIu64 ", sent %" PRIu64,
+=======
+	test_ok("connect TCPAOGood %" PRIu64 "/%" PRIu64 "/%" PRIu64 " => %" PRIu64 "/%" PRIu64 "/%" PRIu64 ", sent %zu",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			before_aogood, ao1.ao_info_pkt_good,
 			ao1.key_cnts[0].pkt_good,
 			after_aogood, ao2.ao_info_pkt_good,
@@ -85,6 +93,10 @@ static void *client_fn(void *arg)
 
 int main(int argc, char *argv[])
 {
+<<<<<<< HEAD
 	test_init(1, server_fn, client_fn);
+=======
+	test_init(2, server_fn, client_fn);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }

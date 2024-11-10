@@ -1092,7 +1092,11 @@ static struct platform_driver bxcan_driver = {
 		.of_match_table = bxcan_of_match,
 	},
 	.probe = bxcan_probe,
+<<<<<<< HEAD
 	.remove_new = bxcan_remove,
+=======
+	.remove = bxcan_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(bxcan_driver);

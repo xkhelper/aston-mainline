@@ -653,7 +653,11 @@
 			mboxes = <&ipcc IPCC_CLIENT_AOP IPCC_MPROC_SIGNAL_GLINK_QMP>;
 
 			rpm_requests: rpm-requests {
+<<<<<<< HEAD
 				compatible = "qcom,rpm-sm6375";
+=======
+				compatible = "qcom,rpm-sm6375", "qcom,glink-smd-rpm";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				qcom,glink-channels = "rpm_requests";
 
 				rpmcc: clock-controller {

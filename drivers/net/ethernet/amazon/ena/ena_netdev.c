@@ -2798,6 +2798,7 @@ err:
 	ena_com_delete_debug_area(adapter->ena_dev);
 }
 
+<<<<<<< HEAD
 int ena_update_hw_stats(struct ena_adapter *adapter)
 {
 	int rc;
@@ -2811,6 +2812,8 @@ int ena_update_hw_stats(struct ena_adapter *adapter)
 	return 0;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void ena_get_stats64(struct net_device *netdev,
 			    struct rtnl_link_stats64 *stats)
 {
@@ -3944,10 +3947,23 @@ static int ena_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 
 	pci_set_drvdata(pdev, adapter);
 
+<<<<<<< HEAD
 	rc = ena_map_llq_mem_bar(pdev, ena_dev, bars);
 	if (rc) {
 		dev_err(&pdev->dev, "ENA LLQ bar mapping failed\n");
 		goto err_netdev_destroy;
+=======
+	rc = ena_com_allocate_customer_metrics_buffer(ena_dev);
+	if (rc) {
+		netdev_err(netdev, "ena_com_allocate_customer_metrics_buffer failed\n");
+		goto err_netdev_destroy;
+	}
+
+	rc = ena_map_llq_mem_bar(pdev, ena_dev, bars);
+	if (rc) {
+		dev_err(&pdev->dev, "ENA LLQ bar mapping failed\n");
+		goto err_metrics_destroy;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	rc = ena_device_init(adapter, pdev, &get_feat_ctx, &wd_state);
@@ -3955,7 +3971,11 @@ static int ena_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 		dev_err(&pdev->dev, "ENA device init failed\n");
 		if (rc == -ETIME)
 			rc = -EPROBE_DEFER;
+<<<<<<< HEAD
 		goto err_netdev_destroy;
+=======
+		goto err_metrics_destroy;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* Initial TX and RX interrupt delay. Assumes 1 usec granularity.
@@ -4076,6 +4096,11 @@ err_worker_destroy:
 err_device_destroy:
 	ena_com_delete_host_info(ena_dev);
 	ena_com_admin_destroy(ena_dev);
+<<<<<<< HEAD
+=======
+err_metrics_destroy:
+	ena_com_delete_customer_metrics_buffer(ena_dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_netdev_destroy:
 	free_netdev(netdev);
 err_free_region:
@@ -4139,6 +4164,11 @@ static void __ena_shutoff(struct pci_dev *pdev, bool shutdown)
 
 	ena_com_delete_host_info(ena_dev);
 
+<<<<<<< HEAD
+=======
+	ena_com_delete_customer_metrics_buffer(ena_dev);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ena_release_bars(ena_dev, pdev);
 
 	pci_disable_device(pdev);

@@ -22,7 +22,11 @@
 #include <linux/mod_devicetable.h>
 #include <linux/module.h>
 #include <linux/property.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Per chip data */
 struct hynitron_ts_chip_data {
@@ -470,7 +474,11 @@ static const struct hynitron_ts_chip_data cst3xx_data = {
 };
 
 static const struct i2c_device_id hyn_tpd_id[] = {
+<<<<<<< HEAD
 	{ .name = "hynitron_ts", 0 },
+=======
+	{ .name = "hynitron_ts" },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ /* sentinel */ },
 };
 MODULE_DEVICE_TABLE(i2c, hyn_tpd_id);

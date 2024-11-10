@@ -336,7 +336,11 @@ static bool nfs_want_read_modify_write(struct file *file, struct folio *folio,
  * increment the page use counts until he is done with the page.
  */
 static int nfs_write_begin(struct file *file, struct address_space *mapping,
+<<<<<<< HEAD
 			   loff_t pos, unsigned len, struct page **pagep,
+=======
+			   loff_t pos, unsigned len, struct folio **foliop,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			   void **fsdata)
 {
 	fgf_t fgp = FGP_WRITEBEGIN;
@@ -353,7 +357,11 @@ start:
 				    mapping_gfp_mask(mapping));
 	if (IS_ERR(folio))
 		return PTR_ERR(folio);
+<<<<<<< HEAD
 	*pagep = &folio->page;
+=======
+	*foliop = folio;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = nfs_flush_incompatible(file, folio);
 	if (ret) {
@@ -372,10 +380,16 @@ start:
 
 static int nfs_write_end(struct file *file, struct address_space *mapping,
 			 loff_t pos, unsigned len, unsigned copied,
+<<<<<<< HEAD
 			 struct page *page, void *fsdata)
 {
 	struct nfs_open_context *ctx = nfs_file_open_context(file);
 	struct folio *folio = page_folio(page);
+=======
+			 struct folio *folio, void *fsdata)
+{
+	struct nfs_open_context *ctx = nfs_file_open_context(file);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned offset = offset_in_folio(folio, pos);
 	int status;
 

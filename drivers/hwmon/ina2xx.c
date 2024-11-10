@@ -22,6 +22,7 @@
  * Thanks to Jan Volkering
  */
 
+<<<<<<< HEAD
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/init.h>
@@ -37,6 +38,23 @@
 #include <linux/regmap.h>
 
 #include <linux/platform_data/ina2xx.h>
+=======
+#include <linux/bitfield.h>
+#include <linux/bits.h>
+#include <linux/delay.h>
+#include <linux/device.h>
+#include <linux/err.h>
+#include <linux/hwmon.h>
+#include <linux/i2c.h>
+#include <linux/init.h>
+#include <linux/kernel.h>
+#include <linux/module.h>
+#include <linux/property.h>
+#include <linux/regmap.h>
+#include <linux/slab.h>
+#include <linux/sysfs.h>
+#include <linux/util_macros.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* common register definitions */
 #define INA2XX_CONFIG			0x00
@@ -51,10 +69,13 @@
 #define INA226_ALERT_LIMIT		0x07
 #define INA226_DIE_ID			0xFF
 
+<<<<<<< HEAD
 /* register count */
 #define INA219_REGISTERS		6
 #define INA226_REGISTERS		8
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define INA2XX_MAX_REGISTERS		8
 
 /* settings - depend on use case */
@@ -68,6 +89,7 @@
 #define INA2XX_RSHUNT_DEFAULT		10000
 
 /* bit mask for reading the averaging setting in the configuration register */
+<<<<<<< HEAD
 #define INA226_AVG_RD_MASK		0x0E00
 
 #define INA226_READ_AVG(reg)		(((reg) & INA226_AVG_RD_MASK) >> 9)
@@ -92,15 +114,73 @@
 /* common attrs, ina226 attrs and NULL */
 #define INA2XX_MAX_ATTRIBUTE_GROUPS	3
 
+=======
+#define INA226_AVG_RD_MASK		GENMASK(11, 9)
+
+#define INA226_READ_AVG(reg)		FIELD_GET(INA226_AVG_RD_MASK, reg)
+
+#define INA226_ALERT_LATCH_ENABLE	BIT(0)
+#define INA226_ALERT_POLARITY		BIT(1)
+
+/* bit number of alert functions in Mask/Enable Register */
+#define INA226_SHUNT_OVER_VOLTAGE_MASK	BIT(15)
+#define INA226_SHUNT_UNDER_VOLTAGE_MASK	BIT(14)
+#define INA226_BUS_OVER_VOLTAGE_MASK	BIT(13)
+#define INA226_BUS_UNDER_VOLTAGE_MASK	BIT(12)
+#define INA226_POWER_OVER_LIMIT_MASK	BIT(11)
+
+/* bit mask for alert config bits of Mask/Enable Register */
+#define INA226_ALERT_CONFIG_MASK	GENMASK(15, 10)
+#define INA226_ALERT_FUNCTION_FLAG	BIT(4)
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Both bus voltage and shunt voltage conversion times for ina226 are set
  * to 0b0100 on POR, which translates to 2200 microseconds in total.
  */
 #define INA226_TOTAL_CONV_TIME_DEFAULT	2200
 
+<<<<<<< HEAD
 static struct regmap_config ina2xx_regmap_config = {
 	.reg_bits = 8,
 	.val_bits = 16,
+=======
+static bool ina2xx_writeable_reg(struct device *dev, unsigned int reg)
+{
+	switch (reg) {
+	case INA2XX_CONFIG:
+	case INA2XX_CALIBRATION:
+	case INA226_MASK_ENABLE:
+	case INA226_ALERT_LIMIT:
+		return true;
+	default:
+		return false;
+	}
+}
+
+static bool ina2xx_volatile_reg(struct device *dev, unsigned int reg)
+{
+	switch (reg) {
+	case INA2XX_SHUNT_VOLTAGE:
+	case INA2XX_BUS_VOLTAGE:
+	case INA2XX_POWER:
+	case INA2XX_CURRENT:
+		return true;
+	default:
+		return false;
+	}
+}
+
+static const struct regmap_config ina2xx_regmap_config = {
+	.reg_bits = 8,
+	.val_bits = 16,
+	.use_single_write = true,
+	.use_single_read = true,
+	.max_register = INA2XX_MAX_REGISTERS,
+	.cache_type = REGCACHE_MAPLE,
+	.volatile_reg = ina2xx_volatile_reg,
+	.writeable_reg = ina2xx_writeable_reg,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum ina2xx_ids { ina219, ina226 };
@@ -108,7 +188,10 @@ enum ina2xx_ids { ina219, ina226 };
 struct ina2xx_config {
 	u16 config_default;
 	int calibration_value;
+<<<<<<< HEAD
 	int registers;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int shunt_div;
 	int bus_voltage_shift;
 	int bus_voltage_lsb;	/* uV */
@@ -117,21 +200,31 @@ struct ina2xx_config {
 
 struct ina2xx_data {
 	const struct ina2xx_config *config;
+<<<<<<< HEAD
+=======
+	enum ina2xx_ids chip;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	long rshunt;
 	long current_lsb_uA;
 	long power_lsb_uW;
 	struct mutex config_lock;
 	struct regmap *regmap;
+<<<<<<< HEAD
 
 	const struct attribute_group *groups[INA2XX_MAX_ATTRIBUTE_GROUPS];
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct ina2xx_config ina2xx_config[] = {
 	[ina219] = {
 		.config_default = INA219_CONFIG_DEFAULT,
 		.calibration_value = 4096,
+<<<<<<< HEAD
 		.registers = INA219_REGISTERS,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.shunt_div = 100,
 		.bus_voltage_shift = 3,
 		.bus_voltage_lsb = 4000,
@@ -140,7 +233,10 @@ static const struct ina2xx_config ina2xx_config[] = {
 	[ina226] = {
 		.config_default = INA226_CONFIG_DEFAULT,
 		.calibration_value = 2048,
+<<<<<<< HEAD
 		.registers = INA226_REGISTERS,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.shunt_div = 400,
 		.bus_voltage_shift = 0,
 		.bus_voltage_lsb = 1250,
@@ -171,15 +267,29 @@ static int ina226_reg_to_interval(u16 config)
  * Return the new, shifted AVG field value of CONFIG register,
  * to use with regmap_update_bits
  */
+<<<<<<< HEAD
 static u16 ina226_interval_to_reg(int interval)
 {
 	int avg, avg_bits;
 
+=======
+static u16 ina226_interval_to_reg(long interval)
+{
+	int avg, avg_bits;
+
+	/*
+	 * The maximum supported interval is 1,024 * (2 * 8.244ms) ~= 16.8s.
+	 * Clamp to 32 seconds before calculations to avoid overflows.
+	 */
+	interval = clamp_val(interval, 0, 32000);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	avg = DIV_ROUND_CLOSEST(interval * 1000,
 				INA226_TOTAL_CONV_TIME_DEFAULT);
 	avg_bits = find_closest(avg, ina226_avg_tab,
 				ARRAY_SIZE(ina226_avg_tab));
 
+<<<<<<< HEAD
 	return INA226_SHIFT_AVG(avg_bits);
 }
 
@@ -272,6 +382,9 @@ static int ina2xx_read_reg(struct device *dev, int reg, unsigned int *regval)
 	 */
 	dev_err(dev, "unable to reinitialize the chip\n");
 	return -ENODEV;
+=======
+	return FIELD_PREP(INA226_AVG_RD_MASK, avg_bits);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int ina2xx_get_value(struct ina2xx_data *data, u8 reg,
@@ -285,8 +398,13 @@ static int ina2xx_get_value(struct ina2xx_data *data, u8 reg,
 		val = DIV_ROUND_CLOSEST((s16)regval, data->config->shunt_div);
 		break;
 	case INA2XX_BUS_VOLTAGE:
+<<<<<<< HEAD
 		val = (regval >> data->config->bus_voltage_shift)
 		  * data->config->bus_voltage_lsb;
+=======
+		val = (regval >> data->config->bus_voltage_shift) *
+		  data->config->bus_voltage_lsb;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		val = DIV_ROUND_CLOSEST(val, 1000);
 		break;
 	case INA2XX_POWER:
@@ -310,6 +428,7 @@ static int ina2xx_get_value(struct ina2xx_data *data, u8 reg,
 	return val;
 }
 
+<<<<<<< HEAD
 static ssize_t ina2xx_value_show(struct device *dev,
 				 struct device_attribute *da, char *buf)
 {
@@ -348,12 +467,72 @@ static int ina226_reg_to_alert(struct ina2xx_data *data, u8 bit, u16 regval)
 	}
 
 	return ina2xx_get_value(data, reg, regval);
+=======
+/*
+ * Read and convert register value from chip. If the register value is 0,
+ * check if the chip has been power cycled or reset. If so, re-initialize it.
+ */
+static int ina2xx_read_init(struct device *dev, int reg, long *val)
+{
+	struct ina2xx_data *data = dev_get_drvdata(dev);
+	struct regmap *regmap = data->regmap;
+	unsigned int regval;
+	int ret, retry;
+
+	for (retry = 5; retry; retry--) {
+		ret = regmap_read(regmap, reg, &regval);
+		if (ret < 0)
+			return ret;
+
+		/*
+		 * If the current value in the calibration register is 0, the
+		 * power and current registers will also remain at 0. In case
+		 * the chip has been reset let's check the calibration
+		 * register and reinitialize if needed.
+		 * We do that extra read of the calibration register if there
+		 * is some hint of a chip reset.
+		 */
+		if (regval == 0) {
+			unsigned int cal;
+
+			ret = regmap_read_bypassed(regmap, INA2XX_CALIBRATION, &cal);
+			if (ret < 0)
+				return ret;
+
+			if (cal == 0) {
+				dev_warn(dev, "chip not calibrated, reinitializing\n");
+
+				regcache_mark_dirty(regmap);
+				regcache_sync(regmap);
+
+				/*
+				 * Let's make sure the power and current
+				 * registers have been updated before trying
+				 * again.
+				 */
+				msleep(INA2XX_MAX_DELAY);
+				continue;
+			}
+		}
+		*val = ina2xx_get_value(data, reg, regval);
+		return 0;
+	}
+
+	/*
+	 * If we're here then although all write operations succeeded, the
+	 * chip still returns 0 in the calibration register. Nothing more we
+	 * can do here.
+	 */
+	dev_err(dev, "unable to reinitialize the chip\n");
+	return -ENODEV;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
  * Turns alert limit values into register values.
  * Opposite of the formula in ina2xx_get_value().
  */
+<<<<<<< HEAD
 static s16 ina226_alert_to_reg(struct ina2xx_data *data, u8 bit, int val)
 {
 	switch (bit) {
@@ -369,6 +548,29 @@ static s16 ina226_alert_to_reg(struct ina2xx_data *data, u8 bit, int val)
 	case INA226_POWER_OVER_LIMIT_BIT:
 		val = DIV_ROUND_CLOSEST(val, data->power_lsb_uW);
 		return clamp_val(val, 0, USHRT_MAX);
+=======
+static u16 ina226_alert_to_reg(struct ina2xx_data *data, int reg, long val)
+{
+	switch (reg) {
+	case INA2XX_SHUNT_VOLTAGE:
+		val = clamp_val(val, 0, SHRT_MAX * data->config->shunt_div);
+		val *= data->config->shunt_div;
+		return clamp_val(val, 0, SHRT_MAX);
+	case INA2XX_BUS_VOLTAGE:
+		val = clamp_val(val, 0, 200000);
+		val = (val * 1000) << data->config->bus_voltage_shift;
+		val = DIV_ROUND_CLOSEST(val, data->config->bus_voltage_lsb);
+		return clamp_val(val, 0, USHRT_MAX);
+	case INA2XX_POWER:
+		val = clamp_val(val, 0, UINT_MAX - data->power_lsb_uW);
+		val = DIV_ROUND_CLOSEST(val, data->power_lsb_uW);
+		return clamp_val(val, 0, USHRT_MAX);
+	case INA2XX_CURRENT:
+		val = clamp_val(val, INT_MIN / 1000, INT_MAX / 1000);
+		/* signed register, result in mA */
+		val = DIV_ROUND_CLOSEST(val * 1000, data->current_lsb_uA);
+		return clamp_val(val, SHRT_MIN, SHRT_MAX);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		/* programmer goofed */
 		WARN_ON_ONCE(1);
@@ -376,6 +578,7 @@ static s16 ina226_alert_to_reg(struct ina2xx_data *data, u8 bit, int val)
 	}
 }
 
+<<<<<<< HEAD
 static ssize_t ina226_alert_show(struct device *dev,
 				 struct device_attribute *da, char *buf)
 {
@@ -398,11 +601,33 @@ static ssize_t ina226_alert_show(struct device *dev,
 	}
 
 	ret = sysfs_emit(buf, "%d\n", val);
+=======
+static int ina226_alert_limit_read(struct ina2xx_data *data, u32 mask, int reg, long *val)
+{
+	struct regmap *regmap = data->regmap;
+	int regval;
+	int ret;
+
+	mutex_lock(&data->config_lock);
+	ret = regmap_read(regmap, INA226_MASK_ENABLE, &regval);
+	if (ret)
+		goto abort;
+
+	if (regval & mask) {
+		ret = regmap_read(regmap, INA226_ALERT_LIMIT, &regval);
+		if (ret)
+			goto abort;
+		*val = ina2xx_get_value(data, reg, regval);
+	} else {
+		*val = 0;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 abort:
 	mutex_unlock(&data->config_lock);
 	return ret;
 }
 
+<<<<<<< HEAD
 static ssize_t ina226_alert_store(struct device *dev,
 				  struct device_attribute *da,
 				  const char *buf, size_t count)
@@ -415,6 +640,15 @@ static ssize_t ina226_alert_store(struct device *dev,
 	ret = kstrtoul(buf, 10, &val);
 	if (ret < 0)
 		return ret;
+=======
+static int ina226_alert_limit_write(struct ina2xx_data *data, u32 mask, int reg, long val)
+{
+	struct regmap *regmap = data->regmap;
+	int ret;
+
+	if (val < 0)
+		return -EINVAL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Clear all alerts first to avoid accidentally triggering ALERT pin
@@ -422,11 +656,16 @@ static ssize_t ina226_alert_store(struct device *dev,
 	 * if the value is non-zero.
 	 */
 	mutex_lock(&data->config_lock);
+<<<<<<< HEAD
 	ret = regmap_update_bits(data->regmap, INA226_MASK_ENABLE,
+=======
+	ret = regmap_update_bits(regmap, INA226_MASK_ENABLE,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				 INA226_ALERT_CONFIG_MASK, 0);
 	if (ret < 0)
 		goto abort;
 
+<<<<<<< HEAD
 	ret = regmap_write(data->regmap, INA226_ALERT_LIMIT,
 			   ina226_alert_to_reg(data, attr->index, val));
 	if (ret < 0)
@@ -441,11 +680,22 @@ static ssize_t ina226_alert_store(struct device *dev,
 	}
 
 	ret = count;
+=======
+	ret = regmap_write(regmap, INA226_ALERT_LIMIT,
+			   ina226_alert_to_reg(data, reg, val));
+	if (ret < 0)
+		goto abort;
+
+	if (val)
+		ret = regmap_update_bits(regmap, INA226_MASK_ENABLE,
+					 INA226_ALERT_CONFIG_MASK, mask);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 abort:
 	mutex_unlock(&data->config_lock);
 	return ret;
 }
 
+<<<<<<< HEAD
 static ssize_t ina226_alarm_show(struct device *dev,
 				 struct device_attribute *da, char *buf)
 {
@@ -464,12 +714,349 @@ static ssize_t ina226_alarm_show(struct device *dev,
 	return sysfs_emit(buf, "%d\n", alarm);
 }
 
+=======
+static int ina2xx_chip_read(struct device *dev, u32 attr, long *val)
+{
+	struct ina2xx_data *data = dev_get_drvdata(dev);
+	u32 regval;
+	int ret;
+
+	switch (attr) {
+	case hwmon_chip_update_interval:
+		ret = regmap_read(data->regmap, INA2XX_CONFIG, &regval);
+		if (ret)
+			return ret;
+
+		*val = ina226_reg_to_interval(regval);
+		break;
+	default:
+		return -EOPNOTSUPP;
+	}
+	return 0;
+}
+
+static int ina226_alert_read(struct regmap *regmap, u32 mask, long *val)
+{
+	unsigned int regval;
+	int ret;
+
+	ret = regmap_read_bypassed(regmap, INA226_MASK_ENABLE, &regval);
+	if (ret)
+		return ret;
+
+	*val = (regval & mask) && (regval & INA226_ALERT_FUNCTION_FLAG);
+
+	return 0;
+}
+
+static int ina2xx_in_read(struct device *dev, u32 attr, int channel, long *val)
+{
+	int voltage_reg = channel ? INA2XX_BUS_VOLTAGE : INA2XX_SHUNT_VOLTAGE;
+	u32 under_voltage_mask = channel ? INA226_BUS_UNDER_VOLTAGE_MASK
+					 : INA226_SHUNT_UNDER_VOLTAGE_MASK;
+	u32 over_voltage_mask = channel ? INA226_BUS_OVER_VOLTAGE_MASK
+					: INA226_SHUNT_OVER_VOLTAGE_MASK;
+	struct ina2xx_data *data = dev_get_drvdata(dev);
+	struct regmap *regmap = data->regmap;
+	unsigned int regval;
+	int ret;
+
+	switch (attr) {
+	case hwmon_in_input:
+		ret = regmap_read(regmap, voltage_reg, &regval);
+		if (ret)
+			return ret;
+		*val = ina2xx_get_value(data, voltage_reg, regval);
+		break;
+	case hwmon_in_lcrit:
+		return ina226_alert_limit_read(data, under_voltage_mask,
+					       voltage_reg, val);
+	case hwmon_in_crit:
+		return ina226_alert_limit_read(data, over_voltage_mask,
+					       voltage_reg, val);
+	case hwmon_in_lcrit_alarm:
+		return ina226_alert_read(regmap, under_voltage_mask, val);
+	case hwmon_in_crit_alarm:
+		return ina226_alert_read(regmap, over_voltage_mask, val);
+	default:
+		return -EOPNOTSUPP;
+	}
+	return 0;
+}
+
+static int ina2xx_power_read(struct device *dev, u32 attr, long *val)
+{
+	struct ina2xx_data *data = dev_get_drvdata(dev);
+
+	switch (attr) {
+	case hwmon_power_input:
+		return ina2xx_read_init(dev, INA2XX_POWER, val);
+	case hwmon_power_crit:
+		return ina226_alert_limit_read(data, INA226_POWER_OVER_LIMIT_MASK,
+					       INA2XX_POWER, val);
+	case hwmon_power_crit_alarm:
+		return ina226_alert_read(data->regmap, INA226_POWER_OVER_LIMIT_MASK, val);
+	default:
+		return -EOPNOTSUPP;
+	}
+}
+
+static int ina2xx_curr_read(struct device *dev, u32 attr, long *val)
+{
+	struct ina2xx_data *data = dev_get_drvdata(dev);
+	struct regmap *regmap = data->regmap;
+	unsigned int regval;
+	int ret;
+
+	/*
+	 * While the chips supported by this driver do not directly support
+	 * current limits, they do support setting shunt voltage limits.
+	 * The shunt voltage divided by the shunt resistor value is the current.
+	 * On top of that, calibration values are set such that in the shunt
+	 * voltage register and the current register report the same values.
+	 * That means we can report and configure current limits based on shunt
+	 * voltage limits.
+	 */
+	switch (attr) {
+	case hwmon_curr_input:
+		/*
+		 * Since the shunt voltage and the current register report the
+		 * same values when the chip is calibrated, we can calculate
+		 * the current directly from the shunt voltage without relying
+		 * on chip calibration.
+		 */
+		ret = regmap_read(regmap, INA2XX_SHUNT_VOLTAGE, &regval);
+		if (ret)
+			return ret;
+		*val = ina2xx_get_value(data, INA2XX_CURRENT, regval);
+		return 0;
+	case hwmon_curr_lcrit:
+		return ina226_alert_limit_read(data, INA226_SHUNT_UNDER_VOLTAGE_MASK,
+					       INA2XX_CURRENT, val);
+	case hwmon_curr_crit:
+		return ina226_alert_limit_read(data, INA226_SHUNT_OVER_VOLTAGE_MASK,
+					       INA2XX_CURRENT, val);
+	case hwmon_curr_lcrit_alarm:
+		return ina226_alert_read(regmap, INA226_SHUNT_UNDER_VOLTAGE_MASK, val);
+	case hwmon_curr_crit_alarm:
+		return ina226_alert_read(regmap, INA226_SHUNT_OVER_VOLTAGE_MASK, val);
+	default:
+		return -EOPNOTSUPP;
+	}
+}
+
+static int ina2xx_read(struct device *dev, enum hwmon_sensor_types type,
+		       u32 attr, int channel, long *val)
+{
+	switch (type) {
+	case hwmon_chip:
+		return ina2xx_chip_read(dev, attr, val);
+	case hwmon_in:
+		return ina2xx_in_read(dev, attr, channel, val);
+	case hwmon_power:
+		return ina2xx_power_read(dev, attr, val);
+	case hwmon_curr:
+		return ina2xx_curr_read(dev, attr, val);
+	default:
+		return -EOPNOTSUPP;
+	}
+}
+
+static int ina2xx_chip_write(struct device *dev, u32 attr, long val)
+{
+	struct ina2xx_data *data = dev_get_drvdata(dev);
+
+	switch (attr) {
+	case hwmon_chip_update_interval:
+		return regmap_update_bits(data->regmap, INA2XX_CONFIG,
+					  INA226_AVG_RD_MASK,
+					  ina226_interval_to_reg(val));
+	default:
+		return -EOPNOTSUPP;
+	}
+}
+
+static int ina2xx_in_write(struct device *dev, u32 attr, int channel, long val)
+{
+	struct ina2xx_data *data = dev_get_drvdata(dev);
+
+	switch (attr) {
+	case hwmon_in_lcrit:
+		return ina226_alert_limit_write(data,
+			channel ? INA226_BUS_UNDER_VOLTAGE_MASK : INA226_SHUNT_UNDER_VOLTAGE_MASK,
+			channel ? INA2XX_BUS_VOLTAGE : INA2XX_SHUNT_VOLTAGE,
+			val);
+	case hwmon_in_crit:
+		return ina226_alert_limit_write(data,
+			channel ? INA226_BUS_OVER_VOLTAGE_MASK : INA226_SHUNT_OVER_VOLTAGE_MASK,
+			channel ? INA2XX_BUS_VOLTAGE : INA2XX_SHUNT_VOLTAGE,
+			val);
+	default:
+		return -EOPNOTSUPP;
+	}
+	return 0;
+}
+
+static int ina2xx_power_write(struct device *dev, u32 attr, long val)
+{
+	struct ina2xx_data *data = dev_get_drvdata(dev);
+
+	switch (attr) {
+	case hwmon_power_crit:
+		return ina226_alert_limit_write(data, INA226_POWER_OVER_LIMIT_MASK,
+						INA2XX_POWER, val);
+	default:
+		return -EOPNOTSUPP;
+	}
+	return 0;
+}
+
+static int ina2xx_curr_write(struct device *dev, u32 attr, long val)
+{
+	struct ina2xx_data *data = dev_get_drvdata(dev);
+
+	switch (attr) {
+	case hwmon_curr_lcrit:
+		return ina226_alert_limit_write(data, INA226_SHUNT_UNDER_VOLTAGE_MASK,
+						INA2XX_CURRENT, val);
+	case hwmon_curr_crit:
+		return ina226_alert_limit_write(data, INA226_SHUNT_OVER_VOLTAGE_MASK,
+						INA2XX_CURRENT, val);
+	default:
+		return -EOPNOTSUPP;
+	}
+	return 0;
+}
+
+static int ina2xx_write(struct device *dev, enum hwmon_sensor_types type,
+			u32 attr, int channel, long val)
+{
+	switch (type) {
+	case hwmon_chip:
+		return ina2xx_chip_write(dev, attr, val);
+	case hwmon_in:
+		return ina2xx_in_write(dev, attr, channel, val);
+	case hwmon_power:
+		return ina2xx_power_write(dev, attr, val);
+	case hwmon_curr:
+		return ina2xx_curr_write(dev, attr, val);
+	default:
+		return -EOPNOTSUPP;
+	}
+}
+
+static umode_t ina2xx_is_visible(const void *_data, enum hwmon_sensor_types type,
+				 u32 attr, int channel)
+{
+	const struct ina2xx_data *data = _data;
+	enum ina2xx_ids chip = data->chip;
+
+	switch (type) {
+	case hwmon_in:
+		switch (attr) {
+		case hwmon_in_input:
+			return 0444;
+		case hwmon_in_lcrit:
+		case hwmon_in_crit:
+			if (chip == ina226)
+				return 0644;
+			break;
+		case hwmon_in_lcrit_alarm:
+		case hwmon_in_crit_alarm:
+			if (chip == ina226)
+				return 0444;
+			break;
+		default:
+			break;
+		}
+		break;
+	case hwmon_curr:
+		switch (attr) {
+		case hwmon_curr_input:
+			return 0444;
+		case hwmon_curr_lcrit:
+		case hwmon_curr_crit:
+			if (chip == ina226)
+				return 0644;
+			break;
+		case hwmon_curr_lcrit_alarm:
+		case hwmon_curr_crit_alarm:
+			if (chip == ina226)
+				return 0444;
+			break;
+		default:
+			break;
+		}
+		break;
+	case hwmon_power:
+		switch (attr) {
+		case hwmon_power_input:
+			return 0444;
+		case hwmon_power_crit:
+			if (chip == ina226)
+				return 0644;
+			break;
+		case hwmon_power_crit_alarm:
+			if (chip == ina226)
+				return 0444;
+			break;
+		default:
+			break;
+		}
+		break;
+	case hwmon_chip:
+		switch (attr) {
+		case hwmon_chip_update_interval:
+			if (chip == ina226)
+				return 0644;
+			break;
+		default:
+			break;
+		}
+		break;
+	default:
+		break;
+	}
+	return 0;
+}
+
+static const struct hwmon_channel_info * const ina2xx_info[] = {
+	HWMON_CHANNEL_INFO(chip,
+			   HWMON_C_UPDATE_INTERVAL),
+	HWMON_CHANNEL_INFO(in,
+			   HWMON_I_INPUT | HWMON_I_CRIT | HWMON_I_CRIT_ALARM |
+			   HWMON_I_LCRIT | HWMON_I_LCRIT_ALARM,
+			   HWMON_I_INPUT | HWMON_I_CRIT | HWMON_I_CRIT_ALARM |
+			   HWMON_I_LCRIT | HWMON_I_LCRIT_ALARM
+			   ),
+	HWMON_CHANNEL_INFO(curr, HWMON_C_INPUT | HWMON_C_CRIT | HWMON_C_CRIT_ALARM |
+			   HWMON_C_LCRIT | HWMON_C_LCRIT_ALARM),
+	HWMON_CHANNEL_INFO(power,
+			   HWMON_P_INPUT | HWMON_P_CRIT | HWMON_P_CRIT_ALARM),
+	NULL
+};
+
+static const struct hwmon_ops ina2xx_hwmon_ops = {
+	.is_visible = ina2xx_is_visible,
+	.read = ina2xx_read,
+	.write = ina2xx_write,
+};
+
+static const struct hwmon_chip_info ina2xx_chip_info = {
+	.ops = &ina2xx_hwmon_ops,
+	.info = ina2xx_info,
+};
+
+/* shunt resistance */
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * In order to keep calibration register value fixed, the product
  * of current_lsb and shunt_resistor should also be fixed and equal
  * to shunt_voltage_lsb = 1 / shunt_div multiplied by 10^9 in order
  * to keep the scale.
  */
+<<<<<<< HEAD
 static int ina2xx_set_shunt(struct ina2xx_data *data, long val)
 {
 	unsigned int dividend = DIV_ROUND_CLOSEST(1000000000,
@@ -478,23 +1065,41 @@ static int ina2xx_set_shunt(struct ina2xx_data *data, long val)
 		return -EINVAL;
 
 	mutex_lock(&data->config_lock);
+=======
+static int ina2xx_set_shunt(struct ina2xx_data *data, unsigned long val)
+{
+	unsigned int dividend = DIV_ROUND_CLOSEST(1000000000,
+						  data->config->shunt_div);
+	if (!val || val > dividend)
+		return -EINVAL;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	data->rshunt = val;
 	data->current_lsb_uA = DIV_ROUND_CLOSEST(dividend, val);
 	data->power_lsb_uW = data->config->power_lsb_factor *
 			     data->current_lsb_uA;
+<<<<<<< HEAD
 	mutex_unlock(&data->config_lock);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static ssize_t ina2xx_shunt_show(struct device *dev,
 				 struct device_attribute *da, char *buf)
+=======
+static ssize_t shunt_resistor_show(struct device *dev,
+				   struct device_attribute *da, char *buf)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ina2xx_data *data = dev_get_drvdata(dev);
 
 	return sysfs_emit(buf, "%li\n", data->rshunt);
 }
 
+<<<<<<< HEAD
 static ssize_t ina2xx_shunt_store(struct device *dev,
 				  struct device_attribute *da,
 				  const char *buf, size_t count)
@@ -502,17 +1107,33 @@ static ssize_t ina2xx_shunt_store(struct device *dev,
 	unsigned long val;
 	int status;
 	struct ina2xx_data *data = dev_get_drvdata(dev);
+=======
+static ssize_t shunt_resistor_store(struct device *dev,
+				    struct device_attribute *da,
+				    const char *buf, size_t count)
+{
+	struct ina2xx_data *data = dev_get_drvdata(dev);
+	unsigned long val;
+	int status;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	status = kstrtoul(buf, 10, &val);
 	if (status < 0)
 		return status;
 
+<<<<<<< HEAD
 	status = ina2xx_set_shunt(data, val);
+=======
+	mutex_lock(&data->config_lock);
+	status = ina2xx_set_shunt(data, val);
+	mutex_unlock(&data->config_lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (status < 0)
 		return status;
 	return count;
 }
 
+<<<<<<< HEAD
 static ssize_t ina226_interval_store(struct device *dev,
 				     struct device_attribute *da,
 				     const char *buf, size_t count)
@@ -624,15 +1245,69 @@ static struct attribute *ina226_attrs[] = {
 static const struct attribute_group ina226_group = {
 	.attrs = ina226_attrs,
 };
+=======
+static DEVICE_ATTR_RW(shunt_resistor);
+
+/* pointers to created device attributes */
+static struct attribute *ina2xx_attrs[] = {
+	&dev_attr_shunt_resistor.attr,
+	NULL,
+};
+ATTRIBUTE_GROUPS(ina2xx);
+
+/*
+ * Initialize chip
+ */
+static int ina2xx_init(struct device *dev, struct ina2xx_data *data)
+{
+	struct regmap *regmap = data->regmap;
+	u32 shunt;
+	int ret;
+
+	if (device_property_read_u32(dev, "shunt-resistor", &shunt) < 0)
+		shunt = INA2XX_RSHUNT_DEFAULT;
+
+	ret = ina2xx_set_shunt(data, shunt);
+	if (ret < 0)
+		return ret;
+
+	ret = regmap_write(regmap, INA2XX_CONFIG, data->config->config_default);
+	if (ret < 0)
+		return ret;
+
+	if (data->chip == ina226) {
+		bool active_high = device_property_read_bool(dev, "ti,alert-polarity-active-high");
+
+		regmap_update_bits(regmap, INA226_MASK_ENABLE,
+				   INA226_ALERT_LATCH_ENABLE | INA226_ALERT_POLARITY,
+				   INA226_ALERT_LATCH_ENABLE |
+						FIELD_PREP(INA226_ALERT_POLARITY, active_high));
+	}
+
+	/*
+	 * Calibration register is set to the best value, which eliminates
+	 * truncation errors on calculating current register in hardware.
+	 * According to datasheet (eq. 3) the best values are 2048 for
+	 * ina226 and 4096 for ina219. They are hardcoded as calibration_value.
+	 */
+	return regmap_write(regmap, INA2XX_CALIBRATION,
+			    data->config->calibration_value);
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int ina2xx_probe(struct i2c_client *client)
 {
 	struct device *dev = &client->dev;
 	struct ina2xx_data *data;
 	struct device *hwmon_dev;
+<<<<<<< HEAD
 	u32 val;
 	int ret, group = 0;
 	enum ina2xx_ids chip;
+=======
+	enum ina2xx_ids chip;
+	int ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	chip = (uintptr_t)i2c_get_match_data(client);
 
@@ -642,6 +1317,7 @@ static int ina2xx_probe(struct i2c_client *client)
 
 	/* set the device type */
 	data->config = &ina2xx_config[chip];
+<<<<<<< HEAD
 	mutex_init(&data->config_lock);
 
 	if (of_property_read_u32(dev->of_node, "shunt-resistor", &val) < 0) {
@@ -657,6 +1333,11 @@ static int ina2xx_probe(struct i2c_client *client)
 
 	ina2xx_regmap_config.max_register = data->config->registers;
 
+=======
+	data->chip = chip;
+	mutex_init(&data->config_lock);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	data->regmap = devm_regmap_init_i2c(client, &ina2xx_regmap_config);
 	if (IS_ERR(data->regmap)) {
 		dev_err(dev, "failed to allocate register map\n");
@@ -667,6 +1348,7 @@ static int ina2xx_probe(struct i2c_client *client)
 	if (ret)
 		return dev_err_probe(dev, ret, "failed to enable vs regulator\n");
 
+<<<<<<< HEAD
 	if (chip == ina226) {
 		if (of_property_read_bool(dev->of_node, "ti,alert-polarity-active-high")) {
 			ret = ina2xx_set_alert_polarity(data,
@@ -698,6 +1380,15 @@ static int ina2xx_probe(struct i2c_client *client)
 
 	hwmon_dev = devm_hwmon_device_register_with_groups(dev, client->name,
 							   data, data->groups);
+=======
+	ret = ina2xx_init(dev, data);
+	if (ret < 0)
+		return dev_err_probe(dev, ret, "failed to configure device\n");
+
+	hwmon_dev = devm_hwmon_device_register_with_info(dev, client->name,
+							 data, &ina2xx_chip_info,
+							 ina2xx_groups);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(hwmon_dev))
 		return PTR_ERR(hwmon_dev);
 

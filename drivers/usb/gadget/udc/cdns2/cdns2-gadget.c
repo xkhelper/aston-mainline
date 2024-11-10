@@ -2033,8 +2033,13 @@ static void cdns2_quiesce(struct cdns2_device *pdev)
 	set_reg_bit_8(&pdev->usb_regs->usbcs, USBCS_DISCON);
 
 	/* Disable interrupt. */
+<<<<<<< HEAD
 	writeb(0, &pdev->interrupt_regs->extien),
 	writeb(0, &pdev->interrupt_regs->usbien),
+=======
+	writeb(0, &pdev->interrupt_regs->extien);
+	writeb(0, &pdev->interrupt_regs->usbien);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	writew(0, &pdev->adma_regs->ep_ien);
 
 	/* Clear interrupt line. */

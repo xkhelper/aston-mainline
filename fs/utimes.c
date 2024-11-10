@@ -115,9 +115,15 @@ static int do_utimes_fd(int fd, struct timespec64 *times, int flags)
 		return -EINVAL;
 
 	f = fdget(fd);
+<<<<<<< HEAD
 	if (!f.file)
 		return -EBADF;
 	error = vfs_utimes(&f.file->f_path, times);
+=======
+	if (!fd_file(f))
+		return -EBADF;
+	error = vfs_utimes(&fd_file(f)->f_path, times);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fdput(f);
 	return error;
 }

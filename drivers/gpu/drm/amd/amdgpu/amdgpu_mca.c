@@ -396,7 +396,10 @@ static int amdgpu_mca_smu_parse_mca_error_count(struct amdgpu_device *adev, enum
 static int amdgpu_mca_dispatch_mca_set(struct amdgpu_device *adev, enum amdgpu_ras_block blk, enum amdgpu_mca_error_type type,
 				       struct mca_bank_set *mca_set, struct ras_err_data *err_data)
 {
+<<<<<<< HEAD
 	struct ras_err_addr err_addr;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct amdgpu_smuio_mcm_config_info mcm_info;
 	struct mca_bank_node *node, *tmp;
 	struct mca_bank_entry *entry;
@@ -421,11 +424,15 @@ static int amdgpu_mca_dispatch_mca_set(struct amdgpu_device *adev, enum amdgpu_r
 			continue;
 
 		memset(&mcm_info, 0, sizeof(mcm_info));
+<<<<<<< HEAD
 		memset(&err_addr, 0, sizeof(err_addr));
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		mcm_info.socket_id = entry->info.socket_id;
 		mcm_info.die_id = entry->info.aid;
 
+<<<<<<< HEAD
 		if (blk == AMDGPU_RAS_BLOCK__UMC) {
 			err_addr.err_status = entry->regs[MCA_REG_IDX_STATUS];
 			err_addr.err_ipid = entry->regs[MCA_REG_IDX_IPID];
@@ -442,6 +449,18 @@ static int amdgpu_mca_dispatch_mca_set(struct amdgpu_device *adev, enum amdgpu_r
 			else
 				amdgpu_ras_error_statistic_ce_count(err_data,
 								    &mcm_info, &err_addr, (uint64_t)count);
+=======
+		if (type == AMDGPU_MCA_ERROR_TYPE_UE) {
+			amdgpu_ras_error_statistic_ue_count(err_data,
+							    &mcm_info, (uint64_t)count);
+		} else {
+			if (amdgpu_mca_is_deferred_error(adev, entry->regs[MCA_REG_IDX_STATUS]))
+				amdgpu_ras_error_statistic_de_count(err_data,
+								    &mcm_info, (uint64_t)count);
+			else
+				amdgpu_ras_error_statistic_ce_count(err_data,
+								    &mcm_info, (uint64_t)count);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		amdgpu_mca_bank_set_remove_node(mca_set, node);

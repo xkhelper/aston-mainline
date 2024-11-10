@@ -6,6 +6,10 @@
 #include <linux/console.h>
 #include <linux/kernel.h>
 #include <linux/init.h>
+<<<<<<< HEAD
+=======
+#include <asm/setup.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/sclp.h>
 
 static void sclp_early_write(struct console *con, const char *s, unsigned int len)
@@ -20,6 +24,19 @@ static struct console sclp_early_console = {
 	.index = -1,
 };
 
+<<<<<<< HEAD
+=======
+void __init register_early_console(void)
+{
+	if (early_console)
+		return;
+	if (!sclp.has_linemode && !sclp.has_vt220)
+		return;
+	early_console = &sclp_early_console;
+	register_console(early_console);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int __init setup_early_printk(char *buf)
 {
 	if (early_console)
@@ -27,10 +44,14 @@ static int __init setup_early_printk(char *buf)
 	/* Accept only "earlyprintk" and "earlyprintk=sclp" */
 	if (buf && !str_has_prefix(buf, "sclp"))
 		return 0;
+<<<<<<< HEAD
 	if (!sclp.has_linemode && !sclp.has_vt220)
 		return 0;
 	early_console = &sclp_early_console;
 	register_console(early_console);
+=======
+	register_early_console();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 early_param("earlyprintk", setup_early_printk);

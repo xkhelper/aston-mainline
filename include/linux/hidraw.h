@@ -32,6 +32,10 @@ struct hidraw_list {
 	struct hidraw *hidraw;
 	struct list_head node;
 	struct mutex read_mutex;
+<<<<<<< HEAD
+=======
+	bool revoked;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #ifdef CONFIG_HIDRAW

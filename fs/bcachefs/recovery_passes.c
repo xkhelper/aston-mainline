@@ -40,7 +40,11 @@ static int bch2_set_may_go_rw(struct bch_fs *c)
 
 	set_bit(BCH_FS_may_go_rw, &c->flags);
 
+<<<<<<< HEAD
 	if (keys->nr || c->opts.fsck || !c->sb.clean || c->recovery_passes_explicit)
+=======
+	if (keys->nr || c->opts.fsck || !c->sb.clean || c->opts.recovery_passes)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return bch2_fs_read_write_early(c);
 	return 0;
 }
@@ -97,14 +101,22 @@ u64 bch2_recovery_passes_from_stable(u64 v)
 int bch2_run_explicit_recovery_pass(struct bch_fs *c,
 				    enum bch_recovery_pass pass)
 {
+<<<<<<< HEAD
 	if (c->recovery_passes_explicit & BIT_ULL(pass))
+=======
+	if (c->opts.recovery_passes & BIT_ULL(pass))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	bch_info(c, "running explicit recovery pass %s (%u), currently at %s (%u)",
 		 bch2_recovery_passes[pass], pass,
 		 bch2_recovery_passes[c->curr_recovery_pass], c->curr_recovery_pass);
 
+<<<<<<< HEAD
 	c->recovery_passes_explicit |= BIT_ULL(pass);
+=======
+	c->opts.recovery_passes |= BIT_ULL(pass);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (c->curr_recovery_pass >= pass) {
 		c->curr_recovery_pass = pass;
@@ -161,7 +173,13 @@ static bool should_run_recovery_pass(struct bch_fs *c, enum bch_recovery_pass pa
 {
 	struct recovery_pass_fn *p = recovery_pass_fns + pass;
 
+<<<<<<< HEAD
 	if (c->recovery_passes_explicit & BIT_ULL(pass))
+=======
+	if (c->opts.recovery_passes_exclude & BIT_ULL(pass))
+		return false;
+	if (c->opts.recovery_passes & BIT_ULL(pass))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return true;
 	if ((p->when & PASS_FSCK) && c->opts.fsck)
 		return true;
@@ -219,6 +237,15 @@ int bch2_run_recovery_passes(struct bch_fs *c)
 {
 	int ret = 0;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * We can't allow set_may_go_rw to be excluded; that would cause us to
+	 * use the journal replay keys for updates where it's not expected.
+	 */
+	c->opts.recovery_passes_exclude &= ~BCH_RECOVERY_PASS_set_may_go_rw;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	while (c->curr_recovery_pass < ARRAY_SIZE(recovery_pass_fns)) {
 		if (c->opts.recovery_pass_last &&
 		    c->curr_recovery_pass > c->opts.recovery_pass_last)

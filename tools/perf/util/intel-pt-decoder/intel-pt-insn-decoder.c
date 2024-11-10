@@ -209,12 +209,21 @@ int intel_pt_get_insn(const unsigned char *buf, size_t len, int x86_64,
 	return 0;
 }
 
+<<<<<<< HEAD
 int arch_is_branch(const unsigned char *buf, size_t len, int x86_64)
+=======
+int arch_is_uncond_branch(const unsigned char *buf, size_t len, int x86_64)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct intel_pt_insn in;
 	if (intel_pt_get_insn(buf, len, x86_64, &in) < 0)
 		return -1;
+<<<<<<< HEAD
 	return in.branch != INTEL_PT_BR_NO_BRANCH;
+=======
+	return in.branch == INTEL_PT_BR_UNCONDITIONAL ||
+	       in.branch == INTEL_PT_BR_INDIRECT;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 const char *dump_insn(struct perf_insn *x, uint64_t ip __maybe_unused,

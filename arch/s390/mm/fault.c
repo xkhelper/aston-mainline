@@ -34,6 +34,10 @@
 #include <linux/uaccess.h>
 #include <linux/hugetlb.h>
 #include <linux/kfence.h>
+<<<<<<< HEAD
+=======
+#include <linux/pagewalk.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/asm-extable.h>
 #include <asm/asm-offsets.h>
 #include <asm/ptrace.h>
@@ -492,9 +496,15 @@ void do_secure_storage_access(struct pt_regs *regs)
 	union teid teid = { .val = regs->int_parm_long };
 	unsigned long addr = get_fault_address(regs);
 	struct vm_area_struct *vma;
+<<<<<<< HEAD
 	struct mm_struct *mm;
 	struct folio *folio;
 	struct page *page;
+=======
+	struct folio_walk fw;
+	struct mm_struct *mm;
+	struct folio *folio;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct gmap *gmap;
 	int rc;
 
@@ -536,6 +546,7 @@ void do_secure_storage_access(struct pt_regs *regs)
 		vma = find_vma(mm, addr);
 		if (!vma)
 			return handle_fault_error(regs, SEGV_MAPERR);
+<<<<<<< HEAD
 		page = follow_page(vma, addr, FOLL_WRITE | FOLL_GET);
 		if (IS_ERR_OR_NULL(page)) {
 			mmap_read_unlock(mm);
@@ -545,6 +556,20 @@ void do_secure_storage_access(struct pt_regs *regs)
 		if (arch_make_folio_accessible(folio))
 			send_sig(SIGSEGV, current, 0);
 		folio_put(folio);
+=======
+		folio = folio_walk_start(&fw, vma, addr, 0);
+		if (!folio) {
+			mmap_read_unlock(mm);
+			break;
+		}
+		/* arch_make_folio_accessible() needs a raised refcount. */
+		folio_get(folio);
+		rc = arch_make_folio_accessible(folio);
+		folio_put(folio);
+		folio_walk_end(&fw, vma);
+		if (rc)
+			send_sig(SIGSEGV, current, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mmap_read_unlock(mm);
 		break;
 	case KERNEL_FAULT:

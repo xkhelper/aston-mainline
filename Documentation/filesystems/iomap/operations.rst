@@ -208,7 +208,11 @@ The filesystem must arrange to `cancel
 such `reservations
 <https://lore.kernel.org/linux-xfs/20220817093627.GZ3600936@dread.disaster.area/>`_
 because writeback will not consume the reservation.
+<<<<<<< HEAD
 The ``iomap_file_buffered_write_punch_delalloc`` can be called from a
+=======
+The ``iomap_write_delalloc_release`` can be called from a
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ``->iomap_end`` function to find all the clean areas of the folios
 caching a fresh (``IOMAP_F_NEW``) delalloc mapping.
 It takes the ``invalidate_lock``.

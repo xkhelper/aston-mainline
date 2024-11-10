@@ -28,12 +28,18 @@
 #include <linux/pci.h>
 #include <linux/types.h>
 
+<<<<<<< HEAD
 struct drm_i915_private;
 struct intel_connector;
+=======
+struct intel_connector;
+struct intel_display;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct intel_encoder;
 
 #ifdef CONFIG_ACPI
 
+<<<<<<< HEAD
 int intel_opregion_setup(struct drm_i915_private *dev_priv);
 void intel_opregion_cleanup(struct drm_i915_private *i915);
 
@@ -63,10 +69,42 @@ void intel_opregion_debugfs_register(struct drm_i915_private *i915);
 #else /* CONFIG_ACPI*/
 
 static inline int intel_opregion_setup(struct drm_i915_private *dev_priv)
+=======
+int intel_opregion_setup(struct intel_display *display);
+void intel_opregion_cleanup(struct intel_display *display);
+
+void intel_opregion_register(struct intel_display *display);
+void intel_opregion_unregister(struct intel_display *display);
+
+void intel_opregion_resume(struct intel_display *display);
+void intel_opregion_suspend(struct intel_display *display,
+			    pci_power_t state);
+
+bool intel_opregion_asle_present(struct intel_display *display);
+void intel_opregion_asle_intr(struct intel_display *display);
+int intel_opregion_notify_encoder(struct intel_encoder *encoder,
+				  bool enable);
+int intel_opregion_notify_adapter(struct intel_display *display,
+				  pci_power_t state);
+int intel_opregion_get_panel_type(struct intel_display *display);
+const struct drm_edid *intel_opregion_get_edid(struct intel_connector *connector);
+
+bool intel_opregion_vbt_present(struct intel_display *display);
+const void *intel_opregion_get_vbt(struct intel_display *display, size_t *size);
+
+bool intel_opregion_headless_sku(struct intel_display *display);
+
+void intel_opregion_debugfs_register(struct intel_display *display);
+
+#else /* CONFIG_ACPI*/
+
+static inline int intel_opregion_setup(struct intel_display *display)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline void intel_opregion_cleanup(struct drm_i915_private *i915)
 {
 }
@@ -84,32 +122,71 @@ static inline void intel_opregion_resume(struct drm_i915_private *dev_priv)
 }
 
 static inline void intel_opregion_suspend(struct drm_i915_private *dev_priv,
+=======
+static inline void intel_opregion_cleanup(struct intel_display *display)
+{
+}
+
+static inline void intel_opregion_register(struct intel_display *display)
+{
+}
+
+static inline void intel_opregion_unregister(struct intel_display *display)
+{
+}
+
+static inline void intel_opregion_resume(struct intel_display *display)
+{
+}
+
+static inline void intel_opregion_suspend(struct intel_display *display,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					  pci_power_t state)
 {
 }
 
+<<<<<<< HEAD
 static inline bool intel_opregion_asle_present(struct drm_i915_private *i915)
+=======
+static inline bool intel_opregion_asle_present(struct intel_display *display)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return false;
 }
 
+<<<<<<< HEAD
 static inline void intel_opregion_asle_intr(struct drm_i915_private *dev_priv)
+=======
+static inline void intel_opregion_asle_intr(struct intel_display *display)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 }
 
 static inline int
+<<<<<<< HEAD
 intel_opregion_notify_encoder(struct intel_encoder *intel_encoder, bool enable)
+=======
+intel_opregion_notify_encoder(struct intel_encoder *encoder, bool enable)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return 0;
 }
 
 static inline int
+<<<<<<< HEAD
 intel_opregion_notify_adapter(struct drm_i915_private *dev, pci_power_t state)
+=======
+intel_opregion_notify_adapter(struct intel_display *display, pci_power_t state)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline int intel_opregion_get_panel_type(struct drm_i915_private *dev)
+=======
+static inline int intel_opregion_get_panel_type(struct intel_display *display)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return -ENODEV;
 }
@@ -120,23 +197,39 @@ intel_opregion_get_edid(struct intel_connector *connector)
 	return NULL;
 }
 
+<<<<<<< HEAD
 static inline bool intel_opregion_vbt_present(struct drm_i915_private *i915)
+=======
+static inline bool intel_opregion_vbt_present(struct intel_display *display)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return false;
 }
 
 static inline const void *
+<<<<<<< HEAD
 intel_opregion_get_vbt(struct drm_i915_private *i915, size_t *size)
+=======
+intel_opregion_get_vbt(struct intel_display *display, size_t *size)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return NULL;
 }
 
+<<<<<<< HEAD
 static inline bool intel_opregion_headless_sku(struct drm_i915_private *i915)
+=======
+static inline bool intel_opregion_headless_sku(struct intel_display *display)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return false;
 }
 
+<<<<<<< HEAD
 static inline void intel_opregion_debugfs_register(struct drm_i915_private *i915)
+=======
+static inline void intel_opregion_debugfs_register(struct intel_display *display)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 }
 

@@ -930,9 +930,12 @@ static int macb_mdiobus_register(struct macb *bp)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (of_phy_is_fixed_link(np))
 		return mdiobus_register(bp->mii_bus);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Only create the PHY from the device tree if at least one PHY is
 	 * described. Otherwise scan the entire MDIO bus. We do this to support
 	 * old device tree that did not follow the best practices and did not
@@ -953,8 +956,24 @@ static int macb_mdiobus_register(struct macb *bp)
 
 static int macb_mii_init(struct macb *bp)
 {
+<<<<<<< HEAD
 	int err = -ENXIO;
 
+=======
+	struct device_node *child, *np = bp->pdev->dev.of_node;
+	int err = -ENXIO;
+
+	/* With fixed-link, we don't need to register the MDIO bus,
+	 * except if we have a child named "mdio" in the device tree.
+	 * In that case, some devices may be attached to the MACB's MDIO bus.
+	 */
+	child = of_get_child_by_name(np, "mdio");
+	if (child)
+		of_node_put(child);
+	else if (of_phy_is_fixed_link(np))
+		return macb_mii_probe(bp->dev);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Enable management port */
 	macb_writel(bp, NCR, MACB_BIT(MPE));
 
@@ -1792,9 +1811,15 @@ static int macb_tx_poll(struct napi_struct *napi, int budget)
 	return work_done;
 }
 
+<<<<<<< HEAD
 static void macb_hresp_error_task(struct tasklet_struct *t)
 {
 	struct macb *bp = from_tasklet(bp, t, hresp_err_tasklet);
+=======
+static void macb_hresp_error_task(struct work_struct *work)
+{
+	struct macb *bp = from_work(bp, work, hresp_err_bh_work);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct net_device *dev = bp->dev;
 	struct macb_queue *queue;
 	unsigned int q;
@@ -1994,7 +2019,11 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
 		}
 
 		if (status & MACB_BIT(HRESP)) {
+<<<<<<< HEAD
 			tasklet_schedule(&bp->hresp_err_tasklet);
+=======
+			queue_work(system_bh_wq, &bp->hresp_err_bh_work);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			netdev_err(dev, "DMA bus error: HRESP not OK\n");
 
 			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
@@ -3410,8 +3439,11 @@ static int gem_get_ts_info(struct net_device *dev,
 
 	info->so_timestamping =
 		SOF_TIMESTAMPING_TX_SOFTWARE |
+<<<<<<< HEAD
 		SOF_TIMESTAMPING_RX_SOFTWARE |
 		SOF_TIMESTAMPING_SOFTWARE |
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		SOF_TIMESTAMPING_TX_HARDWARE |
 		SOF_TIMESTAMPING_RX_HARDWARE |
 		SOF_TIMESTAMPING_RAW_HARDWARE;
@@ -3423,7 +3455,12 @@ static int gem_get_ts_info(struct net_device *dev,
 		(1 << HWTSTAMP_FILTER_NONE) |
 		(1 << HWTSTAMP_FILTER_ALL);
 
+<<<<<<< HEAD
 	info->phc_index = bp->ptp_clock ? ptp_clock_index(bp->ptp_clock) : -1;
+=======
+	if (bp->ptp_clock)
+		info->phc_index = ptp_clock_index(bp->ptp_clock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -4184,6 +4221,11 @@ static int macb_init(struct platform_device *pdev)
 		dev->ethtool_ops = &macb_ethtool_ops;
 	}
 
+<<<<<<< HEAD
+=======
+	netdev_sw_irq_coalesce_default_on(dev);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
 
 	/* Set features */
@@ -5119,12 +5161,20 @@ static int macb_probe(struct platform_device *pdev)
 		goto err_out_free_netdev;
 	}
 
+<<<<<<< HEAD
 	/* MTU range: 68 - 1500 or 10240 */
+=======
+	/* MTU range: 68 - 1518 or 10240 */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev->min_mtu = GEM_MTU_MIN_SIZE;
 	if ((bp->caps & MACB_CAPS_JUMBO) && bp->jumbo_max_len)
 		dev->max_mtu = bp->jumbo_max_len - ETH_HLEN - ETH_FCS_LEN;
 	else
+<<<<<<< HEAD
 		dev->max_mtu = ETH_DATA_LEN;
+=======
+		dev->max_mtu = 1536 - ETH_HLEN - ETH_FCS_LEN;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (bp->caps & MACB_CAPS_BD_RD_PREFETCH) {
 		val = GEM_BFEXT(RXBD_RDBUFF, gem_readl(bp, DCFG10));
@@ -5172,7 +5222,11 @@ static int macb_probe(struct platform_device *pdev)
 		goto err_out_unregister_mdio;
 	}
 
+<<<<<<< HEAD
 	tasklet_setup(&bp->hresp_err_tasklet, macb_hresp_error_task);
+=======
+	INIT_WORK(&bp->hresp_err_bh_work, macb_hresp_error_task);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	netdev_info(dev, "Cadence %s rev 0x%08x at 0x%08lx irq %d (%pM)\n",
 		    macb_is_gem(bp) ? "GEM" : "MACB", macb_readl(bp, MID),
@@ -5216,7 +5270,11 @@ static void macb_remove(struct platform_device *pdev)
 		mdiobus_free(bp->mii_bus);
 
 		unregister_netdev(dev);
+<<<<<<< HEAD
 		tasklet_kill(&bp->hresp_err_tasklet);
+=======
+		cancel_work_sync(&bp->hresp_err_bh_work);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pm_runtime_disable(&pdev->dev);
 		pm_runtime_dont_use_autosuspend(&pdev->dev);
 		if (!pm_runtime_suspended(&pdev->dev)) {

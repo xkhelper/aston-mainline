@@ -111,7 +111,11 @@ static void sig_int(int signo)
 
 int open_netns(void)
 {
+<<<<<<< HEAD
 	const char *netns_path = "/proc/self/ns/net";
+=======
+	const char *netns_path = "/proc/thread-self/ns/net";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int fd;
 
 	fd = open(netns_path, O_RDONLY);
@@ -142,6 +146,16 @@ int switch_save_ns(int new_ns)
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+void switch_close_ns(int fd)
+{
+	if (setns(fd, CLONE_NEWNET))
+		test_error("setns()");
+	close(fd);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int nsfd_outside	= -1;
 static int nsfd_parent	= -1;
 static int nsfd_child	= -1;
@@ -243,9 +257,15 @@ void __test_init(unsigned int ntests, int family, unsigned int prefix,
 	test_print("rand seed %u", (unsigned int)seed);
 	srand(seed);
 
+<<<<<<< HEAD
 
 	ksft_print_header();
 	init_namespaces();
+=======
+	ksft_print_header();
+	init_namespaces();
+	test_init_ftrace(nsfd_parent, nsfd_child);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (add_veth(veth_name, nsfd_parent, nsfd_child))
 		test_error("Failed to add veth");
@@ -296,7 +316,11 @@ static bool is_optmem_namespaced(void)
 		int old_ns = switch_save_ns(nsfd_child);
 
 		optmem_ns = !access(optmem_file, F_OK);
+<<<<<<< HEAD
 		switch_ns(old_ns);
+=======
+		switch_close_ns(old_ns);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return !!optmem_ns;
 }
@@ -317,7 +341,11 @@ size_t test_get_optmem(void)
 		test_error("can't read from %s", optmem_file);
 	fclose(foptmem);
 	if (!is_optmem_namespaced())
+<<<<<<< HEAD
 		switch_ns(old_ns);
+=======
+		switch_close_ns(old_ns);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -339,7 +367,11 @@ static void __test_set_optmem(size_t new, size_t *old)
 		test_error("can't write %zu to %s", new, optmem_file);
 	fclose(foptmem);
 	if (!is_optmem_namespaced())
+<<<<<<< HEAD
 		switch_ns(old_ns);
+=======
+		switch_close_ns(old_ns);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void test_revert_optmem(void)

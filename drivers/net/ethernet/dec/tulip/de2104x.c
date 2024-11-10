@@ -49,7 +49,11 @@
 #include <asm/io.h>
 #include <asm/irq.h>
 #include <linux/uaccess.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 MODULE_AUTHOR("Jeff Garzik <jgarzik@pobox.com>");
 MODULE_DESCRIPTION("Intel/Digital 21040/1 series PCI Ethernet driver");

@@ -43,6 +43,11 @@ struct lenovo_ymc_private {
 };
 
 static const struct key_entry lenovo_ymc_keymap[] = {
+<<<<<<< HEAD
+=======
+	/* Ignore the uninitialized state */
+	{ KE_IGNORE, 0x00 },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Laptop */
 	{ KE_SW, 0x01, { .sw = { SW_TABLET_MODE, 0 } } },
 	/* Tablet */

@@ -487,7 +487,11 @@ static void sfp_unregister_bus(struct sfp_bus *bus)
 			bus->socket_ops->stop(bus->sfp);
 		bus->socket_ops->detach(bus->sfp);
 		if (bus->phydev && ops && ops->disconnect_phy)
+<<<<<<< HEAD
 			ops->disconnect_phy(bus->upstream);
+=======
+			ops->disconnect_phy(bus->upstream, bus->phydev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	bus->registered = false;
 }
@@ -722,6 +726,31 @@ void sfp_bus_del_upstream(struct sfp_bus *bus)
 }
 EXPORT_SYMBOL_GPL(sfp_bus_del_upstream);
 
+<<<<<<< HEAD
+=======
+/**
+ * sfp_get_name() - Get the SFP device name
+ * @bus: a pointer to the &struct sfp_bus structure for the sfp module
+ *
+ * Gets the SFP device's name, if @bus has a registered socket. Callers must
+ * hold RTNL, and the returned name is only valid until RTNL is released.
+ *
+ * Returns:
+ *	- The name of the SFP device registered with sfp_register_socket()
+ *	- %NULL if no device was registered on @bus
+ */
+const char *sfp_get_name(struct sfp_bus *bus)
+{
+	ASSERT_RTNL();
+
+	if (bus->sfp_dev)
+		return dev_name(bus->sfp_dev);
+
+	return NULL;
+}
+EXPORT_SYMBOL_GPL(sfp_get_name);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Socket driver entry points */
 int sfp_add_phy(struct sfp_bus *bus, struct phy_device *phydev)
 {
@@ -743,7 +772,11 @@ void sfp_remove_phy(struct sfp_bus *bus)
 	const struct sfp_upstream_ops *ops = sfp_get_upstream_ops(bus);
 
 	if (ops && ops->disconnect_phy)
+<<<<<<< HEAD
 		ops->disconnect_phy(bus->upstream);
+=======
+		ops->disconnect_phy(bus->upstream, bus->phydev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bus->phydev = NULL;
 }
 EXPORT_SYMBOL_GPL(sfp_remove_phy);

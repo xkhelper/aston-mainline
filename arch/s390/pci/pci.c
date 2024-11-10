@@ -587,7 +587,10 @@ int pcibios_device_add(struct pci_dev *pdev)
 	if (pdev->is_physfn)
 		pdev->no_vf_scan = 1;
 
+<<<<<<< HEAD
 	pdev->dev.groups = zpci_attr_groups;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	zpci_map_resources(pdev);
 
 	for (i = 0; i < PCI_STD_NUM_BARS; i++) {

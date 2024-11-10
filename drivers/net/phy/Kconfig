@@ -44,6 +44,12 @@ config LED_TRIGGER_PHY
 		<Speed in megabits>Mbps OR <Speed in gigabits>Gbps OR link
 		for any speed known to the PHY.
 
+<<<<<<< HEAD
+=======
+config OPEN_ALLIANCE_HELPERS
+	bool
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config PHYLIB_LEDS
 	def_bool OF
 	depends on LEDS_CLASS=y || LEDS_CLASS=PHYLIB
@@ -109,6 +115,16 @@ config ADIN1100_PHY
 	  Currently supports the:
 	  - ADIN1100 - Robust,Industrial, Low Power 10BASE-T1L Ethernet PHY
 
+<<<<<<< HEAD
+=======
+config AMCC_QT2025_PHY
+	tristate "AMCC QT2025 PHY"
+	depends on RUST_PHYLIB_ABSTRACTIONS
+	depends on RUST_FW_LOADER_ABSTRACTIONS
+	help
+	  Adds support for the Applied Micro Circuits Corporation QT2025 PHY.
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 source "drivers/net/phy/aquantia/Kconfig"
 
 config AX88796B_PHY
@@ -414,6 +430,10 @@ config DP83TD510_PHY
 
 config DP83TG720_PHY
 	tristate "Texas Instruments DP83TG720 Ethernet 1000Base-T1 PHY"
+<<<<<<< HEAD
+=======
+	select OPEN_ALLIANCE_HELPERS
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  The DP83TG720S-Q1 is an automotive Ethernet physical layer
 	  transceiver compliant with IEEE 802.3bp and Open Alliance

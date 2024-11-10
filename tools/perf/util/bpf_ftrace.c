@@ -40,13 +40,25 @@ int perf_ftrace__latency_prepare_bpf(struct perf_ftrace *ftrace)
 	if (ftrace->target.cpu_list) {
 		ncpus = perf_cpu_map__nr(ftrace->evlist->core.user_requested_cpus);
 		bpf_map__set_max_entries(skel->maps.cpu_filter, ncpus);
+<<<<<<< HEAD
+=======
+		skel->rodata->has_cpu = 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (target__has_task(&ftrace->target) || target__none(&ftrace->target)) {
 		ntasks = perf_thread_map__nr(ftrace->evlist->core.threads);
 		bpf_map__set_max_entries(skel->maps.task_filter, ntasks);
+<<<<<<< HEAD
 	}
 
+=======
+		skel->rodata->has_task = 1;
+	}
+
+	skel->rodata->use_nsec = ftrace->use_nsec;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	set_max_rlimit();
 
 	err = func_latency_bpf__load(skel);
@@ -59,7 +71,10 @@ int perf_ftrace__latency_prepare_bpf(struct perf_ftrace *ftrace)
 		u32 cpu;
 		u8 val = 1;
 
+<<<<<<< HEAD
 		skel->bss->has_cpu = 1;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fd = bpf_map__fd(skel->maps.cpu_filter);
 
 		for (i = 0; i < ncpus; i++) {
@@ -72,7 +87,10 @@ int perf_ftrace__latency_prepare_bpf(struct perf_ftrace *ftrace)
 		u32 pid;
 		u8 val = 1;
 
+<<<<<<< HEAD
 		skel->bss->has_task = 1;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fd = bpf_map__fd(skel->maps.task_filter);
 
 		for (i = 0; i < ntasks; i++) {
@@ -81,8 +99,11 @@ int perf_ftrace__latency_prepare_bpf(struct perf_ftrace *ftrace)
 		}
 	}
 
+<<<<<<< HEAD
 	skel->bss->use_nsec = ftrace->use_nsec;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	skel->links.func_begin = bpf_program__attach_kprobe(skel->progs.func_begin,
 							    false, func->name);
 	if (IS_ERR(skel->links.func_begin)) {

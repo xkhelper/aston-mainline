@@ -90,7 +90,11 @@ static int __rpc_method(char *rpc_name)
 
 int ksmbd_session_rpc_open(struct ksmbd_session *sess, char *rpc_name)
 {
+<<<<<<< HEAD
 	struct ksmbd_session_rpc *entry;
+=======
+	struct ksmbd_session_rpc *entry, *old;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ksmbd_rpc_command *resp;
 	int method;
 
@@ -106,6 +110,7 @@ int ksmbd_session_rpc_open(struct ksmbd_session *sess, char *rpc_name)
 	entry->id = ksmbd_ipc_id_alloc();
 	if (entry->id < 0)
 		goto free_entry;
+<<<<<<< HEAD
 	xa_store(&sess->rpc_handle_list, entry->id, entry, GFP_KERNEL);
 
 	resp = ksmbd_rpc_open(sess, entry->id);
@@ -116,6 +121,21 @@ int ksmbd_session_rpc_open(struct ksmbd_session *sess, char *rpc_name)
 	return entry->id;
 free_id:
 	xa_erase(&sess->rpc_handle_list, entry->id);
+=======
+	old = xa_store(&sess->rpc_handle_list, entry->id, entry, GFP_KERNEL);
+	if (xa_is_err(old))
+		goto free_id;
+
+	resp = ksmbd_rpc_open(sess, entry->id);
+	if (!resp)
+		goto erase_xa;
+
+	kvfree(resp);
+	return entry->id;
+erase_xa:
+	xa_erase(&sess->rpc_handle_list, entry->id);
+free_id:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ksmbd_rpc_id_free(entry->id);
 free_entry:
 	kfree(entry);
@@ -175,11 +195,21 @@ static void ksmbd_expire_session(struct ksmbd_conn *conn)
 	unsigned long id;
 	struct ksmbd_session *sess;
 
+<<<<<<< HEAD
 	down_write(&conn->session_lock);
 	xa_for_each(&conn->sessions, id, sess) {
 		if (sess->state != SMB2_SESSION_VALID ||
 		    time_after(jiffies,
 			       sess->last_active + SMB2_SESSION_TIMEOUT)) {
+=======
+	down_write(&sessions_table_lock);
+	down_write(&conn->session_lock);
+	xa_for_each(&conn->sessions, id, sess) {
+		if (atomic_read(&sess->refcnt) == 0 &&
+		    (sess->state != SMB2_SESSION_VALID ||
+		     time_after(jiffies,
+			       sess->last_active + SMB2_SESSION_TIMEOUT))) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			xa_erase(&conn->sessions, sess->id);
 			hash_del(&sess->hlist);
 			ksmbd_session_destroy(sess);
@@ -187,6 +217,10 @@ static void ksmbd_expire_session(struct ksmbd_conn *conn)
 		}
 	}
 	up_write(&conn->session_lock);
+<<<<<<< HEAD
+=======
+	up_write(&sessions_table_lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int ksmbd_session_register(struct ksmbd_conn *conn,
@@ -228,7 +262,10 @@ void ksmbd_sessions_deregister(struct ksmbd_conn *conn)
 			}
 		}
 	}
+<<<<<<< HEAD
 	up_write(&sessions_table_lock);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	down_write(&conn->session_lock);
 	xa_for_each(&conn->sessions, id, sess) {
@@ -248,6 +285,10 @@ void ksmbd_sessions_deregister(struct ksmbd_conn *conn)
 		}
 	}
 	up_write(&conn->session_lock);
+<<<<<<< HEAD
+=======
+	up_write(&sessions_table_lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 struct ksmbd_session *ksmbd_session_lookup(struct ksmbd_conn *conn,
@@ -269,8 +310,11 @@ struct ksmbd_session *ksmbd_session_lookup_slowpath(unsigned long long id)
 
 	down_read(&sessions_table_lock);
 	sess = __session_lookup(id);
+<<<<<<< HEAD
 	if (sess)
 		sess->last_active = jiffies;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	up_read(&sessions_table_lock);
 
 	return sess;
@@ -289,6 +333,25 @@ struct ksmbd_session *ksmbd_session_lookup_all(struct ksmbd_conn *conn,
 	return sess;
 }
 
+<<<<<<< HEAD
+=======
+void ksmbd_user_session_get(struct ksmbd_session *sess)
+{
+	atomic_inc(&sess->refcnt);
+}
+
+void ksmbd_user_session_put(struct ksmbd_session *sess)
+{
+	if (!sess)
+		return;
+
+	if (atomic_read(&sess->refcnt) <= 0)
+		WARN_ON(1);
+	else
+		atomic_dec(&sess->refcnt);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct preauth_session *ksmbd_preauth_session_alloc(struct ksmbd_conn *conn,
 						    u64 sess_id)
 {
@@ -393,6 +456,10 @@ static struct ksmbd_session *__session_create(int protocol)
 	xa_init(&sess->rpc_handle_list);
 	sess->sequence_number = 1;
 	rwlock_init(&sess->tree_conns_lock);
+<<<<<<< HEAD
+=======
+	atomic_set(&sess->refcnt, 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = __init_smb2_session(sess);
 	if (ret)

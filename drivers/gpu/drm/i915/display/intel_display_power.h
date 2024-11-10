@@ -183,6 +183,7 @@ void intel_display_power_resume(struct drm_i915_private *i915);
 void intel_display_power_set_target_dc_state(struct drm_i915_private *dev_priv,
 					     u32 state);
 
+<<<<<<< HEAD
 const char *
 intel_display_power_domain_str(enum intel_display_power_domain domain);
 
@@ -190,6 +191,10 @@ bool intel_display_power_is_enabled(struct drm_i915_private *dev_priv,
 				    enum intel_display_power_domain domain);
 bool __intel_display_power_is_enabled(struct drm_i915_private *dev_priv,
 				      enum intel_display_power_domain domain);
+=======
+bool intel_display_power_is_enabled(struct drm_i915_private *dev_priv,
+				    enum intel_display_power_domain domain);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 intel_wakeref_t intel_display_power_get(struct drm_i915_private *dev_priv,
 					enum intel_display_power_domain domain);
 intel_wakeref_t

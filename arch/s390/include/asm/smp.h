@@ -12,6 +12,10 @@
 #include <asm/processor.h>
 
 #define raw_smp_processor_id()	(get_lowcore()->cpu_nr)
+<<<<<<< HEAD
+=======
+#define arch_scale_cpu_capacity smp_cpu_get_capacity
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 extern struct mutex smp_cpu_state_mutex;
 extern unsigned int smp_cpu_mt_shift;
@@ -34,6 +38,12 @@ extern void smp_save_dump_secondary_cpus(void);
 extern void smp_yield_cpu(int cpu);
 extern void smp_cpu_set_polarization(int cpu, int val);
 extern int smp_cpu_get_polarization(int cpu);
+<<<<<<< HEAD
+=======
+extern void smp_cpu_set_capacity(int cpu, unsigned long val);
+extern void smp_set_core_capacity(int cpu, unsigned long val);
+extern unsigned long smp_cpu_get_capacity(int cpu);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern int smp_cpu_get_cpu_address(int cpu);
 extern void smp_fill_possible_mask(void);
 extern void smp_detect_cpus(void);

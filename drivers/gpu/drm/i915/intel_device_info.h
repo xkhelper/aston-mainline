@@ -207,8 +207,11 @@ struct intel_runtime_info {
 
 	u16 device_id;
 
+<<<<<<< HEAD
 	u32 rawclk_freq;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_step_info step;
 
 	unsigned int page_sizes; /* page sizes supported by the HW */

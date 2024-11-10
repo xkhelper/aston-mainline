@@ -9,6 +9,10 @@ int bch2_check_dirents(struct bch_fs *);
 int bch2_check_xattrs(struct bch_fs *);
 int bch2_check_root(struct bch_fs *);
 int bch2_check_subvolume_structure(struct bch_fs *);
+<<<<<<< HEAD
+=======
+int bch2_check_unreachable_inodes(struct bch_fs *);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int bch2_check_directory_structure(struct bch_fs *);
 int bch2_check_nlinks(struct bch_fs *);
 int bch2_fix_reflink_p(struct bch_fs *);

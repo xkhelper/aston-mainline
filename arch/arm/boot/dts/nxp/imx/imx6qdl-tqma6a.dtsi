@@ -27,8 +27,13 @@
 		reg = <0x08>;
 	};
 
+<<<<<<< HEAD
 	sensor@48 {
 		compatible = "national,lm75";
+=======
+	temperature-sensor@48 {
+		compatible = "national,lm75a";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		reg = <0x48>;
 		vs-supply = <&reg_3p3v>;
 	};

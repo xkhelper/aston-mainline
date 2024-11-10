@@ -13,13 +13,20 @@
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
+<<<<<<< HEAD
+=======
+#include <linux/backlight.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/init.h>
 #include <linux/input.h>
 #include <linux/input/sparse-keymap.h>
 #include <linux/dmi.h>
+<<<<<<< HEAD
 #include <linux/fb.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/acpi.h>
 
 #include "asus-wmi.h"
@@ -192,7 +199,11 @@ static void eeepc_wmi_quirks(struct asus_wmi_driver *driver)
 
 	driver->quirks = quirks;
 	driver->quirks->wapf = -1;
+<<<<<<< HEAD
 	driver->panel_power = FB_BLANK_UNBLANK;
+=======
+	driver->panel_power = BACKLIGHT_POWER_ON;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct asus_wmi_driver asus_wmi_driver = {

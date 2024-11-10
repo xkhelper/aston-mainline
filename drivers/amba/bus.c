@@ -435,7 +435,11 @@ static const struct dev_pm_ops amba_pm = {
  * DMA configuration for platform and AMBA bus is same. So here we reuse
  * platform's DMA config routine.
  */
+<<<<<<< HEAD
 struct bus_type amba_bustype = {
+=======
+const struct bus_type amba_bustype = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name		= "amba",
 	.dev_groups	= amba_dev_groups,
 	.match		= amba_match,

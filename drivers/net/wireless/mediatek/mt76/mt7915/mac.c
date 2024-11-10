@@ -1448,6 +1448,10 @@ mt7915_mac_full_reset(struct mt7915_dev *dev)
 
 	dev->recovery.hw_full_reset = true;
 
+<<<<<<< HEAD
+=======
+	set_bit(MT76_MCU_RESET, &dev->mphy.state);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	wake_up(&dev->mt76.mcu.wait);
 	ieee80211_stop_queues(mt76_hw(dev));
 	if (ext_phy)
@@ -1462,11 +1466,15 @@ mt7915_mac_full_reset(struct mt7915_dev *dev)
 		if (!mt7915_mac_restart(dev))
 			break;
 	}
+<<<<<<< HEAD
 	mutex_unlock(&dev->mt76.mutex);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (i == 10)
 		dev_err(dev->mt76.dev, "chip full reset failed\n");
 
+<<<<<<< HEAD
 	ieee80211_restart_hw(mt76_hw(dev));
 	if (ext_phy)
 		ieee80211_restart_hw(ext_phy->hw);
@@ -1482,6 +1490,25 @@ mt7915_mac_full_reset(struct mt7915_dev *dev)
 		ieee80211_queue_delayed_work(ext_phy->hw,
 					     &ext_phy->mac_work,
 					     MT7915_WATCHDOG_TIME);
+=======
+	spin_lock_bh(&dev->mt76.sta_poll_lock);
+	while (!list_empty(&dev->mt76.sta_poll_list))
+		list_del_init(dev->mt76.sta_poll_list.next);
+	spin_unlock_bh(&dev->mt76.sta_poll_lock);
+
+	memset(dev->mt76.wcid_mask, 0, sizeof(dev->mt76.wcid_mask));
+	dev->mt76.vif_mask = 0;
+
+	i = mt76_wcid_alloc(dev->mt76.wcid_mask, MT7915_WTBL_STA);
+	dev->mt76.global_wcid.idx = i;
+	dev->recovery.hw_full_reset = false;
+
+	mutex_unlock(&dev->mt76.mutex);
+
+	ieee80211_restart_hw(mt76_hw(dev));
+	if (ext_phy)
+		ieee80211_restart_hw(ext_phy->hw);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* system error recovery */
@@ -1537,12 +1564,21 @@ void mt7915_mac_reset_work(struct work_struct *work)
 		set_bit(MT76_RESET, &phy2->mt76->state);
 		cancel_delayed_work_sync(&phy2->mt76->mac_work);
 	}
+<<<<<<< HEAD
+=======
+
+	mutex_lock(&dev->mt76.mutex);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mt76_worker_disable(&dev->mt76.tx_worker);
 	mt76_for_each_q_rx(&dev->mt76, i)
 		napi_disable(&dev->mt76.napi[i]);
 	napi_disable(&dev->mt76.tx_napi);
 
+<<<<<<< HEAD
 	mutex_lock(&dev->mt76.mutex);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (mtk_wed_device_active(&dev->mt76.mmio.wed))
 		mtk_wed_device_stop(&dev->mt76.mmio.wed);
@@ -1692,6 +1728,14 @@ void mt7915_reset(struct mt7915_dev *dev)
 		return;
 	}
 
+<<<<<<< HEAD
+=======
+	if ((READ_ONCE(dev->recovery.state) & MT_MCU_CMD_STOP_DMA)) {
+		set_bit(MT76_MCU_RESET, &dev->mphy.state);
+		wake_up(&dev->mt76.mcu.wait);
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	queue_work(dev->mt76.wq, &dev->reset_work);
 	wake_up(&dev->reset_wait);
 }

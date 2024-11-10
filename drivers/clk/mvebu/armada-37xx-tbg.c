@@ -141,7 +141,11 @@ static const struct of_device_id armada_3700_tbg_clock_of_match[] = {
 
 static struct platform_driver armada_3700_tbg_clock_driver = {
 	.probe = armada_3700_tbg_clock_probe,
+<<<<<<< HEAD
 	.remove_new = armada_3700_tbg_clock_remove,
+=======
+	.remove = armada_3700_tbg_clock_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver		= {
 		.name	= "marvell-armada-3700-tbg-clock",
 		.of_match_table = armada_3700_tbg_clock_of_match,

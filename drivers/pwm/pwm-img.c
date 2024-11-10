@@ -416,7 +416,11 @@ static struct platform_driver img_pwm_driver = {
 		.of_match_table = img_pwm_of_match,
 	},
 	.probe = img_pwm_probe,
+<<<<<<< HEAD
 	.remove_new = img_pwm_remove,
+=======
+	.remove = img_pwm_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(img_pwm_driver);
 

@@ -904,7 +904,11 @@ static int cpcap_charger_probe(struct platform_device *pdev)
 	psy_cfg.of_node = pdev->dev.of_node;
 	psy_cfg.drv_data = ddata;
 	psy_cfg.supplied_to = cpcap_charger_supplied_to;
+<<<<<<< HEAD
 	psy_cfg.num_supplicants = ARRAY_SIZE(cpcap_charger_supplied_to),
+=======
+	psy_cfg.num_supplicants = ARRAY_SIZE(cpcap_charger_supplied_to);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ddata->usb = devm_power_supply_register(ddata->dev,
 						&cpcap_charger_usb_desc,

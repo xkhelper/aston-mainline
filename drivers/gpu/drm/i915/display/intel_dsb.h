@@ -13,8 +13,16 @@
 struct intel_atomic_state;
 struct intel_crtc;
 struct intel_crtc_state;
+<<<<<<< HEAD
 struct intel_dsb;
 
+=======
+struct intel_display;
+struct intel_dsb;
+
+enum pipe;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum intel_dsb_id {
 	INTEL_DSB_0,
 	INTEL_DSB_1,
@@ -36,9 +44,28 @@ void intel_dsb_reg_write_masked(struct intel_dsb *dsb,
 void intel_dsb_noop(struct intel_dsb *dsb, int count);
 void intel_dsb_nonpost_start(struct intel_dsb *dsb);
 void intel_dsb_nonpost_end(struct intel_dsb *dsb);
+<<<<<<< HEAD
+=======
+void intel_dsb_wait_scanline_in(struct intel_atomic_state *state,
+				struct intel_dsb *dsb,
+				int lower, int upper);
+void intel_dsb_wait_scanline_out(struct intel_atomic_state *state,
+				 struct intel_dsb *dsb,
+				 int lower, int upper);
+void intel_dsb_chain(struct intel_atomic_state *state,
+		     struct intel_dsb *dsb,
+		     struct intel_dsb *chained_dsb,
+		     bool wait_for_vblank);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void intel_dsb_commit(struct intel_dsb *dsb,
 		      bool wait_for_vblank);
 void intel_dsb_wait(struct intel_dsb *dsb);
 
+<<<<<<< HEAD
+=======
+void intel_dsb_irq_handler(struct intel_display *display,
+			   enum pipe pipe, enum intel_dsb_id dsb_id);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

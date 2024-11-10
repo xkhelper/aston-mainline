@@ -2836,7 +2836,10 @@ static void cadence_nand_chips_cleanup(struct cdns_nand_ctrl *cdns_ctrl)
 static int cadence_nand_chips_init(struct cdns_nand_ctrl *cdns_ctrl)
 {
 	struct device_node *np = cdns_ctrl->dev->of_node;
+<<<<<<< HEAD
 	struct device_node *nand_np;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int max_cs = cdns_ctrl->caps2.max_banks;
 	int nchips, ret;
 
@@ -2849,10 +2852,16 @@ static int cadence_nand_chips_init(struct cdns_nand_ctrl *cdns_ctrl)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	for_each_child_of_node(np, nand_np) {
 		ret = cadence_nand_chip_init(cdns_ctrl, nand_np);
 		if (ret) {
 			of_node_put(nand_np);
+=======
+	for_each_child_of_node_scoped(np, nand_np) {
+		ret = cadence_nand_chip_init(cdns_ctrl, nand_np);
+		if (ret) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			cadence_nand_chips_cleanup(cdns_ctrl);
 			return ret;
 		}

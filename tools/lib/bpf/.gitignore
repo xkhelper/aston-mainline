@@ -5,3 +5,7 @@ TAGS
 tags
 cscope.*
 /bpf_helper_defs.h
+<<<<<<< HEAD
+=======
+fixdep
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

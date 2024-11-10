@@ -24,10 +24,17 @@
 #include <drm/drm_modes.h>
 #include <drm/drm_panel.h>
 
+<<<<<<< HEAD
 #define DSI_REG_MCAP	0xB0
 #define DSI_REG_IS	0xB3 /* Interface Setting */
 #define DSI_REG_IIS	0xB4 /* Interface ID Setting */
 #define DSI_REG_CTRL	0xB6
+=======
+#define DSI_REG_MCAP	0xb0
+#define DSI_REG_IS	0xb3 /* Interface Setting */
+#define DSI_REG_IIS	0xb4 /* Interface ID Setting */
+#define DSI_REG_CTRL	0xb6
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 enum {
 	IOVCC = 0,
@@ -52,6 +59,7 @@ static inline struct stk_panel *to_stk_panel(struct drm_panel *panel)
 static int stk_panel_init(struct stk_panel *stk)
 {
 	struct mipi_dsi_device *dsi = stk->dsi;
+<<<<<<< HEAD
 	struct device *dev = &stk->dsi->dev;
 	int ret;
 
@@ -104,11 +112,38 @@ static int stk_panel_init(struct stk_panel *stk)
 	}
 
 	return 0;
+=======
+	struct mipi_dsi_multi_context dsi_ctx = {.dsi = dsi};
+
+	mipi_dsi_dcs_soft_reset_multi(&dsi_ctx);
+	mipi_dsi_msleep(&dsi_ctx, 5);
+	mipi_dsi_dcs_exit_sleep_mode_multi(&dsi_ctx);
+	mipi_dsi_msleep(&dsi_ctx, 120);
+
+	mipi_dsi_generic_write_seq_multi(&dsi_ctx, DSI_REG_MCAP, 0x04);
+
+	/* Interface setting, video mode */
+	mipi_dsi_generic_write_seq_multi(&dsi_ctx, DSI_REG_IS, 0x14, 0x08, 0x00, 0x22, 0x00);
+	mipi_dsi_generic_write_seq_multi(&dsi_ctx, DSI_REG_IIS, 0x0c, 0x00);
+	mipi_dsi_generic_write_seq_multi(&dsi_ctx, DSI_REG_CTRL, 0x3a, 0xd3);
+
+	mipi_dsi_dcs_set_display_brightness_multi(&dsi_ctx, 0x77);
+
+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, MIPI_DCS_WRITE_CONTROL_DISPLAY,
+				     MIPI_DCS_WRITE_MEMORY_START);
+
+	mipi_dsi_dcs_set_pixel_format_multi(&dsi_ctx, 0x77);
+	mipi_dsi_dcs_set_column_address_multi(&dsi_ctx, 0, stk->mode->hdisplay - 1);
+	mipi_dsi_dcs_set_page_address_multi(&dsi_ctx, 0, stk->mode->vdisplay - 1);
+
+	return dsi_ctx.accum_err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int stk_panel_on(struct stk_panel *stk)
 {
 	struct mipi_dsi_device *dsi = stk->dsi;
+<<<<<<< HEAD
 	struct device *dev = &stk->dsi->dev;
 	int ret;
 
@@ -119,11 +154,21 @@ static int stk_panel_on(struct stk_panel *stk)
 	mdelay(20);
 
 	return ret;
+=======
+	struct mipi_dsi_multi_context dsi_ctx = {.dsi = dsi};
+
+	mipi_dsi_dcs_set_display_on_multi(&dsi_ctx);
+
+	mipi_dsi_msleep(&dsi_ctx, 20);
+
+	return dsi_ctx.accum_err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void stk_panel_off(struct stk_panel *stk)
 {
 	struct mipi_dsi_device *dsi = stk->dsi;
+<<<<<<< HEAD
 	struct device *dev = &stk->dsi->dev;
 	int ret;
 
@@ -138,6 +183,16 @@ static void stk_panel_off(struct stk_panel *stk)
 		dev_err(dev, "failed to enter sleep mode: %d\n", ret);
 
 	msleep(100);
+=======
+	struct mipi_dsi_multi_context dsi_ctx = {.dsi = dsi};
+
+	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
+
+	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
+	mipi_dsi_dcs_enter_sleep_mode_multi(&dsi_ctx);
+
+	mipi_dsi_msleep(&dsi_ctx, 100);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int stk_panel_unprepare(struct drm_panel *panel)
@@ -155,7 +210,10 @@ static int stk_panel_unprepare(struct drm_panel *panel)
 static int stk_panel_prepare(struct drm_panel *panel)
 {
 	struct stk_panel *stk = to_stk_panel(panel);
+<<<<<<< HEAD
 	struct device *dev = &stk->dsi->dev;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	gpiod_set_value(stk->reset_gpio, 0);
@@ -175,6 +233,7 @@ static int stk_panel_prepare(struct drm_panel *panel)
 	gpiod_set_value(stk->reset_gpio, 1);
 	mdelay(10);
 	ret = stk_panel_init(stk);
+<<<<<<< HEAD
 	if (ret < 0) {
 		dev_err(dev, "failed to init panel: %d\n", ret);
 		goto poweroff;
@@ -185,6 +244,14 @@ static int stk_panel_prepare(struct drm_panel *panel)
 		dev_err(dev, "failed to set panel on: %d\n", ret);
 		goto poweroff;
 	}
+=======
+	if (ret < 0)
+		goto poweroff;
+
+	ret = stk_panel_on(stk);
+	if (ret < 0)
+		goto poweroff;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 
@@ -250,6 +317,7 @@ static int dsi_dcs_bl_get_brightness(struct backlight_device *bl)
 static int dsi_dcs_bl_update_status(struct backlight_device *bl)
 {
 	struct mipi_dsi_device *dsi = bl_get_data(bl);
+<<<<<<< HEAD
 	struct device *dev = &dsi->dev;
 	int ret;
 
@@ -262,6 +330,17 @@ static int dsi_dcs_bl_update_status(struct backlight_device *bl)
 
 	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
 	return 0;
+=======
+	struct mipi_dsi_multi_context dsi_ctx = {.dsi = dsi};
+
+	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
+	mipi_dsi_dcs_set_display_brightness_multi(&dsi_ctx, bl->props.brightness);
+	if (dsi_ctx.accum_err)
+		return dsi_ctx.accum_err;
+
+	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
+	return dsi_ctx.accum_err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct backlight_ops dsi_bl_ops = {

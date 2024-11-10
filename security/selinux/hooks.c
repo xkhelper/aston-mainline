@@ -282,8 +282,18 @@ static int __inode_security_revalidate(struct inode *inode,
 
 	might_sleep_if(may_sleep);
 
+<<<<<<< HEAD
 	if (selinux_initialized() &&
 	    isec->initialized != LABEL_INITIALIZED) {
+=======
+	/*
+	 * The check of isec->initialized below is racy but
+	 * inode_doinit_with_dentry() will recheck with
+	 * isec->lock held.
+	 */
+	if (selinux_initialized() &&
+	    data_race(isec->initialized != LABEL_INITIALIZED)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!may_sleep)
 			return -ECHILD;
 
@@ -2202,15 +2212,21 @@ static int selinux_syslog(int type)
 }
 
 /*
+<<<<<<< HEAD
  * Check that a process has enough memory to allocate a new virtual
  * mapping. 0 means there is enough memory for the allocation to
  * succeed and -ENOMEM implies there is not.
+=======
+ * Check permission for allocating a new virtual mapping. Returns
+ * 0 if permission is granted, negative error code if not.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Do not audit the selinux permission check, as this is applied to all
  * processes that allocate mappings.
  */
 static int selinux_vm_enough_memory(struct mm_struct *mm, long pages)
 {
+<<<<<<< HEAD
 	int rc, cap_sys_admin = 0;
 
 	rc = cred_has_capability(current_cred(), CAP_SYS_ADMIN,
@@ -2219,6 +2235,10 @@ static int selinux_vm_enough_memory(struct mm_struct *mm, long pages)
 		cap_sys_admin = 1;
 
 	return cap_sys_admin;
+=======
+	return cred_has_capability(current_cred(), CAP_SYS_ADMIN,
+				   CAP_OPT_NOAUDIT, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* binprm security operations */
@@ -3538,8 +3558,13 @@ static int selinux_inode_copy_up_xattr(struct dentry *dentry, const char *name)
 	 * xattrs up.  Instead, filter out SELinux-related xattrs following
 	 * policy load.
 	 */
+<<<<<<< HEAD
 	if (selinux_initialized() && strcmp(name, XATTR_NAME_SELINUX) == 0)
 		return 1; /* Discard */
+=======
+	if (selinux_initialized() && !strcmp(name, XATTR_NAME_SELINUX))
+		return -ECANCELED; /* Discard */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Any other attribute apart from SELINUX is not claimed, supported
 	 * by selinux.
@@ -3950,7 +3975,11 @@ static int selinux_file_send_sigiotask(struct task_struct *tsk,
 	struct file_security_struct *fsec;
 
 	/* struct fown_struct is never outside the context of a struct file */
+<<<<<<< HEAD
 	file = container_of(fown, struct file, f_owner);
+=======
+	file = fown->file;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	fsec = selinux_file(file);
 
@@ -4594,7 +4623,11 @@ static int socket_sockcreate_sid(const struct task_security_struct *tsec,
 
 static int sock_has_perm(struct sock *sk, u32 perms)
 {
+<<<<<<< HEAD
 	struct sk_security_struct *sksec = sk->sk_security;
+=======
+	struct sk_security_struct *sksec = selinux_sock(sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct common_audit_data ad;
 	struct lsm_network_audit net;
 
@@ -4662,7 +4695,11 @@ static int selinux_socket_post_create(struct socket *sock, int family,
 	isec->initialized = LABEL_INITIALIZED;
 
 	if (sock->sk) {
+<<<<<<< HEAD
 		sksec = sock->sk->sk_security;
+=======
+		sksec = selinux_sock(sock->sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		sksec->sclass = sclass;
 		sksec->sid = sid;
 		/* Allows detection of the first association on this socket */
@@ -4678,8 +4715,13 @@ static int selinux_socket_post_create(struct socket *sock, int family,
 static int selinux_socket_socketpair(struct socket *socka,
 				     struct socket *sockb)
 {
+<<<<<<< HEAD
 	struct sk_security_struct *sksec_a = socka->sk->sk_security;
 	struct sk_security_struct *sksec_b = sockb->sk->sk_security;
+=======
+	struct sk_security_struct *sksec_a = selinux_sock(socka->sk);
+	struct sk_security_struct *sksec_b = selinux_sock(sockb->sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	sksec_a->peer_sid = sksec_b->sid;
 	sksec_b->peer_sid = sksec_a->sid;
@@ -4694,7 +4736,11 @@ static int selinux_socket_socketpair(struct socket *socka,
 static int selinux_socket_bind(struct socket *sock, struct sockaddr *address, int addrlen)
 {
 	struct sock *sk = sock->sk;
+<<<<<<< HEAD
 	struct sk_security_struct *sksec = sk->sk_security;
+=======
+	struct sk_security_struct *sksec = selinux_sock(sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u16 family;
 	int err;
 
@@ -4834,7 +4880,11 @@ static int selinux_socket_connect_helper(struct socket *sock,
 					 struct sockaddr *address, int addrlen)
 {
 	struct sock *sk = sock->sk;
+<<<<<<< HEAD
 	struct sk_security_struct *sksec = sk->sk_security;
+=======
+	struct sk_security_struct *sksec = selinux_sock(sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 
 	err = sock_has_perm(sk, SOCKET__CONNECT);
@@ -5012,9 +5062,15 @@ static int selinux_socket_unix_stream_connect(struct sock *sock,
 					      struct sock *other,
 					      struct sock *newsk)
 {
+<<<<<<< HEAD
 	struct sk_security_struct *sksec_sock = sock->sk_security;
 	struct sk_security_struct *sksec_other = other->sk_security;
 	struct sk_security_struct *sksec_new = newsk->sk_security;
+=======
+	struct sk_security_struct *sksec_sock = selinux_sock(sock);
+	struct sk_security_struct *sksec_other = selinux_sock(other);
+	struct sk_security_struct *sksec_new = selinux_sock(newsk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct common_audit_data ad;
 	struct lsm_network_audit net;
 	int err;
@@ -5043,8 +5099,13 @@ static int selinux_socket_unix_stream_connect(struct sock *sock,
 static int selinux_socket_unix_may_send(struct socket *sock,
 					struct socket *other)
 {
+<<<<<<< HEAD
 	struct sk_security_struct *ssec = sock->sk->sk_security;
 	struct sk_security_struct *osec = other->sk->sk_security;
+=======
+	struct sk_security_struct *ssec = selinux_sock(sock->sk);
+	struct sk_security_struct *osec = selinux_sock(other->sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct common_audit_data ad;
 	struct lsm_network_audit net;
 
@@ -5081,7 +5142,11 @@ static int selinux_sock_rcv_skb_compat(struct sock *sk, struct sk_buff *skb,
 				       u16 family)
 {
 	int err = 0;
+<<<<<<< HEAD
 	struct sk_security_struct *sksec = sk->sk_security;
+=======
+	struct sk_security_struct *sksec = selinux_sock(sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 sk_sid = sksec->sid;
 	struct common_audit_data ad;
 	struct lsm_network_audit net;
@@ -5110,7 +5175,11 @@ static int selinux_sock_rcv_skb_compat(struct sock *sk, struct sk_buff *skb,
 static int selinux_socket_sock_rcv_skb(struct sock *sk, struct sk_buff *skb)
 {
 	int err, peerlbl_active, secmark_active;
+<<<<<<< HEAD
 	struct sk_security_struct *sksec = sk->sk_security;
+=======
+	struct sk_security_struct *sksec = selinux_sock(sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u16 family = sk->sk_family;
 	u32 sk_sid = sksec->sid;
 	struct common_audit_data ad;
@@ -5178,7 +5247,11 @@ static int selinux_socket_getpeersec_stream(struct socket *sock,
 	int err = 0;
 	char *scontext = NULL;
 	u32 scontext_len;
+<<<<<<< HEAD
 	struct sk_security_struct *sksec = sock->sk->sk_security;
+=======
+	struct sk_security_struct *sksec = selinux_sock(sock->sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 peer_sid = SECSID_NULL;
 
 	if (sksec->sclass == SECCLASS_UNIX_STREAM_SOCKET ||
@@ -5238,34 +5311,52 @@ static int selinux_socket_getpeersec_dgram(struct socket *sock,
 
 static int selinux_sk_alloc_security(struct sock *sk, int family, gfp_t priority)
 {
+<<<<<<< HEAD
 	struct sk_security_struct *sksec;
 
 	sksec = kzalloc(sizeof(*sksec), priority);
 	if (!sksec)
 		return -ENOMEM;
+=======
+	struct sk_security_struct *sksec = selinux_sock(sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	sksec->peer_sid = SECINITSID_UNLABELED;
 	sksec->sid = SECINITSID_UNLABELED;
 	sksec->sclass = SECCLASS_SOCKET;
 	selinux_netlbl_sk_security_reset(sksec);
+<<<<<<< HEAD
 	sk->sk_security = sksec;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
 
 static void selinux_sk_free_security(struct sock *sk)
 {
+<<<<<<< HEAD
 	struct sk_security_struct *sksec = sk->sk_security;
 
 	sk->sk_security = NULL;
 	selinux_netlbl_sk_security_free(sksec);
 	kfree(sksec);
+=======
+	struct sk_security_struct *sksec = selinux_sock(sk);
+
+	selinux_netlbl_sk_security_free(sksec);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void selinux_sk_clone_security(const struct sock *sk, struct sock *newsk)
 {
+<<<<<<< HEAD
 	struct sk_security_struct *sksec = sk->sk_security;
 	struct sk_security_struct *newsksec = newsk->sk_security;
+=======
+	struct sk_security_struct *sksec = selinux_sock(sk);
+	struct sk_security_struct *newsksec = selinux_sock(newsk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	newsksec->sid = sksec->sid;
 	newsksec->peer_sid = sksec->peer_sid;
@@ -5279,7 +5370,11 @@ static void selinux_sk_getsecid(const struct sock *sk, u32 *secid)
 	if (!sk)
 		*secid = SECINITSID_ANY_SOCKET;
 	else {
+<<<<<<< HEAD
 		const struct sk_security_struct *sksec = sk->sk_security;
+=======
+		const struct sk_security_struct *sksec = selinux_sock(sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		*secid = sksec->sid;
 	}
@@ -5289,7 +5384,11 @@ static void selinux_sock_graft(struct sock *sk, struct socket *parent)
 {
 	struct inode_security_struct *isec =
 		inode_security_novalidate(SOCK_INODE(parent));
+<<<<<<< HEAD
 	struct sk_security_struct *sksec = sk->sk_security;
+=======
+	struct sk_security_struct *sksec = selinux_sock(sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (sk->sk_family == PF_INET || sk->sk_family == PF_INET6 ||
 	    sk->sk_family == PF_UNIX)
@@ -5306,7 +5405,11 @@ static int selinux_sctp_process_new_assoc(struct sctp_association *asoc,
 {
 	struct sock *sk = asoc->base.sk;
 	u16 family = sk->sk_family;
+<<<<<<< HEAD
 	struct sk_security_struct *sksec = sk->sk_security;
+=======
+	struct sk_security_struct *sksec = selinux_sock(sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct common_audit_data ad;
 	struct lsm_network_audit net;
 	int err;
@@ -5361,7 +5464,11 @@ static int selinux_sctp_process_new_assoc(struct sctp_association *asoc,
 static int selinux_sctp_assoc_request(struct sctp_association *asoc,
 				      struct sk_buff *skb)
 {
+<<<<<<< HEAD
 	struct sk_security_struct *sksec = asoc->base.sk->sk_security;
+=======
+	struct sk_security_struct *sksec = selinux_sock(asoc->base.sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 conn_sid;
 	int err;
 
@@ -5394,7 +5501,11 @@ static int selinux_sctp_assoc_request(struct sctp_association *asoc,
 static int selinux_sctp_assoc_established(struct sctp_association *asoc,
 					  struct sk_buff *skb)
 {
+<<<<<<< HEAD
 	struct sk_security_struct *sksec = asoc->base.sk->sk_security;
+=======
+	struct sk_security_struct *sksec = selinux_sock(asoc->base.sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!selinux_policycap_extsockclass())
 		return 0;
@@ -5493,8 +5604,13 @@ static int selinux_sctp_bind_connect(struct sock *sk, int optname,
 static void selinux_sctp_sk_clone(struct sctp_association *asoc, struct sock *sk,
 				  struct sock *newsk)
 {
+<<<<<<< HEAD
 	struct sk_security_struct *sksec = sk->sk_security;
 	struct sk_security_struct *newsksec = newsk->sk_security;
+=======
+	struct sk_security_struct *sksec = selinux_sock(sk);
+	struct sk_security_struct *newsksec = selinux_sock(newsk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* If policy does not support SECCLASS_SCTP_SOCKET then call
 	 * the non-sctp clone version.
@@ -5510,8 +5626,13 @@ static void selinux_sctp_sk_clone(struct sctp_association *asoc, struct sock *sk
 
 static int selinux_mptcp_add_subflow(struct sock *sk, struct sock *ssk)
 {
+<<<<<<< HEAD
 	struct sk_security_struct *ssksec = ssk->sk_security;
 	struct sk_security_struct *sksec = sk->sk_security;
+=======
+	struct sk_security_struct *ssksec = selinux_sock(ssk);
+	struct sk_security_struct *sksec = selinux_sock(sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ssksec->sclass = sksec->sclass;
 	ssksec->sid = sksec->sid;
@@ -5526,7 +5647,11 @@ static int selinux_mptcp_add_subflow(struct sock *sk, struct sock *ssk)
 static int selinux_inet_conn_request(const struct sock *sk, struct sk_buff *skb,
 				     struct request_sock *req)
 {
+<<<<<<< HEAD
 	struct sk_security_struct *sksec = sk->sk_security;
+=======
+	struct sk_security_struct *sksec = selinux_sock(sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 	u16 family = req->rsk_ops->family;
 	u32 connsid;
@@ -5547,7 +5672,11 @@ static int selinux_inet_conn_request(const struct sock *sk, struct sk_buff *skb,
 static void selinux_inet_csk_clone(struct sock *newsk,
 				   const struct request_sock *req)
 {
+<<<<<<< HEAD
 	struct sk_security_struct *newsksec = newsk->sk_security;
+=======
+	struct sk_security_struct *newsksec = selinux_sock(newsk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	newsksec->sid = req->secid;
 	newsksec->peer_sid = req->peer_secid;
@@ -5564,7 +5693,11 @@ static void selinux_inet_csk_clone(struct sock *newsk,
 static void selinux_inet_conn_established(struct sock *sk, struct sk_buff *skb)
 {
 	u16 family = sk->sk_family;
+<<<<<<< HEAD
 	struct sk_security_struct *sksec = sk->sk_security;
+=======
+	struct sk_security_struct *sksec = selinux_sock(sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* handle mapped IPv4 packets arriving via IPv6 sockets */
 	if (family == PF_INET6 && skb->protocol == htons(ETH_P_IP))
@@ -5595,6 +5728,7 @@ static void selinux_req_classify_flow(const struct request_sock *req,
 	flic->flowic_secid = req->secid;
 }
 
+<<<<<<< HEAD
 static int selinux_tun_dev_alloc_security(void **security)
 {
 	struct tun_security_struct *tunsec;
@@ -5613,6 +5747,16 @@ static void selinux_tun_dev_free_security(void *security)
 	kfree(security);
 }
 
+=======
+static int selinux_tun_dev_alloc_security(void *security)
+{
+	struct tun_security_struct *tunsec = selinux_tun_dev(security);
+
+	tunsec->sid = current_sid();
+	return 0;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int selinux_tun_dev_create(void)
 {
 	u32 sid = current_sid();
@@ -5630,7 +5774,11 @@ static int selinux_tun_dev_create(void)
 
 static int selinux_tun_dev_attach_queue(void *security)
 {
+<<<<<<< HEAD
 	struct tun_security_struct *tunsec = security;
+=======
+	struct tun_security_struct *tunsec = selinux_tun_dev(security);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return avc_has_perm(current_sid(), tunsec->sid, SECCLASS_TUN_SOCKET,
 			    TUN_SOCKET__ATTACH_QUEUE, NULL);
@@ -5638,8 +5786,13 @@ static int selinux_tun_dev_attach_queue(void *security)
 
 static int selinux_tun_dev_attach(struct sock *sk, void *security)
 {
+<<<<<<< HEAD
 	struct tun_security_struct *tunsec = security;
 	struct sk_security_struct *sksec = sk->sk_security;
+=======
+	struct tun_security_struct *tunsec = selinux_tun_dev(security);
+	struct sk_security_struct *sksec = selinux_sock(sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* we don't currently perform any NetLabel based labeling here and it
 	 * isn't clear that we would want to do so anyway; while we could apply
@@ -5656,7 +5809,11 @@ static int selinux_tun_dev_attach(struct sock *sk, void *security)
 
 static int selinux_tun_dev_open(void *security)
 {
+<<<<<<< HEAD
 	struct tun_security_struct *tunsec = security;
+=======
+	struct tun_security_struct *tunsec = selinux_tun_dev(security);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 sid = current_sid();
 	int err;
 
@@ -5762,7 +5919,11 @@ static unsigned int selinux_ip_output(void *priv, struct sk_buff *skb,
 			return NF_ACCEPT;
 
 		/* standard practice, label using the parent socket */
+<<<<<<< HEAD
 		sksec = sk->sk_security;
+=======
+		sksec = selinux_sock(sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		sid = sksec->sid;
 	} else
 		sid = SECINITSID_KERNEL;
@@ -5785,7 +5946,11 @@ static unsigned int selinux_ip_postroute_compat(struct sk_buff *skb,
 	sk = skb_to_full_sk(skb);
 	if (sk == NULL)
 		return NF_ACCEPT;
+<<<<<<< HEAD
 	sksec = sk->sk_security;
+=======
+	sksec = selinux_sock(sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ad_net_init_from_iif(&ad, &net, state->out->ifindex, state->pf);
 	if (selinux_parse_skb(skb, &ad, NULL, 0, &proto))
@@ -5874,7 +6039,11 @@ static unsigned int selinux_ip_postroute(void *priv,
 		u32 skb_sid;
 		struct sk_security_struct *sksec;
 
+<<<<<<< HEAD
 		sksec = sk->sk_security;
+=======
+		sksec = selinux_sock(sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (selinux_skb_peerlbl_sid(skb, family, &skb_sid))
 			return NF_DROP;
 		/* At this point, if the returned skb peerlbl is SECSID_NULL
@@ -5903,7 +6072,11 @@ static unsigned int selinux_ip_postroute(void *priv,
 	} else {
 		/* Locally generated packet, fetch the security label from the
 		 * associated socket. */
+<<<<<<< HEAD
 		struct sk_security_struct *sksec = sk->sk_security;
+=======
+		struct sk_security_struct *sksec = selinux_sock(sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		peer_sid = sksec->sid;
 		secmark_perm = PACKET__SEND;
 	}
@@ -5946,7 +6119,11 @@ static int selinux_netlink_send(struct sock *sk, struct sk_buff *skb)
 	unsigned int data_len = skb->len;
 	unsigned char *data = skb->data;
 	struct nlmsghdr *nlh;
+<<<<<<< HEAD
 	struct sk_security_struct *sksec = sk->sk_security;
+=======
+	struct sk_security_struct *sksec = selinux_sock(sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u16 sclass = sksec->sclass;
 	u32 perm;
 
@@ -6680,11 +6857,15 @@ static int selinux_key_alloc(struct key *k, const struct cred *cred,
 			     unsigned long flags)
 {
 	const struct task_security_struct *tsec;
+<<<<<<< HEAD
 	struct key_security_struct *ksec;
 
 	ksec = kzalloc(sizeof(struct key_security_struct), GFP_KERNEL);
 	if (!ksec)
 		return -ENOMEM;
+=======
+	struct key_security_struct *ksec = selinux_key(k);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	tsec = selinux_cred(cred);
 	if (tsec->keycreate_sid)
@@ -6692,6 +6873,7 @@ static int selinux_key_alloc(struct key *k, const struct cred *cred,
 	else
 		ksec->sid = tsec->sid;
 
+<<<<<<< HEAD
 	k->security = ksec;
 	return 0;
 }
@@ -6704,6 +6886,11 @@ static void selinux_key_free(struct key *k)
 	kfree(ksec);
 }
 
+=======
+	return 0;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int selinux_key_permission(key_ref_t key_ref,
 				  const struct cred *cred,
 				  enum key_need_perm need_perm)
@@ -6744,14 +6931,22 @@ static int selinux_key_permission(key_ref_t key_ref,
 
 	sid = cred_sid(cred);
 	key = key_ref_to_ptr(key_ref);
+<<<<<<< HEAD
 	ksec = key->security;
+=======
+	ksec = selinux_key(key);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return avc_has_perm(sid, ksec->sid, SECCLASS_KEY, perm, NULL);
 }
 
 static int selinux_key_getsecurity(struct key *key, char **_buffer)
 {
+<<<<<<< HEAD
 	struct key_security_struct *ksec = key->security;
+=======
+	struct key_security_struct *ksec = selinux_key(key);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char *context = NULL;
 	unsigned len;
 	int rc;
@@ -6767,7 +6962,11 @@ static int selinux_key_getsecurity(struct key *key, char **_buffer)
 #ifdef CONFIG_KEY_NOTIFICATIONS
 static int selinux_watch_key(struct key *key)
 {
+<<<<<<< HEAD
 	struct key_security_struct *ksec = key->security;
+=======
+	struct key_security_struct *ksec = selinux_key(key);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 sid = current_sid();
 
 	return avc_has_perm(sid, ksec->sid, SECCLASS_KEY, KEY__VIEW, NULL);
@@ -6821,6 +7020,7 @@ static int selinux_ib_endport_manage_subnet(void *ib_sec, const char *dev_name,
 			    INFINIBAND_ENDPORT__MANAGE_SUBNET, &ad);
 }
 
+<<<<<<< HEAD
 static int selinux_ib_alloc_security(void **ib_sec)
 {
 	struct ib_security_struct *sec;
@@ -6838,6 +7038,15 @@ static void selinux_ib_free_security(void *ib_sec)
 {
 	kfree(ib_sec);
 }
+=======
+static int selinux_ib_alloc_security(void *ib_sec)
+{
+	struct ib_security_struct *sec = selinux_ib(ib_sec);
+
+	sec->sid = current_sid();
+	return 0;
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 #ifdef CONFIG_BPF_SYSCALL
@@ -6975,7 +7184,11 @@ static void selinux_bpf_prog_free(struct bpf_prog *prog)
 }
 
 static int selinux_bpf_token_create(struct bpf_token *token, union bpf_attr *attr,
+<<<<<<< HEAD
 				    struct path *path)
+=======
+				    const struct path *path)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct bpf_security_struct *bpfsec;
 
@@ -7003,9 +7216,22 @@ struct lsm_blob_sizes selinux_blob_sizes __ro_after_init = {
 	.lbs_file = sizeof(struct file_security_struct),
 	.lbs_inode = sizeof(struct inode_security_struct),
 	.lbs_ipc = sizeof(struct ipc_security_struct),
+<<<<<<< HEAD
 	.lbs_msg_msg = sizeof(struct msg_security_struct),
 	.lbs_superblock = sizeof(struct superblock_security_struct),
 	.lbs_xattr_count = SELINUX_INODE_INIT_XATTRS,
+=======
+	.lbs_key = sizeof(struct key_security_struct),
+	.lbs_msg_msg = sizeof(struct msg_security_struct),
+#ifdef CONFIG_PERF_EVENTS
+	.lbs_perf_event = sizeof(struct perf_event_security_struct),
+#endif
+	.lbs_sock = sizeof(struct sk_security_struct),
+	.lbs_superblock = sizeof(struct superblock_security_struct),
+	.lbs_xattr_count = SELINUX_INODE_INIT_XATTRS,
+	.lbs_tun_dev = sizeof(struct tun_security_struct),
+	.lbs_ib = sizeof(struct ib_security_struct),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #ifdef CONFIG_PERF_EVENTS
@@ -7032,16 +7258,22 @@ static int selinux_perf_event_alloc(struct perf_event *event)
 {
 	struct perf_event_security_struct *perfsec;
 
+<<<<<<< HEAD
 	perfsec = kzalloc(sizeof(*perfsec), GFP_KERNEL);
 	if (!perfsec)
 		return -ENOMEM;
 
 	perfsec->sid = current_sid();
 	event->security = perfsec;
+=======
+	perfsec = selinux_perf_event(event->security);
+	perfsec->sid = current_sid();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static void selinux_perf_event_free(struct perf_event *event)
 {
 	struct perf_event_security_struct *perfsec = event->security;
@@ -7050,6 +7282,8 @@ static void selinux_perf_event_free(struct perf_event *event)
 	kfree(perfsec);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int selinux_perf_event_read(struct perf_event *event)
 {
 	struct perf_event_security_struct *perfsec = event->security;
@@ -7317,7 +7551,10 @@ static struct security_hook_list selinux_hooks[] __ro_after_init = {
 	LSM_HOOK_INIT(secmark_refcount_inc, selinux_secmark_refcount_inc),
 	LSM_HOOK_INIT(secmark_refcount_dec, selinux_secmark_refcount_dec),
 	LSM_HOOK_INIT(req_classify_flow, selinux_req_classify_flow),
+<<<<<<< HEAD
 	LSM_HOOK_INIT(tun_dev_free_security, selinux_tun_dev_free_security),
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	LSM_HOOK_INIT(tun_dev_create, selinux_tun_dev_create),
 	LSM_HOOK_INIT(tun_dev_attach_queue, selinux_tun_dev_attach_queue),
 	LSM_HOOK_INIT(tun_dev_attach, selinux_tun_dev_attach),
@@ -7326,7 +7563,10 @@ static struct security_hook_list selinux_hooks[] __ro_after_init = {
 	LSM_HOOK_INIT(ib_pkey_access, selinux_ib_pkey_access),
 	LSM_HOOK_INIT(ib_endport_manage_subnet,
 		      selinux_ib_endport_manage_subnet),
+<<<<<<< HEAD
 	LSM_HOOK_INIT(ib_free_security, selinux_ib_free_security),
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 #ifdef CONFIG_SECURITY_NETWORK_XFRM
 	LSM_HOOK_INIT(xfrm_policy_free_security, selinux_xfrm_policy_free),
@@ -7340,7 +7580,10 @@ static struct security_hook_list selinux_hooks[] __ro_after_init = {
 #endif
 
 #ifdef CONFIG_KEYS
+<<<<<<< HEAD
 	LSM_HOOK_INIT(key_free, selinux_key_free),
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	LSM_HOOK_INIT(key_permission, selinux_key_permission),
 	LSM_HOOK_INIT(key_getsecurity, selinux_key_getsecurity),
 #ifdef CONFIG_KEY_NOTIFICATIONS
@@ -7365,7 +7608,10 @@ static struct security_hook_list selinux_hooks[] __ro_after_init = {
 
 #ifdef CONFIG_PERF_EVENTS
 	LSM_HOOK_INIT(perf_event_open, selinux_perf_event_open),
+<<<<<<< HEAD
 	LSM_HOOK_INIT(perf_event_free, selinux_perf_event_free),
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	LSM_HOOK_INIT(perf_event_read, selinux_perf_event_read),
 	LSM_HOOK_INIT(perf_event_write, selinux_perf_event_write),
 #endif

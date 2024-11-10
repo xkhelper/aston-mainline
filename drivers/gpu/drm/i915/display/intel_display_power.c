@@ -36,7 +36,11 @@
 	for_each_power_well_reverse(__dev_priv, __power_well)		        \
 		for_each_if(test_bit((__domain), (__power_well)->domains.bits))
 
+<<<<<<< HEAD
 const char *
+=======
+static const char *
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 intel_display_power_domain_str(enum intel_display_power_domain domain)
 {
 	switch (domain) {
@@ -198,6 +202,7 @@ intel_display_power_domain_str(enum intel_display_power_domain domain)
 	}
 }
 
+<<<<<<< HEAD
 /**
  * __intel_display_power_is_enabled - unlocked check for a power domain
  * @dev_priv: i915 device instance
@@ -212,6 +217,10 @@ intel_display_power_domain_str(enum intel_display_power_domain domain)
  */
 bool __intel_display_power_is_enabled(struct drm_i915_private *dev_priv,
 				      enum intel_display_power_domain domain)
+=======
+static bool __intel_display_power_is_enabled(struct drm_i915_private *dev_priv,
+					     enum intel_display_power_domain domain)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct i915_power_well *power_well;
 	bool is_enabled;
@@ -1696,7 +1705,11 @@ static void icl_display_core_init(struct drm_i915_private *dev_priv,
 		intel_dmc_load_program(dev_priv);
 
 	/* Wa_14011508470:tgl,dg1,rkl,adl-s,adl-p,dg2 */
+<<<<<<< HEAD
 	if (IS_DISPLAY_IP_RANGE(dev_priv, IP_VER(12, 0), IP_VER(13, 0)))
+=======
+	if (IS_DISPLAY_VER_FULL(dev_priv, IP_VER(12, 0), IP_VER(13, 0)))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		intel_de_rmw(dev_priv, GEN11_CHICKEN_DCPR_2, 0,
 			     DCPR_CLEAR_MEMSTAT_DIS | DCPR_SEND_RESP_IMM |
 			     DCPR_MASK_LPMODE | DCPR_MASK_MAXLATENCY_MEMUP_CLR);
@@ -1704,6 +1717,17 @@ static void icl_display_core_init(struct drm_i915_private *dev_priv,
 	/* Wa_14011503030:xelpd */
 	if (DISPLAY_VER(dev_priv) == 13)
 		intel_de_write(dev_priv, XELPD_DISPLAY_ERR_FATAL_MASK, ~0);
+<<<<<<< HEAD
+=======
+
+	/* Wa_15013987218 */
+	if (DISPLAY_VER(dev_priv) == 20) {
+		intel_de_rmw(dev_priv, SOUTH_DSPCLK_GATE_D,
+			     0, PCH_GMBUSUNIT_CLOCK_GATE_DISABLE);
+		intel_de_rmw(dev_priv, SOUTH_DSPCLK_GATE_D,
+			     PCH_GMBUSUNIT_CLOCK_GATE_DISABLE, 0);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void icl_display_core_uninit(struct drm_i915_private *dev_priv)

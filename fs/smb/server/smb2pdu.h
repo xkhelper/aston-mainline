@@ -190,6 +190,7 @@ struct resume_key_ioctl_rsp {
 	__u8 Context[4]; /* ignored, Windows sets to 4 bytes of zero */
 } __packed;
 
+<<<<<<< HEAD
 struct copychunk_ioctl_req {
 	__le64 ResumeKey[3];
 	__le32 ChunkCount;
@@ -197,6 +198,8 @@ struct copychunk_ioctl_req {
 	__u8 Chunks[1]; /* array of srv_copychunk */
 } __packed;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct srv_copychunk {
 	__le64 SourceOffset;
 	__le64 TargetOffset;
@@ -204,6 +207,16 @@ struct srv_copychunk {
 	__le32 Reserved;
 } __packed;
 
+<<<<<<< HEAD
+=======
+struct copychunk_ioctl_req {
+	__le64 ResumeKey[3];
+	__le32 ChunkCount;
+	__le32 Reserved;
+	struct srv_copychunk Chunks[] __counted_by_le(ChunkCount);
+} __packed;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct copychunk_ioctl_rsp {
 	__le32 ChunksWritten;
 	__le32 ChunkBytesWritten;
@@ -370,7 +383,11 @@ struct smb2_file_attr_tag_info {
 struct smb2_ea_info_req {
 	__le32 NextEntryOffset;
 	__u8   EaNameLength;
+<<<<<<< HEAD
 	char name[1];
+=======
+	char name[];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 } __packed; /* level 15 Query */
 
 struct smb2_ea_info {

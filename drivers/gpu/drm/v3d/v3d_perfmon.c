@@ -195,6 +195,26 @@ static const struct v3d_perf_counter_desc v3d_v71_performance_counters[] = {
 	{"QPU", "QPU-stalls-other", "[QPU] Stalled qcycles waiting for any other reason (vary/W/Z)"},
 };
 
+<<<<<<< HEAD
+=======
+void v3d_perfmon_init(struct v3d_dev *v3d)
+{
+	const struct v3d_perf_counter_desc *counters = NULL;
+	unsigned int max = 0;
+
+	if (v3d->ver >= 71) {
+		counters = v3d_v71_performance_counters;
+		max = ARRAY_SIZE(v3d_v71_performance_counters);
+	} else if (v3d->ver >= 42) {
+		counters = v3d_v42_performance_counters;
+		max = ARRAY_SIZE(v3d_v42_performance_counters);
+	}
+
+	v3d->perfmon_info.max_counters = max;
+	v3d->perfmon_info.counters = counters;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void v3d_perfmon_get(struct v3d_perfmon *perfmon)
 {
 	if (perfmon)
@@ -289,6 +309,14 @@ void v3d_perfmon_open_file(struct v3d_file_priv *v3d_priv)
 static int v3d_perfmon_idr_del(int id, void *elem, void *data)
 {
 	struct v3d_perfmon *perfmon = elem;
+<<<<<<< HEAD
+=======
+	struct v3d_dev *v3d = (struct v3d_dev *)data;
+
+	/* If the active perfmon is being destroyed, stop it first */
+	if (perfmon == v3d->active_perfmon)
+		v3d_perfmon_stop(v3d, perfmon, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	v3d_perfmon_put(perfmon);
 
@@ -297,8 +325,15 @@ static int v3d_perfmon_idr_del(int id, void *elem, void *data)
 
 void v3d_perfmon_close_file(struct v3d_file_priv *v3d_priv)
 {
+<<<<<<< HEAD
 	mutex_lock(&v3d_priv->perfmon.lock);
 	idr_for_each(&v3d_priv->perfmon.idr, v3d_perfmon_idr_del, NULL);
+=======
+	struct v3d_dev *v3d = v3d_priv->v3d;
+
+	mutex_lock(&v3d_priv->perfmon.lock);
+	idr_for_each(&v3d_priv->perfmon.idr, v3d_perfmon_idr_del, v3d);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	idr_destroy(&v3d_priv->perfmon.idr);
 	mutex_unlock(&v3d_priv->perfmon.lock);
 	mutex_destroy(&v3d_priv->perfmon.lock);
@@ -321,7 +356,11 @@ int v3d_perfmon_create_ioctl(struct drm_device *dev, void *data,
 
 	/* Make sure all counters are valid. */
 	for (i = 0; i < req->ncounters; i++) {
+<<<<<<< HEAD
 		if (req->counters[i] >= v3d->max_counters)
+=======
+		if (req->counters[i] >= v3d->perfmon_info.max_counters)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EINVAL;
 	}
 
@@ -416,6 +455,7 @@ int v3d_perfmon_get_counter_ioctl(struct drm_device *dev, void *data,
 			return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	/* Make sure that the counter ID is valid */
 	if (req->counter >= v3d->max_counters)
 		return -EINVAL;
@@ -435,6 +475,16 @@ int v3d_perfmon_get_counter_ioctl(struct drm_device *dev, void *data,
 		counter = &v3d_v42_performance_counters[req->counter];
 	else
 		return -EOPNOTSUPP;
+=======
+	if (!v3d->perfmon_info.max_counters)
+		return -EOPNOTSUPP;
+
+	/* Make sure that the counter ID is valid */
+	if (req->counter >= v3d->perfmon_info.max_counters)
+		return -EINVAL;
+
+	counter = &v3d->perfmon_info.counters[req->counter];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	strscpy(req->name, counter->name, sizeof(req->name));
 	strscpy(req->category, counter->category, sizeof(req->category));

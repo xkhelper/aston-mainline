@@ -36,6 +36,7 @@ MODULE_AUTHOR("AudioScience inc. <support@audioscience.com>");
 MODULE_DESCRIPTION("AudioScience ALSA ASI5xxx ASI6xxx ASI87xx ASI89xx "
 			HPI_VER_STRING);
 
+<<<<<<< HEAD
 #if defined CONFIG_SND_DEBUG_VERBOSE
 /**
  * snd_printddd - very verbose debug printk
@@ -49,6 +50,12 @@ MODULE_DESCRIPTION("AudioScience ALSA ASI5xxx ASI6xxx ASI87xx ASI89xx "
 	__snd_printk(3, __FILE__, __LINE__, format, ##args)
 #else
 #define snd_printddd(format, args...) do { } while (0)
+=======
+#ifdef ASIHPI_VERBOSE_DEBUG
+#define asihpi_dbg(format, args...) pr_debug(format, ##args)
+#else
+#define asihpi_dbg(format, args...) do { } while (0)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 static int index[SNDRV_CARDS] = SNDRV_DEFAULT_IDX;	/* index 0-MAX */
@@ -260,8 +267,12 @@ static inline u16 hpi_stream_group_reset(u32 h_stream)
 static u16 handle_error(u16 err, int line, char *filename)
 {
 	if (err)
+<<<<<<< HEAD
 		printk(KERN_WARNING
 			"in file %s, line %d: HPI error %d\n",
+=======
+		pr_warn("in file %s, line %d: HPI error %d\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			filename, line, err);
 	return err;
 }
@@ -273,6 +284,7 @@ static u16 handle_error(u16 err, int line, char *filename)
 static void print_hwparams(struct snd_pcm_substream *substream,
 				struct snd_pcm_hw_params *p)
 {
+<<<<<<< HEAD
 	char name[16];
 	snd_pcm_debug_name(substream, name, sizeof(name));
 	snd_printdd("%s HWPARAMS\n", name);
@@ -283,6 +295,20 @@ static void print_hwparams(struct snd_pcm_substream *substream,
 		params_buffer_bytes(p), params_period_bytes(p),
 		params_period_size(p), params_periods(p));
 	snd_printdd(" buffer_size=%d access=%d data_rate=%dB/s\n",
+=======
+	struct device *dev = substream->pcm->card->dev;
+	char name[16];
+
+	snd_pcm_debug_name(substream, name, sizeof(name));
+	dev_dbg(dev, "%s HWPARAMS\n", name);
+	dev_dbg(dev, " samplerate=%dHz channels=%d format=%d subformat=%d\n",
+		params_rate(p), params_channels(p),
+		params_format(p), params_subformat(p));
+	dev_dbg(dev, " buffer=%dB period=%dB period_size=%dB periods=%d\n",
+		params_buffer_bytes(p), params_period_bytes(p),
+		params_period_size(p), params_periods(p));
+	dev_dbg(dev, " buffer_size=%d access=%d data_rate=%dB/s\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		params_buffer_size(p), params_access(p),
 		params_rate(p) * params_channels(p) *
 		snd_pcm_format_width(params_format(p)) / 8);
@@ -317,7 +343,12 @@ static const snd_pcm_format_t hpi_to_alsa_formats[] = {
 };
 
 
+<<<<<<< HEAD
 static int snd_card_asihpi_format_alsa2hpi(snd_pcm_format_t alsa_format,
+=======
+static int snd_card_asihpi_format_alsa2hpi(struct snd_card_asihpi *asihpi,
+					   snd_pcm_format_t alsa_format,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					   u16 *hpi_format)
 {
 	u16 format;
@@ -330,8 +361,13 @@ static int snd_card_asihpi_format_alsa2hpi(snd_pcm_format_t alsa_format,
 		}
 	}
 
+<<<<<<< HEAD
 	snd_printd(KERN_WARNING "failed match for alsa format %d\n",
 		   alsa_format);
+=======
+	dev_dbg(asihpi->card->dev, "failed match for alsa format %d\n",
+		alsa_format);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	*hpi_format = 0;
 	return -EINVAL;
 }
@@ -439,7 +475,11 @@ static int snd_card_asihpi_pcm_hw_params(struct snd_pcm_substream *substream,
 	unsigned int bytes_per_sec;
 
 	print_hwparams(substream, params);
+<<<<<<< HEAD
 	err = snd_card_asihpi_format_alsa2hpi(params_format(params), &format);
+=======
+	err = snd_card_asihpi_format_alsa2hpi(card, params_format(params), &format);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err)
 		return err;
 
@@ -461,13 +501,22 @@ static int snd_card_asihpi_pcm_hw_params(struct snd_pcm_substream *substream,
 		err = hpi_stream_host_buffer_attach(dpcm->h_stream,
 			params_buffer_bytes(params),  runtime->dma_addr);
 		if (err == 0) {
+<<<<<<< HEAD
 			snd_printdd(
+=======
+			dev_dbg(card->card->dev,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				"stream_host_buffer_attach success %u %lu\n",
 				params_buffer_bytes(params),
 				(unsigned long)runtime->dma_addr);
 		} else {
+<<<<<<< HEAD
 			snd_printd("stream_host_buffer_attach error %d\n",
 					err);
+=======
+			dev_dbg(card->card->dev,
+				"stream_host_buffer_attach error %d\n", err);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -ENOMEM;
 		}
 
@@ -569,7 +618,11 @@ static int snd_card_asihpi_trigger(struct snd_pcm_substream *substream,
 
 	switch (cmd) {
 	case SNDRV_PCM_TRIGGER_START:
+<<<<<<< HEAD
 		snd_printdd("%s trigger start\n", name);
+=======
+		dev_dbg(card->card->dev, "%s trigger start\n", name);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		snd_pcm_group_for_each_entry(s, substream) {
 			struct snd_pcm_runtime *runtime = s->runtime;
 			struct snd_card_asihpi_pcm *ds = runtime->private_data;
@@ -590,7 +643,11 @@ static int snd_card_asihpi_trigger(struct snd_pcm_substream *substream,
 				* data??
 				*/
 				unsigned int preload = ds->period_bytes * 1;
+<<<<<<< HEAD
 				snd_printddd("%d preload %d\n", s->number, preload);
+=======
+				asihpi_dbg("%d preload %d\n", s->number, preload);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				hpi_handle_error(hpi_outstream_write_buf(
 						ds->h_stream,
 						&runtime->dma_area[0],
@@ -600,7 +657,11 @@ static int snd_card_asihpi_trigger(struct snd_pcm_substream *substream,
 			}
 
 			if (card->support_grouping) {
+<<<<<<< HEAD
 				snd_printdd("%d group\n", s->number);
+=======
+				dev_dbg(card->card->dev, "%d group\n", s->number);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				e = hpi_stream_group_add(
 					dpcm->h_stream,
 					ds->h_stream);
@@ -621,7 +682,11 @@ static int snd_card_asihpi_trigger(struct snd_pcm_substream *substream,
 		break;
 
 	case SNDRV_PCM_TRIGGER_STOP:
+<<<<<<< HEAD
 		snd_printdd("%s trigger stop\n", name);
+=======
+		dev_dbg(card->card->dev, "%s trigger stop\n", name);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		card->pcm_stop(substream);
 		snd_pcm_group_for_each_entry(s, substream) {
 			if (snd_pcm_substream_chip(s) != card)
@@ -635,7 +700,11 @@ static int snd_card_asihpi_trigger(struct snd_pcm_substream *substream,
 			__snd_pcm_set_state(s->runtime, SNDRV_PCM_STATE_SETUP);
 
 			if (card->support_grouping) {
+<<<<<<< HEAD
 				snd_printdd("%d group\n", s->number);
+=======
+				dev_dbg(card->card->dev, "%d group\n", s->number);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				snd_pcm_trigger_done(s, substream);
 			} else
 				break;
@@ -652,17 +721,29 @@ static int snd_card_asihpi_trigger(struct snd_pcm_substream *substream,
 		break;
 
 	case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
+<<<<<<< HEAD
 		snd_printdd("%s trigger pause release\n", name);
+=======
+		dev_dbg(card->card->dev, "%s trigger pause release\n", name);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		card->pcm_start(substream);
 		hpi_handle_error(hpi_stream_start(dpcm->h_stream));
 		break;
 	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
+<<<<<<< HEAD
 		snd_printdd("%s trigger pause push\n", name);
+=======
+		dev_dbg(card->card->dev, "%s trigger pause push\n", name);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		card->pcm_stop(substream);
 		hpi_handle_error(hpi_stream_stop(dpcm->h_stream));
 		break;
 	default:
+<<<<<<< HEAD
 		snd_printd(KERN_ERR "\tINVALID\n");
+=======
+		dev_dbg(card->card->dev, "\tINVALID\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 
@@ -760,12 +841,22 @@ static void snd_card_asihpi_timer_function(struct timer_list *t)
 			if (state == HPI_STATE_STOPPED) {
 				if (bytes_avail == 0) {
 					hpi_handle_error(hpi_stream_start(ds->h_stream));
+<<<<<<< HEAD
 					snd_printdd("P%d start\n", s->number);
 					ds->drained_count = 0;
 				}
 			} else if (state == HPI_STATE_DRAINED) {
 				snd_printd(KERN_WARNING "P%d drained\n",
 						s->number);
+=======
+					dev_dbg(card->card->dev,
+						"P%d start\n", s->number);
+					ds->drained_count = 0;
+				}
+			} else if (state == HPI_STATE_DRAINED) {
+				dev_dbg(card->card->dev,
+					"P%d drained\n", s->number);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				ds->drained_count++;
 				if (ds->drained_count > 20) {
 					snd_pcm_stop_xrun(s);
@@ -790,7 +881,11 @@ static void snd_card_asihpi_timer_function(struct timer_list *t)
 				newdata);
 		}
 
+<<<<<<< HEAD
 		snd_printddd(
+=======
+		asihpi_dbg(
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			"timer1, %s, %d, S=%d, elap=%d, rw=%d, dsp=%d, left=%d, aux=%d, space=%d, hw_ptr=%ld, appl_ptr=%ld\n",
 			name, s->number, state,
 			ds->pcm_buf_elapsed_dma_ofs,
@@ -821,7 +916,11 @@ static void snd_card_asihpi_timer_function(struct timer_list *t)
 
 	next_jiffies = max(next_jiffies, 1U);
 	dpcm->timer.expires = jiffies + next_jiffies;
+<<<<<<< HEAD
 	snd_printddd("timer2, jif=%d, buf_pos=%d, newdata=%d, xfer=%d\n",
+=======
+	asihpi_dbg("timer2, jif=%d, buf_pos=%d, newdata=%d, xfer=%d\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			next_jiffies, pcm_buf_dma_ofs, newdata, xfercount);
 
 	snd_pcm_group_for_each_entry(s, substream) {
@@ -854,7 +953,11 @@ static void snd_card_asihpi_timer_function(struct timer_list *t)
 			}
 
 			if (s->stream == SNDRV_PCM_STREAM_PLAYBACK) {
+<<<<<<< HEAD
 				snd_printddd("write1, P=%d, xfer=%d, buf_ofs=%d\n",
+=======
+				asihpi_dbg("write1, P=%d, xfer=%d, buf_ofs=%d\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					s->number, xfer1, buf_ofs);
 				hpi_handle_error(
 					hpi_outstream_write_buf(
@@ -864,7 +967,11 @@ static void snd_card_asihpi_timer_function(struct timer_list *t)
 				if (xfer2) {
 					pd = s->runtime->dma_area;
 
+<<<<<<< HEAD
 					snd_printddd("write2, P=%d, xfer=%d, buf_ofs=%d\n",
+=======
+					asihpi_dbg("write2, P=%d, xfer=%d, buf_ofs=%d\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 							s->number,
 							xfercount - xfer1, buf_ofs);
 					hpi_handle_error(
@@ -874,7 +981,11 @@ static void snd_card_asihpi_timer_function(struct timer_list *t)
 							&ds->format));
 				}
 			} else {
+<<<<<<< HEAD
 				snd_printddd("read1, C=%d, xfer=%d\n",
+=======
+				asihpi_dbg("read1, C=%d, xfer=%d\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					s->number, xfer1);
 				hpi_handle_error(
 					hpi_instream_read_buf(
@@ -882,7 +993,11 @@ static void snd_card_asihpi_timer_function(struct timer_list *t)
 						pd, xfer1));
 				if (xfer2) {
 					pd = s->runtime->dma_area;
+<<<<<<< HEAD
 					snd_printddd("read2, C=%d, xfer=%d\n",
+=======
+					asihpi_dbg("read2, C=%d, xfer=%d\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						s->number, xfer2);
 					hpi_handle_error(
 						hpi_instream_read_buf(
@@ -919,8 +1034,11 @@ static int snd_card_asihpi_playback_prepare(struct snd_pcm_substream *
 	struct snd_pcm_runtime *runtime = substream->runtime;
 	struct snd_card_asihpi_pcm *dpcm = runtime->private_data;
 
+<<<<<<< HEAD
 	snd_printdd("P%d prepare\n", substream->number);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	hpi_handle_error(hpi_outstream_reset(dpcm->h_stream));
 	dpcm->pcm_buf_host_rw_ofs = 0;
 	dpcm->pcm_buf_dma_ofs = 0;
@@ -938,7 +1056,11 @@ snd_card_asihpi_playback_pointer(struct snd_pcm_substream *substream)
 	snd_pcm_debug_name(substream, name, sizeof(name));
 
 	ptr = bytes_to_frames(runtime, dpcm->pcm_buf_dma_ofs  % dpcm->buffer_bytes);
+<<<<<<< HEAD
 	snd_printddd("%s, pointer=%ld\n", name, (unsigned long)ptr);
+=======
+	asihpi_dbg("%s, pointer=%ld\n", name, (unsigned long)ptr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ptr;
 }
 
@@ -1060,8 +1182,11 @@ static int snd_card_asihpi_playback_open(struct snd_pcm_substream *substream)
 	snd_pcm_hw_constraint_minmax(runtime, SNDRV_PCM_HW_PARAM_PERIOD_SIZE,
 		card->update_interval_frames, UINT_MAX);
 
+<<<<<<< HEAD
 	snd_printdd("playback open\n");
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -1071,8 +1196,11 @@ static int snd_card_asihpi_playback_close(struct snd_pcm_substream *substream)
 	struct snd_card_asihpi_pcm *dpcm = runtime->private_data;
 
 	hpi_handle_error(hpi_outstream_close(dpcm->h_stream));
+<<<<<<< HEAD
 	snd_printdd("playback close\n");
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -1095,7 +1223,11 @@ snd_card_asihpi_capture_pointer(struct snd_pcm_substream *substream)
 	char name[16];
 	snd_pcm_debug_name(substream, name, sizeof(name));
 
+<<<<<<< HEAD
 	snd_printddd("%s, pointer=%d\n", name, dpcm->pcm_buf_dma_ofs);
+=======
+	asihpi_dbg("%s, pointer=%d\n", name, dpcm->pcm_buf_dma_ofs);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* NOTE Unlike playback can't use actual samples_played
 		for the capture position, because those samples aren't yet in
 		the local buffer available for reading.
@@ -1113,7 +1245,10 @@ static int snd_card_asihpi_capture_prepare(struct snd_pcm_substream *substream)
 	dpcm->pcm_buf_dma_ofs = 0;
 	dpcm->pcm_buf_elapsed_dma_ofs = 0;
 
+<<<<<<< HEAD
 	snd_printdd("Capture Prepare %d\n", substream->number);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -1162,8 +1297,14 @@ static int snd_card_asihpi_capture_open(struct snd_pcm_substream *substream)
 	if (dpcm == NULL)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	snd_printdd("capture open adapter %d stream %d\n",
 			card->hpi->adapter->index, substream->number);
+=======
+
+	dev_dbg(card->card->dev, "capture open adapter %d stream %d\n",
+		card->hpi->adapter->index, substream->number);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = hpi_handle_error(
 	    hpi_instream_open(card->hpi->adapter->index,
@@ -1413,8 +1554,11 @@ static void asihpi_ctl_init(struct snd_kcontrol_new *snd_control,
 		hpi_ctl->src_node_index,
 		dir, name);
 	}
+<<<<<<< HEAD
 	/* printk(KERN_INFO "Adding %s %d to %d ",  hpi_ctl->name,
 		hpi_ctl->wSrcNodeType, hpi_ctl->wDstNodeType); */
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*------------------------------------------------------------
@@ -2175,9 +2319,14 @@ static int snd_asihpi_mux_get(struct snd_kcontrol *kcontrol,
 			return 0;
 		}
 	}
+<<<<<<< HEAD
 	snd_printd(KERN_WARNING
 		"Control %x failed to match mux source %hu %hu\n",
 		h_control, source_type, source_index);
+=======
+	pr_warn("%s: Control %x failed to match mux source %hu %hu\n",
+		__func__, h_control, source_type, source_index);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ucontrol->value.enumerated.item[0] = 0;
 	return 0;
 }

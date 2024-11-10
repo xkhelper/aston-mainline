@@ -115,7 +115,12 @@ static int cfg80211_conn_scan(struct wireless_dev *wdev)
 		n_channels = i;
 	}
 	request->n_channels = n_channels;
+<<<<<<< HEAD
 	request->ssids = (void *)&request->channels[n_channels];
+=======
+	request->ssids = (void *)request +
+		struct_size(request, channels, n_channels);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	request->n_ssids = 1;
 
 	memcpy(request->ssids[0].ssid, wdev->conn->params.ssid,

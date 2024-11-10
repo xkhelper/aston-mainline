@@ -53,6 +53,7 @@ nouveau_bo(struct ttm_buffer_object *bo)
 	return container_of(bo, struct nouveau_bo, bo);
 }
 
+<<<<<<< HEAD
 static inline int
 nouveau_bo_ref(struct nouveau_bo *ref, struct nouveau_bo **pnvbo)
 {
@@ -72,6 +73,12 @@ nouveau_bo_ref(struct nouveau_bo *ref, struct nouveau_bo **pnvbo)
 		ttm_bo_put(&prev->bo);
 
 	return 0;
+=======
+static inline void
+nouveau_bo_fini(struct nouveau_bo *bo)
+{
+	ttm_bo_put(&bo->bo);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 extern struct ttm_device_funcs nouveau_bo_driver;
@@ -115,6 +122,7 @@ nvbo_kmap_obj_iovirtual(struct nouveau_bo *nvbo)
 	return ioptr;
 }
 
+<<<<<<< HEAD
 static inline void
 nouveau_bo_unmap_unpin_unref(struct nouveau_bo **pnvbo)
 {
@@ -144,6 +152,8 @@ nouveau_bo_new_pin_map(struct nouveau_cli *cli, u64 size, int align, u32 domain,
 	return ret;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int nv04_bo_move_init(struct nouveau_channel *, u32);
 int nv04_bo_move_m2mf(struct nouveau_channel *, struct ttm_buffer_object *,
 		      struct ttm_resource *, struct ttm_resource *);

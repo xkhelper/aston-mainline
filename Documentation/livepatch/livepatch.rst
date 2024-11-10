@@ -50,7 +50,11 @@ some limitations, see below.
 3. Consistency model
 ====================
 
+<<<<<<< HEAD
 Functions are there for a reason. They take some input parameters, get or
+=======
+Functions are there for a reason. They take some input parameters, acquire or
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 release locks, read, process, and even write some data in a defined way,
 have return values. In other words, each function has a defined semantic.
 

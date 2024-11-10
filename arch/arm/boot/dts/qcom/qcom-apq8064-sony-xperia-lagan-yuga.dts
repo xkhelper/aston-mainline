@@ -373,21 +373,34 @@
 	cd-gpios = <&tlmm_pinmux 26 GPIO_ACTIVE_LOW>;
 
 	pinctrl-names = "default";
+<<<<<<< HEAD
 	pinctrl-0 = <&sdcc3_pins>, <&sdcc3_cd_pin_a>;
+=======
+	pinctrl-0 = <&sdcc3_default_state>, <&sdcc3_cd_pin_a>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	status = "okay";
 };
 
 &tlmm_pinmux {
+<<<<<<< HEAD
 	gsbi5_uart_pin_a: gsbi5-uart-pin-active {
 		rx {
+=======
+	gsbi5_uart_pin_a: gsbi5-uart-pin-active-state {
+		rx-pins {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			pins = "gpio52";
 			function = "gsbi5";
 			drive-strength = <2>;
 			bias-pull-up;
 		};
 
+<<<<<<< HEAD
 		tx {
+=======
+		tx-pins {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			pins = "gpio51";
 			function = "gsbi5";
 			drive-strength = <4>;
@@ -396,7 +409,11 @@
 	};
 
 
+<<<<<<< HEAD
 	sdcc3_cd_pin_a: sdcc3-cd-pin-active {
+=======
+	sdcc3_cd_pin_a: sdcc3-cd-pin-active-state {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pins = "gpio26";
 		function = "gpio";
 

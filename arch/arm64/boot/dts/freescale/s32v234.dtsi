@@ -89,7 +89,11 @@
 	};
 
 	gic: interrupt-controller@7d001000 {
+<<<<<<< HEAD
 		compatible = "arm,cortex-a15-gic", "arm,cortex-a9-gic";
+=======
+		compatible = "arm,cortex-a15-gic";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		#interrupt-cells = <3>;
 		#address-cells = <0>;
 		interrupt-controller;

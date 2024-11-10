@@ -1804,6 +1804,7 @@ retry:
 			newcontext.role = OBJECT_R_VAL;
 	}
 
+<<<<<<< HEAD
 	/* Set the type to default values. */
 	if (cladatum && cladatum->default_type == DEFAULT_SOURCE) {
 		newcontext.type = scontext->type;
@@ -1820,6 +1821,11 @@ retry:
 	}
 
 	/* Look for a type transition/member/change rule. */
+=======
+	/* Set the type.
+	 * Look for a type transition/member/change rule.
+	 */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	avkey.source_type = scontext->type;
 	avkey.target_type = tcontext->type;
 	avkey.target_class = tclass;
@@ -1837,9 +1843,30 @@ retry:
 		}
 	}
 
+<<<<<<< HEAD
 	if (avnode) {
 		/* Use the type from the type transition/member/change rule. */
 		newcontext.type = avnode->datum.u.data;
+=======
+	/* If a permanent rule is found, use the type from
+	 * the type transition/member/change rule. Otherwise,
+	 * set the type to its default values.
+	 */
+	if (avnode) {
+		newcontext.type = avnode->datum.u.data;
+	} else if (cladatum && cladatum->default_type == DEFAULT_SOURCE) {
+		newcontext.type = scontext->type;
+	} else if (cladatum && cladatum->default_type == DEFAULT_TARGET) {
+		newcontext.type = tcontext->type;
+	} else {
+		if ((tclass == policydb->process_class) || sock) {
+			/* Use the type of process. */
+			newcontext.type = scontext->type;
+		} else {
+			/* Use the type of the related object. */
+			newcontext.type = tcontext->type;
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* if we have a objname this is a file trans check so check those rules */

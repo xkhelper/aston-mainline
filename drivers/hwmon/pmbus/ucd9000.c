@@ -67,7 +67,10 @@ struct ucd9000_data {
 	struct gpio_chip gpio;
 #endif
 	struct dentry *debugfs;
+<<<<<<< HEAD
 	ktime_t write_time;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 #define to_ucd9000_data(_info) container_of(_info, struct ucd9000_data, info)
 
@@ -86,6 +89,7 @@ struct ucd9000_debugfs_entry {
  */
 #define UCD90320_WAIT_DELAY_US 500
 
+<<<<<<< HEAD
 static inline void ucd90320_wait(const struct ucd9000_data *data)
 {
 	s64 delta = ktime_us_delta(ktime_get(), data->write_time);
@@ -143,6 +147,8 @@ static int ucd90320_write_byte(struct i2c_client *client, int page, u8 value)
 	return ret;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int ucd9000_get_fan_config(struct i2c_client *client, int fan)
 {
 	int fan_config = 0;
@@ -667,10 +673,15 @@ static int ucd9000_probe(struct i2c_client *client)
 		info->func[0] |= PMBUS_HAVE_FAN12 | PMBUS_HAVE_STATUS_FAN12
 		  | PMBUS_HAVE_FAN34 | PMBUS_HAVE_STATUS_FAN34;
 	} else if (mid->driver_data == ucd90320) {
+<<<<<<< HEAD
 		info->read_byte_data = ucd90320_read_byte_data;
 		info->read_word_data = ucd90320_read_word_data;
 		info->write_byte = ucd90320_write_byte;
 		info->write_word_data = ucd90320_write_word_data;
+=======
+		/* Delay SMBus operations after a write */
+		info->write_delay = UCD90320_WAIT_DELAY_US;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	ucd9000_probe_gpio(client, mid, data);

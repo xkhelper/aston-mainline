@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: GPL-2.0
 
+<<<<<<< HEAD
 CFLAGS += -I. -I../../include -I../../../lib -g -Og -Wall \
 	  -D_LGPL_SOURCE -fsanitize=address -fsanitize=undefined
 LDFLAGS += -fsanitize=address -fsanitize=undefined
@@ -27,18 +28,39 @@ endif
 
 targets: generated/map-shift.h generated/bit-length.h $(TARGETS)
 
+=======
+.PHONY: clean
+
+TARGETS = main idr-test multiorder xarray maple
+CORE_OFILES = $(SHARED_OFILES) xarray.o maple.o test.o
+OFILES = main.o $(CORE_OFILES) regression1.o regression2.o \
+	 regression3.o regression4.o tag_check.o multiorder.o idr-test.o \
+	iteration_check.o iteration_check_2.o benchmark.o
+
+targets: generated/map-shift.h generated/bit-length.h $(TARGETS)
+
+include ../shared/shared.mk
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 main:	$(OFILES)
 
 idr-test.o: ../../../lib/test_ida.c
 idr-test: idr-test.o $(CORE_OFILES)
 
+<<<<<<< HEAD
 xarray: $(CORE_OFILES)
 
 maple: $(CORE_OFILES)
+=======
+xarray: $(CORE_OFILES) xarray.o
+
+maple: $(CORE_OFILES) maple.o
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 multiorder: multiorder.o $(CORE_OFILES)
 
 clean:
+<<<<<<< HEAD
 	$(RM) $(TARGETS) *.o radix-tree.c idr.c generated/map-shift.h generated/bit-length.h
 
 vpath %.c ../../lib
@@ -75,3 +97,8 @@ generated/bit-length.h: FORCE
 	fi
 
 FORCE: ;
+=======
+	$(RM) $(TARGETS) *.o radix-tree.c idr.c generated/*
+
+$(OFILES): $(SHARED_DEPS) *.h
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

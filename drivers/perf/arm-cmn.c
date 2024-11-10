@@ -24,6 +24,7 @@
 #define CMN_NI_NODE_ID			GENMASK_ULL(31, 16)
 #define CMN_NI_LOGICAL_ID		GENMASK_ULL(47, 32)
 
+<<<<<<< HEAD
 #define CMN_NODEID_DEVID(reg)		((reg) & 3)
 #define CMN_NODEID_EXT_DEVID(reg)	((reg) & 1)
 #define CMN_NODEID_PID(reg)		(((reg) >> 2) & 1)
@@ -32,6 +33,8 @@
 #define CMN_NODEID_X(reg, bits)		((reg) >> (3 + (bits)))
 #define CMN_NODEID_Y(reg, bits)		(((reg) >> 3) & ((1U << (bits)) - 1))
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define CMN_CHILD_INFO			0x0080
 #define CMN_CI_CHILD_COUNT		GENMASK_ULL(15, 0)
 #define CMN_CI_CHILD_PTR_OFFSET		GENMASK_ULL(31, 16)
@@ -43,6 +46,12 @@
 #define CMN_MAX_XPS			(CMN_MAX_DIMENSION * CMN_MAX_DIMENSION)
 #define CMN_MAX_DTMS			(CMN_MAX_XPS + (CMN_MAX_DIMENSION - 1) * 4)
 
+<<<<<<< HEAD
+=======
+/* Currently XPs are the node type we can have most of; others top out at 128 */
+#define CMN_MAX_NODES_PER_EVENT		CMN_MAX_XPS
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* The CFG node has various info besides the discovery tree */
 #define CMN_CFGM_PERIPH_ID_01		0x0008
 #define CMN_CFGM_PID0_PART_0		GENMASK_ULL(7, 0)
@@ -50,24 +59,44 @@
 #define CMN_CFGM_PERIPH_ID_23		0x0010
 #define CMN_CFGM_PID2_REVISION		GENMASK_ULL(7, 4)
 
+<<<<<<< HEAD
 #define CMN_CFGM_INFO_GLOBAL		0x900
 #define CMN_INFO_MULTIPLE_DTM_EN	BIT_ULL(63)
 #define CMN_INFO_RSP_VC_NUM		GENMASK_ULL(53, 52)
 #define CMN_INFO_DAT_VC_NUM		GENMASK_ULL(51, 50)
 
 #define CMN_CFGM_INFO_GLOBAL_1		0x908
+=======
+#define CMN_CFGM_INFO_GLOBAL		0x0900
+#define CMN_INFO_MULTIPLE_DTM_EN	BIT_ULL(63)
+#define CMN_INFO_RSP_VC_NUM		GENMASK_ULL(53, 52)
+#define CMN_INFO_DAT_VC_NUM		GENMASK_ULL(51, 50)
+#define CMN_INFO_DEVICE_ISO_ENABLE	BIT_ULL(44)
+
+#define CMN_CFGM_INFO_GLOBAL_1		0x0908
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define CMN_INFO_SNP_VC_NUM		GENMASK_ULL(3, 2)
 #define CMN_INFO_REQ_VC_NUM		GENMASK_ULL(1, 0)
 
 /* XPs also have some local topology info which has uses too */
 #define CMN_MXP__CONNECT_INFO(p)	(0x0008 + 8 * (p))
+<<<<<<< HEAD
 #define CMN__CONNECT_INFO_DEVICE_TYPE	GENMASK_ULL(4, 0)
+=======
+#define CMN__CONNECT_INFO_DEVICE_TYPE	GENMASK_ULL(5, 0)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define CMN_MAX_PORTS			6
 #define CI700_CONNECT_INFO_P2_5_OFFSET	0x10
 
 /* PMU registers occupy the 3rd 4KB page of each node's region */
 #define CMN_PMU_OFFSET			0x2000
+<<<<<<< HEAD
+=======
+/* ...except when they don't :( */
+#define CMN_S3_DTM_OFFSET		0xa000
+#define CMN_S3_PMU_OFFSET		0xd900
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* For most nodes, this is all there is */
 #define CMN_PMU_EVENT_SEL		0x000
@@ -78,7 +107,12 @@
 /* Technically this is 4 bits wide on DNs, but we only use 2 there anyway */
 #define CMN__PMU_OCCUP1_ID		GENMASK_ULL(34, 32)
 
+<<<<<<< HEAD
 /* HN-Ps are weird... */
+=======
+/* Some types are designed to coexist with another device in the same node */
+#define CMN_CCLA_PMU_EVENT_SEL		0x008
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define CMN_HNP_PMU_EVENT_SEL		0x008
 
 /* DTMs live in the PMU space of XP registers */
@@ -123,6 +157,7 @@
 /* The DTC node is where the magic happens */
 #define CMN_DT_DTC_CTL			0x0a00
 #define CMN_DT_DTC_CTL_DT_EN		BIT(0)
+<<<<<<< HEAD
 
 /* DTC counters are paired in 64-bit registers on a 16-byte stride. Yuck */
 #define _CMN_DT_CNT_REG(n)		((((n) / 2) * 4 + (n) % 2) * 4)
@@ -133,10 +168,24 @@
 #define CMN_DT_PMCCNTRSR		(CMN_PMU_OFFSET + 0x90)
 
 #define CMN_DT_PMCR			(CMN_PMU_OFFSET + 0x100)
+=======
+#define CMN_DT_DTC_CTL_CG_DISABLE	BIT(10)
+
+/* DTC counters are paired in 64-bit registers on a 16-byte stride. Yuck */
+#define _CMN_DT_CNT_REG(n)		((((n) / 2) * 4 + (n) % 2) * 4)
+#define CMN_DT_PMEVCNT(dtc, n)		((dtc)->pmu_base + _CMN_DT_CNT_REG(n))
+#define CMN_DT_PMCCNTR(dtc)		((dtc)->pmu_base + 0x40)
+
+#define CMN_DT_PMEVCNTSR(dtc, n)	((dtc)->pmu_base + 0x50 + _CMN_DT_CNT_REG(n))
+#define CMN_DT_PMCCNTRSR(dtc)		((dtc)->pmu_base + 0x90)
+
+#define CMN_DT_PMCR(dtc)		((dtc)->pmu_base + 0x100)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define CMN_DT_PMCR_PMU_EN		BIT(0)
 #define CMN_DT_PMCR_CNTR_RST		BIT(5)
 #define CMN_DT_PMCR_OVFL_INTR_EN	BIT(6)
 
+<<<<<<< HEAD
 #define CMN_DT_PMOVSR			(CMN_PMU_OFFSET + 0x118)
 #define CMN_DT_PMOVSR_CLR		(CMN_PMU_OFFSET + 0x120)
 
@@ -144,6 +193,15 @@
 #define CMN_DT_PMSSR_SS_STATUS(n)	BIT(n)
 
 #define CMN_DT_PMSRR			(CMN_PMU_OFFSET + 0x130)
+=======
+#define CMN_DT_PMOVSR(dtc)		((dtc)->pmu_base + 0x118)
+#define CMN_DT_PMOVSR_CLR(dtc)		((dtc)->pmu_base + 0x120)
+
+#define CMN_DT_PMSSR(dtc)		((dtc)->pmu_base + 0x128)
+#define CMN_DT_PMSSR_SS_STATUS(n)	BIT(n)
+
+#define CMN_DT_PMSRR(dtc)		((dtc)->pmu_base + 0x130)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define CMN_DT_PMSRR_SS_REQ		BIT(0)
 
 #define CMN_DT_NUM_COUNTERS		8
@@ -198,10 +256,18 @@ enum cmn_model {
 	CMN650 = 2,
 	CMN700 = 4,
 	CI700 = 8,
+<<<<<<< HEAD
 	/* ...and then we can use bitmap tricks for commonality */
 	CMN_ANY = -1,
 	NOT_CMN600 = -2,
 	CMN_650ON = CMN650 | CMN700,
+=======
+	CMNS3 = 16,
+	/* ...and then we can use bitmap tricks for commonality */
+	CMN_ANY = -1,
+	NOT_CMN600 = -2,
+	CMN_650ON = CMN650 | CMN700 | CMNS3,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* Actual part numbers and revision IDs defined by the hardware */
@@ -210,6 +276,10 @@ enum cmn_part {
 	PART_CMN650 = 0x436,
 	PART_CMN700 = 0x43c,
 	PART_CI700 = 0x43a,
+<<<<<<< HEAD
+=======
+	PART_CMN_S3 = 0x43e,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* CMN-600 r0px shouldn't exist in silicon, thankfully */
@@ -261,6 +331,10 @@ enum cmn_node_type {
 	CMN_TYPE_HNS = 0x200,
 	CMN_TYPE_HNS_MPAM_S,
 	CMN_TYPE_HNS_MPAM_NS,
+<<<<<<< HEAD
+=======
+	CMN_TYPE_APB = 0x1000,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Not a real node type */
 	CMN_TYPE_WP = 0x7770
 };
@@ -280,8 +354,16 @@ struct arm_cmn_node {
 	u16 id, logid;
 	enum cmn_node_type type;
 
+<<<<<<< HEAD
 	u8 dtm;
 	s8 dtc;
+=======
+	/* XP properties really, but replicated to children for convenience */
+	u8 dtm;
+	s8 dtc;
+	u8 portid_bits:4;
+	u8 deviceid_bits:4;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* DN/HN-F/CXHA */
 	struct {
 		u8 val : 4;
@@ -307,8 +389,14 @@ struct arm_cmn_dtm {
 
 struct arm_cmn_dtc {
 	void __iomem *base;
+<<<<<<< HEAD
 	int irq;
 	int irq_friend;
+=======
+	void __iomem *pmu_base;
+	int irq;
+	s8 irq_friend;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool cc_active;
 
 	struct perf_event *counters[CMN_DT_NUM_COUNTERS];
@@ -357,14 +445,18 @@ struct arm_cmn {
 static int arm_cmn_hp_state;
 
 struct arm_cmn_nodeid {
+<<<<<<< HEAD
 	u8 x;
 	u8 y;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 port;
 	u8 dev;
 };
 
 static int arm_cmn_xyidbits(const struct arm_cmn *cmn)
 {
+<<<<<<< HEAD
 	return fls((cmn->mesh_x - 1) | (cmn->mesh_y - 1) | 2);
 }
 
@@ -390,16 +482,36 @@ static struct arm_cmn_nodeid arm_cmn_nid(const struct arm_cmn *cmn, u16 id)
 			nid.dev = CMN_NODEID_DEVID(id);
 		}
 	}
+=======
+	return fls((cmn->mesh_x - 1) | (cmn->mesh_y - 1));
+}
+
+static struct arm_cmn_nodeid arm_cmn_nid(const struct arm_cmn_node *dn)
+{
+	struct arm_cmn_nodeid nid;
+
+	nid.dev = dn->id & ((1U << dn->deviceid_bits) - 1);
+	nid.port = (dn->id >> dn->deviceid_bits) & ((1U << dn->portid_bits) - 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return nid;
 }
 
 static struct arm_cmn_node *arm_cmn_node_to_xp(const struct arm_cmn *cmn,
 					       const struct arm_cmn_node *dn)
 {
+<<<<<<< HEAD
 	struct arm_cmn_nodeid nid = arm_cmn_nid(cmn, dn->id);
 	int xp_idx = cmn->mesh_x * nid.y + nid.x;
 
 	return cmn->xps + xp_idx;
+=======
+	int id = dn->id >> (dn->portid_bits + dn->deviceid_bits);
+	int bits = arm_cmn_xyidbits(cmn);
+	int x = id >> bits;
+	int y = id & ((1U << bits) - 1);
+
+	return cmn->xps + cmn->mesh_x * y + x;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 static struct arm_cmn_node *arm_cmn_node(const struct arm_cmn *cmn,
 					 enum cmn_node_type type)
@@ -423,15 +535,37 @@ static enum cmn_model arm_cmn_model(const struct arm_cmn *cmn)
 		return CMN700;
 	case PART_CI700:
 		return CI700;
+<<<<<<< HEAD
+=======
+	case PART_CMN_S3:
+		return CMNS3;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		return 0;
 	};
 }
 
+<<<<<<< HEAD
 static u32 arm_cmn_device_connect_info(const struct arm_cmn *cmn,
 				       const struct arm_cmn_node *xp, int port)
 {
 	int offset = CMN_MXP__CONNECT_INFO(port);
+=======
+static int arm_cmn_pmu_offset(const struct arm_cmn *cmn, const struct arm_cmn_node *dn)
+{
+	if (cmn->part == PART_CMN_S3) {
+		if (dn->type == CMN_TYPE_XP)
+			return CMN_S3_DTM_OFFSET;
+		return CMN_S3_PMU_OFFSET;
+	}
+	return CMN_PMU_OFFSET;
+}
+
+static u32 arm_cmn_device_connect_info(const struct arm_cmn *cmn,
+				       const struct arm_cmn_node *xp, int port)
+{
+	int offset = CMN_MXP__CONNECT_INFO(port) - arm_cmn_pmu_offset(cmn, xp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (port >= 2) {
 		if (cmn->part == PART_CMN600 || cmn->part == PART_CMN650)
@@ -444,7 +578,11 @@ static u32 arm_cmn_device_connect_info(const struct arm_cmn *cmn,
 			offset += CI700_CONNECT_INFO_P2_5_OFFSET;
 	}
 
+<<<<<<< HEAD
 	return readl_relaxed(xp->pmu_base - CMN_PMU_OFFSET + offset);
+=======
+	return readl_relaxed(xp->pmu_base + offset);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct dentry *arm_cmn_debugfs;
@@ -478,13 +616,25 @@ static const char *arm_cmn_device_type(u8 type)
 		case 0x17: return "RN-F_C_E|";
 		case 0x18: return " RN-F_E |";
 		case 0x19: return "RN-F_E_E|";
+<<<<<<< HEAD
 		case 0x1c: return "  MTSX  |";
 		case 0x1d: return "  HN-V  |";
 		case 0x1e: return "  CCG   |";
+=======
+		case 0x1a: return "  HN-S  |";
+		case 0x1b: return "  LCN   |";
+		case 0x1c: return "  MTSX  |";
+		case 0x1d: return "  HN-V  |";
+		case 0x1e: return "  CCG   |";
+		case 0x20: return " RN-F_F |";
+		case 0x21: return "RN-F_F_E|";
+		case 0x22: return " SN-F_F |";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		default:   return "  ????  |";
 	}
 }
 
+<<<<<<< HEAD
 static void arm_cmn_show_logid(struct seq_file *s, int x, int y, int p, int d)
 {
 	struct arm_cmn *cmn = s->private;
@@ -492,6 +642,15 @@ static void arm_cmn_show_logid(struct seq_file *s, int x, int y, int p, int d)
 
 	for (dn = cmn->dns; dn->type; dn++) {
 		struct arm_cmn_nodeid nid = arm_cmn_nid(cmn, dn->id);
+=======
+static void arm_cmn_show_logid(struct seq_file *s, const struct arm_cmn_node *xp, int p, int d)
+{
+	struct arm_cmn *cmn = s->private;
+	struct arm_cmn_node *dn;
+	u16 id = xp->id | d | (p << xp->deviceid_bits);
+
+	for (dn = cmn->dns; dn->type; dn++) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		int pad = dn->logid < 10;
 
 		if (dn->type == CMN_TYPE_XP)
@@ -500,7 +659,11 @@ static void arm_cmn_show_logid(struct seq_file *s, int x, int y, int p, int d)
 		if (dn->type < CMN_TYPE_HNI)
 			continue;
 
+<<<<<<< HEAD
 		if (nid.x != x || nid.y != y || nid.port != p || nid.dev != d)
+=======
+		if (dn->id != id)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 
 		seq_printf(s, " %*c#%-*d  |", pad + 1, ' ', 3 - pad, dn->logid);
@@ -521,6 +684,10 @@ static int arm_cmn_map_show(struct seq_file *s, void *data)
 	y = cmn->mesh_y;
 	while (y--) {
 		int xp_base = cmn->mesh_x * y;
+<<<<<<< HEAD
+=======
+		struct arm_cmn_node *xp = cmn->xps + xp_base;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		u8 port[CMN_MAX_PORTS][CMN_MAX_DIMENSION];
 
 		for (x = 0; x < cmn->mesh_x; x++)
@@ -528,16 +695,25 @@ static int arm_cmn_map_show(struct seq_file *s, void *data)
 
 		seq_printf(s, "\n%-2d   |", y);
 		for (x = 0; x < cmn->mesh_x; x++) {
+<<<<<<< HEAD
 			struct arm_cmn_node *xp = cmn->xps + xp_base + x;
 
 			for (p = 0; p < CMN_MAX_PORTS; p++)
 				port[p][x] = arm_cmn_device_connect_info(cmn, xp, p);
+=======
+			for (p = 0; p < CMN_MAX_PORTS; p++)
+				port[p][x] = arm_cmn_device_connect_info(cmn, xp + x, p);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			seq_printf(s, " XP #%-3d|", xp_base + x);
 		}
 
 		seq_puts(s, "\n     |");
 		for (x = 0; x < cmn->mesh_x; x++) {
+<<<<<<< HEAD
 			s8 dtc = cmn->xps[xp_base + x].dtc;
+=======
+			s8 dtc = xp[x].dtc;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			if (dtc < 0)
 				seq_puts(s, " DTC ?? |");
@@ -554,10 +730,17 @@ static int arm_cmn_map_show(struct seq_file *s, void *data)
 				seq_puts(s, arm_cmn_device_type(port[p][x]));
 			seq_puts(s, "\n    0|");
 			for (x = 0; x < cmn->mesh_x; x++)
+<<<<<<< HEAD
 				arm_cmn_show_logid(s, x, y, p, 0);
 			seq_puts(s, "\n    1|");
 			for (x = 0; x < cmn->mesh_x; x++)
 				arm_cmn_show_logid(s, x, y, p, 1);
+=======
+				arm_cmn_show_logid(s, xp + x, p, 0);
+			seq_puts(s, "\n    1|");
+			for (x = 0; x < cmn->mesh_x; x++)
+				arm_cmn_show_logid(s, xp + x, p, 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		seq_puts(s, "\n-----+");
 	}
@@ -585,7 +768,11 @@ static void arm_cmn_debugfs_init(struct arm_cmn *cmn, int id) {}
 
 struct arm_cmn_hw_event {
 	struct arm_cmn_node *dn;
+<<<<<<< HEAD
 	u64 dtm_idx[4];
+=======
+	u64 dtm_idx[DIV_ROUND_UP(CMN_MAX_NODES_PER_EVENT * 2, 64)];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	s8 dtc_idx[CMN_MAX_DTCS];
 	u8 num_dns;
 	u8 dtm_offset;
@@ -599,6 +786,10 @@ struct arm_cmn_hw_event {
 	bool wide_sel;
 	enum cmn_filter_select filter_sel;
 };
+<<<<<<< HEAD
+=======
+static_assert(sizeof(struct arm_cmn_hw_event) <= offsetof(struct hw_perf_event, target));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define for_each_hw_dn(hw, dn, i) \
 	for (i = 0, dn = hw->dn; i < hw->num_dns; i++, dn++)
@@ -609,7 +800,10 @@ struct arm_cmn_hw_event {
 
 static struct arm_cmn_hw_event *to_cmn_hw(struct perf_event *event)
 {
+<<<<<<< HEAD
 	BUILD_BUG_ON(sizeof(struct arm_cmn_hw_event) > offsetof(struct hw_perf_event, target));
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return (struct arm_cmn_hw_event *)&event->hw;
 }
 
@@ -790,8 +984,13 @@ static umode_t arm_cmn_event_attr_is_visible(struct kobject *kobj,
 	CMN_EVENT_ATTR(CMN_ANY, cxha_##_name, CMN_TYPE_CXHA, _event)
 #define CMN_EVENT_CCRA(_name, _event)				\
 	CMN_EVENT_ATTR(CMN_ANY, ccra_##_name, CMN_TYPE_CCRA, _event)
+<<<<<<< HEAD
 #define CMN_EVENT_CCHA(_name, _event)				\
 	CMN_EVENT_ATTR(CMN_ANY, ccha_##_name, CMN_TYPE_CCHA, _event)
+=======
+#define CMN_EVENT_CCHA(_model, _name, _event)				\
+	CMN_EVENT_ATTR(_model, ccha_##_name, CMN_TYPE_CCHA, _event)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define CMN_EVENT_CCLA(_name, _event)				\
 	CMN_EVENT_ATTR(CMN_ANY, ccla_##_name, CMN_TYPE_CCLA, _event)
 #define CMN_EVENT_CCLA_RNI(_name, _event)				\
@@ -1149,6 +1348,7 @@ static struct attribute *arm_cmn_event_attrs[] = {
 	CMN_EVENT_CCRA(wdb_alloc,			0x59),
 	CMN_EVENT_CCRA(ssb_alloc,			0x5a),
 
+<<<<<<< HEAD
 	CMN_EVENT_CCHA(rddatbyp,			0x61),
 	CMN_EVENT_CCHA(chirsp_up_stall,			0x62),
 	CMN_EVENT_CCHA(chidat_up_stall,			0x63),
@@ -1185,6 +1385,45 @@ static struct attribute *arm_cmn_event_attrs[] = {
 	CMN_EVENT_CCHA(pb_rhu_pcie_dat_alloc,		0x82),
 	CMN_EVENT_CCHA(pb_pcie_wr_dat_occ,		0x83),
 	CMN_EVENT_CCHA(pb_pcie_wr_dat_alloc,		0x84),
+=======
+	CMN_EVENT_CCHA(CMN_ANY, rddatbyp,		0x61),
+	CMN_EVENT_CCHA(CMN_ANY, chirsp_up_stall,	0x62),
+	CMN_EVENT_CCHA(CMN_ANY, chidat_up_stall,	0x63),
+	CMN_EVENT_CCHA(CMN_ANY, snppcrd_link0_stall,	0x64),
+	CMN_EVENT_CCHA(CMN_ANY, snppcrd_link1_stall,	0x65),
+	CMN_EVENT_CCHA(CMN_ANY, snppcrd_link2_stall,	0x66),
+	CMN_EVENT_CCHA(CMN_ANY, reqtrk_occ,		0x67),
+	CMN_EVENT_CCHA(CMN_ANY, rdb_occ,		0x68),
+	CMN_EVENT_CCHA(CMN_ANY, rdbyp_occ,		0x69),
+	CMN_EVENT_CCHA(CMN_ANY, wdb_occ,		0x6a),
+	CMN_EVENT_CCHA(CMN_ANY, snptrk_occ,		0x6b),
+	CMN_EVENT_CCHA(CMN_ANY, sdb_occ,		0x6c),
+	CMN_EVENT_CCHA(CMN_ANY, snphaz_occ,		0x6d),
+	CMN_EVENT_CCHA(CMN_ANY, reqtrk_alloc,		0x6e),
+	CMN_EVENT_CCHA(CMN_ANY, rdb_alloc,		0x6f),
+	CMN_EVENT_CCHA(CMN_ANY, rdbyp_alloc,		0x70),
+	CMN_EVENT_CCHA(CMN_ANY, wdb_alloc,		0x71),
+	CMN_EVENT_CCHA(CMN_ANY, snptrk_alloc,		0x72),
+	CMN_EVENT_CCHA(CMN_ANY, db_alloc,		0x73),
+	CMN_EVENT_CCHA(CMN_ANY, snphaz_alloc,		0x74),
+	CMN_EVENT_CCHA(CMN_ANY, pb_rhu_req_occ,		0x75),
+	CMN_EVENT_CCHA(CMN_ANY, pb_rhu_req_alloc,	0x76),
+	CMN_EVENT_CCHA(CMN_ANY, pb_rhu_pcie_req_occ,	0x77),
+	CMN_EVENT_CCHA(CMN_ANY, pb_rhu_pcie_req_alloc,	0x78),
+	CMN_EVENT_CCHA(CMN_ANY, pb_pcie_wr_req_occ,	0x79),
+	CMN_EVENT_CCHA(CMN_ANY, pb_pcie_wr_req_alloc,	0x7a),
+	CMN_EVENT_CCHA(CMN_ANY, pb_pcie_reg_req_occ,	0x7b),
+	CMN_EVENT_CCHA(CMN_ANY, pb_pcie_reg_req_alloc,	0x7c),
+	CMN_EVENT_CCHA(CMN_ANY, pb_pcie_rsvd_req_occ,	0x7d),
+	CMN_EVENT_CCHA(CMN_ANY, pb_pcie_rsvd_req_alloc,	0x7e),
+	CMN_EVENT_CCHA(CMN_ANY, pb_rhu_dat_occ,		0x7f),
+	CMN_EVENT_CCHA(CMN_ANY, pb_rhu_dat_alloc,	0x80),
+	CMN_EVENT_CCHA(CMN_ANY, pb_rhu_pcie_dat_occ,	0x81),
+	CMN_EVENT_CCHA(CMN_ANY, pb_rhu_pcie_dat_alloc,	0x82),
+	CMN_EVENT_CCHA(CMN_ANY, pb_pcie_wr_dat_occ,	0x83),
+	CMN_EVENT_CCHA(CMN_ANY, pb_pcie_wr_dat_alloc,	0x84),
+	CMN_EVENT_CCHA(CMNS3, chirsp1_up_stall,		0x85),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	CMN_EVENT_CCLA(rx_cxs,				0x21),
 	CMN_EVENT_CCLA(tx_cxs,				0x22),
@@ -1271,6 +1510,7 @@ static ssize_t arm_cmn_format_show(struct device *dev,
 				   struct device_attribute *attr, char *buf)
 {
 	struct arm_cmn_format_attr *fmt = container_of(attr, typeof(*fmt), attr);
+<<<<<<< HEAD
 	int lo = __ffs(fmt->field), hi = __fls(fmt->field);
 
 	if (lo == hi)
@@ -1280,6 +1520,13 @@ static ssize_t arm_cmn_format_show(struct device *dev,
 		return sysfs_emit(buf, "config:%d-%d\n", lo, hi);
 
 	return sysfs_emit(buf, "config%d:%d-%d\n", fmt->config, lo, hi);
+=======
+
+	if (!fmt->config)
+		return sysfs_emit(buf, "config:%*pbl\n", 64, &fmt->field);
+
+	return sysfs_emit(buf, "config%d:%*pbl\n", fmt->config, 64, &fmt->field);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #define _CMN_FORMAT_ATTR(_name, _cfg, _fld)				\
@@ -1415,7 +1662,11 @@ static u32 arm_cmn_wp_config(struct perf_event *event, int wp_idx)
 static void arm_cmn_set_state(struct arm_cmn *cmn, u32 state)
 {
 	if (!cmn->state)
+<<<<<<< HEAD
 		writel_relaxed(0, cmn->dtc[0].base + CMN_DT_PMCR);
+=======
+		writel_relaxed(0, CMN_DT_PMCR(&cmn->dtc[0]));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cmn->state |= state;
 }
 
@@ -1424,7 +1675,11 @@ static void arm_cmn_clear_state(struct arm_cmn *cmn, u32 state)
 	cmn->state &= ~state;
 	if (!cmn->state)
 		writel_relaxed(CMN_DT_PMCR_PMU_EN | CMN_DT_PMCR_OVFL_INTR_EN,
+<<<<<<< HEAD
 			       cmn->dtc[0].base + CMN_DT_PMCR);
+=======
+			       CMN_DT_PMCR(&cmn->dtc[0]));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void arm_cmn_pmu_enable(struct pmu *pmu)
@@ -1459,18 +1714,32 @@ static u64 arm_cmn_read_dtm(struct arm_cmn *cmn, struct arm_cmn_hw_event *hw,
 
 static u64 arm_cmn_read_cc(struct arm_cmn_dtc *dtc)
 {
+<<<<<<< HEAD
 	u64 val = readq_relaxed(dtc->base + CMN_DT_PMCCNTR);
 
 	writeq_relaxed(CMN_CC_INIT, dtc->base + CMN_DT_PMCCNTR);
+=======
+	void __iomem *pmccntr = CMN_DT_PMCCNTR(dtc);
+	u64 val = readq_relaxed(pmccntr);
+
+	writeq_relaxed(CMN_CC_INIT, pmccntr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return (val - CMN_CC_INIT) & ((CMN_CC_INIT << 1) - 1);
 }
 
 static u32 arm_cmn_read_counter(struct arm_cmn_dtc *dtc, int idx)
 {
+<<<<<<< HEAD
 	u32 val, pmevcnt = CMN_DT_PMEVCNT(idx);
 
 	val = readl_relaxed(dtc->base + pmevcnt);
 	writel_relaxed(CMN_COUNTER_INIT, dtc->base + pmevcnt);
+=======
+	void __iomem *pmevcnt = CMN_DT_PMEVCNT(dtc, idx);
+	u32 val = readl_relaxed(pmevcnt);
+
+	writel_relaxed(CMN_COUNTER_INIT, pmevcnt);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return val - CMN_COUNTER_INIT;
 }
 
@@ -1481,7 +1750,11 @@ static void arm_cmn_init_counter(struct perf_event *event)
 	u64 count;
 
 	for_each_hw_dtc_idx(hw, i, idx) {
+<<<<<<< HEAD
 		writel_relaxed(CMN_COUNTER_INIT, cmn->dtc[i].base + CMN_DT_PMEVCNT(idx));
+=======
+		writel_relaxed(CMN_COUNTER_INIT, CMN_DT_PMEVCNT(&cmn->dtc[i], idx));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		cmn->dtc[i].counters[idx] = event;
 	}
 
@@ -1564,9 +1837,18 @@ static void arm_cmn_event_start(struct perf_event *event, int flags)
 	int i;
 
 	if (type == CMN_TYPE_DTC) {
+<<<<<<< HEAD
 		i = hw->dtc_idx[0];
 		writeq_relaxed(CMN_CC_INIT, cmn->dtc[i].base + CMN_DT_PMCCNTR);
 		cmn->dtc[i].cc_active = true;
+=======
+		struct arm_cmn_dtc *dtc = cmn->dtc + hw->dtc_idx[0];
+
+		writel_relaxed(CMN_DT_DTC_CTL_DT_EN | CMN_DT_DTC_CTL_CG_DISABLE,
+			       dtc->base + CMN_DT_DTC_CTL);
+		writeq_relaxed(CMN_CC_INIT, CMN_DT_PMCCNTR(dtc));
+		dtc->cc_active = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else if (type == CMN_TYPE_WP) {
 		u64 val = CMN_EVENT_WP_VAL(event);
 		u64 mask = CMN_EVENT_WP_MASK(event);
@@ -1595,8 +1877,15 @@ static void arm_cmn_event_stop(struct perf_event *event, int flags)
 	int i;
 
 	if (type == CMN_TYPE_DTC) {
+<<<<<<< HEAD
 		i = hw->dtc_idx[0];
 		cmn->dtc[i].cc_active = false;
+=======
+		struct arm_cmn_dtc *dtc = cmn->dtc + hw->dtc_idx[0];
+
+		dtc->cc_active = false;
+		writel_relaxed(CMN_DT_DTC_CTL_DT_EN, dtc->base + CMN_DT_DTC_CTL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else if (type == CMN_TYPE_WP) {
 		for_each_hw_dn(hw, dn, i) {
 			void __iomem *base = dn->pmu_base + CMN_DTM_OFFSET(hw->dtm_offset);
@@ -1784,7 +2073,12 @@ static int arm_cmn_event_init(struct perf_event *event)
 		/* ...but the DTM may depend on which port we're watching */
 		if (cmn->multi_dtm)
 			hw->dtm_offset = CMN_EVENT_WP_DEV_SEL(event) / 2;
+<<<<<<< HEAD
 	} else if (type == CMN_TYPE_XP && cmn->part == PART_CMN700) {
+=======
+	} else if (type == CMN_TYPE_XP &&
+		   (cmn->part == PART_CMN700 || cmn->part == PART_CMN_S3)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		hw->wide_sel = true;
 	}
 
@@ -1815,10 +2109,14 @@ static int arm_cmn_event_init(struct perf_event *event)
 	}
 
 	if (!hw->num_dns) {
+<<<<<<< HEAD
 		struct arm_cmn_nodeid nid = arm_cmn_nid(cmn, nodeid);
 
 		dev_dbg(cmn->dev, "invalid node 0x%x (%d,%d,%d,%d) type 0x%x\n",
 			nodeid, nid.x, nid.y, nid.port, nid.dev, type);
+=======
+		dev_dbg(cmn->dev, "invalid node 0x%x type 0x%x\n", nodeid, type);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 
@@ -1921,7 +2219,11 @@ static int arm_cmn_event_add(struct perf_event *event, int flags)
 			arm_cmn_claim_wp_idx(dtm, event, d, wp_idx, i);
 			writel_relaxed(cfg, dtm->base + CMN_DTM_WPn_CONFIG(wp_idx));
 		} else {
+<<<<<<< HEAD
 			struct arm_cmn_nodeid nid = arm_cmn_nid(cmn, dn->id);
+=======
+			struct arm_cmn_nodeid nid = arm_cmn_nid(dn);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			if (cmn->multi_dtm)
 				nid.port %= 2;
@@ -2010,7 +2312,11 @@ static int arm_cmn_pmu_online_cpu(unsigned int cpu, struct hlist_node *cpuhp_nod
 
 	cmn = hlist_entry_safe(cpuhp_node, struct arm_cmn, cpuhp_node);
 	node = dev_to_node(cmn->dev);
+<<<<<<< HEAD
 	if (node != NUMA_NO_NODE && cpu_to_node(cmn->cpu) != node && cpu_to_node(cpu) == node)
+=======
+	if (cpu_to_node(cmn->cpu) != node && cpu_to_node(cpu) == node)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		arm_cmn_migrate(cmn, cpu);
 	return 0;
 }
@@ -2043,7 +2349,11 @@ static irqreturn_t arm_cmn_handle_irq(int irq, void *dev_id)
 	irqreturn_t ret = IRQ_NONE;
 
 	for (;;) {
+<<<<<<< HEAD
 		u32 status = readl_relaxed(dtc->base + CMN_DT_PMOVSR);
+=======
+		u32 status = readl_relaxed(CMN_DT_PMOVSR(dtc));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		u64 delta;
 		int i;
 
@@ -2065,7 +2375,11 @@ static irqreturn_t arm_cmn_handle_irq(int irq, void *dev_id)
 			}
 		}
 
+<<<<<<< HEAD
 		writel_relaxed(status, dtc->base + CMN_DT_PMOVSR_CLR);
+=======
+		writel_relaxed(status, CMN_DT_PMOVSR_CLR(dtc));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (!dtc->irq_friend)
 			return ret;
@@ -2119,15 +2433,26 @@ static int arm_cmn_init_dtc(struct arm_cmn *cmn, struct arm_cmn_node *dn, int id
 {
 	struct arm_cmn_dtc *dtc = cmn->dtc + idx;
 
+<<<<<<< HEAD
 	dtc->base = dn->pmu_base - CMN_PMU_OFFSET;
+=======
+	dtc->pmu_base = dn->pmu_base;
+	dtc->base = dtc->pmu_base - arm_cmn_pmu_offset(cmn, dn);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dtc->irq = platform_get_irq(to_platform_device(cmn->dev), idx);
 	if (dtc->irq < 0)
 		return dtc->irq;
 
 	writel_relaxed(CMN_DT_DTC_CTL_DT_EN, dtc->base + CMN_DT_DTC_CTL);
+<<<<<<< HEAD
 	writel_relaxed(CMN_DT_PMCR_PMU_EN | CMN_DT_PMCR_OVFL_INTR_EN, dtc->base + CMN_DT_PMCR);
 	writeq_relaxed(0, dtc->base + CMN_DT_PMCCNTR);
 	writel_relaxed(0x1ff, dtc->base + CMN_DT_PMOVSR_CLR);
+=======
+	writel_relaxed(CMN_DT_PMCR_PMU_EN | CMN_DT_PMCR_OVFL_INTR_EN, CMN_DT_PMCR(dtc));
+	writeq_relaxed(0, CMN_DT_PMCCNTR(dtc));
+	writel_relaxed(0x1ff, CMN_DT_PMOVSR_CLR(dtc));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -2168,10 +2493,19 @@ static int arm_cmn_init_dtcs(struct arm_cmn *cmn)
 			continue;
 
 		xp = arm_cmn_node_to_xp(cmn, dn);
+<<<<<<< HEAD
 		dn->dtc = xp->dtc;
 		dn->dtm = xp->dtm;
 		if (cmn->multi_dtm)
 			dn->dtm += arm_cmn_nid(cmn, dn->id).port / 2;
+=======
+		dn->portid_bits = xp->portid_bits;
+		dn->deviceid_bits = xp->deviceid_bits;
+		dn->dtc = xp->dtc;
+		dn->dtm = xp->dtm;
+		if (cmn->multi_dtm)
+			dn->dtm += arm_cmn_nid(dn).port / 2;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (dn->type == CMN_TYPE_DTC) {
 			int err = arm_cmn_init_dtc(cmn, dn, dtc_idx++);
@@ -2213,7 +2547,11 @@ static void arm_cmn_init_node_info(struct arm_cmn *cmn, u32 offset, struct arm_c
 	node->id = FIELD_GET(CMN_NI_NODE_ID, reg);
 	node->logid = FIELD_GET(CMN_NI_LOGICAL_ID, reg);
 
+<<<<<<< HEAD
 	node->pmu_base = cmn->base + offset + CMN_PMU_OFFSET;
+=======
+	node->pmu_base = cmn->base + offset + arm_cmn_pmu_offset(cmn, node);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (node->type == CMN_TYPE_CFG)
 		level = 0;
@@ -2271,7 +2609,21 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
 	reg = readl_relaxed(cfg_region + CMN_CFGM_PERIPH_ID_23);
 	cmn->rev = FIELD_GET(CMN_CFGM_PID2_REVISION, reg);
 
+<<<<<<< HEAD
 	reg = readq_relaxed(cfg_region + CMN_CFGM_INFO_GLOBAL);
+=======
+	/*
+	 * With the device isolation feature, if firmware has neglected to enable
+	 * an XP port then we risk locking up if we try to access anything behind
+	 * it; however we also have no way to tell from Non-Secure whether any
+	 * given port is disabled or not, so the only way to win is not to play...
+	 */
+	reg = readq_relaxed(cfg_region + CMN_CFGM_INFO_GLOBAL);
+	if (reg & CMN_INFO_DEVICE_ISO_ENABLE) {
+		dev_err(cmn->dev, "Device isolation enabled, not continuing due to risk of lockup\n");
+		return -ENODEV;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cmn->multi_dtm = reg & CMN_INFO_MULTIPLE_DTM_EN;
 	cmn->rsp_vc_num = FIELD_GET(CMN_INFO_RSP_VC_NUM, reg);
 	cmn->dat_vc_num = FIELD_GET(CMN_INFO_DAT_VC_NUM, reg);
@@ -2341,18 +2693,40 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
 		arm_cmn_init_dtm(dtm++, xp, 0);
 		/*
 		 * Keeping track of connected ports will let us filter out
+<<<<<<< HEAD
 		 * unnecessary XP events easily. We can also reliably infer the
 		 * "extra device ports" configuration for the node ID format
 		 * from this, since in that case we will see at least one XP
 		 * with port 2 connected, for the HN-D.
+=======
+		 * unnecessary XP events easily, and also infer the per-XP
+		 * part of the node ID format.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 */
 		for (int p = 0; p < CMN_MAX_PORTS; p++)
 			if (arm_cmn_device_connect_info(cmn, xp, p))
 				xp_ports |= BIT(p);
 
+<<<<<<< HEAD
 		if (cmn->multi_dtm && (xp_ports & 0xc))
 			arm_cmn_init_dtm(dtm++, xp, 1);
 		if (cmn->multi_dtm && (xp_ports & 0x30))
+=======
+		if (cmn->num_xps == 1) {
+			xp->portid_bits = 3;
+			xp->deviceid_bits = 2;
+		} else if (xp_ports > 0x3) {
+			xp->portid_bits = 2;
+			xp->deviceid_bits = 1;
+		} else {
+			xp->portid_bits = 1;
+			xp->deviceid_bits = 2;
+		}
+
+		if (cmn->multi_dtm && (xp_ports > 0x3))
+			arm_cmn_init_dtm(dtm++, xp, 1);
+		if (cmn->multi_dtm && (xp_ports > 0xf))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			arm_cmn_init_dtm(dtm++, xp, 2);
 
 		cmn->ports_used |= xp_ports;
@@ -2407,10 +2781,20 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
 			case CMN_TYPE_CXHA:
 			case CMN_TYPE_CCRA:
 			case CMN_TYPE_CCHA:
+<<<<<<< HEAD
 			case CMN_TYPE_CCLA:
 			case CMN_TYPE_HNS:
 				dn++;
 				break;
+=======
+			case CMN_TYPE_HNS:
+				dn++;
+				break;
+			case CMN_TYPE_CCLA:
+				dn->pmu_base += CMN_CCLA_PMU_EVENT_SEL;
+				dn++;
+				break;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/* Nothing to see here */
 			case CMN_TYPE_MPAM_S:
 			case CMN_TYPE_MPAM_NS:
@@ -2418,6 +2802,10 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
 			case CMN_TYPE_CXLA:
 			case CMN_TYPE_HNS_MPAM_S:
 			case CMN_TYPE_HNS_MPAM_NS:
+<<<<<<< HEAD
+=======
+			case CMN_TYPE_APB:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				break;
 			/*
 			 * Split "optimised" combination nodes into separate
@@ -2428,7 +2816,11 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
 			case CMN_TYPE_HNP:
 			case CMN_TYPE_CCLA_RNI:
 				dn[1] = dn[0];
+<<<<<<< HEAD
 				dn[0].pmu_base += CMN_HNP_PMU_EVENT_SEL;
+=======
+				dn[0].pmu_base += CMN_CCLA_PMU_EVENT_SEL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				dn[1].type = arm_cmn_subtype(dn->type);
 				dn += 2;
 				break;
@@ -2603,6 +2995,10 @@ static const struct of_device_id arm_cmn_of_match[] = {
 	{ .compatible = "arm,cmn-600", .data = (void *)PART_CMN600 },
 	{ .compatible = "arm,cmn-650" },
 	{ .compatible = "arm,cmn-700" },
+<<<<<<< HEAD
+=======
+	{ .compatible = "arm,cmn-s3" },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .compatible = "arm,ci-700" },
 	{}
 };

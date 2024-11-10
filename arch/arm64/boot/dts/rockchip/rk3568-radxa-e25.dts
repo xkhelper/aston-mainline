@@ -103,6 +103,13 @@
 	phy-supply = <&vcc3v3_pcie30x1>;
 };
 
+<<<<<<< HEAD
+=======
+&display_subsystem {
+	status = "disabled";
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &pcie2x1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pcie20_reset_h>;

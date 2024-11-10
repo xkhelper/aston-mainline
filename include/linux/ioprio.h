@@ -40,7 +40,11 @@ static inline int task_nice_ioclass(struct task_struct *task)
 {
 	if (task->policy == SCHED_IDLE)
 		return IOPRIO_CLASS_IDLE;
+<<<<<<< HEAD
 	else if (task_is_realtime(task))
+=======
+	else if (rt_or_dl_task_policy(task))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return IOPRIO_CLASS_RT;
 	else
 		return IOPRIO_CLASS_BE;

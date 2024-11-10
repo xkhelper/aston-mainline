@@ -71,12 +71,24 @@ static void ci_leaf_init(struct cacheinfo *this_leaf,
 	this_leaf->type = type;
 }
 
+<<<<<<< HEAD
+=======
+int init_cache_level(unsigned int cpu)
+{
+	return init_of_cache_level(cpu);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int populate_cache_leaves(unsigned int cpu)
 {
 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
 	struct cacheinfo *this_leaf = this_cpu_ci->info_list;
+<<<<<<< HEAD
 	struct device_node *np = of_cpu_device_node_get(cpu);
 	struct device_node *prev = NULL;
+=======
+	struct device_node *np, *prev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int levels = 1, level = 1;
 
 	if (!acpi_disabled) {
@@ -100,6 +112,13 @@ int populate_cache_leaves(unsigned int cpu)
 		return 0;
 	}
 
+<<<<<<< HEAD
+=======
+	np = of_cpu_device_node_get(cpu);
+	if (!np)
+		return -ENOENT;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (of_property_read_bool(np, "cache-size"))
 		ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
 	if (of_property_read_bool(np, "i-cache-size"))

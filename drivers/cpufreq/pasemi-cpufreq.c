@@ -269,5 +269,9 @@ static void __exit pas_cpufreq_exit(void)
 module_init(pas_cpufreq_init);
 module_exit(pas_cpufreq_exit);
 
+<<<<<<< HEAD
+=======
+MODULE_DESCRIPTION("cpufreq driver for PA Semi PWRficient");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Egor Martovetsky <egor@pasemi.com>, Olof Johansson <olof@lixom.net>");

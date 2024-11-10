@@ -452,6 +452,7 @@ struct adapter {
 #define DF_RX_BIT		BIT1
 #define DF_IO_BIT		BIT2
 
+<<<<<<< HEAD
 /* define RTW_DISABLE_FUNC(padapter, func) (atomic_add(&adapter_to_dvobj(padapter)->disable_func, (func))) */
 /* define RTW_ENABLE_FUNC(padapter, func) (atomic_sub(&adapter_to_dvobj(padapter)->disable_func, (func))) */
 static inline void RTW_DISABLE_FUNC(struct adapter *padapter, int func_bit)
@@ -460,6 +461,9 @@ static inline void RTW_DISABLE_FUNC(struct adapter *padapter, int func_bit)
 	df |= func_bit;
 	atomic_set(&adapter_to_dvobj(padapter)->disable_func, df);
 }
+=======
+/* define RTW_ENABLE_FUNC(padapter, func) (atomic_sub(&adapter_to_dvobj(padapter)->disable_func, (func))) */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline void RTW_ENABLE_FUNC(struct adapter *padapter, int func_bit)
 {

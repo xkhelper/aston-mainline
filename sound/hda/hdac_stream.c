@@ -657,6 +657,10 @@ static void azx_timecounter_init(struct hdac_stream *azx_dev,
  * snd_hdac_stream_timecounter_init - initialize time counter
  * @azx_dev: HD-audio core stream (master stream)
  * @streams: bit flags of streams to set up
+<<<<<<< HEAD
+=======
+ * @start: true for PCM trigger start, false for other cases
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Initializes the time counter of streams marked by the bit flags (each
  * bit corresponds to the stream index).
@@ -664,7 +668,11 @@ static void azx_timecounter_init(struct hdac_stream *azx_dev,
  * updated accordingly, too.
  */
 void snd_hdac_stream_timecounter_init(struct hdac_stream *azx_dev,
+<<<<<<< HEAD
 				      unsigned int streams)
+=======
+				      unsigned int streams, bool start)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct hdac_bus *bus = azx_dev->bus;
 	struct snd_pcm_runtime *runtime = azx_dev->substream->runtime;
@@ -672,6 +680,12 @@ void snd_hdac_stream_timecounter_init(struct hdac_stream *azx_dev,
 	bool inited = false;
 	u64 cycle_last = 0;
 
+<<<<<<< HEAD
+=======
+	if (!start)
+		goto skip;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	list_for_each_entry(s, &bus->stream_list, list) {
 		if ((streams & (1 << s->index))) {
 			azx_timecounter_init(s, inited, cycle_last);
@@ -682,6 +696,10 @@ void snd_hdac_stream_timecounter_init(struct hdac_stream *azx_dev,
 		}
 	}
 
+<<<<<<< HEAD
+=======
+skip:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	snd_pcm_gettime(runtime, &runtime->trigger_tstamp);
 	runtime->trigger_tstamp_latched = true;
 }

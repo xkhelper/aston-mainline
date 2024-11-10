@@ -3972,8 +3972,17 @@ static int intel_pmu_hw_config(struct perf_event *event)
 			x86_pmu.pebs_aliases(event);
 	}
 
+<<<<<<< HEAD
 	if (needs_branch_stack(event) && is_sampling_event(event))
 		event->hw.flags  |= PERF_X86_EVENT_NEEDS_BRANCH_STACK;
+=======
+	if (needs_branch_stack(event)) {
+		/* Avoid branch stack setup for counting events in SAMPLE READ */
+		if (is_sampling_event(event) ||
+		    !(event->attr.sample_type & PERF_SAMPLE_READ))
+			event->hw.flags |= PERF_X86_EVENT_NEEDS_BRANCH_STACK;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (branch_sample_counters(event)) {
 		struct perf_event *leader, *sibling;

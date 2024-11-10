@@ -102,6 +102,18 @@
 
 #define PCIDMA
 
+<<<<<<< HEAD
+=======
+static const struct comedi_lrange range_ni_E_ao_ext = {
+	4, {
+		BIP_RANGE(10),
+		UNI_RANGE(10),
+		RANGE_ext(-1, 1),
+		RANGE_ext(0, 1)
+	}
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * These are not all the possible ao ranges for 628x boards.
  * They can do OFFSET +- REFERENCE where OFFSET can be

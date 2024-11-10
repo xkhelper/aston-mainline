@@ -423,6 +423,10 @@ LIBBPF_1.5.0 {
 		btf__relocate;
 		bpf_map__autoattach;
 		bpf_map__set_autoattach;
+<<<<<<< HEAD
+=======
+		bpf_object__token_fd;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		bpf_program__attach_sockmap;
 		ring__consume_n;
 		ring_buffer__consume_n;

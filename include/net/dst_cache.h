@@ -102,7 +102,11 @@ int dst_cache_init(struct dst_cache *dst_cache, gfp_t gfp);
  *	@dst_cache: the cache
  *
  *	No synchronization is enforced: it must be called only when the cache
+<<<<<<< HEAD
  *	is unsed.
+=======
+ *	is unused.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 void dst_cache_destroy(struct dst_cache *dst_cache);
 

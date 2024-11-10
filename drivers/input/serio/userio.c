@@ -267,7 +267,10 @@ static const struct file_operations userio_fops = {
 	.read		= userio_char_read,
 	.write		= userio_char_write,
 	.poll		= userio_char_poll,
+<<<<<<< HEAD
 	.llseek		= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct miscdevice userio_misc = {

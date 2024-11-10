@@ -217,7 +217,11 @@ static int lpc32xx_adc_probe(struct platform_device *pdev)
 
 static const struct of_device_id lpc32xx_adc_match[] = {
 	{ .compatible = "nxp,lpc3220-adc" },
+<<<<<<< HEAD
 	{},
+=======
+	{ }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(of, lpc32xx_adc_match);
 

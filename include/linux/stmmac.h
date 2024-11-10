@@ -100,6 +100,10 @@ struct stmmac_dma_cfg {
 	bool eame;
 	bool multi_msi_en;
 	bool dche;
+<<<<<<< HEAD
+=======
+	bool atds;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define AXI_BLEN	7
@@ -137,6 +141,7 @@ struct stmmac_txq_cfg {
 	int tbs_en;
 };
 
+<<<<<<< HEAD
 /* FPE link state */
 enum stmmac_fpe_state {
 	FPE_STATE_OFF = 0,
@@ -164,6 +169,8 @@ struct stmmac_fpe_cfg {
 	u32 fpe_csr;				/* MAC_FPE_CTRL_STS reg cache */
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct stmmac_safety_feature_cfg {
 	u32 tsoee;
 	u32 mrxpee;
@@ -231,7 +238,10 @@ struct plat_stmmacenet_data {
 	struct fwnode_handle *port_node;
 	struct device_node *mdio_node;
 	struct stmmac_dma_cfg *dma_cfg;
+<<<<<<< HEAD
 	struct stmmac_fpe_cfg *fpe_cfg;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct stmmac_safety_feature_cfg *safety_feat_cfg;
 	int clk_csr;
 	int has_gmac;

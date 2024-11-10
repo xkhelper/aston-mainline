@@ -163,20 +163,33 @@ static __always_inline s64 arch_atomic64_dec_return(atomic64_t *v)
 }
 #define arch_atomic64_dec_return arch_atomic64_dec_return
 
+<<<<<<< HEAD
 static __always_inline s64 arch_atomic64_add(s64 i, atomic64_t *v)
+=======
+static __always_inline void arch_atomic64_add(s64 i, atomic64_t *v)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	__alternative_atomic64(add, add_return,
 			       ASM_OUTPUT2("+A" (i), "+c" (v)),
 			       ASM_NO_INPUT_CLOBBER("memory"));
+<<<<<<< HEAD
 	return i;
 }
 
 static __always_inline s64 arch_atomic64_sub(s64 i, atomic64_t *v)
+=======
+}
+
+static __always_inline void arch_atomic64_sub(s64 i, atomic64_t *v)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	__alternative_atomic64(sub, sub_return,
 			       ASM_OUTPUT2("+A" (i), "+c" (v)),
 			       ASM_NO_INPUT_CLOBBER("memory"));
+<<<<<<< HEAD
 	return i;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static __always_inline void arch_atomic64_inc(atomic64_t *v)

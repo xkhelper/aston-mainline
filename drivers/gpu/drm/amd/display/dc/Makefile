@@ -35,7 +35,10 @@ DC_LIBS += dcn201
 DC_LIBS += dcn30
 DC_LIBS += dcn301
 DC_LIBS += dcn31
+<<<<<<< HEAD
 DC_LIBS += dcn314
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 DC_LIBS += dml
 DC_LIBS += dml2
 endif

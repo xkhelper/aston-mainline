@@ -94,8 +94,15 @@ static int bcm2835_rng_init(struct hwrng *rng)
 		return ret;
 
 	ret = reset_control_reset(priv->reset);
+<<<<<<< HEAD
 	if (ret)
 		return ret;
+=======
+	if (ret) {
+		clk_disable_unprepare(priv->clk);
+		return ret;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (priv->mask_interrupts) {
 		/* mask the interrupt */

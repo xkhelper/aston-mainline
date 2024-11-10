@@ -45,6 +45,13 @@ struct dm_verity {
 	u8 *salt;		/* salt: its size is salt_size */
 	u8 *initial_hashstate;	/* salted initial state, if shash_tfm is set */
 	u8 *zero_digest;	/* digest for a zero block */
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SECURITY
+	u8 *root_digest_sig;	/* signature of the root digest */
+	unsigned int sig_size;	/* root digest signature size */
+#endif /* CONFIG_SECURITY */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int salt_size;
 	sector_t data_start;	/* data offset in 512-byte sectors */
 	sector_t hash_start;	/* hash start in blocks */
@@ -60,6 +67,10 @@ struct dm_verity {
 	unsigned int digest_size;	/* digest size for the current hash algorithm */
 	unsigned int hash_reqsize; /* the size of temporary space for crypto */
 	enum verity_mode mode;	/* mode for handling verification errors */
+<<<<<<< HEAD
+=======
+	enum verity_mode error_mode;/* mode for handling I/O errors */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int corrupted_errs;/* Number of errors for corrupted blocks */
 
 	struct workqueue_struct *verify_wq;
@@ -87,6 +98,10 @@ struct dm_verity_io {
 	sector_t block;
 	unsigned int n_blocks;
 	bool in_bh;
+<<<<<<< HEAD
+=======
+	bool had_mismatch;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	struct work_struct work;
 	struct work_struct bh_work;

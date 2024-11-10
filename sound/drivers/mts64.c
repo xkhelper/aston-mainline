@@ -652,8 +652,13 @@ static int snd_mts64_ctl_create(struct snd_card *card,
 	for (i = 0; control[i]; ++i) {
 		err = snd_ctl_add(card, snd_ctl_new1(control[i], mts));
 		if (err < 0) {
+<<<<<<< HEAD
 			snd_printd("Cannot create control: %s\n", 
 				   control[i]->name);
+=======
+			dev_dbg(card->dev, "Cannot create control: %s\n",
+				control[i]->name);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return err;
 		}
 	}
@@ -926,7 +931,11 @@ static int snd_mts64_probe(struct platform_device *pdev)
 	err = snd_card_new(&pdev->dev, index[dev], id[dev], THIS_MODULE,
 			   0, &card);
 	if (err < 0) {
+<<<<<<< HEAD
 		snd_printd("Cannot create card\n");
+=======
+		dev_dbg(&pdev->dev, "Cannot create card\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return err;
 	}
 	strcpy(card->driver, DRIVER_NAME);
@@ -940,21 +949,33 @@ static int snd_mts64_probe(struct platform_device *pdev)
 					    &mts64_cb,	 /* callbacks */
 					    pdev->id);	 /* device number */
 	if (!pardev) {
+<<<<<<< HEAD
 		snd_printd("Cannot register pardevice\n");
+=======
+		dev_dbg(card->dev, "Cannot register pardevice\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = -EIO;
 		goto __err;
 	}
 
 	/* claim parport */
 	if (parport_claim(pardev)) {
+<<<<<<< HEAD
 		snd_printd("Cannot claim parport 0x%lx\n", pardev->port->base);
+=======
+		dev_dbg(card->dev, "Cannot claim parport 0x%lx\n", pardev->port->base);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = -EIO;
 		goto free_pardev;
 	}
 
 	err = snd_mts64_create(card, pardev, &mts);
 	if (err < 0) {
+<<<<<<< HEAD
 		snd_printd("Cannot create main component\n");
+=======
+		dev_dbg(card->dev, "Cannot create main component\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto release_pardev;
 	}
 	card->private_data = mts;
@@ -968,7 +989,11 @@ static int snd_mts64_probe(struct platform_device *pdev)
 	
 	err = snd_mts64_rawmidi_create(card);
 	if (err < 0) {
+<<<<<<< HEAD
 		snd_printd("Creating Rawmidi component failed\n");
+=======
+		dev_dbg(card->dev, "Creating Rawmidi component failed\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto __err;
 	}
 
@@ -982,11 +1007,19 @@ static int snd_mts64_probe(struct platform_device *pdev)
 	/* At this point card will be usable */
 	err = snd_card_register(card);
 	if (err < 0) {
+<<<<<<< HEAD
 		snd_printd("Cannot register card\n");
 		goto __err;
 	}
 
 	snd_printk(KERN_INFO "ESI Miditerminal 4140 on 0x%lx\n", p->base);
+=======
+		dev_dbg(card->dev, "Cannot register card\n");
+		goto __err;
+	}
+
+	dev_info(card->dev, "ESI Miditerminal 4140 on 0x%lx\n", p->base);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 
 release_pardev:

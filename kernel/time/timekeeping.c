@@ -2553,6 +2553,10 @@ int do_adjtimex(struct __kernel_timex *txc)
 {
 	struct timekeeper *tk = &tk_core.timekeeper;
 	struct audit_ntp_data ad;
+<<<<<<< HEAD
+=======
+	bool offset_set = false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool clock_set = false;
 	struct timespec64 ts;
 	unsigned long flags;
@@ -2575,6 +2579,10 @@ int do_adjtimex(struct __kernel_timex *txc)
 		if (ret)
 			return ret;
 
+<<<<<<< HEAD
+=======
+		offset_set = delta.tv_sec != 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		audit_tk_injoffset(delta);
 	}
 
@@ -2608,7 +2616,11 @@ int do_adjtimex(struct __kernel_timex *txc)
 	if (clock_set)
 		clock_was_set(CLOCK_SET_WALL);
 
+<<<<<<< HEAD
 	ntp_notify_cmos_timer();
+=======
+	ntp_notify_cmos_timer(offset_set);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }

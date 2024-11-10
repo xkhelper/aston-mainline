@@ -188,6 +188,10 @@ struct adp5588_kpad {
 	u32 cols;
 	u32 unlock_keys[2];
 	int nkeys_unlock;
+<<<<<<< HEAD
+=======
+	bool gpio_only;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned short keycode[ADP5588_KEYMAPSIZE];
 	unsigned char gpiomap[ADP5588_MAXGPIO];
 	struct gpio_chip gc;
@@ -221,15 +225,22 @@ static int adp5588_gpio_get_value(struct gpio_chip *chip, unsigned int off)
 	unsigned int bit = ADP5588_BIT(kpad->gpiomap[off]);
 	int val;
 
+<<<<<<< HEAD
 	mutex_lock(&kpad->gpio_lock);
+=======
+	guard(mutex)(&kpad->gpio_lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (kpad->dir[bank] & bit)
 		val = kpad->dat_out[bank];
 	else
 		val = adp5588_read(kpad->client, GPIO_DAT_STAT1 + bank);
 
+<<<<<<< HEAD
 	mutex_unlock(&kpad->gpio_lock);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return !!(val & bit);
 }
 
@@ -240,7 +251,11 @@ static void adp5588_gpio_set_value(struct gpio_chip *chip,
 	unsigned int bank = ADP5588_BANK(kpad->gpiomap[off]);
 	unsigned int bit = ADP5588_BIT(kpad->gpiomap[off]);
 
+<<<<<<< HEAD
 	mutex_lock(&kpad->gpio_lock);
+=======
+	guard(mutex)(&kpad->gpio_lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (val)
 		kpad->dat_out[bank] |= bit;
@@ -248,8 +263,11 @@ static void adp5588_gpio_set_value(struct gpio_chip *chip,
 		kpad->dat_out[bank] &= ~bit;
 
 	adp5588_write(kpad->client, GPIO_DAT_OUT1 + bank, kpad->dat_out[bank]);
+<<<<<<< HEAD
 
 	mutex_unlock(&kpad->gpio_lock);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int adp5588_gpio_set_config(struct gpio_chip *chip,  unsigned int off,
@@ -259,7 +277,10 @@ static int adp5588_gpio_set_config(struct gpio_chip *chip,  unsigned int off,
 	unsigned int bank = ADP5588_BANK(kpad->gpiomap[off]);
 	unsigned int bit = ADP5588_BIT(kpad->gpiomap[off]);
 	bool pull_disable;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	switch (pinconf_to_config_param(config)) {
 	case PIN_CONFIG_BIAS_PULL_UP:
@@ -272,19 +293,28 @@ static int adp5588_gpio_set_config(struct gpio_chip *chip,  unsigned int off,
 		return -ENOTSUPP;
 	}
 
+<<<<<<< HEAD
 	mutex_lock(&kpad->gpio_lock);
+=======
+	guard(mutex)(&kpad->gpio_lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (pull_disable)
 		kpad->pull_dis[bank] |= bit;
 	else
 		kpad->pull_dis[bank] &= bit;
 
+<<<<<<< HEAD
 	ret = adp5588_write(kpad->client, GPIO_PULL1 + bank,
 			    kpad->pull_dis[bank]);
 
 	mutex_unlock(&kpad->gpio_lock);
 
 	return ret;
+=======
+	return adp5588_write(kpad->client, GPIO_PULL1 + bank,
+			     kpad->pull_dis[bank]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int adp5588_gpio_direction_input(struct gpio_chip *chip, unsigned int off)
@@ -292,6 +322,7 @@ static int adp5588_gpio_direction_input(struct gpio_chip *chip, unsigned int off
 	struct adp5588_kpad *kpad = gpiochip_get_data(chip);
 	unsigned int bank = ADP5588_BANK(kpad->gpiomap[off]);
 	unsigned int bit = ADP5588_BIT(kpad->gpiomap[off]);
+<<<<<<< HEAD
 	int ret;
 
 	mutex_lock(&kpad->gpio_lock);
@@ -302,6 +333,13 @@ static int adp5588_gpio_direction_input(struct gpio_chip *chip, unsigned int off
 	mutex_unlock(&kpad->gpio_lock);
 
 	return ret;
+=======
+
+	guard(mutex)(&kpad->gpio_lock);
+
+	kpad->dir[bank] &= ~bit;
+	return adp5588_write(kpad->client, GPIO_DIR1 + bank, kpad->dir[bank]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int adp5588_gpio_direction_output(struct gpio_chip *chip,
@@ -310,9 +348,15 @@ static int adp5588_gpio_direction_output(struct gpio_chip *chip,
 	struct adp5588_kpad *kpad = gpiochip_get_data(chip);
 	unsigned int bank = ADP5588_BANK(kpad->gpiomap[off]);
 	unsigned int bit = ADP5588_BIT(kpad->gpiomap[off]);
+<<<<<<< HEAD
 	int ret;
 
 	mutex_lock(&kpad->gpio_lock);
+=======
+	int error;
+
+	guard(mutex)(&kpad->gpio_lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	kpad->dir[bank] |= bit;
 
@@ -321,6 +365,7 @@ static int adp5588_gpio_direction_output(struct gpio_chip *chip,
 	else
 		kpad->dat_out[bank] &= ~bit;
 
+<<<<<<< HEAD
 	ret = adp5588_write(kpad->client, GPIO_DAT_OUT1 + bank,
 			    kpad->dat_out[bank]);
 	if (ret)
@@ -332,6 +377,18 @@ out_unlock:
 	mutex_unlock(&kpad->gpio_lock);
 
 	return ret;
+=======
+	error = adp5588_write(kpad->client, GPIO_DAT_OUT1 + bank,
+			      kpad->dat_out[bank]);
+	if (error)
+		return error;
+
+	error = adp5588_write(kpad->client, GPIO_DIR1 + bank, kpad->dir[bank]);
+	if (error)
+		return error;
+
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int adp5588_build_gpiomap(struct adp5588_kpad *kpad)
@@ -446,10 +503,24 @@ static int adp5588_gpio_add(struct adp5588_kpad *kpad)
 	kpad->gc.label = kpad->client->name;
 	kpad->gc.owner = THIS_MODULE;
 
+<<<<<<< HEAD
 	girq = &kpad->gc.irq;
 	gpio_irq_chip_set_chip(girq, &adp5588_irq_chip);
 	girq->handler = handle_bad_irq;
 	girq->threaded = true;
+=======
+	if (device_property_present(dev, "interrupt-controller")) {
+		if (!kpad->client->irq) {
+			dev_err(dev, "Unable to serve as interrupt controller without interrupt");
+			return -EINVAL;
+		}
+
+		girq = &kpad->gc.irq;
+		gpio_irq_chip_set_chip(girq, &adp5588_irq_chip);
+		girq->handler = handle_bad_irq;
+		girq->threaded = true;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_init(&kpad->gpio_lock);
 
@@ -627,7 +698,11 @@ static int adp5588_setup(struct adp5588_kpad *kpad)
 
 	for (i = 0; i < KEYP_MAX_EVENT; i++) {
 		ret = adp5588_read(client, KEY_EVENTA);
+<<<<<<< HEAD
 		if (ret)
+=======
+		if (ret < 0)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return ret;
 	}
 
@@ -647,6 +722,21 @@ static int adp5588_fw_parse(struct adp5588_kpad *kpad)
 	struct i2c_client *client = kpad->client;
 	int ret, i;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Check if the device is to be operated purely in GPIO mode. To do
+	 * so, check that no keypad rows or columns have been specified,
+	 * since all GPINS should be configured as GPIO.
+	 */
+	if (!device_property_present(&client->dev, "keypad,num-rows") &&
+	    !device_property_present(&client->dev, "keypad,num-columns")) {
+		/* If purely GPIO, skip keypad setup */
+		kpad->gpio_only = true;
+		return 0;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = matrix_keypad_parse_properties(&client->dev, &kpad->rows,
 					     &kpad->cols);
 	if (ret)
@@ -790,6 +880,7 @@ static int adp5588_probe(struct i2c_client *client)
 	if (error)
 		return error;
 
+<<<<<<< HEAD
 	error = devm_request_threaded_irq(&client->dev, client->irq,
 					  adp5588_hard_irq, adp5588_thread_irq,
 					  IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
@@ -801,6 +892,21 @@ static int adp5588_probe(struct i2c_client *client)
 	}
 
 	dev_info(&client->dev, "Rev.%d keypad, irq %d\n", revid, client->irq);
+=======
+	if (client->irq) {
+		error = devm_request_threaded_irq(&client->dev, client->irq,
+						  adp5588_hard_irq, adp5588_thread_irq,
+						  IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
+						  client->dev.driver->name, kpad);
+		if (error) {
+			dev_err(&client->dev, "failed to request irq %d: %d\n",
+				client->irq, error);
+			return error;
+		}
+	}
+
+	dev_info(&client->dev, "Rev.%d controller\n", revid);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -815,7 +921,12 @@ static int adp5588_suspend(struct device *dev)
 {
 	struct i2c_client *client = to_i2c_client(dev);
 
+<<<<<<< HEAD
 	disable_irq(client->irq);
+=======
+	if (client->irq)
+		disable_irq(client->irq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -824,7 +935,12 @@ static int adp5588_resume(struct device *dev)
 {
 	struct i2c_client *client = to_i2c_client(dev);
 
+<<<<<<< HEAD
 	enable_irq(client->irq);
+=======
+	if (client->irq)
+		enable_irq(client->irq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

@@ -53,6 +53,31 @@ properties:
       override default rtc_ck parent clock phandle of the new parent clock of rtc_ck
     maxItems: 1
 
+<<<<<<< HEAD
+=======
+patternProperties:
+  "^rtc-[a-z]+-[0-9]+$":
+    type: object
+    $ref: /schemas/pinctrl/pinmux-node.yaml
+    description: |
+      Configuration of STM32 RTC pins description. STM32 RTC is able to output
+      some signals on specific pins:
+      - LSCO (Low Speed Clock Output) that allow to output LSE clock on a pin.
+      - Alarm out that allow to send a pulse on a pin when alarm A of the RTC
+        expires.
+    additionalProperties: false
+    properties:
+      function:
+        enum:
+          - lsco
+          - alarm-a
+      pins:
+        enum:
+          - out1
+          - out2
+          - out2_rmp
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 allOf:
   - if:
       properties:
@@ -68,6 +93,12 @@ allOf:
 
         clock-names: false
 
+<<<<<<< HEAD
+=======
+      patternProperties:
+        "^rtc-[a-z]+-[0-9]+$": false
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       required:
         - st,syscfg
 
@@ -83,6 +114,12 @@ allOf:
           minItems: 2
           maxItems: 2
 
+<<<<<<< HEAD
+=======
+      patternProperties:
+        "^rtc-[a-z]+-[0-9]+$": false
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       required:
         - clock-names
         - st,syscfg

@@ -3530,8 +3530,12 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
 	rtnl_notify(skb, net, 0, RTNLGRP_NEIGH, NULL, GFP_ATOMIC);
 	return;
 errout:
+<<<<<<< HEAD
 	if (err < 0)
 		rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
+=======
+	rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void neigh_app_ns(struct neighbour *n)

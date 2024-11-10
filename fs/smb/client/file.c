@@ -49,6 +49,10 @@ static void cifs_prepare_write(struct netfs_io_subrequest *subreq)
 	struct cifs_io_subrequest *wdata =
 		container_of(subreq, struct cifs_io_subrequest, subreq);
 	struct cifs_io_request *req = wdata->req;
+<<<<<<< HEAD
+=======
+	struct netfs_io_stream *stream = &req->rreq.io_streams[subreq->stream_nr];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct TCP_Server_Info *server;
 	struct cifsFileInfo *open_file = req->cfile;
 	size_t wsize = req->rreq.wsize;
@@ -73,7 +77,11 @@ retry:
 		}
 	}
 
+<<<<<<< HEAD
 	rc = server->ops->wait_mtu_credits(server, wsize, &wdata->subreq.max_len,
+=======
+	rc = server->ops->wait_mtu_credits(server, wsize, &stream->sreq_max_len,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					   &wdata->credits);
 	if (rc < 0) {
 		subreq->error = rc;
@@ -92,7 +100,11 @@ retry:
 
 #ifdef CONFIG_CIFS_SMB_DIRECT
 	if (server->smbd_conn)
+<<<<<<< HEAD
 		subreq->max_nr_segs = server->smbd_conn->max_frmr_depth;
+=======
+		stream->sreq_max_segs = server->smbd_conn->max_frmr_depth;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 }
 
@@ -111,7 +123,10 @@ static void cifs_issue_write(struct netfs_io_subrequest *subreq)
 		goto fail;
 	}
 
+<<<<<<< HEAD
 	wdata->actual_len = wdata->subreq.len;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rc = adjust_credits(wdata->server, wdata, cifs_trace_rw_credits_issue_write_adjust);
 	if (rc)
 		goto fail;
@@ -140,6 +155,7 @@ static void cifs_netfs_invalidate_cache(struct netfs_io_request *wreq)
 }
 
 /*
+<<<<<<< HEAD
  * Split the read up according to how many credits we can get for each piece.
  * It's okay to sleep here if we need to wait for more credit to become
  * available.
@@ -148,17 +164,32 @@ static void cifs_netfs_invalidate_cache(struct netfs_io_request *wreq)
  * later.
  */
 static bool cifs_clamp_length(struct netfs_io_subrequest *subreq)
+=======
+ * Negotiate the size of a read operation on behalf of the netfs library.
+ */
+static int cifs_prepare_read(struct netfs_io_subrequest *subreq)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct netfs_io_request *rreq = subreq->rreq;
 	struct cifs_io_subrequest *rdata = container_of(subreq, struct cifs_io_subrequest, subreq);
 	struct cifs_io_request *req = container_of(subreq->rreq, struct cifs_io_request, rreq);
 	struct TCP_Server_Info *server = req->server;
 	struct cifs_sb_info *cifs_sb = CIFS_SB(rreq->inode->i_sb);
+<<<<<<< HEAD
 	size_t rsize;
 	int rc;
 
 	rdata->xid = get_xid();
 	rdata->have_xid = true;
+=======
+	size_t size;
+	int rc = 0;
+
+	if (!rdata->have_xid) {
+		rdata->xid = get_xid();
+		rdata->have_xid = true;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rdata->server = server;
 
 	if (cifs_sb->ctx->rsize == 0)
@@ -166,6 +197,7 @@ static bool cifs_clamp_length(struct netfs_io_subrequest *subreq)
 			server->ops->negotiate_rsize(tlink_tcon(req->cfile->tlink),
 						     cifs_sb->ctx);
 
+<<<<<<< HEAD
 
 	rc = server->ops->wait_mtu_credits(server, cifs_sb->ctx->rsize,
 					   &rsize, &rdata->credits);
@@ -173,6 +205,14 @@ static bool cifs_clamp_length(struct netfs_io_subrequest *subreq)
 		subreq->error = rc;
 		return false;
 	}
+=======
+	rc = server->ops->wait_mtu_credits(server, cifs_sb->ctx->rsize,
+					   &size, &rdata->credits);
+	if (rc)
+		return rc;
+
+	rreq->io_streams[0].sreq_max_len = size;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rdata->credits.in_flight_check = 1;
 	rdata->credits.rreq_debug_id = rreq->debug_id;
@@ -184,6 +224,7 @@ static bool cifs_clamp_length(struct netfs_io_subrequest *subreq)
 			      server->credits, server->in_flight, 0,
 			      cifs_trace_rw_credits_read_submit);
 
+<<<<<<< HEAD
 	subreq->len = umin(subreq->len, rsize);
 	rdata->actual_len = subreq->len;
 
@@ -192,6 +233,13 @@ static bool cifs_clamp_length(struct netfs_io_subrequest *subreq)
 		subreq->max_nr_segs = server->smbd_conn->max_frmr_depth;
 #endif
 	return true;
+=======
+#ifdef CONFIG_CIFS_SMB_DIRECT
+	if (server->smbd_conn)
+		rreq->io_streams[0].sreq_max_segs = server->smbd_conn->max_frmr_depth;
+#endif
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -200,19 +248,27 @@ static bool cifs_clamp_length(struct netfs_io_subrequest *subreq)
  * to only read a portion of that, but as long as we read something, the netfs
  * helper will call us again so that we can issue another read.
  */
+<<<<<<< HEAD
 static void cifs_req_issue_read(struct netfs_io_subrequest *subreq)
+=======
+static void cifs_issue_read(struct netfs_io_subrequest *subreq)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct netfs_io_request *rreq = subreq->rreq;
 	struct cifs_io_subrequest *rdata = container_of(subreq, struct cifs_io_subrequest, subreq);
 	struct cifs_io_request *req = container_of(subreq->rreq, struct cifs_io_request, rreq);
 	struct TCP_Server_Info *server = req->server;
+<<<<<<< HEAD
 	struct cifs_sb_info *cifs_sb = CIFS_SB(rreq->inode->i_sb);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int rc = 0;
 
 	cifs_dbg(FYI, "%s: op=%08x[%x] mapping=%p len=%zu/%zu\n",
 		 __func__, rreq->debug_id, subreq->debug_index, rreq->mapping,
 		 subreq->transferred, subreq->len);
 
+<<<<<<< HEAD
 	if (test_bit(NETFS_SREQ_RETRYING, &subreq->flags)) {
 		/*
 		 * As we're issuing a retry, we need to negotiate some new
@@ -237,22 +293,42 @@ static void cifs_req_issue_read(struct netfs_io_subrequest *subreq)
 				      server->credits, server->in_flight, 0,
 				      cifs_trace_rw_credits_read_resubmit);
 	}
+=======
+	rc = adjust_credits(server, rdata, cifs_trace_rw_credits_issue_read_adjust);
+	if (rc)
+		goto failed;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (req->cfile->invalidHandle) {
 		do {
 			rc = cifs_reopen_file(req->cfile, true);
 		} while (rc == -EAGAIN);
 		if (rc)
+<<<<<<< HEAD
 			goto out;
+=======
+			goto failed;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (subreq->rreq->origin != NETFS_DIO_READ)
 		__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
 
+<<<<<<< HEAD
 	rc = rdata->server->ops->async_readv(rdata);
 out:
 	if (rc)
 		netfs_subreq_terminated(subreq, rc, false);
+=======
+	trace_netfs_sreq(subreq, netfs_sreq_trace_submit);
+	rc = rdata->server->ops->async_readv(rdata);
+	if (rc)
+		goto failed;
+	return;
+
+failed:
+	netfs_read_subreq_terminated(subreq, rc, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -316,12 +392,15 @@ static void cifs_rreq_done(struct netfs_io_request *rreq)
 		inode_set_atime_to_ts(inode, inode_get_mtime(inode));
 }
 
+<<<<<<< HEAD
 static void cifs_post_modify(struct inode *inode)
 {
 	/* Indication to update ctime and mtime as close is deferred */
 	set_bit(CIFS_INO_MODIFIED_ATTR, &CIFS_I(inode)->flags);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void cifs_free_request(struct netfs_io_request *rreq)
 {
 	struct cifs_io_request *req = container_of(rreq, struct cifs_io_request, rreq);
@@ -369,10 +448,16 @@ const struct netfs_request_ops cifs_req_ops = {
 	.init_request		= cifs_init_request,
 	.free_request		= cifs_free_request,
 	.free_subrequest	= cifs_free_subrequest,
+<<<<<<< HEAD
 	.clamp_length		= cifs_clamp_length,
 	.issue_read		= cifs_req_issue_read,
 	.done			= cifs_rreq_done,
 	.post_modify		= cifs_post_modify,
+=======
+	.prepare_read		= cifs_prepare_read,
+	.issue_read		= cifs_issue_read,
+	.done			= cifs_rreq_done,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.begin_writeback	= cifs_begin_writeback,
 	.prepare_write		= cifs_prepare_write,
 	.issue_write		= cifs_issue_write,
@@ -1396,7 +1481,11 @@ int cifs_close(struct inode *inode, struct file *file)
 		dclose = kmalloc(sizeof(struct cifs_deferred_close), GFP_KERNEL);
 		if ((cfile->status_file_deleted == false) &&
 		    (smb2_can_defer_close(inode, dclose))) {
+<<<<<<< HEAD
 			if (test_and_clear_bit(CIFS_INO_MODIFIED_ATTR, &cinode->flags)) {
+=======
+			if (test_and_clear_bit(NETFS_ICTX_MODIFIED_ATTR, &cinode->netfs.flags)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				inode_set_mtime_to_ts(inode,
 						      inode_set_ctime_current(inode));
 			}
@@ -1435,7 +1524,11 @@ void
 cifs_reopen_persistent_handles(struct cifs_tcon *tcon)
 {
 	struct cifsFileInfo *open_file, *tmp;
+<<<<<<< HEAD
 	struct list_head tmp_list;
+=======
+	LIST_HEAD(tmp_list);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!tcon->use_persistent || !tcon->need_reopen_files)
 		return;
@@ -1443,7 +1536,10 @@ cifs_reopen_persistent_handles(struct cifs_tcon *tcon)
 	tcon->need_reopen_files = false;
 
 	cifs_dbg(FYI, "Reopen persistent handles\n");
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&tmp_list);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* list all files open on tree connection, reopen resilient handles  */
 	spin_lock(&tcon->open_file_lock);
@@ -2126,9 +2222,13 @@ cifs_unlock_range(struct cifsFileInfo *cfile, struct file_lock *flock,
 	struct cifsInodeInfo *cinode = CIFS_I(d_inode(cfile->dentry));
 	struct cifsLockInfo *li, *tmp;
 	__u64 length = cifs_flock_len(flock);
+<<<<<<< HEAD
 	struct list_head tmp_llist;
 
 	INIT_LIST_HEAD(&tmp_llist);
+=======
+	LIST_HEAD(tmp_llist);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Accessing maxBuf is racy with cifs_reconnect - need to store value
@@ -2537,7 +2637,11 @@ refind_writable:
 			}
 		}
 	}
+<<<<<<< HEAD
 	/* couldn't find useable FH with same pid, try any available */
+=======
+	/* couldn't find usable FH with same pid, try any available */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!any_available) {
 		any_available = true;
 		goto refind_writable;

@@ -361,7 +361,12 @@ Alternatives Considered
 -----------------------
 
 An alternative data race detection approach for the kernel can be found in the
+<<<<<<< HEAD
 `Kernel Thread Sanitizer (KTSAN) <https://github.com/google/ktsan/wiki>`_.
+=======
+`Kernel Thread Sanitizer (KTSAN)
+<https://github.com/google/kernel-sanitizers/blob/master/KTSAN.md>`_.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 KTSAN is a happens-before data race detector, which explicitly establishes the
 happens-before order between memory operations, which can then be used to
 determine data races as defined in `Data Races`_.

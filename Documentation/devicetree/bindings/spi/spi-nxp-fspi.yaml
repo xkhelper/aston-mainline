@@ -21,6 +21,10 @@ properties:
           - nxp,imx8mm-fspi
           - nxp,imx8mp-fspi
           - nxp,imx8qxp-fspi
+<<<<<<< HEAD
+=======
+          - nxp,imx8ulp-fspi
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - nxp,lx2160a-fspi
       - items:
           - enum:

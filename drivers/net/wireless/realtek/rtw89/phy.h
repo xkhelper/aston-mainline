@@ -894,7 +894,11 @@ void rtw89_phy_set_txpwr_limit_ru(struct rtw89_dev *rtwdev,
 
 void rtw89_phy_ra_assoc(struct rtw89_dev *rtwdev, struct ieee80211_sta *sta);
 void rtw89_phy_ra_update(struct rtw89_dev *rtwdev);
+<<<<<<< HEAD
 void rtw89_phy_ra_updata_sta(struct rtw89_dev *rtwdev, struct ieee80211_sta *sta,
+=======
+void rtw89_phy_ra_update_sta(struct rtw89_dev *rtwdev, struct ieee80211_sta *sta,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     u32 changed);
 void rtw89_phy_rate_pattern_vif(struct rtw89_dev *rtwdev,
 				struct ieee80211_vif *vif,
@@ -907,10 +911,15 @@ int rtw89_phy_rfk_pre_ntfy_and_wait(struct rtw89_dev *rtwdev,
 				    unsigned int ms);
 int rtw89_phy_rfk_tssi_and_wait(struct rtw89_dev *rtwdev,
 				enum rtw89_phy_idx phy_idx,
+<<<<<<< HEAD
+=======
+				const struct rtw89_chan *chan,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				enum rtw89_tssi_mode tssi_mode,
 				unsigned int ms);
 int rtw89_phy_rfk_iqk_and_wait(struct rtw89_dev *rtwdev,
 			       enum rtw89_phy_idx phy_idx,
+<<<<<<< HEAD
 			       unsigned int ms);
 int rtw89_phy_rfk_dpk_and_wait(struct rtw89_dev *rtwdev,
 			       enum rtw89_phy_idx phy_idx,
@@ -923,6 +932,25 @@ int rtw89_phy_rfk_dack_and_wait(struct rtw89_dev *rtwdev,
 				unsigned int ms);
 int rtw89_phy_rfk_rxdck_and_wait(struct rtw89_dev *rtwdev,
 				 enum rtw89_phy_idx phy_idx,
+=======
+			       const struct rtw89_chan *chan,
+			       unsigned int ms);
+int rtw89_phy_rfk_dpk_and_wait(struct rtw89_dev *rtwdev,
+			       enum rtw89_phy_idx phy_idx,
+			       const struct rtw89_chan *chan,
+			       unsigned int ms);
+int rtw89_phy_rfk_txgapk_and_wait(struct rtw89_dev *rtwdev,
+				  enum rtw89_phy_idx phy_idx,
+				  const struct rtw89_chan *chan,
+				  unsigned int ms);
+int rtw89_phy_rfk_dack_and_wait(struct rtw89_dev *rtwdev,
+				enum rtw89_phy_idx phy_idx,
+				const struct rtw89_chan *chan,
+				unsigned int ms);
+int rtw89_phy_rfk_rxdck_and_wait(struct rtw89_dev *rtwdev,
+				 enum rtw89_phy_idx phy_idx,
+				 const struct rtw89_chan *chan,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				 unsigned int ms);
 void rtw89_phy_rfk_tssi_fill_fwcmd_efuse_to_de(struct rtw89_dev *rtwdev,
 					       enum rtw89_phy_idx phy,

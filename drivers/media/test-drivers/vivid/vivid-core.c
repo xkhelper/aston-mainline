@@ -910,7 +910,11 @@ static int vivid_create_queue(struct vivid_dev *dev,
 	 * videobuf2-core.c to MAX_BUFFER_INDEX.
 	 */
 	if (buf_type == V4L2_BUF_TYPE_VIDEO_CAPTURE)
+<<<<<<< HEAD
 		q->max_num_buffers = 64;
+=======
+		q->max_num_buffers = MAX_VID_CAP_BUFFERS;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (buf_type == V4L2_BUF_TYPE_SDR_CAPTURE)
 		q->max_num_buffers = 1024;
 	if (buf_type == V4L2_BUF_TYPE_VBI_CAPTURE)

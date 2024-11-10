@@ -37,6 +37,11 @@
 
 #include "../kernel/head.h"
 
+<<<<<<< HEAD
+=======
+u64 new_vmalloc[NR_CPUS / sizeof(u64) + 1];
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct kernel_mapping kernel_map __ro_after_init;
 EXPORT_SYMBOL(kernel_map);
 #ifdef CONFIG_XIP_KERNEL
@@ -917,7 +922,11 @@ static void __init relocate_kernel(void)
 static void __init create_kernel_page_table(pgd_t *pgdir,
 					    __always_unused bool early)
 {
+<<<<<<< HEAD
 	uintptr_t va, end_va;
+=======
+	uintptr_t va, start_va, end_va;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Map the flash resident part */
 	end_va = kernel_map.virt_addr + kernel_map.xiprom_sz;
@@ -927,10 +936,18 @@ static void __init create_kernel_page_table(pgd_t *pgdir,
 				   PMD_SIZE, PAGE_KERNEL_EXEC);
 
 	/* Map the data in RAM */
+<<<<<<< HEAD
 	end_va = kernel_map.virt_addr + kernel_map.size;
 	for (va = kernel_map.virt_addr + XIP_OFFSET; va < end_va; va += PMD_SIZE)
 		create_pgd_mapping(pgdir, va,
 				   kernel_map.phys_addr + (va - (kernel_map.virt_addr + XIP_OFFSET)),
+=======
+	start_va = kernel_map.virt_addr + (uintptr_t)&_sdata - (uintptr_t)&_start;
+	end_va = kernel_map.virt_addr + kernel_map.size;
+	for (va = start_va; va < end_va; va += PMD_SIZE)
+		create_pgd_mapping(pgdir, va,
+				   kernel_map.phys_addr + (va - start_va),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   PMD_SIZE, PAGE_KERNEL);
 }
 #else
@@ -1048,6 +1065,10 @@ static void __init pt_ops_set_late(void)
 #ifdef CONFIG_RANDOMIZE_BASE
 extern bool __init __pi_set_nokaslr_from_cmdline(uintptr_t dtb_pa);
 extern u64 __init __pi_get_kaslr_seed(uintptr_t dtb_pa);
+<<<<<<< HEAD
+=======
+extern u64 __init __pi_get_kaslr_seed_zkr(const uintptr_t dtb_pa);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int __init print_nokaslr(char *p)
 {
@@ -1068,10 +1089,19 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
 
 #ifdef CONFIG_RANDOMIZE_BASE
 	if (!__pi_set_nokaslr_from_cmdline(dtb_pa)) {
+<<<<<<< HEAD
 		u64 kaslr_seed = __pi_get_kaslr_seed(dtb_pa);
 		u32 kernel_size = (uintptr_t)(&_end) - (uintptr_t)(&_start);
 		u32 nr_pos;
 
+=======
+		u64 kaslr_seed = __pi_get_kaslr_seed_zkr(dtb_pa);
+		u32 kernel_size = (uintptr_t)(&_end) - (uintptr_t)(&_start);
+		u32 nr_pos;
+
+		if (kaslr_seed == 0)
+			kaslr_seed = __pi_get_kaslr_seed(dtb_pa);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * Compute the number of positions available: we are limited
 		 * by the early page table that only has one PUD and we must
@@ -1098,11 +1128,21 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
 	kernel_map.phys_addr = (uintptr_t)CONFIG_PHYS_RAM_BASE;
 	kernel_map.size = (uintptr_t)(&_end) - (uintptr_t)(&_start);
 
+<<<<<<< HEAD
 	kernel_map.va_kernel_xip_pa_offset = kernel_map.virt_addr - kernel_map.xiprom;
+=======
+	kernel_map.va_kernel_xip_text_pa_offset = kernel_map.virt_addr - kernel_map.xiprom;
+	kernel_map.va_kernel_xip_data_pa_offset = kernel_map.virt_addr - kernel_map.phys_addr
+						+ (uintptr_t)&_sdata - (uintptr_t)&_start;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else
 	kernel_map.page_offset = _AC(CONFIG_PAGE_OFFSET, UL);
 	kernel_map.phys_addr = (uintptr_t)(&_start);
 	kernel_map.size = (uintptr_t)(&_end) - kernel_map.phys_addr;
+<<<<<<< HEAD
+=======
+	kernel_map.va_kernel_pa_offset = kernel_map.virt_addr - kernel_map.phys_addr;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 #if defined(CONFIG_64BIT) && !defined(CONFIG_XIP_KERNEL)
@@ -1124,6 +1164,7 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
 	 */
 	kernel_map.va_pa_offset = IS_ENABLED(CONFIG_64BIT) ?
 				0UL : PAGE_OFFSET - kernel_map.phys_addr;
+<<<<<<< HEAD
 	kernel_map.va_kernel_pa_offset = kernel_map.virt_addr - kernel_map.phys_addr;
 
 	/*
@@ -1133,6 +1174,10 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
 	 * the available size of the linear mapping.
 	 */
 	memory_limit = KERN_VIRT_SIZE - (IS_ENABLED(CONFIG_64BIT) ? SZ_4G : 0);
+=======
+
+	memory_limit = KERN_VIRT_SIZE;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Sanity check alignment and size */
 	BUG_ON((PAGE_OFFSET % PGDIR_SIZE) != 0);

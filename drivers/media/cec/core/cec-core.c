@@ -51,6 +51,7 @@ static struct dentry *top_cec_dir;
 /* dev to cec_devnode */
 #define to_cec_devnode(cd) container_of(cd, struct cec_devnode, dev)
 
+<<<<<<< HEAD
 int cec_get_device(struct cec_devnode *devnode)
 {
 	/*
@@ -80,6 +81,8 @@ void cec_put_device(struct cec_devnode *devnode)
 	put_device(&devnode->dev);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Called when the last user of the cec device exits. */
 static void cec_devnode_release(struct device *cd)
 {
@@ -273,7 +276,11 @@ struct cec_adapter *cec_allocate_adapter(const struct cec_adap_ops *ops,
 	adap->cec_pin_is_high = true;
 	adap->log_addrs.cec_version = CEC_OP_CEC_VERSION_2_0;
 	adap->log_addrs.vendor_id = CEC_VENDOR_ID_NONE;
+<<<<<<< HEAD
 	adap->capabilities = caps;
+=======
+	adap->capabilities = caps | CEC_CAP_REPLY_VENDOR_ID;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (debug_phys_addr)
 		adap->capabilities |= CEC_CAP_PHYS_ADDR;
 	adap->needs_hpd = caps & CEC_CAP_NEEDS_HPD;

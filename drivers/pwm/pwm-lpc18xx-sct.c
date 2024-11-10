@@ -446,7 +446,11 @@ static struct platform_driver lpc18xx_pwm_driver = {
 		.of_match_table = lpc18xx_pwm_of_match,
 	},
 	.probe = lpc18xx_pwm_probe,
+<<<<<<< HEAD
 	.remove_new = lpc18xx_pwm_remove,
+=======
+	.remove = lpc18xx_pwm_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(lpc18xx_pwm_driver);
 

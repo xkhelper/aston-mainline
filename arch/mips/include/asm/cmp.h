@@ -7,6 +7,7 @@
  */
 struct task_struct;
 
+<<<<<<< HEAD
 extern void cmp_smp_setup(void);
 extern void cmp_smp_finish(void);
 extern void cmp_boot_secondary(int cpu, struct task_struct *t);
@@ -15,4 +16,6 @@ extern void cmp_prepare_cpus(unsigned int max_cpus);
 
 /* This is platform specific */
 extern void cmp_send_ipi(int cpu, unsigned int action);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /*  _ASM_CMP_H */

@@ -47,10 +47,13 @@
 	readl((m)->mbase + ((m)->hbm_mc ? 0xef8 :	\
 	(res_cfg->type == GNR ? 0xaf8 : 0x20ef8)) +	\
 	(i) * (m)->chan_mmio_sz)
+<<<<<<< HEAD
 #define I10NM_GET_AMAP(m, i)		\
 	readl((m)->mbase + ((m)->hbm_mc ? 0x814 :	\
 	(res_cfg->type == GNR ? 0xc14 : 0x20814)) +	\
 	(i) * (m)->chan_mmio_sz)
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define I10NM_GET_REG32(m, i, offset)	\
 	readl((m)->mbase + (i) * (m)->chan_mmio_sz + (offset))
 #define I10NM_GET_REG64(m, i, offset)	\
@@ -971,7 +974,11 @@ static int i10nm_get_dimm_config(struct mem_ctl_info *mci,
 {
 	struct skx_pvt *pvt = mci->pvt_info;
 	struct skx_imc *imc = pvt->imc;
+<<<<<<< HEAD
 	u32 mtr, amap, mcddrtcfg = 0;
+=======
+	u32 mtr, mcddrtcfg = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct dimm_info *dimm;
 	int i, j, ndimms;
 
@@ -980,7 +987,10 @@ static int i10nm_get_dimm_config(struct mem_ctl_info *mci,
 			continue;
 
 		ndimms = 0;
+<<<<<<< HEAD
 		amap = I10NM_GET_AMAP(imc, i);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (res_cfg->type != GNR)
 			mcddrtcfg = I10NM_GET_MCDDRTCFG(imc, i);
@@ -992,7 +1002,11 @@ static int i10nm_get_dimm_config(struct mem_ctl_info *mci,
 				 mtr, mcddrtcfg, imc->mc, i, j);
 
 			if (IS_DIMM_PRESENT(mtr))
+<<<<<<< HEAD
 				ndimms += skx_get_dimm_info(mtr, 0, amap, dimm,
+=======
+				ndimms += skx_get_dimm_info(mtr, 0, 0, dimm,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 							    imc, i, j, cfg);
 			else if (IS_NVDIMM_PRESENT(mcddrtcfg, j))
 				ndimms += skx_get_nvdimm_info(dimm, imc, i, j,
@@ -1013,6 +1027,7 @@ static struct notifier_block i10nm_mce_dec = {
 	.priority	= MCE_PRIO_EDAC,
 };
 
+<<<<<<< HEAD
 #ifdef CONFIG_EDAC_DEBUG
 /*
  * Debug feature.
@@ -1061,6 +1076,8 @@ static inline void setup_i10nm_debug(void) {}
 static inline void teardown_i10nm_debug(void) {}
 #endif /*CONFIG_EDAC_DEBUG*/
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int __init i10nm_init(void)
 {
 	u8 mc = 0, src_id = 0, node_id = 0;
@@ -1159,7 +1176,11 @@ static int __init i10nm_init(void)
 
 	opstate_init();
 	mce_register_decode_chain(&i10nm_mce_dec);
+<<<<<<< HEAD
 	setup_i10nm_debug();
+=======
+	skx_setup_debug("i10nm_test");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (retry_rd_err_log && res_cfg->offsets_scrub && res_cfg->offsets_demand) {
 		skx_set_decode(i10nm_mc_decode, show_retry_rd_err_log);
@@ -1187,7 +1208,11 @@ static void __exit i10nm_exit(void)
 			enable_retry_rd_err_log(false);
 	}
 
+<<<<<<< HEAD
 	teardown_i10nm_debug();
+=======
+	skx_teardown_debug();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mce_unregister_decode_chain(&i10nm_mce_dec);
 	skx_adxl_put();
 	skx_remove();

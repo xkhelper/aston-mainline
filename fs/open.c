@@ -193,10 +193,17 @@ long do_sys_ftruncate(unsigned int fd, loff_t length, int small)
 	if (length < 0)
 		return -EINVAL;
 	f = fdget(fd);
+<<<<<<< HEAD
 	if (!f.file)
 		return -EBADF;
 
 	error = do_ftruncate(f.file, length, small);
+=======
+	if (!fd_file(f))
+		return -EBADF;
+
+	error = do_ftruncate(fd_file(f), length, small);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	fdput(f);
 	return error;
@@ -252,6 +259,7 @@ int vfs_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
 	if (offset < 0 || len <= 0)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	/* Return error if mode is not supported */
 	if (mode & ~FALLOC_FL_SUPPORTED_MASK)
 		return -EOPNOTSUPP;
@@ -280,12 +288,45 @@ int vfs_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
 	if ((mode & FALLOC_FL_UNSHARE_RANGE) &&
 	    (mode & ~(FALLOC_FL_UNSHARE_RANGE | FALLOC_FL_KEEP_SIZE)))
 		return -EINVAL;
+=======
+	if (mode & ~(FALLOC_FL_MODE_MASK | FALLOC_FL_KEEP_SIZE))
+		return -EOPNOTSUPP;
+
+	/*
+	 * Modes are exclusive, even if that is not obvious from the encoding
+	 * as bit masks and the mix with the flag in the same namespace.
+	 *
+	 * To make things even more complicated, FALLOC_FL_ALLOCATE_RANGE is
+	 * encoded as no bit set.
+	 */
+	switch (mode & FALLOC_FL_MODE_MASK) {
+	case FALLOC_FL_ALLOCATE_RANGE:
+	case FALLOC_FL_UNSHARE_RANGE:
+	case FALLOC_FL_ZERO_RANGE:
+		break;
+	case FALLOC_FL_PUNCH_HOLE:
+		if (!(mode & FALLOC_FL_KEEP_SIZE))
+			return -EOPNOTSUPP;
+		break;
+	case FALLOC_FL_COLLAPSE_RANGE:
+	case FALLOC_FL_INSERT_RANGE:
+		if (mode & FALLOC_FL_KEEP_SIZE)
+			return -EOPNOTSUPP;
+		break;
+	default:
+		return -EOPNOTSUPP;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!(file->f_mode & FMODE_WRITE))
 		return -EBADF;
 
 	/*
+<<<<<<< HEAD
 	 * We can only allow pure fallocate on append only files
+=======
+	 * On append-only files only space preallocation is supported.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	if ((mode & ~FALLOC_FL_KEEP_SIZE) && IS_APPEND(inode))
 		return -EPERM;
@@ -353,8 +394,13 @@ int ksys_fallocate(int fd, int mode, loff_t offset, loff_t len)
 	struct fd f = fdget(fd);
 	int error = -EBADF;
 
+<<<<<<< HEAD
 	if (f.file) {
 		error = vfs_fallocate(f.file, mode, offset, len);
+=======
+	if (fd_file(f)) {
+		error = vfs_fallocate(fd_file(f), mode, offset, len);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fdput(f);
 	}
 	return error;
@@ -585,6 +631,7 @@ SYSCALL_DEFINE1(fchdir, unsigned int, fd)
 	int error;
 
 	error = -EBADF;
+<<<<<<< HEAD
 	if (!f.file)
 		goto out;
 
@@ -595,6 +642,18 @@ SYSCALL_DEFINE1(fchdir, unsigned int, fd)
 	error = file_permission(f.file, MAY_EXEC | MAY_CHDIR);
 	if (!error)
 		set_fs_pwd(current->fs, &f.file->f_path);
+=======
+	if (!fd_file(f))
+		goto out;
+
+	error = -ENOTDIR;
+	if (!d_can_lookup(fd_file(f)->f_path.dentry))
+		goto out_putf;
+
+	error = file_permission(fd_file(f), MAY_EXEC | MAY_CHDIR);
+	if (!error)
+		set_fs_pwd(current->fs, &fd_file(f)->f_path);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out_putf:
 	fdput(f);
 out:
@@ -675,8 +734,13 @@ SYSCALL_DEFINE2(fchmod, unsigned int, fd, umode_t, mode)
 	struct fd f = fdget(fd);
 	int err = -EBADF;
 
+<<<<<<< HEAD
 	if (f.file) {
 		err = vfs_fchmod(f.file, mode);
+=======
+	if (fd_file(f)) {
+		err = vfs_fchmod(fd_file(f), mode);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fdput(f);
 	}
 	return err;
@@ -869,8 +933,13 @@ int ksys_fchown(unsigned int fd, uid_t user, gid_t group)
 	struct fd f = fdget(fd);
 	int error = -EBADF;
 
+<<<<<<< HEAD
 	if (f.file) {
 		error = vfs_fchown(f.file, user, group);
+=======
+	if (fd_file(f)) {
+		error = vfs_fchown(fd_file(f), user, group);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fdput(f);
 	}
 	return error;
@@ -1458,6 +1527,11 @@ SYSCALL_DEFINE4(openat2, int, dfd, const char __user *, filename,
 
 	if (unlikely(usize < OPEN_HOW_SIZE_VER0))
 		return -EINVAL;
+<<<<<<< HEAD
+=======
+	if (unlikely(usize > PAGE_SIZE))
+		return -E2BIG;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = copy_struct_from_user(&tmp, sizeof(tmp), how, usize);
 	if (err)

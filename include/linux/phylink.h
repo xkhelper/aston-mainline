@@ -598,6 +598,11 @@ int phylink_fwnode_phy_connect(struct phylink *pl,
 			       const struct fwnode_handle *fwnode,
 			       u32 flags);
 void phylink_disconnect_phy(struct phylink *);
+<<<<<<< HEAD
+=======
+int phylink_set_fixed_link(struct phylink *,
+			   const struct phylink_link_state *);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void phylink_mac_change(struct phylink *, bool up);
 void phylink_pcs_change(struct phylink_pcs *, bool up);

@@ -341,7 +341,11 @@ static struct platform_driver imx8mq_pinctrl_driver = {
 	.driver = {
 		.name = "imx8mq-pinctrl",
 		.of_match_table = imx8mq_pinctrl_of_match,
+<<<<<<< HEAD
 		.pm = &imx_pinctrl_pm_ops,
+=======
+		.pm = pm_sleep_ptr(&imx_pinctrl_pm_ops),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.suppress_bind_attrs = true,
 	},
 	.probe = imx8mq_pinctrl_probe,

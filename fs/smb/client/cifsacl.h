@@ -9,8 +9,12 @@
 #ifndef _CIFSACL_H
 #define _CIFSACL_H
 
+<<<<<<< HEAD
 #define NUM_AUTHS (6)	/* number of authority fields */
 #define SID_MAX_SUB_AUTHORITIES (15) /* max number of sub authority fields */
+=======
+#include "../common/smbacl.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define READ_BIT        0x4
 #define WRITE_BIT       0x2
@@ -23,16 +27,20 @@
 #define UBITSHIFT	6
 #define GBITSHIFT	3
 
+<<<<<<< HEAD
 #define ACCESS_ALLOWED	0
 #define ACCESS_DENIED	1
 
 #define SIDOWNER 1
 #define SIDGROUP 2
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Security Descriptor length containing DACL with 3 ACEs (one each for
  * owner, group and world).
  */
+<<<<<<< HEAD
 #define DEFAULT_SEC_DESC_LEN (sizeof(struct cifs_ntsd) + \
 			      sizeof(struct cifs_acl) + \
 			      (sizeof(struct cifs_ace) * 4))
@@ -118,6 +126,11 @@ struct cifs_ace {
 	__le32 access_req;
 	struct cifs_sid sid; /* ie UUID of user or group who gets these perms */
 } __attribute__((packed));
+=======
+#define DEFAULT_SEC_DESC_LEN (sizeof(struct smb_ntsd) + \
+			      sizeof(struct smb_acl) + \
+			      (sizeof(struct smb_ace) * 4))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * The current SMB3 form of security descriptor is similar to what was used for
@@ -144,7 +157,11 @@ struct smb3_sd {
 #define ACL_CONTROL_SI	0x0800	/* SACL Auto-Inherited */
 #define ACL_CONTROL_DI	0x0400	/* DACL Auto-Inherited */
 #define ACL_CONTROL_SC	0x0200	/* SACL computed through inheritance */
+<<<<<<< HEAD
 #define ACL_CONTROL_DC	0x0100	/* DACL computed through inheritence */
+=======
+#define ACL_CONTROL_DC	0x0100	/* DACL computed through inheritance */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define ACL_CONTROL_SS	0x0080	/* Create server ACL */
 #define ACL_CONTROL_DT	0x0040	/* DACL provided by trusted source */
 #define ACL_CONTROL_SD	0x0020	/* SACL defaulted */
@@ -194,6 +211,10 @@ struct owner_group_sids {
  * Minimum security descriptor can be one without any SACL and DACL and can
  * consist of revision, type, and two sids of minimum size for owner and group
  */
+<<<<<<< HEAD
 #define MIN_SEC_DESC_LEN  (sizeof(struct cifs_ntsd) + (2 * MIN_SID_LEN))
+=======
+#define MIN_SEC_DESC_LEN  (sizeof(struct smb_ntsd) + (2 * MIN_SID_LEN))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* _CIFSACL_H */

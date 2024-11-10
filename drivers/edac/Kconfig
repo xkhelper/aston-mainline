@@ -311,6 +311,7 @@ config EDAC_CELL
 	  Cell Broadband Engine internal memory controller
 	  on platform without a hypervisor
 
+<<<<<<< HEAD
 config EDAC_PPC4XX
 	tristate "PPC4xx IBM DDR2 Memory Controller"
 	depends on 4xx
@@ -320,6 +321,8 @@ config EDAC_PPC4XX
 	  PowerPC 4xx embedded processors such as the 405EX[r],
 	  440SP, 440SPe, 460EX, 460GT and 460SX.
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config EDAC_AMD8131
 	tristate "AMD8131 HyperTransport PCI-X Tunnel"
 	depends on PCI && PPC_MAPLE

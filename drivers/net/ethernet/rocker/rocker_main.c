@@ -2575,7 +2575,12 @@ static int rocker_probe_port(struct rocker *rocker, unsigned int port_number)
 	netif_napi_add(dev, &rocker_port->napi_rx, rocker_port_poll_rx);
 	rocker_carrier_init(rocker_port);
 
+<<<<<<< HEAD
 	dev->features |= NETIF_F_NETNS_LOCAL | NETIF_F_SG;
+=======
+	dev->features |= NETIF_F_SG;
+	dev->netns_local = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* MTU range: 68 - 9000 */
 	dev->min_mtu = ROCKER_PORT_MIN_MTU;

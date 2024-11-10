@@ -1201,7 +1201,11 @@ trim_sgl:
 
 	if (!num_async) {
 		goto send_end;
+<<<<<<< HEAD
 	} else if (num_zc) {
+=======
+	} else if (num_zc || eor) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		int err;
 
 		/* Wait for pending encryptions to get completed */

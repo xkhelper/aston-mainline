@@ -293,7 +293,11 @@ __be32 fib_compute_spec_dst(struct sk_buff *skb)
 			.flowi4_iif = LOOPBACK_IFINDEX,
 			.flowi4_l3mdev = l3mdev_master_ifindex_rcu(dev),
 			.daddr = ip_hdr(skb)->saddr,
+<<<<<<< HEAD
 			.flowi4_tos = ip_hdr(skb)->tos & IPTOS_RT_MASK,
+=======
+			.flowi4_tos = ip_hdr(skb)->tos & INET_DSCP_MASK,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			.flowi4_scope = scope,
 			.flowi4_mark = vmark ? skb->mark : 0,
 		};
@@ -1343,7 +1347,11 @@ static void nl_fib_lookup(struct net *net, struct fib_result_nl *frn)
 	struct flowi4           fl4 = {
 		.flowi4_mark = frn->fl_mark,
 		.daddr = frn->fl_addr,
+<<<<<<< HEAD
 		.flowi4_tos = frn->fl_tos,
+=======
+		.flowi4_tos = frn->fl_tos & INET_DSCP_MASK,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.flowi4_scope = frn->fl_scope,
 	};
 	struct fib_table *tb;

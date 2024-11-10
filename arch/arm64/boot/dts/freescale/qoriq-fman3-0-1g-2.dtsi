@@ -26,6 +26,10 @@ fman@1a00000 {
 		fsl,fman-ports = <&fman0_rx_0x0a &fman0_tx_0x2a>;
 		ptp-timer = <&ptp_timer0>;
 		pcsphy-handle = <&pcsphy2>;
+<<<<<<< HEAD
+=======
+		pcs-handle = <&pcsphy2>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	mdio@e5000 {

@@ -304,7 +304,10 @@ static struct notifier_block sc1200wdt_notifier = {
 
 static const struct file_operations sc1200wdt_fops = {
 	.owner		= THIS_MODULE,
+<<<<<<< HEAD
 	.llseek		= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.write		= sc1200wdt_write,
 	.unlocked_ioctl = sc1200wdt_ioctl,
 	.compat_ioctl	= compat_ptr_ioctl,

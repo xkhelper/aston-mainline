@@ -380,7 +380,11 @@ static int prepare_metric(const struct metric_expr *mexp,
 			struct stats *stats;
 			double scale;
 
+<<<<<<< HEAD
 			switch (metric_events[i]->tool_event) {
+=======
+			switch (evsel__tool_event(metric_events[i])) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			case PERF_TOOL_DURATION_TIME:
 				stats = &walltime_nsecs_stats;
 				scale = 1e-9;

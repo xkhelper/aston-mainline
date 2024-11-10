@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
  *  BSD LICENSE
  *
@@ -40,6 +41,18 @@
 	#size-cells = <1>;
 	model = "BCM23550 SoC";
 	compatible = "brcm,bcm23550";
+=======
+// SPDX-License-Identifier: BSD-3-Clause
+/*
+ * Device tree for the BCM23550 SoC.
+ *
+ * Copyright (C) 2016 Broadcom
+ */
+
+#include "bcm2166x-common.dtsi"
+
+/ {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	interrupt-parent = <&gic>;
 
 	cpus {
@@ -80,6 +93,7 @@
 			clock-frequency = <1000000000>;
 		};
 	};
+<<<<<<< HEAD
 
 	/* Hub bus */
 	hub@34000000 {
@@ -254,6 +268,11 @@
 			status = "disabled";
 		};
 
+=======
+};
+
+&apps {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		cdc: cdc@1b0e000 {
 			compatible = "brcm,bcm23550-cdc";
 			reg = <0x01b0e000 0x78>;
@@ -267,6 +286,7 @@
 			reg = <0x01b21000 0x1000>,
 			      <0x01b22000 0x1000>;
 		};
+<<<<<<< HEAD
 	};
 
 	clocks {
@@ -410,4 +430,30 @@
 					     "sdio4_sleep";
 		};
 	};
+=======
+};
+
+&bsc1 {
+	compatible = "brcm,bcm23550-i2c", "brcm,kona-i2c";
+};
+
+&bsc2 {
+	compatible = "brcm,bcm23550-i2c", "brcm,kona-i2c";
+};
+
+&bsc3 {
+	compatible = "brcm,bcm23550-i2c", "brcm,kona-i2c";
+};
+
+&bsc4 {
+	compatible = "brcm,bcm23550-i2c", "brcm,kona-i2c";
+};
+
+&gpio {
+	compatible = "brcm,bcm23550-gpio", "brcm,kona-gpio";
+};
+
+&smc {
+	compatible = "brcm,bcm23550-smc", "brcm,kona-smc";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };

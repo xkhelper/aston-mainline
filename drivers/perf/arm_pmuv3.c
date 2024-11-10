@@ -452,6 +452,7 @@ static const struct attribute_group armv8_pmuv3_caps_attr_group = {
 };
 
 /*
+<<<<<<< HEAD
  * Perf Events' indices
  */
 #define	ARMV8_IDX_CYCLE_COUNTER	0
@@ -459,6 +460,8 @@ static const struct attribute_group armv8_pmuv3_caps_attr_group = {
 #define	ARMV8_IDX_CYCLE_COUNTER_USER	32
 
 /*
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * We unconditionally enable ARMv8.5-PMU long event counter support
  * (64-bit events) where supported. Indicate if this arm_pmu has long
  * event counter support.
@@ -489,12 +492,17 @@ static bool armv8pmu_event_is_chained(struct perf_event *event)
 	return !armv8pmu_event_has_user_read(event) &&
 	       armv8pmu_event_is_64bit(event) &&
 	       !armv8pmu_has_long_event(cpu_pmu) &&
+<<<<<<< HEAD
 	       (idx != ARMV8_IDX_CYCLE_COUNTER);
+=======
+	       (idx < ARMV8_PMU_MAX_GENERAL_COUNTERS);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
  * ARMv8 low level PMU access
  */
+<<<<<<< HEAD
 
 /*
  * Perf Event to low level counters mapping
@@ -502,6 +510,8 @@ static bool armv8pmu_event_is_chained(struct perf_event *event)
 #define	ARMV8_IDX_TO_COUNTER(x)	\
 	(((x) - ARMV8_IDX_COUNTER0) & ARMV8_PMU_COUNTER_MASK)
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static u64 armv8pmu_pmcr_read(void)
 {
 	return read_pmcr();
@@ -514,6 +524,7 @@ static void armv8pmu_pmcr_write(u64 val)
 	write_pmcr(val);
 }
 
+<<<<<<< HEAD
 static int armv8pmu_has_overflowed(u32 pmovsr)
 {
 	return pmovsr & ARMV8_PMU_OVERFLOWED_MASK;
@@ -522,13 +533,27 @@ static int armv8pmu_has_overflowed(u32 pmovsr)
 static int armv8pmu_counter_has_overflowed(u32 pmnc, int idx)
 {
 	return pmnc & BIT(ARMV8_IDX_TO_COUNTER(idx));
+=======
+static int armv8pmu_has_overflowed(u64 pmovsr)
+{
+	return !!(pmovsr & ARMV8_PMU_OVERFLOWED_MASK);
+}
+
+static int armv8pmu_counter_has_overflowed(u64 pmnc, int idx)
+{
+	return !!(pmnc & BIT(idx));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static u64 armv8pmu_read_evcntr(int idx)
 {
+<<<<<<< HEAD
 	u32 counter = ARMV8_IDX_TO_COUNTER(idx);
 
 	return read_pmevcntrn(counter);
+=======
+	return read_pmevcntrn(idx);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static u64 armv8pmu_read_hw_counter(struct perf_event *event)
@@ -557,7 +582,11 @@ static bool armv8pmu_event_needs_bias(struct perf_event *event)
 		return false;
 
 	if (armv8pmu_has_long_event(cpu_pmu) ||
+<<<<<<< HEAD
 	    idx == ARMV8_IDX_CYCLE_COUNTER)
+=======
+	    idx >= ARMV8_PMU_MAX_GENERAL_COUNTERS)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return true;
 
 	return false;
@@ -585,8 +614,15 @@ static u64 armv8pmu_read_counter(struct perf_event *event)
 	int idx = hwc->idx;
 	u64 value;
 
+<<<<<<< HEAD
 	if (idx == ARMV8_IDX_CYCLE_COUNTER)
 		value = read_pmccntr();
+=======
+	if (idx == ARMV8_PMU_CYCLE_IDX)
+		value = read_pmccntr();
+	else if (idx == ARMV8_PMU_INSTR_IDX)
+		value = read_pmicntr();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else
 		value = armv8pmu_read_hw_counter(event);
 
@@ -595,9 +631,13 @@ static u64 armv8pmu_read_counter(struct perf_event *event)
 
 static void armv8pmu_write_evcntr(int idx, u64 value)
 {
+<<<<<<< HEAD
 	u32 counter = ARMV8_IDX_TO_COUNTER(idx);
 
 	write_pmevcntrn(counter, value);
+=======
+	write_pmevcntrn(idx, value);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void armv8pmu_write_hw_counter(struct perf_event *event,
@@ -620,15 +660,25 @@ static void armv8pmu_write_counter(struct perf_event *event, u64 value)
 
 	value = armv8pmu_bias_long_counter(event, value);
 
+<<<<<<< HEAD
 	if (idx == ARMV8_IDX_CYCLE_COUNTER)
 		write_pmccntr(value);
+=======
+	if (idx == ARMV8_PMU_CYCLE_IDX)
+		write_pmccntr(value);
+	else if (idx == ARMV8_PMU_INSTR_IDX)
+		write_pmicntr(value);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else
 		armv8pmu_write_hw_counter(event, value);
 }
 
 static void armv8pmu_write_evtype(int idx, unsigned long val)
 {
+<<<<<<< HEAD
 	u32 counter = ARMV8_IDX_TO_COUNTER(idx);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long mask = ARMV8_PMU_EVTYPE_EVENT |
 			     ARMV8_PMU_INCLUDE_EL2 |
 			     ARMV8_PMU_EXCLUDE_EL0 |
@@ -638,7 +688,11 @@ static void armv8pmu_write_evtype(int idx, unsigned long val)
 		mask |= ARMV8_PMU_EVTYPE_TC | ARMV8_PMU_EVTYPE_TH;
 
 	val &= mask;
+<<<<<<< HEAD
 	write_pmevtypern(counter, val);
+=======
+	write_pmevtypern(idx, val);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void armv8pmu_write_event_type(struct perf_event *event)
@@ -658,24 +712,42 @@ static void armv8pmu_write_event_type(struct perf_event *event)
 		armv8pmu_write_evtype(idx - 1, hwc->config_base);
 		armv8pmu_write_evtype(idx, chain_evt);
 	} else {
+<<<<<<< HEAD
 		if (idx == ARMV8_IDX_CYCLE_COUNTER)
 			write_pmccfiltr(hwc->config_base);
+=======
+		if (idx == ARMV8_PMU_CYCLE_IDX)
+			write_pmccfiltr(hwc->config_base);
+		else if (idx == ARMV8_PMU_INSTR_IDX)
+			write_pmicfiltr(hwc->config_base);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		else
 			armv8pmu_write_evtype(idx, hwc->config_base);
 	}
 }
 
+<<<<<<< HEAD
 static u32 armv8pmu_event_cnten_mask(struct perf_event *event)
 {
 	int counter = ARMV8_IDX_TO_COUNTER(event->hw.idx);
 	u32 mask = BIT(counter);
+=======
+static u64 armv8pmu_event_cnten_mask(struct perf_event *event)
+{
+	int counter = event->hw.idx;
+	u64 mask = BIT(counter);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (armv8pmu_event_is_chained(event))
 		mask |= BIT(counter - 1);
 	return mask;
 }
 
+<<<<<<< HEAD
 static void armv8pmu_enable_counter(u32 mask)
+=======
+static void armv8pmu_enable_counter(u64 mask)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	/*
 	 * Make sure event configuration register writes are visible before we
@@ -688,7 +760,11 @@ static void armv8pmu_enable_counter(u32 mask)
 static void armv8pmu_enable_event_counter(struct perf_event *event)
 {
 	struct perf_event_attr *attr = &event->attr;
+<<<<<<< HEAD
 	u32 mask = armv8pmu_event_cnten_mask(event);
+=======
+	u64 mask = armv8pmu_event_cnten_mask(event);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	kvm_set_pmu_events(mask, attr);
 
@@ -697,7 +773,11 @@ static void armv8pmu_enable_event_counter(struct perf_event *event)
 		armv8pmu_enable_counter(mask);
 }
 
+<<<<<<< HEAD
 static void armv8pmu_disable_counter(u32 mask)
+=======
+static void armv8pmu_disable_counter(u64 mask)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	write_pmcntenclr(mask);
 	/*
@@ -710,7 +790,11 @@ static void armv8pmu_disable_counter(u32 mask)
 static void armv8pmu_disable_event_counter(struct perf_event *event)
 {
 	struct perf_event_attr *attr = &event->attr;
+<<<<<<< HEAD
 	u32 mask = armv8pmu_event_cnten_mask(event);
+=======
+	u64 mask = armv8pmu_event_cnten_mask(event);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	kvm_clr_pmu_events(mask);
 
@@ -719,18 +803,29 @@ static void armv8pmu_disable_event_counter(struct perf_event *event)
 		armv8pmu_disable_counter(mask);
 }
 
+<<<<<<< HEAD
 static void armv8pmu_enable_intens(u32 mask)
+=======
+static void armv8pmu_enable_intens(u64 mask)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	write_pmintenset(mask);
 }
 
 static void armv8pmu_enable_event_irq(struct perf_event *event)
 {
+<<<<<<< HEAD
 	u32 counter = ARMV8_IDX_TO_COUNTER(event->hw.idx);
 	armv8pmu_enable_intens(BIT(counter));
 }
 
 static void armv8pmu_disable_intens(u32 mask)
+=======
+	armv8pmu_enable_intens(BIT(event->hw.idx));
+}
+
+static void armv8pmu_disable_intens(u64 mask)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	write_pmintenclr(mask);
 	isb();
@@ -741,6 +836,7 @@ static void armv8pmu_disable_intens(u32 mask)
 
 static void armv8pmu_disable_event_irq(struct perf_event *event)
 {
+<<<<<<< HEAD
 	u32 counter = ARMV8_IDX_TO_COUNTER(event->hw.idx);
 	armv8pmu_disable_intens(BIT(counter));
 }
@@ -748,6 +844,14 @@ static void armv8pmu_disable_event_irq(struct perf_event *event)
 static u32 armv8pmu_getreset_flags(void)
 {
 	u32 value;
+=======
+	armv8pmu_disable_intens(BIT(event->hw.idx));
+}
+
+static u64 armv8pmu_getreset_flags(void)
+{
+	u64 value;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Read */
 	value = read_pmovsclr();
@@ -786,9 +890,18 @@ static void armv8pmu_enable_user_access(struct arm_pmu *cpu_pmu)
 	struct pmu_hw_events *cpuc = this_cpu_ptr(cpu_pmu->hw_events);
 
 	/* Clear any unused counters to avoid leaking their contents */
+<<<<<<< HEAD
 	for_each_clear_bit(i, cpuc->used_mask, cpu_pmu->num_events) {
 		if (i == ARMV8_IDX_CYCLE_COUNTER)
 			write_pmccntr(0);
+=======
+	for_each_andnot_bit(i, cpu_pmu->cntr_mask, cpuc->used_mask,
+			    ARMPMU_MAX_HWEVENTS) {
+		if (i == ARMV8_PMU_CYCLE_IDX)
+			write_pmccntr(0);
+		else if (i == ARMV8_PMU_INSTR_IDX)
+			write_pmicntr(0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		else
 			armv8pmu_write_evcntr(i, 0);
 	}
@@ -842,7 +955,11 @@ static void armv8pmu_stop(struct arm_pmu *cpu_pmu)
 
 static irqreturn_t armv8pmu_handle_irq(struct arm_pmu *cpu_pmu)
 {
+<<<<<<< HEAD
 	u32 pmovsr;
+=======
+	u64 pmovsr;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct perf_sample_data data;
 	struct pmu_hw_events *cpuc = this_cpu_ptr(cpu_pmu->hw_events);
 	struct pt_regs *regs;
@@ -869,7 +986,11 @@ static irqreturn_t armv8pmu_handle_irq(struct arm_pmu *cpu_pmu)
 	 * to prevent skews in group events.
 	 */
 	armv8pmu_stop(cpu_pmu);
+<<<<<<< HEAD
 	for (idx = 0; idx < cpu_pmu->num_events; ++idx) {
+=======
+	for_each_set_bit(idx, cpu_pmu->cntr_mask, ARMPMU_MAX_HWEVENTS) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct perf_event *event = cpuc->events[idx];
 		struct hw_perf_event *hwc;
 
@@ -908,7 +1029,11 @@ static int armv8pmu_get_single_idx(struct pmu_hw_events *cpuc,
 {
 	int idx;
 
+<<<<<<< HEAD
 	for (idx = ARMV8_IDX_COUNTER0; idx < cpu_pmu->num_events; idx++) {
+=======
+	for_each_set_bit(idx, cpu_pmu->cntr_mask, ARMV8_PMU_MAX_GENERAL_COUNTERS) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!test_and_set_bit(idx, cpuc->used_mask))
 			return idx;
 	}
@@ -924,7 +1049,13 @@ static int armv8pmu_get_chain_idx(struct pmu_hw_events *cpuc,
 	 * Chaining requires two consecutive event counters, where
 	 * the lower idx must be even.
 	 */
+<<<<<<< HEAD
 	for (idx = ARMV8_IDX_COUNTER0 + 1; idx < cpu_pmu->num_events; idx += 2) {
+=======
+	for_each_set_bit(idx, cpu_pmu->cntr_mask, ARMV8_PMU_MAX_GENERAL_COUNTERS) {
+		if (!(idx & 0x1))
+			continue;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!test_and_set_bit(idx, cpuc->used_mask)) {
 			/* Check if the preceding even counter is available */
 			if (!test_and_set_bit(idx - 1, cpuc->used_mask))
@@ -946,8 +1077,13 @@ static int armv8pmu_get_event_idx(struct pmu_hw_events *cpuc,
 	/* Always prefer to place a cycle counter into the cycle counter. */
 	if ((evtype == ARMV8_PMUV3_PERFCTR_CPU_CYCLES) &&
 	    !armv8pmu_event_get_threshold(&event->attr)) {
+<<<<<<< HEAD
 		if (!test_and_set_bit(ARMV8_IDX_CYCLE_COUNTER, cpuc->used_mask))
 			return ARMV8_IDX_CYCLE_COUNTER;
+=======
+		if (!test_and_set_bit(ARMV8_PMU_CYCLE_IDX, cpuc->used_mask))
+			return ARMV8_PMU_CYCLE_IDX;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		else if (armv8pmu_event_is_64bit(event) &&
 			   armv8pmu_event_want_user_access(event) &&
 			   !armv8pmu_has_long_event(cpu_pmu))
@@ -955,6 +1091,22 @@ static int armv8pmu_get_event_idx(struct pmu_hw_events *cpuc,
 	}
 
 	/*
+<<<<<<< HEAD
+=======
+	 * Always prefer to place a instruction counter into the instruction counter,
+	 * but don't expose the instruction counter to userspace access as userspace
+	 * may not know how to handle it.
+	 */
+	if ((evtype == ARMV8_PMUV3_PERFCTR_INST_RETIRED) &&
+	    !armv8pmu_event_get_threshold(&event->attr) &&
+	    test_bit(ARMV8_PMU_INSTR_IDX, cpu_pmu->cntr_mask) &&
+	    !armv8pmu_event_want_user_access(event)) {
+		if (!test_and_set_bit(ARMV8_PMU_INSTR_IDX, cpuc->used_mask))
+			return ARMV8_PMU_INSTR_IDX;
+	}
+
+	/*
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * Otherwise use events counters
 	 */
 	if (armv8pmu_event_is_chained(event))
@@ -978,6 +1130,7 @@ static int armv8pmu_user_event_idx(struct perf_event *event)
 	if (!sysctl_perf_user_access || !armv8pmu_event_has_user_read(event))
 		return 0;
 
+<<<<<<< HEAD
 	/*
 	 * We remap the cycle counter index to 32 to
 	 * match the offset applied to the rest of
@@ -987,6 +1140,9 @@ static int armv8pmu_user_event_idx(struct perf_event *event)
 		return ARMV8_IDX_CYCLE_COUNTER_USER;
 
 	return event->hw.idx;
+=======
+	return event->hw.idx + 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1061,6 +1217,7 @@ static int armv8pmu_set_event_filter(struct hw_perf_event *event,
 static void armv8pmu_reset(void *info)
 {
 	struct arm_pmu *cpu_pmu = (struct arm_pmu *)info;
+<<<<<<< HEAD
 	u64 pmcr;
 
 	/* The counter and interrupt enable registers are unknown at reset. */
@@ -1069,6 +1226,18 @@ static void armv8pmu_reset(void *info)
 
 	/* Clear the counters we flip at guest entry/exit */
 	kvm_clr_pmu_events(U32_MAX);
+=======
+	u64 pmcr, mask;
+
+	bitmap_to_arr64(&mask, cpu_pmu->cntr_mask, ARMPMU_MAX_HWEVENTS);
+
+	/* The counter and interrupt enable registers are unknown at reset. */
+	armv8pmu_disable_counter(mask);
+	armv8pmu_disable_intens(mask);
+
+	/* Clear the counters we flip at guest entry/exit */
+	kvm_clr_pmu_events(mask);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Initialize & Reset PMNC. Request overflow interrupt for
@@ -1089,14 +1258,24 @@ static int __armv8_pmuv3_map_event_id(struct arm_pmu *armpmu,
 	if (event->attr.type == PERF_TYPE_HARDWARE &&
 	    event->attr.config == PERF_COUNT_HW_BRANCH_INSTRUCTIONS) {
 
+<<<<<<< HEAD
 		if (test_bit(ARMV8_PMUV3_PERFCTR_PC_WRITE_RETIRED,
 			     armpmu->pmceid_bitmap))
 			return ARMV8_PMUV3_PERFCTR_PC_WRITE_RETIRED;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (test_bit(ARMV8_PMUV3_PERFCTR_BR_RETIRED,
 			     armpmu->pmceid_bitmap))
 			return ARMV8_PMUV3_PERFCTR_BR_RETIRED;
 
+<<<<<<< HEAD
+=======
+		if (test_bit(ARMV8_PMUV3_PERFCTR_PC_WRITE_RETIRED,
+			     armpmu->pmceid_bitmap))
+			return ARMV8_PMUV3_PERFCTR_PC_WRITE_RETIRED;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return HW_OP_UNSUPPORTED;
 	}
 
@@ -1211,10 +1390,22 @@ static void __armv8pmu_probe_pmu(void *info)
 	probe->present = true;
 
 	/* Read the nb of CNTx counters supported from PMNC */
+<<<<<<< HEAD
 	cpu_pmu->num_events = FIELD_GET(ARMV8_PMU_PMCR_N, armv8pmu_pmcr_read());
 
 	/* Add the CPU cycles counter */
 	cpu_pmu->num_events += 1;
+=======
+	bitmap_set(cpu_pmu->cntr_mask,
+		   0, FIELD_GET(ARMV8_PMU_PMCR_N, armv8pmu_pmcr_read()));
+
+	/* Add the CPU cycles counter */
+	set_bit(ARMV8_PMU_CYCLE_IDX, cpu_pmu->cntr_mask);
+
+	/* Add the CPU instructions counter */
+	if (pmuv3_has_icntr())
+		set_bit(ARMV8_PMU_INSTR_IDX, cpu_pmu->cntr_mask);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pmceid[0] = pmceid_raw[0] = read_pmceid0();
 	pmceid[1] = pmceid_raw[1] = read_pmceid1();

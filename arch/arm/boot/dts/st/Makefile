@@ -35,8 +35,16 @@ dtb-$(CONFIG_ARCH_STM32) += \
 	stm32mp151a-prtt1c.dtb \
 	stm32mp151a-prtt1s.dtb \
 	stm32mp151a-dhcor-testbench.dtb \
+<<<<<<< HEAD
 	stm32mp153c-dhcom-drc02.dtb \
 	stm32mp153c-dhcor-drc-compact.dtb \
+=======
+	stm32mp151c-mecio1r0.dtb \
+	stm32mp151c-mect1s.dtb \
+	stm32mp153c-dhcom-drc02.dtb \
+	stm32mp153c-dhcor-drc-compact.dtb \
+	stm32mp153c-mecio1r1.dtb \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	stm32mp157a-avenger96.dtb \
 	stm32mp157a-dhcor-avenger96.dtb \
 	stm32mp157a-dk1.dtb \

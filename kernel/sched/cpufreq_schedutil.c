@@ -197,8 +197,15 @@ unsigned long sugov_effective_cpu_perf(int cpu, unsigned long actual,
 
 static void sugov_get_util(struct sugov_cpu *sg_cpu, unsigned long boost)
 {
+<<<<<<< HEAD
 	unsigned long min, max, util = cpu_util_cfs_boost(sg_cpu->cpu);
 
+=======
+	unsigned long min, max, util = scx_cpuperf_target(sg_cpu->cpu);
+
+	if (!scx_switched_all())
+		util += cpu_util_cfs_boost(sg_cpu->cpu);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	util = effective_cpu_util(sg_cpu->cpu, util, &min, &max);
 	util = max(util, boost);
 	sg_cpu->bw_min = min;
@@ -325,16 +332,46 @@ static unsigned long sugov_iowait_apply(struct sugov_cpu *sg_cpu, u64 time,
 }
 
 #ifdef CONFIG_NO_HZ_COMMON
+<<<<<<< HEAD
 static bool sugov_cpu_is_busy(struct sugov_cpu *sg_cpu)
 {
 	unsigned long idle_calls = tick_nohz_get_idle_calls_cpu(sg_cpu->cpu);
 	bool ret = idle_calls == sg_cpu->saved_idle_calls;
+=======
+static bool sugov_hold_freq(struct sugov_cpu *sg_cpu)
+{
+	unsigned long idle_calls;
+	bool ret;
+
+	/*
+	 * The heuristics in this function is for the fair class. For SCX, the
+	 * performance target comes directly from the BPF scheduler. Let's just
+	 * follow it.
+	 */
+	if (scx_switched_all())
+		return false;
+
+	/* if capped by uclamp_max, always update to be in compliance */
+	if (uclamp_rq_is_capped(cpu_rq(sg_cpu->cpu)))
+		return false;
+
+	/*
+	 * Maintain the frequency if the CPU has not been idle recently, as
+	 * reduction is likely to be premature.
+	 */
+	idle_calls = tick_nohz_get_idle_calls_cpu(sg_cpu->cpu);
+	ret = idle_calls == sg_cpu->saved_idle_calls;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	sg_cpu->saved_idle_calls = idle_calls;
 	return ret;
 }
 #else
+<<<<<<< HEAD
 static inline bool sugov_cpu_is_busy(struct sugov_cpu *sg_cpu) { return false; }
+=======
+static inline bool sugov_hold_freq(struct sugov_cpu *sg_cpu) { return false; }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* CONFIG_NO_HZ_COMMON */
 
 /*
@@ -382,6 +419,7 @@ static void sugov_update_single_freq(struct update_util_data *hook, u64 time,
 		return;
 
 	next_f = get_next_freq(sg_policy, sg_cpu->util, max_cap);
+<<<<<<< HEAD
 	/*
 	 * Do not reduce the frequency if the CPU has not been idle
 	 * recently, as the reduction is likely to be premature then.
@@ -390,6 +428,10 @@ static void sugov_update_single_freq(struct update_util_data *hook, u64 time,
 	 */
 	if (!uclamp_rq_is_capped(cpu_rq(sg_cpu->cpu)) &&
 	    sugov_cpu_is_busy(sg_cpu) && next_f < sg_policy->next_freq &&
+=======
+
+	if (sugov_hold_freq(sg_cpu) && next_f < sg_policy->next_freq &&
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    !sg_policy->need_freq_update) {
 		next_f = sg_policy->next_freq;
 
@@ -436,6 +478,7 @@ static void sugov_update_single_perf(struct update_util_data *hook, u64 time,
 	if (!sugov_update_single_common(sg_cpu, time, max_cap, flags))
 		return;
 
+<<<<<<< HEAD
 	/*
 	 * Do not reduce the target performance level if the CPU has not been
 	 * idle recently, as the reduction is likely to be premature then.
@@ -444,6 +487,9 @@ static void sugov_update_single_perf(struct update_util_data *hook, u64 time,
 	 */
 	if (!uclamp_rq_is_capped(cpu_rq(sg_cpu->cpu)) &&
 	    sugov_cpu_is_busy(sg_cpu) && sg_cpu->util < prev_util)
+=======
+	if (sugov_hold_freq(sg_cpu) && sg_cpu->util < prev_util)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		sg_cpu->util = prev_util;
 
 	cpufreq_driver_adjust_perf(sg_cpu->cpu, sg_cpu->bw_min,
@@ -654,9 +700,15 @@ static int sugov_kthread_create(struct sugov_policy *sg_policy)
 		 * Fake (unused) bandwidth; workaround to "fix"
 		 * priority inheritance.
 		 */
+<<<<<<< HEAD
 		.sched_runtime	=  1000000,
 		.sched_deadline = 10000000,
 		.sched_period	= 10000000,
+=======
+		.sched_runtime	= NSEC_PER_MSEC,
+		.sched_deadline = 10 * NSEC_PER_MSEC,
+		.sched_period	= 10 * NSEC_PER_MSEC,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 	struct cpufreq_policy *policy = sg_policy->policy;
 	int ret;

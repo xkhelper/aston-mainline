@@ -128,7 +128,11 @@ static struct imx_usbmisc_data *usbmisc_get_init_data(struct device *dev)
 	 * In case the fsl,usbmisc property is not present this device doesn't
 	 * need usbmisc. Return NULL (which is no error here)
 	 */
+<<<<<<< HEAD
 	if (!of_get_property(np, "fsl,usbmisc", NULL))
+=======
+	if (!of_property_present(np, "fsl,usbmisc"))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return NULL;
 
 	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);

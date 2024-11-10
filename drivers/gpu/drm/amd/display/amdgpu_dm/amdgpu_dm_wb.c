@@ -114,6 +114,10 @@ static int amdgpu_dm_wb_prepare_job(struct drm_writeback_connector *wb_connector
 
 	domain = amdgpu_display_supported_domains(adev, rbo->flags);
 
+<<<<<<< HEAD
+=======
+	rbo->flags |= AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	r = amdgpu_bo_pin(rbo, domain);
 	if (unlikely(r != 0)) {
 		if (r != -ERESTARTSYS)

@@ -9,6 +9,10 @@
 #include <linux/netfilter/nf_conntrack_common.h>
 #include <linux/netfilter/nf_tables.h>
 #include <net/ip.h> /* for ipv4 options. */
+<<<<<<< HEAD
+=======
+#include <net/inet_dscp.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <net/netfilter/nf_tables.h>
 #include <net/netfilter/nf_tables_core.h>
 #include <net/netfilter/nf_conntrack_core.h>
@@ -235,7 +239,11 @@ static int nft_flow_route(const struct nft_pktinfo *pkt,
 		fl.u.ip4.saddr = ct->tuplehash[!dir].tuple.src.u3.ip;
 		fl.u.ip4.flowi4_oif = nft_in(pkt)->ifindex;
 		fl.u.ip4.flowi4_iif = this_dst->dev->ifindex;
+<<<<<<< HEAD
 		fl.u.ip4.flowi4_tos = RT_TOS(ip_hdr(pkt->skb)->tos);
+=======
+		fl.u.ip4.flowi4_tos = ip_hdr(pkt->skb)->tos & INET_DSCP_MASK;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fl.u.ip4.flowi4_mark = pkt->skb->mark;
 		fl.u.ip4.flowi4_flags = FLOWI_FLAG_ANYSRC;
 		break;
@@ -380,8 +388,12 @@ out:
 }
 
 static int nft_flow_offload_validate(const struct nft_ctx *ctx,
+<<<<<<< HEAD
 				     const struct nft_expr *expr,
 				     const struct nft_data **data)
+=======
+				     const struct nft_expr *expr)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int hook_mask = (1 << NF_INET_FORWARD);
 

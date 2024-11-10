@@ -778,7 +778,11 @@ static void ndev_init_debugfs(struct intel_ntb_dev *ndev)
 		ndev->debugfs_dir =
 			debugfs_create_dir(pci_name(ndev->ntb.pdev),
 					   debugfs_dir);
+<<<<<<< HEAD
 		if (!ndev->debugfs_dir)
+=======
+		if (IS_ERR(ndev->debugfs_dir))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ndev->debugfs_info = NULL;
 		else
 			ndev->debugfs_info =

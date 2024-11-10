@@ -83,7 +83,10 @@
 };
 
 &i2c1 {
+<<<<<<< HEAD
 	clock-frequency = <100000>;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pinctrl-names = "default", "gpio";
 	pinctrl-0 = <&pinctrl_i2c1>;
 	pinctrl-1 = <&pinctrl_i2c1_gpio>;

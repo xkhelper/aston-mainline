@@ -11,6 +11,10 @@
 #include <uapi/linux/uio.h>
 
 struct page;
+<<<<<<< HEAD
+=======
+struct folio_queue;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 typedef unsigned int __bitwise iov_iter_extraction_t;
 
@@ -25,6 +29,10 @@ enum iter_type {
 	ITER_IOVEC,
 	ITER_BVEC,
 	ITER_KVEC,
+<<<<<<< HEAD
+=======
+	ITER_FOLIOQ,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ITER_XARRAY,
 	ITER_DISCARD,
 };
@@ -66,6 +74,10 @@ struct iov_iter {
 				const struct iovec *__iov;
 				const struct kvec *kvec;
 				const struct bio_vec *bvec;
+<<<<<<< HEAD
+=======
+				const struct folio_queue *folioq;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				struct xarray *xarray;
 				void __user *ubuf;
 			};
@@ -74,6 +86,10 @@ struct iov_iter {
 	};
 	union {
 		unsigned long nr_segs;
+<<<<<<< HEAD
+=======
+		u8 folioq_slot;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		loff_t xarray_start;
 	};
 };
@@ -126,6 +142,14 @@ static inline bool iov_iter_is_discard(const struct iov_iter *i)
 	return iov_iter_type(i) == ITER_DISCARD;
 }
 
+<<<<<<< HEAD
+=======
+static inline bool iov_iter_is_folioq(const struct iov_iter *i)
+{
+	return iov_iter_type(i) == ITER_FOLIOQ;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline bool iov_iter_is_xarray(const struct iov_iter *i)
 {
 	return iov_iter_type(i) == ITER_XARRAY;
@@ -180,6 +204,15 @@ static inline size_t copy_folio_to_iter(struct folio *folio, size_t offset,
 	return copy_page_to_iter(&folio->page, offset, bytes, i);
 }
 
+<<<<<<< HEAD
+=======
+static inline size_t copy_folio_from_iter(struct folio *folio, size_t offset,
+					  size_t bytes, struct iov_iter *i)
+{
+	return copy_page_from_iter(&folio->page, offset, bytes, i);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline size_t copy_folio_from_iter_atomic(struct folio *folio,
 		size_t offset, size_t bytes, struct iov_iter *i)
 {
@@ -273,6 +306,12 @@ void iov_iter_kvec(struct iov_iter *i, unsigned int direction, const struct kvec
 void iov_iter_bvec(struct iov_iter *i, unsigned int direction, const struct bio_vec *bvec,
 			unsigned long nr_segs, size_t count);
 void iov_iter_discard(struct iov_iter *i, unsigned int direction, size_t count);
+<<<<<<< HEAD
+=======
+void iov_iter_folio_queue(struct iov_iter *i, unsigned int direction,
+			  const struct folio_queue *folioq,
+			  unsigned int first_slot, unsigned int offset, size_t count);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void iov_iter_xarray(struct iov_iter *i, unsigned int direction, struct xarray *xarray,
 		     loff_t start, size_t count);
 ssize_t iov_iter_get_pages2(struct iov_iter *i, struct page **pages,

@@ -648,6 +648,11 @@
 };
 
 &tsadc {
+<<<<<<< HEAD
+=======
+	rockchip,hw-tshut-mode = <1>;
+	rockchip,hw-tshut-polarity = <0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	status = "okay";
 };
 

@@ -6,6 +6,11 @@
 #ifndef _XE_GT_H_
 #define _XE_GT_H_
 
+<<<<<<< HEAD
+=======
+#include <linux/fault-inject.h>
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <drm/drm_util.h>
 
 #include "xe_device.h"
@@ -19,19 +24,25 @@
 
 #define CCS_MASK(gt) (((gt)->info.engine_mask & XE_HW_ENGINE_CCS_MASK) >> XE_HW_ENGINE_CCS0)
 
+<<<<<<< HEAD
 #ifdef CONFIG_FAULT_INJECTION
 #include <linux/fault-inject.h> /* XXX: fault-inject.h is broken */
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern struct fault_attr gt_reset_failure;
 static inline bool xe_fault_inject_gt_reset(void)
 {
 	return should_fail(&gt_reset_failure, 1);
 }
+<<<<<<< HEAD
 #else
 static inline bool xe_fault_inject_gt_reset(void)
 {
 	return false;
 }
 #endif
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct xe_gt *xe_gt_alloc(struct xe_tile *tile);
 int xe_gt_init_hwconfig(struct xe_gt *gt);

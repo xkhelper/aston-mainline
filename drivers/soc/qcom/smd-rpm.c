@@ -196,9 +196,12 @@ static int qcom_smd_rpm_probe(struct rpmsg_device *rpdev)
 {
 	struct qcom_smd_rpm *rpm;
 
+<<<<<<< HEAD
 	if (!rpdev->dev.of_node)
 		return -EINVAL;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rpm = devm_kzalloc(&rpdev->dev, sizeof(*rpm), GFP_KERNEL);
 	if (!rpm)
 		return -ENOMEM;
@@ -218,18 +221,57 @@ static void qcom_smd_rpm_remove(struct rpmsg_device *rpdev)
 	of_platform_depopulate(&rpdev->dev);
 }
 
+<<<<<<< HEAD
 static const struct rpmsg_device_id qcom_smd_rpm_id_table[] = {
 	{ .name = "rpm_requests", },
 	{ /* sentinel */ }
 };
 MODULE_DEVICE_TABLE(rpmsg, qcom_smd_rpm_id_table);
+=======
+static const struct of_device_id qcom_smd_rpm_of_match[] = {
+	{ .compatible = "qcom,glink-smd-rpm" },
+	{ .compatible = "qcom,smd-rpm" },
+	/*
+	 * Don't add any more compatibles to the list, two previous entryes
+	 * should match all defined devices.
+	 */
+	{ .compatible = "qcom,rpm-apq8084" },
+	{ .compatible = "qcom,rpm-ipq6018" },
+	{ .compatible = "qcom,rpm-ipq9574" },
+	{ .compatible = "qcom,rpm-msm8226" },
+	{ .compatible = "qcom,rpm-msm8909" },
+	{ .compatible = "qcom,rpm-msm8916" },
+	{ .compatible = "qcom,rpm-msm8936" },
+	{ .compatible = "qcom,rpm-msm8953" },
+	{ .compatible = "qcom,rpm-msm8974" },
+	{ .compatible = "qcom,rpm-msm8976" },
+	{ .compatible = "qcom,rpm-msm8994" },
+	{ .compatible = "qcom,rpm-msm8996" },
+	{ .compatible = "qcom,rpm-msm8998" },
+	{ .compatible = "qcom,rpm-sdm660" },
+	{ .compatible = "qcom,rpm-sm6115" },
+	{ .compatible = "qcom,rpm-sm6125" },
+	{ .compatible = "qcom,rpm-sm6375" },
+	{ .compatible = "qcom,rpm-qcm2290" },
+	{ .compatible = "qcom,rpm-qcs404" },
+	{}
+};
+MODULE_DEVICE_TABLE(of, qcom_smd_rpm_of_match);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct rpmsg_driver qcom_smd_rpm_driver = {
 	.probe = qcom_smd_rpm_probe,
 	.remove = qcom_smd_rpm_remove,
 	.callback = qcom_smd_rpm_callback,
+<<<<<<< HEAD
 	.id_table = qcom_smd_rpm_id_table,
 	.drv.name = "qcom_smd_rpm",
+=======
+	.drv  = {
+		.name  = "qcom_smd_rpm",
+		.of_match_table = qcom_smd_rpm_of_match,
+	},
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int __init qcom_smd_rpm_init(void)

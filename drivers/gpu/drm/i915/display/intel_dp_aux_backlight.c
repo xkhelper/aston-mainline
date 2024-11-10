@@ -109,7 +109,11 @@ static bool is_intel_tcon_cap(const u8 tcon_cap[4])
 static bool
 intel_dp_aux_supports_hdr_backlight(struct intel_connector *connector)
 {
+<<<<<<< HEAD
 	struct drm_i915_private *i915 = to_i915(connector->base.dev);
+=======
+	struct intel_display *display = to_intel_display(connector);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_dp *intel_dp = enc_to_intel_dp(connector->encoder);
 	struct drm_dp_aux *aux = &intel_dp->aux;
 	struct intel_panel *panel = &connector->panel;
@@ -122,7 +126,12 @@ intel_dp_aux_supports_hdr_backlight(struct intel_connector *connector)
 	if (ret != sizeof(tcon_cap))
 		return false;
 
+<<<<<<< HEAD
 	drm_dbg_kms(&i915->drm, "[CONNECTOR:%d:%s] Detected %s HDR backlight interface version %d\n",
+=======
+	drm_dbg_kms(display->drm,
+		    "[CONNECTOR:%d:%s] Detected %s HDR backlight interface version %d\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    connector->base.base.id, connector->base.name,
 		    is_intel_tcon_cap(tcon_cap) ? "Intel" : "unsupported", tcon_cap[0]);
 
@@ -141,10 +150,17 @@ intel_dp_aux_supports_hdr_backlight(struct intel_connector *connector)
 	 * HDR static metadata we need to start maintaining table of
 	 * ranges for such panels.
 	 */
+<<<<<<< HEAD
 	if (i915->display.params.enable_dpcd_backlight != INTEL_DP_AUX_BACKLIGHT_FORCE_INTEL &&
 	    !(connector->base.hdr_sink_metadata.hdmi_type1.metadata_type &
 	      BIT(HDMI_STATIC_METADATA_TYPE1))) {
 		drm_info(&i915->drm,
+=======
+	if (display->params.enable_dpcd_backlight != INTEL_DP_AUX_BACKLIGHT_FORCE_INTEL &&
+	    !(connector->base.hdr_sink_metadata.hdmi_type1.metadata_type &
+	      BIT(HDMI_STATIC_METADATA_TYPE1))) {
+		drm_info(display->drm,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			 "[CONNECTOR:%d:%s] Panel is missing HDR static metadata. Possible support for Intel HDR backlight interface is not used. If your backlight controls don't work try booting with i915.enable_dpcd_backlight=%d. needs this, please file a _new_ bug report on drm/i915, see " FDO_BUG_URL " for details.\n",
 			 connector->base.base.id, connector->base.name,
 			 INTEL_DP_AUX_BACKLIGHT_FORCE_INTEL);
@@ -170,14 +186,23 @@ intel_dp_aux_supports_hdr_backlight(struct intel_connector *connector)
 static u32
 intel_dp_aux_hdr_get_backlight(struct intel_connector *connector, enum pipe pipe)
 {
+<<<<<<< HEAD
 	struct drm_i915_private *i915 = to_i915(connector->base.dev);
+=======
+	struct intel_display *display = to_intel_display(connector);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_panel *panel = &connector->panel;
 	struct intel_dp *intel_dp = enc_to_intel_dp(connector->encoder);
 	u8 tmp;
 	u8 buf[2] = {};
 
 	if (drm_dp_dpcd_readb(&intel_dp->aux, INTEL_EDP_HDR_GETSET_CTRL_PARAMS, &tmp) != 1) {
+<<<<<<< HEAD
 		drm_err(&i915->drm, "[CONNECTOR:%d:%s] Failed to read current backlight mode from DPCD\n",
+=======
+		drm_err(display->drm,
+			"[CONNECTOR:%d:%s] Failed to read current backlight mode from DPCD\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			connector->base.base.id, connector->base.name);
 		return 0;
 	}
@@ -195,7 +220,12 @@ intel_dp_aux_hdr_get_backlight(struct intel_connector *connector, enum pipe pipe
 
 	if (drm_dp_dpcd_read(&intel_dp->aux, INTEL_EDP_BRIGHTNESS_NITS_LSB, buf,
 			     sizeof(buf)) != sizeof(buf)) {
+<<<<<<< HEAD
 		drm_err(&i915->drm, "[CONNECTOR:%d:%s] Failed to read brightness from DPCD\n",
+=======
+		drm_err(display->drm,
+			"[CONNECTOR:%d:%s] Failed to read brightness from DPCD\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			connector->base.base.id, connector->base.name);
 		return 0;
 	}
@@ -253,8 +283,13 @@ static void
 intel_dp_aux_write_content_luminance(struct intel_connector *connector,
 				     struct hdr_output_metadata *hdr_metadata)
 {
+<<<<<<< HEAD
 	struct intel_dp *intel_dp = enc_to_intel_dp(connector->encoder);
 	struct drm_i915_private *i915 = to_i915(connector->base.dev);
+=======
+	struct intel_display *display = to_intel_display(connector);
+	struct intel_dp *intel_dp = enc_to_intel_dp(connector->encoder);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 	u8 buf[4];
 
@@ -270,7 +305,11 @@ intel_dp_aux_write_content_luminance(struct intel_connector *connector,
 				INTEL_EDP_HDR_CONTENT_LUMINANCE,
 				buf, sizeof(buf));
 	if (ret < 0)
+<<<<<<< HEAD
 		drm_dbg_kms(&i915->drm,
+=======
+		drm_dbg_kms(display->drm,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    "Content Luminance DPCD reg write failed, err:-%d\n",
 			    ret);
 }
@@ -280,7 +319,11 @@ intel_dp_aux_fill_hdr_tcon_params(const struct drm_connector_state *conn_state, 
 {
 	struct intel_connector *connector = to_intel_connector(conn_state->connector);
 	struct intel_panel *panel = &connector->panel;
+<<<<<<< HEAD
 	struct drm_i915_private *i915 = to_i915(connector->base.dev);
+=======
+	struct intel_display *display = to_intel_display(connector);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * According to spec segmented backlight needs to be set whenever panel is in
@@ -291,7 +334,11 @@ intel_dp_aux_fill_hdr_tcon_params(const struct drm_connector_state *conn_state, 
 		*ctrl |= INTEL_EDP_HDR_TCON_2084_DECODE_ENABLE;
 	}
 
+<<<<<<< HEAD
 	if (DISPLAY_VER(i915) < 11)
+=======
+	if (DISPLAY_VER(display) < 11)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		*ctrl &= ~INTEL_EDP_HDR_TCON_TONE_MAPPING_ENABLE;
 
 	if (panel->backlight.edp.intel_cap.supports_2020_gamut &&
@@ -311,9 +358,15 @@ static void
 intel_dp_aux_hdr_enable_backlight(const struct intel_crtc_state *crtc_state,
 				  const struct drm_connector_state *conn_state, u32 level)
 {
+<<<<<<< HEAD
 	struct intel_connector *connector = to_intel_connector(conn_state->connector);
 	struct intel_panel *panel = &connector->panel;
 	struct drm_i915_private *i915 = to_i915(connector->base.dev);
+=======
+	struct intel_display *display = to_intel_display(crtc_state);
+	struct intel_connector *connector = to_intel_connector(conn_state->connector);
+	struct intel_panel *panel = &connector->panel;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_dp *intel_dp = enc_to_intel_dp(connector->encoder);
 	struct hdr_output_metadata *hdr_metadata;
 	int ret;
@@ -323,7 +376,12 @@ intel_dp_aux_hdr_enable_backlight(const struct intel_crtc_state *crtc_state,
 
 	ret = drm_dp_dpcd_readb(&intel_dp->aux, INTEL_EDP_HDR_GETSET_CTRL_PARAMS, &old_ctrl);
 	if (ret != 1) {
+<<<<<<< HEAD
 		drm_err(&i915->drm, "[CONNECTOR:%d:%s] Failed to read current backlight control mode: %d\n",
+=======
+		drm_err(display->drm,
+			"[CONNECTOR:%d:%s] Failed to read current backlight control mode: %d\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			connector->base.base.id, connector->base.name, ret);
 		return;
 	}
@@ -346,7 +404,12 @@ intel_dp_aux_hdr_enable_backlight(const struct intel_crtc_state *crtc_state,
 
 	if (ctrl != old_ctrl &&
 	    drm_dp_dpcd_writeb(&intel_dp->aux, INTEL_EDP_HDR_GETSET_CTRL_PARAMS, ctrl) != 1)
+<<<<<<< HEAD
 		drm_err(&i915->drm, "[CONNECTOR:%d:%s] Failed to configure DPCD brightness controls\n",
+=======
+		drm_err(display->drm,
+			"[CONNECTOR:%d:%s] Failed to configure DPCD brightness controls\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			connector->base.base.id, connector->base.name);
 
 	if (intel_dp_in_hdr_mode(conn_state)) {
@@ -377,7 +440,11 @@ static const char *dpcd_vs_pwm_str(bool aux)
 static void
 intel_dp_aux_write_panel_luminance_override(struct intel_connector *connector)
 {
+<<<<<<< HEAD
 	struct drm_i915_private *i915 = to_i915(connector->base.dev);
+=======
+	struct intel_display *display = to_intel_display(connector);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_panel *panel = &connector->panel;
 	struct intel_dp *intel_dp = enc_to_intel_dp(connector->encoder);
 	int ret;
@@ -392,7 +459,11 @@ intel_dp_aux_write_panel_luminance_override(struct intel_connector *connector)
 				INTEL_EDP_HDR_PANEL_LUMINANCE_OVERRIDE,
 				buf, sizeof(buf));
 	if (ret < 0)
+<<<<<<< HEAD
 		drm_dbg_kms(&i915->drm,
+=======
+		drm_dbg_kms(display->drm,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    "Panel Luminance DPCD reg write failed, err:-%d\n",
 			    ret);
 }
@@ -400,20 +471,33 @@ intel_dp_aux_write_panel_luminance_override(struct intel_connector *connector)
 static int
 intel_dp_aux_hdr_setup_backlight(struct intel_connector *connector, enum pipe pipe)
 {
+<<<<<<< HEAD
 	struct drm_i915_private *i915 = to_i915(connector->base.dev);
+=======
+	struct intel_display *display = to_intel_display(connector);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_panel *panel = &connector->panel;
 	struct drm_luminance_range_info *luminance_range =
 		&connector->base.display_info.luminance_range;
 	int ret;
 
+<<<<<<< HEAD
 	drm_dbg_kms(&i915->drm, "[CONNECTOR:%d:%s] SDR backlight is controlled through %s\n",
+=======
+	drm_dbg_kms(display->drm,
+		    "[CONNECTOR:%d:%s] SDR backlight is controlled through %s\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    connector->base.base.id, connector->base.name,
 		    dpcd_vs_pwm_str(panel->backlight.edp.intel_cap.sdr_uses_aux));
 
 	if (!panel->backlight.edp.intel_cap.sdr_uses_aux) {
 		ret = panel->backlight.pwm_funcs->setup(connector, pipe);
 		if (ret < 0) {
+<<<<<<< HEAD
 			drm_err(&i915->drm,
+=======
+			drm_err(display->drm,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				"[CONNECTOR:%d:%s] Failed to setup SDR backlight controls through PWM: %d\n",
 				connector->base.base.id, connector->base.name, ret);
 			return ret;
@@ -430,7 +514,12 @@ intel_dp_aux_hdr_setup_backlight(struct intel_connector *connector, enum pipe pi
 
 	intel_dp_aux_write_panel_luminance_override(connector);
 
+<<<<<<< HEAD
 	drm_dbg_kms(&i915->drm, "[CONNECTOR:%d:%s] Using AUX HDR interface for backlight control (range %d..%d)\n",
+=======
+	drm_dbg_kms(display->drm,
+		    "[CONNECTOR:%d:%s] Using AUX HDR interface for backlight control (range %d..%d)\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    connector->base.base.id, connector->base.name,
 		    panel->backlight.min, panel->backlight.max);
 
@@ -501,9 +590,15 @@ static void intel_dp_aux_vesa_disable_backlight(const struct drm_connector_state
 
 static int intel_dp_aux_vesa_setup_backlight(struct intel_connector *connector, enum pipe pipe)
 {
+<<<<<<< HEAD
 	struct intel_dp *intel_dp = intel_attached_dp(connector);
 	struct intel_panel *panel = &connector->panel;
 	struct drm_i915_private *i915 = dp_to_i915(intel_dp);
+=======
+	struct intel_display *display = to_intel_display(connector);
+	struct intel_dp *intel_dp = intel_attached_dp(connector);
+	struct intel_panel *panel = &connector->panel;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u16 current_level;
 	u8 current_mode;
 	int ret;
@@ -514,17 +609,30 @@ static int intel_dp_aux_vesa_setup_backlight(struct intel_connector *connector, 
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	drm_dbg_kms(&i915->drm, "[CONNECTOR:%d:%s] AUX VESA backlight enable is controlled through %s\n",
 		    connector->base.base.id, connector->base.name,
 		    dpcd_vs_pwm_str(panel->backlight.edp.vesa.info.aux_enable));
 	drm_dbg_kms(&i915->drm, "[CONNECTOR:%d:%s] AUX VESA backlight level is controlled through %s\n",
+=======
+	drm_dbg_kms(display->drm,
+		    "[CONNECTOR:%d:%s] AUX VESA backlight enable is controlled through %s\n",
+		    connector->base.base.id, connector->base.name,
+		    dpcd_vs_pwm_str(panel->backlight.edp.vesa.info.aux_enable));
+	drm_dbg_kms(display->drm,
+		    "[CONNECTOR:%d:%s] AUX VESA backlight level is controlled through %s\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    connector->base.base.id, connector->base.name,
 		    dpcd_vs_pwm_str(panel->backlight.edp.vesa.info.aux_set));
 
 	if (!panel->backlight.edp.vesa.info.aux_set || !panel->backlight.edp.vesa.info.aux_enable) {
 		ret = panel->backlight.pwm_funcs->setup(connector, pipe);
 		if (ret < 0) {
+<<<<<<< HEAD
 			drm_err(&i915->drm,
+=======
+			drm_err(display->drm,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				"[CONNECTOR:%d:%s] Failed to setup PWM backlight controls for eDP backlight: %d\n",
 				connector->base.base.id, connector->base.name, ret);
 			return ret;
@@ -553,7 +661,12 @@ static int intel_dp_aux_vesa_setup_backlight(struct intel_connector *connector, 
 		}
 	}
 
+<<<<<<< HEAD
 	drm_dbg_kms(&i915->drm, "[CONNECTOR:%d:%s] Using AUX VESA interface for backlight control\n",
+=======
+	drm_dbg_kms(display->drm,
+		    "[CONNECTOR:%d:%s] Using AUX VESA interface for backlight control\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    connector->base.base.id, connector->base.name);
 
 	return 0;
@@ -562,11 +675,20 @@ static int intel_dp_aux_vesa_setup_backlight(struct intel_connector *connector, 
 static bool
 intel_dp_aux_supports_vesa_backlight(struct intel_connector *connector)
 {
+<<<<<<< HEAD
 	struct intel_dp *intel_dp = intel_attached_dp(connector);
 	struct drm_i915_private *i915 = dp_to_i915(intel_dp);
 
 	if (drm_edp_backlight_supported(intel_dp->edp_dpcd)) {
 		drm_dbg_kms(&i915->drm, "[CONNECTOR:%d:%s] AUX Backlight Control Supported!\n",
+=======
+	struct intel_display *display = to_intel_display(connector);
+	struct intel_dp *intel_dp = intel_attached_dp(connector);
+
+	if (drm_edp_backlight_supported(intel_dp->edp_dpcd)) {
+		drm_dbg_kms(display->drm,
+			    "[CONNECTOR:%d:%s] AUX Backlight Control Supported!\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    connector->base.base.id, connector->base.name);
 		return true;
 	}
@@ -591,16 +713,26 @@ static const struct intel_panel_bl_funcs intel_dp_vesa_bl_funcs = {
 
 int intel_dp_aux_init_backlight_funcs(struct intel_connector *connector)
 {
+<<<<<<< HEAD
 	struct drm_device *dev = connector->base.dev;
 	struct intel_panel *panel = &connector->panel;
 	struct intel_dp *intel_dp = enc_to_intel_dp(connector->encoder);
 	struct drm_i915_private *i915 = dp_to_i915(intel_dp);
+=======
+	struct intel_display *display = to_intel_display(connector);
+	struct drm_device *dev = connector->base.dev;
+	struct intel_panel *panel = &connector->panel;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool try_intel_interface = false, try_vesa_interface = false;
 
 	/* Check the VBT and user's module parameters to figure out which
 	 * interfaces to probe
 	 */
+<<<<<<< HEAD
 	switch (i915->display.params.enable_dpcd_backlight) {
+=======
+	switch (display->params.enable_dpcd_backlight) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case INTEL_DP_AUX_BACKLIGHT_OFF:
 		return -ENODEV;
 	case INTEL_DP_AUX_BACKLIGHT_AUTO:

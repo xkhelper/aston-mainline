@@ -297,10 +297,13 @@ struct drbd_epoch {
 	unsigned long flags;
 };
 
+<<<<<<< HEAD
 /* Prototype declaration of function defined in drbd_receiver.c */
 int drbdd_init(struct drbd_thread *);
 int drbd_asender(struct drbd_thread *);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* drbd_epoch flag bits */
 enum {
 	DE_HAVE_BARRIER_NUMBER,
@@ -864,7 +867,10 @@ struct drbd_device {
 	struct list_head read_ee;   /* [RS]P_DATA_REQUEST being read */
 	struct list_head net_ee;    /* zero-copy network send in progress */
 
+<<<<<<< HEAD
 	int next_barrier_nr;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct list_head resync_reads;
 	atomic_t pp_in_use;		/* allocated from page pool */
 	atomic_t pp_in_use_by_net;	/* sendpage()d, still referenced by tcp */
@@ -1369,7 +1375,10 @@ extern struct bio_set drbd_io_bio_set;
 
 extern struct mutex resources_mutex;
 
+<<<<<<< HEAD
 extern int conn_lowest_minor(struct drbd_connection *connection);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern enum drbd_ret_code drbd_create_device(struct drbd_config_context *adm_ctx, unsigned int minor);
 extern void drbd_destroy_device(struct kref *kref);
 extern void drbd_delete_device(struct drbd_device *device);
@@ -1390,9 +1399,12 @@ extern void conn_free_crypto(struct drbd_connection *connection);
 extern void do_submit(struct work_struct *ws);
 extern void __drbd_make_request(struct drbd_device *, struct bio *);
 void drbd_submit_bio(struct bio *bio);
+<<<<<<< HEAD
 extern int drbd_read_remote(struct drbd_device *device, struct drbd_request *req);
 extern int is_valid_ar_handle(struct drbd_request *, sector_t);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* drbd_nl.c */
 
@@ -1474,7 +1486,10 @@ extern int w_resync_timer(struct drbd_work *, int);
 extern int w_send_write_hint(struct drbd_work *, int);
 extern int w_send_dblock(struct drbd_work *, int);
 extern int w_send_read_req(struct drbd_work *, int);
+<<<<<<< HEAD
 extern int w_e_reissue(struct drbd_work *, int);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern int w_restart_disk_io(struct drbd_work *, int);
 extern int w_send_out_of_sync(struct drbd_work *, int);
 
@@ -1488,7 +1503,10 @@ extern int drbd_issue_discard_or_zero_out(struct drbd_device *device,
 		sector_t start, unsigned int nr_sectors, int flags);
 extern int drbd_receiver(struct drbd_thread *thi);
 extern int drbd_ack_receiver(struct drbd_thread *thi);
+<<<<<<< HEAD
 extern void drbd_send_ping_wf(struct work_struct *ws);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void drbd_send_acks_wf(struct work_struct *ws);
 extern bool drbd_rs_c_min_rate_throttle(struct drbd_device *device);
 extern bool drbd_rs_should_slow_down(struct drbd_peer_device *peer_device, sector_t sector,
@@ -1504,7 +1522,10 @@ extern void __drbd_free_peer_req(struct drbd_device *, struct drbd_peer_request 
 #define drbd_free_peer_req(m,e) __drbd_free_peer_req(m, e, 0)
 #define drbd_free_net_peer_req(m,e) __drbd_free_peer_req(m, e, 1)
 extern struct page *drbd_alloc_pages(struct drbd_peer_device *, unsigned int, bool);
+<<<<<<< HEAD
 extern void drbd_set_recv_tcq(struct drbd_device *device, int tcq_enabled);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void _drbd_clear_done_ee(struct drbd_device *device, struct list_head *to_be_freed);
 extern int drbd_connected(struct drbd_peer_device *);
 

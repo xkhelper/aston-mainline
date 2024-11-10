@@ -179,7 +179,11 @@
 })
 
 /* startup code, note that it's called __start on MIPS */
+<<<<<<< HEAD
 void __attribute__((weak, noreturn, optimize("Os", "omit-frame-pointer"))) __no_stack_protector __start(void)
+=======
+void __attribute__((weak, noreturn)) __nolibc_entrypoint __no_stack_protector __start(void)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	__asm__ volatile (
 		".set push\n"
@@ -194,11 +198,21 @@ void __attribute__((weak, noreturn, optimize("Os", "omit-frame-pointer"))) __no_
 		"li    $t0, -8\n"
 		"and   $sp, $sp, $t0\n"  /* $sp must be 8-byte aligned                     */
 		"addiu $sp, $sp, -16\n"  /* the callee expects to save a0..a3 there        */
+<<<<<<< HEAD
 		"jal   _start_c\n"       /* transfer to c runtime                          */
 		" nop\n"                 /* delayed slot                                   */
 		".set pop\n"
 	);
 	__builtin_unreachable();
+=======
+		"lui $t9, %hi(_start_c)\n" /* ABI requires current function address in $t9 */
+		"ori $t9, %lo(_start_c)\n"
+		"jalr $t9\n"             /* transfer to c runtime                          */
+		" nop\n"                 /* delayed slot                                   */
+		".set pop\n"
+	);
+	__nolibc_entrypoint_epilogue();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #endif /* _NOLIBC_ARCH_MIPS_H */

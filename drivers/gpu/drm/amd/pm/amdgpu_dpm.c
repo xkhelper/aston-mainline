@@ -168,7 +168,15 @@ int amdgpu_dpm_set_mp1_state(struct amdgpu_device *adev,
 	int ret = 0;
 	const struct amd_pm_funcs *pp_funcs = adev->powerplay.pp_funcs;
 
+<<<<<<< HEAD
 	if (pp_funcs && pp_funcs->set_mp1_state) {
+=======
+	if (mp1_state == PP_MP1_STATE_FLR) {
+		/* VF lost access to SMU */
+		if (amdgpu_sriov_vf(adev))
+			adev->pm.dpm_enabled = false;
+	} else if (pp_funcs && pp_funcs->set_mp1_state) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mutex_lock(&adev->pm.mutex);
 
 		ret = pp_funcs->set_mp1_state(

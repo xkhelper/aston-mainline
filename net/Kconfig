@@ -66,6 +66,15 @@ config SKB_DECRYPTED
 config SKB_EXTENSIONS
 	bool
 
+<<<<<<< HEAD
+=======
+config NET_DEVMEM
+	def_bool y
+	depends on DMA_SHARED_BUFFER
+	depends on GENERIC_ALLOCATOR
+	depends on PAGE_POOL
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 menu "Networking options"
 
 source "net/packet/Kconfig"

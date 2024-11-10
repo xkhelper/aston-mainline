@@ -392,7 +392,11 @@ static int is31fl319x_parse_child_fw(const struct device *dev,
 
 static int is31fl319x_parse_fw(struct device *dev, struct is31fl319x_chip *is31)
 {
+<<<<<<< HEAD
 	struct fwnode_handle *fwnode = dev_fwnode(dev), *child;
+=======
+	struct fwnode_handle *fwnode = dev_fwnode(dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int count;
 	int ret;
 
@@ -404,7 +408,11 @@ static int is31fl319x_parse_fw(struct device *dev, struct is31fl319x_chip *is31)
 	is31->cdef = device_get_match_data(dev);
 
 	count = 0;
+<<<<<<< HEAD
 	fwnode_for_each_available_child_node(fwnode, child)
+=======
+	device_for_each_child_node_scoped(dev, child)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		count++;
 
 	dev_dbg(dev, "probing with %d leds defined in DT\n", count);
@@ -414,11 +422,16 @@ static int is31fl319x_parse_fw(struct device *dev, struct is31fl319x_chip *is31)
 				     "Number of leds defined must be between 1 and %u\n",
 				     is31->cdef->num_leds);
 
+<<<<<<< HEAD
 	fwnode_for_each_available_child_node(fwnode, child) {
+=======
+	device_for_each_child_node_scoped(dev, child) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct is31fl319x_led *led;
 		u32 reg;
 
 		ret = fwnode_property_read_u32(child, "reg", &reg);
+<<<<<<< HEAD
 		if (ret) {
 			ret = dev_err_probe(dev, ret, "Failed to read led 'reg' property\n");
 			goto put_child_node;
@@ -441,6 +454,22 @@ static int is31fl319x_parse_fw(struct device *dev, struct is31fl319x_chip *is31)
 			ret = dev_err_probe(dev, ret, "led %u DT parsing failed\n", reg);
 			goto put_child_node;
 		}
+=======
+		if (ret)
+			return dev_err_probe(dev, ret, "Failed to read led 'reg' property\n");
+
+		if (reg < 1 || reg > is31->cdef->num_leds)
+			return dev_err_probe(dev, -EINVAL, "invalid led reg %u\n", reg);
+
+		led = &is31->leds[reg - 1];
+
+		if (led->configured)
+			return dev_err_probe(dev, -EINVAL, "led %u is already configured\n", reg);
+
+		ret = is31fl319x_parse_child_fw(dev, child, led, is31);
+		if (ret)
+			return dev_err_probe(dev, ret, "led %u DT parsing failed\n", reg);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		led->configured = true;
 	}
@@ -454,10 +483,13 @@ static int is31fl319x_parse_fw(struct device *dev, struct is31fl319x_chip *is31)
 	}
 
 	return 0;
+<<<<<<< HEAD
 
 put_child_node:
 	fwnode_handle_put(child);
 	return ret;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline int is31fl3190_microamp_to_cs(struct device *dev, u32 microamp)

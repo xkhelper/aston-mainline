@@ -1381,7 +1381,11 @@ static inline union ns_mem *NS_GET_PAGE(struct nandsim *ns)
 }
 
 /*
+<<<<<<< HEAD
  * Retuns a pointer to the current byte, within the current page.
+=======
+ * Returns a pointer to the current byte, within the current page.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static inline u_char *NS_PAGE_BYTE_OFF(struct nandsim *ns)
 {

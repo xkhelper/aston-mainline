@@ -62,6 +62,10 @@ VERSION
 		__vdso_clock_getres;
 		__vdso_clock_gettime;
 		__vdso_gettimeofday;
+<<<<<<< HEAD
+=======
+		__vdso_getrandom;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__vdso_rt_sigreturn;
 	local: *;
 	};

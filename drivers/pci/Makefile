@@ -35,6 +35,10 @@ obj-$(CONFIG_XEN_PCIDEV_FRONTEND) += xen-pcifront.o
 obj-$(CONFIG_VGA_ARB)		+= vgaarb.o
 obj-$(CONFIG_PCI_DOE)		+= doe.o
 obj-$(CONFIG_PCI_DYNAMIC_OF_NODES) += of_property.o
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_PCI_NPEM)		+= npem.o
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 # Endpoint library must be initialized before its users
 obj-$(CONFIG_PCI_ENDPOINT)	+= endpoint/

@@ -989,8 +989,11 @@ static int ionic_get_ts_info(struct net_device *netdev,
 	info->phc_index = ptp_clock_index(lif->phc->ptp);
 
 	info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE |
+<<<<<<< HEAD
 				SOF_TIMESTAMPING_RX_SOFTWARE |
 				SOF_TIMESTAMPING_SOFTWARE |
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				SOF_TIMESTAMPING_TX_HARDWARE |
 				SOF_TIMESTAMPING_RX_HARDWARE |
 				SOF_TIMESTAMPING_RAW_HARDWARE;

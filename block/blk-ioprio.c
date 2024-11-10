@@ -50,6 +50,7 @@ static const char *policy_name[] = {
 static struct blkcg_policy ioprio_policy;
 
 /**
+<<<<<<< HEAD
  * struct ioprio_blkg - Per (cgroup, request queue) data.
  * @pd: blkg_policy_data structure.
  */
@@ -58,6 +59,8 @@ struct ioprio_blkg {
 };
 
 /**
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * struct ioprio_blkcg - Per cgroup data.
  * @cpd: blkcg_policy_data structure.
  * @prio_policy: One of the IOPRIO_CLASS_* values. See also <linux/ioprio.h>.
@@ -67,11 +70,14 @@ struct ioprio_blkcg {
 	enum prio_policy	 prio_policy;
 };
 
+<<<<<<< HEAD
 static inline struct ioprio_blkg *pd_to_ioprio(struct blkg_policy_data *pd)
 {
 	return pd ? container_of(pd, struct ioprio_blkg, pd) : NULL;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct ioprio_blkcg *blkcg_to_ioprio_blkcg(struct blkcg *blkcg)
 {
 	return container_of(blkcg_to_cpd(blkcg, &ioprio_policy),
@@ -84,6 +90,7 @@ ioprio_blkcg_from_css(struct cgroup_subsys_state *css)
 	return blkcg_to_ioprio_blkcg(css_to_blkcg(css));
 }
 
+<<<<<<< HEAD
 static struct ioprio_blkcg *ioprio_blkcg_from_bio(struct bio *bio)
 {
 	struct blkg_policy_data *pd = blkg_to_pd(bio->bi_blkg, &ioprio_policy);
@@ -94,6 +101,8 @@ static struct ioprio_blkcg *ioprio_blkcg_from_bio(struct bio *bio)
 	return blkcg_to_ioprio_blkcg(pd->blkg->blkcg);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int ioprio_show_prio_policy(struct seq_file *sf, void *v)
 {
 	struct ioprio_blkcg *blkcg = ioprio_blkcg_from_css(seq_css(sf));
@@ -118,6 +127,7 @@ static ssize_t ioprio_set_prio_policy(struct kernfs_open_file *of, char *buf,
 	return nbytes;
 }
 
+<<<<<<< HEAD
 static struct blkg_policy_data *
 ioprio_alloc_pd(struct gendisk *disk, struct blkcg *blkcg, gfp_t gfp)
 {
@@ -137,6 +147,8 @@ static void ioprio_free_pd(struct blkg_policy_data *pd)
 	kfree(ioprio_blkg);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct blkcg_policy_data *ioprio_alloc_cpd(gfp_t gfp)
 {
 	struct ioprio_blkcg *blkcg;
@@ -179,14 +191,21 @@ static struct blkcg_policy ioprio_policy = {
 
 	.cpd_alloc_fn	= ioprio_alloc_cpd,
 	.cpd_free_fn	= ioprio_free_cpd,
+<<<<<<< HEAD
 
 	.pd_alloc_fn	= ioprio_alloc_pd,
 	.pd_free_fn	= ioprio_free_pd,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 void blkcg_set_ioprio(struct bio *bio)
 {
+<<<<<<< HEAD
 	struct ioprio_blkcg *blkcg = ioprio_blkcg_from_bio(bio);
+=======
+	struct ioprio_blkcg *blkcg = blkcg_to_ioprio_blkcg(bio->bi_blkg->blkcg);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u16 prio;
 
 	if (!blkcg || blkcg->prio_policy == POLICY_NO_CHANGE)
@@ -219,6 +238,7 @@ void blkcg_set_ioprio(struct bio *bio)
 		bio->bi_ioprio = prio;
 }
 
+<<<<<<< HEAD
 void blk_ioprio_exit(struct gendisk *disk)
 {
 	blkcg_deactivate_policy(disk, &ioprio_policy);
@@ -229,6 +249,8 @@ int blk_ioprio_init(struct gendisk *disk)
 	return blkcg_activate_policy(disk, &ioprio_policy);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int __init ioprio_init(void)
 {
 	return blkcg_policy_register(&ioprio_policy);

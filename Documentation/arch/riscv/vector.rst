@@ -15,7 +15,11 @@ status for the use of Vector in userspace. The intended usage guideline for
 these interfaces is to give init systems a way to modify the availability of V
 for processes running under its domain. Calling these interfaces is not
 recommended in libraries routines because libraries should not override policies
+<<<<<<< HEAD
 configured from the parant process. Also, users must noted that these interfaces
+=======
+configured from the parent process. Also, users must note that these interfaces
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 are not portable to non-Linux, nor non-RISC-V environments, so it is discourage
 to use in a portable code. To get the availability of V in an ELF program,
 please read :c:macro:`COMPAT_HWCAP_ISA_V` bit of :c:macro:`ELF_HWCAP` in the

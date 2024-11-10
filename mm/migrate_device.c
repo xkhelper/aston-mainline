@@ -328,8 +328,13 @@ static bool migrate_vma_check_page(struct page *page, struct page *fault_page)
 
 	/*
 	 * One extra ref because caller holds an extra reference, either from
+<<<<<<< HEAD
 	 * isolate_lru_page() for a regular page, or migrate_vma_collect() for
 	 * a device page.
+=======
+	 * folio_isolate_lru() for a regular folio, or migrate_vma_collect() for
+	 * a device folio.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	int extra = 1 + (page == fault_page);
 
@@ -379,21 +384,33 @@ static unsigned long migrate_device_unmap(unsigned long *src_pfns,
 			continue;
 		}
 
+<<<<<<< HEAD
 		/* ZONE_DEVICE pages are not on LRU */
 		if (!is_zone_device_page(page)) {
 			if (!PageLRU(page) && allow_drain) {
+=======
+		folio =	page_folio(page);
+		/* ZONE_DEVICE folios are not on LRU */
+		if (!folio_is_zone_device(folio)) {
+			if (!folio_test_lru(folio) && allow_drain) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				/* Drain CPU's lru cache */
 				lru_add_drain_all();
 				allow_drain = false;
 			}
 
+<<<<<<< HEAD
 			if (!isolate_lru_page(page)) {
+=======
+			if (!folio_isolate_lru(folio)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				src_pfns[i] &= ~MIGRATE_PFN_MIGRATE;
 				restore++;
 				continue;
 			}
 
 			/* Drop the reference we took in collect */
+<<<<<<< HEAD
 			put_page(page);
 		}
 
@@ -406,6 +423,19 @@ static unsigned long migrate_device_unmap(unsigned long *src_pfns,
 			if (!is_zone_device_page(page)) {
 				get_page(page);
 				putback_lru_page(page);
+=======
+			folio_put(folio);
+		}
+
+		if (folio_mapped(folio))
+			try_to_migrate(folio, 0);
+
+		if (folio_mapped(folio) ||
+		    !migrate_vma_check_page(page, fault_page)) {
+			if (!folio_is_zone_device(folio)) {
+				folio_get(folio);
+				folio_putback_lru(folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 
 			src_pfns[i] &= ~MIGRATE_PFN_MIGRATE;
@@ -424,7 +454,11 @@ static unsigned long migrate_device_unmap(unsigned long *src_pfns,
 			continue;
 
 		folio = page_folio(page);
+<<<<<<< HEAD
 		remove_migration_ptes(folio, folio, false);
+=======
+		remove_migration_ptes(folio, folio, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		src_pfns[i] = 0;
 		folio_unlock(folio);
@@ -708,7 +742,11 @@ static void __migrate_device_pages(unsigned long *src_pfns,
 
 			/*
 			 * The only time there is no vma is when called from
+<<<<<<< HEAD
 			 * migrate_device_coherent_page(). However this isn't
+=======
+			 * migrate_device_coherent_folio(). However this isn't
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			 * called if the page could not be unmapped.
 			 */
 			VM_BUG_ON(!migrate);
@@ -815,6 +853,7 @@ void migrate_device_finalize(unsigned long *src_pfns,
 	unsigned long i;
 
 	for (i = 0; i < npages; i++) {
+<<<<<<< HEAD
 		struct folio *dst, *src;
 		struct page *newpage = migrate_pfn_to_page(dst_pfns[i]);
 		struct page *page = migrate_pfn_to_page(src_pfns[i]);
@@ -823,10 +862,24 @@ void migrate_device_finalize(unsigned long *src_pfns,
 			if (newpage) {
 				unlock_page(newpage);
 				put_page(newpage);
+=======
+		struct folio *dst = NULL, *src = NULL;
+		struct page *newpage = migrate_pfn_to_page(dst_pfns[i]);
+		struct page *page = migrate_pfn_to_page(src_pfns[i]);
+
+		if (newpage)
+			dst = page_folio(newpage);
+
+		if (!page) {
+			if (dst) {
+				folio_unlock(dst);
+				folio_put(dst);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 			continue;
 		}
 
+<<<<<<< HEAD
 		if (!(src_pfns[i] & MIGRATE_PFN_MIGRATE) || !newpage) {
 			if (newpage) {
 				unlock_page(newpage);
@@ -851,6 +904,32 @@ void migrate_device_finalize(unsigned long *src_pfns,
 				put_page(newpage);
 			else
 				putback_lru_page(newpage);
+=======
+		src = page_folio(page);
+
+		if (!(src_pfns[i] & MIGRATE_PFN_MIGRATE) || !dst) {
+			if (dst) {
+				folio_unlock(dst);
+				folio_put(dst);
+			}
+			dst = src;
+		}
+
+		remove_migration_ptes(src, dst, 0);
+		folio_unlock(src);
+
+		if (folio_is_zone_device(src))
+			folio_put(src);
+		else
+			folio_putback_lru(src);
+
+		if (dst != src) {
+			folio_unlock(dst);
+			if (folio_is_zone_device(dst))
+				folio_put(dst);
+			else
+				folio_putback_lru(dst);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 }
@@ -898,16 +977,29 @@ int migrate_device_range(unsigned long *src_pfns, unsigned long start,
 	unsigned long i, pfn;
 
 	for (pfn = start, i = 0; i < npages; pfn++, i++) {
+<<<<<<< HEAD
 		struct page *page = pfn_to_page(pfn);
 
 		if (!get_page_unless_zero(page)) {
+=======
+		struct folio *folio;
+
+		folio = folio_get_nontail_page(pfn_to_page(pfn));
+		if (!folio) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			src_pfns[i] = 0;
 			continue;
 		}
 
+<<<<<<< HEAD
 		if (!trylock_page(page)) {
 			src_pfns[i] = 0;
 			put_page(page);
+=======
+		if (!folio_trylock(folio)) {
+			src_pfns[i] = 0;
+			folio_put(folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 		}
 
@@ -921,6 +1013,7 @@ int migrate_device_range(unsigned long *src_pfns, unsigned long start,
 EXPORT_SYMBOL(migrate_device_range);
 
 /*
+<<<<<<< HEAD
  * Migrate a device coherent page back to normal memory. The caller should have
  * a reference on page which will be copied to the new page if migration is
  * successful or dropped on failure.
@@ -939,20 +1032,51 @@ int migrate_device_coherent_page(struct page *page)
 	 * We don't have a VMA and don't need to walk the page tables to find
 	 * the source page. So call migrate_vma_unmap() directly to unmap the
 	 * page as migrate_vma_setup() will fail if args.vma == NULL.
+=======
+ * Migrate a device coherent folio back to normal memory. The caller should have
+ * a reference on folio which will be copied to the new folio if migration is
+ * successful or dropped on failure.
+ */
+int migrate_device_coherent_folio(struct folio *folio)
+{
+	unsigned long src_pfn, dst_pfn = 0;
+	struct folio *dfolio;
+
+	WARN_ON_ONCE(folio_test_large(folio));
+
+	folio_lock(folio);
+	src_pfn = migrate_pfn(folio_pfn(folio)) | MIGRATE_PFN_MIGRATE;
+
+	/*
+	 * We don't have a VMA and don't need to walk the page tables to find
+	 * the source folio. So call migrate_vma_unmap() directly to unmap the
+	 * folio as migrate_vma_setup() will fail if args.vma == NULL.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	migrate_device_unmap(&src_pfn, 1, NULL);
 	if (!(src_pfn & MIGRATE_PFN_MIGRATE))
 		return -EBUSY;
 
+<<<<<<< HEAD
 	dpage = alloc_page(GFP_USER | __GFP_NOWARN);
 	if (dpage) {
 		lock_page(dpage);
 		dst_pfn = migrate_pfn(page_to_pfn(dpage));
+=======
+	dfolio = folio_alloc(GFP_USER | __GFP_NOWARN, 0);
+	if (dfolio) {
+		folio_lock(dfolio);
+		dst_pfn = migrate_pfn(folio_pfn(dfolio));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	migrate_device_pages(&src_pfn, &dst_pfn, 1);
 	if (src_pfn & MIGRATE_PFN_MIGRATE)
+<<<<<<< HEAD
 		copy_highpage(dpage, page);
+=======
+		folio_copy(dfolio, folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	migrate_device_finalize(&src_pfn, &dst_pfn, 1);
 
 	if (src_pfn & MIGRATE_PFN_MIGRATE)

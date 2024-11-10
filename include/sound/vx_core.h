@@ -155,7 +155,10 @@ struct vx_core {
 	unsigned int chip_status;
 	unsigned int pcm_running;
 
+<<<<<<< HEAD
 	struct device *dev;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct snd_hwdep *hwdep;
 
 	struct vx_rmh irq_rmh;	/* RMH used in interrupts */

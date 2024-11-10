@@ -441,7 +441,11 @@ static void drm_test_check_broadcast_rgb_auto_cea_mode_vic_1(struct kunit *test)
 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
 
+<<<<<<< HEAD
 	mode = drm_display_mode_from_cea_vic(drm, 1);
+=======
+	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KUNIT_ASSERT_NOT_NULL(test, mode);
 
 	drm = &priv->drm;
@@ -555,7 +559,11 @@ static void drm_test_check_broadcast_rgb_full_cea_mode_vic_1(struct kunit *test)
 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
 
+<<<<<<< HEAD
 	mode = drm_display_mode_from_cea_vic(drm, 1);
+=======
+	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KUNIT_ASSERT_NOT_NULL(test, mode);
 
 	drm = &priv->drm;
@@ -671,7 +679,11 @@ static void drm_test_check_broadcast_rgb_limited_cea_mode_vic_1(struct kunit *te
 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
 
+<<<<<<< HEAD
 	mode = drm_display_mode_from_cea_vic(drm, 1);
+=======
+	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KUNIT_ASSERT_NOT_NULL(test, mode);
 
 	drm = &priv->drm;
@@ -1263,7 +1275,11 @@ static void drm_test_check_output_bpc_format_vic_1(struct kunit *test)
 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
 
+<<<<<<< HEAD
 	mode = drm_display_mode_from_cea_vic(drm, 1);
+=======
+	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KUNIT_ASSERT_NOT_NULL(test, mode);
 
 	/*

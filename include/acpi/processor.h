@@ -465,4 +465,9 @@ extern int acpi_processor_ffh_lpi_probe(unsigned int cpu);
 extern int acpi_processor_ffh_lpi_enter(struct acpi_lpi_state *lpi);
 #endif
 
+<<<<<<< HEAD
+=======
+void acpi_processor_init_invariance_cppc(void);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

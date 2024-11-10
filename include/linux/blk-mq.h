@@ -149,10 +149,14 @@ struct request {
 	 * physical address coalescing is performed.
 	 */
 	unsigned short nr_phys_segments;
+<<<<<<< HEAD
 
 #ifdef CONFIG_BLK_DEV_INTEGRITY
 	unsigned short nr_integrity_segments;
 #endif
+=======
+	unsigned short nr_integrity_segments;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_BLK_INLINE_ENCRYPTION
 	struct bio_crypt_ctx *crypt_ctx;

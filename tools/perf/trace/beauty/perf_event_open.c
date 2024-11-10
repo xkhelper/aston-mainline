@@ -76,7 +76,11 @@ static size_t perf_event_attr___scnprintf(struct perf_event_attr *attr, char *bf
 
 static size_t syscall_arg__scnprintf_augmented_perf_event_attr(struct syscall_arg *arg, char *bf, size_t size)
 {
+<<<<<<< HEAD
 	return perf_event_attr___scnprintf((void *)arg->augmented.args, bf, size, arg->trace->show_zeros);
+=======
+	return perf_event_attr___scnprintf((void *)arg->augmented.args->value, bf, size, arg->trace->show_zeros);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static size_t syscall_arg__scnprintf_perf_event_attr(char *bf, size_t size, struct syscall_arg *arg)
@@ -88,3 +92,10 @@ static size_t syscall_arg__scnprintf_perf_event_attr(char *bf, size_t size, stru
 }
 
 #define SCA_PERF_ATTR syscall_arg__scnprintf_perf_event_attr
+<<<<<<< HEAD
+=======
+// 'argname' is just documentational at this point, to remove the previous comment with that info
+#define SCA_PERF_ATTR_FROM_USER(argname) \
+          { .scnprintf  = SCA_PERF_ATTR, \
+            .from_user  = true, }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

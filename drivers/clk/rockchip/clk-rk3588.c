@@ -526,7 +526,11 @@ PNAME(pmu_200m_100m_p)			= { "clk_pmu1_200m_src", "clk_pmu1_100m_src" };
 PNAME(pmu_300m_24m_p)			= { "clk_300m_src", "xin24m" };
 PNAME(pmu_400m_24m_p)			= { "clk_400m_src", "xin24m" };
 PNAME(pmu_100m_50m_24m_src_p)		= { "clk_pmu1_100m_src", "clk_pmu1_50m_src", "xin24m" };
+<<<<<<< HEAD
 PNAME(pmu_24m_32k_100m_src_p)		= { "xin24m", "32k", "clk_pmu1_100m_src" };
+=======
+PNAME(pmu_24m_32k_100m_src_p)		= { "xin24m", "xin32k", "clk_pmu1_100m_src" };
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 PNAME(hclk_pmu1_root_p)			= { "clk_pmu1_200m_src", "clk_pmu1_100m_src", "clk_pmu1_50m_src", "xin24m" };
 PNAME(hclk_pmu_cm0_root_p)		= { "clk_pmu1_400m_src", "clk_pmu1_200m_src", "clk_pmu1_100m_src", "xin24m" };
 PNAME(mclk_pdm0_p)			= { "clk_pmu1_300m_src", "clk_pmu1_200m_src" };
@@ -2502,6 +2506,7 @@ static void __init rk3588_clk_init(struct device_node *np)
 }
 
 CLK_OF_DECLARE(rk3588_cru, "rockchip,rk3588-cru", rk3588_clk_init);
+<<<<<<< HEAD
 
 struct clk_rk3588_inits {
 	void (*inits)(struct device_node *np);
@@ -2542,3 +2547,5 @@ static struct platform_driver clk_rk3588_driver = {
 	},
 };
 builtin_platform_driver_probe(clk_rk3588_driver, clk_rk3588_probe);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

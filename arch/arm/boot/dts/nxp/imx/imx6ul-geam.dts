@@ -365,7 +365,11 @@
 	};
 
 	pinctrl_tsc: tscgrp {
+<<<<<<< HEAD
 		fsl,pin = <
+=======
+		fsl,pins = <
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			MX6UL_PAD_GPIO1_IO01__GPIO1_IO01	0xb0
 			MX6UL_PAD_GPIO1_IO02__GPIO1_IO02	0xb0
 			MX6UL_PAD_GPIO1_IO03__GPIO1_IO03	0xb0
@@ -410,7 +414,11 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	pinctrl_usdhc1_100mhz: usdhc1grp100mhz {
+=======
+	pinctrl_usdhc1_100mhz: usdhc1-100mhz-grp {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fsl,pins = <
 			MX6UL_PAD_SD1_CMD__USDHC1_CMD     0x170b9
 			MX6UL_PAD_SD1_CLK__USDHC1_CLK     0x100b9
@@ -421,7 +429,11 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	pinctrl_usdhc1_200mhz: usdhc1grp200mhz {
+=======
+	pinctrl_usdhc1_200mhz: usdhc1-200mhz-grp {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fsl,pins = <
 			MX6UL_PAD_SD1_CMD__USDHC1_CMD     0x170f9
 			MX6UL_PAD_SD1_CLK__USDHC1_CLK     0x100f9

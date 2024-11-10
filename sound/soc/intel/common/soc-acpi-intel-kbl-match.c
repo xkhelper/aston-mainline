@@ -8,9 +8,12 @@
 
 #include <sound/soc-acpi.h>
 #include <sound/soc-acpi-intel-match.h>
+<<<<<<< HEAD
 #include "../skylake/skl.h"
 
 static struct skl_machine_pdata skl_dmic_data;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const struct snd_soc_acpi_codecs kbl_codecs = {
 	.num_codecs = 1,
@@ -54,7 +57,10 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_kbl_machines[] = {
 		.fw_filename = "intel/dsp_fw_kbl.bin",
 		.machine_quirk = snd_soc_acpi_codec_list,
 		.quirk_data = &kbl_codecs,
+<<<<<<< HEAD
 		.pdata = &skl_dmic_data,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{
 		.id = "MX98357A",
@@ -62,7 +68,10 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_kbl_machines[] = {
 		.fw_filename = "intel/dsp_fw_kbl.bin",
 		.machine_quirk = snd_soc_acpi_codec_list,
 		.quirk_data = &kbl_codecs,
+<<<<<<< HEAD
 		.pdata = &skl_dmic_data,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{
 		.id = "MX98927",
@@ -70,7 +79,10 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_kbl_machines[] = {
 		.fw_filename = "intel/dsp_fw_kbl.bin",
 		.machine_quirk = snd_soc_acpi_codec_list,
 		.quirk_data = &kbl_5663_5514_codecs,
+<<<<<<< HEAD
 		.pdata = &skl_dmic_data,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{
 		.id = "MX98927",
@@ -78,7 +90,10 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_kbl_machines[] = {
 		.fw_filename = "intel/dsp_fw_kbl.bin",
 		.machine_quirk = snd_soc_acpi_codec_list,
 		.quirk_data = &kbl_poppy_codecs,
+<<<<<<< HEAD
 		.pdata = &skl_dmic_data,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{
 		.id = "10EC5663",
@@ -91,7 +106,10 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_kbl_machines[] = {
 		.fw_filename = "intel/dsp_fw_kbl.bin",
 		.machine_quirk = snd_soc_acpi_codec_list,
 		.quirk_data = &kbl_7219_98357_codecs,
+<<<<<<< HEAD
 		.pdata = &skl_dmic_data,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{
 		.id = "DLGS7219",
@@ -99,7 +117,10 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_kbl_machines[] = {
 		.fw_filename = "intel/dsp_fw_kbl.bin",
 		.machine_quirk = snd_soc_acpi_codec_list,
 		.quirk_data = &kbl_7219_98927_codecs,
+<<<<<<< HEAD
 		.pdata = &skl_dmic_data
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{
 		.id = "10EC5660",
@@ -117,13 +138,19 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_kbl_machines[] = {
 		.fw_filename = "intel/dsp_fw_kbl.bin",
 		.machine_quirk = snd_soc_acpi_codec_list,
 		.quirk_data = &kbl_7219_98373_codecs,
+<<<<<<< HEAD
 		.pdata = &skl_dmic_data
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{
 		.id = "MX98373",
 		.drv_name = "kbl_max98373",
 		.fw_filename = "intel/dsp_fw_kbl.bin",
+<<<<<<< HEAD
 		.pdata = &skl_dmic_data
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{},
 };

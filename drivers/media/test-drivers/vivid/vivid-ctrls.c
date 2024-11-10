@@ -553,7 +553,11 @@ static int vivid_vid_cap_s_ctrl(struct v4l2_ctrl *ctrl)
 		break;
 	case VIVID_CID_PERCENTAGE_FILL:
 		tpg_s_perc_fill(&dev->tpg, ctrl->val);
+<<<<<<< HEAD
 		for (i = 0; i < VIDEO_MAX_FRAME; i++)
+=======
+		for (i = 0; i < MAX_VID_CAP_BUFFERS; i++)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			dev->must_blank[i] = ctrl->val < 100;
 		break;
 	case VIVID_CID_INSERT_SAV:

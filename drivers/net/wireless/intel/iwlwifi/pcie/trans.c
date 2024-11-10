@@ -1967,7 +1967,10 @@ void iwl_trans_pcie_configure(struct iwl_trans *trans,
 
 	trans_pcie->txqs.cmd.q_id = trans_cfg->cmd_queue;
 	trans_pcie->txqs.cmd.fifo = trans_cfg->cmd_fifo;
+<<<<<<< HEAD
 	trans_pcie->txqs.cmd.wdg_timeout = trans_cfg->cmd_q_wdg_timeout;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	trans_pcie->txqs.page_offs = trans_cfg->cb_data_offs;
 	trans_pcie->txqs.dev_cmd_offs = trans_cfg->cb_data_offs + sizeof(void *);
 	trans_pcie->txqs.queue_alloc_cmd_ver = trans_cfg->queue_alloc_cmd_ver;
@@ -3567,6 +3570,12 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
 	}
 	trans->max_skb_frags = IWL_TRANS_PCIE_MAX_FRAGS(trans_pcie);
 
+<<<<<<< HEAD
+=======
+	/* Set a short watchdog for the command queue */
+	trans_pcie->txqs.cmd.wdg_timeout = IWL_DEF_WD_TIMEOUT;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	trans_pcie->txqs.tso_hdr_page = alloc_percpu(struct iwl_tso_hdr_page);
 	if (!trans_pcie->txqs.tso_hdr_page) {
 		ret = -ENOMEM;

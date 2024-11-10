@@ -62,6 +62,10 @@ static const struct platform_device_id ntc_thermistor_id[] = {
 	[NTC_SSG1404001221]   = { "ssg1404_001221",  TYPE_NCPXXWB473 },
 	[NTC_LAST]            = { },
 };
+<<<<<<< HEAD
+=======
+MODULE_DEVICE_TABLE(platform, ntc_thermistor_id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * A compensation table should be sorted by the values of .ohm

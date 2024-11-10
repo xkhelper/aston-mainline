@@ -371,8 +371,12 @@ static int sof_audio_probe(struct platform_device *pdev)
 		sof_pcm512x_quirk = SOF_PCM512X_SSP_CODEC(2);
 	} else {
 		dmic_be_num = 2;
+<<<<<<< HEAD
 		if (mach->mach_params.common_hdmi_codec_drv &&
 		    (mach->mach_params.codec_mask & IDISP_CODEC_MASK))
+=======
+		if (mach->mach_params.codec_mask & IDISP_CODEC_MASK)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ctx->idisp_codec = true;
 
 		/* links are always present in topology */
@@ -430,7 +434,11 @@ static void sof_pcm512x_remove(struct platform_device *pdev)
 
 static struct platform_driver sof_audio = {
 	.probe = sof_audio_probe,
+<<<<<<< HEAD
 	.remove_new = sof_pcm512x_remove,
+=======
+	.remove = sof_pcm512x_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "sof_pcm512x",
 		.pm = &snd_soc_pm_ops,

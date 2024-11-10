@@ -27,6 +27,11 @@ struct xe_execlist_port {
 	struct xe_execlist_exec_queue *running_exl;
 
 	struct timer_list irq_fail;
+<<<<<<< HEAD
+=======
+
+	struct xe_lrc *lrc;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct xe_execlist_exec_queue {

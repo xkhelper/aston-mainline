@@ -526,6 +526,11 @@ int iwl_trans_pcie_gen2_start_fw(struct iwl_trans *trans,
 	keep_ram_busy = !iwl_pcie_set_ltr(trans);
 
 	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ) {
+<<<<<<< HEAD
+=======
+		IWL_DEBUG_POWER(trans, "function scratch register value is 0x%08x\n",
+				iwl_read32(trans, CSR_FUNC_SCRATCH));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		iwl_write32(trans, CSR_FUNC_SCRATCH, CSR_FUNC_SCRATCH_INIT_VALUE);
 		iwl_set_bit(trans, CSR_GP_CNTRL,
 			    CSR_GP_CNTRL_REG_FLAG_ROM_START);

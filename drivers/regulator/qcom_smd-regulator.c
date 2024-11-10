@@ -1386,7 +1386,11 @@ MODULE_DEVICE_TABLE(of, rpm_of_match);
  * @pmic_rpm_data:	Pointer to a null-terminated array of qcom_smd-regulator
  *			resources defined for the top level PMIC device
  *
+<<<<<<< HEAD
  * Return: 0 on success, errno on failure
+=======
+ * Return: 0 on success, or a negative error number on failure
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static int rpm_regulator_init_vreg(struct qcom_rpm_reg *vreg, struct device *dev,
 				   struct device_node *node,
@@ -1435,7 +1439,10 @@ static int rpm_reg_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	const struct rpm_regulator_data *vreg_data;
+<<<<<<< HEAD
 	struct device_node *node;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct qcom_rpm_reg *vreg;
 	struct qcom_smd_rpm *rpm;
 	int ret;
@@ -1455,6 +1462,7 @@ static int rpm_reg_probe(struct platform_device *pdev)
 	if (!vreg_data)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	for_each_available_child_of_node(dev->of_node, node) {
 		vreg = devm_kzalloc(&pdev->dev, sizeof(*vreg), GFP_KERNEL);
 		if (!vreg) {
@@ -1467,6 +1475,16 @@ static int rpm_reg_probe(struct platform_device *pdev)
 			of_node_put(node);
 			return ret;
 		}
+=======
+	for_each_available_child_of_node_scoped(dev->of_node, node) {
+		vreg = devm_kzalloc(&pdev->dev, sizeof(*vreg), GFP_KERNEL);
+		if (!vreg)
+			return -ENOMEM;
+
+		ret = rpm_regulator_init_vreg(vreg, dev, node, vreg_data);
+		if (ret < 0)
+			return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;

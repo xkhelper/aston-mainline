@@ -13,7 +13,11 @@
 #include <linux/module.h>
 #include <linux/netdevice.h>
 #include <linux/crc-ccitt.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <net/mac802154.h>
 #include <net/ieee802154_netdev.h>

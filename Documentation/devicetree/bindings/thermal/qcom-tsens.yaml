@@ -51,6 +51,10 @@ properties:
               - qcom,msm8996-tsens
               - qcom,msm8998-tsens
               - qcom,qcm2290-tsens
+<<<<<<< HEAD
+=======
+              - qcom,sa8255p-tsens
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - qcom,sa8775p-tsens
               - qcom,sc7180-tsens
               - qcom,sc7280-tsens
@@ -310,7 +314,11 @@ examples:
 
   - |
     #include <dt-bindings/interrupt-controller/arm-gic.h>
+<<<<<<< HEAD
     // Example 1 (new calbiration data: for pre v1 IP):
+=======
+    // Example 1 (new calibration data: for pre v1 IP):
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     thermal-sensor@4a9000 {
         compatible = "qcom,msm8916-tsens", "qcom,tsens-v0_1";
         reg = <0x4a9000 0x1000>, /* TM */

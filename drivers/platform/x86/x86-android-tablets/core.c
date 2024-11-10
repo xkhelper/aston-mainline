@@ -26,6 +26,7 @@
 static struct platform_device *x86_android_tablet_device;
 
 /*
+<<<<<<< HEAD
  * This helper allows getting a gpio_desc *before* the actual device consuming
  * the GPIO has been instantiated. This function _must_ only be used to handle
  * this special case such as e.g. :
@@ -39,6 +40,21 @@ static struct platform_device *x86_android_tablet_device;
  * is generated using the special x86_android_tablet dev for dev_id.
  *
  * For normal GPIO lookups a standard static gpiod_lookup_table _must_ be used.
+=======
+ * This helper allows getting a GPIO descriptor *before* the actual device
+ * consuming it has been instantiated. This function MUST only be used to
+ * handle this special case such as, e.g.:
+ *
+ * 1. Getting an IRQ from a GPIO for i2c_board_info.irq which is passed to
+ * i2c_client_new() to instantiate i2c_client-s; or
+ * 2. Calling desc_to_gpio() to get an old style GPIO number for gpio-keys
+ * platform_data which still uses old style GPIO numbers.
+ *
+ * Since the consuming device has not been instantiated yet a dynamic lookup
+ * is generated using the special x86_android_tablet device for dev_id.
+ *
+ * For normal GPIO lookups a standard static struct gpiod_lookup_table MUST be used.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int x86_android_tablet_get_gpiod(const char *chip, int pin, const char *con_id,
 				 bool active_low, enum gpiod_flags dflags,
@@ -87,7 +103,11 @@ int x86_acpi_irq_helper_get(const struct x86_acpi_irq_data *data)
 		/*
 		 * The DSDT may already reference the GSI in a device skipped by
 		 * acpi_quirk_skip_i2c_client_enumeration(). Unregister the GSI
+<<<<<<< HEAD
 		 * to avoid EBUSY errors in this case.
+=======
+		 * to avoid -EBUSY errors in this case.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 */
 		acpi_unregister_gsi(data->index);
 		irq = acpi_register_gsi(NULL, data->index, data->trigger, data->polarity);
@@ -379,7 +399,11 @@ static __init int x86_android_tablet_probe(struct platform_device *pdev)
 		}
 	}
 
+<<<<<<< HEAD
 	/* + 1 to make space for (optional) gpio_keys_button pdev */
+=======
+	/* + 1 to make space for the (optional) gpio_keys_button platform device */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pdevs = kcalloc(dev_info->pdev_count + 1, sizeof(*pdevs), GFP_KERNEL);
 	if (!pdevs) {
 		x86_android_tablet_remove(pdev);
@@ -390,8 +414,14 @@ static __init int x86_android_tablet_probe(struct platform_device *pdev)
 	for (i = 0; i < pdev_count; i++) {
 		pdevs[i] = platform_device_register_full(&dev_info->pdev_info[i]);
 		if (IS_ERR(pdevs[i])) {
+<<<<<<< HEAD
 			x86_android_tablet_remove(pdev);
 			return PTR_ERR(pdevs[i]);
+=======
+			ret = PTR_ERR(pdevs[i]);
+			x86_android_tablet_remove(pdev);
+			return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -432,7 +462,11 @@ static __init int x86_android_tablet_probe(struct platform_device *pdev)
 
 			buttons[i] = dev_info->gpio_button[i].button;
 			buttons[i].gpio = desc_to_gpio(gpiod);
+<<<<<<< HEAD
 			/* Release gpiod so that gpio-keys can request it */
+=======
+			/* Release GPIO descriptor so that gpio-keys can request it */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			devm_gpiod_put(&x86_android_tablet_device->dev, gpiod);
 		}
 
@@ -443,8 +477,14 @@ static __init int x86_android_tablet_probe(struct platform_device *pdev)
 								  PLATFORM_DEVID_AUTO,
 								  &pdata, sizeof(pdata));
 		if (IS_ERR(pdevs[pdev_count])) {
+<<<<<<< HEAD
 			x86_android_tablet_remove(pdev);
 			return PTR_ERR(pdevs[pdev_count]);
+=======
+			ret = PTR_ERR(pdevs[pdev_count]);
+			x86_android_tablet_remove(pdev);
+			return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		pdev_count++;
 	}

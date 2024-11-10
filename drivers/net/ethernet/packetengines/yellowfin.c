@@ -102,7 +102,11 @@ static int gx_fix;
 #include <linux/bitops.h>
 #include <linux/uaccess.h>
 #include <asm/processor.h>		/* Processor type for cache alignment. */
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/io.h>
 
 /* These identify the driver base version and may not be removed. */

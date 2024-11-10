@@ -441,6 +441,11 @@ const struct vb2_ops atomisp_vb2_ops = {
 	.buf_queue		= atomisp_buf_queue,
 	.start_streaming	= atomisp_start_streaming,
 	.stop_streaming		= atomisp_stop_streaming,
+<<<<<<< HEAD
+=======
+	.wait_prepare		= vb2_ops_wait_prepare,
+	.wait_finish		= vb2_ops_wait_finish,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void atomisp_dev_init_struct(struct atomisp_device *isp)

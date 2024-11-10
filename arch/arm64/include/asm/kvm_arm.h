@@ -107,6 +107,10 @@
 /* TCR_EL2 Registers bits */
 #define TCR_EL2_DS		(1UL << 32)
 #define TCR_EL2_RES1		((1U << 31) | (1 << 23))
+<<<<<<< HEAD
+=======
+#define TCR_EL2_HPD		(1 << 24)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define TCR_EL2_TBI		(1 << 20)
 #define TCR_EL2_PS_SHIFT	16
 #define TCR_EL2_PS_MASK		(7 << TCR_EL2_PS_SHIFT)

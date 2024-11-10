@@ -32,7 +32,11 @@
 #include <linux/i2c.h>
 #include <linux/kthread.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/byteorder.h>
 
 #include <linux/dvb/frontend.h>

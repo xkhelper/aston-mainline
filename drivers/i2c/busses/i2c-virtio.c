@@ -182,7 +182,11 @@ static u32 virtio_i2c_func(struct i2c_adapter *adap)
 	return I2C_FUNC_I2C | I2C_FUNC_SMBUS_EMUL;
 }
 
+<<<<<<< HEAD
 static struct i2c_algorithm virtio_algorithm = {
+=======
+static const struct i2c_algorithm virtio_algorithm = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.xfer = virtio_i2c_xfer,
 	.functionality = virtio_i2c_func,
 };
@@ -237,7 +241,11 @@ static void virtio_i2c_remove(struct virtio_device *vdev)
 	virtio_i2c_del_vqs(vdev);
 }
 
+<<<<<<< HEAD
 static struct virtio_device_id id_table[] = {
+=======
+static const struct virtio_device_id id_table[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ VIRTIO_ID_I2C_ADAPTER, VIRTIO_DEV_ANY_ID },
 	{}
 };

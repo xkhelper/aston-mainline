@@ -1451,7 +1451,11 @@ int lease_modify(struct file_lease *fl, int arg, struct list_head *dispose)
 		struct file *filp = fl->c.flc_file;
 
 		f_delown(filp);
+<<<<<<< HEAD
 		filp->f_owner.signum = 0;
+=======
+		file_f_owner(filp)->signum = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fasync_helper(0, fl->c.flc_file, 0, &fl->fl_fasync);
 		if (fl->fl_fasync != NULL) {
 			printk(KERN_ERR "locks_delete_lock: fasync == %p\n", fl->fl_fasync);
@@ -1783,6 +1787,13 @@ generic_add_lease(struct file *filp, int arg, struct file_lease **flp, void **pr
 	lease = *flp;
 	trace_generic_add_lease(inode, lease);
 
+<<<<<<< HEAD
+=======
+	error = file_f_owner_allocate(filp);
+	if (error)
+		return error;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Note that arg is never F_UNLCK here */
 	ctx = locks_get_lock_context(inode, arg);
 	if (!ctx)
@@ -2153,6 +2164,7 @@ SYSCALL_DEFINE2(flock, unsigned int, fd, unsigned int, cmd)
 
 	error = -EBADF;
 	f = fdget(fd);
+<<<<<<< HEAD
 	if (!f.file)
 		return error;
 
@@ -2162,6 +2174,17 @@ SYSCALL_DEFINE2(flock, unsigned int, fd, unsigned int, cmd)
 	flock_make_lock(f.file, &fl, type);
 
 	error = security_file_lock(f.file, fl.c.flc_type);
+=======
+	if (!fd_file(f))
+		return error;
+
+	if (type != F_UNLCK && !(fd_file(f)->f_mode & (FMODE_READ | FMODE_WRITE)))
+		goto out_putf;
+
+	flock_make_lock(fd_file(f), &fl, type);
+
+	error = security_file_lock(fd_file(f), fl.c.flc_type);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (error)
 		goto out_putf;
 
@@ -2169,12 +2192,21 @@ SYSCALL_DEFINE2(flock, unsigned int, fd, unsigned int, cmd)
 	if (can_sleep)
 		fl.c.flc_flags |= FL_SLEEP;
 
+<<<<<<< HEAD
 	if (f.file->f_op->flock)
 		error = f.file->f_op->flock(f.file,
 					    (can_sleep) ? F_SETLKW : F_SETLK,
 					    &fl);
 	else
 		error = locks_lock_file_wait(f.file, &fl);
+=======
+	if (fd_file(f)->f_op->flock)
+		error = fd_file(f)->f_op->flock(fd_file(f),
+					    (can_sleep) ? F_SETLKW : F_SETLK,
+					    &fl);
+	else
+		error = locks_lock_file_wait(fd_file(f), &fl);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	locks_release_private(&fl);
  out_putf:

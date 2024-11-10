@@ -57,7 +57,10 @@ int process_param(int fd, int msg_index, __u8 *signature, int *data)
 		.msg_index = msg_index,
 		.param = *data,
 	};
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	assert(signature);
 	assert(data);

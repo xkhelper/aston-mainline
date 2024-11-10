@@ -33,9 +33,15 @@
 #include <linux/types.h>
 
 struct drm_edid;
+<<<<<<< HEAD
 struct drm_i915_private;
 struct intel_bios_encoder_data;
 struct intel_crtc_state;
+=======
+struct intel_bios_encoder_data;
+struct intel_crtc_state;
+struct intel_display;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct intel_encoder;
 struct intel_panel;
 enum aux_ch;
@@ -232,15 +238,24 @@ struct mipi_pps_data {
 	u16 panel_power_cycle_delay;
 } __packed;
 
+<<<<<<< HEAD
 void intel_bios_init(struct drm_i915_private *dev_priv);
 void intel_bios_init_panel_early(struct drm_i915_private *dev_priv,
 				 struct intel_panel *panel,
 				 const struct intel_bios_encoder_data *devdata);
 void intel_bios_init_panel_late(struct drm_i915_private *dev_priv,
+=======
+void intel_bios_init(struct intel_display *display);
+void intel_bios_init_panel_early(struct intel_display *display,
+				 struct intel_panel *panel,
+				 const struct intel_bios_encoder_data *devdata);
+void intel_bios_init_panel_late(struct intel_display *display,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				struct intel_panel *panel,
 				const struct intel_bios_encoder_data *devdata,
 				const struct drm_edid *drm_edid);
 void intel_bios_fini_panel(struct intel_panel *panel);
+<<<<<<< HEAD
 void intel_bios_driver_remove(struct drm_i915_private *dev_priv);
 bool intel_bios_is_valid_vbt(struct drm_i915_private *i915,
 			     const void *buf, size_t size);
@@ -248,12 +263,25 @@ bool intel_bios_is_tv_present(struct drm_i915_private *dev_priv);
 bool intel_bios_is_lvds_present(struct drm_i915_private *dev_priv, u8 *i2c_pin);
 bool intel_bios_is_port_present(struct drm_i915_private *dev_priv, enum port port);
 bool intel_bios_is_dsi_present(struct drm_i915_private *dev_priv, enum port *port);
+=======
+void intel_bios_driver_remove(struct intel_display *display);
+bool intel_bios_is_valid_vbt(struct intel_display *display,
+			     const void *buf, size_t size);
+bool intel_bios_is_tv_present(struct intel_display *display);
+bool intel_bios_is_lvds_present(struct intel_display *display, u8 *i2c_pin);
+bool intel_bios_is_port_present(struct intel_display *display, enum port port);
+bool intel_bios_is_dsi_present(struct intel_display *display, enum port *port);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool intel_bios_get_dsc_params(struct intel_encoder *encoder,
 			       struct intel_crtc_state *crtc_state,
 			       int dsc_max_bpc);
 
 const struct intel_bios_encoder_data *
+<<<<<<< HEAD
 intel_bios_encoder_data_lookup(struct drm_i915_private *i915, enum port port);
+=======
+intel_bios_encoder_data_lookup(struct intel_display *display, enum port port);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 bool intel_bios_encoder_supports_dvi(const struct intel_bios_encoder_data *devdata);
 bool intel_bios_encoder_supports_hdmi(const struct intel_bios_encoder_data *devdata);
@@ -277,10 +305,18 @@ int intel_bios_hdmi_ddc_pin(const struct intel_bios_encoder_data *devdata);
 int intel_bios_hdmi_level_shift(const struct intel_bios_encoder_data *devdata);
 int intel_bios_hdmi_max_tmds_clock(const struct intel_bios_encoder_data *devdata);
 
+<<<<<<< HEAD
 void intel_bios_for_each_encoder(struct drm_i915_private *i915,
 				 void (*func)(struct drm_i915_private *i915,
 					      const struct intel_bios_encoder_data *devdata));
 
 void intel_bios_debugfs_register(struct drm_i915_private *i915);
+=======
+void intel_bios_for_each_encoder(struct intel_display *display,
+				 void (*func)(struct intel_display *display,
+					      const struct intel_bios_encoder_data *devdata));
+
+void intel_bios_debugfs_register(struct intel_display *display);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* _INTEL_BIOS_H_ */

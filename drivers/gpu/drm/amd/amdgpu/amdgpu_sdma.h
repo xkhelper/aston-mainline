@@ -115,6 +115,10 @@ struct amdgpu_sdma {
 	bool			has_page_queue;
 	struct ras_common_if	*ras_if;
 	struct amdgpu_sdma_ras	*ras;
+<<<<<<< HEAD
+=======
+	uint32_t		*ip_dump;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*

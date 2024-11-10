@@ -101,9 +101,16 @@ static void get_stats_counter(struct msm_ringbuffer *ring, u32 counter,
 }
 
 static void a6xx_set_pagetable(struct a6xx_gpu *a6xx_gpu,
+<<<<<<< HEAD
 		struct msm_ringbuffer *ring, struct msm_file_private *ctx)
 {
 	bool sysprof = refcount_read(&a6xx_gpu->base.base.sysprof_active) > 1;
+=======
+		struct msm_ringbuffer *ring, struct msm_gem_submit *submit)
+{
+	bool sysprof = refcount_read(&a6xx_gpu->base.base.sysprof_active) > 1;
+	struct msm_file_private *ctx = submit->queue->ctx;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
 	phys_addr_t ttbr;
 	u32 asid;
@@ -115,6 +122,18 @@ static void a6xx_set_pagetable(struct a6xx_gpu *a6xx_gpu,
 	if (msm_iommu_pagetable_params(ctx->aspace->mmu, &ttbr, &asid))
 		return;
 
+<<<<<<< HEAD
+=======
+	if (adreno_gpu->info->family >= ADRENO_7XX_GEN1) {
+		/* Wait for previous submit to complete before continuing: */
+		OUT_PKT7(ring, CP_WAIT_TIMESTAMP, 4);
+		OUT_RING(ring, 0);
+		OUT_RING(ring, lower_32_bits(rbmemptr(ring, fence)));
+		OUT_RING(ring, upper_32_bits(rbmemptr(ring, fence)));
+		OUT_RING(ring, submit->seqno - 1);
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!sysprof) {
 		if (!adreno_is_a7xx(adreno_gpu)) {
 			/* Turn off protected mode to write to special registers */
@@ -193,7 +212,11 @@ static void a6xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
 	struct msm_ringbuffer *ring = submit->ring;
 	unsigned int i, ibs = 0;
 
+<<<<<<< HEAD
 	a6xx_set_pagetable(a6xx_gpu, ring, submit->queue->ctx);
+=======
+	a6xx_set_pagetable(a6xx_gpu, ring, submit);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	get_stats_counter(ring, REG_A6XX_RBBM_PERFCTR_CP(0),
 		rbmemptr_stats(ring, index, cpcycles_start));
@@ -283,7 +306,11 @@ static void a7xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
 	OUT_PKT7(ring, CP_THREAD_CONTROL, 1);
 	OUT_RING(ring, CP_THREAD_CONTROL_0_SYNC_THREADS | CP_SET_THREAD_BR);
 
+<<<<<<< HEAD
 	a6xx_set_pagetable(a6xx_gpu, ring, submit->queue->ctx);
+=======
+	a6xx_set_pagetable(a6xx_gpu, ring, submit);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	get_stats_counter(ring, REG_A7XX_RBBM_PERFCTR_CP(0),
 		rbmemptr_stats(ring, index, cpcycles_start));
@@ -402,7 +429,12 @@ static void a6xx_set_hwcg(struct msm_gpu *gpu, bool state)
 	struct a6xx_gmu *gmu = &a6xx_gpu->gmu;
 	const struct adreno_reglist *reg;
 	unsigned int i;
+<<<<<<< HEAD
 	u32 val, clock_cntl_on, cgc_mode;
+=======
+	u32 cgc_delay, cgc_hyst;
+	u32 val, clock_cntl_on;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!(adreno_gpu->info->a6xx->hwcg || adreno_is_a7xx(adreno_gpu)))
 		return;
@@ -416,6 +448,7 @@ static void a6xx_set_hwcg(struct msm_gpu *gpu, bool state)
 	else
 		clock_cntl_on = 0x8aa8aa82;
 
+<<<<<<< HEAD
 	if (adreno_is_a7xx(adreno_gpu)) {
 		cgc_mode = adreno_is_a740_family(adreno_gpu) ? 0x20222 : 0x20000;
 
@@ -426,6 +459,17 @@ static void a6xx_set_hwcg(struct msm_gpu *gpu, bool state)
 		gmu_write(&a6xx_gpu->gmu, REG_A6XX_GPU_GMU_AO_GMU_CGC_HYST_CNTL,
 			  state ? 0x5555 : 0);
 	}
+=======
+	cgc_delay = adreno_is_a615_family(adreno_gpu) ? 0x111 : 0x10111;
+	cgc_hyst = adreno_is_a615_family(adreno_gpu) ? 0x555 : 0x5555;
+
+	gmu_write(&a6xx_gpu->gmu, REG_A6XX_GPU_GMU_AO_GMU_CGC_MODE_CNTL,
+			state ? adreno_gpu->info->a6xx->gmu_cgc_mode : 0);
+	gmu_write(&a6xx_gpu->gmu, REG_A6XX_GPU_GMU_AO_GMU_CGC_DELAY_CNTL,
+			state ? cgc_delay : 0);
+	gmu_write(&a6xx_gpu->gmu, REG_A6XX_GPU_GMU_AO_GMU_CGC_HYST_CNTL,
+			state ? cgc_hyst : 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!adreno_gpu->info->a6xx->hwcg) {
 		gpu_write(gpu, REG_A7XX_RBBM_CLOCK_CNTL_GLOBAL, 1);
@@ -493,6 +537,7 @@ static void a6xx_set_cp_protect(struct msm_gpu *gpu)
 
 static void a6xx_calc_ubwc_config(struct adreno_gpu *gpu)
 {
+<<<<<<< HEAD
 	/* Unknown, introduced with A650 family, related to UBWC mode/ver 4 */
 	gpu->ubwc_config.rgb565_predicator = 0;
 	/* Unknown, introduced with A650 family */
@@ -505,12 +550,23 @@ static void a6xx_calc_ubwc_config(struct adreno_gpu *gpu)
 	 * The Highest Bank Bit value represents the bit of the highest DDR bank.
 	 * This should ideally use DRAM type detection.
 	 */
+=======
+	gpu->ubwc_config.rgb565_predicator = 0;
+	gpu->ubwc_config.uavflagprd_inv = 0;
+	gpu->ubwc_config.min_acc_len = 0;
+	gpu->ubwc_config.ubwc_swizzle = 0x6;
+	gpu->ubwc_config.macrotile_mode = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	gpu->ubwc_config.highest_bank_bit = 15;
 
 	if (adreno_is_a610(gpu)) {
 		gpu->ubwc_config.highest_bank_bit = 13;
 		gpu->ubwc_config.min_acc_len = 1;
+<<<<<<< HEAD
 		gpu->ubwc_config.ubwc_mode = 1;
+=======
+		gpu->ubwc_config.ubwc_swizzle = 0x7;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (adreno_is_a618(gpu))
@@ -523,9 +579,24 @@ static void a6xx_calc_ubwc_config(struct adreno_gpu *gpu)
 	if (adreno_is_a619_holi(gpu))
 		gpu->ubwc_config.highest_bank_bit = 13;
 
+<<<<<<< HEAD
 	if (adreno_is_a640_family(gpu))
 		gpu->ubwc_config.amsbc = 1;
 
+=======
+	if (adreno_is_a621(gpu)) {
+		gpu->ubwc_config.highest_bank_bit = 13;
+		gpu->ubwc_config.amsbc = 1;
+		gpu->ubwc_config.uavflagprd_inv = 2;
+	}
+
+	if (adreno_is_a640_family(gpu))
+		gpu->ubwc_config.amsbc = 1;
+
+	if (adreno_is_a680(gpu))
+		gpu->ubwc_config.macrotile_mode = 1;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (adreno_is_a650(gpu) ||
 	    adreno_is_a660(gpu) ||
 	    adreno_is_a690(gpu) ||
@@ -536,6 +607,10 @@ static void a6xx_calc_ubwc_config(struct adreno_gpu *gpu)
 		gpu->ubwc_config.amsbc = 1;
 		gpu->ubwc_config.rgb565_predicator = 1;
 		gpu->ubwc_config.uavflagprd_inv = 2;
+<<<<<<< HEAD
+=======
+		gpu->ubwc_config.macrotile_mode = 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (adreno_is_7c3(gpu)) {
@@ -543,12 +618,19 @@ static void a6xx_calc_ubwc_config(struct adreno_gpu *gpu)
 		gpu->ubwc_config.amsbc = 1;
 		gpu->ubwc_config.rgb565_predicator = 1;
 		gpu->ubwc_config.uavflagprd_inv = 2;
+<<<<<<< HEAD
+=======
+		gpu->ubwc_config.macrotile_mode = 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (adreno_is_a702(gpu)) {
 		gpu->ubwc_config.highest_bank_bit = 14;
 		gpu->ubwc_config.min_acc_len = 1;
+<<<<<<< HEAD
 		gpu->ubwc_config.ubwc_mode = 0;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -564,6 +646,7 @@ static void a6xx_set_ubwc_config(struct msm_gpu *gpu)
 	u32 hbb = adreno_gpu->ubwc_config.highest_bank_bit - 13;
 	u32 hbb_hi = hbb >> 2;
 	u32 hbb_lo = hbb & 3;
+<<<<<<< HEAD
 
 	gpu_write(gpu, REG_A6XX_RB_NC_MODE_CNTL,
 		  adreno_gpu->ubwc_config.rgb565_predicator << 11 |
@@ -579,6 +662,28 @@ static void a6xx_set_ubwc_config(struct msm_gpu *gpu)
 		  adreno_gpu->ubwc_config.uavflagprd_inv << 4 |
 		  adreno_gpu->ubwc_config.min_acc_len << 3 |
 		  hbb_lo << 1 | adreno_gpu->ubwc_config.ubwc_mode);
+=======
+	u32 ubwc_mode = adreno_gpu->ubwc_config.ubwc_swizzle & 1;
+	u32 level2_swizzling_dis = !(adreno_gpu->ubwc_config.ubwc_swizzle & 2);
+
+	gpu_write(gpu, REG_A6XX_RB_NC_MODE_CNTL,
+		  level2_swizzling_dis << 12 |
+		  adreno_gpu->ubwc_config.rgb565_predicator << 11 |
+		  hbb_hi << 10 | adreno_gpu->ubwc_config.amsbc << 4 |
+		  adreno_gpu->ubwc_config.min_acc_len << 3 |
+		  hbb_lo << 1 | ubwc_mode);
+
+	gpu_write(gpu, REG_A6XX_TPL1_NC_MODE_CNTL,
+		  level2_swizzling_dis << 6 | hbb_hi << 4 |
+		  adreno_gpu->ubwc_config.min_acc_len << 3 |
+		  hbb_lo << 1 | ubwc_mode);
+
+	gpu_write(gpu, REG_A6XX_SP_NC_MODE_CNTL,
+		  level2_swizzling_dis << 12 | hbb_hi << 10 |
+		  adreno_gpu->ubwc_config.uavflagprd_inv << 4 |
+		  adreno_gpu->ubwc_config.min_acc_len << 3 |
+		  hbb_lo << 1 | ubwc_mode);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (adreno_is_a7xx(adreno_gpu))
 		gpu_write(gpu, REG_A7XX_GRAS_NC_MODE_CNTL,
@@ -586,6 +691,12 @@ static void a6xx_set_ubwc_config(struct msm_gpu *gpu)
 
 	gpu_write(gpu, REG_A6XX_UCHE_MODE_CNTL,
 		  adreno_gpu->ubwc_config.min_acc_len << 23 | hbb_lo << 21);
+<<<<<<< HEAD
+=======
+
+	gpu_write(gpu, REG_A6XX_RBBM_NC_MODE_CNTL,
+		  adreno_gpu->ubwc_config.macrotile_mode);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int a6xx_cp_init(struct msm_gpu *gpu)
@@ -976,6 +1087,7 @@ static int hw_init(struct msm_gpu *gpu)
 	} else if (!adreno_is_a7xx(adreno_gpu))
 		gpu_write(gpu, REG_A6XX_CP_MEM_POOL_SIZE, 128);
 
+<<<<<<< HEAD
 	/* Setting the primFifo thresholds default values,
 	 * and vccCacheSkipDis=1 bit (0x200) for A640 and newer
 	*/
@@ -995,6 +1107,13 @@ static int hw_init(struct msm_gpu *gpu)
 		gpu_write(gpu, REG_A6XX_PC_DBG_ECO_CNTL, 0x00080000);
 	else if (!adreno_is_a7xx(adreno_gpu))
 		gpu_write(gpu, REG_A6XX_PC_DBG_ECO_CNTL, 0x00180000);
+=======
+
+	/* Set the default primFifo threshold values */
+	if (adreno_gpu->info->a6xx->prim_fifo_threshold)
+		gpu_write(gpu, REG_A6XX_PC_DBG_ECO_CNTL,
+			  adreno_gpu->info->a6xx->prim_fifo_threshold);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Set the AHB default slave response to "ERROR" */
 	gpu_write(gpu, REG_A6XX_CP_AHB_CNTL, 0x1);

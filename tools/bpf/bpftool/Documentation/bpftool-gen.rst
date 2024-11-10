@@ -104,7 +104,11 @@ bpftool gen skeleton *FILE*
 
     - **example__load**.
       This function creates maps, loads and verifies BPF programs, initializes
+<<<<<<< HEAD
       global data maps. It corresponds to libppf's **bpf_object__load**\ ()
+=======
+      global data maps. It corresponds to libbpf's **bpf_object__load**\ ()
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       API.
 
     - **example__open_and_load** combines **example__open** and
@@ -172,7 +176,11 @@ bpftool gen min_core_btf *INPUT* *OUTPUT* *OBJECT* [*OBJECT*...]
     CO-RE based application, turning the application portable to different
     kernel versions.
 
+<<<<<<< HEAD
     Check examples bellow for more information how to use it.
+=======
+    Check examples below for more information on how to use it.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 bpftool gen help
     Print short help message.

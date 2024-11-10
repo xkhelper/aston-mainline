@@ -934,7 +934,11 @@ static struct platform_driver ti_adpll_driver = {
 		.of_match_table = ti_adpll_match,
 	},
 	.probe = ti_adpll_probe,
+<<<<<<< HEAD
 	.remove_new = ti_adpll_remove,
+=======
+	.remove = ti_adpll_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int __init ti_adpll_init(void)

@@ -27,7 +27,11 @@ static void dsc401_disconnect(struct display_stream_compressor *dsc);
 static void dsc401_wait_disconnect_pending_clear(struct display_stream_compressor *dsc);
 static void dsc401_get_enc_caps(struct dsc_enc_caps *dsc_enc_caps, int pixel_clock_100Hz);
 
+<<<<<<< HEAD
 const struct dsc_funcs dcn401_dsc_funcs = {
+=======
+static const struct dsc_funcs dcn401_dsc_funcs = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.dsc_get_enc_caps = dsc401_get_enc_caps,
 	.dsc_read_state = dsc401_read_state,
 	.dsc_validate_stream = dsc401_validate_stream,

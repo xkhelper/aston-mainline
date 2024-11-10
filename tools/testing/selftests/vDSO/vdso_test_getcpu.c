@@ -14,6 +14,10 @@
 #include "../kselftest.h"
 #include "parse_vdso.h"
 #include "vdso_config.h"
+<<<<<<< HEAD
+=======
+#include "vdso_call.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct getcpu_cache;
 typedef long (*getcpu_t)(unsigned int *, unsigned int *,
@@ -42,7 +46,11 @@ int main(int argc, char **argv)
 		return KSFT_SKIP;
 	}
 
+<<<<<<< HEAD
 	ret = get_cpu(&cpu, &node, 0);
+=======
+	ret = VDSO_CALL(get_cpu, 3, &cpu, &node, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret == 0) {
 		printf("Running on CPU %u node %u\n", cpu, node);
 	} else {

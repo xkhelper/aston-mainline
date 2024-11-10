@@ -40,7 +40,10 @@ nvif_object_ioctl(struct nvif_object *object, void *data, u32 size, void **hack)
 			args->v0.object = nvif_handle(object);
 		else
 			args->v0.object = 0;
+<<<<<<< HEAD
 		args->v0.owner = NVIF_IOCTL_V0_OWNER_ANY;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else
 		return -ENOSYS;
 
@@ -98,6 +101,7 @@ nvif_object_sclass_get(struct nvif_object *object, struct nvif_sclass **psclass)
 	return ret;
 }
 
+<<<<<<< HEAD
 u32
 nvif_object_rd(struct nvif_object *object, int size, u64 addr)
 {
@@ -135,6 +139,8 @@ nvif_object_wr(struct nvif_object *object, int size, u64 addr, u32 data)
 	}
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int
 nvif_object_mthd(struct nvif_object *object, u32 mthd, void *data, u32 size)
 {
@@ -299,8 +305,11 @@ nvif_object_ctor(struct nvif_object *parent, const char *name, u32 handle,
 		args->ioctl.version = 0;
 		args->ioctl.type = NVIF_IOCTL_V0_NEW;
 		args->new.version = 0;
+<<<<<<< HEAD
 		args->new.route = parent->client->route;
 		args->new.token = nvif_handle(object);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		args->new.object = nvif_handle(object);
 		args->new.handle = handle;
 		args->new.oclass = oclass;

@@ -459,6 +459,7 @@ static int mcp320x_probe(struct spi_device *spi)
 }
 
 static const struct of_device_id mcp320x_dt_ids[] = {
+<<<<<<< HEAD
 	/* NOTE: The use of compatibles with no vendor prefix is deprecated. */
 	{ .compatible = "mcp3001" },
 	{ .compatible = "mcp3002" },
@@ -469,6 +470,8 @@ static const struct of_device_id mcp320x_dt_ids[] = {
 	{ .compatible = "mcp3204" },
 	{ .compatible = "mcp3208" },
 	{ .compatible = "mcp3301" },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .compatible = "microchip,mcp3001" },
 	{ .compatible = "microchip,mcp3002" },
 	{ .compatible = "microchip,mcp3004" },

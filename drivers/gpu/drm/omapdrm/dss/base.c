@@ -242,8 +242,12 @@ static void omapdss_walk_device(struct device *dev, struct device_node *node,
 
 	of_node_put(n);
 
+<<<<<<< HEAD
 	n = NULL;
 	while ((n = of_graph_get_next_endpoint(node, n)) != NULL) {
+=======
+	for_each_endpoint_of_node(node, n) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct device_node *pn = of_graph_get_remote_port_parent(n);
 
 		if (!pn)

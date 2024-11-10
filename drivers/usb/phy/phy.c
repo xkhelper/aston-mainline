@@ -628,7 +628,11 @@ void devm_usb_put_phy(struct device *dev, struct usb_phy *phy)
 {
 	int r;
 
+<<<<<<< HEAD
 	r = devres_destroy(dev, devm_usb_phy_release, devm_usb_phy_match, phy);
+=======
+	r = devres_release(dev, devm_usb_phy_release, devm_usb_phy_match, phy);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev_WARN_ONCE(dev, r, "couldn't find PHY resource\n");
 }
 EXPORT_SYMBOL_GPL(devm_usb_put_phy);

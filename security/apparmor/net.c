@@ -151,7 +151,11 @@ static int aa_label_sk_perm(const struct cred *subj_cred,
 			    const char *op, u32 request,
 			    struct sock *sk)
 {
+<<<<<<< HEAD
 	struct aa_sk_ctx *ctx = SK_CTX(sk);
+=======
+	struct aa_sk_ctx *ctx = aa_sock(sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int error = 0;
 
 	AA_BUG(!label);

@@ -1676,9 +1676,17 @@ static int mlxsw_sp_port_create(struct mlxsw_sp *mlxsw_sp, u16 local_port,
 
 	netif_carrier_off(dev);
 
+<<<<<<< HEAD
 	dev->features |= NETIF_F_NETNS_LOCAL | NETIF_F_LLTX | NETIF_F_SG |
 			 NETIF_F_HW_VLAN_CTAG_FILTER | NETIF_F_HW_TC;
 	dev->hw_features |= NETIF_F_HW_TC | NETIF_F_LOOPBACK;
+=======
+	dev->features |= NETIF_F_SG | NETIF_F_HW_VLAN_CTAG_FILTER |
+			 NETIF_F_HW_TC;
+	dev->hw_features |= NETIF_F_HW_TC | NETIF_F_LOOPBACK;
+	dev->lltx = true;
+	dev->netns_local = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dev->min_mtu = ETH_MIN_MTU;
 	dev->max_mtu = MLXSW_PORT_MAX_MTU - MLXSW_PORT_ETH_FRAME_HDR;
@@ -2784,7 +2792,13 @@ static const struct mlxsw_sp_ptp_ops mlxsw_sp1_ptp_ops = {
 	.hwtstamp_get	= mlxsw_sp1_ptp_hwtstamp_get,
 	.hwtstamp_set	= mlxsw_sp1_ptp_hwtstamp_set,
 	.shaper_work	= mlxsw_sp1_ptp_shaper_work,
+<<<<<<< HEAD
 	.get_ts_info	= mlxsw_sp1_ptp_get_ts_info,
+=======
+#if IS_REACHABLE(CONFIG_PTP_1588_CLOCK)
+	.get_ts_info	= mlxsw_sp1_ptp_get_ts_info,
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.get_stats_count = mlxsw_sp1_get_stats_count,
 	.get_stats_strings = mlxsw_sp1_get_stats_strings,
 	.get_stats	= mlxsw_sp1_get_stats,
@@ -2801,7 +2815,13 @@ static const struct mlxsw_sp_ptp_ops mlxsw_sp2_ptp_ops = {
 	.hwtstamp_get	= mlxsw_sp2_ptp_hwtstamp_get,
 	.hwtstamp_set	= mlxsw_sp2_ptp_hwtstamp_set,
 	.shaper_work	= mlxsw_sp2_ptp_shaper_work,
+<<<<<<< HEAD
 	.get_ts_info	= mlxsw_sp2_ptp_get_ts_info,
+=======
+#if IS_REACHABLE(CONFIG_PTP_1588_CLOCK)
+	.get_ts_info	= mlxsw_sp2_ptp_get_ts_info,
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.get_stats_count = mlxsw_sp2_get_stats_count,
 	.get_stats_strings = mlxsw_sp2_get_stats_strings,
 	.get_stats	= mlxsw_sp2_get_stats,
@@ -2818,7 +2838,13 @@ static const struct mlxsw_sp_ptp_ops mlxsw_sp4_ptp_ops = {
 	.hwtstamp_get	= mlxsw_sp2_ptp_hwtstamp_get,
 	.hwtstamp_set	= mlxsw_sp2_ptp_hwtstamp_set,
 	.shaper_work	= mlxsw_sp2_ptp_shaper_work,
+<<<<<<< HEAD
 	.get_ts_info	= mlxsw_sp2_ptp_get_ts_info,
+=======
+#if IS_REACHABLE(CONFIG_PTP_1588_CLOCK)
+	.get_ts_info	= mlxsw_sp2_ptp_get_ts_info,
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.get_stats_count = mlxsw_sp2_get_stats_count,
 	.get_stats_strings = mlxsw_sp2_get_stats_strings,
 	.get_stats	= mlxsw_sp2_get_stats,

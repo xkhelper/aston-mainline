@@ -19,7 +19,11 @@
 #include <linux/rcupdate.h>
 #include <linux/rculist.h>
 #include <linux/kref.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <scsi/libfc.h>
 
 #include <target/target_core_base.h>

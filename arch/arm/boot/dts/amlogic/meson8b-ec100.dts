@@ -34,8 +34,11 @@
 
 	gpio-keys {
 		compatible = "gpio-keys-polled";
+<<<<<<< HEAD
 		#address-cells = <1>;
 		#size-cells = <0>;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		poll-interval = <100>;
 
 		pal-switch {

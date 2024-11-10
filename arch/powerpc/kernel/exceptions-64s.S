@@ -1989,6 +1989,7 @@ INT_DEFINE_END(system_call)
 	INTERRUPT_TO_KERNEL
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_FAST_ENDIAN_SWITCH
 BEGIN_FTR_SECTION
 	cmpdi	r0,0x1ebe
@@ -1996,6 +1997,8 @@ BEGIN_FTR_SECTION
 END_FTR_SECTION_IFSET(CPU_FTR_REAL_LE)
 #endif
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* We reach here with PACA in r13, r13 in r9. */
 	mfspr	r11,SPRN_SRR0
 	mfspr	r12,SPRN_SRR1
@@ -2015,6 +2018,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_REAL_LE)
 	b	system_call_common
 #endif
 	.endif
+<<<<<<< HEAD
 
 #ifdef CONFIG_PPC_FAST_ENDIAN_SWITCH
 	/* Fast LE/BE switch system call */
@@ -2025,6 +2029,8 @@ END_FTR_SECTION_IFSET(CPU_FTR_REAL_LE)
 	RFI_TO_USER	/* return to userspace */
 	b	.	/* prevent speculative execution */
 #endif
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 .endm
 
 EXC_REAL_BEGIN(system_call, 0xc00, 0x100)

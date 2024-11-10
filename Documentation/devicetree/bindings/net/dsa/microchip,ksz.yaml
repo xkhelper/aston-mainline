@@ -22,7 +22,13 @@ properties:
       - microchip,ksz8794
       - microchip,ksz8795
       - microchip,ksz8863
+<<<<<<< HEAD
       - microchip,ksz8873
+=======
+      - microchip,ksz8864  # 4-port version of KSZ8895 family switch
+      - microchip,ksz8873
+      - microchip,ksz8895  # 5-port version of KSZ8895 family switch
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       - microchip,ksz9477
       - microchip,ksz9897
       - microchip,ksz9896
@@ -51,6 +57,14 @@ properties:
       Set if the output SYNCLKO clock should be disabled. Do not mix with
       microchip,synclko-125.
 
+<<<<<<< HEAD
+=======
+  microchip,pme-active-high:
+    $ref: /schemas/types.yaml#/definitions/flag
+    description:
+      Indicates if the PME pin polarity is active-high.
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   microchip,io-drive-strength-microamp:
     description:
       IO Pad Drive Strength

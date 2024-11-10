@@ -25,6 +25,19 @@
  * Device Information
  */
 
+<<<<<<< HEAD
+=======
+static const struct rzg2l_du_device_info rzg2l_du_r9a07g043u_info = {
+	.channels_mask = BIT(0),
+	.routes = {
+		[RZG2L_DU_OUTPUT_DPAD0] = {
+			.possible_outputs = BIT(0),
+			.port = 0,
+		},
+	},
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct rzg2l_du_device_info rzg2l_du_r9a07g044_info = {
 	.channels_mask = BIT(0),
 	.routes = {
@@ -40,6 +53,10 @@ static const struct rzg2l_du_device_info rzg2l_du_r9a07g044_info = {
 };
 
 static const struct of_device_id rzg2l_du_of_table[] = {
+<<<<<<< HEAD
+=======
+	{ .compatible = "renesas,r9a07g043u-du", .data = &rzg2l_du_r9a07g043u_info },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .compatible = "renesas,r9a07g044-du", .data = &rzg2l_du_r9a07g044_info },
 	{ /* sentinel */ }
 };

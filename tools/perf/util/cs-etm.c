@@ -97,28 +97,60 @@ struct cs_etm_traceid_queue {
 	struct cs_etm_packet_queue packet_queue;
 };
 
+<<<<<<< HEAD
+=======
+enum cs_etm_format {
+	UNSET,
+	FORMATTED,
+	UNFORMATTED
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct cs_etm_queue {
 	struct cs_etm_auxtrace *etm;
 	struct cs_etm_decoder *decoder;
 	struct auxtrace_buffer *buffer;
 	unsigned int queue_nr;
 	u8 pending_timestamp_chan_id;
+<<<<<<< HEAD
+=======
+	enum cs_etm_format format;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 offset;
 	const unsigned char *buf;
 	size_t buf_len, buf_used;
 	/* Conversion between traceID and index in traceid_queues array */
 	struct intlist *traceid_queues_list;
 	struct cs_etm_traceid_queue **traceid_queues;
+<<<<<<< HEAD
 };
 
 /* RB tree for quick conversion between traceID and metadata pointers */
 static struct intlist *traceid_list;
 
+=======
+	/* Conversion between traceID and metadata pointers */
+	struct intlist *traceid_list;
+	/*
+	 * Same as traceid_list, but traceid_list may be a reference to another
+	 * queue's which has a matching sink ID.
+	 */
+	struct intlist *own_traceid_list;
+	u32 sink_id;
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int cs_etm__process_timestamped_queues(struct cs_etm_auxtrace *etm);
 static int cs_etm__process_timeless_queues(struct cs_etm_auxtrace *etm,
 					   pid_t tid);
 static int cs_etm__get_data_block(struct cs_etm_queue *etmq);
 static int cs_etm__decode_data_block(struct cs_etm_queue *etmq);
+<<<<<<< HEAD
+=======
+static int cs_etm__metadata_get_trace_id(u8 *trace_chan_id, u64 *cpu_metadata);
+static u64 *get_cpu_data(struct cs_etm_auxtrace *etm, int cpu);
+static int cs_etm__metadata_set_trace_id(u8 trace_chan_id, u64 *cpu_metadata);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* PTMs ETMIDR [11:8] set to b0011 */
 #define ETMIDR_PTM_VERSION 0x00000300
@@ -133,6 +165,10 @@ static int cs_etm__decode_data_block(struct cs_etm_queue *etmq);
 		      (queue_nr << 16 | trace_chan_id)
 #define TO_QUEUE_NR(cs_queue_nr) (cs_queue_nr >> 16)
 #define TO_TRACE_CHAN_ID(cs_queue_nr) (cs_queue_nr & 0x0000ffff)
+<<<<<<< HEAD
+=======
+#define SINK_UNSET ((u32) -1)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static u32 cs_etm__get_v7_protocol_version(u32 etmidr)
 {
@@ -144,12 +180,20 @@ static u32 cs_etm__get_v7_protocol_version(u32 etmidr)
 	return CS_ETM_PROTO_ETMV3;
 }
 
+<<<<<<< HEAD
 static int cs_etm__get_magic(u8 trace_chan_id, u64 *magic)
+=======
+static int cs_etm__get_magic(struct cs_etm_queue *etmq, u8 trace_chan_id, u64 *magic)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct int_node *inode;
 	u64 *metadata;
 
+<<<<<<< HEAD
 	inode = intlist__find(traceid_list, trace_chan_id);
+=======
+	inode = intlist__find(etmq->traceid_list, trace_chan_id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!inode)
 		return -EINVAL;
 
@@ -158,12 +202,20 @@ static int cs_etm__get_magic(u8 trace_chan_id, u64 *magic)
 	return 0;
 }
 
+<<<<<<< HEAD
 int cs_etm__get_cpu(u8 trace_chan_id, int *cpu)
+=======
+int cs_etm__get_cpu(struct cs_etm_queue *etmq, u8 trace_chan_id, int *cpu)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct int_node *inode;
 	u64 *metadata;
 
+<<<<<<< HEAD
 	inode = intlist__find(traceid_list, trace_chan_id);
+=======
+	inode = intlist__find(etmq->traceid_list, trace_chan_id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!inode)
 		return -EINVAL;
 
@@ -215,17 +267,26 @@ enum cs_etm_pid_fmt cs_etm__get_pid_fmt(struct cs_etm_queue *etmq)
 	return etmq->etm->pid_fmt;
 }
 
+<<<<<<< HEAD
 static int cs_etm__map_trace_id(u8 trace_chan_id, u64 *cpu_metadata)
 {
 	struct int_node *inode;
 
 	/* Get an RB node for this CPU */
 	inode = intlist__findnew(traceid_list, trace_chan_id);
+=======
+static int cs_etm__insert_trace_id_node(struct cs_etm_queue *etmq,
+					u8 trace_chan_id, u64 *cpu_metadata)
+{
+	/* Get an RB node for this CPU */
+	struct int_node *inode = intlist__findnew(etmq->traceid_list, trace_chan_id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Something went wrong, no need to continue */
 	if (!inode)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	/*
 	 * The node for that CPU should not be taken.
 	 * Back out if that's the case.
@@ -235,6 +296,163 @@ static int cs_etm__map_trace_id(u8 trace_chan_id, u64 *cpu_metadata)
 
 	/* All good, associate the traceID with the metadata pointer */
 	inode->priv = cpu_metadata;
+=======
+	/* Disallow re-mapping a different traceID to metadata pair. */
+	if (inode->priv) {
+		u64 *curr_cpu_data = inode->priv;
+		u8 curr_chan_id;
+		int err;
+
+		if (curr_cpu_data[CS_ETM_CPU] != cpu_metadata[CS_ETM_CPU]) {
+			/*
+			 * With > CORESIGHT_TRACE_IDS_MAX ETMs, overlapping IDs
+			 * are expected (but not supported) in per-thread mode,
+			 * rather than signifying an error.
+			 */
+			if (etmq->etm->per_thread_decoding)
+				pr_err("CS_ETM: overlapping Trace IDs aren't currently supported in per-thread mode\n");
+			else
+				pr_err("CS_ETM: map mismatch between HW_ID packet CPU and Trace ID\n");
+
+			return -EINVAL;
+		}
+
+		/* check that the mapped ID matches */
+		err = cs_etm__metadata_get_trace_id(&curr_chan_id, curr_cpu_data);
+		if (err)
+			return err;
+
+		if (curr_chan_id != trace_chan_id) {
+			pr_err("CS_ETM: mismatch between CPU trace ID and HW_ID packet ID\n");
+			return -EINVAL;
+		}
+
+		/* Skip re-adding the same mappings if everything matched */
+		return 0;
+	}
+
+	/* Not one we've seen before, associate the traceID with the metadata pointer */
+	inode->priv = cpu_metadata;
+
+	return 0;
+}
+
+static struct cs_etm_queue *cs_etm__get_queue(struct cs_etm_auxtrace *etm, int cpu)
+{
+	if (etm->per_thread_decoding)
+		return etm->queues.queue_array[0].priv;
+	else
+		return etm->queues.queue_array[cpu].priv;
+}
+
+static int cs_etm__map_trace_id_v0(struct cs_etm_auxtrace *etm, u8 trace_chan_id,
+				   u64 *cpu_metadata)
+{
+	struct cs_etm_queue *etmq;
+
+	/*
+	 * If the queue is unformatted then only save one mapping in the
+	 * queue associated with that CPU so only one decoder is made.
+	 */
+	etmq = cs_etm__get_queue(etm, cpu_metadata[CS_ETM_CPU]);
+	if (etmq->format == UNFORMATTED)
+		return cs_etm__insert_trace_id_node(etmq, trace_chan_id,
+						    cpu_metadata);
+
+	/*
+	 * Otherwise, version 0 trace IDs are global so save them into every
+	 * queue.
+	 */
+	for (unsigned int i = 0; i < etm->queues.nr_queues; ++i) {
+		int ret;
+
+		etmq = etm->queues.queue_array[i].priv;
+		ret = cs_etm__insert_trace_id_node(etmq, trace_chan_id,
+						   cpu_metadata);
+		if (ret)
+			return ret;
+	}
+
+	return 0;
+}
+
+static int cs_etm__process_trace_id_v0(struct cs_etm_auxtrace *etm, int cpu,
+				       u64 hw_id)
+{
+	int err;
+	u64 *cpu_data;
+	u8 trace_chan_id = FIELD_GET(CS_AUX_HW_ID_TRACE_ID_MASK, hw_id);
+
+	cpu_data = get_cpu_data(etm, cpu);
+	if (cpu_data == NULL)
+		return -EINVAL;
+
+	err = cs_etm__map_trace_id_v0(etm, trace_chan_id, cpu_data);
+	if (err)
+		return err;
+
+	/*
+	 * if we are picking up the association from the packet, need to plug
+	 * the correct trace ID into the metadata for setting up decoders later.
+	 */
+	return cs_etm__metadata_set_trace_id(trace_chan_id, cpu_data);
+}
+
+static int cs_etm__process_trace_id_v0_1(struct cs_etm_auxtrace *etm, int cpu,
+					 u64 hw_id)
+{
+	struct cs_etm_queue *etmq = cs_etm__get_queue(etm, cpu);
+	int ret;
+	u64 *cpu_data;
+	u32 sink_id = FIELD_GET(CS_AUX_HW_ID_SINK_ID_MASK, hw_id);
+	u8 trace_id = FIELD_GET(CS_AUX_HW_ID_TRACE_ID_MASK, hw_id);
+
+	/*
+	 * Check sink id hasn't changed in per-cpu mode. In per-thread mode,
+	 * let it pass for now until an actual overlapping trace ID is hit. In
+	 * most cases IDs won't overlap even if the sink changes.
+	 */
+	if (!etmq->etm->per_thread_decoding && etmq->sink_id != SINK_UNSET &&
+	    etmq->sink_id != sink_id) {
+		pr_err("CS_ETM: mismatch between sink IDs\n");
+		return -EINVAL;
+	}
+
+	etmq->sink_id = sink_id;
+
+	/* Find which other queues use this sink and link their ID maps */
+	for (unsigned int i = 0; i < etm->queues.nr_queues; ++i) {
+		struct cs_etm_queue *other_etmq = etm->queues.queue_array[i].priv;
+
+		/* Different sinks, skip */
+		if (other_etmq->sink_id != etmq->sink_id)
+			continue;
+
+		/* Already linked, skip */
+		if (other_etmq->traceid_list == etmq->traceid_list)
+			continue;
+
+		/* At the point of first linking, this one should be empty */
+		if (!intlist__empty(etmq->traceid_list)) {
+			pr_err("CS_ETM: Can't link populated trace ID lists\n");
+			return -EINVAL;
+		}
+
+		etmq->own_traceid_list = NULL;
+		intlist__delete(etmq->traceid_list);
+		etmq->traceid_list = other_etmq->traceid_list;
+		break;
+	}
+
+	cpu_data = get_cpu_data(etm, cpu);
+	ret = cs_etm__insert_trace_id_node(etmq, trace_id, cpu_data);
+	if (ret)
+		return ret;
+
+	ret = cs_etm__metadata_set_trace_id(trace_id, cpu_data);
+	if (ret)
+		return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -261,7 +479,10 @@ static int cs_etm__metadata_get_trace_id(u8 *trace_chan_id, u64 *cpu_metadata)
 
 /*
  * update metadata trace ID from the value found in the AUX_HW_INFO packet.
+<<<<<<< HEAD
  * This will also clear the CORESIGHT_TRACE_ID_UNUSED_FLAG flag if present.
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static int cs_etm__metadata_set_trace_id(u8 trace_chan_id, u64 *cpu_metadata)
 {
@@ -322,6 +543,7 @@ static int cs_etm__process_aux_output_hw_id(struct perf_session *session,
 {
 	struct cs_etm_auxtrace *etm;
 	struct perf_sample sample;
+<<<<<<< HEAD
 	struct int_node *inode;
 	struct evsel *evsel;
 	u64 *cpu_data;
@@ -336,6 +558,18 @@ static int cs_etm__process_aux_output_hw_id(struct perf_session *session,
 
 	/* check that we can handle this version */
 	if (version > CS_AUX_HW_ID_CURR_VERSION) {
+=======
+	struct evsel *evsel;
+	u64 hw_id;
+	int cpu, version, err;
+
+	/* extract and parse the HW ID */
+	hw_id = event->aux_output_hw_id.hw_id;
+	version = FIELD_GET(CS_AUX_HW_ID_MAJOR_VERSION_MASK, hw_id);
+
+	/* check that we can handle this version */
+	if (version > CS_AUX_HW_ID_MAJOR_VERSION) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pr_err("CS ETM Trace: PERF_RECORD_AUX_OUTPUT_HW_ID version %d not supported. Please update Perf.\n",
 		       version);
 		return -EINVAL;
@@ -360,6 +594,7 @@ static int cs_etm__process_aux_output_hw_id(struct perf_session *session,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	/* See if the ID is mapped to a CPU, and it matches the current CPU */
 	inode = intlist__find(traceid_list, trace_chan_id);
 	if (inode) {
@@ -397,6 +632,12 @@ static int cs_etm__process_aux_output_hw_id(struct perf_session *session,
 	 */
 	err = cs_etm__metadata_set_trace_id(trace_chan_id, cpu_data);
 	return err;
+=======
+	if (FIELD_GET(CS_AUX_HW_ID_MINOR_VERSION_MASK, hw_id) == 0)
+		return cs_etm__process_trace_id_v0(etm, cpu, hw_id);
+
+	return cs_etm__process_trace_id_v0_1(etm, cpu, hw_id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void cs_etm__etmq_set_traceid_queue_timestamp(struct cs_etm_queue *etmq,
@@ -639,6 +880,7 @@ static void cs_etm__packet_swap(struct cs_etm_auxtrace *etm,
 	}
 }
 
+<<<<<<< HEAD
 static void cs_etm__packet_dump(const char *pkt_string)
 {
 	const char *color = PERF_COLOR_BLUE;
@@ -648,11 +890,30 @@ static void cs_etm__packet_dump(const char *pkt_string)
 		color_fprintf(stdout, color, "	%s", pkt_string);
 	else
 		color_fprintf(stdout, color, "	%s\n", pkt_string);
+=======
+static void cs_etm__packet_dump(const char *pkt_string, void *data)
+{
+	const char *color = PERF_COLOR_BLUE;
+	int len = strlen(pkt_string);
+	struct cs_etm_queue *etmq = data;
+	char queue_nr[64];
+
+	if (verbose)
+		snprintf(queue_nr, sizeof(queue_nr), "Qnr:%d; ", etmq->queue_nr);
+	else
+		queue_nr[0] = '\0';
+
+	if (len && (pkt_string[len-1] == '\n'))
+		color_fprintf(stdout, color, "	%s%s", queue_nr, pkt_string);
+	else
+		color_fprintf(stdout, color, "	%s%s\n", queue_nr, pkt_string);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	fflush(stdout);
 }
 
 static void cs_etm__set_trace_param_etmv3(struct cs_etm_trace_params *t_params,
+<<<<<<< HEAD
 					  struct cs_etm_auxtrace *etm, int t_idx,
 					  int m_idx, u32 etmidr)
 {
@@ -727,6 +988,60 @@ static int cs_etm__init_trace_params(struct cs_etm_trace_params *t_params,
 			break;
 		case __perf_cs_ete_magic:
 			cs_etm__set_trace_param_ete(t_params, etm, t_idx, m_idx);
+=======
+					  u64 *metadata, u32 etmidr)
+{
+	t_params->protocol = cs_etm__get_v7_protocol_version(etmidr);
+	t_params->etmv3.reg_ctrl = metadata[CS_ETM_ETMCR];
+	t_params->etmv3.reg_trc_id = metadata[CS_ETM_ETMTRACEIDR];
+}
+
+static void cs_etm__set_trace_param_etmv4(struct cs_etm_trace_params *t_params,
+					  u64 *metadata)
+{
+	t_params->protocol = CS_ETM_PROTO_ETMV4i;
+	t_params->etmv4.reg_idr0 = metadata[CS_ETMV4_TRCIDR0];
+	t_params->etmv4.reg_idr1 = metadata[CS_ETMV4_TRCIDR1];
+	t_params->etmv4.reg_idr2 = metadata[CS_ETMV4_TRCIDR2];
+	t_params->etmv4.reg_idr8 = metadata[CS_ETMV4_TRCIDR8];
+	t_params->etmv4.reg_configr = metadata[CS_ETMV4_TRCCONFIGR];
+	t_params->etmv4.reg_traceidr = metadata[CS_ETMV4_TRCTRACEIDR];
+}
+
+static void cs_etm__set_trace_param_ete(struct cs_etm_trace_params *t_params,
+					u64 *metadata)
+{
+	t_params->protocol = CS_ETM_PROTO_ETE;
+	t_params->ete.reg_idr0 = metadata[CS_ETE_TRCIDR0];
+	t_params->ete.reg_idr1 = metadata[CS_ETE_TRCIDR1];
+	t_params->ete.reg_idr2 = metadata[CS_ETE_TRCIDR2];
+	t_params->ete.reg_idr8 = metadata[CS_ETE_TRCIDR8];
+	t_params->ete.reg_configr = metadata[CS_ETE_TRCCONFIGR];
+	t_params->ete.reg_traceidr = metadata[CS_ETE_TRCTRACEIDR];
+	t_params->ete.reg_devarch = metadata[CS_ETE_TRCDEVARCH];
+}
+
+static int cs_etm__init_trace_params(struct cs_etm_trace_params *t_params,
+				     struct cs_etm_queue *etmq)
+{
+	struct int_node *inode;
+
+	intlist__for_each_entry(inode, etmq->traceid_list) {
+		u64 *metadata = inode->priv;
+		u64 architecture = metadata[CS_ETM_MAGIC];
+		u32 etmidr;
+
+		switch (architecture) {
+		case __perf_cs_etmv3_magic:
+			etmidr = metadata[CS_ETM_ETMIDR];
+			cs_etm__set_trace_param_etmv3(t_params++, metadata, etmidr);
+			break;
+		case __perf_cs_etmv4_magic:
+			cs_etm__set_trace_param_etmv4(t_params++, metadata);
+			break;
+		case __perf_cs_ete_magic:
+			cs_etm__set_trace_param_ete(t_params++, metadata);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		default:
 			return -EINVAL;
@@ -738,8 +1053,12 @@ static int cs_etm__init_trace_params(struct cs_etm_trace_params *t_params,
 
 static int cs_etm__init_decoder_params(struct cs_etm_decoder_params *d_params,
 				       struct cs_etm_queue *etmq,
+<<<<<<< HEAD
 				       enum cs_etm_decoder_operation mode,
 				       bool formatted)
+=======
+				       enum cs_etm_decoder_operation mode)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int ret = -EINVAL;
 
@@ -749,7 +1068,11 @@ static int cs_etm__init_decoder_params(struct cs_etm_decoder_params *d_params,
 	d_params->packet_printer = cs_etm__packet_dump;
 	d_params->operation = mode;
 	d_params->data = etmq;
+<<<<<<< HEAD
 	d_params->formatted = formatted;
+=======
+	d_params->formatted = etmq->format == FORMATTED;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	d_params->fsyncs = false;
 	d_params->hsyncs = false;
 	d_params->frame_aligned = true;
@@ -788,7 +1111,11 @@ static void cs_etm__dump_event(struct cs_etm_queue *etmq,
 }
 
 static int cs_etm__flush_events(struct perf_session *session,
+<<<<<<< HEAD
 				struct perf_tool *tool)
+=======
+				const struct perf_tool *tool)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct cs_etm_auxtrace *etm = container_of(session->auxtrace,
 						   struct cs_etm_auxtrace,
@@ -850,6 +1177,10 @@ static void cs_etm__free_traceid_queues(struct cs_etm_queue *etmq)
 
 static void cs_etm__free_queue(void *priv)
 {
+<<<<<<< HEAD
+=======
+	struct int_node *inode, *tmp;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cs_etm_queue *etmq = priv;
 
 	if (!etmq)
@@ -857,6 +1188,19 @@ static void cs_etm__free_queue(void *priv)
 
 	cs_etm_decoder__free(etmq->decoder);
 	cs_etm__free_traceid_queues(etmq);
+<<<<<<< HEAD
+=======
+
+	if (etmq->own_traceid_list) {
+		/* First remove all traceID/metadata nodes for the RB tree */
+		intlist__for_each_entry_safe(inode, tmp, etmq->own_traceid_list)
+			intlist__remove(etmq->own_traceid_list, inode);
+
+		/* Then the RB tree itself */
+		intlist__delete(etmq->own_traceid_list);
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	free(etmq);
 }
 
@@ -879,19 +1223,25 @@ static void cs_etm__free_events(struct perf_session *session)
 static void cs_etm__free(struct perf_session *session)
 {
 	int i;
+<<<<<<< HEAD
 	struct int_node *inode, *tmp;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cs_etm_auxtrace *aux = container_of(session->auxtrace,
 						   struct cs_etm_auxtrace,
 						   auxtrace);
 	cs_etm__free_events(session);
 	session->auxtrace = NULL;
 
+<<<<<<< HEAD
 	/* First remove all traceID/metadata nodes for the RB tree */
 	intlist__for_each_entry_safe(inode, tmp, traceid_list)
 		intlist__remove(traceid_list, inode);
 	/* Then the RB tree itself */
 	intlist__delete(traceid_list);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < aux->num_cpu; i++)
 		zfree(&aux->metadata[i]);
 
@@ -1041,6 +1391,7 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static struct cs_etm_queue *cs_etm__alloc_queue(struct cs_etm_auxtrace *etm,
 						bool formatted, int sample_cpu)
 {
@@ -1054,6 +1405,11 @@ static struct cs_etm_queue *cs_etm__alloc_queue(struct cs_etm_auxtrace *etm,
 	int decoders = formatted ? etm->num_cpu : 1;
 
 	etmq = zalloc(sizeof(*etmq));
+=======
+static struct cs_etm_queue *cs_etm__alloc_queue(void)
+{
+	struct cs_etm_queue *etmq = zalloc(sizeof(*etmq));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!etmq)
 		return NULL;
 
@@ -1061,6 +1417,7 @@ static struct cs_etm_queue *cs_etm__alloc_queue(struct cs_etm_auxtrace *etm,
 	if (!etmq->traceid_queues_list)
 		goto out_free;
 
+<<<<<<< HEAD
 	/* Use metadata to fill in trace parameters for trace decoder */
 	t_params = zalloc(sizeof(*t_params) * decoders);
 
@@ -1097,6 +1454,19 @@ static struct cs_etm_queue *cs_etm__alloc_queue(struct cs_etm_auxtrace *etm,
 
 out_free_decoder:
 	cs_etm_decoder__free(etmq->decoder);
+=======
+	/*
+	 * Create an RB tree for traceID-metadata tuple.  Since the conversion
+	 * has to be made for each packet that gets decoded, optimizing access
+	 * in anything other than a sequential array is worth doing.
+	 */
+	etmq->traceid_list = etmq->own_traceid_list = intlist__new(NULL);
+	if (!etmq->traceid_list)
+		goto out_free;
+
+	return etmq;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out_free:
 	intlist__delete(etmq->traceid_queues_list);
 	free(etmq);
@@ -1106,6 +1476,7 @@ out_free:
 
 static int cs_etm__setup_queue(struct cs_etm_auxtrace *etm,
 			       struct auxtrace_queue *queue,
+<<<<<<< HEAD
 			       unsigned int queue_nr,
 			       bool formatted,
 			       int sample_cpu)
@@ -1116,6 +1487,16 @@ static int cs_etm__setup_queue(struct cs_etm_auxtrace *etm,
 		return 0;
 
 	etmq = cs_etm__alloc_queue(etm, formatted, sample_cpu);
+=======
+			       unsigned int queue_nr)
+{
+	struct cs_etm_queue *etmq = queue->priv;
+
+	if (etmq)
+		return 0;
+
+	etmq = cs_etm__alloc_queue();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!etmq)
 		return -ENOMEM;
@@ -1123,7 +1504,13 @@ static int cs_etm__setup_queue(struct cs_etm_auxtrace *etm,
 	queue->priv = etmq;
 	etmq->etm = etm;
 	etmq->queue_nr = queue_nr;
+<<<<<<< HEAD
 	etmq->offset = 0;
+=======
+	queue->cpu = queue_nr; /* Placeholder, may be reset to -1 in per-thread mode */
+	etmq->offset = 0;
+	etmq->sink_id = SINK_UNSET;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -1267,8 +1654,17 @@ static inline int cs_etm__t32_instr_size(struct cs_etm_queue *etmq,
 
 static inline u64 cs_etm__first_executed_instr(struct cs_etm_packet *packet)
 {
+<<<<<<< HEAD
 	/* Returns 0 for the CS_ETM_DISCONTINUITY packet */
 	if (packet->sample_type == CS_ETM_DISCONTINUITY)
+=======
+	/*
+	 * Return 0 for packets that have no addresses so that CS_ETM_INVAL_ADDR doesn't
+	 * appear in samples.
+	 */
+	if (packet->sample_type == CS_ETM_DISCONTINUITY ||
+	    packet->sample_type == CS_ETM_EXCEPTION)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	return packet->start_addr;
@@ -1595,6 +1991,7 @@ static int cs_etm__synth_branch_sample(struct cs_etm_queue *etmq,
 	return ret;
 }
 
+<<<<<<< HEAD
 struct cs_etm_synth {
 	struct perf_tool dummy_tool;
 	struct perf_session *session;
@@ -1624,6 +2021,8 @@ static int cs_etm__synth_event(struct perf_session *session,
 					   &id, cs_etm__event_synth);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int cs_etm__synth_events(struct cs_etm_auxtrace *etm,
 				struct perf_session *session)
 {
@@ -1675,7 +2074,11 @@ static int cs_etm__synth_events(struct cs_etm_auxtrace *etm,
 		attr.config = PERF_COUNT_HW_BRANCH_INSTRUCTIONS;
 		attr.sample_period = 1;
 		attr.sample_type |= PERF_SAMPLE_ADDR;
+<<<<<<< HEAD
 		err = cs_etm__synth_event(session, &attr, id);
+=======
+		err = perf_session__deliver_synth_attr_event(session, &attr, id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err)
 			return err;
 		etm->branches_sample_type = attr.sample_type;
@@ -1698,7 +2101,11 @@ static int cs_etm__synth_events(struct cs_etm_auxtrace *etm,
 		attr.config = PERF_COUNT_HW_INSTRUCTIONS;
 		attr.sample_period = etm->synth_opts.period;
 		etm->instructions_sample_period = attr.sample_period;
+<<<<<<< HEAD
 		err = cs_etm__synth_event(session, &attr, id);
+=======
+		err = perf_session__deliver_synth_attr_event(session, &attr, id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err)
 			return err;
 		etm->instructions_sample_type = attr.sample_type;
@@ -2252,7 +2659,11 @@ static int cs_etm__set_sample_flags(struct cs_etm_queue *etmq,
 					      PERF_IP_FLAG_TRACE_END;
 		break;
 	case CS_ETM_EXCEPTION:
+<<<<<<< HEAD
 		ret = cs_etm__get_magic(packet->trace_chan_id, &magic);
+=======
+		ret = cs_etm__get_magic(etmq, packet->trace_chan_id, &magic);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret)
 			return ret;
 
@@ -2740,7 +3151,11 @@ static int cs_etm__process_switch_cpu_wide(struct cs_etm_auxtrace *etm,
 static int cs_etm__process_event(struct perf_session *session,
 				 union perf_event *event,
 				 struct perf_sample *sample,
+<<<<<<< HEAD
 				 struct perf_tool *tool)
+=======
+				 const struct perf_tool *tool)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct cs_etm_auxtrace *etm = container_of(session->auxtrace,
 						   struct cs_etm_auxtrace,
@@ -2810,7 +3225,11 @@ static void dump_queued_data(struct cs_etm_auxtrace *etm,
 
 static int cs_etm__process_auxtrace_event(struct perf_session *session,
 					  union perf_event *event,
+<<<<<<< HEAD
 					  struct perf_tool *tool __maybe_unused)
+=======
+					  const struct perf_tool *tool __maybe_unused)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct cs_etm_auxtrace *etm = container_of(session->auxtrace,
 						   struct cs_etm_auxtrace,
@@ -2836,6 +3255,7 @@ static int cs_etm__process_auxtrace_event(struct perf_session *session,
 		if (err)
 			return err;
 
+<<<<<<< HEAD
 		/*
 		 * Knowing if the trace is formatted or not requires a lookup of
 		 * the aux record so only works in non-piped mode where data is
@@ -2847,6 +3267,8 @@ static int cs_etm__process_auxtrace_event(struct perf_session *session,
 		if (err)
 			return err;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (dump_trace)
 			if (auxtrace_buffer__get_data(buffer, fd)) {
 				cs_etm__dump_event(etm->queues.queue_array[idx].priv, buffer);
@@ -2963,8 +3385,12 @@ static int cs_etm__queue_aux_fragment(struct perf_session *session, off_t file_o
 	struct perf_record_auxtrace *auxtrace_event;
 	union perf_event auxtrace_fragment;
 	__u64 aux_offset, aux_size;
+<<<<<<< HEAD
 	__u32 idx;
 	bool formatted;
+=======
+	enum cs_etm_format format;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	struct cs_etm_auxtrace *etm = container_of(session->auxtrace,
 						   struct cs_etm_auxtrace,
@@ -3030,6 +3456,11 @@ static int cs_etm__queue_aux_fragment(struct perf_session *session, off_t file_o
 
 	if (aux_offset >= auxtrace_event->offset &&
 	    aux_offset + aux_size <= auxtrace_event->offset + auxtrace_event->size) {
+<<<<<<< HEAD
+=======
+		struct cs_etm_queue *etmq = etm->queues.queue_array[auxtrace_event->idx].priv;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * If this AUX event was inside this buffer somewhere, create a new auxtrace event
 		 * based on the sizes of the aux event, and queue that fragment.
@@ -3046,10 +3477,21 @@ static int cs_etm__queue_aux_fragment(struct perf_session *session, off_t file_o
 		if (err)
 			return err;
 
+<<<<<<< HEAD
 		idx = auxtrace_event->idx;
 		formatted = !(aux_event->flags & PERF_AUX_FLAG_CORESIGHT_FORMAT_RAW);
 		return cs_etm__setup_queue(etm, &etm->queues.queue_array[idx],
 					   idx, formatted, sample->cpu);
+=======
+		format = (aux_event->flags & PERF_AUX_FLAG_CORESIGHT_FORMAT_RAW) ?
+				UNFORMATTED : FORMATTED;
+		if (etmq->format != UNSET && format != etmq->format) {
+			pr_err("CS_ETM: mixed formatted and unformatted trace not supported\n");
+			return -EINVAL;
+		}
+		etmq->format = format;
+		return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* Wasn't inside this buffer, but there were no parse errors. 1 == 'not found' */
@@ -3175,7 +3617,12 @@ static bool cs_etm__has_virtual_ts(u64 **metadata, int num_cpu)
 }
 
 /* map trace ids to correct metadata block, from information in metadata */
+<<<<<<< HEAD
 static int cs_etm__map_trace_ids_metadata(int num_cpu, u64 **metadata)
+=======
+static int cs_etm__map_trace_ids_metadata(struct cs_etm_auxtrace *etm, int num_cpu,
+					  u64 **metadata)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u64 cs_etm_magic;
 	u8 trace_chan_id;
@@ -3197,7 +3644,11 @@ static int cs_etm__map_trace_ids_metadata(int num_cpu, u64 **metadata)
 			/* unknown magic number */
 			return -EINVAL;
 		}
+<<<<<<< HEAD
 		err = cs_etm__map_trace_id(trace_chan_id, metadata[i]);
+=======
+		err = cs_etm__map_trace_id_v0(etm, trace_chan_id, metadata[i]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err)
 			return err;
 	}
@@ -3205,6 +3656,7 @@ static int cs_etm__map_trace_ids_metadata(int num_cpu, u64 **metadata)
 }
 
 /*
+<<<<<<< HEAD
  * If we found AUX_HW_ID packets, then set any metadata marked as unused to the
  * unused value to reduce the number of unneeded decoders created.
  */
@@ -3229,6 +3681,87 @@ static int cs_etm__clear_unused_trace_ids_metadata(int num_cpu, u64 **metadata)
 			/* unknown magic number */
 			return -EINVAL;
 		}
+=======
+ * Use the data gathered by the peeks for HW_ID (trace ID mappings) and AUX
+ * (formatted or not) packets to create the decoders.
+ */
+static int cs_etm__create_queue_decoders(struct cs_etm_queue *etmq)
+{
+	struct cs_etm_decoder_params d_params;
+	struct cs_etm_trace_params  *t_params;
+	int decoders = intlist__nr_entries(etmq->traceid_list);
+
+	if (decoders == 0)
+		return 0;
+
+	/*
+	 * Each queue can only contain data from one CPU when unformatted, so only one decoder is
+	 * needed.
+	 */
+	if (etmq->format == UNFORMATTED)
+		assert(decoders == 1);
+
+	/* Use metadata to fill in trace parameters for trace decoder */
+	t_params = zalloc(sizeof(*t_params) * decoders);
+
+	if (!t_params)
+		goto out_free;
+
+	if (cs_etm__init_trace_params(t_params, etmq))
+		goto out_free;
+
+	/* Set decoder parameters to decode trace packets */
+	if (cs_etm__init_decoder_params(&d_params, etmq,
+					dump_trace ? CS_ETM_OPERATION_PRINT :
+						     CS_ETM_OPERATION_DECODE))
+		goto out_free;
+
+	etmq->decoder = cs_etm_decoder__new(decoders, &d_params,
+					    t_params);
+
+	if (!etmq->decoder)
+		goto out_free;
+
+	/*
+	 * Register a function to handle all memory accesses required by
+	 * the trace decoder library.
+	 */
+	if (cs_etm_decoder__add_mem_access_cb(etmq->decoder,
+					      0x0L, ((u64) -1L),
+					      cs_etm__mem_access))
+		goto out_free_decoder;
+
+	zfree(&t_params);
+	return 0;
+
+out_free_decoder:
+	cs_etm_decoder__free(etmq->decoder);
+out_free:
+	zfree(&t_params);
+	return -EINVAL;
+}
+
+static int cs_etm__create_decoders(struct cs_etm_auxtrace *etm)
+{
+	struct auxtrace_queues *queues = &etm->queues;
+
+	for (unsigned int i = 0; i < queues->nr_queues; i++) {
+		bool empty = list_empty(&queues->queue_array[i].head);
+		struct cs_etm_queue *etmq = queues->queue_array[i].priv;
+		int ret;
+
+		/*
+		 * Don't create decoders for empty queues, mainly because
+		 * etmq->format is unknown for empty queues.
+		 */
+		assert(empty || etmq->format != UNSET);
+		if (empty)
+			continue;
+
+		ret = cs_etm__create_queue_decoders(etmq);
+		if (ret)
+			return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return 0;
 }
@@ -3242,6 +3775,7 @@ int cs_etm__process_auxtrace_info_full(union perf_event *event,
 	int event_header_size = sizeof(struct perf_event_header);
 	int total_size = auxtrace_info->header.size;
 	int priv_size = 0;
+<<<<<<< HEAD
 	int num_cpu;
 	int err = 0;
 	int aux_hw_id_found;
@@ -3258,14 +3792,28 @@ int cs_etm__process_auxtrace_info_full(union perf_event *event,
 	if (!traceid_list)
 		return -ENOMEM;
 
+=======
+	int num_cpu, max_cpu = 0;
+	int err = 0;
+	int aux_hw_id_found;
+	int i;
+	u64 *ptr = NULL;
+	u64 **metadata = NULL;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* First the global part */
 	ptr = (u64 *) auxtrace_info->priv;
 	num_cpu = ptr[CS_PMU_TYPE_CPUS] & 0xffffffff;
 	metadata = zalloc(sizeof(*metadata) * num_cpu);
+<<<<<<< HEAD
 	if (!metadata) {
 		err = -ENOMEM;
 		goto err_free_traceid_list;
 	}
+=======
+	if (!metadata)
+		return -ENOMEM;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Start parsing after the common part of the header */
 	i = CS_HEADER_VERSION_MAX;
@@ -3276,7 +3824,11 @@ int cs_etm__process_auxtrace_info_full(union perf_event *event,
 	 * required by the trace decoder to properly decode the trace due
 	 * to its highly compressed nature.
 	 */
+<<<<<<< HEAD
 	for (j = 0; j < num_cpu; j++) {
+=======
+	for (int j = 0; j < num_cpu; j++) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ptr[i] == __perf_cs_etmv3_magic) {
 			metadata[j] =
 				cs_etm__create_meta_blk(ptr, &i,
@@ -3300,6 +3852,12 @@ int cs_etm__process_auxtrace_info_full(union perf_event *event,
 			err = -ENOMEM;
 			goto err_free_metadata;
 		}
+<<<<<<< HEAD
+=======
+
+		if ((int) metadata[j][CS_ETM_CPU] > max_cpu)
+			max_cpu = metadata[j][CS_ETM_CPU];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/*
@@ -3329,10 +3887,23 @@ int cs_etm__process_auxtrace_info_full(union perf_event *event,
 	 */
 	etm->pid_fmt = cs_etm__init_pid_fmt(metadata[0]);
 
+<<<<<<< HEAD
 	err = auxtrace_queues__init(&etm->queues);
 	if (err)
 		goto err_free_etm;
 
+=======
+	err = auxtrace_queues__init_nr(&etm->queues, max_cpu + 1);
+	if (err)
+		goto err_free_etm;
+
+	for (unsigned int j = 0; j < etm->queues.nr_queues; ++j) {
+		err = cs_etm__setup_queue(etm, &etm->queues.queue_array[j], j);
+		if (err)
+			goto err_free_queues;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (session->itrace_synth_opts->set) {
 		etm->synth_opts = *session->itrace_synth_opts;
 	} else {
@@ -3396,12 +3967,25 @@ int cs_etm__process_auxtrace_info_full(union perf_event *event,
 	if (err)
 		goto err_free_queues;
 
+<<<<<<< HEAD
 	/*
 	 * Map Trace ID values to CPU metadata.
 	 *
 	 * Trace metadata will always contain Trace ID values from the legacy algorithm. If the
 	 * files has been recorded by a "new" perf updated to handle AUX_HW_ID then the metadata
 	 * ID value will also have the CORESIGHT_TRACE_ID_UNUSED_FLAG set.
+=======
+	err = cs_etm__queue_aux_records(session);
+	if (err)
+		goto err_free_queues;
+
+	/*
+	 * Map Trace ID values to CPU metadata.
+	 *
+	 * Trace metadata will always contain Trace ID values from the legacy algorithm
+	 * in case it's read by a version of Perf that doesn't know about HW_ID packets
+	 * or the kernel doesn't emit them.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 *
 	 * The updated kernel drivers that use AUX_HW_ID to sent Trace IDs will attempt to use
 	 * the same IDs as the old algorithm as far as is possible, unless there are clashes
@@ -3410,6 +3994,7 @@ int cs_etm__process_auxtrace_info_full(union perf_event *event,
 	 *
 	 * For a perf able to interpret AUX_HW_ID packets we first check for the presence of
 	 * those packets. If they are there then the values will be mapped and plugged into
+<<<<<<< HEAD
 	 * the metadata. We then set any remaining metadata values with the used flag to a
 	 * value CORESIGHT_TRACE_ID_UNUSED_VAL - which indicates no decoder is required.
 	 *
@@ -3419,6 +4004,16 @@ int cs_etm__process_auxtrace_info_full(union perf_event *event,
 	 */
 
 	/* first scan for AUX_OUTPUT_HW_ID records to map trace ID values to CPU metadata */
+=======
+	 * the metadata and decoders are only created for each mapping received.
+	 *
+	 * If no AUX_HW_ID packets are present - which means a file recorded on an old kernel
+	 * then we map Trace ID values to CPU directly from the metadata and create decoders
+	 * for all mappings.
+	 */
+
+	/* Scan for AUX_OUTPUT_HW_ID records to map trace ID values to CPU metadata */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	aux_hw_id_found = 0;
 	err = perf_session__peek_events(session, session->header.data_offset,
 					session->header.data_size,
@@ -3426,6 +4021,7 @@ int cs_etm__process_auxtrace_info_full(union perf_event *event,
 	if (err)
 		goto err_free_queues;
 
+<<<<<<< HEAD
 	/* if HW ID found then clear any unused metadata ID values */
 	if (aux_hw_id_found)
 		err = cs_etm__clear_unused_trace_ids_metadata(num_cpu, metadata);
@@ -3437,6 +4033,16 @@ int cs_etm__process_auxtrace_info_full(union perf_event *event,
 		goto err_free_queues;
 
 	err = cs_etm__queue_aux_records(session);
+=======
+	/* if no HW ID found this is a file with metadata values only, map from metadata */
+	if (!aux_hw_id_found) {
+		err = cs_etm__map_trace_ids_metadata(etm, num_cpu, metadata);
+		if (err)
+			goto err_free_queues;
+	}
+
+	err = cs_etm__create_decoders(etm);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err)
 		goto err_free_queues;
 
@@ -3450,10 +4056,16 @@ err_free_etm:
 	zfree(&etm);
 err_free_metadata:
 	/* No need to check @metadata[j], free(NULL) is supported */
+<<<<<<< HEAD
 	for (j = 0; j < num_cpu; j++)
 		zfree(&metadata[j]);
 	zfree(&metadata);
 err_free_traceid_list:
 	intlist__delete(traceid_list);
+=======
+	for (int j = 0; j < num_cpu; j++)
+		zfree(&metadata[j]);
+	zfree(&metadata);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }

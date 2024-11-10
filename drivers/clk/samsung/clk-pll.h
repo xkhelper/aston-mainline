@@ -30,6 +30,10 @@ enum samsung_pll_type {
 	pll_2650x,
 	pll_2650xx,
 	pll_1417x,
+<<<<<<< HEAD
+=======
+	pll_1418x,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pll_1450x,
 	pll_1451x,
 	pll_1452x,
@@ -41,6 +45,10 @@ enum samsung_pll_type {
 	pll_0516x,
 	pll_0517x,
 	pll_0518x,
+<<<<<<< HEAD
+=======
+	pll_531x,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define PLL_RATE(_fin, _m, _p, _s, _k, _ks) \

@@ -1696,11 +1696,19 @@ static void veth_setup(struct net_device *dev)
 	dev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
 	dev->priv_flags |= IFF_NO_QUEUE;
 	dev->priv_flags |= IFF_PHONY_HEADROOM;
+<<<<<<< HEAD
+=======
+	dev->priv_flags |= IFF_DISABLE_NETPOLL;
+	dev->lltx = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dev->netdev_ops = &veth_netdev_ops;
 	dev->xdp_metadata_ops = &veth_xdp_metadata_ops;
 	dev->ethtool_ops = &veth_ethtool_ops;
+<<<<<<< HEAD
 	dev->features |= NETIF_F_LLTX;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev->features |= VETH_FEATURES;
 	dev->vlan_features = dev->features &
 			     ~(NETIF_F_HW_VLAN_CTAG_TX |

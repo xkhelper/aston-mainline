@@ -58,6 +58,10 @@ enum binderfs_stats_mode {
 struct binder_features {
 	bool oneway_spam_detection;
 	bool extended_error;
+<<<<<<< HEAD
+=======
+	bool freeze_notification;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct constant_table binderfs_param_stats[] = {
@@ -74,6 +78,10 @@ static const struct fs_parameter_spec binderfs_fs_parameters[] = {
 static struct binder_features binder_features = {
 	.oneway_spam_detection = true,
 	.extended_error = true,
+<<<<<<< HEAD
+=======
+	.freeze_notification = true,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static inline struct binderfs_info *BINDERFS_SB(const struct super_block *sb)
@@ -608,6 +616,15 @@ static int init_binder_features(struct super_block *sb)
 	if (IS_ERR(dentry))
 		return PTR_ERR(dentry);
 
+<<<<<<< HEAD
+=======
+	dentry = binderfs_create_file(dir, "freeze_notification",
+				      &binder_features_fops,
+				      &binder_features.freeze_notification);
+	if (IS_ERR(dentry))
+		return PTR_ERR(dentry);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 

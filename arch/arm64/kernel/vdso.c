@@ -34,12 +34,15 @@ enum vdso_abi {
 	VDSO_ABI_AA32,
 };
 
+<<<<<<< HEAD
 enum vvar_pages {
 	VVAR_DATA_PAGE_OFFSET,
 	VVAR_TIMENS_PAGE_OFFSET,
 	VVAR_NR_PAGES,
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct vdso_abi_info {
 	const char *name;
 	const char *vdso_code_start;

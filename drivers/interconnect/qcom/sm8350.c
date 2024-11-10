@@ -628,6 +628,7 @@ static struct qcom_icc_node xm_gic = {
 	.links = { SM8350_SLAVE_SNOC_GEM_NOC_GC },
 };
 
+<<<<<<< HEAD
 static struct qcom_icc_node qnm_mnoc_hf_disp = {
 	.name = "qnm_mnoc_hf_disp",
 	.id = SM8350_MASTER_MNOC_HF_MEM_NOC_DISP,
@@ -682,6 +683,8 @@ static struct qcom_icc_node qxm_rot_disp = {
 	.links = { SM8350_SLAVE_MNOC_SF_MEM_NOC_DISP },
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct qcom_icc_node qns_a1noc_snoc = {
 	.name = "qns_a1noc_snoc",
 	.id = SM8350_SLAVE_A1NOC_SNOC,
@@ -1320,6 +1323,7 @@ static struct qcom_icc_node srvc_snoc = {
 	.buswidth = 4,
 };
 
+<<<<<<< HEAD
 static struct qcom_icc_node qns_llcc_disp = {
 	.name = "qns_llcc_disp",
 	.id = SM8350_SLAVE_LLCC_DISP,
@@ -1354,6 +1358,8 @@ static struct qcom_icc_node qns_mem_noc_sf_disp = {
 	.links = { SM8350_MASTER_MNOC_SF_MEM_NOC_DISP },
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct qcom_icc_bcm bcm_acv = {
 	.name = "ACV",
 	.enable_mask = BIT(3),
@@ -1583,6 +1589,7 @@ static struct qcom_icc_bcm bcm_sn14 = {
 	.nodes = { &qns_pcie_mem_noc },
 };
 
+<<<<<<< HEAD
 static struct qcom_icc_bcm bcm_acv_disp = {
 	.name = "ACV",
 	.keepalive = false,
@@ -1632,6 +1639,8 @@ static struct qcom_icc_bcm bcm_sh0_disp = {
 	.nodes = { &qns_llcc_disp },
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct qcom_icc_bcm * const aggre1_noc_bcms[] = {
 };
 
@@ -1785,7 +1794,10 @@ static struct qcom_icc_bcm * const gem_noc_bcms[] = {
 	&bcm_sh2,
 	&bcm_sh3,
 	&bcm_sh4,
+<<<<<<< HEAD
 	&bcm_sh0_disp,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct qcom_icc_node * const gem_noc_nodes[] = {
@@ -1808,9 +1820,12 @@ static struct qcom_icc_node * const gem_noc_nodes[] = {
 	[SLAVE_SERVICE_GEM_NOC_1] = &srvc_even_gemnoc,
 	[SLAVE_SERVICE_GEM_NOC_2] = &srvc_odd_gemnoc,
 	[SLAVE_SERVICE_GEM_NOC] = &srvc_sys_gemnoc,
+<<<<<<< HEAD
 	[MASTER_MNOC_HF_MEM_NOC_DISP] = &qnm_mnoc_hf_disp,
 	[MASTER_MNOC_SF_MEM_NOC_DISP] = &qnm_mnoc_sf_disp,
 	[SLAVE_LLCC_DISP] = &qns_llcc_disp,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct qcom_icc_desc sm8350_gem_noc = {
@@ -1843,15 +1858,21 @@ static const struct qcom_icc_desc sm8350_lpass_ag_noc = {
 static struct qcom_icc_bcm * const mc_virt_bcms[] = {
 	&bcm_acv,
 	&bcm_mc0,
+<<<<<<< HEAD
 	&bcm_acv_disp,
 	&bcm_mc0_disp,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct qcom_icc_node * const mc_virt_nodes[] = {
 	[MASTER_LLCC] = &llcc_mc,
 	[SLAVE_EBI1] = &ebi,
+<<<<<<< HEAD
 	[MASTER_LLCC_DISP] = &llcc_mc_disp,
 	[SLAVE_EBI1_DISP] = &ebi_disp,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct qcom_icc_desc sm8350_mc_virt = {
@@ -1866,10 +1887,13 @@ static struct qcom_icc_bcm * const mmss_noc_bcms[] = {
 	&bcm_mm1,
 	&bcm_mm4,
 	&bcm_mm5,
+<<<<<<< HEAD
 	&bcm_mm0_disp,
 	&bcm_mm1_disp,
 	&bcm_mm4_disp,
 	&bcm_mm5_disp,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct qcom_icc_node * const mmss_noc_nodes[] = {
@@ -1886,11 +1910,14 @@ static struct qcom_icc_node * const mmss_noc_nodes[] = {
 	[SLAVE_MNOC_HF_MEM_NOC] = &qns_mem_noc_hf,
 	[SLAVE_MNOC_SF_MEM_NOC] = &qns_mem_noc_sf,
 	[SLAVE_SERVICE_MNOC] = &srvc_mnoc,
+<<<<<<< HEAD
 	[MASTER_MDP0_DISP] = &qxm_mdp0_disp,
 	[MASTER_MDP1_DISP] = &qxm_mdp1_disp,
 	[MASTER_ROTATOR_DISP] = &qxm_rot_disp,
 	[SLAVE_MNOC_HF_MEM_NOC_DISP] = &qns_mem_noc_hf_disp,
 	[SLAVE_MNOC_SF_MEM_NOC_DISP] = &qns_mem_noc_sf_disp,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct qcom_icc_desc sm8350_mmss_noc = {
@@ -1965,6 +1992,10 @@ static struct platform_driver qnoc_driver = {
 	.driver = {
 		.name = "qnoc-sm8350",
 		.of_match_table = qnoc_of_match,
+<<<<<<< HEAD
+=======
+		.sync_state = icc_sync_state,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 };
 module_platform_driver(qnoc_driver);

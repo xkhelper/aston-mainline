@@ -177,7 +177,10 @@ static ssize_t mtx1_wdt_write(struct file *file, const char *buf,
 
 static const struct file_operations mtx1_wdt_fops = {
 	.owner		= THIS_MODULE,
+<<<<<<< HEAD
 	.llseek		= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.unlocked_ioctl	= mtx1_wdt_ioctl,
 	.compat_ioctl	= compat_ptr_ioctl,
 	.open		= mtx1_wdt_open,

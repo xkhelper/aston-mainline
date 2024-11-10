@@ -45,7 +45,10 @@ struct iqs62x_keys_private {
 static int iqs62x_keys_parse_prop(struct platform_device *pdev,
 				  struct iqs62x_keys_private *iqs62x_keys)
 {
+<<<<<<< HEAD
 	struct fwnode_handle *child;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int val;
 	int ret, i;
 
@@ -68,7 +71,12 @@ static int iqs62x_keys_parse_prop(struct platform_device *pdev,
 	}
 
 	for (i = 0; i < ARRAY_SIZE(iqs62x_keys->switches); i++) {
+<<<<<<< HEAD
 		child = device_get_named_child_node(&pdev->dev,
+=======
+		struct fwnode_handle *child __free(fwnode_handle) =
+			device_get_named_child_node(&pdev->dev,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						    iqs62x_switch_names[i]);
 		if (!child)
 			continue;
@@ -77,7 +85,10 @@ static int iqs62x_keys_parse_prop(struct platform_device *pdev,
 		if (ret) {
 			dev_err(&pdev->dev, "Failed to read switch code: %d\n",
 				ret);
+<<<<<<< HEAD
 			fwnode_handle_put(child);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return ret;
 		}
 		iqs62x_keys->switches[i].code = val;
@@ -91,8 +102,11 @@ static int iqs62x_keys_parse_prop(struct platform_device *pdev,
 			iqs62x_keys->switches[i].flag = (i == IQS62X_SW_HALL_N ?
 							 IQS62X_EVENT_HALL_N_T :
 							 IQS62X_EVENT_HALL_S_T);
+<<<<<<< HEAD
 
 		fwnode_handle_put(child);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;

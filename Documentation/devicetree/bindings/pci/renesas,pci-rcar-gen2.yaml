@@ -42,9 +42,19 @@ properties:
   interrupts:
     maxItems: 1
 
+<<<<<<< HEAD
   clocks: true
 
   clock-names: true
+=======
+  clocks:
+    minItems: 1
+    maxItems: 3
+
+  clock-names:
+    minItems: 1
+    maxItems: 3
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   resets:
     maxItems: 1

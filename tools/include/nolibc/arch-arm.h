@@ -185,6 +185,7 @@
 })
 
 /* startup code */
+<<<<<<< HEAD
 void __attribute__((weak, noreturn, optimize("Os", "omit-frame-pointer"))) __no_stack_protector _start(void)
 {
 	__asm__ volatile (
@@ -194,6 +195,17 @@ void __attribute__((weak, noreturn, optimize("Os", "omit-frame-pointer"))) __no_
 		"bl  _start_c\n"        /* transfer to c runtime                          */
 	);
 	__builtin_unreachable();
+=======
+void __attribute__((weak, noreturn)) __nolibc_entrypoint __no_stack_protector _start(void)
+{
+	__asm__ volatile (
+		"mov r0, sp\n"          /* save stack pointer to %r0, as arg1 of _start_c */
+		"and ip, r0, #-8\n"     /* sp must be 8-byte aligned in the callee        */
+		"mov sp, ip\n"
+		"bl  _start_c\n"        /* transfer to c runtime                          */
+	);
+	__nolibc_entrypoint_epilogue();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #endif /* _NOLIBC_ARCH_ARM_H */

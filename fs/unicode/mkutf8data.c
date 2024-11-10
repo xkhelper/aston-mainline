@@ -2230,6 +2230,7 @@ static void nfdicf_init(void)
 		file_fail(fold_name);
 }
 
+<<<<<<< HEAD
 static void ignore_init(void)
 {
 	FILE *file;
@@ -2299,6 +2300,8 @@ static void ignore_init(void)
 		file_fail(prop_name);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void corrections_init(void)
 {
 	FILE *file;
@@ -3411,7 +3414,10 @@ int main(int argc, char *argv[])
 	ccc_init();
 	nfdi_init();
 	nfdicf_init();
+<<<<<<< HEAD
 	ignore_init();
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	corrections_init();
 	hangul_decompose();
 	nfdi_decompose();

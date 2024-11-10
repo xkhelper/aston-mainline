@@ -105,7 +105,11 @@ long rbtree_api_remove_unadded_node(void *ctx)
 }
 
 SEC("?tc")
+<<<<<<< HEAD
 __failure __regex("Unreleased reference id=3 alloc_insn=[0-9]+")
+=======
+__failure __msg("Unreleased reference id=3 alloc_insn={{[0-9]+}}")
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 long rbtree_api_remove_no_drop(void *ctx)
 {
 	struct bpf_rb_node *res;

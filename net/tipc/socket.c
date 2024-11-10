@@ -1009,12 +1009,19 @@ static int tipc_send_group_anycast(struct socket *sock, struct msghdr *m,
 	struct tipc_member *mbr = NULL;
 	struct net *net = sock_net(sk);
 	u32 node, port, exclude;
+<<<<<<< HEAD
 	struct list_head dsts;
+=======
+	LIST_HEAD(dsts);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int lookups = 0;
 	int dstcnt, rc;
 	bool cong;
 
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&dsts);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ua->sa.type = msg_nametype(hdr);
 	ua->scope = msg_lookup_scope(hdr);
 
@@ -1161,10 +1168,16 @@ static int tipc_send_group_mcast(struct socket *sock, struct msghdr *m,
 	struct tipc_group *grp = tsk->group;
 	struct tipc_msg *hdr = &tsk->phdr;
 	struct net *net = sock_net(sk);
+<<<<<<< HEAD
 	struct list_head dsts;
 	u32 dstcnt, exclude;
 
 	INIT_LIST_HEAD(&dsts);
+=======
+	u32 dstcnt, exclude;
+	LIST_HEAD(dsts);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ua->sa.type = msg_nametype(hdr);
 	ua->scope = msg_lookup_scope(hdr);
 	exclude = tipc_group_exclude(grp);

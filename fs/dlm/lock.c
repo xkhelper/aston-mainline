@@ -600,7 +600,11 @@ static int get_rsb_struct(struct dlm_ls *ls, const void *name, int len,
 {
 	struct dlm_rsb *r;
 
+<<<<<<< HEAD
 	r = dlm_allocate_rsb(ls);
+=======
+	r = dlm_allocate_rsb();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!r)
 		return -ENOMEM;
 
@@ -733,11 +737,21 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
 	}
 
  retry:
+<<<<<<< HEAD
 
 	/* check if the rsb is active under read lock - likely path */
 	read_lock_bh(&ls->ls_rsbtbl_lock);
 	error = dlm_search_rsb_tree(&ls->ls_rsbtbl, name, len, &r);
 	if (error) {
+=======
+	error = dlm_search_rsb_tree(&ls->ls_rsbtbl, name, len, &r);
+	if (error)
+		goto do_new;
+
+	/* check if the rsb is active under read lock - likely path */
+	read_lock_bh(&ls->ls_rsbtbl_lock);
+	if (!rsb_flag(r, RSB_HASHED)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		read_unlock_bh(&ls->ls_rsbtbl_lock);
 		goto do_new;
 	}
@@ -918,11 +932,21 @@ static int find_rsb_nodir(struct dlm_ls *ls, const void *name, int len,
 	int error;
 
  retry:
+<<<<<<< HEAD
 
 	/* check if the rsb is in active state under read lock - likely path */
 	read_lock_bh(&ls->ls_rsbtbl_lock);
 	error = dlm_search_rsb_tree(&ls->ls_rsbtbl, name, len, &r);
 	if (error) {
+=======
+	error = dlm_search_rsb_tree(&ls->ls_rsbtbl, name, len, &r);
+	if (error)
+		goto do_new;
+
+	/* check if the rsb is in active state under read lock - likely path */
+	read_lock_bh(&ls->ls_rsbtbl_lock);
+	if (!rsb_flag(r, RSB_HASHED)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		read_unlock_bh(&ls->ls_rsbtbl_lock);
 		goto do_new;
 	}
@@ -1151,7 +1175,11 @@ static void __dlm_master_lookup(struct dlm_ls *ls, struct dlm_rsb *r, int our_no
 		r->res_dir_nodeid = our_nodeid;
 	}
 
+<<<<<<< HEAD
 	if (fix_master && dlm_is_removed(ls, r->res_master_nodeid)) {
+=======
+	if (fix_master && r->res_master_nodeid && dlm_is_removed(ls, r->res_master_nodeid)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Recovery uses this function to set a new master when
 		 * the previous master failed.  Setting NEW_MASTER will
 		 * force dlm_recover_masters to call recover_master on this
@@ -1276,6 +1304,7 @@ static int _dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *na
 	}
 
  retry:
+<<<<<<< HEAD
 
 	/* check if the rsb is active under read lock - likely path */
 	read_lock_bh(&ls->ls_rsbtbl_lock);
@@ -1303,16 +1332,56 @@ static int _dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *na
 
 		return 0;
 	} else {
+=======
+	error = dlm_search_rsb_tree(&ls->ls_rsbtbl, name, len, &r);
+	if (error)
+		goto not_found;
+
+	/* check if the rsb is active under read lock - likely path */
+	read_lock_bh(&ls->ls_rsbtbl_lock);
+	if (!rsb_flag(r, RSB_HASHED)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		read_unlock_bh(&ls->ls_rsbtbl_lock);
 		goto not_found;
 	}
 
+<<<<<<< HEAD
  do_inactive:
 	/* unlikely path - relookup under write */
 	write_lock_bh(&ls->ls_rsbtbl_lock);
 
 	error = dlm_search_rsb_tree(&ls->ls_rsbtbl, name, len, &r);
 	if (!error) {
+=======
+	if (rsb_flag(r, RSB_INACTIVE)) {
+		read_unlock_bh(&ls->ls_rsbtbl_lock);
+		goto do_inactive;
+	}
+
+	/* because the rsb is active, we need to lock_rsb before
+	 * checking/changing re_master_nodeid
+	 */
+
+	hold_rsb(r);
+	read_unlock_bh(&ls->ls_rsbtbl_lock);
+	lock_rsb(r);
+
+	__dlm_master_lookup(ls, r, our_nodeid, from_nodeid, false,
+			    flags, r_nodeid, result);
+
+	/* the rsb was active */
+	unlock_rsb(r);
+	put_rsb(r);
+
+	return 0;
+
+ do_inactive:
+	/* unlikely path - check if still part of ls_rsbtbl */
+	write_lock_bh(&ls->ls_rsbtbl_lock);
+
+	/* see comment in find_rsb_dir */
+	if (rsb_flag(r, RSB_HASHED)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!rsb_flag(r, RSB_INACTIVE)) {
 			write_unlock_bh(&ls->ls_rsbtbl_lock);
 			/* something as changed, very unlikely but
@@ -1403,14 +1472,22 @@ void dlm_dump_rsb_name(struct dlm_ls *ls, const char *name, int len)
 	struct dlm_rsb *r = NULL;
 	int error;
 
+<<<<<<< HEAD
 	read_lock_bh(&ls->ls_rsbtbl_lock);
+=======
+	rcu_read_lock();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	error = dlm_search_rsb_tree(&ls->ls_rsbtbl, name, len, &r);
 	if (!error)
 		goto out;
 
 	dlm_dump_rsb(r);
  out:
+<<<<<<< HEAD
 	read_unlock_bh(&ls->ls_rsbtbl_lock);
+=======
+	rcu_read_unlock();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void deactivate_rsb(struct kref *kref)
@@ -1442,6 +1519,7 @@ static void deactivate_rsb(struct kref *kref)
 	}
 }
 
+<<<<<<< HEAD
 /* See comment for unhold_lkb */
 
 static void unhold_rsb(struct dlm_rsb *r)
@@ -1454,6 +1532,8 @@ static void unhold_rsb(struct dlm_rsb *r)
 	DLM_ASSERT(!rv, dlm_dump_rsb(r););
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void free_inactive_rsb(struct dlm_rsb *r)
 {
 	WARN_ON_ONCE(!rsb_flag(r, RSB_INACTIVE));
@@ -1497,7 +1577,11 @@ static int _create_lkb(struct dlm_ls *ls, struct dlm_lkb **lkb_ret,
 	limit.max = end;
 	limit.min = start;
 
+<<<<<<< HEAD
 	lkb = dlm_allocate_lkb(ls);
+=======
+	lkb = dlm_allocate_lkb();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!lkb)
 		return -ENOMEM;
 
@@ -1533,11 +1617,29 @@ static int find_lkb(struct dlm_ls *ls, uint32_t lkid, struct dlm_lkb **lkb_ret)
 {
 	struct dlm_lkb *lkb;
 
+<<<<<<< HEAD
 	read_lock_bh(&ls->ls_lkbxa_lock);
 	lkb = xa_load(&ls->ls_lkbxa, lkid);
 	if (lkb)
 		kref_get(&lkb->lkb_ref);
 	read_unlock_bh(&ls->ls_lkbxa_lock);
+=======
+	rcu_read_lock();
+	lkb = xa_load(&ls->ls_lkbxa, lkid);
+	if (lkb) {
+		/* check if lkb is still part of lkbxa under lkbxa_lock as
+		 * the lkb_ref is tight to the lkbxa data structure, see
+		 * __put_lkb().
+		 */
+		read_lock_bh(&ls->ls_lkbxa_lock);
+		if (kref_read(&lkb->lkb_ref))
+			kref_get(&lkb->lkb_ref);
+		else
+			lkb = NULL;
+		read_unlock_bh(&ls->ls_lkbxa_lock);
+	}
+	rcu_read_unlock();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	*lkb_ret = lkb;
 	return lkb ? 0 : -ENOENT;
@@ -1675,10 +1777,15 @@ static void del_lkb(struct dlm_rsb *r, struct dlm_lkb *lkb)
 
 static void move_lkb(struct dlm_rsb *r, struct dlm_lkb *lkb, int sts)
 {
+<<<<<<< HEAD
 	hold_lkb(lkb);
 	del_lkb(r, lkb);
 	add_lkb(r, lkb, sts);
 	unhold_lkb(lkb);
+=======
+	del_lkb(r, lkb);
+	add_lkb(r, lkb, sts);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int msg_reply_type(int mstype)
@@ -4323,6 +4430,7 @@ static void receive_remove(struct dlm_ls *ls, const struct dlm_message *ms)
 	memset(name, 0, sizeof(name));
 	memcpy(name, ms->m_extra, len);
 
+<<<<<<< HEAD
 	write_lock_bh(&ls->ls_rsbtbl_lock);
 
 	rv = dlm_search_rsb_tree(&ls->ls_rsbtbl, name, len, &r);
@@ -4334,6 +4442,30 @@ static void receive_remove(struct dlm_ls *ls, const struct dlm_message *ms)
 		return;
 	}
 
+=======
+	rcu_read_lock();
+	rv = dlm_search_rsb_tree(&ls->ls_rsbtbl, name, len, &r);
+	if (rv) {
+		rcu_read_unlock();
+		/* should not happen */
+		log_error(ls, "%s from %d not found %s", __func__,
+			  from_nodeid, name);
+		return;
+	}
+
+	write_lock_bh(&ls->ls_rsbtbl_lock);
+	if (!rsb_flag(r, RSB_HASHED)) {
+		rcu_read_unlock();
+		write_unlock_bh(&ls->ls_rsbtbl_lock);
+		/* should not happen */
+		log_error(ls, "%s from %d got removed during removal %s",
+			  __func__, from_nodeid, name);
+		return;
+	}
+	/* at this stage the rsb can only being freed here */
+	rcu_read_unlock();
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!rsb_flag(r, RSB_INACTIVE)) {
 		if (r->res_master_nodeid != from_nodeid) {
 			/* should not happen */
@@ -5297,7 +5429,11 @@ int dlm_recover_waiters_post(struct dlm_ls *ls)
 			case DLM_MSG_LOOKUP:
 			case DLM_MSG_REQUEST:
 				_request_lock(r, lkb);
+<<<<<<< HEAD
 				if (is_master(r))
+=======
+				if (r->res_nodeid != -1 && is_master(r))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					confirm_master(r, 0);
 				break;
 			case DLM_MSG_CONVERT:
@@ -5409,9 +5545,14 @@ void dlm_recover_purge(struct dlm_ls *ls, const struct list_head *root_list)
 		return;
 
 	list_for_each_entry(r, root_list, res_root_list) {
+<<<<<<< HEAD
 		hold_rsb(r);
 		lock_rsb(r);
 		if (is_master(r)) {
+=======
+		lock_rsb(r);
+		if (r->res_nodeid != -1 && is_master(r)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			purge_dead_list(ls, r, &r->res_grantqueue,
 					nodeid_gone, &lkb_count);
 			purge_dead_list(ls, r, &r->res_convertqueue,
@@ -5420,7 +5561,11 @@ void dlm_recover_purge(struct dlm_ls *ls, const struct list_head *root_list)
 					nodeid_gone, &lkb_count);
 		}
 		unlock_rsb(r);
+<<<<<<< HEAD
 		unhold_rsb(r);
+=======
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		cond_resched();
 	}
 

@@ -282,6 +282,15 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
+=======
+&remoteproc_mpss {
+	firmware-name = "qcom/sdx75/modem.mbn",
+			"qcom/sdx75/modem_dtb.mbn";
+	status = "okay";
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &sdhc {
 	cd-gpios = <&tlmm 103 GPIO_ACTIVE_LOW>;
 	vmmc-supply = <&reg_2v95_vdd>;

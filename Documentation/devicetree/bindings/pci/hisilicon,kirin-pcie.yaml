@@ -37,7 +37,12 @@ properties:
     minItems: 3
     maxItems: 4
 
+<<<<<<< HEAD
   clocks: true
+=======
+  clocks:
+    maxItems: 5
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   clock-names:
     items:

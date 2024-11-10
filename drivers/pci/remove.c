@@ -50,6 +50,11 @@ static void pci_destroy_dev(struct pci_dev *dev)
 	if (!dev->dev.kobj.parent)
 		return;
 
+<<<<<<< HEAD
+=======
+	pci_npem_remove(dev);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	device_del(&dev->dev);
 
 	down_write(&pci_bus_sem);
@@ -179,7 +184,11 @@ void pci_remove_root_bus(struct pci_bus *bus)
 #ifdef CONFIG_PCI_DOMAINS_GENERIC
 	/* Release domain_nr if it was dynamically allocated */
 	if (host_bridge->domain_nr == PCI_DOMAIN_NR_NOT_SET)
+<<<<<<< HEAD
 		pci_bus_release_domain_nr(bus, host_bridge->dev.parent);
+=======
+		pci_bus_release_domain_nr(host_bridge->dev.parent, bus->domain_nr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 	pci_remove_bus(bus);

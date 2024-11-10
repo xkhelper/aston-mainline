@@ -868,6 +868,11 @@
 #define DORQ_REG_VF_TYPE_VALUE_0				 0x170258
 #define DORQ_REG_VF_USAGE_CT_LIMIT				 0x170340
 
+<<<<<<< HEAD
+=======
+extern const u32 dmae_reg_go_c[];
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* [RW 4] Initial activity counter value on the load request; when the
    shortcut is done. */
 #define DORQ_REG_SHRT_ACT_CNT					 0x170070

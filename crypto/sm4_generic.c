@@ -14,7 +14,11 @@
 #include <linux/types.h>
 #include <linux/errno.h>
 #include <asm/byteorder.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * sm4_setkey - Set the SM4 key.

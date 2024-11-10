@@ -18,18 +18,30 @@
 #include <linux/err.h>
 #include <linux/delay.h>
 #include <linux/device.h>
+<<<<<<< HEAD
+=======
+#include <linux/dma-direction.h>
+#include <linux/dma-mapping.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/dmaengine.h>
 #include <linux/bitops.h>
 #include <linux/interrupt.h>
 #include <linux/module.h>
+<<<<<<< HEAD
+=======
+#include <linux/property.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/platform_device.h>
 #include <linux/sched.h>
 #include <linux/scatterlist.h>
 #include <linux/spi/spi.h>
 
+<<<<<<< HEAD
 #include <linux/platform_data/dma-ep93xx.h>
 #include <linux/platform_data/spi-ep93xx.h>
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define SSPCR0			0x0000
 #define SSPCR0_SPO		BIT(6)
 #define SSPCR0_SPH		BIT(7)
@@ -76,8 +88,11 @@
  *              frame decreases this level and sending one frame increases it.
  * @dma_rx: RX DMA channel
  * @dma_tx: TX DMA channel
+<<<<<<< HEAD
  * @dma_rx_data: RX parameters passed to the DMA engine
  * @dma_tx_data: TX parameters passed to the DMA engine
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @rx_sgt: sg table for RX transfers
  * @tx_sgt: sg table for TX transfers
  * @zeropage: dummy page used as RX buffer when only TX buffer is passed in by
@@ -92,8 +107,11 @@ struct ep93xx_spi {
 	size_t				fifo_level;
 	struct dma_chan			*dma_rx;
 	struct dma_chan			*dma_tx;
+<<<<<<< HEAD
 	struct ep93xx_dma_data		dma_rx_data;
 	struct ep93xx_dma_data		dma_tx_data;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct sg_table			rx_sgt;
 	struct sg_table			tx_sgt;
 	void				*zeropage;
@@ -575,6 +593,7 @@ static int ep93xx_spi_unprepare_hardware(struct spi_controller *host)
 	return 0;
 }
 
+<<<<<<< HEAD
 static bool ep93xx_spi_dma_filter(struct dma_chan *chan, void *filter_param)
 {
 	if (ep93xx_dma_chan_is_m2p(chan))
@@ -587,12 +606,17 @@ static bool ep93xx_spi_dma_filter(struct dma_chan *chan, void *filter_param)
 static int ep93xx_spi_setup_dma(struct ep93xx_spi *espi)
 {
 	dma_cap_mask_t mask;
+=======
+static int ep93xx_spi_setup_dma(struct device *dev, struct ep93xx_spi *espi)
+{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	espi->zeropage = (void *)get_zeroed_page(GFP_KERNEL);
 	if (!espi->zeropage)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	dma_cap_zero(mask);
 	dma_cap_set(DMA_SLAVE, mask);
 
@@ -615,6 +639,17 @@ static int ep93xx_spi_setup_dma(struct ep93xx_spi *espi)
 					   &espi->dma_tx_data);
 	if (!espi->dma_tx) {
 		ret = -ENODEV;
+=======
+	espi->dma_rx = dma_request_chan(dev, "rx");
+	if (IS_ERR(espi->dma_rx)) {
+		ret = dev_err_probe(dev, PTR_ERR(espi->dma_rx), "rx DMA setup failed");
+		goto fail_free_page;
+	}
+
+	espi->dma_tx = dma_request_chan(dev, "tx");
+	if (IS_ERR(espi->dma_tx)) {
+		ret = dev_err_probe(dev, PTR_ERR(espi->dma_tx), "tx DMA setup failed");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto fail_release_rx;
 	}
 
@@ -647,18 +682,24 @@ static void ep93xx_spi_release_dma(struct ep93xx_spi *espi)
 static int ep93xx_spi_probe(struct platform_device *pdev)
 {
 	struct spi_controller *host;
+<<<<<<< HEAD
 	struct ep93xx_spi_info *info;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ep93xx_spi *espi;
 	struct resource *res;
 	int irq;
 	int error;
 
+<<<<<<< HEAD
 	info = dev_get_platdata(&pdev->dev);
 	if (!info) {
 		dev_err(&pdev->dev, "missing platform data\n");
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	irq = platform_get_irq(pdev, 0);
 	if (irq < 0)
 		return irq;
@@ -713,12 +754,24 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
 		goto fail_release_host;
 	}
 
+<<<<<<< HEAD
 	if (info->use_dma && ep93xx_spi_setup_dma(espi))
+=======
+	error = ep93xx_spi_setup_dma(&pdev->dev, espi);
+	if (error == -EPROBE_DEFER)
+		goto fail_release_host;
+
+	if (error)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_warn(&pdev->dev, "DMA setup failed. Falling back to PIO\n");
 
 	/* make sure that the hardware is disabled */
 	writel(0, espi->mmio + SSPCR1);
 
+<<<<<<< HEAD
+=======
+	device_set_node(&host->dev, dev_fwnode(&pdev->dev));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	error = devm_spi_register_controller(&pdev->dev, host);
 	if (error) {
 		dev_err(&pdev->dev, "failed to register SPI host\n");
@@ -746,9 +799,22 @@ static void ep93xx_spi_remove(struct platform_device *pdev)
 	ep93xx_spi_release_dma(espi);
 }
 
+<<<<<<< HEAD
 static struct platform_driver ep93xx_spi_driver = {
 	.driver		= {
 		.name	= "ep93xx-spi",
+=======
+static const struct of_device_id ep93xx_spi_of_ids[] = {
+	{ .compatible = "cirrus,ep9301-spi" },
+	{ /* sentinel */ }
+};
+MODULE_DEVICE_TABLE(of, ep93xx_spi_of_ids);
+
+static struct platform_driver ep93xx_spi_driver = {
+	.driver		= {
+		.name	= "ep93xx-spi",
+		.of_match_table = ep93xx_spi_of_ids,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	.probe		= ep93xx_spi_probe,
 	.remove_new	= ep93xx_spi_remove,

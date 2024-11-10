@@ -126,8 +126,11 @@ required:
   - compatible
   - reg
   - '#clock-cells'
+<<<<<<< HEAD
   - idt,shutdown
   - idt,output-enable-active
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 allOf:
   - if:

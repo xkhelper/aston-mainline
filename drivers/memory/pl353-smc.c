@@ -74,13 +74,17 @@ static int pl353_smc_probe(struct amba_device *adev, const struct amba_id *id)
 	struct device_node *of_node = adev->dev.of_node;
 	const struct of_device_id *match = NULL;
 	struct pl353_smc_data *pl353_smc;
+<<<<<<< HEAD
 	struct device_node *child;
 	int err;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pl353_smc = devm_kzalloc(&adev->dev, sizeof(*pl353_smc), GFP_KERNEL);
 	if (!pl353_smc)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	pl353_smc->aclk = devm_clk_get(&adev->dev, "apb_pclk");
 	if (IS_ERR(pl353_smc->aclk)) {
 		dev_err(&adev->dev, "aclk clock not found.\n");
@@ -104,16 +108,32 @@ static int pl353_smc_probe(struct amba_device *adev, const struct amba_id *id)
 		dev_err(&adev->dev, "Unable to enable memory clock.\n");
 		goto disable_axi_clk;
 	}
+=======
+	pl353_smc->aclk = devm_clk_get_enabled(&adev->dev, "apb_pclk");
+	if (IS_ERR(pl353_smc->aclk))
+		return dev_err_probe(&adev->dev, PTR_ERR(pl353_smc->aclk),
+				     "aclk clock not found.\n");
+
+	pl353_smc->memclk = devm_clk_get_enabled(&adev->dev, "memclk");
+	if (IS_ERR(pl353_smc->memclk))
+		return dev_err_probe(&adev->dev, PTR_ERR(pl353_smc->memclk),
+				     "memclk clock not found.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	amba_set_drvdata(adev, pl353_smc);
 
 	/* Find compatible children. Only a single child is supported */
+<<<<<<< HEAD
 	for_each_available_child_of_node(of_node, child) {
+=======
+	for_each_available_child_of_node_scoped(of_node, child) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		match = of_match_node(pl353_smc_supported_children, child);
 		if (!match) {
 			dev_warn(&adev->dev, "unsupported child node\n");
 			continue;
 		}
+<<<<<<< HEAD
 		break;
 	}
 	if (!match) {
@@ -141,6 +161,17 @@ static void pl353_smc_remove(struct amba_device *adev)
 
 	clk_disable_unprepare(pl353_smc->memclk);
 	clk_disable_unprepare(pl353_smc->aclk);
+=======
+		of_platform_device_create(child, NULL, &adev->dev);
+		break;
+	}
+	if (!match) {
+		dev_err(&adev->dev, "no matching children\n");
+		return -ENODEV;
+	}
+
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct amba_id pl353_ids[] = {
@@ -159,7 +190,10 @@ static struct amba_driver pl353_smc_driver = {
 	},
 	.id_table = pl353_ids,
 	.probe = pl353_smc_probe,
+<<<<<<< HEAD
 	.remove = pl353_smc_remove,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_amba_driver(pl353_smc_driver);

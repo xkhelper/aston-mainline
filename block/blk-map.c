@@ -561,6 +561,7 @@ EXPORT_SYMBOL(blk_rq_append_bio);
 /* Prepare bio for passthrough IO given ITER_BVEC iter */
 static int blk_rq_map_user_bvec(struct request *rq, const struct iov_iter *iter)
 {
+<<<<<<< HEAD
 	struct request_queue *q = rq->q;
 	size_t nr_iter = iov_iter_count(iter);
 	size_t nr_segs = iter->nr_segs;
@@ -612,6 +613,35 @@ static int blk_rq_map_user_bvec(struct request *rq, const struct iov_iter *iter)
 put_bio:
 	blk_mq_map_bio_put(bio);
 	return -EINVAL;
+=======
+	const struct queue_limits *lim = &rq->q->limits;
+	unsigned int max_bytes = lim->max_hw_sectors << SECTOR_SHIFT;
+	unsigned int nsegs;
+	struct bio *bio;
+	int ret;
+
+	if (!iov_iter_count(iter) || iov_iter_count(iter) > max_bytes)
+		return -EINVAL;
+
+	/* reuse the bvecs from the iterator instead of allocating new ones */
+	bio = blk_rq_map_bio_alloc(rq, 0, GFP_KERNEL);
+	if (!bio)
+		return -ENOMEM;
+	bio_iov_bvec_set(bio, (struct iov_iter *)iter);
+
+	/* check that the data layout matches the hardware restrictions */
+	ret = bio_split_rw_at(bio, lim, &nsegs, max_bytes);
+	if (ret) {
+		/* if we would have to split the bio, copy instead */
+		if (ret > 0)
+			ret = -EREMOTEIO;
+		blk_mq_map_bio_put(bio);
+		return ret;
+	}
+
+	blk_rq_bio_prep(rq, bio, nsegs);
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**

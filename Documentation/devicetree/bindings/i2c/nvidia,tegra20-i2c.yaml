@@ -103,6 +103,12 @@ properties:
     items:
       - const: i2c
 
+<<<<<<< HEAD
+=======
+  power-domains:
+    maxItems: 1
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   dmas:
     items:
       - description: DMA channel for the reception FIFO
@@ -124,6 +130,11 @@ allOf:
               - nvidia,tegra30-i2c
     then:
       properties:
+<<<<<<< HEAD
+=======
+        clocks:
+          minItems: 2
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
         clock-names:
           items:
             - const: div-clk
@@ -133,6 +144,7 @@ allOf:
       properties:
         compatible:
           contains:
+<<<<<<< HEAD
             const: nvidia,tegra114-i2c
     then:
       properties:
@@ -147,6 +159,15 @@ allOf:
             const: nvidia,tegra210-i2c
     then:
       properties:
+=======
+            enum:
+              - nvidia,tegra114-i2c
+              - nvidia,tegra210-i2c
+    then:
+      properties:
+        clocks:
+          maxItems: 1
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
         clock-names:
           items:
             - const: div-clk
@@ -158,6 +179,11 @@ allOf:
             const: nvidia,tegra210-i2c-vi
     then:
       properties:
+<<<<<<< HEAD
+=======
+        clocks:
+          minItems: 2
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
         clock-names:
           items:
             - const: div-clk
@@ -165,6 +191,12 @@ allOf:
         power-domains:
           items:
             - description: phandle to the VENC power domain
+<<<<<<< HEAD
+=======
+    else:
+      properties:
+        power-domains: false
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 unevaluatedProperties: false
 

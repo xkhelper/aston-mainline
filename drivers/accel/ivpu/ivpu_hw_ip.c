@@ -1062,7 +1062,14 @@ static void irq_wdt_mss_handler(struct ivpu_device *vdev)
 
 static void irq_noc_firewall_handler(struct ivpu_device *vdev)
 {
+<<<<<<< HEAD
 	ivpu_pm_trigger_recovery(vdev, "NOC Firewall IRQ");
+=======
+	atomic_inc(&vdev->hw->firewall_irq_counter);
+
+	ivpu_dbg(vdev, IRQ, "NOC Firewall interrupt detected, counter %d\n",
+		 atomic_read(&vdev->hw->firewall_irq_counter));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Handler for IRQs from NPU core */

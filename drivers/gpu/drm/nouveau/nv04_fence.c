@@ -39,7 +39,11 @@ struct nv04_fence_priv {
 static int
 nv04_fence_emit(struct nouveau_fence *fence)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = unrcu_pointer(fence->channel)->chan.push;
+=======
+	struct nvif_push *push = &unrcu_pointer(fence->channel)->chan.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret = PUSH_WAIT(push, 2);
 	if (ret == 0) {
 		PUSH_NVSQ(push, NV_SW, 0x0150, fence->base.seqno);

@@ -23,7 +23,11 @@
 #include <linux/iio/buffer.h>
 #include <linux/iio/kfifo_buf.h>
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Commands */
 #define ADS1298_CMD_WAKEUP	0x02
@@ -502,8 +506,12 @@ static void ads1298_rdata_complete(void *context)
 	}
 
 	/* Demux the channel data into our bounce buffer */
+<<<<<<< HEAD
 	for_each_set_bit(scan_index, indio_dev->active_scan_mask,
 			 indio_dev->masklength) {
+=======
+	iio_for_each_active_channel(indio_dev, scan_index) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		const struct iio_chan_spec *scan_chan =
 					&indio_dev->channels[scan_index];
 		const u8 *data = priv->rx_buffer + scan_chan->address;

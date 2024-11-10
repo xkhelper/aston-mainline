@@ -149,7 +149,11 @@ static int dom_size(int peers)
 
 	while ((i * i) < peers)
 		i++;
+<<<<<<< HEAD
 	return i < MAX_MON_DOMAIN ? i : MAX_MON_DOMAIN;
+=======
+	return min(i, MAX_MON_DOMAIN);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void map_set(u64 *up_map, int i, unsigned int v)

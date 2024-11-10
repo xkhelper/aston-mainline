@@ -18,6 +18,12 @@ struct block_info {
 	u64			total_cycles;
 	int			num;
 	int			num_aggr;
+<<<<<<< HEAD
+=======
+	int			br_cntr_nr;
+	u64			*br_cntr;
+	struct evsel		*evsel;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct block_fmt {
@@ -36,6 +42,10 @@ enum {
 	PERF_HPP_REPORT__BLOCK_AVG_CYCLES,
 	PERF_HPP_REPORT__BLOCK_RANGE,
 	PERF_HPP_REPORT__BLOCK_DSO,
+<<<<<<< HEAD
+=======
+	PERF_HPP_REPORT__BLOCK_BRANCH_COUNTER,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	PERF_HPP_REPORT__BLOCK_MAX_INDEX
 };
 
@@ -46,7 +56,10 @@ struct block_report {
 	int			nr_fmts;
 };
 
+<<<<<<< HEAD
 struct block_info *block_info__new(void);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void block_info__delete(struct block_info *bi);
 
 int64_t __block_info__cmp(struct hist_entry *left, struct hist_entry *right);
@@ -55,7 +68,12 @@ int64_t block_info__cmp(struct perf_hpp_fmt *fmt __maybe_unused,
 			struct hist_entry *left, struct hist_entry *right);
 
 int block_info__process_sym(struct hist_entry *he, struct block_hist *bh,
+<<<<<<< HEAD
 			    u64 *block_cycles_aggr, u64 total_cycles);
+=======
+			    u64 *block_cycles_aggr, u64 total_cycles,
+			    unsigned int br_cntr_nr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct block_report *block_info__create_report(struct evlist *evlist,
 					       u64 total_cycles,

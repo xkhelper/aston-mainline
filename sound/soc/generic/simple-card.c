@@ -291,8 +291,11 @@ static int simple_dai_link_of_dpcm(struct simple_util_priv *priv,
 
 	simple_parse_convert(dev, np, &dai_props->adata);
 
+<<<<<<< HEAD
 	snd_soc_dai_link_set_capabilities(dai_link);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = simple_link_init(priv, np, codec, li, prefix, dai_name);
 
 out_put_node:
@@ -840,7 +843,11 @@ static struct platform_driver simple_card = {
 		.of_match_table = simple_of_match,
 	},
 	.probe = simple_probe,
+<<<<<<< HEAD
 	.remove_new = simple_util_remove,
+=======
+	.remove = simple_util_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(simple_card);

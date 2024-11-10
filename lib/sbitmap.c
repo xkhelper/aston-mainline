@@ -65,7 +65,11 @@ static inline bool sbitmap_deferred_clear(struct sbitmap_word *map,
 {
 	unsigned long mask, word_mask;
 
+<<<<<<< HEAD
 	guard(spinlock_irqsave)(&map->swap_lock);
+=======
+	guard(raw_spinlock_irqsave)(&map->swap_lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!map->cleared) {
 		if (depth == 0)
@@ -136,7 +140,11 @@ int sbitmap_init_node(struct sbitmap *sb, unsigned int depth, int shift,
 	}
 
 	for (i = 0; i < sb->map_nr; i++)
+<<<<<<< HEAD
 		spin_lock_init(&sb->map[i].swap_lock);
+=======
+		raw_spin_lock_init(&sb->map[i].swap_lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

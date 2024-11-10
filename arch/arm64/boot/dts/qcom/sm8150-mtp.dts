@@ -355,11 +355,14 @@
 };
 
 &gpu {
+<<<<<<< HEAD
 	/*
 	 * NOTE: "amd,imageon" makes Adreno start in headless mode, remove it
 	 * after display support is added on this board.
 	 */
 	compatible = "qcom,adreno-640.1", "qcom,adreno", "amd,imageon";
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	status = "okay";
 };
 

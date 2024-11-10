@@ -116,7 +116,11 @@ MODULE_PARM_DESC(osrun_time, "how many seconds to wait for the ICS2115 OS");
 
 #define DPRINT(cond, ...) \
        if ((dev->debug & (cond)) == (cond)) { \
+<<<<<<< HEAD
 	     snd_printk (__VA_ARGS__); \
+=======
+	     pr_debug(__VA_ARGS__); \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
        }
 #else
 #define DPRINT(cond, args...)
@@ -341,7 +345,11 @@ snd_wavefront_cmd (snd_wavefront_t *dev,
 
 	wfcmd = wavefront_get_command(cmd);
 	if (!wfcmd) {
+<<<<<<< HEAD
 		snd_printk ("command 0x%x not supported.\n",
+=======
+		dev_err(dev->card->dev, "command 0x%x not supported.\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			cmd);
 		return 1;
 	}
@@ -623,7 +631,11 @@ wavefront_get_sample_status (snd_wavefront_t *dev, int assume_rom)
 	/* check sample status */
     
 	if (snd_wavefront_cmd (dev, WFC_GET_NSAMPLES, rbuf, wbuf)) {
+<<<<<<< HEAD
 		snd_printk ("cannot request sample count.\n");
+=======
+		dev_err(dev->card->dev, "cannot request sample count.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -1;
 	} 
     
@@ -635,8 +647,13 @@ wavefront_get_sample_status (snd_wavefront_t *dev, int assume_rom)
 		wbuf[1] = i >> 7;
 
 		if (snd_wavefront_cmd (dev, WFC_IDENTIFY_SAMPLE_TYPE, rbuf, wbuf)) {
+<<<<<<< HEAD
 			snd_printk(KERN_WARNING "cannot identify sample "
 				   "type of slot %d\n", i);
+=======
+			dev_warn(dev->card->dev,
+				 "cannot identify sample type of slot %d\n", i);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			dev->sample_status[i] = WF_ST_EMPTY;
 			continue;
 		}
@@ -661,9 +678,15 @@ wavefront_get_sample_status (snd_wavefront_t *dev, int assume_rom)
 			break;
 
 		default:
+<<<<<<< HEAD
 			snd_printk ("unknown sample type for "
 				    "slot %d (0x%x)\n", 
 				    i, rbuf[0]);
+=======
+			dev_err(dev->card->dev,
+				"unknown sample type for slot %d (0x%x)\n",
+				i, rbuf[0]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		if (rbuf[0] != WF_ST_EMPTY) {
@@ -671,9 +694,16 @@ wavefront_get_sample_status (snd_wavefront_t *dev, int assume_rom)
 		} 
 	}
 
+<<<<<<< HEAD
 	snd_printk ("%d samples used (%d real, %d aliases, %d multi), "
 		    "%d empty\n", dev->samples_used, sc_real, sc_alias, sc_multi,
 		    WF_MAX_SAMPLE - dev->samples_used);
+=======
+	dev_info(dev->card->dev,
+		 "%d samples used (%d real, %d aliases, %d multi), %d empty\n",
+		 dev->samples_used, sc_real, sc_alias, sc_multi,
+		 WF_MAX_SAMPLE - dev->samples_used);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 
 	return (0);
@@ -706,8 +736,13 @@ wavefront_get_patch_status (snd_wavefront_t *dev)
 		} else if (x == 3) { /* Bad patch number */
 			dev->patch_status[i] = 0;
 		} else {
+<<<<<<< HEAD
 			snd_printk ("upload patch "
 				    "error 0x%x\n", x);
+=======
+			dev_err(dev->card->dev,
+				"upload patch error 0x%x\n", x);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			dev->patch_status[i] = 0;
 			return 1;
 		}
@@ -724,7 +759,12 @@ wavefront_get_patch_status (snd_wavefront_t *dev)
 		}
 	
 	}
+<<<<<<< HEAD
 	snd_printk ("%d patch slots filled, %d in use\n", cnt, cnt2);
+=======
+	dev_info(dev->card->dev, "%d patch slots filled, %d in use\n",
+		 cnt, cnt2);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return (0);
 }
@@ -760,8 +800,13 @@ wavefront_get_program_status (snd_wavefront_t *dev)
 		} else if (x == 1) { /* Bad program number */
 			dev->prog_status[i] = 0;
 		} else {
+<<<<<<< HEAD
 			snd_printk ("upload program "
 				    "error 0x%x\n", x);
+=======
+			dev_err(dev->card->dev,
+				"upload program error 0x%x\n", x);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			dev->prog_status[i] = 0;
 		}
 	}
@@ -772,7 +817,11 @@ wavefront_get_program_status (snd_wavefront_t *dev)
 		}
 	}
 
+<<<<<<< HEAD
 	snd_printk ("%d programs slots in use\n", cnt);
+=======
+	dev_info(dev->card->dev, "%d programs slots in use\n", cnt);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return (0);
 }
@@ -796,7 +845,11 @@ wavefront_send_patch (snd_wavefront_t *dev, wavefront_patch_info *header)
 	munge_buf ((unsigned char *)&header->hdr.p, bptr, WF_PATCH_BYTES);
     
 	if (snd_wavefront_cmd (dev, WFC_DOWNLOAD_PATCH, NULL, buf)) {
+<<<<<<< HEAD
 		snd_printk ("download patch failed\n");
+=======
+		dev_err(dev->card->dev, "download patch failed\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EIO;
 	}
 
@@ -837,7 +890,11 @@ wavefront_send_program (snd_wavefront_t *dev, wavefront_patch_info *header)
 	munge_buf ((unsigned char *)&header->hdr.pr, &buf[1], WF_PROGRAM_BYTES);
     
 	if (snd_wavefront_cmd (dev, WFC_DOWNLOAD_PROGRAM, NULL, buf)) {
+<<<<<<< HEAD
 		snd_printk ("download patch failed\n");	
+=======
+		dev_err(dev->card->dev, "download patch failed\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EIO;
 	}
 
@@ -851,7 +908,11 @@ wavefront_freemem (snd_wavefront_t *dev)
 	char rbuf[8];
 
 	if (snd_wavefront_cmd (dev, WFC_REPORT_FREE_MEMORY, rbuf, NULL)) {
+<<<<<<< HEAD
 		snd_printk ("can't get memory stats.\n");
+=======
+		dev_err(dev->card->dev, "can't get memory stats.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -1;
 	} else {
 		return demunge_int32 (rbuf, 4);
@@ -901,7 +962,11 @@ wavefront_send_sample (snd_wavefront_t *dev,
 		x = wavefront_find_free_sample(dev);
 		if (x < 0)
 			return -ENOMEM;
+<<<<<<< HEAD
 		snd_printk ("unspecified sample => %d\n", x);
+=======
+		dev_info(dev->card->dev, "unspecified sample => %d\n", x);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		header->number = x;
 	}
 
@@ -935,9 +1000,15 @@ wavefront_send_sample (snd_wavefront_t *dev,
 
 		if (dev->rom_samples_rdonly) {
 			if (dev->sample_status[header->number] & WF_SLOT_ROM) {
+<<<<<<< HEAD
 				snd_printk ("sample slot %d "
 					    "write protected\n",
 					    header->number);
+=======
+				dev_err(dev->card->dev,
+					"sample slot %d write protected\n",
+					header->number);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				return -EACCES;
 			}
 		}
@@ -949,9 +1020,15 @@ wavefront_send_sample (snd_wavefront_t *dev,
 		dev->freemem = wavefront_freemem (dev);
 
 		if (dev->freemem < (int)header->size) {
+<<<<<<< HEAD
 			snd_printk ("insufficient memory to "
 				    "load %d byte sample.\n",
 				    header->size);
+=======
+			dev_err(dev->card->dev,
+				"insufficient memory to load %d byte sample.\n",
+				header->size);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -ENOMEM;
 		}
 	
@@ -960,8 +1037,13 @@ wavefront_send_sample (snd_wavefront_t *dev,
 	skip = WF_GET_CHANNEL(&header->hdr.s);
 
 	if (skip > 0 && header->hdr.s.SampleResolution != LINEAR_16BIT) {
+<<<<<<< HEAD
 		snd_printk ("channel selection only "
 			    "possible on 16-bit samples");
+=======
+		dev_err(dev->card->dev,
+			"channel selection only possible on 16-bit samples");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 
@@ -1057,8 +1139,13 @@ wavefront_send_sample (snd_wavefront_t *dev,
 			   header->size ?
 			   WFC_DOWNLOAD_SAMPLE : WFC_DOWNLOAD_SAMPLE_HEADER,
 			   NULL, sample_hdr)) {
+<<<<<<< HEAD
 		snd_printk ("sample %sdownload refused.\n",
 			    header->size ? "" : "header ");
+=======
+		dev_err(dev->card->dev, "sample %sdownload refused.\n",
+			header->size ? "" : "header ");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EIO;
 	}
 
@@ -1083,8 +1170,13 @@ wavefront_send_sample (snd_wavefront_t *dev,
 		}
 
 		if (snd_wavefront_cmd (dev, WFC_DOWNLOAD_BLOCK, NULL, NULL)) {
+<<<<<<< HEAD
 			snd_printk ("download block "
 				    "request refused.\n");
+=======
+			dev_err(dev->card->dev,
+				"download block request refused.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EIO;
 		}
 
@@ -1145,6 +1237,7 @@ wavefront_send_sample (snd_wavefront_t *dev,
 		dma_ack = wavefront_read(dev);
 		if (dma_ack != WF_DMA_ACK) {
 			if (dma_ack == -1) {
+<<<<<<< HEAD
 				snd_printk ("upload sample "
 					    "DMA ack timeout\n");
 				return -EIO;
@@ -1152,6 +1245,15 @@ wavefront_send_sample (snd_wavefront_t *dev,
 				snd_printk ("upload sample "
 					    "DMA ack error 0x%x\n",
 					    dma_ack);
+=======
+				dev_err(dev->card->dev,
+					"upload sample DMA ack timeout\n");
+				return -EIO;
+			} else {
+				dev_err(dev->card->dev,
+					"upload sample DMA ack error 0x%x\n",
+					dma_ack);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				return -EIO;
 			}
 		}
@@ -1195,7 +1297,11 @@ wavefront_send_alias (snd_wavefront_t *dev, wavefront_patch_info *header)
 	munge_int32 (*(&header->hdr.a.FrequencyBias+1), &alias_hdr[23], 2);
 
 	if (snd_wavefront_cmd (dev, WFC_DOWNLOAD_SAMPLE_ALIAS, NULL, alias_hdr)) {
+<<<<<<< HEAD
 		snd_printk ("download alias failed.\n");
+=======
+		dev_err(dev->card->dev, "download alias failed.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EIO;
 	}
 
@@ -1248,7 +1354,11 @@ wavefront_send_multisample (snd_wavefront_t *dev, wavefront_patch_info *header)
 	if (snd_wavefront_cmd (dev, WFC_DOWNLOAD_MULTISAMPLE, 
 			   (unsigned char *) (long) ((num_samples*2)+3),
 			   msample_hdr)) {
+<<<<<<< HEAD
 		snd_printk ("download of multisample failed.\n");
+=======
+		dev_err(dev->card->dev, "download of multisample failed.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		kfree(msample_hdr);
 		return -EIO;
 	}
@@ -1271,7 +1381,11 @@ wavefront_fetch_multisample (snd_wavefront_t *dev,
 	munge_int32 (header->number, number, 2);
     
 	if (snd_wavefront_cmd (dev, WFC_UPLOAD_MULTISAMPLE, log_ns, number)) {
+<<<<<<< HEAD
 		snd_printk ("upload multisample failed.\n");
+=======
+		dev_err(dev->card->dev, "upload multisample failed.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EIO;
 	}
     
@@ -1290,16 +1404,26 @@ wavefront_fetch_multisample (snd_wavefront_t *dev,
 	
 		val = wavefront_read(dev);
 		if (val == -1) {
+<<<<<<< HEAD
 			snd_printk ("upload multisample failed "
 				    "during sample loop.\n");
+=======
+			dev_err(dev->card->dev,
+				"upload multisample failed during sample loop.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EIO;
 		}
 		d[0] = val;
 
 		val = wavefront_read(dev);
 		if (val == -1) {
+<<<<<<< HEAD
 			snd_printk ("upload multisample failed "
 				    "during sample loop.\n");
+=======
+			dev_err(dev->card->dev,
+				"upload multisample failed during sample loop.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EIO;
 		}
 		d[1] = val;
@@ -1334,7 +1458,11 @@ wavefront_send_drum (snd_wavefront_t *dev, wavefront_patch_info *header)
 	}
 
 	if (snd_wavefront_cmd (dev, WFC_DOWNLOAD_EDRUM_PROGRAM, NULL, drumbuf)) {
+<<<<<<< HEAD
 		snd_printk ("download drum failed.\n");
+=======
+		dev_err(dev->card->dev, "download drum failed.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EIO;
 	}
 
@@ -1352,7 +1480,11 @@ wavefront_find_free_sample (snd_wavefront_t *dev)
 			return i;
 		}
 	}
+<<<<<<< HEAD
 	snd_printk ("no free sample slots!\n");
+=======
+	dev_err(dev->card->dev, "no free sample slots!\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return -1;
 }
 
@@ -1368,7 +1500,11 @@ wavefront_find_free_patch (snd_wavefront_t *dev)
 			return i;
 		}
 	}
+<<<<<<< HEAD
 	snd_printk ("no free patch slots!\n");
+=======
+	dev_err(dev->card->dev, "no free patch slots!\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return -1;
 }
 #endif
@@ -1385,7 +1521,11 @@ wavefront_load_patch (snd_wavefront_t *dev, const char __user *addr)
 
 	if (copy_from_user (header, addr, sizeof(wavefront_patch_info) -
 			    sizeof(wavefront_any))) {
+<<<<<<< HEAD
 		snd_printk ("bad address for load patch.\n");
+=======
+		dev_err(dev->card->dev, "bad address for load patch.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = -EFAULT;
 		goto __error;
 	}
@@ -1463,8 +1603,13 @@ wavefront_load_patch (snd_wavefront_t *dev, const char __user *addr)
 		break;
 
 	default:
+<<<<<<< HEAD
 		snd_printk ("unknown patch type %d.\n",
 			    header->subkey);
+=======
+		dev_err(dev->card->dev, "unknown patch type %d.\n",
+			header->subkey);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = -EINVAL;
 		break;
 	}
@@ -1527,13 +1672,21 @@ wavefront_synth_control (snd_wavefront_card_t *acard,
 	switch (wc->cmd) {
 		
 	case WFC_DISABLE_INTERRUPTS:
+<<<<<<< HEAD
 		snd_printk ("interrupts disabled.\n");
+=======
+		dev_dbg(dev->card->dev, "interrupts disabled.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		outb (0x80|0x20, dev->control_port);
 		dev->interrupts_are_midi = 1;
 		return 0;
 
 	case WFC_ENABLE_INTERRUPTS:
+<<<<<<< HEAD
 		snd_printk ("interrupts enabled.\n");
+=======
+		dev_dbg(dev->card->dev, "interrupts enabled.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		outb (0x80|0x40|0x20, dev->control_port);
 		dev->interrupts_are_midi = 1;
 		return 0;
@@ -1550,7 +1703,11 @@ wavefront_synth_control (snd_wavefront_card_t *acard,
 	case WFC_IDENTIFY_SLOT_TYPE:
 		i = wc->wbuf[0] | (wc->wbuf[1] << 7);
 		if (i <0 || i >= WF_MAX_SAMPLE) {
+<<<<<<< HEAD
 			snd_printk ("invalid slot ID %d\n",
+=======
+			dev_err(dev->card->dev, "invalid slot ID %d\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				i);
 			wc->status = EINVAL;
 			return -EINVAL;
@@ -1561,7 +1718,11 @@ wavefront_synth_control (snd_wavefront_card_t *acard,
 
 	case WFC_DEBUG_DRIVER:
 		dev->debug = wc->wbuf[0];
+<<<<<<< HEAD
 		snd_printk ("debug = 0x%x\n", dev->debug);
+=======
+		dev_dbg(dev->card->dev, "debug = 0x%x\n", dev->debug);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	case WFC_UPLOAD_PATCH:
@@ -1578,8 +1739,13 @@ wavefront_synth_control (snd_wavefront_card_t *acard,
 		return 0;
 
 	case WFC_UPLOAD_SAMPLE_ALIAS:
+<<<<<<< HEAD
 		snd_printk ("support for sample alias upload "
 			"being considered.\n");
+=======
+		dev_err(dev->card->dev,
+			"support for sample alias upload being considered.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		wc->status = EINVAL;
 		return -EINVAL;
 	}
@@ -1620,9 +1786,14 @@ wavefront_synth_control (snd_wavefront_card_t *acard,
 			break;
 
 		case WFC_UPLOAD_SAMPLE_ALIAS:
+<<<<<<< HEAD
 			snd_printk ("support for "
 				    "sample aliases still "
 				    "being considered.\n");
+=======
+			dev_err(dev->card->dev,
+				"support for sample aliases still being considered.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 
 		case WFC_VMIDI_OFF:
@@ -1760,7 +1931,11 @@ snd_wavefront_internal_interrupt (snd_wavefront_card_t *card)
 */
 
 static int
+<<<<<<< HEAD
 snd_wavefront_interrupt_bits (int irq)
+=======
+snd_wavefront_interrupt_bits(snd_wavefront_t *dev, int irq)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 {
 	int bits;
@@ -1780,7 +1955,11 @@ snd_wavefront_interrupt_bits (int irq)
 		break;
 	
 	default:
+<<<<<<< HEAD
 		snd_printk ("invalid IRQ %d\n", irq);
+=======
+		dev_err(dev->card->dev, "invalid IRQ %d\n", irq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		bits = -1;
 	}
 
@@ -1815,7 +1994,11 @@ wavefront_reset_to_cleanliness (snd_wavefront_t *dev)
 
 	/* IRQ already checked */
 
+<<<<<<< HEAD
 	bits = snd_wavefront_interrupt_bits (dev->irq);
+=======
+	bits = snd_wavefront_interrupt_bits(dev, dev->irq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* try reset of port */
 
@@ -1885,7 +2068,11 @@ wavefront_reset_to_cleanliness (snd_wavefront_t *dev)
 	 */
 
 	if (!dev->irq_ok) {
+<<<<<<< HEAD
 		snd_printk ("intr not received after h/w un-reset.\n");
+=======
+		dev_err(dev->card->dev, "intr not received after h/w un-reset.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto gone_bad;
 	} 
 
@@ -1909,18 +2096,30 @@ wavefront_reset_to_cleanliness (snd_wavefront_t *dev)
 					 dev->data_port, ramcheck_time*HZ);
 
 	if (!dev->irq_ok) {
+<<<<<<< HEAD
 		snd_printk ("post-RAM-check interrupt not received.\n");
+=======
+		dev_err(dev->card->dev, "post-RAM-check interrupt not received.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto gone_bad;
 	} 
 
 	if (!wavefront_wait (dev, STAT_CAN_READ)) {
+<<<<<<< HEAD
 		snd_printk ("no response to HW version cmd.\n");
+=======
+		dev_err(dev->card->dev, "no response to HW version cmd.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto gone_bad;
 	}
 	
 	hwv[0] = wavefront_read(dev);
 	if (hwv[0] == -1) {
+<<<<<<< HEAD
 		snd_printk ("board not responding correctly.\n");
+=======
+		dev_err(dev->card->dev, "board not responding correctly.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto gone_bad;
 	}
 
@@ -1932,11 +2131,19 @@ wavefront_reset_to_cleanliness (snd_wavefront_t *dev)
 		
 		hwv[0] = wavefront_read(dev);
 		if (hwv[0] == -1) {
+<<<<<<< HEAD
 			snd_printk ("on-board RAM test failed "
 				    "(bad error code).\n");
 		} else {
 			snd_printk ("on-board RAM test failed "
 				    "(error code: 0x%x).\n",
+=======
+			dev_err(dev->card->dev,
+				"on-board RAM test failed (bad error code).\n");
+		} else {
+			dev_err(dev->card->dev,
+				"on-board RAM test failed (error code: 0x%x).\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				hwv[0]);
 		}
 		goto gone_bad;
@@ -1946,12 +2153,21 @@ wavefront_reset_to_cleanliness (snd_wavefront_t *dev)
 
 	hwv[1] = wavefront_read(dev);
 	if (hwv[1] == -1) {
+<<<<<<< HEAD
 		snd_printk ("incorrect h/w response.\n");
 		goto gone_bad;
 	}
 
 	snd_printk ("hardware version %d.%d\n",
 		    hwv[0], hwv[1]);
+=======
+		dev_err(dev->card->dev, "incorrect h/w response.\n");
+		goto gone_bad;
+	}
+
+	dev_info(dev->card->dev, "hardware version %d.%d\n",
+		 hwv[0], hwv[1]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 
@@ -1971,7 +2187,11 @@ wavefront_download_firmware (snd_wavefront_t *dev, char *path)
 
 	err = request_firmware(&firmware, path, dev->card->dev);
 	if (err < 0) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "firmware (%s) download failed!!!\n", path);
+=======
+		dev_err(dev->card->dev, "firmware (%s) download failed!!!\n", path);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 1;
 	}
 
@@ -1982,16 +2202,26 @@ wavefront_download_firmware (snd_wavefront_t *dev, char *path)
 		if (section_length == 0)
 			break;
 		if (section_length < 0 || section_length > WF_SECTION_MAX) {
+<<<<<<< HEAD
 			snd_printk(KERN_ERR
 				   "invalid firmware section length %d\n",
 				   section_length);
+=======
+			dev_err(dev->card->dev,
+				"invalid firmware section length %d\n",
+				section_length);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto failure;
 		}
 		buf++;
 		len++;
 
 		if (firmware->size < len + section_length) {
+<<<<<<< HEAD
 			snd_printk(KERN_ERR "firmware section read error.\n");
+=======
+			dev_err(dev->card->dev, "firmware section read error.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto failure;
 		}
 
@@ -2008,15 +2238,25 @@ wavefront_download_firmware (snd_wavefront_t *dev, char *path)
 	
 		/* get ACK */
 		if (!wavefront_wait(dev, STAT_CAN_READ)) {
+<<<<<<< HEAD
 			snd_printk(KERN_ERR "time out for firmware ACK.\n");
+=======
+			dev_err(dev->card->dev, "time out for firmware ACK.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto failure;
 		}
 		err = inb(dev->data_port);
 		if (err != WF_ACK) {
+<<<<<<< HEAD
 			snd_printk(KERN_ERR
 				   "download of section #%d not "
 				   "acknowledged, ack = 0x%x\n",
 				   section_cnt_downloaded + 1, err);
+=======
+			dev_err(dev->card->dev,
+				"download of section #%d not acknowledged, ack = 0x%x\n",
+				section_cnt_downloaded + 1, err);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto failure;
 		}
 
@@ -2028,7 +2268,11 @@ wavefront_download_firmware (snd_wavefront_t *dev, char *path)
 
  failure:
 	release_firmware(firmware);
+<<<<<<< HEAD
 	snd_printk(KERN_ERR "firmware download failed!!!\n");
+=======
+	dev_err(dev->card->dev, "firmware download failed!!!\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 1;
 }
 
@@ -2040,7 +2284,11 @@ wavefront_do_reset (snd_wavefront_t *dev)
 	char voices[1];
 
 	if (wavefront_reset_to_cleanliness (dev)) {
+<<<<<<< HEAD
 		snd_printk ("hw reset failed.\n");
+=======
+		dev_err(dev->card->dev, "hw reset failed.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto gone_bad;
 	}
 
@@ -2064,7 +2312,11 @@ wavefront_do_reset (snd_wavefront_t *dev)
 						  (osrun_time*HZ));
 
 		if (!dev->irq_ok) {
+<<<<<<< HEAD
 			snd_printk ("no post-OS interrupt.\n");
+=======
+			dev_err(dev->card->dev, "no post-OS interrupt.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto gone_bad;
 		}
 		
@@ -2074,7 +2326,11 @@ wavefront_do_reset (snd_wavefront_t *dev)
 						  dev->data_port, (10*HZ));
 		
 		if (!dev->irq_ok) {
+<<<<<<< HEAD
 			snd_printk ("no post-OS interrupt(2).\n");
+=======
+			dev_err(dev->card->dev, "no post-OS interrupt(2).\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto gone_bad;
 		}
 
@@ -2094,20 +2350,32 @@ wavefront_do_reset (snd_wavefront_t *dev)
 	if (dev->freemem < 0)
 		goto gone_bad;
 		
+<<<<<<< HEAD
 	snd_printk ("available DRAM %dk\n", dev->freemem / 1024);
+=======
+	dev_info(dev->card->dev, "available DRAM %dk\n", dev->freemem / 1024);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (wavefront_write (dev, 0xf0) ||
 	    wavefront_write (dev, 1) ||
 	    (wavefront_read (dev) < 0)) {
 		dev->debug = 0;
+<<<<<<< HEAD
 		snd_printk ("MPU emulation mode not set.\n");
+=======
+		dev_err(dev->card->dev, "MPU emulation mode not set.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto gone_bad;
 	}
 
 	voices[0] = 32;
 
 	if (snd_wavefront_cmd (dev, WFC_SET_NVOICES, NULL, voices)) {
+<<<<<<< HEAD
 		snd_printk ("cannot set number of voices to 32.\n");
+=======
+		dev_err(dev->card->dev, "cannot set number of voices to 32.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto gone_bad;
 	}
 
@@ -2187,8 +2455,13 @@ snd_wavefront_detect (snd_wavefront_card_t *card)
 		dev->fw_version[0] = rbuf[0];
 		dev->fw_version[1] = rbuf[1];
 
+<<<<<<< HEAD
 		snd_printk ("firmware %d.%d already loaded.\n",
 			    rbuf[0], rbuf[1]);
+=======
+		dev_info(dev->card->dev, "firmware %d.%d already loaded.\n",
+			 rbuf[0], rbuf[1]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* check that a command actually works */
       
@@ -2197,22 +2470,37 @@ snd_wavefront_detect (snd_wavefront_card_t *card)
 			dev->hw_version[0] = rbuf[0];
 			dev->hw_version[1] = rbuf[1];
 		} else {
+<<<<<<< HEAD
 			snd_printk ("not raw, but no "
 				    "hardware version!\n");
+=======
+			dev_err(dev->card->dev,
+				"not raw, but no hardware version!\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -1;
 		}
 
 		if (!wf_raw) {
 			return 0;
 		} else {
+<<<<<<< HEAD
 			snd_printk ("reloading firmware as you requested.\n");
+=======
+			dev_info(dev->card->dev,
+				 "reloading firmware as you requested.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			dev->israw = 1;
 		}
 
 	} else {
 
 		dev->israw = 1;
+<<<<<<< HEAD
 		snd_printk ("no response to firmware probe, assume raw.\n");
+=======
+		dev_info(dev->card->dev,
+			 "no response to firmware probe, assume raw.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	}
 

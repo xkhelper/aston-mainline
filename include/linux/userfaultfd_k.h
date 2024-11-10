@@ -249,6 +249,10 @@ static inline bool vma_can_userfault(struct vm_area_struct *vma,
 
 extern int dup_userfaultfd(struct vm_area_struct *, struct list_head *);
 extern void dup_userfaultfd_complete(struct list_head *);
+<<<<<<< HEAD
+=======
+void dup_userfaultfd_fail(struct list_head *);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 extern void mremap_userfaultfd_prep(struct vm_area_struct *,
 				    struct vm_userfaultfd_ctx *);
@@ -267,6 +271,28 @@ extern void userfaultfd_unmap_complete(struct mm_struct *mm,
 extern bool userfaultfd_wp_unpopulated(struct vm_area_struct *vma);
 extern bool userfaultfd_wp_async(struct vm_area_struct *vma);
 
+<<<<<<< HEAD
+=======
+void userfaultfd_reset_ctx(struct vm_area_struct *vma);
+
+struct vm_area_struct *userfaultfd_clear_vma(struct vma_iterator *vmi,
+					     struct vm_area_struct *prev,
+					     struct vm_area_struct *vma,
+					     unsigned long start,
+					     unsigned long end);
+
+int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
+			       struct vm_area_struct *vma,
+			       unsigned long vm_flags,
+			       unsigned long start, unsigned long end,
+			       bool wp_async);
+
+void userfaultfd_release_new(struct userfaultfd_ctx *ctx);
+
+void userfaultfd_release_all(struct mm_struct *mm,
+			     struct userfaultfd_ctx *ctx);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else /* CONFIG_USERFAULTFD */
 
 /* mm helpers */
@@ -332,6 +358,13 @@ static inline void dup_userfaultfd_complete(struct list_head *l)
 {
 }
 
+<<<<<<< HEAD
+=======
+static inline void dup_userfaultfd_fail(struct list_head *l)
+{
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void mremap_userfaultfd_prep(struct vm_area_struct *vma,
 					   struct vm_userfaultfd_ctx *ctx)
 {

@@ -702,6 +702,10 @@ static int params_show(struct seq_file *seq, void *v)
 	print_param(seq, p, uframe_sched);
 	print_param(seq, p, external_id_pin_ctl);
 	print_param(seq, p, power_down);
+<<<<<<< HEAD
+=======
+	print_param(seq, p, no_clock_gating);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	print_param(seq, p, lpm);
 	print_param(seq, p, lpm_clock_gating);
 	print_param(seq, p, besl);

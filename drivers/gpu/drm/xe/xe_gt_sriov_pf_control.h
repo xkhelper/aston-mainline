@@ -11,6 +11,12 @@
 
 struct xe_gt;
 
+<<<<<<< HEAD
+=======
+int xe_gt_sriov_pf_control_init(struct xe_gt *gt);
+void xe_gt_sriov_pf_control_restart(struct xe_gt *gt);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int xe_gt_sriov_pf_control_pause_vf(struct xe_gt *gt, unsigned int vfid);
 int xe_gt_sriov_pf_control_resume_vf(struct xe_gt *gt, unsigned int vfid);
 int xe_gt_sriov_pf_control_stop_vf(struct xe_gt *gt, unsigned int vfid);

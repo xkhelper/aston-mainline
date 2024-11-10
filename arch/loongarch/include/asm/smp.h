@@ -70,10 +70,18 @@ extern int __cpu_logical_map[NR_CPUS];
 #define ACTION_RESCHEDULE	1
 #define ACTION_CALL_FUNCTION	2
 #define ACTION_IRQ_WORK		3
+<<<<<<< HEAD
+=======
+#define ACTION_CLEAR_VECTOR	4
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define SMP_BOOT_CPU		BIT(ACTION_BOOT_CPU)
 #define SMP_RESCHEDULE		BIT(ACTION_RESCHEDULE)
 #define SMP_CALL_FUNCTION	BIT(ACTION_CALL_FUNCTION)
 #define SMP_IRQ_WORK		BIT(ACTION_IRQ_WORK)
+<<<<<<< HEAD
+=======
+#define SMP_CLEAR_VECTOR	BIT(ACTION_CLEAR_VECTOR)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct secondary_data {
 	unsigned long stack;

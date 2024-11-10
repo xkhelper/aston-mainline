@@ -1137,7 +1137,12 @@ static int pvscsi_setup_msg_workqueue(struct pvscsi_adapter *adapter)
 	snprintf(name, sizeof(name),
 		 "vmw_pvscsi_wq_%u", adapter->host->host_no);
 
+<<<<<<< HEAD
 	adapter->workqueue = create_singlethread_workqueue(name);
+=======
+	adapter->workqueue =
+		alloc_ordered_workqueue("%s", WQ_MEM_RECLAIM, name);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!adapter->workqueue) {
 		printk(KERN_ERR "vmw_pvscsi: failed to create work queue\n");
 		return 0;

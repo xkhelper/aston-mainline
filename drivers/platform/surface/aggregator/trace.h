@@ -13,7 +13,11 @@
 
 #include <linux/surface_aggregator/serial_hub.h>
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/tracepoint.h>
 
 TRACE_DEFINE_ENUM(SSH_FRAME_TYPE_DATA_SEQ);

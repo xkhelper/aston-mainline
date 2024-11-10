@@ -6,6 +6,10 @@
 #include <stdbool.h>
 #include <linux/bpf.h>
 #include <bpf/bpf_helpers.h>
+<<<<<<< HEAD
+=======
+#include <bpf/bpf_tracing.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/if_ether.h>
 #include "bpf_misc.h"
 #include "bpf_kfuncs.h"
@@ -964,7 +968,11 @@ int dynptr_invalidate_slice_reinit(void *ctx)
  * mem_or_null pointers.
  */
 SEC("?raw_tp")
+<<<<<<< HEAD
 __failure __regex("R[0-9]+ type=scalar expected=percpu_ptr_")
+=======
+__failure __msg("R{{[0-9]+}} type=scalar expected=percpu_ptr_")
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int dynptr_invalidate_slice_or_null(void *ctx)
 {
 	struct bpf_dynptr ptr;
@@ -982,7 +990,11 @@ int dynptr_invalidate_slice_or_null(void *ctx)
 
 /* Destruction of dynptr should also any slices obtained from it */
 SEC("?raw_tp")
+<<<<<<< HEAD
 __failure __regex("R[0-9]+ invalid mem access 'scalar'")
+=======
+__failure __msg("R{{[0-9]+}} invalid mem access 'scalar'")
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int dynptr_invalidate_slice_failure(void *ctx)
 {
 	struct bpf_dynptr ptr1;
@@ -1069,7 +1081,11 @@ int dynptr_read_into_slot(void *ctx)
 
 /* bpf_dynptr_slice()s are read-only and cannot be written to */
 SEC("?tc")
+<<<<<<< HEAD
 __failure __regex("R[0-9]+ cannot write into rdonly_mem")
+=======
+__failure __msg("R{{[0-9]+}} cannot write into rdonly_mem")
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int skb_invalid_slice_write(struct __sk_buff *skb)
 {
 	struct bpf_dynptr ptr;
@@ -1254,6 +1270,33 @@ int skb_invalid_ctx(void *ctx)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+SEC("fentry/skb_tx_error")
+__failure __msg("must be referenced or trusted")
+int BPF_PROG(skb_invalid_ctx_fentry, void *skb)
+{
+	struct bpf_dynptr ptr;
+
+	/* this should fail */
+	bpf_dynptr_from_skb(skb, 0, &ptr);
+
+	return 0;
+}
+
+SEC("fexit/skb_tx_error")
+__failure __msg("must be referenced or trusted")
+int BPF_PROG(skb_invalid_ctx_fexit, void *skb)
+{
+	struct bpf_dynptr ptr;
+
+	/* this should fail */
+	bpf_dynptr_from_skb(skb, 0, &ptr);
+
+	return 0;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Reject writes to dynptr slot for uninit arg */
 SEC("?raw_tp")
 __failure __msg("potential write to dynptr at off=-16")

@@ -216,7 +216,11 @@ page_pool_get_dma_dir(const struct page_pool *pool)
 
 static inline void page_pool_fragment_netmem(netmem_ref netmem, long nr)
 {
+<<<<<<< HEAD
 	atomic_long_set(&netmem_to_page(netmem)->pp_ref_count, nr);
+=======
+	atomic_long_set(netmem_get_pp_ref_count_ref(netmem), nr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -244,7 +248,11 @@ static inline void page_pool_fragment_page(struct page *page, long nr)
 
 static inline long page_pool_unref_netmem(netmem_ref netmem, long nr)
 {
+<<<<<<< HEAD
 	struct page *page = netmem_to_page(netmem);
+=======
+	atomic_long_t *pp_ref_count = netmem_get_pp_ref_count_ref(netmem);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	long ret;
 
 	/* If nr == pp_ref_count then we have cleared all remaining
@@ -261,19 +269,31 @@ static inline long page_pool_unref_netmem(netmem_ref netmem, long nr)
 	 * initially, and only overwrite it when the page is partitioned into
 	 * more than one piece.
 	 */
+<<<<<<< HEAD
 	if (atomic_long_read(&page->pp_ref_count) == nr) {
+=======
+	if (atomic_long_read(pp_ref_count) == nr) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* As we have ensured nr is always one for constant case using
 		 * the BUILD_BUG_ON(), only need to handle the non-constant case
 		 * here for pp_ref_count draining, which is a rare case.
 		 */
 		BUILD_BUG_ON(__builtin_constant_p(nr) && nr != 1);
 		if (!__builtin_constant_p(nr))
+<<<<<<< HEAD
 			atomic_long_set(&page->pp_ref_count, 1);
+=======
+			atomic_long_set(pp_ref_count, 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		return 0;
 	}
 
+<<<<<<< HEAD
 	ret = atomic_long_sub_return(nr, &page->pp_ref_count);
+=======
+	ret = atomic_long_sub_return(nr, pp_ref_count);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	WARN_ON(ret < 0);
 
 	/* We are the last user here too, reset pp_ref_count back to 1 to
@@ -282,7 +302,11 @@ static inline long page_pool_unref_netmem(netmem_ref netmem, long nr)
 	 * page_pool_unref_page() currently.
 	 */
 	if (unlikely(!ret))
+<<<<<<< HEAD
 		atomic_long_set(&page->pp_ref_count, 1);
+=======
+		atomic_long_set(pp_ref_count, 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }
@@ -401,9 +425,13 @@ static inline void page_pool_free_va(struct page_pool *pool, void *va,
 
 static inline dma_addr_t page_pool_get_dma_addr_netmem(netmem_ref netmem)
 {
+<<<<<<< HEAD
 	struct page *page = netmem_to_page(netmem);
 
 	dma_addr_t ret = page->dma_addr;
+=======
+	dma_addr_t ret = netmem_get_dma_addr(netmem);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (PAGE_POOL_32BIT_ARCH_WITH_64BIT_DMA)
 		ret <<= PAGE_SHIFT;
@@ -423,6 +451,7 @@ static inline dma_addr_t page_pool_get_dma_addr(const struct page *page)
 	return page_pool_get_dma_addr_netmem(page_to_netmem((struct page *)page));
 }
 
+<<<<<<< HEAD
 static inline bool page_pool_set_dma_addr_netmem(netmem_ref netmem,
 						 dma_addr_t addr)
 {
@@ -441,6 +470,8 @@ static inline bool page_pool_set_dma_addr_netmem(netmem_ref netmem,
 	return false;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * page_pool_dma_sync_for_cpu - sync Rx page for CPU after it's written by HW
  * @pool: &page_pool the @page belongs to
@@ -463,11 +494,14 @@ static inline void page_pool_dma_sync_for_cpu(const struct page_pool *pool,
 				      page_pool_get_dma_dir(pool));
 }
 
+<<<<<<< HEAD
 static inline bool page_pool_set_dma_addr(struct page *page, dma_addr_t addr)
 {
 	return page_pool_set_dma_addr_netmem(page_to_netmem(page), addr);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline bool page_pool_put(struct page_pool *pool)
 {
 	return refcount_dec_and_test(&pool->user_cnt);

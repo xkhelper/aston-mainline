@@ -1815,8 +1815,11 @@ static int rswitch_get_ts_info(struct net_device *ndev, struct kernel_ethtool_ts
 
 	info->phc_index = ptp_clock_index(rdev->priv->ptp_priv->clock);
 	info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE |
+<<<<<<< HEAD
 				SOF_TIMESTAMPING_RX_SOFTWARE |
 				SOF_TIMESTAMPING_SOFTWARE |
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				SOF_TIMESTAMPING_TX_HARDWARE |
 				SOF_TIMESTAMPING_RX_HARDWARE |
 				SOF_TIMESTAMPING_RAW_HARDWARE;

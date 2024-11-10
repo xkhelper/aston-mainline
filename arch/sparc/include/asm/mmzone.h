@@ -6,10 +6,13 @@
 
 #include <linux/cpumask.h>
 
+<<<<<<< HEAD
 extern struct pglist_data *node_data[];
 
 #define NODE_DATA(nid)		(node_data[nid])
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern int numa_cpu_lookup_table[];
 extern cpumask_t numa_cpumask_lookup_table[];
 

@@ -69,6 +69,11 @@ struct mtk_crtc {
 	/* lock for display hardware access */
 	struct mutex			hw_lock;
 	bool				config_updating;
+<<<<<<< HEAD
+=======
+	/* lock for config_updating to cmd buffer */
+	spinlock_t			config_lock;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct mtk_crtc_state {
@@ -106,11 +111,20 @@ static void mtk_crtc_finish_page_flip(struct mtk_crtc *mtk_crtc)
 
 static void mtk_drm_finish_page_flip(struct mtk_crtc *mtk_crtc)
 {
+<<<<<<< HEAD
 	drm_crtc_handle_vblank(&mtk_crtc->base);
+=======
+	unsigned long flags;
+
+	drm_crtc_handle_vblank(&mtk_crtc->base);
+
+	spin_lock_irqsave(&mtk_crtc->config_lock, flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!mtk_crtc->config_updating && mtk_crtc->pending_needs_vblank) {
 		mtk_crtc_finish_page_flip(mtk_crtc);
 		mtk_crtc->pending_needs_vblank = false;
 	}
+<<<<<<< HEAD
 }
 
 #if IS_REACHABLE(CONFIG_MTK_CMDQ)
@@ -151,6 +165,11 @@ static void mtk_drm_cmdq_pkt_destroy(struct cmdq_pkt *pkt)
 }
 #endif
 
+=======
+	spin_unlock_irqrestore(&mtk_crtc->config_lock, flags);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void mtk_crtc_destroy(struct drm_crtc *crtc)
 {
 	struct mtk_crtc *mtk_crtc = to_mtk_crtc(crtc);
@@ -158,9 +177,14 @@ static void mtk_crtc_destroy(struct drm_crtc *crtc)
 
 	mtk_mutex_put(mtk_crtc->mutex);
 #if IS_REACHABLE(CONFIG_MTK_CMDQ)
+<<<<<<< HEAD
 	mtk_drm_cmdq_pkt_destroy(&mtk_crtc->cmdq_handle);
 
 	if (mtk_crtc->cmdq_client.chan) {
+=======
+	if (mtk_crtc->cmdq_client.chan) {
+		cmdq_pkt_destroy(&mtk_crtc->cmdq_client, &mtk_crtc->cmdq_handle);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mbox_free_channel(mtk_crtc->cmdq_client.chan);
 		mtk_crtc->cmdq_client.chan = NULL;
 	}
@@ -308,12 +332,25 @@ static void ddp_cmdq_cb(struct mbox_client *cl, void *mssg)
 	struct mtk_crtc *mtk_crtc = container_of(cmdq_cl, struct mtk_crtc, cmdq_client);
 	struct mtk_crtc_state *state;
 	unsigned int i;
+<<<<<<< HEAD
+=======
+	unsigned long flags;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (data->sta < 0)
 		return;
 
 	state = to_mtk_crtc_state(mtk_crtc->base.state);
 
+<<<<<<< HEAD
+=======
+	spin_lock_irqsave(&mtk_crtc->config_lock, flags);
+	if (mtk_crtc->config_updating) {
+		spin_unlock_irqrestore(&mtk_crtc->config_lock, flags);
+		goto ddp_cmdq_cb_out;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	state->pending_config = false;
 
 	if (mtk_crtc->pending_planes) {
@@ -340,6 +377,13 @@ static void ddp_cmdq_cb(struct mbox_client *cl, void *mssg)
 		mtk_crtc->pending_async_planes = false;
 	}
 
+<<<<<<< HEAD
+=======
+	spin_unlock_irqrestore(&mtk_crtc->config_lock, flags);
+
+ddp_cmdq_cb_out:
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mtk_crtc->cmdq_vblank_cnt = 0;
 	wake_up(&mtk_crtc->cb_blocking_queue);
 }
@@ -449,6 +493,10 @@ static void mtk_crtc_ddp_hw_fini(struct mtk_crtc *mtk_crtc)
 {
 	struct drm_device *drm = mtk_crtc->base.dev;
 	struct drm_crtc *crtc = &mtk_crtc->base;
+<<<<<<< HEAD
+=======
+	unsigned long flags;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int i;
 
 	for (i = 0; i < mtk_crtc->ddp_comp_nr; i++) {
@@ -480,10 +528,17 @@ static void mtk_crtc_ddp_hw_fini(struct mtk_crtc *mtk_crtc)
 	pm_runtime_put(drm->dev);
 
 	if (crtc->state->event && !crtc->state->active) {
+<<<<<<< HEAD
 		spin_lock_irq(&crtc->dev->event_lock);
 		drm_crtc_send_vblank_event(crtc, crtc->state->event);
 		crtc->state->event = NULL;
 		spin_unlock_irq(&crtc->dev->event_lock);
+=======
+		spin_lock_irqsave(&crtc->dev->event_lock, flags);
+		drm_crtc_send_vblank_event(crtc, crtc->state->event);
+		crtc->state->event = NULL;
+		spin_unlock_irqrestore(&crtc->dev->event_lock, flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -569,9 +624,20 @@ static void mtk_crtc_update_config(struct mtk_crtc *mtk_crtc, bool needs_vblank)
 	struct mtk_drm_private *priv = crtc->dev->dev_private;
 	unsigned int pending_planes = 0, pending_async_planes = 0;
 	int i;
+<<<<<<< HEAD
 
 	mutex_lock(&mtk_crtc->hw_lock);
 	mtk_crtc->config_updating = true;
+=======
+	unsigned long flags;
+
+	mutex_lock(&mtk_crtc->hw_lock);
+
+	spin_lock_irqsave(&mtk_crtc->config_lock, flags);
+	mtk_crtc->config_updating = true;
+	spin_unlock_irqrestore(&mtk_crtc->config_lock, flags);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (needs_vblank)
 		mtk_crtc->pending_needs_vblank = true;
 
@@ -607,7 +673,11 @@ static void mtk_crtc_update_config(struct mtk_crtc *mtk_crtc, bool needs_vblank)
 		cmdq_pkt_clear_event(cmdq_handle, mtk_crtc->cmdq_event);
 		cmdq_pkt_wfe(cmdq_handle, mtk_crtc->cmdq_event, false);
 		mtk_crtc_ddp_config(crtc, cmdq_handle);
+<<<<<<< HEAD
 		cmdq_pkt_finalize(cmdq_handle);
+=======
+		cmdq_pkt_eoc(cmdq_handle);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dma_sync_single_for_device(mtk_crtc->cmdq_client.chan->mbox->dev,
 					   cmdq_handle->pa_base,
 					   cmdq_handle->cmd_buf_size,
@@ -625,7 +695,14 @@ static void mtk_crtc_update_config(struct mtk_crtc *mtk_crtc, bool needs_vblank)
 		mbox_client_txdone(mtk_crtc->cmdq_client.chan, 0);
 	}
 #endif
+<<<<<<< HEAD
 	mtk_crtc->config_updating = false;
+=======
+	spin_lock_irqsave(&mtk_crtc->config_lock, flags);
+	mtk_crtc->config_updating = false;
+	spin_unlock_irqrestore(&mtk_crtc->config_lock, flags);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_unlock(&mtk_crtc->hw_lock);
 }
 
@@ -924,8 +1001,14 @@ static int mtk_crtc_init_comp_planes(struct drm_device *drm_dev,
 				BIT(pipe),
 				mtk_crtc_plane_type(mtk_crtc->layer_nr, num_planes),
 				mtk_ddp_comp_supported_rotations(comp),
+<<<<<<< HEAD
 				mtk_ddp_comp_get_formats(comp),
 				mtk_ddp_comp_get_num_formats(comp));
+=======
+				mtk_ddp_comp_get_blend_modes(comp),
+				mtk_ddp_comp_get_formats(comp),
+				mtk_ddp_comp_get_num_formats(comp), i);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret)
 			return ret;
 
@@ -1068,6 +1151,10 @@ int mtk_crtc_create(struct drm_device *drm_dev, const unsigned int *path,
 		drm_mode_crtc_set_gamma_size(&mtk_crtc->base, gamma_lut_size);
 	drm_crtc_enable_color_mgmt(&mtk_crtc->base, 0, has_ctm, gamma_lut_size);
 	mutex_init(&mtk_crtc->hw_lock);
+<<<<<<< HEAD
+=======
+	spin_lock_init(&mtk_crtc->config_lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #if IS_REACHABLE(CONFIG_MTK_CMDQ)
 	i = priv->mbox_index++;
@@ -1094,9 +1181,15 @@ int mtk_crtc_create(struct drm_device *drm_dev, const unsigned int *path,
 			mbox_free_channel(mtk_crtc->cmdq_client.chan);
 			mtk_crtc->cmdq_client.chan = NULL;
 		} else {
+<<<<<<< HEAD
 			ret = mtk_drm_cmdq_pkt_create(&mtk_crtc->cmdq_client,
 						      &mtk_crtc->cmdq_handle,
 						      PAGE_SIZE);
+=======
+			ret = cmdq_pkt_create(&mtk_crtc->cmdq_client,
+					      &mtk_crtc->cmdq_handle,
+					      PAGE_SIZE);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (ret) {
 				dev_dbg(dev, "mtk_crtc %d failed to create cmdq packet\n",
 					drm_crtc_index(&mtk_crtc->base));

@@ -39,12 +39,19 @@ unsigned long leon_swprobe(unsigned long vaddr, unsigned long *paddr)
 	unsigned int ctxtbl;
 	unsigned int pgd, pmd, ped;
 	unsigned int ptr;
+<<<<<<< HEAD
 	unsigned int lvl, pte, paddrbase;
 	unsigned int ctx;
 	unsigned int paddr_calc;
 
 	paddrbase = 0;
 
+=======
+	unsigned int lvl, pte;
+	unsigned int ctx;
+	unsigned int paddr_calc;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (srmmu_swprobe_trace)
 		printk(KERN_INFO "swprobe: trace on\n");
 
@@ -73,7 +80,10 @@ unsigned long leon_swprobe(unsigned long vaddr, unsigned long *paddr)
 			printk(KERN_INFO "swprobe: pgd is entry level 3\n");
 		lvl = 3;
 		pte = pgd;
+<<<<<<< HEAD
 		paddrbase = pgd & _SRMMU_PTE_PMASK_LEON;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto ready;
 	}
 	if (((pgd & SRMMU_ET_MASK) != SRMMU_ET_PTD)) {
@@ -96,7 +106,10 @@ unsigned long leon_swprobe(unsigned long vaddr, unsigned long *paddr)
 			printk(KERN_INFO "swprobe: pmd is entry level 2\n");
 		lvl = 2;
 		pte = pmd;
+<<<<<<< HEAD
 		paddrbase = pmd & _SRMMU_PTE_PMASK_LEON;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto ready;
 	}
 	if (((pmd & SRMMU_ET_MASK) != SRMMU_ET_PTD)) {
@@ -124,7 +137,10 @@ unsigned long leon_swprobe(unsigned long vaddr, unsigned long *paddr)
 			printk(KERN_INFO "swprobe: ped is entry level 1\n");
 		lvl = 1;
 		pte = ped;
+<<<<<<< HEAD
 		paddrbase = ped & _SRMMU_PTE_PMASK_LEON;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto ready;
 	}
 	if (((ped & SRMMU_ET_MASK) != SRMMU_ET_PTD)) {
@@ -147,7 +163,10 @@ unsigned long leon_swprobe(unsigned long vaddr, unsigned long *paddr)
 			printk(KERN_INFO "swprobe: ptr is entry level 0\n");
 		lvl = 0;
 		pte = ptr;
+<<<<<<< HEAD
 		paddrbase = ptr & _SRMMU_PTE_PMASK_LEON;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto ready;
 	}
 	if (srmmu_swprobe_trace)

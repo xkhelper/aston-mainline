@@ -64,7 +64,11 @@
 		reg = <3 0 0x1000>;
 		ranges = <0 3 0 0x1000>;
 
+<<<<<<< HEAD
 		mdio-mux-emi1@54 {
+=======
+		mdio-mux@54 {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			compatible = "mdio-mux-mmioreg", "mdio-mux";
 			mdio-parent-bus = <&emdio1>;
 			reg = <0x54 1>;		/* BRDCFG4 */

@@ -153,6 +153,22 @@ char *strim(char *s)
 	return skip_spaces(s);
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * remove_spaces - Removes whitespaces from @s
+ */
+void remove_spaces(char *s)
+{
+	char *d = s;
+
+	do {
+		while (*d == ' ')
+			++d;
+	} while ((*s++ = *d++));
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * strreplace - Replace all occurrences of character in string.
  * @s: The string to operate on.

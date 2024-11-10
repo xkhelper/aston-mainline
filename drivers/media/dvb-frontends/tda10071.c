@@ -1230,7 +1230,11 @@ static void tda10071_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id tda10071_id_table[] = {
+<<<<<<< HEAD
 	{"tda10071_cx24118", 0},
+=======
+	{ "tda10071_cx24118" },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 MODULE_DEVICE_TABLE(i2c, tda10071_id_table);

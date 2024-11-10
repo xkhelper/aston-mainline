@@ -376,11 +376,20 @@ static int intel_hw_params(struct snd_pcm_substream *substream,
 static int intel_prepare(struct snd_pcm_substream *substream,
 			 struct snd_soc_dai *dai)
 {
+<<<<<<< HEAD
 	struct sdw_cdns *cdns = snd_soc_dai_get_drvdata(dai);
 	struct sdw_intel *sdw = cdns_to_intel(cdns);
 	struct sdw_cdns_dai_runtime *dai_runtime;
 	int ch, dir;
 	int ret = 0;
+=======
+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
+	struct sdw_cdns *cdns = snd_soc_dai_get_drvdata(dai);
+	struct sdw_intel *sdw = cdns_to_intel(cdns);
+	struct sdw_cdns_dai_runtime *dai_runtime;
+	struct snd_pcm_hw_params *hw_params;
+	int ch, dir;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dai_runtime = cdns->dai_runtime_array[dai->id];
 	if (!dai_runtime) {
@@ -389,12 +398,17 @@ static int intel_prepare(struct snd_pcm_substream *substream,
 		return -EIO;
 	}
 
+<<<<<<< HEAD
 	if (dai_runtime->suspended) {
 		struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
 		struct snd_pcm_hw_params *hw_params;
 
 		hw_params = &rtd->dpcm[substream->stream].hw_params;
 
+=======
+	hw_params = &rtd->dpcm[substream->stream].hw_params;
+	if (dai_runtime->suspended) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dai_runtime->suspended = false;
 
 		/*
@@ -415,6 +429,7 @@ static int intel_prepare(struct snd_pcm_substream *substream,
 		/* the SHIM will be configured in the callback functions */
 
 		sdw_cdns_config_stream(cdns, ch, dir, dai_runtime->pdi);
+<<<<<<< HEAD
 
 		/* Inform DSP about PDI stream number */
 		ret = intel_params_stream(sdw, substream, dai,
@@ -424,6 +439,13 @@ static int intel_prepare(struct snd_pcm_substream *substream,
 	}
 
 	return ret;
+=======
+	}
+
+	/* Inform DSP about PDI stream number */
+	return intel_params_stream(sdw, substream, dai, hw_params, sdw->instance,
+				   dai_runtime->pdi->intel_alh_id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int
@@ -706,10 +728,36 @@ static void intel_program_sdi(struct sdw_intel *sdw, int dev_num)
 			__func__, sdw->instance, dev_num);
 }
 
+<<<<<<< HEAD
+=======
+static int intel_get_link_count(struct sdw_intel *sdw)
+{
+	int ret;
+
+	ret = hdac_bus_eml_get_count(sdw->link_res->hbus, true, AZX_REG_ML_LEPTR_ID_SDW);
+	if (!ret) {
+		dev_err(sdw->cdns.dev, "%s: could not retrieve link count\n", __func__);
+		return -ENODEV;
+	}
+
+	if (ret > SDW_INTEL_MAX_LINKS) {
+		dev_err(sdw->cdns.dev, "%s: link count %d exceed max %d\n", __func__, ret, SDW_INTEL_MAX_LINKS);
+		return -EINVAL;
+	}
+
+	return ret;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const struct sdw_intel_hw_ops sdw_intel_lnl_hw_ops = {
 	.debugfs_init = intel_ace2x_debugfs_init,
 	.debugfs_exit = intel_ace2x_debugfs_exit,
 
+<<<<<<< HEAD
+=======
+	.get_link_count = intel_get_link_count,
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.register_dai = intel_register_dai,
 
 	.check_clock_stop = intel_check_clock_stop,

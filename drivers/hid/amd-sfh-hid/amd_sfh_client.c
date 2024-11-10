@@ -236,9 +236,15 @@ int amd_sfh_hid_client_init(struct amd_mp2_dev *privdata)
 	cl_data->in_data = in_data;
 
 	for (i = 0; i < cl_data->num_hid_devices; i++) {
+<<<<<<< HEAD
 		in_data->sensor_virt_addr[i] = dma_alloc_coherent(dev, sizeof(int) * 8,
 								  &cl_data->sensor_dma_addr[i],
 								  GFP_KERNEL);
+=======
+		in_data->sensor_virt_addr[i] = dmam_alloc_coherent(dev, sizeof(int) * 8,
+								   &cl_data->sensor_dma_addr[i],
+								   GFP_KERNEL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!in_data->sensor_virt_addr[i]) {
 			rc = -ENOMEM;
 			goto cleanup;
@@ -331,7 +337,10 @@ cleanup:
 int amd_sfh_hid_client_deinit(struct amd_mp2_dev *privdata)
 {
 	struct amdtp_cl_data *cl_data = privdata->cl_data;
+<<<<<<< HEAD
 	struct amd_input_data *in_data = cl_data->in_data;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int i, status;
 
 	for (i = 0; i < cl_data->num_hid_devices; i++) {
@@ -351,6 +360,7 @@ int amd_sfh_hid_client_deinit(struct amd_mp2_dev *privdata)
 	cancel_delayed_work_sync(&cl_data->work_buffer);
 	amdtp_hid_remove(cl_data);
 
+<<<<<<< HEAD
 	for (i = 0; i < cl_data->num_hid_devices; i++) {
 		if (in_data->sensor_virt_addr[i]) {
 			dma_free_coherent(&privdata->pdev->dev, 8 * sizeof(int),
@@ -358,5 +368,7 @@ int amd_sfh_hid_client_deinit(struct amd_mp2_dev *privdata)
 					  cl_data->sensor_dma_addr[i]);
 		}
 	}
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }

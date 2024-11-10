@@ -688,8 +688,12 @@ static void print_reg_state(struct bpf_verifier_env *env,
 	if (t == SCALAR_VALUE && reg->precise)
 		verbose(env, "P");
 	if (t == SCALAR_VALUE && tnum_is_const(reg->var_off)) {
+<<<<<<< HEAD
 		/* reg->off should be 0 for SCALAR_VALUE */
 		verbose_snum(env, reg->var_off.value + reg->off);
+=======
+		verbose_snum(env, reg->var_off.value);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 

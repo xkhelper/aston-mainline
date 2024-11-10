@@ -10,6 +10,10 @@ config SPARX5_SWITCH
 	select PHY_SPARX5_SERDES
 	select RESET_CONTROLLER
 	select VCAP
+<<<<<<< HEAD
+=======
+	select FDMA
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  This driver supports the Sparx5 network switch device.
 

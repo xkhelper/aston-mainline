@@ -18,6 +18,12 @@
 #include "intel_frontbuffer.h"
 #include "intel_plane_initial.h"
 #include "xe_bo.h"
+<<<<<<< HEAD
+=======
+#include "xe_wa.h"
+
+#include <generated/xe_wa_oob.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static bool
 intel_reuse_initial_plane_obj(struct intel_crtc *this,
@@ -104,6 +110,12 @@ initial_plane_bo(struct xe_device *xe,
 		phys_base = base;
 		flags |= XE_BO_FLAG_STOLEN;
 
+<<<<<<< HEAD
+=======
+		if (XE_WA(xe_root_mmio_gt(xe), 22019338487_display))
+			return NULL;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * If the FB is too big, just don't use it since fbdev is not very
 		 * important and we should probably use that space with FBC or other

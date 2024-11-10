@@ -5,6 +5,10 @@
 #include <bpf/bpf_tracing.h>
 #include <bpf/bpf_helpers.h>
 
+<<<<<<< HEAD
+=======
+#include "../bpf_experimental.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "task_kfunc_common.h"
 
 char _license[] SEC("license") = "GPL";
@@ -142,8 +146,14 @@ int BPF_PROG(test_task_acquire_leave_in_map, struct task_struct *task, u64 clone
 SEC("tp_btf/task_newtask")
 int BPF_PROG(test_task_xchg_release, struct task_struct *task, u64 clone_flags)
 {
+<<<<<<< HEAD
 	struct task_struct *kptr;
 	struct __tasks_kfunc_map_value *v;
+=======
+	struct task_struct *kptr, *acquired;
+	struct __tasks_kfunc_map_value *v, *local;
+	int refcnt, refcnt_after_drop;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	long status;
 
 	if (!is_test_kfunc_task())
@@ -167,6 +177,59 @@ int BPF_PROG(test_task_xchg_release, struct task_struct *task, u64 clone_flags)
 		return 0;
 	}
 
+<<<<<<< HEAD
+=======
+	local = bpf_obj_new(typeof(*local));
+	if (!local) {
+		err = 4;
+		bpf_task_release(kptr);
+		return 0;
+	}
+
+	kptr = bpf_kptr_xchg(&local->task, kptr);
+	if (kptr) {
+		err = 5;
+		bpf_obj_drop(local);
+		bpf_task_release(kptr);
+		return 0;
+	}
+
+	kptr = bpf_kptr_xchg(&local->task, NULL);
+	if (!kptr) {
+		err = 6;
+		bpf_obj_drop(local);
+		return 0;
+	}
+
+	/* Stash a copy into local kptr and check if it is released recursively */
+	acquired = bpf_task_acquire(kptr);
+	if (!acquired) {
+		err = 7;
+		bpf_obj_drop(local);
+		bpf_task_release(kptr);
+		return 0;
+	}
+	bpf_probe_read_kernel(&refcnt, sizeof(refcnt), &acquired->rcu_users);
+
+	acquired = bpf_kptr_xchg(&local->task, acquired);
+	if (acquired) {
+		err = 8;
+		bpf_obj_drop(local);
+		bpf_task_release(kptr);
+		bpf_task_release(acquired);
+		return 0;
+	}
+
+	bpf_obj_drop(local);
+
+	bpf_probe_read_kernel(&refcnt_after_drop, sizeof(refcnt_after_drop), &kptr->rcu_users);
+	if (refcnt != refcnt_after_drop + 1) {
+		err = 9;
+		bpf_task_release(kptr);
+		return 0;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bpf_task_release(kptr);
 
 	return 0;

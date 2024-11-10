@@ -772,6 +772,7 @@ static irqreturn_t xiic_process(int irq, void *dev_id)
 			goto out;
 		}
 
+<<<<<<< HEAD
 		xiic_fill_tx_fifo(i2c);
 
 		/* current message sent and there is space in the fifo */
@@ -780,6 +781,19 @@ static irqreturn_t xiic_process(int irq, void *dev_id)
 				"%s end of message sent, nmsgs: %d\n",
 				__func__, i2c->nmsgs);
 			if (i2c->nmsgs > 1) {
+=======
+		if (xiic_tx_space(i2c)) {
+			xiic_fill_tx_fifo(i2c);
+		} else {
+			/* current message fully written */
+			dev_dbg(i2c->adap.dev.parent,
+				"%s end of message sent, nmsgs: %d\n",
+				__func__, i2c->nmsgs);
+			/* Don't move onto the next message until the TX FIFO empties,
+			 * to ensure that a NAK is not missed.
+			 */
+			if (i2c->nmsgs > 1 && (pend & XIIC_INTR_TX_EMPTY_MASK)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				i2c->nmsgs--;
 				i2c->tx_msg++;
 				xfer_more = 1;
@@ -790,11 +804,15 @@ static irqreturn_t xiic_process(int irq, void *dev_id)
 					"%s Got TX IRQ but no more to do...\n",
 					__func__);
 			}
+<<<<<<< HEAD
 		} else if (!xiic_tx_space(i2c) && (i2c->nmsgs == 1))
 			/* current frame is sent and is last,
 			 * make sure to disable tx half
 			 */
 			xiic_irq_dis(i2c, XIIC_INTR_TX_HALF_MASK);
+=======
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (pend & XIIC_INTR_BNB_MASK) {
@@ -844,11 +862,16 @@ static int xiic_bus_busy(struct xiic_i2c *i2c)
 	return (sr & XIIC_SR_BUS_BUSY_MASK) ? -EBUSY : 0;
 }
 
+<<<<<<< HEAD
 static int xiic_busy(struct xiic_i2c *i2c)
+=======
+static int xiic_wait_not_busy(struct xiic_i2c *i2c)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int tries = 3;
 	int err;
 
+<<<<<<< HEAD
 	if (i2c->tx_msg || i2c->rx_msg)
 		return -EBUSY;
 
@@ -861,6 +884,8 @@ static int xiic_busy(struct xiic_i2c *i2c)
 		return 0;
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* for instance if previous transfer was terminated due to TX error
 	 * it might be that the bus is on it's way to become available
 	 * give it at most 3 ms to wake
@@ -1104,6 +1129,7 @@ static int xiic_start_xfer(struct xiic_i2c *i2c, struct i2c_msg *msgs, int num)
 
 	mutex_lock(&i2c->lock);
 
+<<<<<<< HEAD
 	ret = xiic_busy(i2c);
 	if (ret) {
 		dev_err(i2c->adap.dev.parent,
@@ -1111,6 +1137,38 @@ static int xiic_start_xfer(struct xiic_i2c *i2c, struct i2c_msg *msgs, int num)
 		goto out;
 	}
 
+=======
+	if (i2c->tx_msg || i2c->rx_msg) {
+		dev_err(i2c->adap.dev.parent,
+			"cannot start a transfer while busy\n");
+		ret = -EBUSY;
+		goto out;
+	}
+
+	/* In single master mode bus can only be busy, when in use by this
+	 * driver. If the register indicates bus being busy for some reason we
+	 * should ignore it, since bus will never be released and i2c will be
+	 * stuck forever.
+	 */
+	if (!i2c->singlemaster) {
+		ret = xiic_wait_not_busy(i2c);
+		if (ret) {
+			/* If the bus is stuck in a busy state, such as due to spurious low
+			 * pulses on the bus causing a false start condition to be detected,
+			 * then try to recover by re-initializing the controller and check
+			 * again if the bus is still busy.
+			 */
+			dev_warn(i2c->adap.dev.parent, "I2C bus busy timeout, reinitializing\n");
+			ret = xiic_reinit(i2c);
+			if (ret)
+				goto out;
+			ret = xiic_wait_not_busy(i2c);
+			if (ret)
+				goto out;
+		}
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	i2c->tx_msg = msgs;
 	i2c->rx_msg = NULL;
 	i2c->nmsgs = num;
@@ -1327,8 +1385,13 @@ static int xiic_i2c_probe(struct platform_device *pdev)
 	return 0;
 
 err_pm_disable:
+<<<<<<< HEAD
 	pm_runtime_set_suspended(&pdev->dev);
 	pm_runtime_disable(&pdev->dev);
+=======
+	pm_runtime_disable(&pdev->dev);
+	pm_runtime_set_suspended(&pdev->dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }

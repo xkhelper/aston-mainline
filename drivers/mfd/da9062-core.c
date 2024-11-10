@@ -25,7 +25,11 @@
 #define	DA9062_IRQ_LOW	0
 #define	DA9062_IRQ_HIGH	1
 
+<<<<<<< HEAD
 static struct regmap_irq da9061_irqs[] = {
+=======
+static const struct regmap_irq da9061_irqs[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* EVENT A */
 	[DA9061_IRQ_ONKEY] = {
 		.reg_offset = DA9062_REG_EVENT_A_OFFSET,
@@ -79,7 +83,11 @@ static struct regmap_irq da9061_irqs[] = {
 	},
 };
 
+<<<<<<< HEAD
 static struct regmap_irq_chip da9061_irq_chip = {
+=======
+static const struct regmap_irq_chip da9061_irq_chip = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name = "da9061-irq",
 	.irqs = da9061_irqs,
 	.num_irqs = DA9061_NUM_IRQ,
@@ -89,7 +97,11 @@ static struct regmap_irq_chip da9061_irq_chip = {
 	.ack_base = DA9062AA_EVENT_A,
 };
 
+<<<<<<< HEAD
 static struct regmap_irq da9062_irqs[] = {
+=======
+static const struct regmap_irq da9062_irqs[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* EVENT A */
 	[DA9062_IRQ_ONKEY] = {
 		.reg_offset = DA9062_REG_EVENT_A_OFFSET,
@@ -151,7 +163,11 @@ static struct regmap_irq da9062_irqs[] = {
 	},
 };
 
+<<<<<<< HEAD
 static struct regmap_irq_chip da9062_irq_chip = {
+=======
+static const struct regmap_irq_chip da9062_irq_chip = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name = "da9062-irq",
 	.irqs = da9062_irqs,
 	.num_irqs = DA9062_NUM_IRQ,
@@ -470,7 +486,11 @@ static const struct regmap_range_cfg da9061_range_cfg[] = {
 	}
 };
 
+<<<<<<< HEAD
 static struct regmap_config da9061_regmap_config = {
+=======
+static const struct regmap_config da9061_regmap_config = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.reg_bits = 8,
 	.val_bits = 8,
 	.ranges = da9061_range_cfg,
@@ -576,7 +596,11 @@ static const struct regmap_range_cfg da9062_range_cfg[] = {
 	}
 };
 
+<<<<<<< HEAD
 static struct regmap_config da9062_regmap_config = {
+=======
+static const struct regmap_config da9062_regmap_config = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.reg_bits = 8,
 	.val_bits = 8,
 	.ranges = da9062_range_cfg,

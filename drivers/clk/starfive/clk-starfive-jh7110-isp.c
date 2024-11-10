@@ -216,7 +216,11 @@ MODULE_DEVICE_TABLE(of, jh7110_ispcrg_match);
 
 static struct platform_driver jh7110_ispcrg_driver = {
 	.probe = jh7110_ispcrg_probe,
+<<<<<<< HEAD
 	.remove_new = jh7110_ispcrg_remove,
+=======
+	.remove = jh7110_ispcrg_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "clk-starfive-jh7110-isp",
 		.of_match_table = jh7110_ispcrg_match,

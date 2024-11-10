@@ -1218,7 +1218,10 @@ static const struct file_operations u32_array_fops = {
 	.open	 = u32_array_open,
 	.release = u32_array_release,
 	.read	 = u32_array_read,
+<<<<<<< HEAD
 	.llseek  = no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**

@@ -165,6 +165,12 @@ include::itrace.txt[]
 --type-stat::
 	Show stats for the data type annotation.
 
+<<<<<<< HEAD
+=======
+--skip-empty::
+	Do not display empty (or dummy) events.
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 SEE ALSO
 --------

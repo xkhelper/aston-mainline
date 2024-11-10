@@ -5,6 +5,11 @@
  */
 #include <linux/kvm_host.h>
 #include <linux/perf_event.h>
+<<<<<<< HEAD
+=======
+#include <linux/perf/arm_pmu.h>
+#include <linux/perf/arm_pmuv3.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static DEFINE_PER_CPU(struct kvm_pmu_events, kvm_pmu_events);
 
@@ -35,7 +40,11 @@ struct kvm_pmu_events *kvm_get_pmu_events(void)
  * Add events to track that we may want to switch at guest entry/exit
  * time.
  */
+<<<<<<< HEAD
 void kvm_set_pmu_events(u32 set, struct perf_event_attr *attr)
+=======
+void kvm_set_pmu_events(u64 set, struct perf_event_attr *attr)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct kvm_pmu_events *pmu = kvm_get_pmu_events();
 
@@ -51,7 +60,11 @@ void kvm_set_pmu_events(u32 set, struct perf_event_attr *attr)
 /*
  * Stop tracking events
  */
+<<<<<<< HEAD
 void kvm_clr_pmu_events(u32 clr)
+=======
+void kvm_clr_pmu_events(u64 clr)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct kvm_pmu_events *pmu = kvm_get_pmu_events();
 
@@ -62,6 +75,7 @@ void kvm_clr_pmu_events(u32 clr)
 	pmu->events_guest &= ~clr;
 }
 
+<<<<<<< HEAD
 #define PMEVTYPER_READ_CASE(idx)				\
 	case idx:						\
 		return read_sysreg(pmevtyper##idx##_el0)
@@ -119,10 +133,25 @@ static u64 kvm_vcpu_pmu_read_evtype_direct(int idx)
 	}
 
 	return 0;
+=======
+/*
+ * Read a value direct from PMEVTYPER<idx> where idx is 0-30
+ * or PMxCFILTR_EL0 where idx is 31-32.
+ */
+static u64 kvm_vcpu_pmu_read_evtype_direct(int idx)
+{
+	if (idx == ARMV8_PMU_CYCLE_IDX)
+		return read_pmccfiltr();
+	else if (idx == ARMV8_PMU_INSTR_IDX)
+		return read_pmicfiltr();
+
+	return read_pmevtypern(idx);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
  * Write a value direct to PMEVTYPER<idx> where idx is 0-30
+<<<<<<< HEAD
  * or PMCCFILTR_EL0 where idx is ARMV8_PMU_CYCLE_IDX (31).
  */
 static void kvm_vcpu_pmu_write_evtype_direct(int idx, u32 val)
@@ -135,6 +164,18 @@ static void kvm_vcpu_pmu_write_evtype_direct(int idx, u32 val)
 	default:
 		WARN_ON(1);
 	}
+=======
+ * or PMxCFILTR_EL0 where idx is 31-32.
+ */
+static void kvm_vcpu_pmu_write_evtype_direct(int idx, u32 val)
+{
+	if (idx == ARMV8_PMU_CYCLE_IDX)
+		write_pmccfiltr(val);
+	else if (idx == ARMV8_PMU_INSTR_IDX)
+		write_pmicfiltr(val);
+	else
+		write_pmevtypern(idx, val);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -145,7 +186,11 @@ static void kvm_vcpu_pmu_enable_el0(unsigned long events)
 	u64 typer;
 	u32 counter;
 
+<<<<<<< HEAD
 	for_each_set_bit(counter, &events, 32) {
+=======
+	for_each_set_bit(counter, &events, ARMPMU_MAX_HWEVENTS) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		typer = kvm_vcpu_pmu_read_evtype_direct(counter);
 		typer &= ~ARMV8_PMU_EXCLUDE_EL0;
 		kvm_vcpu_pmu_write_evtype_direct(counter, typer);
@@ -160,7 +205,11 @@ static void kvm_vcpu_pmu_disable_el0(unsigned long events)
 	u64 typer;
 	u32 counter;
 
+<<<<<<< HEAD
 	for_each_set_bit(counter, &events, 32) {
+=======
+	for_each_set_bit(counter, &events, ARMPMU_MAX_HWEVENTS) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		typer = kvm_vcpu_pmu_read_evtype_direct(counter);
 		typer |= ARMV8_PMU_EXCLUDE_EL0;
 		kvm_vcpu_pmu_write_evtype_direct(counter, typer);
@@ -176,7 +225,11 @@ static void kvm_vcpu_pmu_disable_el0(unsigned long events)
 void kvm_vcpu_pmu_restore_guest(struct kvm_vcpu *vcpu)
 {
 	struct kvm_pmu_events *pmu;
+<<<<<<< HEAD
 	u32 events_guest, events_host;
+=======
+	u64 events_guest, events_host;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!kvm_arm_support_pmu_v3() || !has_vhe())
 		return;
@@ -197,7 +250,11 @@ void kvm_vcpu_pmu_restore_guest(struct kvm_vcpu *vcpu)
 void kvm_vcpu_pmu_restore_host(struct kvm_vcpu *vcpu)
 {
 	struct kvm_pmu_events *pmu;
+<<<<<<< HEAD
 	u32 events_guest, events_host;
+=======
+	u64 events_guest, events_host;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!kvm_arm_support_pmu_v3() || !has_vhe())
 		return;

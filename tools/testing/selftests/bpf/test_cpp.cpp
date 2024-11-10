@@ -6,6 +6,13 @@
 #include <bpf/libbpf.h>
 #include <bpf/bpf.h>
 #include <bpf/btf.h>
+<<<<<<< HEAD
+=======
+
+#ifndef _Bool
+#define _Bool bool
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "test_core_extern.skel.h"
 #include "struct_ops_module.skel.h"
 

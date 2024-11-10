@@ -378,9 +378,12 @@ int octeon_send_command(struct octeon_device *oct, u32 iq_no,
 			u32 force_db, void *cmd, void *buf,
 			u32 datasize, u32 reqtype);
 
+<<<<<<< HEAD
 void octeon_dump_soft_command(struct octeon_device *oct,
 			      struct octeon_soft_command *sc);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void octeon_prepare_soft_command(struct octeon_device *oct,
 				 struct octeon_soft_command *sc,
 				 u8 opcode, u8 subcode,

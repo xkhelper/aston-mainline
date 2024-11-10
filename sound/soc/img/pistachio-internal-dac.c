@@ -271,7 +271,11 @@ static struct platform_driver pistachio_internal_dac_plat_driver = {
 		.pm = &pistachio_internal_dac_pm_ops
 	},
 	.probe = pistachio_internal_dac_probe,
+<<<<<<< HEAD
 	.remove_new = pistachio_internal_dac_remove
+=======
+	.remove = pistachio_internal_dac_remove
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(pistachio_internal_dac_plat_driver);
 

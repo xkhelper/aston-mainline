@@ -32,6 +32,12 @@ properties:
   clocks:
     maxItems: 1
 
+<<<<<<< HEAD
+=======
+  power-domains:
+    maxItems: 1
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   amlogic,ao-secure:
     description: phandle to the ao-secure syscon
     $ref: /schemas/types.yaml#/definitions/phandle

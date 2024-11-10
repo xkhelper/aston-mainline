@@ -12,6 +12,10 @@
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
+=======
+#include <linux/interrupt.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/io.h>
 #include <linux/irq.h>
 #include <linux/slab.h>
@@ -19,6 +23,7 @@
 #include <linux/bitops.h>
 #include <linux/seq_file.h>
 
+<<<<<<< HEAD
 #define EP93XX_GPIO_F_INT_STATUS 0x5c
 #define EP93XX_GPIO_A_INT_STATUS 0xa0
 #define EP93XX_GPIO_B_INT_STATUS 0xbc
@@ -42,6 +47,10 @@
 
 struct ep93xx_gpio_irq_chip {
 	u8 irq_offset;
+=======
+struct ep93xx_gpio_irq_chip {
+	void __iomem *base;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 int_unmasked;
 	u8 int_enabled;
 	u8 int_type1;
@@ -50,15 +59,22 @@ struct ep93xx_gpio_irq_chip {
 };
 
 struct ep93xx_gpio_chip {
+<<<<<<< HEAD
+=======
+	void __iomem			*base;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct gpio_chip		gc;
 	struct ep93xx_gpio_irq_chip	*eic;
 };
 
+<<<<<<< HEAD
 struct ep93xx_gpio {
 	void __iomem		*base;
 	struct ep93xx_gpio_chip	gc[EP93XX_GPIO_CHIP_NUM];
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define to_ep93xx_gpio_chip(x) container_of(x, struct ep93xx_gpio_chip, gc)
 
 static struct ep93xx_gpio_irq_chip *to_ep93xx_gpio_irq_chip(struct gpio_chip *gc)
@@ -79,6 +95,7 @@ static struct ep93xx_gpio_irq_chip *to_ep93xx_gpio_irq_chip(struct gpio_chip *gc
 #define EP93XX_INT_RAW_STATUS_OFFSET	0x14
 #define EP93XX_INT_DEBOUNCE_OFFSET	0x18
 
+<<<<<<< HEAD
 static void ep93xx_gpio_update_int_params(struct ep93xx_gpio *epg,
 					  struct ep93xx_gpio_irq_chip *eic)
 {
@@ -92,12 +109,29 @@ static void ep93xx_gpio_update_int_params(struct ep93xx_gpio *epg,
 
 	writeb_relaxed(eic->int_unmasked & eic->int_enabled,
 		       epg->base + eic->irq_offset + EP93XX_INT_EN_OFFSET);
+=======
+static void ep93xx_gpio_update_int_params(struct ep93xx_gpio_irq_chip *eic)
+{
+	writeb_relaxed(0, eic->base + EP93XX_INT_EN_OFFSET);
+
+	writeb_relaxed(eic->int_type2,
+		       eic->base + EP93XX_INT_TYPE2_OFFSET);
+
+	writeb_relaxed(eic->int_type1,
+		       eic->base + EP93XX_INT_TYPE1_OFFSET);
+
+	writeb_relaxed(eic->int_unmasked & eic->int_enabled,
+		       eic->base + EP93XX_INT_EN_OFFSET);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void ep93xx_gpio_int_debounce(struct gpio_chip *gc,
 				     unsigned int offset, bool enable)
 {
+<<<<<<< HEAD
 	struct ep93xx_gpio *epg = gpiochip_get_data(gc);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ep93xx_gpio_irq_chip *eic = to_ep93xx_gpio_irq_chip(gc);
 	int port_mask = BIT(offset);
 
@@ -106,6 +140,7 @@ static void ep93xx_gpio_int_debounce(struct gpio_chip *gc,
 	else
 		eic->int_debounce &= ~port_mask;
 
+<<<<<<< HEAD
 	writeb(eic->int_debounce,
 	       epg->base + eic->irq_offset + EP93XX_INT_DEBOUNCE_OFFSET);
 }
@@ -137,10 +172,32 @@ static void ep93xx_gpio_ab_irq_handler(struct irq_desc *desc)
 					  offset);
 
 	chained_irq_exit(irqchip, desc);
+=======
+	writeb(eic->int_debounce, eic->base + EP93XX_INT_DEBOUNCE_OFFSET);
+}
+
+static u32 ep93xx_gpio_ab_irq_handler(struct gpio_chip *gc)
+{
+	struct ep93xx_gpio_irq_chip *eic = to_ep93xx_gpio_irq_chip(gc);
+	unsigned long stat;
+	int offset;
+
+	stat = readb(eic->base + EP93XX_INT_STATUS_OFFSET);
+	for_each_set_bit(offset, &stat, 8)
+		generic_handle_domain_irq(gc->irq.domain, offset);
+
+	return stat;
+}
+
+static irqreturn_t ep93xx_ab_irq_handler(int irq, void *dev_id)
+{
+	return IRQ_RETVAL(ep93xx_gpio_ab_irq_handler(dev_id));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void ep93xx_gpio_f_irq_handler(struct irq_desc *desc)
 {
+<<<<<<< HEAD
 	/*
 	 * map discontiguous hw irq range to continuous sw irq range:
 	 *
@@ -153,6 +210,22 @@ static void ep93xx_gpio_f_irq_handler(struct irq_desc *desc)
 
 	chained_irq_enter(irqchip, desc);
 	generic_handle_irq(gpio_irq);
+=======
+	struct irq_chip *irqchip = irq_desc_get_chip(desc);
+	struct gpio_chip *gc = irq_desc_get_handler_data(desc);
+	struct gpio_irq_chip *gic = &gc->irq;
+	unsigned int parent = irq_desc_get_irq(desc);
+	unsigned int i;
+
+	chained_irq_enter(irqchip, desc);
+	for (i = 0; i < gic->num_parents; i++)
+		if (gic->parents[i] == parent)
+			break;
+
+	if (i < gic->num_parents)
+		generic_handle_domain_irq(gc->irq.domain, i);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	chained_irq_exit(irqchip, desc);
 }
 
@@ -160,6 +233,7 @@ static void ep93xx_gpio_irq_ack(struct irq_data *d)
 {
 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
 	struct ep93xx_gpio_irq_chip *eic = to_ep93xx_gpio_irq_chip(gc);
+<<<<<<< HEAD
 	struct ep93xx_gpio *epg = gpiochip_get_data(gc);
 	int port_mask = BIT(d->irq & 7);
 
@@ -169,45 +243,83 @@ static void ep93xx_gpio_irq_ack(struct irq_data *d)
 	}
 
 	writeb(port_mask, epg->base + eic->irq_offset + EP93XX_INT_EOI_OFFSET);
+=======
+	int port_mask = BIT(irqd_to_hwirq(d));
+
+	if (irqd_get_trigger_type(d) == IRQ_TYPE_EDGE_BOTH) {
+		eic->int_type2 ^= port_mask; /* switch edge direction */
+		ep93xx_gpio_update_int_params(eic);
+	}
+
+	writeb(port_mask, eic->base + EP93XX_INT_EOI_OFFSET);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void ep93xx_gpio_irq_mask_ack(struct irq_data *d)
 {
 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
 	struct ep93xx_gpio_irq_chip *eic = to_ep93xx_gpio_irq_chip(gc);
+<<<<<<< HEAD
 	struct ep93xx_gpio *epg = gpiochip_get_data(gc);
 	int port_mask = BIT(d->irq & 7);
+=======
+	irq_hw_number_t hwirq = irqd_to_hwirq(d);
+	int port_mask = BIT(hwirq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (irqd_get_trigger_type(d) == IRQ_TYPE_EDGE_BOTH)
 		eic->int_type2 ^= port_mask; /* switch edge direction */
 
 	eic->int_unmasked &= ~port_mask;
+<<<<<<< HEAD
 	ep93xx_gpio_update_int_params(epg, eic);
 
 	writeb(port_mask, epg->base + eic->irq_offset + EP93XX_INT_EOI_OFFSET);
 	gpiochip_disable_irq(gc, irqd_to_hwirq(d));
+=======
+	ep93xx_gpio_update_int_params(eic);
+
+	writeb(port_mask, eic->base + EP93XX_INT_EOI_OFFSET);
+	gpiochip_disable_irq(gc, hwirq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void ep93xx_gpio_irq_mask(struct irq_data *d)
 {
 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
 	struct ep93xx_gpio_irq_chip *eic = to_ep93xx_gpio_irq_chip(gc);
+<<<<<<< HEAD
 	struct ep93xx_gpio *epg = gpiochip_get_data(gc);
 
 	eic->int_unmasked &= ~BIT(d->irq & 7);
 	ep93xx_gpio_update_int_params(epg, eic);
 	gpiochip_disable_irq(gc, irqd_to_hwirq(d));
+=======
+	irq_hw_number_t hwirq = irqd_to_hwirq(d);
+
+	eic->int_unmasked &= ~BIT(hwirq);
+	ep93xx_gpio_update_int_params(eic);
+	gpiochip_disable_irq(gc, hwirq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void ep93xx_gpio_irq_unmask(struct irq_data *d)
 {
 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
 	struct ep93xx_gpio_irq_chip *eic = to_ep93xx_gpio_irq_chip(gc);
+<<<<<<< HEAD
 	struct ep93xx_gpio *epg = gpiochip_get_data(gc);
 
 	gpiochip_enable_irq(gc, irqd_to_hwirq(d));
 	eic->int_unmasked |= BIT(d->irq & 7);
 	ep93xx_gpio_update_int_params(epg, eic);
+=======
+	irq_hw_number_t hwirq = irqd_to_hwirq(d);
+
+	gpiochip_enable_irq(gc, hwirq);
+	eic->int_unmasked |= BIT(hwirq);
+	ep93xx_gpio_update_int_params(eic);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -219,12 +331,20 @@ static int ep93xx_gpio_irq_type(struct irq_data *d, unsigned int type)
 {
 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
 	struct ep93xx_gpio_irq_chip *eic = to_ep93xx_gpio_irq_chip(gc);
+<<<<<<< HEAD
 	struct ep93xx_gpio *epg = gpiochip_get_data(gc);
 	int offset = d->irq & 7;
 	int port_mask = BIT(offset);
 	irq_flow_handler_t handler;
 
 	gc->direction_input(gc, offset);
+=======
+	irq_hw_number_t hwirq = irqd_to_hwirq(d);
+	int port_mask = BIT(hwirq);
+	irq_flow_handler_t handler;
+
+	gc->direction_input(gc, hwirq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	switch (type) {
 	case IRQ_TYPE_EDGE_RISING:
@@ -250,7 +370,11 @@ static int ep93xx_gpio_irq_type(struct irq_data *d, unsigned int type)
 	case IRQ_TYPE_EDGE_BOTH:
 		eic->int_type1 |= port_mask;
 		/* set initial polarity based on current input level */
+<<<<<<< HEAD
 		if (gc->get(gc, offset))
+=======
+		if (gc->get(gc, hwirq))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			eic->int_type2 &= ~port_mask; /* falling */
 		else
 			eic->int_type2 |= port_mask; /* rising */
@@ -264,11 +388,16 @@ static int ep93xx_gpio_irq_type(struct irq_data *d, unsigned int type)
 
 	eic->int_enabled |= port_mask;
 
+<<<<<<< HEAD
 	ep93xx_gpio_update_int_params(epg, eic);
+=======
+	ep93xx_gpio_update_int_params(eic);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
 
+<<<<<<< HEAD
 /*************************************************************************
  * gpiolib interface for EP93xx on-chip GPIOs
  *************************************************************************/
@@ -309,6 +438,8 @@ static struct ep93xx_gpio_bank ep93xx_gpio_banks[] = {
 	EP93XX_GPIO_BANK("H", 0x40, 0x44, 0x00, 56, false, false, 0),
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int ep93xx_gpio_set_config(struct gpio_chip *gc, unsigned offset,
 				  unsigned long config)
 {
@@ -342,6 +473,7 @@ static const struct irq_chip gpio_eic_irq_chip = {
 	GPIOCHIP_IRQ_RESOURCE_HELPERS,
 };
 
+<<<<<<< HEAD
 static int ep93xx_gpio_add_bank(struct ep93xx_gpio_chip *egc,
 				struct platform_device *pdev,
 				struct ep93xx_gpio *epg,
@@ -451,6 +583,114 @@ static int ep93xx_gpio_probe(struct platform_device *pdev)
 static struct platform_driver ep93xx_gpio_driver = {
 	.driver		= {
 		.name	= "gpio-ep93xx",
+=======
+static int ep93xx_setup_irqs(struct platform_device *pdev,
+			     struct ep93xx_gpio_chip *egc)
+{
+	struct gpio_chip *gc = &egc->gc;
+	struct device *dev = &pdev->dev;
+	struct gpio_irq_chip *girq = &gc->irq;
+	int ret, irq, i;
+	void __iomem *intr;
+
+	intr = devm_platform_ioremap_resource_byname(pdev, "intr");
+	if (IS_ERR(intr))
+		return PTR_ERR(intr);
+
+	gc->set_config = ep93xx_gpio_set_config;
+	egc->eic = devm_kzalloc(dev, sizeof(*egc->eic), GFP_KERNEL);
+	if (!egc->eic)
+		return -ENOMEM;
+
+	egc->eic->base = intr;
+	gpio_irq_chip_set_chip(girq, &gpio_eic_irq_chip);
+	girq->num_parents = platform_irq_count(pdev);
+	if (girq->num_parents == 0)
+		return -EINVAL;
+
+	girq->parents = devm_kcalloc(dev, girq->num_parents, sizeof(*girq->parents),
+				     GFP_KERNEL);
+	if (!girq->parents)
+		return -ENOMEM;
+
+	if (girq->num_parents == 1) { /* A/B irqchips */
+		irq = platform_get_irq(pdev, 0);
+		if (irq < 0)
+			return irq;
+
+		ret = devm_request_irq(dev, irq, ep93xx_ab_irq_handler,
+				       IRQF_SHARED, gc->label, gc);
+		if (ret)
+			return dev_err_probe(dev, ret, "requesting IRQ: %d\n", irq);
+
+		girq->parents[0] = irq;
+	} else { /* F irqchip */
+		girq->parent_handler = ep93xx_gpio_f_irq_handler;
+
+		for (i = 0; i < girq->num_parents; i++) {
+			irq = platform_get_irq_optional(pdev, i);
+			if (irq < 0)
+				continue;
+
+			girq->parents[i] = irq;
+		}
+
+		girq->map = girq->parents;
+	}
+
+	girq->default_type = IRQ_TYPE_NONE;
+	/* TODO: replace with handle_bad_irq() once we are fully hierarchical */
+	girq->handler = handle_simple_irq;
+
+	return 0;
+}
+
+static int ep93xx_gpio_probe(struct platform_device *pdev)
+{
+	struct ep93xx_gpio_chip *egc;
+	struct gpio_chip *gc;
+	void __iomem *data;
+	void __iomem *dir;
+	int ret;
+
+	egc = devm_kzalloc(&pdev->dev, sizeof(*egc), GFP_KERNEL);
+	if (!egc)
+		return -ENOMEM;
+
+	data = devm_platform_ioremap_resource_byname(pdev, "data");
+	if (IS_ERR(data))
+		return PTR_ERR(data);
+
+	dir = devm_platform_ioremap_resource_byname(pdev, "dir");
+	if (IS_ERR(dir))
+		return PTR_ERR(dir);
+
+	gc = &egc->gc;
+	ret = bgpio_init(gc, &pdev->dev, 1, data, NULL, NULL, dir, NULL, 0);
+	if (ret)
+		return dev_err_probe(&pdev->dev, ret, "unable to init generic GPIO\n");
+
+	gc->label = dev_name(&pdev->dev);
+	if (platform_irq_count(pdev) > 0) {
+		dev_dbg(&pdev->dev, "setting up irqs for %s\n", dev_name(&pdev->dev));
+		ret = ep93xx_setup_irqs(pdev, egc);
+		if (ret)
+			dev_err_probe(&pdev->dev, ret, "setup irqs failed");
+	}
+
+	return devm_gpiochip_add_data(&pdev->dev, gc, egc);
+}
+
+static const struct of_device_id ep93xx_gpio_match[] = {
+	{ .compatible = "cirrus,ep9301-gpio" },
+	{ /* sentinel */ }
+};
+
+static struct platform_driver ep93xx_gpio_driver = {
+	.driver		= {
+		.name	= "gpio-ep93xx",
+		.of_match_table = ep93xx_gpio_match,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	.probe		= ep93xx_gpio_probe,
 };

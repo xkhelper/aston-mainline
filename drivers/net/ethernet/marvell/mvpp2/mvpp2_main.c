@@ -5268,8 +5268,11 @@ static int mvpp2_ethtool_get_ts_info(struct net_device *dev,
 
 	info->phc_index = mvpp22_tai_ptp_clock_index(port->priv->tai);
 	info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE |
+<<<<<<< HEAD
 				SOF_TIMESTAMPING_RX_SOFTWARE |
 				SOF_TIMESTAMPING_SOFTWARE |
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				SOF_TIMESTAMPING_TX_HARDWARE |
 				SOF_TIMESTAMPING_RX_HARDWARE |
 				SOF_TIMESTAMPING_RAW_HARDWARE;
@@ -5696,10 +5699,83 @@ static int mvpp2_ethtool_get_rxfh(struct net_device *dev,
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static bool mvpp2_ethtool_rxfh_okay(struct mvpp2_port *port,
+				    const struct ethtool_rxfh_param *rxfh)
+{
+	if (!mvpp22_rss_is_supported(port))
+		return false;
+
+	if (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
+	    rxfh->hfunc != ETH_RSS_HASH_CRC32)
+		return false;
+
+	if (rxfh->key)
+		return false;
+
+	return true;
+}
+
+static int mvpp2_create_rxfh_context(struct net_device *dev,
+				     struct ethtool_rxfh_context *ctx,
+				     const struct ethtool_rxfh_param *rxfh,
+				     struct netlink_ext_ack *extack)
+{
+	struct mvpp2_port *port = netdev_priv(dev);
+	int ret = 0;
+
+	if (!mvpp2_ethtool_rxfh_okay(port, rxfh))
+		return -EOPNOTSUPP;
+
+	ctx->hfunc = ETH_RSS_HASH_CRC32;
+
+	ret = mvpp22_port_rss_ctx_create(port, rxfh->rss_context);
+	if (ret)
+		return ret;
+
+	if (!rxfh->indir)
+		ret = mvpp22_port_rss_ctx_indir_get(port, rxfh->rss_context,
+						    ethtool_rxfh_context_indir(ctx));
+	else
+		ret = mvpp22_port_rss_ctx_indir_set(port, rxfh->rss_context,
+						    rxfh->indir);
+	return ret;
+}
+
+static int mvpp2_modify_rxfh_context(struct net_device *dev,
+				     struct ethtool_rxfh_context *ctx,
+				     const struct ethtool_rxfh_param *rxfh,
+				     struct netlink_ext_ack *extack)
+{
+	struct mvpp2_port *port = netdev_priv(dev);
+	int ret = 0;
+
+	if (!mvpp2_ethtool_rxfh_okay(port, rxfh))
+		return -EOPNOTSUPP;
+
+	if (rxfh->indir)
+		ret = mvpp22_port_rss_ctx_indir_set(port, rxfh->rss_context,
+						    rxfh->indir);
+	return ret;
+}
+
+static int mvpp2_remove_rxfh_context(struct net_device *dev,
+				     struct ethtool_rxfh_context *ctx,
+				     u32 rss_context,
+				     struct netlink_ext_ack *extack)
+{
+	struct mvpp2_port *port = netdev_priv(dev);
+
+	return mvpp22_port_rss_ctx_delete(port, rss_context);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int mvpp2_ethtool_set_rxfh(struct net_device *dev,
 				  struct ethtool_rxfh_param *rxfh,
 				  struct netlink_ext_ack *extack)
 {
+<<<<<<< HEAD
 	struct mvpp2_port *port = netdev_priv(dev);
 	u32 *rss_context = &rxfh->rss_context;
 	int ret = 0;
@@ -5728,6 +5804,9 @@ static int mvpp2_ethtool_set_rxfh(struct net_device *dev,
 						    rxfh->indir);
 
 	return ret;
+=======
+	return mvpp2_modify_rxfh_context(dev, NULL, rxfh, extack);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Device ops */
@@ -5749,7 +5828,11 @@ static const struct net_device_ops mvpp2_netdev_ops = {
 };
 
 static const struct ethtool_ops mvpp2_eth_tool_ops = {
+<<<<<<< HEAD
 	.cap_rss_ctx_supported	= true,
+=======
+	.rxfh_max_num_contexts	= MVPP22_N_RSS_TABLES,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.supported_coalesce_params = ETHTOOL_COALESCE_USECS |
 				     ETHTOOL_COALESCE_MAX_FRAMES,
 	.nway_reset		= mvpp2_ethtool_nway_reset,
@@ -5772,6 +5855,12 @@ static const struct ethtool_ops mvpp2_eth_tool_ops = {
 	.get_rxfh_indir_size	= mvpp2_ethtool_get_rxfh_indir_size,
 	.get_rxfh		= mvpp2_ethtool_get_rxfh,
 	.set_rxfh		= mvpp2_ethtool_set_rxfh,
+<<<<<<< HEAD
+=======
+	.create_rxfh_context	= mvpp2_create_rxfh_context,
+	.modify_rxfh_context	= mvpp2_modify_rxfh_context,
+	.remove_rxfh_context	= mvpp2_remove_rxfh_context,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* Used for PPv2.1, or PPv2.2 with the old Device Tree binding that
@@ -7417,8 +7506,11 @@ static int mvpp2_get_sram(struct platform_device *pdev,
 
 static int mvpp2_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct fwnode_handle *fwnode = pdev->dev.fwnode;
 	struct fwnode_handle *port_fwnode;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct mvpp2 *priv;
 	struct resource *res;
 	void __iomem *base;
@@ -7591,7 +7683,11 @@ static int mvpp2_probe(struct platform_device *pdev)
 	}
 
 	/* Map DTS-active ports. Should be done before FIFO mvpp2_init */
+<<<<<<< HEAD
 	fwnode_for_each_available_child_node(fwnode, port_fwnode) {
+=======
+	device_for_each_child_node_scoped(&pdev->dev, port_fwnode) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!fwnode_property_read_u32(port_fwnode, "port-id", &i))
 			priv->port_map |= BIT(i);
 	}
@@ -7614,7 +7710,11 @@ static int mvpp2_probe(struct platform_device *pdev)
 		goto err_axi_clk;
 
 	/* Initialize ports */
+<<<<<<< HEAD
 	fwnode_for_each_available_child_node(fwnode, port_fwnode) {
+=======
+	device_for_each_child_node_scoped(&pdev->dev, port_fwnode) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = mvpp2_port_probe(pdev, port_fwnode, priv);
 		if (err < 0)
 			goto err_port_probe;
@@ -7653,6 +7753,7 @@ static int mvpp2_probe(struct platform_device *pdev)
 	return 0;
 
 err_port_probe:
+<<<<<<< HEAD
 	fwnode_handle_put(port_fwnode);
 
 	i = 0;
@@ -7661,6 +7762,10 @@ err_port_probe:
 			mvpp2_port_remove(priv->port_list[i]);
 		i++;
 	}
+=======
+	for (i = 0; i < priv->port_count; i++)
+		mvpp2_port_remove(priv->port_list[i]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_axi_clk:
 	clk_disable_unprepare(priv->axi_clk);
 err_mg_core_clk:
@@ -7677,6 +7782,7 @@ err_pp_clk:
 static void mvpp2_remove(struct platform_device *pdev)
 {
 	struct mvpp2 *priv = platform_get_drvdata(pdev);
+<<<<<<< HEAD
 	struct fwnode_handle *fwnode = pdev->dev.fwnode;
 	int i = 0, poolnum = MVPP2_BM_POOLS_NUM;
 	struct fwnode_handle *port_fwnode;
@@ -7689,6 +7795,15 @@ static void mvpp2_remove(struct platform_device *pdev)
 			mvpp2_port_remove(priv->port_list[i]);
 		}
 		i++;
+=======
+	int i, poolnum = MVPP2_BM_POOLS_NUM;
+
+	mvpp2_dbgfs_cleanup(priv);
+
+	for (i = 0; i < priv->port_count; i++) {
+		mutex_destroy(&priv->port_list[i]->gather_stats_lock);
+		mvpp2_port_remove(priv->port_list[i]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	destroy_workqueue(priv->stats_queue);
@@ -7711,7 +7826,11 @@ static void mvpp2_remove(struct platform_device *pdev)
 				  aggr_txq->descs_dma);
 	}
 
+<<<<<<< HEAD
 	if (is_acpi_node(port_fwnode))
+=======
+	if (!dev_of_node(&pdev->dev))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	clk_disable_unprepare(priv->axi_clk);

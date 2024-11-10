@@ -43,6 +43,18 @@
 	clock-frequency = <25000000>;
 };
 
+<<<<<<< HEAD
+=======
+&sdhci0 {
+	status = "okay";
+	bus-width = <4>;
+	no-1-8-v;
+	no-mmc;
+	no-sdio;
+	disable-wp;
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &uart0 {
 	status = "okay";
 };

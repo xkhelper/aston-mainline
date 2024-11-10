@@ -72,7 +72,11 @@ int perf_read_tsc_conversion(const struct perf_event_mmap_page *pc,
 }
 
 int perf_event__synth_time_conv(const struct perf_event_mmap_page *pc,
+<<<<<<< HEAD
 				struct perf_tool *tool,
+=======
+				const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				perf_event__handler_t process,
 				struct machine *machine)
 {

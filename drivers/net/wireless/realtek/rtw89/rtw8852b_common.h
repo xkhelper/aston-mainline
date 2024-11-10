@@ -121,13 +121,22 @@ struct rtw8852bx_info {
 	void (*bb_cfg_txrx_path)(struct rtw89_dev *rtwdev);
 	void (*bb_cfg_tx_path)(struct rtw89_dev *rtwdev, u8 tx_path);
 	void (*bb_ctrl_rx_path)(struct rtw89_dev *rtwdev,
+<<<<<<< HEAD
 				enum rtw89_rf_path_bit rx_path);
+=======
+				enum rtw89_rf_path_bit rx_path,
+				const struct rtw89_chan *chan);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void (*bb_set_plcp_tx)(struct rtw89_dev *rtwdev);
 	void (*bb_set_power)(struct rtw89_dev *rtwdev, s16 pwr_dbm,
 			     enum rtw89_phy_idx idx);
 	void (*bb_set_pmac_pkt_tx)(struct rtw89_dev *rtwdev, u8 enable,
 				   u16 tx_cnt, u16 period, u16 tx_time,
+<<<<<<< HEAD
 				   enum rtw89_phy_idx idx);
+=======
+				   enum rtw89_phy_idx idx, const struct rtw89_chan *chan);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void (*bb_backup_tssi)(struct rtw89_dev *rtwdev, enum rtw89_phy_idx idx,
 			       struct rtw8852bx_bb_tssi_bak *bak);
 	void (*bb_restore_tssi)(struct rtw89_dev *rtwdev, enum rtw89_phy_idx idx,
@@ -145,6 +154,11 @@ struct rtw8852bx_info {
 	void (*query_ppdu)(struct rtw89_dev *rtwdev,
 			   struct rtw89_rx_phy_ppdu *phy_ppdu,
 			   struct ieee80211_rx_status *status);
+<<<<<<< HEAD
+=======
+	void (*convert_rpl_to_rssi)(struct rtw89_dev *rtwdev,
+				    struct rtw89_rx_phy_ppdu *phy_ppdu);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int (*read_efuse)(struct rtw89_dev *rtwdev, u8 *log_map,
 			  enum rtw89_efuse_block block);
 	int (*read_phycap)(struct rtw89_dev *rtwdev, u8 *phycap_map);
@@ -207,9 +221,16 @@ void rtw8852bx_bb_cfg_tx_path(struct rtw89_dev *rtwdev, u8 tx_path)
 
 static inline
 void rtw8852bx_bb_ctrl_rx_path(struct rtw89_dev *rtwdev,
+<<<<<<< HEAD
 			       enum rtw89_rf_path_bit rx_path)
 {
 	rtw8852bx_info.bb_ctrl_rx_path(rtwdev, rx_path);
+=======
+			       enum rtw89_rf_path_bit rx_path,
+			       const struct rtw89_chan *chan)
+{
+	rtw8852bx_info.bb_ctrl_rx_path(rtwdev, rx_path, chan);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline
@@ -228,9 +249,16 @@ void rtw8852bx_bb_set_power(struct rtw89_dev *rtwdev, s16 pwr_dbm,
 static inline
 void rtw8852bx_bb_set_pmac_pkt_tx(struct rtw89_dev *rtwdev, u8 enable,
 				  u16 tx_cnt, u16 period, u16 tx_time,
+<<<<<<< HEAD
 				  enum rtw89_phy_idx idx)
 {
 	rtw8852bx_info.bb_set_pmac_pkt_tx(rtwdev, enable, tx_cnt, period, tx_time, idx);
+=======
+				  enum rtw89_phy_idx idx, const struct rtw89_chan *chan)
+{
+	rtw8852bx_info.bb_set_pmac_pkt_tx(rtwdev, enable, tx_cnt, period, tx_time, idx,
+					  chan);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline
@@ -291,6 +319,16 @@ void rtw8852bx_query_ppdu(struct rtw89_dev *rtwdev,
 }
 
 static inline
+<<<<<<< HEAD
+=======
+void rtw8852bx_convert_rpl_to_rssi(struct rtw89_dev *rtwdev,
+				   struct rtw89_rx_phy_ppdu *phy_ppdu)
+{
+	rtw8852bx_info.convert_rpl_to_rssi(rtwdev, phy_ppdu);
+}
+
+static inline
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int rtw8852bx_read_efuse(struct rtw89_dev *rtwdev, u8 *log_map,
 			 enum rtw89_efuse_block block)
 {

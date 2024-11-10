@@ -80,6 +80,7 @@ static inline void pgalloc_tag_sub(struct page *page, unsigned int nr)
 	}
 }
 
+<<<<<<< HEAD
 static inline void pgalloc_tag_split(struct page *page, unsigned int nr)
 {
 	int i;
@@ -110,6 +111,8 @@ out:
 	page_ext_put(first_page_ext);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline struct alloc_tag *pgalloc_tag_get(struct page *page)
 {
 	struct alloc_tag *tag = NULL;
@@ -142,7 +145,10 @@ static inline void clear_page_tag_ref(struct page *page) {}
 static inline void pgalloc_tag_add(struct page *page, struct task_struct *task,
 				   unsigned int nr) {}
 static inline void pgalloc_tag_sub(struct page *page, unsigned int nr) {}
+<<<<<<< HEAD
 static inline void pgalloc_tag_split(struct page *page, unsigned int nr) {}
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline struct alloc_tag *pgalloc_tag_get(struct page *page) { return NULL; }
 static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr) {}
 

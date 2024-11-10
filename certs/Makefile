@@ -84,5 +84,9 @@ targets += x509_revocation_list
 
 hostprogs := extract-cert
 
+<<<<<<< HEAD
 HOSTCFLAGS_extract-cert.o = $(shell $(HOSTPKG_CONFIG) --cflags libcrypto 2> /dev/null)
+=======
+HOSTCFLAGS_extract-cert.o = $(shell $(HOSTPKG_CONFIG) --cflags libcrypto 2> /dev/null) -I$(srctree)/scripts
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 HOSTLDLIBS_extract-cert = $(shell $(HOSTPKG_CONFIG) --libs libcrypto 2> /dev/null || echo -lcrypto)

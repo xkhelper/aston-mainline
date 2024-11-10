@@ -22,6 +22,7 @@ description:
 
 properties:
   compatible:
+<<<<<<< HEAD
     enum:
       - fsl,ls1021a-pcie
       - fsl,ls2080a-pcie
@@ -34,6 +35,22 @@ properties:
       - fsl,ls1028a-pcie
       - fsl,lx2160a-pcie
 
+=======
+    oneOf:
+      - enum:
+          - fsl,ls1012a-pcie
+          - fsl,ls1021a-pcie
+          - fsl,ls1028a-pcie
+          - fsl,ls1043a-pcie
+          - fsl,ls1046a-pcie
+          - fsl,ls1088a-pcie
+          - fsl,ls2080a-pcie
+          - fsl,ls2085a-pcie
+          - fsl,ls2088a-pcie
+      - items:
+          - const: fsl,lx2160ar2-pcie
+          - const: fsl,ls2088a-pcie
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   reg:
     maxItems: 2
 
@@ -43,10 +60,22 @@ properties:
       - const: config
 
   fsl,pcie-scfg:
+<<<<<<< HEAD
     $ref: /schemas/types.yaml#/definitions/phandle
     description: A phandle to the SCFG device node. The second entry is the
       physical PCIe controller index starting from '0'. This is used to get
       SCFG PEXN registers.
+=======
+    $ref: /schemas/types.yaml#/definitions/phandle-array
+    description: A phandle to the SCFG device node. The second entry is the
+      physical PCIe controller index starting from '0'. This is used to get
+      SCFG PEXN registers.
+    items:
+      items:
+        - description: A phandle to the SCFG device node
+        - description: PCIe controller index starting from '0'
+    maxItems: 1
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   big-endian:
     $ref: /schemas/types.yaml#/definitions/flag
@@ -67,6 +96,17 @@ properties:
     minItems: 1
     maxItems: 2
 
+<<<<<<< HEAD
+=======
+  num-viewport:
+    $ref: /schemas/types.yaml#/definitions/uint32
+    deprecated: true
+    description:
+      Number of outbound view ports configured in hardware. It's the same as
+      the number of outbound AT windows.
+    maximum: 256
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 required:
   - compatible
   - reg

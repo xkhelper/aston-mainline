@@ -71,6 +71,10 @@
 	assigned-clock-rates = <500000000>, <200000000>, <0>,
 		/* IMX8MP_CLK_MEDIA_DISP2_PIX = pixelclk of lvds panel */
 		<68900000>,
+<<<<<<< HEAD
+=======
+		<500000000>,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* IMX8MP_VIDEO_PLL1 = IMX8MP_CLK_MEDIA_LDB * 2 */
 		<964600000>;
 };

@@ -134,7 +134,11 @@ OPTIONS
         srcline, period, iregs, uregs, brstack, brstacksym, flags, bpf-output,
         brstackinsn, brstackinsnlen, brstackdisasm, brstackoff, callindent, insn, disasm,
         insnlen, synth, phys_addr, metric, misc, srccode, ipc, data_page_size,
+<<<<<<< HEAD
         code_page_size, ins_lat, machine_pid, vcpu, cgroup, retire_lat,
+=======
+        code_page_size, ins_lat, machine_pid, vcpu, cgroup, retire_lat, brcntr,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
         Field list can be prepended with the type, trace, sw or hw,
         to indicate to which event type the field list applies.
@@ -369,6 +373,12 @@ OPTIONS
 --demangle-kernel::
 	Demangle kernel symbol names to human readable form (for C++ kernels).
 
+<<<<<<< HEAD
+=======
+--addr2line=<path>::
+	Path to addr2line binary.
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 --header
 	Show perf.data header.
 

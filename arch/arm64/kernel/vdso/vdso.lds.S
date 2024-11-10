@@ -11,7 +11,13 @@
 #include <linux/const.h>
 #include <asm/page.h>
 #include <asm/vdso.h>
+<<<<<<< HEAD
 #include <asm-generic/vmlinux.lds.h>
+=======
+#include <asm/vdso/vsyscall.h>
+#include <asm-generic/vmlinux.lds.h>
+#include <vdso/datapage.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 OUTPUT_FORMAT("elf64-littleaarch64", "elf64-bigaarch64", "elf64-littleaarch64")
 OUTPUT_ARCH(aarch64)
@@ -19,6 +25,10 @@ OUTPUT_ARCH(aarch64)
 SECTIONS
 {
 	PROVIDE(_vdso_data = . - __VVAR_PAGES * PAGE_SIZE);
+<<<<<<< HEAD
+=======
+	PROVIDE(_vdso_rng_data = _vdso_data + __VDSO_RND_DATA_OFFSET);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_TIME_NS
 	PROVIDE(_timens_data = _vdso_data + PAGE_SIZE);
 #endif
@@ -102,6 +112,10 @@ VERSION
 		__kernel_gettimeofday;
 		__kernel_clock_gettime;
 		__kernel_clock_getres;
+<<<<<<< HEAD
+=======
+		__kernel_getrandom;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	local: *;
 	};
 }

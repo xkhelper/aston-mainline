@@ -77,7 +77,11 @@ static const struct i2c_device_id stts751_id[] = {
 };
 
 static const struct of_device_id __maybe_unused stts751_of_match[] = {
+<<<<<<< HEAD
 	{ .compatible = "stts751" },
+=======
+	{ .compatible = "st,stts751" },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ },
 };
 MODULE_DEVICE_TABLE(of, stts751_of_match);

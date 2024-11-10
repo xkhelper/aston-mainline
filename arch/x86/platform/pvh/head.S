@@ -7,6 +7,10 @@
 	.code32
 	.text
 #define _pa(x)          ((x) - __START_KERNEL_map)
+<<<<<<< HEAD
+=======
+#define rva(x)          ((x) - pvh_start_xen)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/elfnote.h>
 #include <linux/init.h>
@@ -15,6 +19,10 @@
 #include <asm/segment.h>
 #include <asm/asm.h>
 #include <asm/boot.h>
+<<<<<<< HEAD
+=======
+#include <asm/pgtable.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/processor-flags.h>
 #include <asm/msr.h>
 #include <asm/nospec-branch.h>
@@ -54,7 +62,29 @@ SYM_CODE_START_LOCAL(pvh_start_xen)
 	UNWIND_HINT_END_OF_STACK
 	cld
 
+<<<<<<< HEAD
 	lgdt (_pa(gdt))
+=======
+	/*
+	 * See the comment for startup_32 for more details.  We need to
+	 * execute a call to get the execution address to be position
+	 * independent, but we don't have a stack.  Save and restore the
+	 * magic field of start_info in ebx, and use that as the stack.
+	 */
+	mov  (%ebx), %eax
+	leal 4(%ebx), %esp
+	ANNOTATE_INTRA_FUNCTION_CALL
+	call 1f
+1:	popl %ebp
+	mov  %eax, (%ebx)
+	subl $rva(1b), %ebp
+	movl $0, %esp
+
+	leal rva(gdt)(%ebp), %eax
+	leal rva(gdt_start)(%ebp), %ecx
+	movl %ecx, 2(%eax)
+	lgdt (%eax)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mov $PVH_DS_SEL,%eax
 	mov %eax,%ds
@@ -62,14 +92,24 @@ SYM_CODE_START_LOCAL(pvh_start_xen)
 	mov %eax,%ss
 
 	/* Stash hvm_start_info. */
+<<<<<<< HEAD
 	mov $_pa(pvh_start_info), %edi
 	mov %ebx, %esi
 	mov _pa(pvh_start_info_sz), %ecx
+=======
+	leal rva(pvh_start_info)(%ebp), %edi
+	mov %ebx, %esi
+	movl rva(pvh_start_info_sz)(%ebp), %ecx
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	shr $2,%ecx
 	rep
 	movsl
 
+<<<<<<< HEAD
 	mov $_pa(early_stack_end), %esp
+=======
+	leal rva(early_stack_end)(%ebp), %esp
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Enable PAE mode. */
 	mov %cr4, %eax
@@ -83,18 +123,70 @@ SYM_CODE_START_LOCAL(pvh_start_xen)
 	btsl $_EFER_LME, %eax
 	wrmsr
 
+<<<<<<< HEAD
 	/* Enable pre-constructed page tables. */
 	mov $_pa(init_top_pgt), %eax
+=======
+	mov %ebp, %ebx
+	subl $_pa(pvh_start_xen), %ebx /* offset */
+	jz .Lpagetable_done
+
+	/* Fixup page-tables for relocation. */
+	leal rva(pvh_init_top_pgt)(%ebp), %edi
+	movl $PTRS_PER_PGD, %ecx
+2:
+	testl $_PAGE_PRESENT, 0x00(%edi)
+	jz 1f
+	addl %ebx, 0x00(%edi)
+1:
+	addl $8, %edi
+	decl %ecx
+	jnz 2b
+
+	/* L3 ident has a single entry. */
+	leal rva(pvh_level3_ident_pgt)(%ebp), %edi
+	addl %ebx, 0x00(%edi)
+
+	leal rva(pvh_level3_kernel_pgt)(%ebp), %edi
+	addl %ebx, (PAGE_SIZE - 16)(%edi)
+	addl %ebx, (PAGE_SIZE - 8)(%edi)
+
+	/* pvh_level2_ident_pgt is fine - large pages */
+
+	/* pvh_level2_kernel_pgt needs adjustment - large pages */
+	leal rva(pvh_level2_kernel_pgt)(%ebp), %edi
+	movl $PTRS_PER_PMD, %ecx
+2:
+	testl $_PAGE_PRESENT, 0x00(%edi)
+	jz 1f
+	addl %ebx, 0x00(%edi)
+1:
+	addl $8, %edi
+	decl %ecx
+	jnz 2b
+
+.Lpagetable_done:
+	/* Enable pre-constructed page tables. */
+	leal rva(pvh_init_top_pgt)(%ebp), %eax
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mov %eax, %cr3
 	mov $(X86_CR0_PG | X86_CR0_PE), %eax
 	mov %eax, %cr0
 
 	/* Jump to 64-bit mode. */
+<<<<<<< HEAD
 	ljmp $PVH_CS_SEL, $_pa(1f)
+=======
+	pushl $PVH_CS_SEL
+	leal  rva(1f)(%ebp), %eax
+	pushl %eax
+	lretl
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* 64-bit entry point. */
 	.code64
 1:
+<<<<<<< HEAD
 	/* Set base address in stack canary descriptor. */
 	mov $MSR_GS_BASE,%ecx
 	mov $_pa(canary), %eax
@@ -108,6 +200,34 @@ SYM_CODE_START_LOCAL(pvh_start_xen)
 	mov $_pa(startup_64), %rax
 	ANNOTATE_RETPOLINE_SAFE
 	jmp *%rax
+=======
+	UNWIND_HINT_END_OF_STACK
+
+	/* Set base address in stack canary descriptor. */
+	mov $MSR_GS_BASE,%ecx
+	leal canary(%rip), %eax
+	xor %edx, %edx
+	wrmsr
+
+	/*
+	 * Calculate load offset and store in phys_base.  __pa() needs
+	 * phys_base set to calculate the hypercall page in xen_pvh_init().
+	 */
+	movq %rbp, %rbx
+	subq $_pa(pvh_start_xen), %rbx
+	movq %rbx, phys_base(%rip)
+	call xen_prepare_pvh
+	/*
+	 * Clear phys_base.  __startup_64 will *add* to its value,
+	 * so reset to 0.
+	 */
+	xor  %rbx, %rbx
+	movq %rbx, phys_base(%rip)
+
+	/* startup_64 expects boot_params in %rsi. */
+	lea pvh_bootparams(%rip), %rsi
+	jmp startup_64
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #else /* CONFIG_X86_64 */
 
@@ -143,7 +263,11 @@ SYM_CODE_END(pvh_start_xen)
 	.balign 8
 SYM_DATA_START_LOCAL(gdt)
 	.word gdt_end - gdt_start
+<<<<<<< HEAD
 	.long _pa(gdt_start)
+=======
+	.long _pa(gdt_start) /* x86-64 will overwrite if relocated. */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.word 0
 SYM_DATA_END(gdt)
 SYM_DATA_START_LOCAL(gdt_start)
@@ -163,5 +287,70 @@ SYM_DATA_START_LOCAL(early_stack)
 	.fill BOOT_STACK_SIZE, 1, 0
 SYM_DATA_END_LABEL(early_stack, SYM_L_LOCAL, early_stack_end)
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_X86_64
+/*
+ * Xen PVH needs a set of identity mapped and kernel high mapping
+ * page tables.  pvh_start_xen starts running on the identity mapped
+ * page tables, but xen_prepare_pvh calls into the high mapping.
+ * These page tables need to be relocatable and are only used until
+ * startup_64 transitions to init_top_pgt.
+ */
+SYM_DATA_START_PAGE_ALIGNED(pvh_init_top_pgt)
+	.quad   pvh_level3_ident_pgt - __START_KERNEL_map + _KERNPG_TABLE_NOENC
+	.org    pvh_init_top_pgt + L4_PAGE_OFFSET * 8, 0
+	.quad   pvh_level3_ident_pgt - __START_KERNEL_map + _KERNPG_TABLE_NOENC
+	.org    pvh_init_top_pgt + L4_START_KERNEL * 8, 0
+	/* (2^48-(2*1024*1024*1024))/(2^39) = 511 */
+	.quad   pvh_level3_kernel_pgt - __START_KERNEL_map + _PAGE_TABLE_NOENC
+SYM_DATA_END(pvh_init_top_pgt)
+
+SYM_DATA_START_PAGE_ALIGNED(pvh_level3_ident_pgt)
+	.quad	pvh_level2_ident_pgt - __START_KERNEL_map + _KERNPG_TABLE_NOENC
+	.fill	511, 8, 0
+SYM_DATA_END(pvh_level3_ident_pgt)
+SYM_DATA_START_PAGE_ALIGNED(pvh_level2_ident_pgt)
+	/*
+	 * Since I easily can, map the first 1G.
+	 * Don't set NX because code runs from these pages.
+	 *
+	 * Note: This sets _PAGE_GLOBAL despite whether
+	 * the CPU supports it or it is enabled.  But,
+	 * the CPU should ignore the bit.
+	 */
+	PMDS(0, __PAGE_KERNEL_IDENT_LARGE_EXEC, PTRS_PER_PMD)
+SYM_DATA_END(pvh_level2_ident_pgt)
+SYM_DATA_START_PAGE_ALIGNED(pvh_level3_kernel_pgt)
+	.fill	L3_START_KERNEL, 8, 0
+	/* (2^48-(2*1024*1024*1024)-((2^39)*511))/(2^30) = 510 */
+	.quad	pvh_level2_kernel_pgt - __START_KERNEL_map + _KERNPG_TABLE_NOENC
+	.quad	0 /* no fixmap */
+SYM_DATA_END(pvh_level3_kernel_pgt)
+
+SYM_DATA_START_PAGE_ALIGNED(pvh_level2_kernel_pgt)
+	/*
+	 * Kernel high mapping.
+	 *
+	 * The kernel code+data+bss must be located below KERNEL_IMAGE_SIZE in
+	 * virtual address space, which is 1 GiB if RANDOMIZE_BASE is enabled,
+	 * 512 MiB otherwise.
+	 *
+	 * (NOTE: after that starts the module area, see MODULES_VADDR.)
+	 *
+	 * This table is eventually used by the kernel during normal runtime.
+	 * Care must be taken to clear out undesired bits later, like _PAGE_RW
+	 * or _PAGE_GLOBAL in some cases.
+	 */
+	PMDS(0, __PAGE_KERNEL_LARGE_EXEC, KERNEL_IMAGE_SIZE / PMD_SIZE)
+SYM_DATA_END(pvh_level2_kernel_pgt)
+
+	ELFNOTE(Xen, XEN_ELFNOTE_PHYS32_RELOC,
+		     .long CONFIG_PHYSICAL_ALIGN;
+		     .long LOAD_PHYSICAL_ADDR;
+		     .long KERNEL_IMAGE_SIZE - 1)
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ELFNOTE(Xen, XEN_ELFNOTE_PHYS32_ENTRY,
 	             _ASM_PTR (pvh_start_xen - __START_KERNEL_map))

@@ -110,6 +110,7 @@ struct meson_bank {
 struct meson_pinctrl_data {
 	const char *name;
 	const struct pinctrl_pin_desc *pins;
+<<<<<<< HEAD
 	struct meson_pmx_group *groups;
 	struct meson_pmx_func *funcs;
 	unsigned int num_pins;
@@ -119,6 +120,17 @@ struct meson_pinctrl_data {
 	unsigned int num_banks;
 	const struct pinmux_ops *pmx_ops;
 	void *pmx_data;
+=======
+	const struct meson_pmx_group *groups;
+	const struct meson_pmx_func *funcs;
+	unsigned int num_pins;
+	unsigned int num_groups;
+	unsigned int num_funcs;
+	const struct meson_bank *banks;
+	unsigned int num_banks;
+	const struct pinmux_ops *pmx_ops;
+	const void *pmx_data;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int (*parse_dt)(struct meson_pinctrl *pc);
 };
 

@@ -61,6 +61,10 @@
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 #endif
 
+<<<<<<< HEAD
+=======
+#if defined(__i386__) || defined(__x86_64__) /* arch */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * gcc cpuid.h provides __cpuid_count() since v4.4.
  * Clang/LLVM cpuid.h provides  __cpuid_count() since v3.4.0.
@@ -75,6 +79,10 @@
 			      : "=a" (a), "=b" (b), "=c" (c), "=d" (d)	\
 			      : "0" (level), "2" (count))
 #endif
+<<<<<<< HEAD
+=======
+#endif /* end arch */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* define kselftest exit codes */
 #define KSFT_PASS  0
@@ -371,6 +379,7 @@ static inline __noreturn __printf(1, 2) void ksft_exit_fail_msg(const char *msg,
 
 static inline __noreturn void ksft_exit_fail_perror(const char *msg)
 {
+<<<<<<< HEAD
 #ifndef NOLIBC
 	ksft_exit_fail_msg("%s: %s (%d)\n", msg, strerror(errno), errno);
 #else
@@ -380,6 +389,9 @@ static inline __noreturn void ksft_exit_fail_perror(const char *msg)
 	 */
 	ksft_exit_fail_msg("%s: %d)\n", msg, errno);
 #endif
+=======
+	ksft_exit_fail_msg("%s: %s (%d)\n", msg, strerror(errno), errno);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline __noreturn void ksft_exit_xfail(void)

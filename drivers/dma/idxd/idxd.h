@@ -124,7 +124,10 @@ struct idxd_pmu {
 
 	struct pmu pmu;
 	char name[IDXD_NAME_SIZE];
+<<<<<<< HEAD
 	int cpu;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	int n_counters;
 	int counter_width;
@@ -135,8 +138,11 @@ struct idxd_pmu {
 
 	unsigned long supported_filters;
 	int n_filters;
+<<<<<<< HEAD
 
 	struct hlist_node cpuhp_node;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define IDXD_MAX_PRIORITY	0xf
@@ -803,14 +809,20 @@ void idxd_user_counter_increment(struct idxd_wq *wq, u32 pasid, int index);
 int perfmon_pmu_init(struct idxd_device *idxd);
 void perfmon_pmu_remove(struct idxd_device *idxd);
 void perfmon_counter_overflow(struct idxd_device *idxd);
+<<<<<<< HEAD
 void perfmon_init(void);
 void perfmon_exit(void);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else
 static inline int perfmon_pmu_init(struct idxd_device *idxd) { return 0; }
 static inline void perfmon_pmu_remove(struct idxd_device *idxd) {}
 static inline void perfmon_counter_overflow(struct idxd_device *idxd) {}
+<<<<<<< HEAD
 static inline void perfmon_init(void) {}
 static inline void perfmon_exit(void) {}
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 /* debugfs */

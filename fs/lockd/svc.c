@@ -53,7 +53,10 @@ EXPORT_SYMBOL_GPL(nlmsvc_ops);
 static DEFINE_MUTEX(nlmsvc_mutex);
 static unsigned int		nlmsvc_users;
 static struct svc_serv		*nlmsvc_serv;
+<<<<<<< HEAD
 unsigned long			nlmsvc_timeout;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void nlmsvc_request_retry(struct timer_list *tl)
 {
@@ -68,7 +71,11 @@ unsigned int lockd_net_id;
  * and also changed through the sysctl interface.  -- Jamie Lokier, Aug 2003
  */
 static unsigned long		nlm_grace_period;
+<<<<<<< HEAD
 static unsigned long		nlm_timeout = LOCKD_DFLT_TIMEO;
+=======
+unsigned long			nlm_timeout = LOCKD_DFLT_TIMEO;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int			nlm_udpport, nlm_tcpport;
 
 /* RLIM_NOFILE defaults to 1024. That seems like a reasonable default here. */
@@ -125,6 +132,11 @@ lockd(void *vrqstp)
 	struct net *net = &init_net;
 	struct lockd_net *ln = net_generic(net, lockd_net_id);
 
+<<<<<<< HEAD
+=======
+	svc_thread_init_status(rqstp, 0);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* try_to_freeze() is called from svc_recv() */
 	set_freezable();
 
@@ -333,10 +345,13 @@ static int lockd_get(void)
 		printk(KERN_WARNING
 			"lockd_up: no pid, %d users??\n", nlmsvc_users);
 
+<<<<<<< HEAD
 	if (!nlm_timeout)
 		nlm_timeout = LOCKD_DFLT_TIMEO;
 	nlmsvc_timeout = nlm_timeout * HZ;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	serv = svc_create(&nlmsvc_program, LOCKD_BUFSIZE, lockd);
 	if (!serv) {
 		printk(KERN_WARNING "lockd_up: create service failed\n");

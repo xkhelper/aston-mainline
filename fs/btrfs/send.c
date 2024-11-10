@@ -62,7 +62,11 @@ struct fs_path {
 		/*
 		 * Average path length does not exceed 200 bytes, we'll have
 		 * better packing in the slab and higher chance to satisfy
+<<<<<<< HEAD
 		 * a allocation later during send.
+=======
+		 * an allocation later during send.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 */
 		char pad[256];
 	};
@@ -346,8 +350,15 @@ struct name_cache_entry {
 	u64 parent_gen;
 	int ret;
 	int need_later_update;
+<<<<<<< HEAD
 	int name_len;
 	char name[] __counted_by(name_len);
+=======
+	/* Name length without NUL terminator. */
+	int name_len;
+	/* Not NUL terminated. */
+	char name[] __counted_by(name_len) __nonstring;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* See the comment at lru_cache.h about struct btrfs_lru_cache_entry. */
@@ -1136,7 +1147,11 @@ static int iterate_dir_item(struct btrfs_root *root, struct btrfs_path *path,
 	/*
 	 * Start with a small buffer (1 page). If later we end up needing more
 	 * space, which can happen for xattrs on a fs with a leaf size greater
+<<<<<<< HEAD
 	 * then the page size, attempt to increase the buffer. Typically xattr
+=======
+	 * than the page size, attempt to increase the buffer. Typically xattr
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * values are small.
 	 */
 	buf_len = PATH_MAX;
@@ -2388,7 +2403,11 @@ out_cache:
 	/*
 	 * Store the result of the lookup in the name cache.
 	 */
+<<<<<<< HEAD
 	nce = kmalloc(sizeof(*nce) + fs_path_len(dest) + 1, GFP_KERNEL);
+=======
+	nce = kmalloc(sizeof(*nce) + fs_path_len(dest), GFP_KERNEL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!nce) {
 		ret = -ENOMEM;
 		goto out;
@@ -2400,7 +2419,11 @@ out_cache:
 	nce->parent_gen = *parent_gen;
 	nce->name_len = fs_path_len(dest);
 	nce->ret = ret;
+<<<<<<< HEAD
 	strcpy(nce->name, dest->start);
+=======
+	memcpy(nce->name, dest->start, nce->name_len);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (ino < sctx->send_progress)
 		nce->need_later_update = 0;
@@ -6187,8 +6210,34 @@ static int send_write_or_clone(struct send_ctx *sctx,
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	if (clone_root->offset + num_bytes == info.size)
 		goto clone_data;
+=======
+	if (clone_root->offset + num_bytes == info.size) {
+		/*
+		 * The final size of our file matches the end offset, but it may
+		 * be that its current size is larger, so we have to truncate it
+		 * to any value between the start offset of the range and the
+		 * final i_size, otherwise the clone operation is invalid
+		 * because it's unaligned and it ends before the current EOF.
+		 * We do this truncate to the final i_size when we finish
+		 * processing the inode, but it's too late by then. And here we
+		 * truncate to the start offset of the range because it's always
+		 * sector size aligned while if it were the final i_size it
+		 * would result in dirtying part of a page, filling part of a
+		 * page with zeroes and then having the clone operation at the
+		 * receiver trigger IO and wait for it due to the dirty page.
+		 */
+		if (sctx->parent_root != NULL) {
+			ret = send_truncate(sctx, sctx->cur_ino,
+					    sctx->cur_inode_gen, offset);
+			if (ret < 0)
+				return ret;
+		}
+		goto clone_data;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 write_data:
 	ret = send_extent_data(sctx, path, offset, num_bytes);
@@ -7167,13 +7216,20 @@ static int changed_extent(struct send_ctx *sctx,
 
 static int changed_verity(struct send_ctx *sctx, enum btrfs_compare_tree_result result)
 {
+<<<<<<< HEAD
 	int ret = 0;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!sctx->cur_inode_new_gen && !sctx->cur_inode_deleted) {
 		if (result == BTRFS_COMPARE_TREE_NEW)
 			sctx->cur_inode_needs_verity = true;
 	}
+<<<<<<< HEAD
 	return ret;
+=======
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int dir_changed(struct send_ctx *sctx, u64 dir)

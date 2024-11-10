@@ -106,8 +106,11 @@ struct throtl_grp {
 	/* Number of bio's dispatched in current slice */
 	unsigned int io_disp[2];
 
+<<<<<<< HEAD
 	unsigned long last_low_overflow_time[2];
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	uint64_t last_bytes_disp[2];
 	unsigned int last_io_disp[2];
 

@@ -319,7 +319,11 @@ sclp_vt220_add_msg(struct sclp_vt220_request *request,
 	buffer = (void *) ((addr_t) sccb + sccb->header.length);
 
 	if (convertlf) {
+<<<<<<< HEAD
 		/* Perform Linefeed conversion (0x0a -> 0x0a 0x0d)*/
+=======
+		/* Perform Linefeed conversion (0x0a -> 0x0d 0x0a)*/
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		for (from=0, to=0;
 		     (from < count) && (to < sclp_vt220_space_left(request));
 		     from++) {
@@ -328,8 +332,13 @@ sclp_vt220_add_msg(struct sclp_vt220_request *request,
 			/* Perform conversion */
 			if (c == 0x0a) {
 				if (to + 1 < sclp_vt220_space_left(request)) {
+<<<<<<< HEAD
 					((unsigned char *) buffer)[to++] = c;
 					((unsigned char *) buffer)[to++] = 0x0d;
+=======
+					((unsigned char *) buffer)[to++] = 0x0d;
+					((unsigned char *) buffer)[to++] = c;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				} else
 					break;
 

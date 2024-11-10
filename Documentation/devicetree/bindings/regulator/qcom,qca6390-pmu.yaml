@@ -18,6 +18,10 @@ properties:
   compatible:
     enum:
       - qcom,qca6390-pmu
+<<<<<<< HEAD
+=======
+      - qcom,wcn6855-pmu
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       - qcom,wcn7850-pmu
 
   vdd-supply:
@@ -65,7 +69,15 @@ properties:
 
   bt-enable-gpios:
     maxItems: 1
+<<<<<<< HEAD
     description: GPIO line enabling the ATH11K Bluetooth module supplied by the PMU
+=======
+    description: GPIO line enabling the Bluetooth module supplied by the PMU
+
+  swctrl-gpios:
+    maxItems: 1
+    description: GPIO line indicating the state of the clock supply to the BT module
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   clocks:
     maxItems: 1
@@ -108,6 +120,24 @@ allOf:
       properties:
         compatible:
           contains:
+<<<<<<< HEAD
+=======
+            const: qcom,wcn6855-pmu
+    then:
+      required:
+        - vddio-supply
+        - vddaon-supply
+        - vddpmu-supply
+        - vddrfa0p95-supply
+        - vddrfa1p3-supply
+        - vddrfa1p9-supply
+        - vddpcie1p3-supply
+        - vddpcie1p9-supply
+  - if:
+      properties:
+        compatible:
+          contains:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
             const: qcom,wcn7850-pmu
     then:
       required:

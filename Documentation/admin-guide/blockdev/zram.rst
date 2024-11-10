@@ -102,6 +102,7 @@ Examples::
 	#select lzo compression algorithm
 	echo lzo > /sys/block/zram0/comp_algorithm
 
+<<<<<<< HEAD
 For the time being, the `comp_algorithm` content does not necessarily
 show every compression algorithm supported by the kernel. We keep this
 list primarily to simplify device configuration and one can configure
@@ -113,6 +114,43 @@ method. This, however, has an advantage of permitting the usage of
 custom crypto compression modules (implementing S/W or H/W compression).
 
 4) Set Disksize
+=======
+For the time being, the `comp_algorithm` content shows only compression
+algorithms that are supported by zram.
+
+4) Set compression algorithm parameters: Optional
+=================================================
+
+Compression algorithms may support specific parameters which can be
+tweaked for particular dataset. ZRAM has an `algorithm_params` device
+attribute which provides a per-algorithm params configuration.
+
+For example, several compression algorithms support `level` parameter.
+In addition, certain compression algorithms support pre-trained dictionaries,
+which significantly change algorithms' characteristics. In order to configure
+compression algorithm to use external pre-trained dictionary, pass full
+path to the `dict` along with other parameters::
+
+	#pass path to pre-trained zstd dictionary
+	echo "algo=zstd dict=/etc/dictioary" > /sys/block/zram0/algorithm_params
+
+	#same, but using algorithm priority
+	echo "priority=1 dict=/etc/dictioary" > \
+		/sys/block/zram0/algorithm_params
+
+	#pass path to pre-trained zstd dictionary and compression level
+	echo "algo=zstd level=8 dict=/etc/dictioary" > \
+		/sys/block/zram0/algorithm_params
+
+Parameters are algorithm specific: not all algorithms support pre-trained
+dictionaries, not all algorithms support `level`. Furthermore, for certain
+algorithms `level` controls the compression level (the higher the value the
+better the compression ratio, it even can take negatives values for some
+algorithms), for other algorithms `level` is acceleration level (the higher
+the value the lower the compression ratio).
+
+5) Set Disksize
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ===============
 
 Set disk size by writing the value to sysfs node 'disksize'.
@@ -132,7 +170,11 @@ There is little point creating a zram of greater than twice the size of memory
 since we expect a 2:1 compression ratio. Note that zram uses about 0.1% of the
 size of the disk when not in use so a huge zram is wasteful.
 
+<<<<<<< HEAD
 5) Set memory limit: Optional
+=======
+6) Set memory limit: Optional
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 =============================
 
 Set memory limit by writing the value to sysfs node 'mem_limit'.
@@ -151,7 +193,11 @@ Examples::
 	# To disable memory limit
 	echo 0 > /sys/block/zram0/mem_limit
 
+<<<<<<< HEAD
 6) Activate
+=======
+7) Activate
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ===========
 
 ::
@@ -162,7 +208,11 @@ Examples::
 	mkfs.ext4 /dev/zram1
 	mount /dev/zram1 /tmp
 
+<<<<<<< HEAD
 7) Add/remove zram devices
+=======
+8) Add/remove zram devices
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ==========================
 
 zram provides a control interface, which enables dynamic (on-demand) device
@@ -182,7 +232,11 @@ execute::
 
 	echo X > /sys/class/zram-control/hot_remove
 
+<<<<<<< HEAD
 8) Stats
+=======
+9) Stats
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ========
 
 Per-device statistics are exported as various nodes under /sys/block/zram<id>/
@@ -205,6 +259,10 @@ writeback_limit_enable  RW	show and set writeback_limit feature
 max_comp_streams  	RW	the number of possible concurrent compress
 				operations
 comp_algorithm    	RW	show and change the compression algorithm
+<<<<<<< HEAD
+=======
+algorithm_params	WO	setup compression algorithm parameters
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 compact           	WO	trigger memory compaction
 debug_stat        	RO	this file is used for zram debugging purposes
 backing_dev	  	RW	set up backend storage for zram to write out
@@ -283,15 +341,24 @@ a single line of text and contains the following stats separated by whitespace:
 		Unit: 4K bytes
  ============== =============================================================
 
+<<<<<<< HEAD
 9) Deactivate
 =============
+=======
+10) Deactivate
+==============
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 ::
 
 	swapoff /dev/zram0
 	umount /dev/zram1
 
+<<<<<<< HEAD
 10) Reset
+=======
+11) Reset
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 =========
 
 	Write any positive value to 'reset' sysfs node::
@@ -487,11 +554,21 @@ registered compression algorithms, increases our chances of finding the
 algorithm that successfully compresses a particular page. Sometimes, however,
 it is convenient (and sometimes even necessary) to limit recompression to
 only one particular algorithm so that it will not try any other algorithms.
+<<<<<<< HEAD
 This can be achieved by providing a algo=NAME parameter:::
+=======
+This can be achieved by providing a `algo` or `priority` parameter:::
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	#use zstd algorithm only (if registered)
 	echo "type=huge algo=zstd" > /sys/block/zramX/recompress
 
+<<<<<<< HEAD
+=======
+	#use zstd algorithm only (if zstd was registered under priority 1)
+	echo "type=huge priority=1" > /sys/block/zramX/recompress
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 memory tracking
 ===============
 

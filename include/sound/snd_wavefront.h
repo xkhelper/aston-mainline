@@ -137,8 +137,11 @@ extern int  snd_wavefront_fx_ioctl  (struct snd_hwdep *,
 extern int snd_wavefront_fx_open    (struct snd_hwdep *, struct file *);
 extern int snd_wavefront_fx_release (struct snd_hwdep *, struct file *);
 
+<<<<<<< HEAD
 /* prefix in all snd_printk() delivered messages */
 
 #define LOGNAME "WaveFront: "
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif  /* __SOUND_SND_WAVEFRONT_H__ */

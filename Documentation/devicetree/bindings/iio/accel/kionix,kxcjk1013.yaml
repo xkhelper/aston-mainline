@@ -16,6 +16,10 @@ properties:
       - kionix,kxcj91008
       - kionix,kxtj21009
       - kionix,kxtf9
+<<<<<<< HEAD
+=======
+      - kionix,kx022-1020
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       - kionix,kx023-1025
 
   reg:

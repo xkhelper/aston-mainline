@@ -553,7 +553,11 @@ static void cifs_fill_dirent_std(struct cifs_dirent *de,
 		const FIND_FILE_STANDARD_INFO *info)
 {
 	de->name = &info->FileName[0];
+<<<<<<< HEAD
 	/* one byte length, no endianess conversion */
+=======
+	/* one byte length, no endianness conversion */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	de->namelen = info->FileNameLength;
 	de->resume_key = info->ResumeKey;
 }
@@ -815,7 +819,11 @@ static bool emit_cached_dirents(struct cached_dirents *cde,
 		 * However, this sequence of ->pos values may have holes
 		 * in it, for example dot-dirs returned from the server
 		 * are suppressed.
+<<<<<<< HEAD
 		 * Handle this bu forcing ctx->pos to be the same as the
+=======
+		 * Handle this by forcing ctx->pos to be the same as the
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 * ->pos of the current dirent we emit from the cache.
 		 * This means that when we emit these entries from the cache
 		 * we now emit them with the same ->pos value as in the

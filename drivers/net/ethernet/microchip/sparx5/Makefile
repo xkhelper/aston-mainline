@@ -18,3 +18,7 @@ sparx5-switch-$(CONFIG_DEBUG_FS) += sparx5_vcap_debugfs.o
 
 # Provide include files
 ccflags-y += -I$(srctree)/drivers/net/ethernet/microchip/vcap
+<<<<<<< HEAD
+=======
+ccflags-y += -I$(srctree)/drivers/net/ethernet/microchip/fdma
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

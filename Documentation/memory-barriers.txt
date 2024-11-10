@@ -88,7 +88,10 @@ CONTENTS
 
  (*) The effects of the cpu cache.
 
+<<<<<<< HEAD
      - Cache coherency.
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
      - Cache coherency vs DMA.
      - Cache coherency vs MMIO.
 
@@ -677,8 +680,11 @@ include/linux/rcupdate.h.  This permits the current target of an RCU'd
 pointer to be replaced with a new modified target, without the replacement
 target appearing to be incompletely initialised.
 
+<<<<<<< HEAD
 See also the subsection on "Cache Coherency" for a more thorough example.
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 CONTROL DEPENDENCIES
 --------------------

@@ -187,7 +187,11 @@ static int regcache_rbtree_init(struct regmap *map)
 	int i;
 	int ret;
 
+<<<<<<< HEAD
 	map->cache = kmalloc(sizeof *rbtree_ctx, GFP_KERNEL);
+=======
+	map->cache = kmalloc(sizeof *rbtree_ctx, map->alloc_flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!map->cache)
 		return -ENOMEM;
 

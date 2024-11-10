@@ -181,7 +181,11 @@ struct iommu_domain *amd_iommu_domain_alloc_sva(struct device *dev,
 	struct protection_domain *pdom;
 	int ret;
 
+<<<<<<< HEAD
 	pdom = protection_domain_alloc(IOMMU_DOMAIN_SVA);
+=======
+	pdom = protection_domain_alloc(IOMMU_DOMAIN_SVA, dev_to_node(dev));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!pdom)
 		return ERR_PTR(-ENOMEM);
 

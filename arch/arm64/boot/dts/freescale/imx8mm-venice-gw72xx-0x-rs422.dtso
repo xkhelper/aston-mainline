@@ -18,19 +18,28 @@
 /dts-v1/;
 /plugin/;
 
+<<<<<<< HEAD
 &{/} {
 	compatible = "gw,imx8mm-gw72xx-0x";
 };
 
 &gpio4 {
 	rs485_en {
+=======
+&gpio4 {
+	rs485-en-hog {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		gpio-hog;
 		gpios = <0 GPIO_ACTIVE_HIGH>;
 		output-high;
 		line-name = "rs485_en";
 	};
 
+<<<<<<< HEAD
 	rs485_hd {
+=======
+	rs485-hd-hog {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		gpio-hog;
 		gpios = <2 GPIO_ACTIVE_HIGH>;
 		output-low;

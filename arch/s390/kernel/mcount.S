@@ -9,6 +9,10 @@
 #include <asm/ftrace.h>
 #include <asm/nospec-insn.h>
 #include <asm/ptrace.h>
+<<<<<<< HEAD
+=======
+#include <asm/march.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define STACK_FRAME_SIZE_PTREGS		(STACK_FRAME_OVERHEAD + __PT_SIZE)
 #define STACK_PTREGS			(STACK_FRAME_OVERHEAD)
@@ -88,7 +92,11 @@ SYM_CODE_START(ftrace_caller)
 SYM_CODE_END(ftrace_caller)
 
 SYM_CODE_START(ftrace_common)
+<<<<<<< HEAD
 #ifdef CONFIG_HAVE_MARCH_Z196_FEATURES
+=======
+#ifdef MARCH_HAS_Z196_FEATURES
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	aghik	%r2,%r0,-MCOUNT_INSN_SIZE
 	lgrl	%r4,function_trace_op
 	lgrl	%r1,ftrace_func
@@ -115,7 +123,11 @@ SYM_INNER_LABEL(ftrace_graph_caller, SYM_L_GLOBAL)
 .Lftrace_graph_caller_end:
 #endif
 	lg	%r0,(STACK_FREGS_PTREGS_PSW+8)(%r15)
+<<<<<<< HEAD
 #ifdef CONFIG_HAVE_MARCH_Z196_FEATURES
+=======
+#ifdef MARCH_HAS_Z196_FEATURES
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ltg	%r1,STACK_FREGS_PTREGS_ORIG_GPR2(%r15)
 	locgrz	%r1,%r0
 #else

@@ -231,41 +231,65 @@
 			resets = <&syscon ASPEED_RESET_MII>;
 		};
 
+<<<<<<< HEAD
 		mac0: ftgmac@1e660000 {
 			compatible = "aspeed,ast2600-mac", "faraday,ftgmac100";
 			reg = <0x1e660000 0x180>;
 			#address-cells = <1>;
 			#size-cells = <0>;
+=======
+		mac0: ethernet@1e660000 {
+			compatible = "aspeed,ast2600-mac", "faraday,ftgmac100";
+			reg = <0x1e660000 0x180>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			interrupts = <GIC_SPI 2 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&syscon ASPEED_CLK_GATE_MAC1CLK>;
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		mac1: ftgmac@1e680000 {
 			compatible = "aspeed,ast2600-mac", "faraday,ftgmac100";
 			reg = <0x1e680000 0x180>;
 			#address-cells = <1>;
 			#size-cells = <0>;
+=======
+		mac1: ethernet@1e680000 {
+			compatible = "aspeed,ast2600-mac", "faraday,ftgmac100";
+			reg = <0x1e680000 0x180>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			interrupts = <GIC_SPI 3 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&syscon ASPEED_CLK_GATE_MAC2CLK>;
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		mac2: ftgmac@1e670000 {
 			compatible = "aspeed,ast2600-mac", "faraday,ftgmac100";
 			reg = <0x1e670000 0x180>;
 			#address-cells = <1>;
 			#size-cells = <0>;
+=======
+		mac2: ethernet@1e670000 {
+			compatible = "aspeed,ast2600-mac", "faraday,ftgmac100";
+			reg = <0x1e670000 0x180>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			interrupts = <GIC_SPI 32 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&syscon ASPEED_CLK_GATE_MAC3CLK>;
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		mac3: ftgmac@1e690000 {
 			compatible = "aspeed,ast2600-mac", "faraday,ftgmac100";
 			reg = <0x1e690000 0x180>;
 			#address-cells = <1>;
 			#size-cells = <0>;
+=======
+		mac3: ethernet@1e690000 {
+			compatible = "aspeed,ast2600-mac", "faraday,ftgmac100";
+			reg = <0x1e690000 0x180>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			interrupts = <GIC_SPI 33 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&syscon ASPEED_CLK_GATE_MAC4CLK>;
 			status = "disabled";
@@ -398,6 +422,7 @@
 				interrupts = <GIC_SPI 14 IRQ_TYPE_LEVEL_HIGH>;
 			};
 
+<<<<<<< HEAD
 			xdma: xdma@1e6e7000 {
 				compatible = "aspeed,ast2600-xdma";
 				reg = <0x1e6e7000 0x100>;
@@ -411,6 +436,8 @@
 				status = "disabled";
 			};
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			adc0: adc@1e6e9000 {
 				compatible = "aspeed,ast2600-adc0";
 				reg = <0x1e6e9000 0x100>;

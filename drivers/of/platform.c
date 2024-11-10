@@ -338,7 +338,10 @@ static int of_platform_bus_create(struct device_node *bus,
 				  struct device *parent, bool strict)
 {
 	const struct of_dev_auxdata *auxdata;
+<<<<<<< HEAD
 	struct device_node *child;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct platform_device *dev;
 	const char *bus_id = NULL;
 	void *platform_data = NULL;
@@ -382,6 +385,7 @@ static int of_platform_bus_create(struct device_node *bus,
 	if (!dev || !of_match_node(matches, bus))
 		return 0;
 
+<<<<<<< HEAD
 	for_each_child_of_node(bus, child) {
 		pr_debug("   create child: %pOF\n", child);
 		rc = of_platform_bus_create(child, matches, lookup, &dev->dev, strict);
@@ -389,6 +393,13 @@ static int of_platform_bus_create(struct device_node *bus,
 			of_node_put(child);
 			break;
 		}
+=======
+	for_each_child_of_node_scoped(bus, child) {
+		pr_debug("   create child: %pOF\n", child);
+		rc = of_platform_bus_create(child, matches, lookup, &dev->dev, strict);
+		if (rc)
+			break;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	of_node_set_flag(bus, OF_POPULATED_BUS);
 	return rc;
@@ -459,7 +470,10 @@ int of_platform_populate(struct device_node *root,
 			const struct of_dev_auxdata *lookup,
 			struct device *parent)
 {
+<<<<<<< HEAD
 	struct device_node *child;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int rc = 0;
 
 	root = root ? of_node_get(root) : of_find_node_by_path("/");
@@ -470,12 +484,19 @@ int of_platform_populate(struct device_node *root,
 	pr_debug(" starting at: %pOF\n", root);
 
 	device_links_supplier_sync_state_pause();
+<<<<<<< HEAD
 	for_each_child_of_node(root, child) {
 		rc = of_platform_bus_create(child, matches, lookup, parent, true);
 		if (rc) {
 			of_node_put(child);
 			break;
 		}
+=======
+	for_each_child_of_node_scoped(root, child) {
+		rc = of_platform_bus_create(child, matches, lookup, parent, true);
+		if (rc)
+			break;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	device_links_supplier_sync_state_resume();
 
@@ -732,11 +753,22 @@ static int of_platform_notify(struct notifier_block *nb,
 	struct of_reconfig_data *rd = arg;
 	struct platform_device *pdev_parent, *pdev;
 	bool children_left;
+<<<<<<< HEAD
 
 	switch (of_reconfig_get_state_change(action, rd)) {
 	case OF_RECONFIG_CHANGE_ADD:
 		/* verify that the parent is a bus */
 		if (!of_node_check_flag(rd->dn->parent, OF_POPULATED_BUS))
+=======
+	struct device_node *parent;
+
+	switch (of_reconfig_get_state_change(action, rd)) {
+	case OF_RECONFIG_CHANGE_ADD:
+		parent = rd->dn->parent;
+		/* verify that the parent is a bus (or the root node) */
+		if (!of_node_is_root(parent) &&
+		    !of_node_check_flag(parent, OF_POPULATED_BUS))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return NOTIFY_OK;	/* not for us */
 
 		/* already populated? (driver using of_populate manually) */
@@ -749,7 +781,11 @@ static int of_platform_notify(struct notifier_block *nb,
 		 */
 		rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
 		/* pdev_parent may be NULL when no bus platform device */
+<<<<<<< HEAD
 		pdev_parent = of_find_device_by_node(rd->dn->parent);
+=======
+		pdev_parent = of_find_device_by_node(parent);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pdev = of_platform_device_create(rd->dn, NULL,
 				pdev_parent ? &pdev_parent->dev : NULL);
 		platform_device_put(pdev_parent);

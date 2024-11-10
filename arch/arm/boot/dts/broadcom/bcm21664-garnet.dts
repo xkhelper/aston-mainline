@@ -11,6 +11,13 @@
 	model = "BCM21664 Garnet board";
 	compatible = "brcm,bcm21664-garnet", "brcm,bcm21664";
 
+<<<<<<< HEAD
+=======
+	chosen {
+		bootargs = "console=ttyS0,115200n8";
+	};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	memory@80000000 {
 		device_type = "memory";
 		reg = <0x80000000 0x40000000>; /* 1 GB */

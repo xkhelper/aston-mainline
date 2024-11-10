@@ -686,6 +686,10 @@ static bool assert_hdmi_port_valid(struct drm_i915_private *i915, enum port port
 void g4x_hdmi_init(struct drm_i915_private *dev_priv,
 		   i915_reg_t hdmi_reg, enum port port)
 {
+<<<<<<< HEAD
+=======
+	struct intel_display *display = &dev_priv->display;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct intel_bios_encoder_data *devdata;
 	struct intel_digital_port *dig_port;
 	struct intel_encoder *intel_encoder;
@@ -697,7 +701,11 @@ void g4x_hdmi_init(struct drm_i915_private *dev_priv,
 	if (!assert_hdmi_port_valid(dev_priv, port))
 		return;
 
+<<<<<<< HEAD
 	devdata = intel_bios_encoder_data_lookup(dev_priv, port);
+=======
+	devdata = intel_bios_encoder_data_lookup(display, port);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* FIXME bail? */
 	if (!devdata)

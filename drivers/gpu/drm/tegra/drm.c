@@ -801,6 +801,10 @@ static const struct file_operations tegra_drm_fops = {
 	.read = drm_read,
 	.compat_ioctl = drm_compat_ioctl,
 	.llseek = noop_llseek,
+<<<<<<< HEAD
+=======
+	.fop_flags = FOP_UNSIGNED_OFFSET,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int tegra_drm_context_cleanup(int id, void *p, void *data)
@@ -1152,8 +1156,13 @@ static int host1x_drm_probe(struct host1x_device *dev)
 
 	if (host1x_drm_wants_iommu(dev) && device_iommu_mapped(dma_dev)) {
 		tegra->domain = iommu_paging_domain_alloc(dma_dev);
+<<<<<<< HEAD
 		if (!tegra->domain) {
 			err = -ENOMEM;
+=======
+		if (IS_ERR(tegra->domain)) {
+			err = PTR_ERR(tegra->domain);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto free;
 		}
 
@@ -1331,6 +1340,14 @@ static int host1x_drm_remove(struct host1x_device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static void host1x_drm_shutdown(struct host1x_device *dev)
+{
+	drm_atomic_helper_shutdown(dev_get_drvdata(&dev->dev));
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_PM_SLEEP
 static int host1x_drm_suspend(struct device *dev)
 {
@@ -1399,6 +1416,10 @@ static struct host1x_driver host1x_drm_driver = {
 	},
 	.probe = host1x_drm_probe,
 	.remove = host1x_drm_remove,
+<<<<<<< HEAD
+=======
+	.shutdown = host1x_drm_shutdown,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.subdevs = host1x_drm_subdevs,
 };
 

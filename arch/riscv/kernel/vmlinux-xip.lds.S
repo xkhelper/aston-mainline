@@ -14,6 +14,10 @@
 #include <asm/page.h>
 #include <asm/cache.h>
 #include <asm/thread_info.h>
+<<<<<<< HEAD
+=======
+#include <asm/set_memory.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 OUTPUT_ARCH(riscv)
 ENTRY(_start)
@@ -65,10 +69,17 @@ SECTIONS
  * From this point, stuff is considered writable and will be copied to RAM
  */
 	__data_loc = ALIGN(PAGE_SIZE);		/* location in file */
+<<<<<<< HEAD
 	. = KERNEL_LINK_ADDR + XIP_OFFSET;	/* location in memory */
 
 #undef LOAD_OFFSET
 #define LOAD_OFFSET (KERNEL_LINK_ADDR + XIP_OFFSET - (__data_loc & XIP_OFFSET_MASK))
+=======
+	. = ALIGN(SECTION_ALIGN);		/* location in memory */
+
+#undef LOAD_OFFSET
+#define LOAD_OFFSET (KERNEL_LINK_ADDR + _sdata - __data_loc)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	_sdata = .;			/* Start of data section */
 	_data = .;

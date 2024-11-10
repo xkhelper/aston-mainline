@@ -145,8 +145,12 @@ out:
 }
 
 static int nft_reject_netdev_validate(const struct nft_ctx *ctx,
+<<<<<<< HEAD
 				      const struct nft_expr *expr,
 				      const struct nft_data **data)
+=======
+				      const struct nft_expr *expr)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return nft_chain_validate_hooks(ctx->chain, (1 << NF_NETDEV_INGRESS));
 }

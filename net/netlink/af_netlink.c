@@ -2136,8 +2136,14 @@ void __netlink_clear_multicast_users(struct sock *ksk, unsigned int group)
 {
 	struct sock *sk;
 	struct netlink_table *tbl = &nl_table[ksk->sk_protocol];
+<<<<<<< HEAD
 
 	sk_for_each_bound(sk, &tbl->mc_list)
+=======
+	struct hlist_node *tmp;
+
+	sk_for_each_bound_safe(sk, tmp, &tbl->mc_list)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		netlink_update_socket_mc(nlk_sk(sk), group, 0);
 }
 

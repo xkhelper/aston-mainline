@@ -2,7 +2,10 @@
 
 #include <stdbool.h>
 #include <stdlib.h>
+<<<<<<< HEAD
 #include <error.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>

@@ -43,8 +43,11 @@
 #include "amdgpu_hmm.h"
 #include "amdgpu_xgmi.h"
 
+<<<<<<< HEAD
 static const struct drm_gem_object_funcs amdgpu_gem_object_funcs;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static vm_fault_t amdgpu_gem_fault(struct vm_fault *vmf)
 {
 	struct ttm_buffer_object *bo = vmf->vma->vm_private_data;
@@ -87,11 +90,19 @@ static const struct vm_operations_struct amdgpu_gem_vm_ops = {
 
 static void amdgpu_gem_object_free(struct drm_gem_object *gobj)
 {
+<<<<<<< HEAD
 	struct amdgpu_bo *robj = gem_to_amdgpu_bo(gobj);
 
 	if (robj) {
 		amdgpu_hmm_unregister(robj);
 		amdgpu_bo_unref(&robj);
+=======
+	struct amdgpu_bo *aobj = gem_to_amdgpu_bo(gobj);
+
+	if (aobj) {
+		amdgpu_hmm_unregister(aobj);
+		ttm_bo_put(&aobj->tbo);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -126,7 +137,10 @@ int amdgpu_gem_object_create(struct amdgpu_device *adev, unsigned long size,
 
 	bo = &ubo->bo;
 	*obj = &bo->tbo.base;
+<<<<<<< HEAD
 	(*obj)->funcs = &amdgpu_gem_object_funcs;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -295,7 +309,11 @@ static int amdgpu_gem_object_mmap(struct drm_gem_object *obj, struct vm_area_str
 	return drm_gem_ttm_mmap(obj, vma);
 }
 
+<<<<<<< HEAD
 static const struct drm_gem_object_funcs amdgpu_gem_object_funcs = {
+=======
+const struct drm_gem_object_funcs amdgpu_gem_object_funcs = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.free = amdgpu_gem_object_free,
 	.open = amdgpu_gem_object_open,
 	.close = amdgpu_gem_object_close,

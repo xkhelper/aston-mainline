@@ -223,8 +223,11 @@ static inline u8 permission_fault(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
 
 bool kvm_mmu_may_ignore_guest_pat(void);
 
+<<<<<<< HEAD
 int kvm_arch_write_log_dirty(struct kvm_vcpu *vcpu);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int kvm_mmu_post_init_vm(struct kvm *kvm);
 void kvm_mmu_pre_destroy_vm(struct kvm *kvm);
 

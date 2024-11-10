@@ -32,11 +32,24 @@ properties:
       - enum:
           - samsung,exynos850-usi
 
+<<<<<<< HEAD
   reg: true
 
   clocks: true
 
   clock-names: true
+=======
+  reg:
+    maxItems: 1
+
+  clocks:
+    maxItems: 2
+
+  clock-names:
+    items:
+      - const: pclk
+      - const: ipclk
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   ranges: true
 
@@ -113,9 +126,13 @@ then:
         - description: Operating clock for UART/SPI/I2C protocol
 
     clock-names:
+<<<<<<< HEAD
       items:
         - const: pclk
         - const: ipclk
+=======
+      maxItems: 2
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   required:
     - reg

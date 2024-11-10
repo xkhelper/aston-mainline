@@ -2421,7 +2421,11 @@ out:
 		spin_lock_irqsave(&device->done_lock, flags);
 		if (test_bit(SAS_HA_FROZEN, &ha->state)) {
 			spin_unlock_irqrestore(&device->done_lock, flags);
+<<<<<<< HEAD
 			dev_info(dev, "slot complete: task(%pK) ignored\n ",
+=======
+			dev_info(dev, "slot complete: task(%pK) ignored\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				 task);
 			return;
 		}

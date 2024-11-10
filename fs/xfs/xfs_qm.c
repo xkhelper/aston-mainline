@@ -799,7 +799,11 @@ xfs_qm_qino_alloc(
 		};
 		xfs_ino_t	ino;
 
+<<<<<<< HEAD
 		error = xfs_dialloc(&tp, 0, S_IFREG, &ino);
+=======
+		error = xfs_dialloc(&tp, &args, &ino);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!error)
 			error = xfs_icreate(tp, ino, &args, ipp);
 		if (error) {
@@ -1539,6 +1543,46 @@ xfs_qm_mount_quotas(
 }
 
 /*
+<<<<<<< HEAD
+=======
+ * Load the inode for a given type of quota, assuming that the sb fields have
+ * been sorted out.  This is not true when switching quota types on a V4
+ * filesystem, so do not use this function for that.
+ *
+ * Returns -ENOENT if the quota inode field is NULLFSINO; 0 and an inode on
+ * success; or a negative errno.
+ */
+int
+xfs_qm_qino_load(
+	struct xfs_mount	*mp,
+	xfs_dqtype_t		type,
+	struct xfs_inode	**ipp)
+{
+	xfs_ino_t		ino = NULLFSINO;
+
+	switch (type) {
+	case XFS_DQTYPE_USER:
+		ino = mp->m_sb.sb_uquotino;
+		break;
+	case XFS_DQTYPE_GROUP:
+		ino = mp->m_sb.sb_gquotino;
+		break;
+	case XFS_DQTYPE_PROJ:
+		ino = mp->m_sb.sb_pquotino;
+		break;
+	default:
+		ASSERT(0);
+		return -EFSCORRUPTED;
+	}
+
+	if (ino == NULLFSINO)
+		return -ENOENT;
+
+	return xfs_iget(mp, NULL, ino, 0, 0, ipp);
+}
+
+/*
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * This is called after the superblock has been read in and we're ready to
  * iget the quota inodes.
  */
@@ -1561,24 +1605,36 @@ xfs_qm_init_quotainos(
 		if (XFS_IS_UQUOTA_ON(mp) &&
 		    mp->m_sb.sb_uquotino != NULLFSINO) {
 			ASSERT(mp->m_sb.sb_uquotino > 0);
+<<<<<<< HEAD
 			error = xfs_iget(mp, NULL, mp->m_sb.sb_uquotino,
 					     0, 0, &uip);
+=======
+			error = xfs_qm_qino_load(mp, XFS_DQTYPE_USER, &uip);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (error)
 				return error;
 		}
 		if (XFS_IS_GQUOTA_ON(mp) &&
 		    mp->m_sb.sb_gquotino != NULLFSINO) {
 			ASSERT(mp->m_sb.sb_gquotino > 0);
+<<<<<<< HEAD
 			error = xfs_iget(mp, NULL, mp->m_sb.sb_gquotino,
 					     0, 0, &gip);
+=======
+			error = xfs_qm_qino_load(mp, XFS_DQTYPE_GROUP, &gip);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (error)
 				goto error_rele;
 		}
 		if (XFS_IS_PQUOTA_ON(mp) &&
 		    mp->m_sb.sb_pquotino != NULLFSINO) {
 			ASSERT(mp->m_sb.sb_pquotino > 0);
+<<<<<<< HEAD
 			error = xfs_iget(mp, NULL, mp->m_sb.sb_pquotino,
 					     0, 0, &pip);
+=======
+			error = xfs_qm_qino_load(mp, XFS_DQTYPE_PROJ, &pip);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (error)
 				goto error_rele;
 		}

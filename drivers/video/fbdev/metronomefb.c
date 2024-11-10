@@ -37,7 +37,11 @@
 
 #include <video/metronomefb.h>
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Display specific information */
 #define DPY_W 832
@@ -707,7 +711,11 @@ static void metronomefb_remove(struct platform_device *dev)
 
 static struct platform_driver metronomefb_driver = {
 	.probe	= metronomefb_probe,
+<<<<<<< HEAD
 	.remove_new = metronomefb_remove,
+=======
+	.remove	= metronomefb_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver	= {
 		.name	= "metronomefb",
 	},

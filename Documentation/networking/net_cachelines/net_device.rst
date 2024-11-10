@@ -7,6 +7,11 @@ net_device struct fast path usage breakdown
 
 Type                                Name                    fastpath_tx_access  fastpath_rx_access  Comments
 ..struct                            ..net_device                                                    
+<<<<<<< HEAD
+=======
+unsigned_long:32                    priv_flags              read_mostly         -                   __dev_queue_xmit(tx)
+unsigned_long:1                     lltx                    read_mostly         -                   HARD_TX_LOCK,HARD_TX_TRYLOCK,HARD_TX_UNLOCK(tx)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 char                                name[16]                -                   -                   
 struct_netdev_name_node*            name_node                                                       
 struct_dev_ifalias*                 ifalias                                                         
@@ -23,7 +28,10 @@ struct_list_head                    ptype_specific                              
 struct                              adj_list                                                        
 unsigned_int                        flags                   read_mostly         read_mostly         __dev_queue_xmit,__dev_xmit_skb,ip6_output,__ip6_finish_output(tx);ip6_rcv_core(rx)
 xdp_features_t                      xdp_features                                                    
+<<<<<<< HEAD
 unsigned_long_long                  priv_flags              read_mostly         -                   __dev_queue_xmit(tx)
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct_net_device_ops*              netdev_ops              read_mostly         -                   netdev_core_pick_tx,netdev_start_xmit(tx)
 struct_xdp_metadata_ops*            xdp_metadata_ops                                                
 int                                 ifindex                 -                   read_mostly         ip6_rcv_core
@@ -98,7 +106,11 @@ unsigned_int                        num_rx_queues
 unsigned_int                        real_num_rx_queues      -                   read_mostly         get_rps_cpu
 struct_bpf_prog*                    xdp_prog                -                   read_mostly         netif_elide_gro()
 unsigned_long                       gro_flush_timeout       -                   read_mostly         napi_complete_done
+<<<<<<< HEAD
 int                                 napi_defer_hard_irqs    -                   read_mostly         napi_complete_done
+=======
+u32                                 napi_defer_hard_irqs    -                   read_mostly         napi_complete_done
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 unsigned_int                        gro_max_size            -                   read_mostly         skb_gro_receive
 unsigned_int                        gro_ipv4_max_size       -                   read_mostly         skb_gro_receive
 rx_handler_func_t*                  rx_handler              read_mostly         -                   __netif_receive_skb_core
@@ -163,6 +175,13 @@ struct_lock_class_key*              qdisc_tx_busylock
 bool                                proto_down                                                      
 unsigned:1                          wol_enabled                                                     
 unsigned:1                          threaded                -                   -                   napi_poll(napi_enable,dev_set_threaded)
+<<<<<<< HEAD
+=======
+unsigned_long:1                     see_all_hwtstamp_requests                                       
+unsigned_long:1                     change_proto_down                                               
+unsigned_long:1                     netns_local                                                     
+unsigned_long:1                     fcoe_mtu                                                        
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct_list_head                    net_notifier_list                                               
 struct_macsec_ops*                  macsec_ops                                                      
 struct_udp_tunnel_nic_info*         udp_tunnel_nic_info                                             
@@ -176,3 +195,8 @@ netdevice_tracker                   dev_registered_tracker
 struct_rtnl_hw_stats64*             offload_xstats_l3                                               
 struct_devlink_port*                devlink_port                                                    
 struct_dpll_pin*                    dpll_pin                                                        
+<<<<<<< HEAD
+=======
+struct hlist_head                   page_pools
+struct dim_irq_moder*               irq_moder
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

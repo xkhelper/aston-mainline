@@ -16,6 +16,7 @@ struct resource;
 struct vmem_altmap;
 struct dev_pagemap;
 
+<<<<<<< HEAD
 #ifdef CONFIG_HAVE_ARCH_NODEDATA_EXTENSION
 /*
  * For supporting node-hotadd, we have to allocate a new pgdat.
@@ -64,6 +65,8 @@ static inline void arch_refresh_nodedata(int nid, pg_data_t *pgdat)
 #endif /* CONFIG_NUMA */
 #endif /* CONFIG_HAVE_ARCH_NODEDATA_EXTENSION */
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_MEMORY_HOTPLUG
 struct page *pfn_to_online_page(unsigned long pfn);
 

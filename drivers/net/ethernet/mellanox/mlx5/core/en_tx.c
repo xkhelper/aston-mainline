@@ -642,7 +642,10 @@ mlx5e_sq_xmit_mpwqe(struct mlx5e_txqsq *sq, struct sk_buff *skb,
 	return;
 
 err_unmap:
+<<<<<<< HEAD
 	mlx5e_dma_unmap_wqe_err(sq, 1);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sq->stats->dropped++;
 	dev_kfree_skb_any(skb);
 	mlx5e_tx_flush(sq);

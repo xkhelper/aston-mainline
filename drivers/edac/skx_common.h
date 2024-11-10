@@ -259,4 +259,15 @@ int skx_mce_check_error(struct notifier_block *nb, unsigned long val,
 
 void skx_remove(void);
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_EDAC_DEBUG
+void skx_setup_debug(const char *name);
+void skx_teardown_debug(void);
+#else
+static inline void skx_setup_debug(const char *name) {}
+static inline void skx_teardown_debug(void) {}
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _SKX_COMM_EDAC_H */

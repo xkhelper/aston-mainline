@@ -87,7 +87,11 @@ static inline unsigned long COLOR_ALIGN(unsigned long addr,
 	return base + off;
 }
 
+<<<<<<< HEAD
 unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr, unsigned long len, unsigned long pgoff, unsigned long flags)
+=======
+unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr, unsigned long len, unsigned long pgoff, unsigned long flags, vm_flags_t vm_flags)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct mm_struct *mm = current->mm;
 	struct vm_area_struct * vma;
@@ -146,7 +150,11 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr, unsi
 unsigned long
 arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
 			  const unsigned long len, const unsigned long pgoff,
+<<<<<<< HEAD
 			  const unsigned long flags)
+=======
+			  const unsigned long flags, vm_flags_t vm_flags)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct vm_area_struct *vma;
 	struct mm_struct *mm = current->mm;

@@ -947,6 +947,10 @@ static int hip04_mac_probe(struct platform_device *pdev)
 	priv->tx_coalesce_timer.function = tx_done;
 
 	priv->map = syscon_node_to_regmap(arg.np);
+<<<<<<< HEAD
+=======
+	of_node_put(arg.np);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(priv->map)) {
 		dev_warn(d, "no syscon hisilicon,hip04-ppe\n");
 		ret = PTR_ERR(priv->map);

@@ -164,7 +164,11 @@ struct snp_guest_msg_hdr {
 
 struct snp_guest_msg {
 	struct snp_guest_msg_hdr hdr;
+<<<<<<< HEAD
 	u8 payload[4000];
+=======
+	u8 payload[PAGE_SIZE - sizeof(struct snp_guest_msg_hdr)];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 } __packed;
 
 struct sev_guest_platform_data {

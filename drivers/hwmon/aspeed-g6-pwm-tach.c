@@ -456,7 +456,10 @@ static int aspeed_pwm_tach_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev, *hwmon;
 	int ret;
+<<<<<<< HEAD
 	struct device_node *child;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct aspeed_pwm_tach_data *priv;
 	struct pwm_chip *chip;
 
@@ -498,10 +501,16 @@ static int aspeed_pwm_tach_probe(struct platform_device *pdev)
 	if (ret)
 		return dev_err_probe(dev, ret, "Failed to add PWM chip\n");
 
+<<<<<<< HEAD
 	for_each_child_of_node(dev->of_node, child) {
 		ret = aspeed_create_fan_monitor(dev, child, priv);
 		if (ret) {
 			of_node_put(child);
+=======
+	for_each_child_of_node_scoped(dev->of_node, child) {
+		ret = aspeed_create_fan_monitor(dev, child, priv);
+		if (ret) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			dev_warn(dev, "Failed to create fan %d", ret);
 			return 0;
 		}

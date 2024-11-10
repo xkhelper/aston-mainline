@@ -2287,7 +2287,11 @@ static const struct v4l2_async_notifier_operations vpfe_async_ops = {
 static struct vpfe_config *
 vpfe_get_pdata(struct vpfe_device *vpfe)
 {
+<<<<<<< HEAD
 	struct device_node *endpoint = NULL;
+=======
+	struct device_node *endpoint;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct device *dev = vpfe->pdev;
 	struct vpfe_subdev_info *sdinfo;
 	struct vpfe_config *pdata;
@@ -2306,6 +2310,7 @@ vpfe_get_pdata(struct vpfe_device *vpfe)
 	if (!pdata)
 		return NULL;
 
+<<<<<<< HEAD
 	for (i = 0; ; i++) {
 		struct v4l2_fwnode_endpoint bus_cfg = { .bus_type = 0 };
 		struct device_node *rem;
@@ -2314,6 +2319,13 @@ vpfe_get_pdata(struct vpfe_device *vpfe)
 		if (!endpoint)
 			break;
 
+=======
+	i = 0;
+	for_each_endpoint_of_node(dev->of_node, endpoint) {
+		struct v4l2_fwnode_endpoint bus_cfg = { .bus_type = 0 };
+		struct device_node *rem;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		sdinfo = &pdata->sub_devs[i];
 		sdinfo->grp_id = 0;
 
@@ -2371,9 +2383,16 @@ vpfe_get_pdata(struct vpfe_device *vpfe)
 		of_node_put(rem);
 		if (IS_ERR(pdata->asd[i]))
 			goto cleanup;
+<<<<<<< HEAD
 	}
 
 	of_node_put(endpoint);
+=======
+
+		i++;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return pdata;
 
 cleanup:

@@ -61,7 +61,10 @@
 			fan: fan@18 {
 				compatible = "ti,amc6821";
 				reg = <0x18>;
+<<<<<<< HEAD
 				#cooling-cells = <2>;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			};
 
 			rtc_twi: rtc@6f {

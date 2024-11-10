@@ -226,6 +226,10 @@ config GENERIC_ARCH_TOPOLOGY
 
 config GENERIC_ARCH_NUMA
 	bool
+<<<<<<< HEAD
+=======
+	select NUMA_MEMBLKS
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  Enable support for generic NUMA implementation. Currently, RISC-V
 	  and ARM64 use it.

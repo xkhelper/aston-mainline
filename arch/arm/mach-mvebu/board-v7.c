@@ -86,6 +86,12 @@ static int __init mvebu_scan_mem(unsigned long node, const char *uname,
 		base = dt_mem_next_cell(dt_root_addr_cells, &reg);
 		size = dt_mem_next_cell(dt_root_size_cells, &reg);
 
+<<<<<<< HEAD
+=======
+		if (size < MVEBU_DDR_TRAINING_AREA_SZ)
+			pr_warn("Too little memory to reserve for DDR training\n");
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		memblock_reserve(base, MVEBU_DDR_TRAINING_AREA_SZ);
 	}
 

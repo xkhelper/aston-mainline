@@ -9,24 +9,38 @@
 #include <asm/simd.h>
 #include <crypto/aes.h>
 #include <crypto/ctr.h>
+<<<<<<< HEAD
 #include <crypto/internal/cipher.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <crypto/internal/simd.h>
 #include <crypto/internal/skcipher.h>
 #include <crypto/scatterwalk.h>
 #include <crypto/xts.h>
 #include <linux/module.h>
+<<<<<<< HEAD
+=======
+#include "aes-cipher.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 MODULE_AUTHOR("Ard Biesheuvel <ard.biesheuvel@linaro.org>");
 MODULE_DESCRIPTION("Bit sliced AES using NEON instructions");
 MODULE_LICENSE("GPL v2");
 
 MODULE_ALIAS_CRYPTO("ecb(aes)");
+<<<<<<< HEAD
 MODULE_ALIAS_CRYPTO("cbc(aes)-all");
 MODULE_ALIAS_CRYPTO("ctr(aes)");
 MODULE_ALIAS_CRYPTO("xts(aes)");
 
 MODULE_IMPORT_NS(CRYPTO_INTERNAL);
 
+=======
+MODULE_ALIAS_CRYPTO("cbc(aes)");
+MODULE_ALIAS_CRYPTO("ctr(aes)");
+MODULE_ALIAS_CRYPTO("xts(aes)");
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 asmlinkage void aesbs_convert_key(u8 out[], u32 const rk[], int rounds);
 
 asmlinkage void aesbs_ecb_encrypt(u8 out[], u8 const in[], u8 const rk[],
@@ -52,13 +66,22 @@ struct aesbs_ctx {
 
 struct aesbs_cbc_ctx {
 	struct aesbs_ctx	key;
+<<<<<<< HEAD
 	struct crypto_skcipher	*enc_tfm;
+=======
+	struct crypto_aes_ctx	fallback;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct aesbs_xts_ctx {
 	struct aesbs_ctx	key;
+<<<<<<< HEAD
 	struct crypto_cipher	*cts_tfm;
 	struct crypto_cipher	*tweak_tfm;
+=======
+	struct crypto_aes_ctx	fallback;
+	struct crypto_aes_ctx	tweak_key;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct aesbs_ctr_ctx {
@@ -129,25 +152,39 @@ static int aesbs_cbc_setkey(struct crypto_skcipher *tfm, const u8 *in_key,
 			    unsigned int key_len)
 {
 	struct aesbs_cbc_ctx *ctx = crypto_skcipher_ctx(tfm);
+<<<<<<< HEAD
 	struct crypto_aes_ctx rk;
 	int err;
 
 	err = aes_expandkey(&rk, in_key, key_len);
+=======
+	int err;
+
+	err = aes_expandkey(&ctx->fallback, in_key, key_len);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err)
 		return err;
 
 	ctx->key.rounds = 6 + key_len / 4;
 
 	kernel_neon_begin();
+<<<<<<< HEAD
 	aesbs_convert_key(ctx->key.rk, rk.key_enc, ctx->key.rounds);
 	kernel_neon_end();
 	memzero_explicit(&rk, sizeof(rk));
 
 	return crypto_skcipher_setkey(ctx->enc_tfm, in_key, key_len);
+=======
+	aesbs_convert_key(ctx->key.rk, ctx->fallback.key_enc, ctx->key.rounds);
+	kernel_neon_end();
+
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int cbc_encrypt(struct skcipher_request *req)
 {
+<<<<<<< HEAD
 	struct skcipher_request *subreq = skcipher_request_ctx(req);
 	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
 	struct aesbs_cbc_ctx *ctx = crypto_skcipher_ctx(tfm);
@@ -160,6 +197,34 @@ static int cbc_encrypt(struct skcipher_request *req)
 				   req->cryptlen, req->iv);
 
 	return crypto_skcipher_encrypt(subreq);
+=======
+	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
+	const struct aesbs_cbc_ctx *ctx = crypto_skcipher_ctx(tfm);
+	struct skcipher_walk walk;
+	unsigned int nbytes;
+	int err;
+
+	err = skcipher_walk_virt(&walk, req, false);
+
+	while ((nbytes = walk.nbytes) >= AES_BLOCK_SIZE) {
+		const u8 *src = walk.src.virt.addr;
+		u8 *dst = walk.dst.virt.addr;
+		u8 *prev = walk.iv;
+
+		do {
+			crypto_xor_cpy(dst, src, prev, AES_BLOCK_SIZE);
+			__aes_arm_encrypt(ctx->fallback.key_enc,
+					  ctx->key.rounds, dst, dst);
+			prev = dst;
+			src += AES_BLOCK_SIZE;
+			dst += AES_BLOCK_SIZE;
+			nbytes -= AES_BLOCK_SIZE;
+		} while (nbytes >= AES_BLOCK_SIZE);
+		memcpy(walk.iv, prev, AES_BLOCK_SIZE);
+		err = skcipher_walk_done(&walk, nbytes);
+	}
+	return err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int cbc_decrypt(struct skcipher_request *req)
@@ -190,6 +255,7 @@ static int cbc_decrypt(struct skcipher_request *req)
 	return err;
 }
 
+<<<<<<< HEAD
 static int cbc_init(struct crypto_skcipher *tfm)
 {
 	struct aesbs_cbc_ctx *ctx = crypto_skcipher_ctx(tfm);
@@ -214,6 +280,8 @@ static void cbc_exit(struct crypto_skcipher *tfm)
 	crypto_free_skcipher(ctx->enc_tfm);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int aesbs_ctr_setkey_sync(struct crypto_skcipher *tfm, const u8 *in_key,
 				 unsigned int key_len)
 {
@@ -271,6 +339,7 @@ static int ctr_encrypt(struct skcipher_request *req)
 static void ctr_encrypt_one(struct crypto_skcipher *tfm, const u8 *src, u8 *dst)
 {
 	struct aesbs_ctr_ctx *ctx = crypto_skcipher_ctx(tfm);
+<<<<<<< HEAD
 	unsigned long flags;
 
 	/*
@@ -281,6 +350,10 @@ static void ctr_encrypt_one(struct crypto_skcipher *tfm, const u8 *src, u8 *dst)
 	local_irq_save(flags);
 	aes_encrypt(&ctx->fallback, dst, src);
 	local_irq_restore(flags);
+=======
+
+	__aes_arm_encrypt(ctx->fallback.key_enc, ctx->key.rounds, src, dst);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int ctr_encrypt_sync(struct skcipher_request *req)
@@ -302,16 +375,24 @@ static int aesbs_xts_setkey(struct crypto_skcipher *tfm, const u8 *in_key,
 		return err;
 
 	key_len /= 2;
+<<<<<<< HEAD
 	err = crypto_cipher_setkey(ctx->cts_tfm, in_key, key_len);
 	if (err)
 		return err;
 	err = crypto_cipher_setkey(ctx->tweak_tfm, in_key + key_len, key_len);
+=======
+	err = aes_expandkey(&ctx->fallback, in_key, key_len);
+	if (err)
+		return err;
+	err = aes_expandkey(&ctx->tweak_key, in_key + key_len, key_len);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err)
 		return err;
 
 	return aesbs_setkey(tfm, in_key, key_len);
 }
 
+<<<<<<< HEAD
 static int xts_init(struct crypto_skcipher *tfm)
 {
 	struct aesbs_xts_ctx *ctx = crypto_skcipher_ctx(tfm);
@@ -335,12 +416,18 @@ static void xts_exit(struct crypto_skcipher *tfm)
 	crypto_free_cipher(ctx->cts_tfm);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int __xts_crypt(struct skcipher_request *req, bool encrypt,
 		       void (*fn)(u8 out[], u8 const in[], u8 const rk[],
 				  int rounds, int blocks, u8 iv[], int))
 {
 	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
 	struct aesbs_xts_ctx *ctx = crypto_skcipher_ctx(tfm);
+<<<<<<< HEAD
+=======
+	const int rounds = ctx->key.rounds;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int tail = req->cryptlen % AES_BLOCK_SIZE;
 	struct skcipher_request subreq;
 	u8 buf[2 * AES_BLOCK_SIZE];
@@ -364,7 +451,11 @@ static int __xts_crypt(struct skcipher_request *req, bool encrypt,
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	crypto_cipher_encrypt_one(ctx->tweak_tfm, walk.iv, walk.iv);
+=======
+	__aes_arm_encrypt(ctx->tweak_key.key_enc, rounds, walk.iv, walk.iv);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	while (walk.nbytes >= AES_BLOCK_SIZE) {
 		unsigned int blocks = walk.nbytes / AES_BLOCK_SIZE;
@@ -378,7 +469,11 @@ static int __xts_crypt(struct skcipher_request *req, bool encrypt,
 
 		kernel_neon_begin();
 		fn(walk.dst.virt.addr, walk.src.virt.addr, ctx->key.rk,
+<<<<<<< HEAD
 		   ctx->key.rounds, blocks, walk.iv, reorder_last_tweak);
+=======
+		   rounds, blocks, walk.iv, reorder_last_tweak);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		kernel_neon_end();
 		err = skcipher_walk_done(&walk,
 					 walk.nbytes - blocks * AES_BLOCK_SIZE);
@@ -396,9 +491,15 @@ static int __xts_crypt(struct skcipher_request *req, bool encrypt,
 	crypto_xor(buf, req->iv, AES_BLOCK_SIZE);
 
 	if (encrypt)
+<<<<<<< HEAD
 		crypto_cipher_encrypt_one(ctx->cts_tfm, buf, buf);
 	else
 		crypto_cipher_decrypt_one(ctx->cts_tfm, buf, buf);
+=======
+		__aes_arm_encrypt(ctx->fallback.key_enc, rounds, buf, buf);
+	else
+		__aes_arm_decrypt(ctx->fallback.key_dec, rounds, buf, buf);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	crypto_xor(buf, req->iv, AES_BLOCK_SIZE);
 
@@ -439,8 +540,12 @@ static struct skcipher_alg aes_algs[] = { {
 	.base.cra_blocksize	= AES_BLOCK_SIZE,
 	.base.cra_ctxsize	= sizeof(struct aesbs_cbc_ctx),
 	.base.cra_module	= THIS_MODULE,
+<<<<<<< HEAD
 	.base.cra_flags		= CRYPTO_ALG_INTERNAL |
 				  CRYPTO_ALG_NEED_FALLBACK,
+=======
+	.base.cra_flags		= CRYPTO_ALG_INTERNAL,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	.min_keysize		= AES_MIN_KEY_SIZE,
 	.max_keysize		= AES_MAX_KEY_SIZE,
@@ -449,8 +554,11 @@ static struct skcipher_alg aes_algs[] = { {
 	.setkey			= aesbs_cbc_setkey,
 	.encrypt		= cbc_encrypt,
 	.decrypt		= cbc_decrypt,
+<<<<<<< HEAD
 	.init			= cbc_init,
 	.exit			= cbc_exit,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }, {
 	.base.cra_name		= "__ctr(aes)",
 	.base.cra_driver_name	= "__ctr-aes-neonbs",
@@ -500,8 +608,11 @@ static struct skcipher_alg aes_algs[] = { {
 	.setkey			= aesbs_xts_setkey,
 	.encrypt		= xts_encrypt,
 	.decrypt		= xts_decrypt,
+<<<<<<< HEAD
 	.init			= xts_init,
 	.exit			= xts_exit,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 } };
 
 static struct simd_skcipher_alg *aes_simd_algs[ARRAY_SIZE(aes_algs)];
@@ -540,7 +651,11 @@ static int __init aes_init(void)
 		algname = aes_algs[i].base.cra_name + 2;
 		drvname = aes_algs[i].base.cra_driver_name + 2;
 		basename = aes_algs[i].base.cra_driver_name;
+<<<<<<< HEAD
 		simd = simd_skcipher_create_compat(algname, drvname, basename);
+=======
+		simd = simd_skcipher_create_compat(aes_algs + i, algname, drvname, basename);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = PTR_ERR(simd);
 		if (IS_ERR(simd))
 			goto unregister_simds;

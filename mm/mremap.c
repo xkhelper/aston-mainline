@@ -238,6 +238,10 @@ static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
 {
 	spinlock_t *old_ptl, *new_ptl;
 	struct mm_struct *mm = vma->vm_mm;
+<<<<<<< HEAD
+=======
+	bool res = false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pmd_t pmd;
 
 	if (!arch_supports_page_table_move())
@@ -277,19 +281,38 @@ static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
 	if (new_ptl != old_ptl)
 		spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
 
+<<<<<<< HEAD
 	/* Clear the pmd */
 	pmd = *old_pmd;
 	pmd_clear(old_pmd);
+=======
+	pmd = *old_pmd;
+
+	/* Racing with collapse? */
+	if (unlikely(!pmd_present(pmd) || pmd_leaf(pmd)))
+		goto out_unlock;
+	/* Clear the pmd */
+	pmd_clear(old_pmd);
+	res = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	VM_BUG_ON(!pmd_none(*new_pmd));
 
 	pmd_populate(mm, new_pmd, pmd_pgtable(pmd));
 	flush_tlb_range(vma, old_addr, old_addr + PMD_SIZE);
+<<<<<<< HEAD
+=======
+out_unlock:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (new_ptl != old_ptl)
 		spin_unlock(new_ptl);
 	spin_unlock(old_ptl);
 
+<<<<<<< HEAD
 	return true;
+=======
+	return res;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 #else
 static inline bool move_normal_pmd(struct vm_area_struct *vma,
@@ -902,6 +925,7 @@ static unsigned long mremap_to(unsigned long addr, unsigned long old_len,
 	if ((mm->map_count + 2) >= sysctl_max_map_count - 3)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	/*
 	 * In mremap_to().
 	 * Move a VMA to another location, check if src addr is sealed.
@@ -915,6 +939,8 @@ static unsigned long mremap_to(unsigned long addr, unsigned long old_len,
 	if (unlikely(!can_modify_mm(mm, addr, addr + old_len)))
 		return -EPERM;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (flags & MREMAP_FIXED) {
 		/*
 		 * In mremap_to().
@@ -1052,6 +1078,15 @@ SYSCALL_DEFINE5(mremap, unsigned long, addr, unsigned long, old_len,
 		goto out;
 	}
 
+<<<<<<< HEAD
+=======
+	/* Don't allow remapping vmas when they have already been sealed */
+	if (!can_modify_vma(vma)) {
+		ret = -EPERM;
+		goto out;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (is_vm_hugetlb_page(vma)) {
 		struct hstate *h __maybe_unused = hstate_vma(vma);
 
@@ -1080,6 +1115,7 @@ SYSCALL_DEFINE5(mremap, unsigned long, addr, unsigned long, old_len,
 	}
 
 	/*
+<<<<<<< HEAD
 	 * Below is shrink/expand case (not mremap_to())
 	 * Check if src address is sealed, if so, reject.
 	 * In other words, prevent shrinking or expanding a sealed VMA.
@@ -1093,6 +1129,8 @@ SYSCALL_DEFINE5(mremap, unsigned long, addr, unsigned long, old_len,
 	}
 
 	/*
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * Always allow a shrinking remap: that just unmaps
 	 * the unnecessary pages..
 	 * do_vmi_munmap does all the needed commit accounting, and

@@ -44,8 +44,13 @@
 #include <linux/delay.h>
 #include <linux/dmaengine.h>
 #include <linux/ktime.h>
+<<<<<<< HEAD
 
 #include <linux/platform_data/dma-ep93xx.h>
+=======
+#include <linux/mod_devicetable.h>
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/soc/cirrus/ep93xx.h>
 
 #define DRV_NAME	"ep93xx-ide"
@@ -126,7 +131,11 @@ enum {
 };
 
 struct ep93xx_pata_data {
+<<<<<<< HEAD
 	const struct platform_device *pdev;
+=======
+	struct platform_device *pdev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void __iomem *ide_base;
 	struct ata_timing t;
 	bool iordy;
@@ -135,9 +144,13 @@ struct ep93xx_pata_data {
 	unsigned long udma_out_phys;
 
 	struct dma_chan *dma_rx_channel;
+<<<<<<< HEAD
 	struct ep93xx_dma_data dma_rx_data;
 	struct dma_chan *dma_tx_channel;
 	struct ep93xx_dma_data dma_tx_data;
+=======
+	struct dma_chan *dma_tx_channel;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void ep93xx_pata_clear_regs(void __iomem *base)
@@ -637,6 +650,7 @@ static void ep93xx_pata_release_dma(struct ep93xx_pata_data *drv_data)
 	}
 }
 
+<<<<<<< HEAD
 static bool ep93xx_pata_dma_filter(struct dma_chan *chan, void *filter_param)
 {
 	if (ep93xx_dma_chan_is_m2p(chan))
@@ -651,6 +665,15 @@ static void ep93xx_pata_dma_init(struct ep93xx_pata_data *drv_data)
 	const struct platform_device *pdev = drv_data->pdev;
 	dma_cap_mask_t mask;
 	struct dma_slave_config conf;
+=======
+static int ep93xx_pata_dma_init(struct ep93xx_pata_data *drv_data)
+{
+	struct platform_device *pdev = drv_data->pdev;
+	struct device *dev = &pdev->dev;
+	dma_cap_mask_t mask;
+	struct dma_slave_config conf;
+	int ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dma_cap_zero(mask);
 	dma_cap_set(DMA_SLAVE, mask);
@@ -660,6 +683,7 @@ static void ep93xx_pata_dma_init(struct ep93xx_pata_data *drv_data)
 	 * to request only one channel, and reprogram it's direction at
 	 * start of new transfer.
 	 */
+<<<<<<< HEAD
 	drv_data->dma_rx_data.port = EP93XX_DMA_IDE;
 	drv_data->dma_rx_data.direction = DMA_DEV_TO_MEM;
 	drv_data->dma_rx_data.name = "ep93xx-pata-rx";
@@ -676,6 +700,18 @@ static void ep93xx_pata_dma_init(struct ep93xx_pata_data *drv_data)
 	if (!drv_data->dma_tx_channel) {
 		dma_release_channel(drv_data->dma_rx_channel);
 		return;
+=======
+	drv_data->dma_rx_channel = dma_request_chan(dev, "rx");
+	if (IS_ERR(drv_data->dma_rx_channel))
+		return dev_err_probe(dev, PTR_ERR(drv_data->dma_rx_channel),
+				     "rx DMA setup failed\n");
+
+	drv_data->dma_tx_channel = dma_request_chan(&pdev->dev, "tx");
+	if (IS_ERR(drv_data->dma_tx_channel)) {
+		ret = dev_err_probe(dev, PTR_ERR(drv_data->dma_tx_channel),
+				    "tx DMA setup failed\n");
+		goto fail_release_rx;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* Configure receive channel direction and source address */
@@ -683,10 +719,17 @@ static void ep93xx_pata_dma_init(struct ep93xx_pata_data *drv_data)
 	conf.direction = DMA_DEV_TO_MEM;
 	conf.src_addr = drv_data->udma_in_phys;
 	conf.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+<<<<<<< HEAD
 	if (dmaengine_slave_config(drv_data->dma_rx_channel, &conf)) {
 		dev_err(&pdev->dev, "failed to configure rx dma channel\n");
 		ep93xx_pata_release_dma(drv_data);
 		return;
+=======
+	ret = dmaengine_slave_config(drv_data->dma_rx_channel, &conf);
+	if (ret) {
+		dev_err_probe(dev, ret, "failed to configure rx dma channel");
+		goto fail_release_dma;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* Configure transmit channel direction and destination address */
@@ -694,10 +737,27 @@ static void ep93xx_pata_dma_init(struct ep93xx_pata_data *drv_data)
 	conf.direction = DMA_MEM_TO_DEV;
 	conf.dst_addr = drv_data->udma_out_phys;
 	conf.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+<<<<<<< HEAD
 	if (dmaengine_slave_config(drv_data->dma_tx_channel, &conf)) {
 		dev_err(&pdev->dev, "failed to configure tx dma channel\n");
 		ep93xx_pata_release_dma(drv_data);
 	}
+=======
+	ret = dmaengine_slave_config(drv_data->dma_tx_channel, &conf);
+	if (ret) {
+		dev_err_probe(dev, ret, "failed to configure tx dma channel");
+		goto fail_release_dma;
+	}
+
+	return 0;
+
+fail_release_rx:
+	dma_release_channel(drv_data->dma_rx_channel);
+fail_release_dma:
+	ep93xx_pata_release_dma(drv_data);
+
+	return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void ep93xx_pata_dma_start(struct ata_queued_cmd *qc)
@@ -884,8 +944,11 @@ static const struct scsi_host_template ep93xx_pata_sht = {
 static struct ata_port_operations ep93xx_pata_port_ops = {
 	.inherits		= &ata_bmdma_port_ops,
 
+<<<<<<< HEAD
 	.qc_prep		= ata_noop_qc_prep,
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.softreset		= ep93xx_pata_softreset,
 	.hardreset		= ATA_OP_NULL,
 
@@ -927,6 +990,7 @@ static int ep93xx_pata_probe(struct platform_device *pdev)
 	void __iomem *ide_base;
 	int err;
 
+<<<<<<< HEAD
 	err = ep93xx_ide_acquire_gpio(pdev);
 	if (err)
 		return err;
@@ -949,12 +1013,32 @@ static int ep93xx_pata_probe(struct platform_device *pdev)
 		err = -ENOMEM;
 		goto err_rel_gpio;
 	}
+=======
+	/* INT[3] (IRQ_EP93XX_EXT3) line connected as pull down */
+	irq = platform_get_irq(pdev, 0);
+	if (irq < 0)
+		return irq;
+
+	ide_base = devm_platform_get_and_ioremap_resource(pdev, 0, &mem_res);
+	if (IS_ERR(ide_base))
+		return PTR_ERR(ide_base);
+
+	drv_data = devm_kzalloc(&pdev->dev, sizeof(*drv_data), GFP_KERNEL);
+	if (!drv_data)
+		return -ENOMEM;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	drv_data->pdev = pdev;
 	drv_data->ide_base = ide_base;
 	drv_data->udma_in_phys = mem_res->start + IDEUDMADATAIN;
 	drv_data->udma_out_phys = mem_res->start + IDEUDMADATAOUT;
+<<<<<<< HEAD
 	ep93xx_pata_dma_init(drv_data);
+=======
+	err = ep93xx_pata_dma_init(drv_data);
+	if (err)
+		return err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* allocate host */
 	host = ata_host_alloc(&pdev->dev, 1);
@@ -1005,8 +1089,11 @@ static int ep93xx_pata_probe(struct platform_device *pdev)
 
 err_rel_dma:
 	ep93xx_pata_release_dma(drv_data);
+<<<<<<< HEAD
 err_rel_gpio:
 	ep93xx_ide_release_gpio(pdev);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
@@ -1018,12 +1105,27 @@ static void ep93xx_pata_remove(struct platform_device *pdev)
 	ata_host_detach(host);
 	ep93xx_pata_release_dma(drv_data);
 	ep93xx_pata_clear_regs(drv_data->ide_base);
+<<<<<<< HEAD
 	ep93xx_ide_release_gpio(pdev);
 }
 
 static struct platform_driver ep93xx_pata_platform_driver = {
 	.driver = {
 		.name = DRV_NAME,
+=======
+}
+
+static const struct of_device_id ep93xx_pata_of_ids[] = {
+	{ .compatible = "cirrus,ep9312-pata" },
+	{ /* sentinel */ }
+};
+MODULE_DEVICE_TABLE(of, ep93xx_pata_of_ids);
+
+static struct platform_driver ep93xx_pata_platform_driver = {
+	.driver = {
+		.name = DRV_NAME,
+		.of_match_table = ep93xx_pata_of_ids,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	.probe = ep93xx_pata_probe,
 	.remove_new = ep93xx_pata_remove,

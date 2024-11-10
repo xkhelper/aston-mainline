@@ -175,6 +175,7 @@ static void led_tg_destroy(const struct xt_tgdtor_param *par)
 	kfree(ledinternal);
 }
 
+<<<<<<< HEAD
 static struct xt_target led_tg_reg __read_mostly = {
 	.name		= "LED",
 	.revision	= 0,
@@ -185,16 +186,51 @@ static struct xt_target led_tg_reg __read_mostly = {
 	.checkentry	= led_tg_check,
 	.destroy	= led_tg_destroy,
 	.me		= THIS_MODULE,
+=======
+static struct xt_target led_tg_reg[] __read_mostly = {
+	{
+		.name		= "LED",
+		.revision	= 0,
+		.family		= NFPROTO_IPV4,
+		.target		= led_tg,
+		.targetsize	= sizeof(struct xt_led_info),
+		.usersize	= offsetof(struct xt_led_info, internal_data),
+		.checkentry	= led_tg_check,
+		.destroy	= led_tg_destroy,
+		.me		= THIS_MODULE,
+	},
+#if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
+	{
+		.name		= "LED",
+		.revision	= 0,
+		.family		= NFPROTO_IPV6,
+		.target		= led_tg,
+		.targetsize	= sizeof(struct xt_led_info),
+		.usersize	= offsetof(struct xt_led_info, internal_data),
+		.checkentry	= led_tg_check,
+		.destroy	= led_tg_destroy,
+		.me		= THIS_MODULE,
+	},
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int __init led_tg_init(void)
 {
+<<<<<<< HEAD
 	return xt_register_target(&led_tg_reg);
+=======
+	return xt_register_targets(led_tg_reg, ARRAY_SIZE(led_tg_reg));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void __exit led_tg_exit(void)
 {
+<<<<<<< HEAD
 	xt_unregister_target(&led_tg_reg);
+=======
+	xt_unregister_targets(led_tg_reg, ARRAY_SIZE(led_tg_reg));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 module_init(led_tg_init);

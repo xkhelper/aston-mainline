@@ -186,6 +186,7 @@ static void update_range(struct ocmem *ocmem, struct ocmem_buf *buf,
 struct ocmem *of_get_ocmem(struct device *dev)
 {
 	struct platform_device *pdev;
+<<<<<<< HEAD
 	struct device_node *devnode;
 	struct ocmem *ocmem;
 
@@ -193,16 +194,29 @@ struct ocmem *of_get_ocmem(struct device *dev)
 	if (!devnode || !devnode->parent) {
 		dev_err(dev, "Cannot look up sram phandle\n");
 		of_node_put(devnode);
+=======
+	struct ocmem *ocmem;
+
+	struct device_node *devnode __free(device_node) = of_parse_phandle(dev->of_node,
+									   "sram", 0);
+	if (!devnode || !devnode->parent) {
+		dev_err(dev, "Cannot look up sram phandle\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return ERR_PTR(-ENODEV);
 	}
 
 	pdev = of_find_device_by_node(devnode->parent);
 	if (!pdev) {
 		dev_err(dev, "Cannot find device node %s\n", devnode->name);
+<<<<<<< HEAD
 		of_node_put(devnode);
 		return ERR_PTR(-EPROBE_DEFER);
 	}
 	of_node_put(devnode);
+=======
+		return ERR_PTR(-EPROBE_DEFER);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ocmem = platform_get_drvdata(pdev);
 	if (!ocmem) {

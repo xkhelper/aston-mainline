@@ -41,6 +41,10 @@ struct f_acm {
 	struct gserial			port;
 	u8				ctrl_id, data_id;
 	u8				port_num;
+<<<<<<< HEAD
+=======
+	u8				bInterfaceProtocol;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	u8				pending;
 
@@ -89,7 +93,11 @@ acm_iad_descriptor = {
 	.bInterfaceCount = 	2,	// control + data
 	.bFunctionClass =	USB_CLASS_COMM,
 	.bFunctionSubClass =	USB_CDC_SUBCLASS_ACM,
+<<<<<<< HEAD
 	.bFunctionProtocol =	USB_CDC_ACM_PROTO_AT_V25TER,
+=======
+	/* .bFunctionProtocol = DYNAMIC */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* .iFunction =		DYNAMIC */
 };
 
@@ -101,7 +109,11 @@ static struct usb_interface_descriptor acm_control_interface_desc = {
 	.bNumEndpoints =	1,
 	.bInterfaceClass =	USB_CLASS_COMM,
 	.bInterfaceSubClass =	USB_CDC_SUBCLASS_ACM,
+<<<<<<< HEAD
 	.bInterfaceProtocol =	USB_CDC_ACM_PROTO_AT_V25TER,
+=======
+	/* .bInterfaceProtocol = DYNAMIC */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* .iInterface = DYNAMIC */
 };
 
@@ -663,6 +675,12 @@ acm_bind(struct usb_configuration *c, struct usb_function *f)
 		goto fail;
 	acm->notify = ep;
 
+<<<<<<< HEAD
+=======
+	acm_iad_descriptor.bFunctionProtocol = acm->bInterfaceProtocol;
+	acm_control_interface_desc.bInterfaceProtocol = acm->bInterfaceProtocol;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* allocate notification */
 	acm->notify_req = gs_alloc_req(ep,
 			sizeof(struct usb_cdc_notification) + 2,
@@ -719,8 +737,19 @@ static void acm_unbind(struct usb_configuration *c, struct usb_function *f)
 static void acm_free_func(struct usb_function *f)
 {
 	struct f_acm		*acm = func_to_acm(f);
+<<<<<<< HEAD
 
 	kfree(acm);
+=======
+	struct f_serial_opts	*opts;
+
+	opts = container_of(f->fi, struct f_serial_opts, func_inst);
+
+	kfree(acm);
+	mutex_lock(&opts->lock);
+	opts->instances--;
+	mutex_unlock(&opts->lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void acm_resume(struct usb_function *f)
@@ -761,7 +790,15 @@ static struct usb_function *acm_alloc_func(struct usb_function_instance *fi)
 	acm->port.func.disable = acm_disable;
 
 	opts = container_of(fi, struct f_serial_opts, func_inst);
+<<<<<<< HEAD
 	acm->port_num = opts->port_num;
+=======
+	mutex_lock(&opts->lock);
+	acm->port_num = opts->port_num;
+	acm->bInterfaceProtocol = opts->protocol;
+	opts->instances++;
+	mutex_unlock(&opts->lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	acm->port.func.unbind = acm_unbind;
 	acm->port.func.free_func = acm_free_func;
 	acm->port.func.resume = acm_resume;
@@ -812,11 +849,48 @@ static ssize_t f_acm_port_num_show(struct config_item *item, char *page)
 
 CONFIGFS_ATTR_RO(f_acm_, port_num);
 
+<<<<<<< HEAD
+=======
+static ssize_t f_acm_protocol_show(struct config_item *item, char *page)
+{
+	return sprintf(page, "%u\n", to_f_serial_opts(item)->protocol);
+}
+
+static ssize_t f_acm_protocol_store(struct config_item *item,
+		const char *page, size_t count)
+{
+	struct f_serial_opts *opts = to_f_serial_opts(item);
+	int ret;
+
+	mutex_lock(&opts->lock);
+
+	if (opts->instances) {
+		ret = -EBUSY;
+		goto out;
+	}
+
+	ret = kstrtou8(page, 0, &opts->protocol);
+	if (ret)
+		goto out;
+	ret = count;
+
+out:
+	mutex_unlock(&opts->lock);
+	return ret;
+}
+
+CONFIGFS_ATTR(f_acm_, protocol);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct configfs_attribute *acm_attrs[] = {
 #ifdef CONFIG_U_SERIAL_CONSOLE
 	&f_acm_attr_console,
 #endif
 	&f_acm_attr_port_num,
+<<<<<<< HEAD
+=======
+	&f_acm_attr_protocol,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	NULL,
 };
 
@@ -832,6 +906,10 @@ static void acm_free_instance(struct usb_function_instance *fi)
 
 	opts = container_of(fi, struct f_serial_opts, func_inst);
 	gserial_free_line(opts->port_num);
+<<<<<<< HEAD
+=======
+	mutex_destroy(&opts->lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(opts);
 }
 
@@ -843,7 +921,13 @@ static struct usb_function_instance *acm_alloc_instance(void)
 	opts = kzalloc(sizeof(*opts), GFP_KERNEL);
 	if (!opts)
 		return ERR_PTR(-ENOMEM);
+<<<<<<< HEAD
 	opts->func_inst.free_func_inst = acm_free_instance;
+=======
+	opts->protocol = USB_CDC_ACM_PROTO_AT_V25TER;
+	opts->func_inst.free_func_inst = acm_free_instance;
+	mutex_init(&opts->lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = gserial_alloc_line(&opts->port_num);
 	if (ret) {
 		kfree(opts);

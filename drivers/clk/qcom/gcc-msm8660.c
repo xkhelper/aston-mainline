@@ -82,7 +82,11 @@ static const struct clk_parent_data gcc_pxo_pll8_cxo[] = {
 	{ .fw_name = "cxo", .name = "cxo_board" },
 };
 
+<<<<<<< HEAD
 static struct freq_tbl clk_tbl_gsbi_uart[] = {
+=======
+static const struct freq_tbl clk_tbl_gsbi_uart[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{  1843200, P_PLL8, 2,  6, 625 },
 	{  3686400, P_PLL8, 2, 12, 625 },
 	{  7372800, P_PLL8, 2, 24, 625 },
@@ -712,7 +716,11 @@ static struct clk_branch gsbi12_uart_clk = {
 	},
 };
 
+<<<<<<< HEAD
 static struct freq_tbl clk_tbl_gsbi_qup[] = {
+=======
+static const struct freq_tbl clk_tbl_gsbi_qup[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{  1100000, P_PXO,  1, 2, 49 },
 	{  5400000, P_PXO,  1, 1,  5 },
 	{ 10800000, P_PXO,  1, 2,  5 },

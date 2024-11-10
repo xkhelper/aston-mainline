@@ -485,11 +485,18 @@ static int of_apr_add_pd_lookups(struct device *dev)
 {
 	const char *service_name, *service_path;
 	struct packet_router *apr = dev_get_drvdata(dev);
+<<<<<<< HEAD
 	struct device_node *node;
 	struct pdr_service *pds;
 	int ret;
 
 	for_each_child_of_node(dev->of_node, node) {
+=======
+	struct pdr_service *pds;
+	int ret;
+
+	for_each_child_of_node_scoped(dev->of_node, node) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = of_property_read_string_index(node, "qcom,protection-domain",
 						    0, &service_name);
 		if (ret < 0)
@@ -499,14 +506,20 @@ static int of_apr_add_pd_lookups(struct device *dev)
 						    1, &service_path);
 		if (ret < 0) {
 			dev_err(dev, "pdr service path missing: %d\n", ret);
+<<<<<<< HEAD
 			of_node_put(node);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return ret;
 		}
 
 		pds = pdr_add_lookup(apr->pdr, service_name, service_path);
 		if (IS_ERR(pds) && PTR_ERR(pds) != -EALREADY) {
 			dev_err(dev, "pdr add lookup failed: %ld\n", PTR_ERR(pds));
+<<<<<<< HEAD
 			of_node_put(node);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return PTR_ERR(pds);
 		}
 	}

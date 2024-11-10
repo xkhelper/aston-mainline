@@ -749,6 +749,7 @@ Appendix A. Test suite
  of the command line options. Please refer to rt-app documentation for more
  details (`<rt-app-sources>/doc/*.json`).
 
+<<<<<<< HEAD
  The second testing application is a modification of schedtool, called
  schedtool-dl, which can be used to setup SCHED_DEADLINE parameters for a
  certain pid/application. schedtool-dl is available at:
@@ -764,6 +765,21 @@ Appendix A. Test suite
  application, given that you know its pid::
 
   # schedtool -E -t 10000000:100000000 my_app_pid
+=======
+ The second testing application is done using chrt which has support
+ for SCHED_DEADLINE.
+
+ The usage is straightforward::
+
+  # chrt -d -T 10000000 -D 100000000 0 ./my_cpuhog_app
+
+ With this, my_cpuhog_app is put to run inside a SCHED_DEADLINE reservation
+ of 10ms every 100ms (note that parameters are expressed in nanoseconds).
+ You can also use chrt to create a reservation for an already running
+ application, given that you know its pid::
+
+  # chrt -d -T 10000000 -D 100000000 -p 0 my_app_pid
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Appendix B. Minimal main()
 ==========================

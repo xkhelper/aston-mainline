@@ -158,10 +158,15 @@ int snd_opl3_ioctl(struct snd_hwdep * hw, struct file *file,
 		return 0;
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_SND_DEBUG
 	default:
 		snd_printk(KERN_WARNING "unknown IOCTL: 0x%x\n", cmd);
 #endif
+=======
+	default:
+		dev_dbg(opl3->card->dev, "unknown IOCTL: 0x%x\n", cmd);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return -ENOTTY;
 }

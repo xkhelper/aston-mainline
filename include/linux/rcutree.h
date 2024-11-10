@@ -35,9 +35,16 @@ static inline void rcu_virt_note_context_switch(void)
 
 void synchronize_rcu_expedited(void);
 void kvfree_call_rcu(struct rcu_head *head, void *ptr);
+<<<<<<< HEAD
 
 void rcu_barrier(void);
 void rcu_momentary_dyntick_idle(void);
+=======
+void kvfree_rcu_barrier(void);
+
+void rcu_barrier(void);
+void rcu_momentary_eqs(void);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void kfree_rcu_scheduler_running(void);
 bool rcu_gp_might_be_stalled(void);
 

@@ -369,9 +369,15 @@ static void ths7303_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id ths7303_id[] = {
+<<<<<<< HEAD
 	{"ths7303", 0},
 	{"ths7353", 0},
 	{},
+=======
+	{ "ths7303" },
+	{ "ths7353" },
+	{}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 MODULE_DEVICE_TABLE(i2c, ths7303_id);

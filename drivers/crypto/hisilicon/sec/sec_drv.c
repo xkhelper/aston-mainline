@@ -458,7 +458,11 @@ static void sec_ipv6_hashmask(struct sec_dev_info *info, u32 hash_mask[])
 static int sec_ipv4_hashmask(struct sec_dev_info *info, u32 hash_mask)
 {
 	if (hash_mask & SEC_HASH_IPV4_MASK) {
+<<<<<<< HEAD
 		dev_err(info->dev, "Sec Ipv4 Hash Mask Input Error!\n ");
+=======
+		dev_err(info->dev, "Sec Ipv4 Hash Mask Input Error!\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 

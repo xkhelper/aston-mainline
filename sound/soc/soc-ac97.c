@@ -168,7 +168,11 @@ static void snd_soc_ac97_free_gpio(struct snd_ac97 *ac97)
  * it. The caller is responsible to either call device_add(&ac97->dev) to
  * register the device, or to call put_device(&ac97->dev) to free the device.
  *
+<<<<<<< HEAD
  * Returns: A snd_ac97 device or a PTR_ERR in case of an error.
+=======
+ * Returns: A snd_ac97 device or an ERR_PTR in case of an error.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct snd_ac97 *snd_soc_alloc_ac97_component(struct snd_soc_component *component)
 {
@@ -207,7 +211,11 @@ EXPORT_SYMBOL(snd_soc_alloc_ac97_component);
  * the device and check if it matches the expected ID. If it doesn't match an
  * error will be returned and device will not be registered.
  *
+<<<<<<< HEAD
  * Returns: A PTR_ERR() on failure or a valid snd_ac97 struct on success.
+=======
+ * Returns: An ERR_PTR on failure or a valid snd_ac97 struct on success.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct snd_ac97 *snd_soc_new_ac97_component(struct snd_soc_component *component,
 	unsigned int id, unsigned int id_mask)

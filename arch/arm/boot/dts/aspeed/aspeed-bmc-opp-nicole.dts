@@ -284,10 +284,13 @@
 	memory-region = <&gfx_memory>;
 };
 
+<<<<<<< HEAD
 &pinctrl {
 	aspeed,external-nodes = <&gfx &lhc>;
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &ibt {
 	status = "okay";
 };

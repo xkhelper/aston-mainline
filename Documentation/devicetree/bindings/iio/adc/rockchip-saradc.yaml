@@ -17,6 +17,12 @@ properties:
       - const: rockchip,rk3399-saradc
       - const: rockchip,rk3588-saradc
       - items:
+<<<<<<< HEAD
+=======
+          - const: rockchip,rk3576-saradc
+          - const: rockchip,rk3588-saradc
+      - items:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - enum:
               - rockchip,px30-saradc
               - rockchip,rk3308-saradc

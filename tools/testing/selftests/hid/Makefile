@@ -17,6 +17,12 @@ TEST_PROGS += hid-tablet.sh
 TEST_PROGS += hid-usb_crash.sh
 TEST_PROGS += hid-wacom.sh
 
+<<<<<<< HEAD
+=======
+TEST_FILES := run-hid-tools-tests.sh
+TEST_FILES += tests
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 CXX ?= $(CROSS_COMPILE)g++
 
 HOSTPKG_CONFIG := pkg-config
@@ -32,7 +38,11 @@ CFLAGS += -Wno-unused-command-line-argument
 endif
 
 # Order correspond to 'make run_tests' order
+<<<<<<< HEAD
 TEST_GEN_PROGS = hid_bpf
+=======
+TEST_GEN_PROGS = hid_bpf hidraw
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 # Emit succinct information message describing current building step
 # $1 - generic step name (e.g., CC, LINK, etc);

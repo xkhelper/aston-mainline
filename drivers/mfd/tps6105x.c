@@ -23,7 +23,11 @@
 #include <linux/mfd/core.h>
 #include <linux/mfd/tps6105x.h>
 
+<<<<<<< HEAD
 static struct regmap_config tps6105x_regmap_config = {
+=======
+static const struct regmap_config tps6105x_regmap_config = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.reg_bits = 8,
 	.val_bits = 8,
 	.max_register = TPS6105X_REG_3,

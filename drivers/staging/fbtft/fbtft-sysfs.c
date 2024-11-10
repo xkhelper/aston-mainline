@@ -27,6 +27,7 @@ int fbtft_gamma_parse_str(struct fbtft_par *par, u32 *curves,
 	int curve_counter, value_counter;
 	int _count;
 
+<<<<<<< HEAD
 	fbtft_par_dbg(DEBUG_SYSFS, par, "%s() str=\n", __func__);
 
 	if (!str || !curves)
@@ -34,6 +35,11 @@ int fbtft_gamma_parse_str(struct fbtft_par *par, u32 *curves,
 
 	fbtft_par_dbg(DEBUG_SYSFS, par, "%s\n", str);
 
+=======
+	if (!str || !curves)
+		return -EINVAL;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	tmp = kmemdup(str, size + 1, GFP_KERNEL);
 	if (!tmp)
 		return -ENOMEM;

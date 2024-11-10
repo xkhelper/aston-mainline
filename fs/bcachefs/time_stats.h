@@ -70,6 +70,10 @@ struct time_stat_buffer {
 struct bch2_time_stats {
 	spinlock_t	lock;
 	bool		have_quantiles;
+<<<<<<< HEAD
+=======
+	struct time_stat_buffer __percpu *buffer;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* all fields are in nanoseconds */
 	u64             min_duration;
 	u64		max_duration;
@@ -87,7 +91,10 @@ struct bch2_time_stats {
 
 	struct mean_and_variance_weighted duration_stats_weighted;
 	struct mean_and_variance_weighted freq_stats_weighted;
+<<<<<<< HEAD
 	struct time_stat_buffer __percpu *buffer;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct bch2_time_stats_quantiles {
@@ -142,6 +149,10 @@ static inline bool track_event_change(struct bch2_time_stats *stats, bool v)
 	return false;
 }
 
+<<<<<<< HEAD
+=======
+void bch2_time_stats_reset(struct bch2_time_stats *);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void bch2_time_stats_exit(struct bch2_time_stats *);
 void bch2_time_stats_init(struct bch2_time_stats *);
 

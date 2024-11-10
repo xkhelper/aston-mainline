@@ -493,7 +493,11 @@ static u64 __alarm_forward_now(struct alarm *alarm, ktime_t interval, bool throt
 		 * promised in the context of posix_timer_fn() never
 		 * materialized, but someone should really work on it.
 		 *
+<<<<<<< HEAD
 		 * To prevent DOS fake @now to be 1 jiffie out which keeps
+=======
+		 * To prevent DOS fake @now to be 1 jiffy out which keeps
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 * the overrun accounting correct but creates an
 		 * inconsistency vs. timer_gettime(2).
 		 */
@@ -574,6 +578,7 @@ static enum alarmtimer_restart alarm_handle_timer(struct alarm *alarm,
 					    it.alarm.alarmtimer);
 	enum alarmtimer_restart result = ALARMTIMER_NORESTART;
 	unsigned long flags;
+<<<<<<< HEAD
 	int si_private = 0;
 
 	spin_lock_irqsave(&ptr->it_lock, flags);
@@ -583,6 +588,12 @@ static enum alarmtimer_restart alarm_handle_timer(struct alarm *alarm,
 		si_private = ++ptr->it_requeue_pending;
 
 	if (posix_timer_event(ptr, si_private) && ptr->it_interval) {
+=======
+
+	spin_lock_irqsave(&ptr->it_lock, flags);
+
+	if (posix_timer_queue_signal(ptr) && ptr->it_interval) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * Handle ignored signals and rearm the timer. This will go
 		 * away once we handle ignored signals proper. Ensure that

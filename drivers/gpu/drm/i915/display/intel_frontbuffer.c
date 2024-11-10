@@ -83,6 +83,11 @@ static void frontbuffer_flush(struct drm_i915_private *i915,
 			      unsigned int frontbuffer_bits,
 			      enum fb_op_origin origin)
 {
+<<<<<<< HEAD
+=======
+	struct intel_display *display = &i915->display;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Delay flushing when rings are still busy.*/
 	spin_lock(&i915->display.fb_tracking.lock);
 	frontbuffer_bits &= ~i915->display.fb_tracking.busy_bits;
@@ -96,7 +101,11 @@ static void frontbuffer_flush(struct drm_i915_private *i915,
 	might_sleep();
 	intel_td_flush(i915);
 	intel_drrs_flush(i915, frontbuffer_bits);
+<<<<<<< HEAD
 	intel_psr_flush(i915, frontbuffer_bits, origin);
+=======
+	intel_psr_flush(display, frontbuffer_bits, origin);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_fbc_flush(i915, frontbuffer_bits, origin);
 }
 
@@ -172,6 +181,10 @@ void __intel_fb_invalidate(struct intel_frontbuffer *front,
 			   unsigned int frontbuffer_bits)
 {
 	struct drm_i915_private *i915 = intel_bo_to_i915(front->obj);
+<<<<<<< HEAD
+=======
+	struct intel_display *display = &i915->display;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (origin == ORIGIN_CS) {
 		spin_lock(&i915->display.fb_tracking.lock);
@@ -183,7 +196,11 @@ void __intel_fb_invalidate(struct intel_frontbuffer *front,
 	trace_intel_frontbuffer_invalidate(i915, frontbuffer_bits, origin);
 
 	might_sleep();
+<<<<<<< HEAD
 	intel_psr_invalidate(i915, frontbuffer_bits, origin);
+=======
+	intel_psr_invalidate(display, frontbuffer_bits, origin);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_drrs_invalidate(i915, frontbuffer_bits);
 	intel_fbc_invalidate(i915, frontbuffer_bits, origin);
 }

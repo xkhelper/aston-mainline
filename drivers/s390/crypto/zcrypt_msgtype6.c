@@ -437,9 +437,14 @@ static int xcrb_msg_to_type6cprb_msgx(bool userspace, struct ap_message *ap_msg,
 		ap_msg->flags |= AP_MSG_FLAG_ADMIN;
 		break;
 	default:
+<<<<<<< HEAD
 		pr_debug("%s unknown CPRB minor version '%c%c'\n",
 			 __func__, msg->cprbx.func_id[0],
 			 msg->cprbx.func_id[1]);
+=======
+		pr_debug("unknown CPRB minor version '%c%c'\n",
+			 msg->cprbx.func_id[0], msg->cprbx.func_id[1]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* copy data block */
@@ -629,9 +634,14 @@ static int convert_type86_xcrb(bool userspace, struct zcrypt_queue *zq,
 
 	/* Copy CPRB to user */
 	if (xcrb->reply_control_blk_length < msg->fmt2.count1) {
+<<<<<<< HEAD
 		pr_debug("%s reply_control_blk_length %u < required %u => EMSGSIZE\n",
 			 __func__, xcrb->reply_control_blk_length,
 			 msg->fmt2.count1);
+=======
+		pr_debug("reply_control_blk_length %u < required %u => EMSGSIZE\n",
+			 xcrb->reply_control_blk_length, msg->fmt2.count1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EMSGSIZE;
 	}
 	if (z_copy_to_user(userspace, xcrb->reply_control_blk_addr,
@@ -642,9 +652,14 @@ static int convert_type86_xcrb(bool userspace, struct zcrypt_queue *zq,
 	/* Copy data buffer to user */
 	if (msg->fmt2.count2) {
 		if (xcrb->reply_data_length < msg->fmt2.count2) {
+<<<<<<< HEAD
 			pr_debug("%s reply_data_length %u < required %u => EMSGSIZE\n",
 				 __func__, xcrb->reply_data_length,
 				 msg->fmt2.count2);
+=======
+			pr_debug("reply_data_length %u < required %u => EMSGSIZE\n",
+				 xcrb->reply_data_length, msg->fmt2.count2);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EMSGSIZE;
 		}
 		if (z_copy_to_user(userspace, xcrb->reply_data_addr,
@@ -673,9 +688,14 @@ static int convert_type86_ep11_xcrb(bool userspace, struct zcrypt_queue *zq,
 	char *data = reply->msg;
 
 	if (xcrb->resp_len < msg->fmt2.count1) {
+<<<<<<< HEAD
 		pr_debug("%s resp_len %u < required %u => EMSGSIZE\n",
 			 __func__, (unsigned int)xcrb->resp_len,
 			 msg->fmt2.count1);
+=======
+		pr_debug("resp_len %u < required %u => EMSGSIZE\n",
+			 (unsigned int)xcrb->resp_len, msg->fmt2.count1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EMSGSIZE;
 	}
 
@@ -875,8 +895,12 @@ static void zcrypt_msgtype6_receive(struct ap_queue *aq,
 			len = sizeof(struct type86x_reply) + t86r->length;
 			if (len > reply->bufsize || len > msg->bufsize ||
 			    len != reply->len) {
+<<<<<<< HEAD
 				pr_debug("%s len mismatch => EMSGSIZE\n",
 					 __func__);
+=======
+				pr_debug("len mismatch => EMSGSIZE\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				msg->rc = -EMSGSIZE;
 				goto out;
 			}
@@ -890,8 +914,12 @@ static void zcrypt_msgtype6_receive(struct ap_queue *aq,
 				len = t86r->fmt2.offset1 + t86r->fmt2.count1;
 			if (len > reply->bufsize || len > msg->bufsize ||
 			    len != reply->len) {
+<<<<<<< HEAD
 				pr_debug("%s len mismatch => EMSGSIZE\n",
 					 __func__);
+=======
+				pr_debug("len mismatch => EMSGSIZE\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				msg->rc = -EMSGSIZE;
 				goto out;
 			}
@@ -941,8 +969,12 @@ static void zcrypt_msgtype6_receive_ep11(struct ap_queue *aq,
 			len = t86r->fmt2.offset1 + t86r->fmt2.count1;
 			if (len > reply->bufsize || len > msg->bufsize ||
 			    len != reply->len) {
+<<<<<<< HEAD
 				pr_debug("%s len mismatch => EMSGSIZE\n",
 					 __func__);
+=======
+				pr_debug("len mismatch => EMSGSIZE\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				msg->rc = -EMSGSIZE;
 				goto out;
 			}
@@ -1154,8 +1186,13 @@ static long zcrypt_msgtype6_send_cprb(bool userspace, struct zcrypt_queue *zq,
 
 out:
 	if (rc)
+<<<<<<< HEAD
 		pr_debug("%s send cprb at dev=%02x.%04x rc=%d\n",
 			 __func__, AP_QID_CARD(zq->queue->qid),
+=======
+		pr_debug("send cprb at dev=%02x.%04x rc=%d\n",
+			 AP_QID_CARD(zq->queue->qid),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			 AP_QID_QUEUE(zq->queue->qid), rc);
 	return rc;
 }
@@ -1277,8 +1314,13 @@ static long zcrypt_msgtype6_send_ep11_cprb(bool userspace, struct zcrypt_queue *
 
 out:
 	if (rc)
+<<<<<<< HEAD
 		pr_debug("%s send cprb at dev=%02x.%04x rc=%d\n",
 			 __func__, AP_QID_CARD(zq->queue->qid),
+=======
+		pr_debug("send cprb at dev=%02x.%04x rc=%d\n",
+			 AP_QID_CARD(zq->queue->qid),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			 AP_QID_QUEUE(zq->queue->qid), rc);
 	return rc;
 }

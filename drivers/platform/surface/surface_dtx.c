@@ -555,7 +555,10 @@ static const struct file_operations surface_dtx_fops = {
 	.fasync         = surface_dtx_fasync,
 	.unlocked_ioctl = surface_dtx_ioctl,
 	.compat_ioctl   = surface_dtx_ioctl,
+<<<<<<< HEAD
 	.llseek         = no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 

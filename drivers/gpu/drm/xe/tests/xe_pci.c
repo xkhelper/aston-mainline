@@ -12,6 +12,7 @@
 #include <kunit/test-bug.h>
 #include <kunit/visibility.h>
 
+<<<<<<< HEAD
 struct kunit_test_data {
 	int ndevs;
 	xe_device_fn xe_fn;
@@ -64,6 +65,8 @@ int xe_call_for_each_device(xe_device_fn xe_fn)
 	return ret ?: data.ndevs;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * xe_call_for_each_graphics_ip - Iterate over all recognized graphics IPs
  * @xe_fn: Function to call for each device.
@@ -167,3 +170,36 @@ done:
 	return 0;
 }
 EXPORT_SYMBOL_IF_KUNIT(xe_pci_fake_device_init);
+<<<<<<< HEAD
+=======
+
+/**
+ * xe_pci_live_device_gen_param - Helper to iterate Xe devices as KUnit parameters
+ * @prev: the previously returned value, or NULL for the first iteration
+ * @desc: the buffer for a parameter name
+ *
+ * Iterates over the available Xe devices on the system. Uses the device name
+ * as the parameter name.
+ *
+ * To be used only as a parameter generator function in &KUNIT_CASE_PARAM.
+ *
+ * Return: pointer to the next &struct xe_device ready to be used as a parameter
+ *         or NULL if there are no more Xe devices on the system.
+ */
+const void *xe_pci_live_device_gen_param(const void *prev, char *desc)
+{
+	const struct xe_device *xe = prev;
+	struct device *dev = xe ? xe->drm.dev : NULL;
+	struct device *next;
+
+	next = driver_find_next_device(&xe_pci_driver.driver, dev);
+	if (dev)
+		put_device(dev);
+	if (!next)
+		return NULL;
+
+	snprintf(desc, KUNIT_PARAM_DESC_SIZE, "%s", dev_name(next));
+	return pdev_to_xe_device(to_pci_dev(next));
+}
+EXPORT_SYMBOL_IF_KUNIT(xe_pci_live_device_gen_param);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

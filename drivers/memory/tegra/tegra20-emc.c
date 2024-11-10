@@ -410,7 +410,10 @@ static int cmp_timings(const void *_a, const void *_b)
 static int tegra_emc_load_timings_from_dt(struct tegra_emc *emc,
 					  struct device_node *node)
 {
+<<<<<<< HEAD
 	struct device_node *child;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct emc_timing *timing;
 	int child_count;
 	int err;
@@ -428,15 +431,24 @@ static int tegra_emc_load_timings_from_dt(struct tegra_emc *emc,
 
 	timing = emc->timings;
 
+<<<<<<< HEAD
 	for_each_child_of_node(node, child) {
+=======
+	for_each_child_of_node_scoped(node, child) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (of_node_name_eq(child, "lpddr2"))
 			continue;
 
 		err = load_one_timing_from_dt(emc, timing++, child);
+<<<<<<< HEAD
 		if (err) {
 			of_node_put(child);
 			return err;
 		}
+=======
+		if (err)
+			return err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		emc->num_timings++;
 	}

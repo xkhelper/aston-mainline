@@ -10,6 +10,10 @@
 
 #define __HAVE_ARCH_PMD_ALLOC_ONE
 #define __HAVE_ARCH_PUD_ALLOC_ONE
+<<<<<<< HEAD
+=======
+#define __HAVE_ARCH_PTE_ALLOC_ONE_KERNEL
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm-generic/pgalloc.h>
 
 static inline void pmd_populate_kernel(struct mm_struct *mm,
@@ -44,6 +48,19 @@ extern void pagetable_init(void);
 
 extern pgd_t *pgd_alloc(struct mm_struct *mm);
 
+<<<<<<< HEAD
+=======
+static inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
+{
+	pte_t *pte = __pte_alloc_one_kernel(mm);
+
+	if (pte)
+		kernel_pte_init(pte);
+
+	return pte;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define __pte_free_tlb(tlb, pte, address)			\
 do {								\
 	pagetable_pte_dtor(page_ptdesc(pte));			\

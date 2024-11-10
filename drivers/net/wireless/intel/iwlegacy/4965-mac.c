@@ -1769,7 +1769,11 @@ il4965_tx_skb(struct il_priv *il,
 	/* Set up first empty entry in queue's array of Tx/cmd buffers */
 	out_cmd = txq->cmd[q->write_ptr];
 	out_meta = &txq->meta[q->write_ptr];
+<<<<<<< HEAD
 	tx_cmd = &out_cmd->cmd.tx;
+=======
+	tx_cmd = container_of(&out_cmd->cmd.tx, struct il_tx_cmd, __hdr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	memset(&out_cmd->hdr, 0, sizeof(out_cmd->hdr));
 	memset(tx_cmd, 0, sizeof(struct il_tx_cmd));
 

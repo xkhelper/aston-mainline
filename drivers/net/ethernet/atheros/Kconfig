@@ -6,7 +6,11 @@
 config NET_VENDOR_ATHEROS
 	bool "Atheros devices"
 	default y
+<<<<<<< HEAD
 	depends on (PCI || ATH79)
+=======
+	depends on PCI || ATH79 || COMPILE_TEST
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  If you have a network (Ethernet) card belonging to this class, say Y.
 
@@ -19,7 +23,11 @@ if NET_VENDOR_ATHEROS
 
 config AG71XX
 	tristate "Atheros AR7XXX/AR9XXX built-in ethernet mac support"
+<<<<<<< HEAD
 	depends on ATH79
+=======
+	depends on ATH79 || COMPILE_TEST
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select PHYLINK
 	imply NET_SELFTESTS
 	help

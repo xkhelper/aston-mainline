@@ -17,6 +17,15 @@ unsigned char snd_usb_parse_datainterval(struct snd_usb_audio *chip,
 struct usb_host_interface *
 snd_usb_get_host_interface(struct snd_usb_audio *chip, int ifnum, int altsetting);
 
+<<<<<<< HEAD
+=======
+int snd_usb_add_ctrl_interface_link(struct snd_usb_audio *chip, int ifnum,
+		int ctrlif);
+
+struct usb_host_interface *snd_usb_find_ctrl_interface(struct snd_usb_audio *chip,
+								int ifnum);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * retrieve usb_interface descriptor from the host interface
  * (conditional for compatibility with the older API)
@@ -28,9 +37,15 @@ snd_usb_get_host_interface(struct snd_usb_audio *chip, int ifnum, int altsetting
 
 #define snd_usb_get_speed(dev) ((dev)->speed)
 
+<<<<<<< HEAD
 static inline int snd_usb_ctrl_intf(struct snd_usb_audio *chip)
 {
 	return get_iface_desc(chip->ctrl_intf)->bInterfaceNumber;
+=======
+static inline int snd_usb_ctrl_intf(struct usb_host_interface *ctrl_intf)
+{
+	return get_iface_desc(ctrl_intf)->bInterfaceNumber;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* in validate.c */

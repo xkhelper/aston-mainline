@@ -5,6 +5,7 @@
 #include <linux/gfp.h>
 #include <linux/kmemleak.h>
 
+<<<<<<< HEAD
 #define GENRADIX_ARY		(GENRADIX_NODE_SIZE / sizeof(struct genradix_node *))
 #define GENRADIX_ARY_SHIFT	ilog2(GENRADIX_ARY)
 
@@ -48,12 +49,15 @@ static inline struct genradix_node *genradix_root_to_node(struct genradix_root *
 	return (void *) ((unsigned long) r & ~GENRADIX_DEPTH_MASK);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Returns pointer to the specified byte @offset within @radix, or NULL if not
  * allocated
  */
 void *__genradix_ptr(struct __genradix *radix, size_t offset)
 {
+<<<<<<< HEAD
 	struct genradix_root *r = READ_ONCE(radix->root);
 	struct genradix_node *n = genradix_root_to_node(r);
 	unsigned level		= genradix_root_to_depth(r);
@@ -87,17 +91,33 @@ static inline void genradix_free_node(struct genradix_node *node)
 	kfree(node);
 }
 
+=======
+	return __genradix_ptr_inlined(radix, offset);
+}
+EXPORT_SYMBOL(__genradix_ptr);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Returns pointer to the specified byte @offset within @radix, allocating it if
  * necessary - newly allocated slots are always zeroed out:
  */
 void *__genradix_ptr_alloc(struct __genradix *radix, size_t offset,
+<<<<<<< HEAD
+=======
+			   struct genradix_node **preallocated,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			   gfp_t gfp_mask)
 {
 	struct genradix_root *v = READ_ONCE(radix->root);
 	struct genradix_node *n, *new_node = NULL;
 	unsigned level;
 
+<<<<<<< HEAD
+=======
+	if (preallocated)
+		swap(new_node, *preallocated);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Increase tree depth if necessary: */
 	while (1) {
 		struct genradix_root *r = v, *new_root;
@@ -281,7 +301,11 @@ int __genradix_prealloc(struct __genradix *radix, size_t size,
 	size_t offset;
 
 	for (offset = 0; offset < size; offset += GENRADIX_NODE_SIZE)
+<<<<<<< HEAD
 		if (!__genradix_ptr_alloc(radix, offset, gfp_mask))
+=======
+		if (!__genradix_ptr_alloc(radix, offset, NULL, gfp_mask))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -ENOMEM;
 
 	return 0;

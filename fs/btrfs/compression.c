@@ -138,6 +138,7 @@ static int compression_decompress_bio(struct list_head *ws,
 }
 
 static int compression_decompress(int type, struct list_head *ws,
+<<<<<<< HEAD
 		const u8 *data_in, struct page *dest_page,
 		unsigned long dest_pgoff, size_t srclen, size_t destlen)
 {
@@ -147,6 +148,17 @@ static int compression_decompress(int type, struct list_head *ws,
 	case BTRFS_COMPRESS_LZO:  return lzo_decompress(ws, data_in, dest_page,
 						dest_pgoff, srclen, destlen);
 	case BTRFS_COMPRESS_ZSTD: return zstd_decompress(ws, data_in, dest_page,
+=======
+		const u8 *data_in, struct folio *dest_folio,
+		unsigned long dest_pgoff, size_t srclen, size_t destlen)
+{
+	switch (type) {
+	case BTRFS_COMPRESS_ZLIB: return zlib_decompress(ws, data_in, dest_folio,
+						dest_pgoff, srclen, destlen);
+	case BTRFS_COMPRESS_LZO:  return lzo_decompress(ws, data_in, dest_folio,
+						dest_pgoff, srclen, destlen);
+	case BTRFS_COMPRESS_ZSTD: return zstd_decompress(ws, data_in, dest_folio,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						dest_pgoff, srclen, destlen);
 	case BTRFS_COMPRESS_NONE:
 	default:
@@ -395,7 +407,11 @@ void btrfs_submit_compressed_write(struct btrfs_ordered_extent *ordered,
 	cb->bbio.ordered = ordered;
 	btrfs_add_compressed_bio_folios(cb);
 
+<<<<<<< HEAD
 	btrfs_submit_bio(&cb->bbio, 0);
+=======
+	btrfs_submit_bbio(&cb->bbio, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -420,7 +436,11 @@ static noinline int add_ra_bio_pages(struct inode *inode,
 	u64 cur = cb->orig_bbio->file_offset + orig_bio->bi_iter.bi_size;
 	u64 isize = i_size_read(inode);
 	int ret;
+<<<<<<< HEAD
 	struct page *page;
+=======
+	struct folio *folio;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct extent_map *em;
 	struct address_space *mapping = inode->i_mapping;
 	struct extent_map_tree *em_tree;
@@ -453,9 +473,19 @@ static noinline int add_ra_bio_pages(struct inode *inode,
 		if (pg_index > end_index)
 			break;
 
+<<<<<<< HEAD
 		page = xa_load(&mapping->i_pages, pg_index);
 		if (page && !xa_is_value(page)) {
 			sectors_missed += (PAGE_SIZE - offset_in_page(cur)) >>
+=======
+		folio = __filemap_get_folio(mapping, pg_index, 0, 0);
+		if (!IS_ERR(folio)) {
+			u64 folio_sz = folio_size(folio);
+			u64 offset = offset_in_folio(folio, cur);
+
+			folio_put(folio);
+			sectors_missed += (folio_sz - offset) >>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					  fs_info->sectorsize_bits;
 
 			/* Beyond threshold, no need to continue */
@@ -466,6 +496,7 @@ static noinline int add_ra_bio_pages(struct inode *inode,
 			 * Jump to next page start as we already have page for
 			 * current offset.
 			 */
+<<<<<<< HEAD
 			cur = (pg_index << PAGE_SHIFT) + PAGE_SIZE;
 			continue;
 		}
@@ -483,10 +514,30 @@ static noinline int add_ra_bio_pages(struct inode *inode,
 		}
 
 		if (!*memstall && PageWorkingset(page)) {
+=======
+			cur += (folio_sz - offset);
+			continue;
+		}
+
+		folio = filemap_alloc_folio(mapping_gfp_constraint(mapping,
+								   ~__GFP_FS), 0);
+		if (!folio)
+			break;
+
+		if (filemap_add_folio(mapping, folio, pg_index, GFP_NOFS)) {
+			/* There is already a page, skip to page end */
+			cur += folio_size(folio);
+			folio_put(folio);
+			continue;
+		}
+
+		if (!*memstall && folio_test_workingset(folio)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			psi_memstall_enter(pflags);
 			*memstall = 1;
 		}
 
+<<<<<<< HEAD
 		ret = set_page_extent_mapped(page);
 		if (ret < 0) {
 			unlock_page(page);
@@ -495,6 +546,16 @@ static noinline int add_ra_bio_pages(struct inode *inode,
 		}
 
 		page_end = (pg_index << PAGE_SHIFT) + PAGE_SIZE - 1;
+=======
+		ret = set_folio_extent_mapped(folio);
+		if (ret < 0) {
+			folio_unlock(folio);
+			folio_put(folio);
+			break;
+		}
+
+		page_end = (pg_index << PAGE_SHIFT) + folio_size(folio) - 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		lock_extent(tree, cur, page_end, NULL);
 		read_lock(&em_tree->lock);
 		em = lookup_extent_mapping(em_tree, cur, page_end + 1 - cur);
@@ -511,12 +572,18 @@ static noinline int add_ra_bio_pages(struct inode *inode,
 		    orig_bio->bi_iter.bi_sector) {
 			free_extent_map(em);
 			unlock_extent(tree, cur, page_end, NULL);
+<<<<<<< HEAD
 			unlock_page(page);
 			put_page(page);
+=======
+			folio_unlock(folio);
+			folio_put(folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		}
 		add_size = min(em->start + em->len, page_end + 1) - cur;
 		free_extent_map(em);
+<<<<<<< HEAD
 
 		if (page->index == end_index) {
 			size_t zero_offset = offset_in_page(isize);
@@ -533,6 +600,24 @@ static noinline int add_ra_bio_pages(struct inode *inode,
 			unlock_extent(tree, cur, page_end, NULL);
 			unlock_page(page);
 			put_page(page);
+=======
+		unlock_extent(tree, cur, page_end, NULL);
+
+		if (folio->index == end_index) {
+			size_t zero_offset = offset_in_folio(folio, isize);
+
+			if (zero_offset) {
+				int zeros;
+				zeros = folio_size(folio) - zero_offset;
+				folio_zero_range(folio, zero_offset, zeros);
+			}
+		}
+
+		if (!bio_add_folio(orig_bio, folio, add_size,
+				   offset_in_folio(folio, cur))) {
+			folio_unlock(folio);
+			folio_put(folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		}
 		/*
@@ -541,9 +626,15 @@ static noinline int add_ra_bio_pages(struct inode *inode,
 		 * subpage::readers and to unlock the page.
 		 */
 		if (fs_info->sectorsize < PAGE_SIZE)
+<<<<<<< HEAD
 			btrfs_subpage_start_reader(fs_info, page_folio(page),
 						   cur, add_size);
 		put_page(page);
+=======
+			btrfs_subpage_start_reader(fs_info, folio, cur,
+						   add_size);
+		folio_put(folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		cur += add_size;
 	}
 	return 0;
@@ -626,7 +717,11 @@ void btrfs_submit_compressed_read(struct btrfs_bio *bbio)
 	if (memstall)
 		psi_memstall_leave(&pflags);
 
+<<<<<<< HEAD
 	btrfs_submit_bio(&cb->bbio, 0);
+=======
+	btrfs_submit_bbio(&cb->bbio, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return;
 
 out_free_compressed_pages:
@@ -1057,10 +1152,17 @@ static int btrfs_decompress_bio(struct compressed_bio *cb)
  * single page, and we want to read a single page out of it.
  * start_byte tells us the offset into the compressed data we're interested in
  */
+<<<<<<< HEAD
 int btrfs_decompress(int type, const u8 *data_in, struct page *dest_page,
 		     unsigned long dest_pgoff, size_t srclen, size_t destlen)
 {
 	struct btrfs_fs_info *fs_info = page_to_fs_info(dest_page);
+=======
+int btrfs_decompress(int type, const u8 *data_in, struct folio *dest_folio,
+		     unsigned long dest_pgoff, size_t srclen, size_t destlen)
+{
+	struct btrfs_fs_info *fs_info = folio_to_fs_info(dest_folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct list_head *workspace;
 	const u32 sectorsize = fs_info->sectorsize;
 	int ret;
@@ -1073,7 +1175,11 @@ int btrfs_decompress(int type, const u8 *data_in, struct page *dest_page,
 	ASSERT(dest_pgoff + destlen <= PAGE_SIZE && destlen <= sectorsize);
 
 	workspace = get_workspace(type, 0);
+<<<<<<< HEAD
 	ret = compression_decompress(type, workspace, data_in, dest_page,
+=======
+	ret = compression_decompress(type, workspace, data_in, dest_folio,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				     dest_pgoff, srclen, destlen);
 	put_workspace(type, workspace);
 

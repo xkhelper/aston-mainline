@@ -45,7 +45,11 @@
 /* Contains the details of a pagefault. */
 struct mlx5_pagefault {
 	u32			bytes_committed;
+<<<<<<< HEAD
 	u32			token;
+=======
+	u64			token;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8			event_subtype;
 	u8			type;
 	union {
@@ -74,6 +78,17 @@ struct mlx5_pagefault {
 			u32	rdma_op_len;
 			u64	rdma_va;
 		} rdma;
+<<<<<<< HEAD
+=======
+		struct {
+			u64	va;
+			u32	mkey;
+			u32	fault_byte_count;
+			u32     prefetch_before_byte_count;
+			u32     prefetch_after_byte_count;
+			u8	flags;
+		} memory;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	struct mlx5_ib_pf_eq	*eq;
@@ -99,6 +114,7 @@ static u64 mlx5_imr_ksm_entries;
 static void populate_klm(struct mlx5_klm *pklm, size_t idx, size_t nentries,
 			struct mlx5_ib_mr *imr, int flags)
 {
+<<<<<<< HEAD
 	struct mlx5_klm *end = pklm + nentries;
 
 	if (flags & MLX5_IB_UPD_XLT_ZAP) {
@@ -106,6 +122,22 @@ static void populate_klm(struct mlx5_klm *pklm, size_t idx, size_t nentries,
 			pklm->bcount = cpu_to_be32(MLX5_IMR_MTT_SIZE);
 			pklm->key = mr_to_mdev(imr)->mkeys.null_mkey;
 			pklm->va = 0;
+=======
+	struct mlx5_core_dev *dev = mr_to_mdev(imr)->mdev;
+	struct mlx5_klm *end = pklm + nentries;
+	int step = MLX5_CAP_ODP(dev, mem_page_fault) ? MLX5_IMR_MTT_SIZE : 0;
+	__be32 key = MLX5_CAP_ODP(dev, mem_page_fault) ?
+			     cpu_to_be32(imr->null_mmkey.key) :
+			     mr_to_mdev(imr)->mkeys.null_mkey;
+	u64 va =
+		MLX5_CAP_ODP(dev, mem_page_fault) ? idx * MLX5_IMR_MTT_SIZE : 0;
+
+	if (flags & MLX5_IB_UPD_XLT_ZAP) {
+		for (; pklm != end; pklm++, idx++, va += step) {
+			pklm->bcount = cpu_to_be32(MLX5_IMR_MTT_SIZE);
+			pklm->key = key;
+			pklm->va = cpu_to_be64(va);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		return;
 	}
@@ -129,7 +161,11 @@ static void populate_klm(struct mlx5_klm *pklm, size_t idx, size_t nentries,
 	 */
 	lockdep_assert_held(&to_ib_umem_odp(imr->umem)->umem_mutex);
 
+<<<<<<< HEAD
 	for (; pklm != end; pklm++, idx++) {
+=======
+	for (; pklm != end; pklm++, idx++, va += step) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct mlx5_ib_mr *mtt = xa_load(&imr->implicit_children, idx);
 
 		pklm->bcount = cpu_to_be32(MLX5_IMR_MTT_SIZE);
@@ -137,8 +173,13 @@ static void populate_klm(struct mlx5_klm *pklm, size_t idx, size_t nentries,
 			pklm->key = cpu_to_be32(mtt->ibmr.lkey);
 			pklm->va = cpu_to_be64(idx * MLX5_IMR_MTT_SIZE);
 		} else {
+<<<<<<< HEAD
 			pklm->key = mr_to_mdev(imr)->mkeys.null_mkey;
 			pklm->va = 0;
+=======
+			pklm->key = key;
+			pklm->va = cpu_to_be64(va);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 }
@@ -217,6 +258,12 @@ static void destroy_unused_implicit_child_mr(struct mlx5_ib_mr *mr)
 		return;
 
 	xa_erase(&imr->implicit_children, idx);
+<<<<<<< HEAD
+=======
+	if (MLX5_CAP_ODP(mr_to_mdev(mr)->mdev, mem_page_fault))
+		xa_erase(&mr_to_mdev(mr)->odp_mkeys,
+			 mlx5_base_mkey(mr->mmkey.key));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Freeing a MR is a sleeping operation, so bounce to a work queue */
 	INIT_WORK(&mr->odp_destroy.work, free_implicit_child_mr_work);
@@ -332,6 +379,7 @@ static void internal_fill_odp_caps(struct mlx5_ib_dev *dev)
 	else
 		dev->odp_max_size = BIT_ULL(MLX5_MAX_UMR_SHIFT + PAGE_SHIFT);
 
+<<<<<<< HEAD
 	if (MLX5_CAP_ODP(dev->mdev, ud_odp_caps.send))
 		caps->per_transport_caps.ud_odp_caps |= IB_ODP_SUPPORT_SEND;
 
@@ -372,6 +420,48 @@ static void internal_fill_odp_caps(struct mlx5_ib_dev *dev)
 		caps->per_transport_caps.xrc_odp_caps |= IB_ODP_SUPPORT_ATOMIC;
 
 	if (MLX5_CAP_ODP(dev->mdev, xrc_odp_caps.srq_receive))
+=======
+	if (MLX5_CAP_ODP_SCHEME(dev->mdev, ud_odp_caps.send))
+		caps->per_transport_caps.ud_odp_caps |= IB_ODP_SUPPORT_SEND;
+
+	if (MLX5_CAP_ODP_SCHEME(dev->mdev, ud_odp_caps.srq_receive))
+		caps->per_transport_caps.ud_odp_caps |= IB_ODP_SUPPORT_SRQ_RECV;
+
+	if (MLX5_CAP_ODP_SCHEME(dev->mdev, rc_odp_caps.send))
+		caps->per_transport_caps.rc_odp_caps |= IB_ODP_SUPPORT_SEND;
+
+	if (MLX5_CAP_ODP_SCHEME(dev->mdev, rc_odp_caps.receive))
+		caps->per_transport_caps.rc_odp_caps |= IB_ODP_SUPPORT_RECV;
+
+	if (MLX5_CAP_ODP_SCHEME(dev->mdev, rc_odp_caps.write))
+		caps->per_transport_caps.rc_odp_caps |= IB_ODP_SUPPORT_WRITE;
+
+	if (MLX5_CAP_ODP_SCHEME(dev->mdev, rc_odp_caps.read))
+		caps->per_transport_caps.rc_odp_caps |= IB_ODP_SUPPORT_READ;
+
+	if (MLX5_CAP_ODP_SCHEME(dev->mdev, rc_odp_caps.atomic))
+		caps->per_transport_caps.rc_odp_caps |= IB_ODP_SUPPORT_ATOMIC;
+
+	if (MLX5_CAP_ODP_SCHEME(dev->mdev, rc_odp_caps.srq_receive))
+		caps->per_transport_caps.rc_odp_caps |= IB_ODP_SUPPORT_SRQ_RECV;
+
+	if (MLX5_CAP_ODP_SCHEME(dev->mdev, xrc_odp_caps.send))
+		caps->per_transport_caps.xrc_odp_caps |= IB_ODP_SUPPORT_SEND;
+
+	if (MLX5_CAP_ODP_SCHEME(dev->mdev, xrc_odp_caps.receive))
+		caps->per_transport_caps.xrc_odp_caps |= IB_ODP_SUPPORT_RECV;
+
+	if (MLX5_CAP_ODP_SCHEME(dev->mdev, xrc_odp_caps.write))
+		caps->per_transport_caps.xrc_odp_caps |= IB_ODP_SUPPORT_WRITE;
+
+	if (MLX5_CAP_ODP_SCHEME(dev->mdev, xrc_odp_caps.read))
+		caps->per_transport_caps.xrc_odp_caps |= IB_ODP_SUPPORT_READ;
+
+	if (MLX5_CAP_ODP_SCHEME(dev->mdev, xrc_odp_caps.atomic))
+		caps->per_transport_caps.xrc_odp_caps |= IB_ODP_SUPPORT_ATOMIC;
+
+	if (MLX5_CAP_ODP_SCHEME(dev->mdev, xrc_odp_caps.srq_receive))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		caps->per_transport_caps.xrc_odp_caps |= IB_ODP_SUPPORT_SRQ_RECV;
 
 	if (MLX5_CAP_GEN(dev->mdev, fixed_buffer_size) &&
@@ -388,6 +478,7 @@ static void mlx5_ib_page_fault_resume(struct mlx5_ib_dev *dev,
 	int wq_num = pfault->event_subtype == MLX5_PFAULT_SUBTYPE_WQE ?
 		     pfault->wqe.wq_num : pfault->token;
 	u32 in[MLX5_ST_SZ_DW(page_fault_resume_in)] = {};
+<<<<<<< HEAD
 	int err;
 
 	MLX5_SET(page_fault_resume_in, in, opcode, MLX5_CMD_OP_PAGE_FAULT_RESUME);
@@ -395,6 +486,31 @@ static void mlx5_ib_page_fault_resume(struct mlx5_ib_dev *dev,
 	MLX5_SET(page_fault_resume_in, in, token, pfault->token);
 	MLX5_SET(page_fault_resume_in, in, wq_number, wq_num);
 	MLX5_SET(page_fault_resume_in, in, error, !!error);
+=======
+	void *info;
+	int err;
+
+	MLX5_SET(page_fault_resume_in, in, opcode, MLX5_CMD_OP_PAGE_FAULT_RESUME);
+
+	if (pfault->event_subtype == MLX5_PFAULT_SUBTYPE_MEMORY) {
+		info = MLX5_ADDR_OF(page_fault_resume_in, in,
+				    page_fault_info.mem_page_fault_info);
+		MLX5_SET(mem_page_fault_info, info, fault_token_31_0,
+			 pfault->token & 0xffffffff);
+		MLX5_SET(mem_page_fault_info, info, fault_token_47_32,
+			 (pfault->token >> 32) & 0xffff);
+		MLX5_SET(mem_page_fault_info, info, error, !!error);
+	} else {
+		info = MLX5_ADDR_OF(page_fault_resume_in, in,
+				    page_fault_info.trans_page_fault_info);
+		MLX5_SET(trans_page_fault_info, info, page_fault_type,
+			 pfault->type);
+		MLX5_SET(trans_page_fault_info, info, fault_token,
+			 pfault->token);
+		MLX5_SET(trans_page_fault_info, info, wq_number, wq_num);
+		MLX5_SET(trans_page_fault_info, info, error, !!error);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = mlx5_cmd_exec_in(dev->mdev, page_fault_resume, in);
 	if (err)
@@ -468,6 +584,19 @@ static struct mlx5_ib_mr *implicit_get_child_mr(struct mlx5_ib_mr *imr,
 	}
 	xa_unlock(&imr->implicit_children);
 
+<<<<<<< HEAD
+=======
+	if (MLX5_CAP_ODP(dev->mdev, mem_page_fault)) {
+		ret = xa_store(&dev->odp_mkeys, mlx5_base_mkey(mr->mmkey.key),
+			       &mr->mmkey, GFP_KERNEL);
+		if (xa_is_err(ret)) {
+			ret = ERR_PTR(xa_err(ret));
+			xa_erase(&imr->implicit_children, idx);
+			goto out_mr;
+		}
+		mr->mmkey.type = MLX5_MKEY_IMPLICIT_CHILD;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mlx5_ib_dbg(mr_to_mdev(imr), "key %x mr %p\n", mr->mmkey.key, mr);
 	return mr;
 
@@ -478,6 +607,60 @@ out_mr:
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * When using memory scheme ODP, implicit MRs can't use the reserved null mkey
+ * and each implicit MR needs to assign a private null mkey to get the page
+ * faults on.
+ * The null mkey is created with the properties to enable getting the page
+ * fault for every time it is accessed and having all relevant access flags.
+ */
+static int alloc_implicit_mr_null_mkey(struct mlx5_ib_dev *dev,
+				       struct mlx5_ib_mr *imr,
+				       struct mlx5_ib_pd *pd)
+{
+	size_t inlen = MLX5_ST_SZ_BYTES(create_mkey_in) + 64;
+	void *mkc;
+	u32 *in;
+	int err;
+
+	in = kzalloc(inlen, GFP_KERNEL);
+	if (!in)
+		return -ENOMEM;
+
+	MLX5_SET(create_mkey_in, in, translations_octword_actual_size, 4);
+	MLX5_SET(create_mkey_in, in, pg_access, 1);
+
+	mkc = MLX5_ADDR_OF(create_mkey_in, in, memory_key_mkey_entry);
+	MLX5_SET(mkc, mkc, a, 1);
+	MLX5_SET(mkc, mkc, rw, 1);
+	MLX5_SET(mkc, mkc, rr, 1);
+	MLX5_SET(mkc, mkc, lw, 1);
+	MLX5_SET(mkc, mkc, lr, 1);
+	MLX5_SET(mkc, mkc, free, 0);
+	MLX5_SET(mkc, mkc, umr_en, 0);
+	MLX5_SET(mkc, mkc, access_mode_1_0, MLX5_MKC_ACCESS_MODE_MTT);
+
+	MLX5_SET(mkc, mkc, translations_octword_size, 4);
+	MLX5_SET(mkc, mkc, log_page_size, 61);
+	MLX5_SET(mkc, mkc, length64, 1);
+	MLX5_SET(mkc, mkc, pd, pd->pdn);
+	MLX5_SET64(mkc, mkc, start_addr, 0);
+	MLX5_SET(mkc, mkc, qpn, 0xffffff);
+
+	err = mlx5_core_create_mkey(dev->mdev, &imr->null_mmkey.key, in, inlen);
+	if (err)
+		goto free_in;
+
+	imr->null_mmkey.type = MLX5_MKEY_NULL;
+
+free_in:
+	kfree(in);
+	return err;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct mlx5_ib_mr *mlx5_ib_alloc_implicit_mr(struct mlx5_ib_pd *pd,
 					     int access_flags)
 {
@@ -510,6 +693,19 @@ struct mlx5_ib_mr *mlx5_ib_alloc_implicit_mr(struct mlx5_ib_pd *pd,
 	imr->is_odp_implicit = true;
 	xa_init(&imr->implicit_children);
 
+<<<<<<< HEAD
+=======
+	if (MLX5_CAP_ODP(dev->mdev, mem_page_fault)) {
+		err = alloc_implicit_mr_null_mkey(dev, imr, pd);
+		if (err)
+			goto out_mr;
+
+		err = mlx5r_store_odp_mkey(dev, &imr->null_mmkey);
+		if (err)
+			goto out_mr;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	err = mlx5r_umr_update_xlt(imr, 0,
 				   mlx5_imr_ksm_entries,
 				   MLX5_KSM_PAGE_SHIFT,
@@ -544,6 +740,17 @@ void mlx5_ib_free_odp_mr(struct mlx5_ib_mr *mr)
 		xa_erase(&mr->implicit_children, idx);
 		mlx5_ib_dereg_mr(&mtt->ibmr, NULL);
 	}
+<<<<<<< HEAD
+=======
+
+	if (mr->null_mmkey.key) {
+		xa_erase(&mr_to_mdev(mr)->odp_mkeys,
+			 mlx5_base_mkey(mr->null_mmkey.key));
+
+		mlx5_core_destroy_mkey(mr_to_mdev(mr)->mdev,
+				       mr->null_mmkey.key);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #define MLX5_PF_FLAGS_DOWNGRADE BIT(1)
@@ -693,7 +900,11 @@ static int pagefault_dmabuf_mr(struct mlx5_ib_mr *mr, size_t bcnt,
 	struct ib_umem_dmabuf *umem_dmabuf = to_ib_umem_dmabuf(mr->umem);
 	u32 xlt_flags = 0;
 	int err;
+<<<<<<< HEAD
 	unsigned int page_size;
+=======
+	unsigned long page_size;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (flags & MLX5_PF_FLAGS_ENABLE)
 		xlt_flags |= MLX5_IB_UPD_XLT_ENABLE;
@@ -710,7 +921,14 @@ static int pagefault_dmabuf_mr(struct mlx5_ib_mr *mr, size_t bcnt,
 		ib_umem_dmabuf_unmap_pages(umem_dmabuf);
 		err = -EINVAL;
 	} else {
+<<<<<<< HEAD
 		err = mlx5r_umr_update_mr_pas(mr, xlt_flags);
+=======
+		if (mr->data_direct)
+			err = mlx5r_umr_update_data_direct_ksm_pas(mr, xlt_flags);
+		else
+			err = mlx5r_umr_update_mr_pas(mr, xlt_flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	dma_resv_unlock(umem_dmabuf->attach->dmabuf->resv);
 
@@ -733,17 +951,26 @@ static int pagefault_dmabuf_mr(struct mlx5_ib_mr *mr, size_t bcnt,
  *  >0: Number of pages mapped
  */
 static int pagefault_mr(struct mlx5_ib_mr *mr, u64 io_virt, size_t bcnt,
+<<<<<<< HEAD
 			u32 *bytes_mapped, u32 flags)
 {
 	struct ib_umem_odp *odp = to_ib_umem_odp(mr->umem);
 
 	if (unlikely(io_virt < mr->ibmr.iova))
+=======
+			u32 *bytes_mapped, u32 flags, bool permissive_fault)
+{
+	struct ib_umem_odp *odp = to_ib_umem_odp(mr->umem);
+
+	if (unlikely(io_virt < mr->ibmr.iova) && !permissive_fault)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EFAULT;
 
 	if (mr->umem->is_dmabuf)
 		return pagefault_dmabuf_mr(mr, bcnt, bytes_mapped, flags);
 
 	if (!odp->is_implicit_odp) {
+<<<<<<< HEAD
 		u64 user_va;
 
 		if (check_add_overflow(io_virt - mr->ibmr.iova,
@@ -751,6 +978,22 @@ static int pagefault_mr(struct mlx5_ib_mr *mr, u64 io_virt, size_t bcnt,
 			return -EFAULT;
 		if (unlikely(user_va >= ib_umem_end(odp) ||
 			     ib_umem_end(odp) - user_va < bcnt))
+=======
+		u64 offset = io_virt < mr->ibmr.iova ? 0 : io_virt - mr->ibmr.iova;
+		u64 user_va;
+
+		if (check_add_overflow(offset, (u64)odp->umem.address,
+				       &user_va))
+			return -EFAULT;
+
+		if (permissive_fault) {
+			if (user_va < ib_umem_start(odp))
+				user_va = ib_umem_start(odp);
+			if ((user_va + bcnt) > ib_umem_end(odp))
+				bcnt = ib_umem_end(odp) - user_va;
+		} else if (unlikely(user_va >= ib_umem_end(odp) ||
+				    ib_umem_end(odp) - user_va < bcnt))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EFAULT;
 		return pagefault_real_mr(mr, odp, user_va, bcnt, bytes_mapped,
 					 flags);
@@ -797,6 +1040,30 @@ static bool mkey_is_eq(struct mlx5_ib_mkey *mmkey, u32 key)
 	return mmkey->key == key;
 }
 
+<<<<<<< HEAD
+=======
+static struct mlx5_ib_mkey *find_odp_mkey(struct mlx5_ib_dev *dev, u32 key)
+{
+	struct mlx5_ib_mkey *mmkey;
+
+	xa_lock(&dev->odp_mkeys);
+	mmkey = xa_load(&dev->odp_mkeys, mlx5_base_mkey(key));
+	if (!mmkey) {
+		mmkey = ERR_PTR(-ENOENT);
+		goto out;
+	}
+	if (!mkey_is_eq(mmkey, key)) {
+		mmkey = ERR_PTR(-EFAULT);
+		goto out;
+	}
+	refcount_inc(&mmkey->usecount);
+out:
+	xa_unlock(&dev->odp_mkeys);
+
+	return mmkey;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Handle a single data segment in a page-fault WQE or RDMA region.
  *
@@ -824,6 +1091,7 @@ static int pagefault_single_data_segment(struct mlx5_ib_dev *dev,
 
 	io_virt += *bytes_committed;
 	bcnt -= *bytes_committed;
+<<<<<<< HEAD
 
 next_mr:
 	xa_lock(&dev->odp_mkeys);
@@ -850,6 +1118,26 @@ next_mr:
 	if (!mkey_is_eq(mmkey, key)) {
 		mlx5_ib_dbg(dev, "failed to find mkey %x\n", key);
 		ret = -EFAULT;
+=======
+next_mr:
+	mmkey = find_odp_mkey(dev, key);
+	if (IS_ERR(mmkey)) {
+		ret = PTR_ERR(mmkey);
+		if (ret == -ENOENT) {
+			mlx5_ib_dbg(
+				dev,
+				"skipping non ODP MR (lkey=0x%06x) in page fault handler.\n",
+				key);
+			if (bytes_mapped)
+				*bytes_mapped += bcnt;
+			/*
+			 * The user could specify a SGL with multiple lkeys and
+			 * only some of them are ODP. Treat the non-ODP ones as
+			 * fully faulted.
+			 */
+			ret = 0;
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto end;
 	}
 
@@ -857,7 +1145,11 @@ next_mr:
 	case MLX5_MKEY_MR:
 		mr = container_of(mmkey, struct mlx5_ib_mr, mmkey);
 
+<<<<<<< HEAD
 		ret = pagefault_mr(mr, io_virt, bcnt, bytes_mapped, 0);
+=======
+		ret = pagefault_mr(mr, io_virt, bcnt, bytes_mapped, 0, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret < 0)
 			goto end;
 
@@ -944,7 +1236,11 @@ next_mr:
 	}
 
 end:
+<<<<<<< HEAD
 	if (mmkey)
+=======
+	if (!IS_ERR(mmkey))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mlx5r_deref_odp_mkey(mmkey);
 	while (head) {
 		frame = head;
@@ -1266,7 +1562,11 @@ read_user:
 	if (ret)
 		mlx5_ib_err(
 			dev,
+<<<<<<< HEAD
 			"Failed reading a WQE following page fault, error %d, wqe_index %x, qpn %x\n",
+=======
+			"Failed reading a WQE following page fault, error %d, wqe_index %x, qpn %llx\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ret, wqe_index, pfault->token);
 
 resolve_page_fault:
@@ -1325,13 +1625,21 @@ static void mlx5_ib_mr_rdma_pfault_handler(struct mlx5_ib_dev *dev,
 	} else if (ret < 0 || pages_in_range(address, length) > ret) {
 		mlx5_ib_page_fault_resume(dev, pfault, 1);
 		if (ret != -ENOENT)
+<<<<<<< HEAD
 			mlx5_ib_dbg(dev, "PAGE FAULT error %d. QP 0x%x, type: 0x%x\n",
+=======
+			mlx5_ib_dbg(dev, "PAGE FAULT error %d. QP 0x%llx, type: 0x%x\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    ret, pfault->token, pfault->type);
 		return;
 	}
 
 	mlx5_ib_page_fault_resume(dev, pfault, 0);
+<<<<<<< HEAD
 	mlx5_ib_dbg(dev, "PAGE FAULT completed. QP 0x%x, type: 0x%x, prefetch_activated: %d\n",
+=======
+	mlx5_ib_dbg(dev, "PAGE FAULT completed. QP 0x%llx, type: 0x%x, prefetch_activated: %d\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    pfault->token, pfault->type,
 		    prefetch_activated);
 
@@ -1347,12 +1655,87 @@ static void mlx5_ib_mr_rdma_pfault_handler(struct mlx5_ib_dev *dev,
 						    prefetch_len,
 						    &bytes_committed, NULL);
 		if (ret < 0 && ret != -EAGAIN) {
+<<<<<<< HEAD
 			mlx5_ib_dbg(dev, "Prefetch failed. ret: %d, QP 0x%x, address: 0x%.16llx, length = 0x%.16x\n",
+=======
+			mlx5_ib_dbg(dev, "Prefetch failed. ret: %d, QP 0x%llx, address: 0x%.16llx, length = 0x%.16x\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    ret, pfault->token, address, prefetch_len);
 		}
 	}
 }
 
+<<<<<<< HEAD
+=======
+#define MLX5_MEMORY_PAGE_FAULT_FLAGS_LAST BIT(7)
+static void mlx5_ib_mr_memory_pfault_handler(struct mlx5_ib_dev *dev,
+					     struct mlx5_pagefault *pfault)
+{
+	u64 prefetch_va =
+		pfault->memory.va - pfault->memory.prefetch_before_byte_count;
+	size_t prefetch_size = pfault->memory.prefetch_before_byte_count +
+			       pfault->memory.fault_byte_count +
+			       pfault->memory.prefetch_after_byte_count;
+	struct mlx5_ib_mkey *mmkey;
+	struct mlx5_ib_mr *mr, *child_mr;
+	int ret = 0;
+
+	mmkey = find_odp_mkey(dev, pfault->memory.mkey);
+	if (IS_ERR(mmkey))
+		goto err;
+
+	switch (mmkey->type) {
+	case MLX5_MKEY_IMPLICIT_CHILD:
+		child_mr = container_of(mmkey, struct mlx5_ib_mr, mmkey);
+		mr = child_mr->parent;
+		break;
+	case MLX5_MKEY_NULL:
+		mr = container_of(mmkey, struct mlx5_ib_mr, null_mmkey);
+		break;
+	default:
+		mr = container_of(mmkey, struct mlx5_ib_mr, mmkey);
+		break;
+	}
+
+	/* If prefetch fails, handle only demanded page fault */
+	ret = pagefault_mr(mr, prefetch_va, prefetch_size, NULL, 0, true);
+	if (ret < 0) {
+		ret = pagefault_mr(mr, pfault->memory.va,
+				   pfault->memory.fault_byte_count, NULL, 0,
+				   true);
+		if (ret < 0)
+			goto err;
+	}
+
+	mlx5_update_odp_stats(mr, faults, ret);
+	mlx5r_deref_odp_mkey(mmkey);
+
+	if (pfault->memory.flags & MLX5_MEMORY_PAGE_FAULT_FLAGS_LAST)
+		mlx5_ib_page_fault_resume(dev, pfault, 0);
+
+	mlx5_ib_dbg(
+		dev,
+		"PAGE FAULT completed %s. token 0x%llx, mkey: 0x%x, va: 0x%llx, byte_count: 0x%x\n",
+		pfault->memory.flags & MLX5_MEMORY_PAGE_FAULT_FLAGS_LAST ?
+			"" :
+			"without resume cmd",
+		pfault->token, pfault->memory.mkey, pfault->memory.va,
+		pfault->memory.fault_byte_count);
+
+	return;
+
+err:
+	if (!IS_ERR(mmkey))
+		mlx5r_deref_odp_mkey(mmkey);
+	mlx5_ib_page_fault_resume(dev, pfault, 1);
+	mlx5_ib_dbg(
+		dev,
+		"PAGE FAULT error. token 0x%llx, mkey: 0x%x, va: 0x%llx, byte_count: 0x%x, err: %d\n",
+		pfault->token, pfault->memory.mkey, pfault->memory.va,
+		pfault->memory.fault_byte_count, ret);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void mlx5_ib_pfault(struct mlx5_ib_dev *dev, struct mlx5_pagefault *pfault)
 {
 	u8 event_subtype = pfault->event_subtype;
@@ -1364,6 +1747,12 @@ static void mlx5_ib_pfault(struct mlx5_ib_dev *dev, struct mlx5_pagefault *pfaul
 	case MLX5_PFAULT_SUBTYPE_RDMA:
 		mlx5_ib_mr_rdma_pfault_handler(dev, pfault);
 		break;
+<<<<<<< HEAD
+=======
+	case MLX5_PFAULT_SUBTYPE_MEMORY:
+		mlx5_ib_mr_memory_pfault_handler(dev, pfault);
+		break;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		mlx5_ib_err(dev, "Invalid page fault event subtype: 0x%x\n",
 			    event_subtype);
@@ -1382,6 +1771,10 @@ static void mlx5_ib_eqe_pf_action(struct work_struct *work)
 	mempool_free(pfault, eq->pool);
 }
 
+<<<<<<< HEAD
+=======
+#define MEMORY_SCHEME_PAGE_FAULT_GRANULARITY 4096
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void mlx5_ib_eq_pf_process(struct mlx5_ib_pf_eq *eq)
 {
 	struct mlx5_eqe_page_fault *pf_eqe;
@@ -1398,15 +1791,23 @@ static void mlx5_ib_eq_pf_process(struct mlx5_ib_pf_eq *eq)
 
 		pf_eqe = &eqe->data.page_fault;
 		pfault->event_subtype = eqe->sub_type;
+<<<<<<< HEAD
 		pfault->bytes_committed = be32_to_cpu(pf_eqe->bytes_committed);
 
 		mlx5_ib_dbg(eq->dev,
 			    "PAGE_FAULT: subtype: 0x%02x, bytes_committed: 0x%06x\n",
 			    eqe->sub_type, pfault->bytes_committed);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		switch (eqe->sub_type) {
 		case MLX5_PFAULT_SUBTYPE_RDMA:
 			/* RDMA based event */
+<<<<<<< HEAD
+=======
+			pfault->bytes_committed =
+				be32_to_cpu(pf_eqe->rdma.bytes_committed);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			pfault->type =
 				be32_to_cpu(pf_eqe->rdma.pftype_token) >> 24;
 			pfault->token =
@@ -1420,10 +1821,19 @@ static void mlx5_ib_eq_pf_process(struct mlx5_ib_pf_eq *eq)
 				be32_to_cpu(pf_eqe->rdma.rdma_op_len);
 			pfault->rdma.rdma_va =
 				be64_to_cpu(pf_eqe->rdma.rdma_va);
+<<<<<<< HEAD
 			mlx5_ib_dbg(eq->dev,
 				    "PAGE_FAULT: type:0x%x, token: 0x%06x, r_key: 0x%08x\n",
 				    pfault->type, pfault->token,
 				    pfault->rdma.r_key);
+=======
+			mlx5_ib_dbg(
+				eq->dev,
+				"PAGE_FAULT: subtype: 0x%02x, bytes_committed: 0x%06x, type:0x%x, token: 0x%06llx, r_key: 0x%08x\n",
+				eqe->sub_type, pfault->bytes_committed,
+				pfault->type, pfault->token,
+				pfault->rdma.r_key);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			mlx5_ib_dbg(eq->dev,
 				    "PAGE_FAULT: rdma_op_len: 0x%08x, rdma_va: 0x%016llx\n",
 				    pfault->rdma.rdma_op_len,
@@ -1432,6 +1842,11 @@ static void mlx5_ib_eq_pf_process(struct mlx5_ib_pf_eq *eq)
 
 		case MLX5_PFAULT_SUBTYPE_WQE:
 			/* WQE based event */
+<<<<<<< HEAD
+=======
+			pfault->bytes_committed =
+				be32_to_cpu(pf_eqe->wqe.bytes_committed);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			pfault->type =
 				(be32_to_cpu(pf_eqe->wqe.pftype_wq) >> 24) & 0x7;
 			pfault->token =
@@ -1443,11 +1858,55 @@ static void mlx5_ib_eq_pf_process(struct mlx5_ib_pf_eq *eq)
 				be16_to_cpu(pf_eqe->wqe.wqe_index);
 			pfault->wqe.packet_size =
 				be16_to_cpu(pf_eqe->wqe.packet_length);
+<<<<<<< HEAD
 			mlx5_ib_dbg(eq->dev,
 				    "PAGE_FAULT: type:0x%x, token: 0x%06x, wq_num: 0x%06x, wqe_index: 0x%04x\n",
 				    pfault->type, pfault->token,
 				    pfault->wqe.wq_num,
 				    pfault->wqe.wqe_index);
+=======
+			mlx5_ib_dbg(
+				eq->dev,
+				"PAGE_FAULT: subtype: 0x%02x, bytes_committed: 0x%06x, type:0x%x, token: 0x%06llx, wq_num: 0x%06x, wqe_index: 0x%04x\n",
+				eqe->sub_type, pfault->bytes_committed,
+				pfault->type, pfault->token, pfault->wqe.wq_num,
+				pfault->wqe.wqe_index);
+			break;
+
+		case MLX5_PFAULT_SUBTYPE_MEMORY:
+			/* Memory based event */
+			pfault->bytes_committed = 0;
+			pfault->token =
+				be32_to_cpu(pf_eqe->memory.token31_0) |
+				((u64)be16_to_cpu(pf_eqe->memory.token47_32)
+				 << 32);
+			pfault->memory.va = be64_to_cpu(pf_eqe->memory.va);
+			pfault->memory.mkey = be32_to_cpu(pf_eqe->memory.mkey);
+			pfault->memory.fault_byte_count = (be32_to_cpu(
+				pf_eqe->memory.demand_fault_pages) >> 12) *
+				MEMORY_SCHEME_PAGE_FAULT_GRANULARITY;
+			pfault->memory.prefetch_before_byte_count =
+				be16_to_cpu(
+					pf_eqe->memory.pre_demand_fault_pages) *
+				MEMORY_SCHEME_PAGE_FAULT_GRANULARITY;
+			pfault->memory.prefetch_after_byte_count =
+				be16_to_cpu(
+					pf_eqe->memory.post_demand_fault_pages) *
+				MEMORY_SCHEME_PAGE_FAULT_GRANULARITY;
+			pfault->memory.flags = pf_eqe->memory.flags;
+			mlx5_ib_dbg(
+				eq->dev,
+				"PAGE_FAULT: subtype: 0x%02x, token: 0x%06llx, mkey: 0x%06x, fault_byte_count: 0x%06x, va: 0x%016llx, flags: 0x%02x\n",
+				eqe->sub_type, pfault->token,
+				pfault->memory.mkey,
+				pfault->memory.fault_byte_count,
+				pfault->memory.va, pfault->memory.flags);
+			mlx5_ib_dbg(
+				eq->dev,
+				"PAGE_FAULT: prefetch size: before: 0x%06x, after 0x%06x\n",
+				pfault->memory.prefetch_before_byte_count,
+				pfault->memory.prefetch_after_byte_count);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 
 		default:
@@ -1710,7 +2169,11 @@ static void mlx5_ib_prefetch_mr_work(struct work_struct *w)
 	for (i = 0; i < work->num_sge; ++i) {
 		ret = pagefault_mr(work->frags[i].mr, work->frags[i].io_virt,
 				   work->frags[i].length, &bytes_mapped,
+<<<<<<< HEAD
 				   work->pf_flags);
+=======
+				   work->pf_flags, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret <= 0)
 			continue;
 		mlx5_update_odp_stats(work->frags[i].mr, prefetch, ret);
@@ -1761,7 +2224,11 @@ static int mlx5_ib_prefetch_sg_list(struct ib_pd *pd,
 		if (IS_ERR(mr))
 			return PTR_ERR(mr);
 		ret = pagefault_mr(mr, sg_list[i].addr, sg_list[i].length,
+<<<<<<< HEAD
 				   &bytes_mapped, pf_flags);
+=======
+				   &bytes_mapped, pf_flags, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret < 0) {
 			mlx5r_deref_odp_mkey(&mr->mmkey);
 			return ret;

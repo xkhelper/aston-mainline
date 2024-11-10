@@ -2187,3 +2187,7 @@ module_platform_driver(axg_driver);
 
 MODULE_DESCRIPTION("Amlogic AXG Main Clock Controller driver");
 MODULE_LICENSE("GPL");
+<<<<<<< HEAD
+=======
+MODULE_IMPORT_NS(CLK_MESON);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -26,12 +26,22 @@ snd_emux_hwdep_load_patch(struct snd_emux *emu, void __user *arg)
 		return -EFAULT;
 
 	if (patch.key == GUS_PATCH)
+<<<<<<< HEAD
 		return snd_soundfont_load_guspatch(emu->sflist, arg,
+=======
+		return snd_soundfont_load_guspatch(emu->card, emu->sflist, arg,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						   patch.len + sizeof(patch));
 
 	if (patch.type >= SNDRV_SFNT_LOAD_INFO &&
 	    patch.type <= SNDRV_SFNT_PROBE_DATA) {
+<<<<<<< HEAD
 		err = snd_soundfont_load(emu->sflist, arg, patch.len + sizeof(patch), TMP_CLIENT_ID);
+=======
+		err = snd_soundfont_load(emu->card, emu->sflist, arg,
+					 patch.len + sizeof(patch),
+					 TMP_CLIENT_ID);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err < 0)
 			return err;
 	} else {

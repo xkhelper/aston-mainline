@@ -464,9 +464,12 @@ int snd_soc_component_force_enable_pin_unlocked(
 /* component controls */
 struct snd_kcontrol *snd_soc_component_get_kcontrol(struct snd_soc_component *component,
 						    const char * const ctl);
+<<<<<<< HEAD
 struct snd_kcontrol *
 snd_soc_component_get_kcontrol_locked(struct snd_soc_component *component,
 				      const char * const ctl);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int snd_soc_component_notify_control(struct snd_soc_component *component,
 				     const char * const ctl);
 

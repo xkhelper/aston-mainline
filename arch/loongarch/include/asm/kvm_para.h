@@ -2,6 +2,11 @@
 #ifndef _ASM_LOONGARCH_KVM_PARA_H
 #define _ASM_LOONGARCH_KVM_PARA_H
 
+<<<<<<< HEAD
+=======
+#include <uapi/asm/kvm_para.h>
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Hypercall code field
  */
@@ -154,10 +159,26 @@ static __always_inline long kvm_hypercall5(u64 fid,
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_PARAVIRT
+bool kvm_para_available(void);
+unsigned int kvm_arch_para_features(void);
+#else
+static inline bool kvm_para_available(void)
+{
+	return false;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline unsigned int kvm_arch_para_features(void)
 {
 	return 0;
 }
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline unsigned int kvm_arch_para_hints(void)
 {

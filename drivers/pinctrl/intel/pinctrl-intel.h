@@ -264,7 +264,12 @@ int intel_pinctrl_probe_by_uid(struct platform_device *pdev);
 
 extern const struct dev_pm_ops intel_pinctrl_pm_ops;
 
+<<<<<<< HEAD
 struct intel_community *intel_get_community(struct intel_pinctrl *pctrl, unsigned int pin);
+=======
+const struct intel_community *intel_get_community(const struct intel_pinctrl *pctrl,
+						  unsigned int pin);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int intel_get_groups_count(struct pinctrl_dev *pctldev);
 const char *intel_get_group_name(struct pinctrl_dev *pctldev, unsigned int group);

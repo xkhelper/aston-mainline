@@ -75,6 +75,9 @@ extern const struct attribute_group *tsc200x_groups[];
 int tsc200x_probe(struct device *dev, int irq, const struct input_id *tsc_id,
 		  struct regmap *regmap,
 		  int (*tsc200x_cmd)(struct device *dev, u8 cmd));
+<<<<<<< HEAD
 void tsc200x_remove(struct device *dev);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif

@@ -17,6 +17,10 @@
  */
 
 #include <linux/module.h>
+<<<<<<< HEAD
+=======
+#include <linux/mod_devicetable.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/platform_device.h>
 #include <linux/slab.h>
 #include <linux/clk.h>
@@ -26,8 +30,11 @@
 
 #include <asm/div64.h>
 
+<<<<<<< HEAD
 #include <linux/soc/cirrus/ep93xx.h>	/* for ep93xx_pwm_{acquire,release}_gpio() */
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define EP93XX_PWMx_TERM_COUNT	0x00
 #define EP93XX_PWMx_DUTY_CYCLE	0x04
 #define EP93XX_PWMx_ENABLE	0x08
@@ -43,6 +50,7 @@ static inline struct ep93xx_pwm *to_ep93xx_pwm(struct pwm_chip *chip)
 	return pwmchip_get_drvdata(chip);
 }
 
+<<<<<<< HEAD
 static int ep93xx_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
 {
 	struct platform_device *pdev = to_platform_device(pwmchip_parent(chip));
@@ -57,6 +65,8 @@ static void ep93xx_pwm_free(struct pwm_chip *chip, struct pwm_device *pwm)
 	ep93xx_pwm_release_gpio(pdev);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int ep93xx_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
 			    const struct pwm_state *state)
 {
@@ -155,8 +165,11 @@ static int ep93xx_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
 }
 
 static const struct pwm_ops ep93xx_pwm_ops = {
+<<<<<<< HEAD
 	.request = ep93xx_pwm_request,
 	.free = ep93xx_pwm_free,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.apply = ep93xx_pwm_apply,
 };
 
@@ -188,9 +201,22 @@ static int ep93xx_pwm_probe(struct platform_device *pdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static struct platform_driver ep93xx_pwm_driver = {
 	.driver = {
 		.name = "ep93xx-pwm",
+=======
+static const struct of_device_id ep93xx_pwm_of_ids[] = {
+	{ .compatible = "cirrus,ep9301-pwm" },
+	{ /* sentinel */}
+};
+MODULE_DEVICE_TABLE(of, ep93xx_pwm_of_ids);
+
+static struct platform_driver ep93xx_pwm_driver = {
+	.driver = {
+		.name = "ep93xx-pwm",
+		.of_match_table = ep93xx_pwm_of_ids,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	.probe = ep93xx_pwm_probe,
 };

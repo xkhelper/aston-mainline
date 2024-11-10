@@ -455,7 +455,11 @@ void intel_backlight_disable(const struct drm_connector_state *old_conn_state)
 	mutex_lock(&i915->display.backlight.lock);
 
 	if (panel->backlight.device)
+<<<<<<< HEAD
 		panel->backlight.device->props.power = FB_BLANK_POWERDOWN;
+=======
+		panel->backlight.device->props.power = BACKLIGHT_POWER_OFF;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	panel->backlight.enabled = false;
 	panel->backlight.funcs->disable(old_conn_state, 0);
 
@@ -773,7 +777,11 @@ static void __intel_backlight_enable(const struct intel_crtc_state *crtc_state,
 	panel->backlight.funcs->enable(crtc_state, conn_state, panel->backlight.level);
 	panel->backlight.enabled = true;
 	if (panel->backlight.device)
+<<<<<<< HEAD
 		panel->backlight.device->props.power = FB_BLANK_UNBLANK;
+=======
+		panel->backlight.device->props.power = BACKLIGHT_POWER_ON;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void intel_backlight_enable(const struct intel_crtc_state *crtc_state,
@@ -870,12 +878,20 @@ static int intel_backlight_device_update_status(struct backlight_device *bd)
 	 */
 	if (panel->backlight.enabled) {
 		if (panel->backlight.power) {
+<<<<<<< HEAD
 			bool enable = bd->props.power == FB_BLANK_UNBLANK &&
+=======
+			bool enable = bd->props.power == BACKLIGHT_POWER_ON &&
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				bd->props.brightness != 0;
 			panel->backlight.power(connector, enable);
 		}
 	} else {
+<<<<<<< HEAD
 		bd->props.power = FB_BLANK_POWERDOWN;
+=======
+		bd->props.power = BACKLIGHT_POWER_OFF;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	drm_modeset_unlock(&i915->drm.mode_config.connection_mutex);
@@ -945,9 +961,15 @@ int intel_backlight_device_register(struct intel_connector *connector)
 					    props.max_brightness);
 
 	if (panel->backlight.enabled)
+<<<<<<< HEAD
 		props.power = FB_BLANK_UNBLANK;
 	else
 		props.power = FB_BLANK_POWERDOWN;
+=======
+		props.power = BACKLIGHT_POWER_ON;
+	else
+		props.power = BACKLIGHT_POWER_OFF;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	name = kstrdup_const("intel_backlight", GFP_KERNEL);
 	if (!name)
@@ -1011,7 +1033,11 @@ static u32 cnp_hz_to_pwm(struct intel_connector *connector, u32 pwm_freq_hz)
 {
 	struct drm_i915_private *i915 = to_i915(connector->base.dev);
 
+<<<<<<< HEAD
 	return DIV_ROUND_CLOSEST(KHz(RUNTIME_INFO(i915)->rawclk_freq),
+=======
+	return DIV_ROUND_CLOSEST(KHz(DISPLAY_RUNTIME_INFO(i915)->rawclk_freq),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				 pwm_freq_hz);
 }
 
@@ -1073,7 +1099,11 @@ static u32 pch_hz_to_pwm(struct intel_connector *connector, u32 pwm_freq_hz)
 {
 	struct drm_i915_private *i915 = to_i915(connector->base.dev);
 
+<<<<<<< HEAD
 	return DIV_ROUND_CLOSEST(KHz(RUNTIME_INFO(i915)->rawclk_freq),
+=======
+	return DIV_ROUND_CLOSEST(KHz(DISPLAY_RUNTIME_INFO(i915)->rawclk_freq),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				 pwm_freq_hz * 128);
 }
 
@@ -1091,7 +1121,11 @@ static u32 i9xx_hz_to_pwm(struct intel_connector *connector, u32 pwm_freq_hz)
 	int clock;
 
 	if (IS_PINEVIEW(i915))
+<<<<<<< HEAD
 		clock = KHz(RUNTIME_INFO(i915)->rawclk_freq);
+=======
+		clock = KHz(DISPLAY_RUNTIME_INFO(i915)->rawclk_freq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else
 		clock = KHz(i915->display.cdclk.hw.cdclk);
 
@@ -1109,7 +1143,11 @@ static u32 i965_hz_to_pwm(struct intel_connector *connector, u32 pwm_freq_hz)
 	int clock;
 
 	if (IS_G4X(i915))
+<<<<<<< HEAD
 		clock = KHz(RUNTIME_INFO(i915)->rawclk_freq);
+=======
+		clock = KHz(DISPLAY_RUNTIME_INFO(i915)->rawclk_freq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else
 		clock = KHz(i915->display.cdclk.hw.cdclk);
 
@@ -1133,7 +1171,11 @@ static u32 vlv_hz_to_pwm(struct intel_connector *connector, u32 pwm_freq_hz)
 			clock = MHz(25);
 		mul = 16;
 	} else {
+<<<<<<< HEAD
 		clock = KHz(RUNTIME_INFO(i915)->rawclk_freq);
+=======
+		clock = KHz(DISPLAY_RUNTIME_INFO(i915)->rawclk_freq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mul = 128;
 	}
 

@@ -543,6 +543,7 @@ static int do_procmap_query(struct proc_maps_private *priv, void __user *uarg)
 		}
 	}
 
+<<<<<<< HEAD
 	if (karg.build_id_size) {
 		__u32 build_id_sz;
 
@@ -558,6 +559,8 @@ static int do_procmap_query(struct proc_maps_private *priv, void __user *uarg)
 		}
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (karg.vma_name_size) {
 		size_t name_buf_sz = min_t(size_t, PATH_MAX, karg.vma_name_size);
 		const struct path *path;
@@ -924,8 +927,20 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
 {
 	/*
 	 * Don't forget to update Documentation/ on changes.
+<<<<<<< HEAD
 	 */
 	static const char mnemonics[BITS_PER_LONG][2] = {
+=======
+	 *
+	 * The length of the second argument of mnemonics[]
+	 * needs to be 3 instead of previously set 2
+	 * (i.e. from [BITS_PER_LONG][2] to [BITS_PER_LONG][3])
+	 * to avoid spurious
+	 * -Werror=unterminated-string-initialization warning
+	 *  with GCC 15
+	 */
+	static const char mnemonics[BITS_PER_LONG][3] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * In case if we meet a flag we don't know about.
 		 */
@@ -976,7 +991,13 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
 		[ilog2(VM_PKEY_BIT0)]	= "",
 		[ilog2(VM_PKEY_BIT1)]	= "",
 		[ilog2(VM_PKEY_BIT2)]	= "",
+<<<<<<< HEAD
 		[ilog2(VM_PKEY_BIT3)]	= "",
+=======
+#if VM_PKEY_BIT3
+		[ilog2(VM_PKEY_BIT3)]	= "",
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if VM_PKEY_BIT4
 		[ilog2(VM_PKEY_BIT4)]	= "",
 #endif
@@ -987,8 +1008,15 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
 #ifdef CONFIG_X86_USER_SHADOW_STACK
 		[ilog2(VM_SHADOW_STACK)] = "ss",
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_64BIT
 		[ilog2(VM_DROPPABLE)] = "dp",
+=======
+#if defined(CONFIG_64BIT) || defined(CONFIG_PPC32)
+		[ilog2(VM_DROPPABLE)] = "dp",
+#endif
+#ifdef CONFIG_64BIT
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		[ilog2(VM_SEALED)] = "sl",
 #endif
 	};
@@ -998,11 +1026,16 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
 	for (i = 0; i < BITS_PER_LONG; i++) {
 		if (!mnemonics[i][0])
 			continue;
+<<<<<<< HEAD
 		if (vma->vm_flags & (1UL << i)) {
 			seq_putc(m, mnemonics[i][0]);
 			seq_putc(m, mnemonics[i][1]);
 			seq_putc(m, ' ');
 		}
+=======
+		if (vma->vm_flags & (1UL << i))
+			seq_printf(m, "%s ", mnemonics[i]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	seq_putc(m, '\n');
 }

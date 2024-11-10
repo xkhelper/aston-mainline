@@ -52,6 +52,10 @@
 #include <linux/nfs.h>
 #include <linux/nfs4.h>
 #include <linux/nfs_fs.h>
+<<<<<<< HEAD
+=======
+#include <linux/nfs_common.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "nfs4_fs.h"
 #include "nfs4trace.h"
@@ -63,11 +67,15 @@
 
 #define NFSDBG_FACILITY		NFSDBG_XDR
 
+<<<<<<< HEAD
 /* Mapping from NFS error code to "errno" error code. */
 #define errno_NFSERR_IO		EIO
 
 struct compound_hdr;
 static int nfs4_stat_to_errno(int);
+=======
+struct compound_hdr;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void encode_layoutget(struct xdr_stream *xdr,
 			     const struct nfs4_layoutget_args *args,
 			     struct compound_hdr *hdr);
@@ -975,11 +983,14 @@ static __be32 *reserve_space(struct xdr_stream *xdr, size_t nbytes)
 	return p;
 }
 
+<<<<<<< HEAD
 static void encode_opaque_fixed(struct xdr_stream *xdr, const void *buf, size_t len)
 {
 	WARN_ON_ONCE(xdr_stream_encode_opaque_fixed(xdr, buf, len) < 0);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void encode_string(struct xdr_stream *xdr, unsigned int len, const char *str)
 {
 	WARN_ON_ONCE(xdr_stream_encode_opaque(xdr, str, len) < 0);
@@ -1424,12 +1435,21 @@ static inline void encode_openhdr(struct xdr_stream *xdr, const struct nfs_opena
  */
 	encode_nfs4_seqid(xdr, arg->seqid);
 	encode_share_access(xdr, arg->share_access);
+<<<<<<< HEAD
 	p = reserve_space(xdr, 36);
 	p = xdr_encode_hyper(p, arg->clientid);
 	*p++ = cpu_to_be32(24);
 	p = xdr_encode_opaque_fixed(p, "open id:", 8);
 	*p++ = cpu_to_be32(arg->server->s_dev);
 	*p++ = cpu_to_be32(arg->id.uniquifier);
+=======
+	p = reserve_space(xdr, 40);
+	p = xdr_encode_hyper(p, arg->clientid);
+	*p++ = cpu_to_be32(28);
+	p = xdr_encode_opaque_fixed(p, "open id:", 8);
+	*p++ = cpu_to_be32(arg->server->s_dev);
+	p = xdr_encode_hyper(p, arg->id.uniquifier);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xdr_encode_hyper(p, arg->id.create_time);
 }
 
@@ -3447,7 +3467,11 @@ static int decode_attr_link_support(struct xdr_stream *xdr, uint32_t *bitmap, ui
 		*res = be32_to_cpup(p);
 		bitmap[0] &= ~FATTR4_WORD0_LINK_SUPPORT;
 	}
+<<<<<<< HEAD
 	dprintk("%s: link support=%s\n", __func__, *res == 0 ? "false" : "true");
+=======
+	dprintk("%s: link support=%s\n", __func__, str_false_true(*res == 0));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -3465,7 +3489,11 @@ static int decode_attr_symlink_support(struct xdr_stream *xdr, uint32_t *bitmap,
 		*res = be32_to_cpup(p);
 		bitmap[0] &= ~FATTR4_WORD0_SYMLINK_SUPPORT;
 	}
+<<<<<<< HEAD
 	dprintk("%s: symlink support=%s\n", __func__, *res == 0 ? "false" : "true");
+=======
+	dprintk("%s: symlink support=%s\n", __func__, str_false_true(*res == 0));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -3607,7 +3635,11 @@ static int decode_attr_case_insensitive(struct xdr_stream *xdr, uint32_t *bitmap
 		*res = be32_to_cpup(p);
 		bitmap[0] &= ~FATTR4_WORD0_CASE_INSENSITIVE;
 	}
+<<<<<<< HEAD
 	dprintk("%s: case_insensitive=%s\n", __func__, *res == 0 ? "false" : "true");
+=======
+	dprintk("%s: case_insensitive=%s\n", __func__, str_false_true(*res == 0));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -3625,7 +3657,11 @@ static int decode_attr_case_preserving(struct xdr_stream *xdr, uint32_t *bitmap,
 		*res = be32_to_cpup(p);
 		bitmap[0] &= ~FATTR4_WORD0_CASE_PRESERVING;
 	}
+<<<<<<< HEAD
 	dprintk("%s: case_preserving=%s\n", __func__, *res == 0 ? "false" : "true");
+=======
+	dprintk("%s: case_preserving=%s\n", __func__, str_false_true(*res == 0));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -4333,8 +4369,12 @@ static int decode_attr_xattrsupport(struct xdr_stream *xdr, uint32_t *bitmap,
 		*res = be32_to_cpup(p);
 		bitmap[2] &= ~FATTR4_WORD2_XATTR_SUPPORT;
 	}
+<<<<<<< HEAD
 	dprintk("%s: XATTR support=%s\n", __func__,
 		*res == 0 ? "false" : "true");
+=======
+	dprintk("%s: XATTR support=%s\n", __func__, str_false_true(*res == 0));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -4409,6 +4449,7 @@ static int decode_access(struct xdr_stream *xdr, u32 *supported, u32 *access)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int decode_opaque_fixed(struct xdr_stream *xdr, void *buf, size_t len)
 {
 	ssize_t ret = xdr_stream_decode_opaque_fixed(xdr, buf, len);
@@ -4417,6 +4458,8 @@ static int decode_opaque_fixed(struct xdr_stream *xdr, void *buf, size_t len)
 	return 0;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int decode_stateid(struct xdr_stream *xdr, nfs4_stateid *stateid)
 {
 	return decode_opaque_fixed(xdr, stateid, NFS4_STATEID_SIZE);
@@ -7621,6 +7664,7 @@ int nfs4_decode_dirent(struct xdr_stream *xdr, struct nfs_entry *entry,
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * We need to translate between nfs status return values and
  * the local errno values which may not be the same.
@@ -7687,6 +7731,8 @@ nfs4_stat_to_errno(int stat)
 	return -stat;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_NFS_V4_2
 #include "nfs42xdr.c"
 #endif /* CONFIG_NFS_V4_2 */

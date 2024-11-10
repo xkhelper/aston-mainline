@@ -64,6 +64,10 @@
  *   This means a slightly higher tree locking latency.
  */
 
+<<<<<<< HEAD
+=======
+#if PAGE_SIZE > SZ_4K
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool btrfs_is_subpage(const struct btrfs_fs_info *fs_info, struct address_space *mapping)
 {
 	if (fs_info->sectorsize >= PAGE_SIZE)
@@ -85,6 +89,7 @@ bool btrfs_is_subpage(const struct btrfs_fs_info *fs_info, struct address_space 
 		return true;
 	return false;
 }
+<<<<<<< HEAD
 
 void btrfs_init_subpage_info(struct btrfs_subpage_info *subpage_info, u32 sectorsize)
 {
@@ -116,6 +121,9 @@ void btrfs_init_subpage_info(struct btrfs_subpage_info *subpage_info, u32 sector
 
 	subpage_info->total_nr_bits = cur;
 }
+=======
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int btrfs_attach_subpage(const struct btrfs_fs_info *fs_info,
 			 struct folio *folio, enum btrfs_subpage_type type)
@@ -163,7 +171,11 @@ struct btrfs_subpage *btrfs_alloc_subpage(const struct btrfs_fs_info *fs_info,
 	ASSERT(fs_info->sectorsize < PAGE_SIZE);
 
 	real_size = struct_size(ret, bitmaps,
+<<<<<<< HEAD
 			BITS_TO_LONGS(fs_info->subpage_info->total_nr_bits));
+=======
+			BITS_TO_LONGS(btrfs_bitmap_nr_max * fs_info->sectors_per_page));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = kzalloc(real_size, GFP_NOFS);
 	if (!ret)
 		return ERR_PTR(-ENOMEM);
@@ -246,7 +258,11 @@ static void btrfs_subpage_assert(const struct btrfs_fs_info *fs_info,
 									\
 	btrfs_subpage_assert(fs_info, folio, start, len);		\
 	__start_bit = offset_in_page(start) >> fs_info->sectorsize_bits; \
+<<<<<<< HEAD
 	__start_bit += fs_info->subpage_info->name##_offset;		\
+=======
+	__start_bit += fs_info->sectors_per_page * btrfs_bitmap_nr_##name; \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__start_bit;							\
 })
 
@@ -351,6 +367,11 @@ static bool btrfs_subpage_end_and_test_writer(const struct btrfs_fs_info *fs_inf
 	const int start_bit = subpage_calc_start_bit(fs_info, folio, locked, start, len);
 	const int nbits = (len >> fs_info->sectorsize_bits);
 	unsigned long flags;
+<<<<<<< HEAD
+=======
+	unsigned int cleared = 0;
+	int bit = start_bit;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool last;
 
 	btrfs_subpage_assert(fs_info, folio, start, len);
@@ -368,11 +389,20 @@ static bool btrfs_subpage_end_and_test_writer(const struct btrfs_fs_info *fs_inf
 		return true;
 	}
 
+<<<<<<< HEAD
 	ASSERT(atomic_read(&subpage->writers) >= nbits);
 	/* The target range should have been locked. */
 	ASSERT(bitmap_test_range_all_set(subpage->bitmaps, start_bit, nbits));
 	bitmap_clear(subpage->bitmaps, start_bit, nbits);
 	last = atomic_sub_and_test(nbits, &subpage->writers);
+=======
+	for_each_set_bit_from(bit, subpage->bitmaps, start_bit + nbits) {
+		clear_bit(bit, subpage->bitmaps);
+		cleared++;
+	}
+	ASSERT(atomic_read(&subpage->writers) >= cleared);
+	last = atomic_sub_and_test(cleared, &subpage->writers);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_unlock_irqrestore(&subpage->lock, flags);
 	return last;
 }
@@ -404,18 +434,62 @@ int btrfs_folio_start_writer_lock(const struct btrfs_fs_info *fs_info,
 	return 0;
 }
 
+<<<<<<< HEAD
 void btrfs_folio_end_writer_lock(const struct btrfs_fs_info *fs_info,
 				 struct folio *folio, u64 start, u32 len)
 {
+=======
+/*
+ * Handle different locked folios:
+ *
+ * - Non-subpage folio
+ *   Just unlock it.
+ *
+ * - folio locked but without any subpage locked
+ *   This happens either before writepage_delalloc() or the delalloc range is
+ *   already handled by previous folio.
+ *   We can simple unlock it.
+ *
+ * - folio locked with subpage range locked.
+ *   We go through the locked sectors inside the range and clear their locked
+ *   bitmap, reduce the writer lock number, and unlock the page if that's
+ *   the last locked range.
+ */
+void btrfs_folio_end_writer_lock(const struct btrfs_fs_info *fs_info,
+				 struct folio *folio, u64 start, u32 len)
+{
+	struct btrfs_subpage *subpage = folio_get_private(folio);
+
+	ASSERT(folio_test_locked(folio));
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (unlikely(!fs_info) || !btrfs_is_subpage(fs_info, folio->mapping)) {
 		folio_unlock(folio);
 		return;
 	}
+<<<<<<< HEAD
+=======
+
+	/*
+	 * For subpage case, there are two types of locked page.  With or
+	 * without writers number.
+	 *
+	 * Since we own the page lock, no one else could touch subpage::writers
+	 * and we are safe to do several atomic operations without spinlock.
+	 */
+	if (atomic_read(&subpage->writers) == 0) {
+		/* No writers, locked by plain lock_page(). */
+		folio_unlock(folio);
+		return;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	btrfs_subpage_clamp_range(folio, &start, &len);
 	if (btrfs_subpage_end_and_test_writer(fs_info, folio, start, len))
 		folio_unlock(folio);
 }
 
+<<<<<<< HEAD
 #define subpage_test_bitmap_all_set(fs_info, subpage, name)		\
 	bitmap_test_range_all_set(subpage->bitmaps,			\
 			fs_info->subpage_info->name##_offset,		\
@@ -425,6 +499,50 @@ void btrfs_folio_end_writer_lock(const struct btrfs_fs_info *fs_info,
 	bitmap_test_range_all_zero(subpage->bitmaps,			\
 			fs_info->subpage_info->name##_offset,		\
 			fs_info->subpage_info->bitmap_nr_bits)
+=======
+void btrfs_folio_end_writer_lock_bitmap(const struct btrfs_fs_info *fs_info,
+					struct folio *folio, unsigned long bitmap)
+{
+	struct btrfs_subpage *subpage = folio_get_private(folio);
+	const int start_bit = fs_info->sectors_per_page * btrfs_bitmap_nr_locked;
+	unsigned long flags;
+	bool last = false;
+	int cleared = 0;
+	int bit;
+
+	if (unlikely(!fs_info) || !btrfs_is_subpage(fs_info, folio->mapping)) {
+		folio_unlock(folio);
+		return;
+	}
+
+	if (atomic_read(&subpage->writers) == 0) {
+		/* No writers, locked by plain lock_page(). */
+		folio_unlock(folio);
+		return;
+	}
+
+	spin_lock_irqsave(&subpage->lock, flags);
+	for_each_set_bit(bit, &bitmap, fs_info->sectors_per_page) {
+		if (test_and_clear_bit(bit + start_bit, subpage->bitmaps))
+			cleared++;
+	}
+	ASSERT(atomic_read(&subpage->writers) >= cleared);
+	last = atomic_sub_and_test(cleared, &subpage->writers);
+	spin_unlock_irqrestore(&subpage->lock, flags);
+	if (last)
+		folio_unlock(folio);
+}
+
+#define subpage_test_bitmap_all_set(fs_info, subpage, name)		\
+	bitmap_test_range_all_set(subpage->bitmaps,			\
+			fs_info->sectors_per_page * btrfs_bitmap_nr_##name, \
+			fs_info->sectors_per_page)
+
+#define subpage_test_bitmap_all_zero(fs_info, subpage, name)		\
+	bitmap_test_range_all_zero(subpage->bitmaps,			\
+			fs_info->sectors_per_page * btrfs_bitmap_nr_##name, \
+			fs_info->sectors_per_page)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void btrfs_subpage_set_uptodate(const struct btrfs_fs_info *fs_info,
 				struct folio *folio, u64 start, u32 len)
@@ -729,6 +847,7 @@ void btrfs_folio_assert_not_dirty(const struct btrfs_fs_info *fs_info,
 }
 
 /*
+<<<<<<< HEAD
  * Handle different locked pages with different page sizes:
  *
  * - Page locked by plain lock_page()
@@ -776,6 +895,8 @@ void btrfs_folio_unlock_writer(struct btrfs_fs_info *fs_info,
 }
 
 /*
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * This is for folio already locked by plain lock_page()/folio_lock(), which
  * doesn't have any subpage awareness.
  *
@@ -803,7 +924,11 @@ void btrfs_folio_set_writer_lock(const struct btrfs_fs_info *fs_info,
 	ASSERT(bitmap_test_range_all_zero(subpage->bitmaps, start_bit, nbits));
 	bitmap_set(subpage->bitmaps, start_bit, nbits);
 	ret = atomic_add_return(nbits, &subpage->writers);
+<<<<<<< HEAD
 	ASSERT(ret <= fs_info->subpage_info->bitmap_nr_bits);
+=======
+	ASSERT(ret <= fs_info->sectors_per_page);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_unlock_irqrestore(&subpage->lock, flags);
 }
 
@@ -819,6 +944,7 @@ bool btrfs_subpage_find_writer_locked(const struct btrfs_fs_info *fs_info,
 				      struct folio *folio, u64 search_start,
 				      u64 *found_start_ret, u32 *found_len_ret)
 {
+<<<<<<< HEAD
 	struct btrfs_subpage_info *subpage_info = fs_info->subpage_info;
 	struct btrfs_subpage *subpage = folio_get_private(folio);
 	const unsigned int len = PAGE_SIZE - offset_in_page(search_start);
@@ -827,6 +953,15 @@ bool btrfs_subpage_find_writer_locked(const struct btrfs_fs_info *fs_info,
 	const unsigned int locked_bitmap_start = subpage_info->locked_offset;
 	const unsigned int locked_bitmap_end = locked_bitmap_start +
 					       subpage_info->bitmap_nr_bits;
+=======
+	struct btrfs_subpage *subpage = folio_get_private(folio);
+	const u32 sectors_per_page = fs_info->sectors_per_page;
+	const unsigned int len = PAGE_SIZE - offset_in_page(search_start);
+	const unsigned int start_bit = subpage_calc_start_bit(fs_info, folio,
+						locked, search_start, len);
+	const unsigned int locked_bitmap_start = sectors_per_page * btrfs_bitmap_nr_locked;
+	const unsigned int locked_bitmap_end = locked_bitmap_start + sectors_per_page;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long flags;
 	int first_zero;
 	int first_set;
@@ -855,6 +990,7 @@ out:
 	return found;
 }
 
+<<<<<<< HEAD
 /*
  * Unlike btrfs_folio_end_writer_lock() which unlocks a specified subpage range,
  * this ends all writer locked ranges of a page.
@@ -908,6 +1044,23 @@ void __cold btrfs_subpage_dump_bitmap(const struct btrfs_fs_info *fs_info,
 {
 	struct btrfs_subpage_info *subpage_info = fs_info->subpage_info;
 	struct btrfs_subpage *subpage;
+=======
+#define GET_SUBPAGE_BITMAP(subpage, fs_info, name, dst)			\
+{									\
+	const int sectors_per_page = fs_info->sectors_per_page;		\
+									\
+	ASSERT(sectors_per_page < BITS_PER_LONG);			\
+	*dst = bitmap_read(subpage->bitmaps,				\
+			   sectors_per_page * btrfs_bitmap_nr_##name,	\
+			   sectors_per_page);				\
+}
+
+void __cold btrfs_subpage_dump_bitmap(const struct btrfs_fs_info *fs_info,
+				      struct folio *folio, u64 start, u32 len)
+{
+	struct btrfs_subpage *subpage;
+	const u32 sectors_per_page = fs_info->sectors_per_page;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long uptodate_bitmap;
 	unsigned long dirty_bitmap;
 	unsigned long writeback_bitmap;
@@ -916,6 +1069,7 @@ void __cold btrfs_subpage_dump_bitmap(const struct btrfs_fs_info *fs_info,
 	unsigned long flags;
 
 	ASSERT(folio_test_private(folio) && folio_get_private(folio));
+<<<<<<< HEAD
 	ASSERT(subpage_info);
 	subpage = folio_get_private(folio);
 
@@ -926,15 +1080,51 @@ void __cold btrfs_subpage_dump_bitmap(const struct btrfs_fs_info *fs_info,
 	GET_SUBPAGE_BITMAP(subpage, subpage_info, ordered, &ordered_bitmap);
 	GET_SUBPAGE_BITMAP(subpage, subpage_info, checked, &checked_bitmap);
 	GET_SUBPAGE_BITMAP(subpage, subpage_info, locked, &checked_bitmap);
+=======
+	ASSERT(sectors_per_page > 1);
+	subpage = folio_get_private(folio);
+
+	spin_lock_irqsave(&subpage->lock, flags);
+	GET_SUBPAGE_BITMAP(subpage, fs_info, uptodate, &uptodate_bitmap);
+	GET_SUBPAGE_BITMAP(subpage, fs_info, dirty, &dirty_bitmap);
+	GET_SUBPAGE_BITMAP(subpage, fs_info, writeback, &writeback_bitmap);
+	GET_SUBPAGE_BITMAP(subpage, fs_info, ordered, &ordered_bitmap);
+	GET_SUBPAGE_BITMAP(subpage, fs_info, checked, &checked_bitmap);
+	GET_SUBPAGE_BITMAP(subpage, fs_info, locked, &checked_bitmap);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_unlock_irqrestore(&subpage->lock, flags);
 
 	dump_page(folio_page(folio, 0), "btrfs subpage dump");
 	btrfs_warn(fs_info,
 "start=%llu len=%u page=%llu, bitmaps uptodate=%*pbl dirty=%*pbl writeback=%*pbl ordered=%*pbl checked=%*pbl",
 		    start, len, folio_pos(folio),
+<<<<<<< HEAD
 		    subpage_info->bitmap_nr_bits, &uptodate_bitmap,
 		    subpage_info->bitmap_nr_bits, &dirty_bitmap,
 		    subpage_info->bitmap_nr_bits, &writeback_bitmap,
 		    subpage_info->bitmap_nr_bits, &ordered_bitmap,
 		    subpage_info->bitmap_nr_bits, &checked_bitmap);
+=======
+		    sectors_per_page, &uptodate_bitmap,
+		    sectors_per_page, &dirty_bitmap,
+		    sectors_per_page, &writeback_bitmap,
+		    sectors_per_page, &ordered_bitmap,
+		    sectors_per_page, &checked_bitmap);
+}
+
+void btrfs_get_subpage_dirty_bitmap(struct btrfs_fs_info *fs_info,
+				    struct folio *folio,
+				    unsigned long *ret_bitmap)
+{
+	struct btrfs_subpage *subpage;
+	unsigned long flags;
+
+	ASSERT(folio_test_private(folio) && folio_get_private(folio));
+	ASSERT(fs_info->sectors_per_page > 1);
+	subpage = folio_get_private(folio);
+
+	spin_lock_irqsave(&subpage->lock, flags);
+	GET_SUBPAGE_BITMAP(subpage, fs_info, dirty, ret_bitmap);
+	spin_unlock_irqrestore(&subpage->lock, flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

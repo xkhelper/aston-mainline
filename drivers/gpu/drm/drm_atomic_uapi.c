@@ -543,7 +543,11 @@ static int drm_atomic_plane_set_property(struct drm_plane *plane,
 					&state->fb_damage_clips,
 					val,
 					-1,
+<<<<<<< HEAD
 					sizeof(struct drm_rect),
+=======
+					sizeof(struct drm_mode_rect),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					&replaced);
 		return ret;
 	} else if (property == plane->scaling_filter_property) {

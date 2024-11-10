@@ -28,6 +28,7 @@
 #include <linux/xattr.h>
 #include <linux/msg.h>
 #include <linux/overflow.h>
+<<<<<<< HEAD
 #include <net/flow.h>
 
 /* How many LSMs were built into the kernel? */
@@ -52,6 +53,31 @@
 	(IS_ENABLED(CONFIG_SECURITY_LANDLOCK) ? 1 : 0) + \
 	(IS_ENABLED(CONFIG_IMA) ? 1 : 0) + \
 	(IS_ENABLED(CONFIG_EVM) ? 1 : 0))
+=======
+#include <linux/perf_event.h>
+#include <linux/fs.h>
+#include <net/flow.h>
+#include <net/sock.h>
+
+#define SECURITY_HOOK_ACTIVE_KEY(HOOK, IDX) security_hook_active_##HOOK##_##IDX
+
+/*
+ * Identifier for the LSM static calls.
+ * HOOK is an LSM hook as defined in linux/lsm_hookdefs.h
+ * IDX is the index of the static call. 0 <= NUM < MAX_LSM_COUNT
+ */
+#define LSM_STATIC_CALL(HOOK, IDX) lsm_static_call_##HOOK##_##IDX
+
+/*
+ * Call the macro M for each LSM hook MAX_LSM_COUNT times.
+ */
+#define LSM_LOOP_UNROLL(M, ...) 		\
+do {						\
+	UNROLL(MAX_LSM_COUNT, M, __VA_ARGS__)	\
+} while (0)
+
+#define LSM_DEFINE_UNROLL(M, ...) UNROLL(MAX_LSM_COUNT, M, __VA_ARGS__)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * These are descriptions of the reasons that can be passed to the
@@ -92,7 +118,10 @@ const char *const lockdown_reasons[LOCKDOWN_CONFIDENTIALITY_MAX + 1] = {
 	[LOCKDOWN_CONFIDENTIALITY_MAX] = "confidentiality",
 };
 
+<<<<<<< HEAD
 struct security_hook_heads security_hook_heads __ro_after_init;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static BLOCKING_NOTIFIER_HEAD(blocking_lsm_notifier_chain);
 
 static struct kmem_cache *lsm_file_cache;
@@ -108,9 +137,64 @@ static __initdata const char *chosen_major_lsm;
 static __initconst const char *const builtin_lsm_order = CONFIG_LSM;
 
 /* Ordered list of LSMs to initialize. */
+<<<<<<< HEAD
 static __initdata struct lsm_info **ordered_lsms;
 static __initdata struct lsm_info *exclusive;
 
+=======
+static __initdata struct lsm_info *ordered_lsms[MAX_LSM_COUNT + 1];
+static __initdata struct lsm_info *exclusive;
+
+#ifdef CONFIG_HAVE_STATIC_CALL
+#define LSM_HOOK_TRAMP(NAME, NUM) \
+	&STATIC_CALL_TRAMP(LSM_STATIC_CALL(NAME, NUM))
+#else
+#define LSM_HOOK_TRAMP(NAME, NUM) NULL
+#endif
+
+/*
+ * Define static calls and static keys for each LSM hook.
+ */
+#define DEFINE_LSM_STATIC_CALL(NUM, NAME, RET, ...)			\
+	DEFINE_STATIC_CALL_NULL(LSM_STATIC_CALL(NAME, NUM),		\
+				*((RET(*)(__VA_ARGS__))NULL));		\
+	DEFINE_STATIC_KEY_FALSE(SECURITY_HOOK_ACTIVE_KEY(NAME, NUM));
+
+#define LSM_HOOK(RET, DEFAULT, NAME, ...)				\
+	LSM_DEFINE_UNROLL(DEFINE_LSM_STATIC_CALL, NAME, RET, __VA_ARGS__)
+#include <linux/lsm_hook_defs.h>
+#undef LSM_HOOK
+#undef DEFINE_LSM_STATIC_CALL
+
+/*
+ * Initialise a table of static calls for each LSM hook.
+ * DEFINE_STATIC_CALL_NULL invocation above generates a key (STATIC_CALL_KEY)
+ * and a trampoline (STATIC_CALL_TRAMP) which are used to call
+ * __static_call_update when updating the static call.
+ *
+ * The static calls table is used by early LSMs, some architectures can fault on
+ * unaligned accesses and the fault handling code may not be ready by then.
+ * Thus, the static calls table should be aligned to avoid any unhandled faults
+ * in early init.
+ */
+struct lsm_static_calls_table
+	static_calls_table __ro_after_init __aligned(sizeof(u64)) = {
+#define INIT_LSM_STATIC_CALL(NUM, NAME)					\
+	(struct lsm_static_call) {					\
+		.key = &STATIC_CALL_KEY(LSM_STATIC_CALL(NAME, NUM)),	\
+		.trampoline = LSM_HOOK_TRAMP(NAME, NUM),		\
+		.active = &SECURITY_HOOK_ACTIVE_KEY(NAME, NUM),		\
+	},
+#define LSM_HOOK(RET, DEFAULT, NAME, ...)				\
+	.NAME = {							\
+		LSM_DEFINE_UNROLL(INIT_LSM_STATIC_CALL, NAME)		\
+	},
+#include <linux/lsm_hook_defs.h>
+#undef LSM_HOOK
+#undef INIT_LSM_STATIC_CALL
+	};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static __initdata bool debug;
 #define init_debug(...)						\
 	do {							\
@@ -171,7 +255,11 @@ static void __init append_ordered_lsm(struct lsm_info *lsm, const char *from)
 	if (exists_ordered_lsm(lsm))
 		return;
 
+<<<<<<< HEAD
 	if (WARN(last_lsm == LSM_COUNT, "%s: out of LSM slots!?\n", from))
+=======
+	if (WARN(last_lsm == MAX_LSM_COUNT, "%s: out of LSM static calls!?\n", from))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	/* Enable this LSM, if it is not already set. */
@@ -218,6 +306,10 @@ static void __init lsm_set_blob_sizes(struct lsm_blob_sizes *needed)
 
 	lsm_set_blob_size(&needed->lbs_cred, &blob_sizes.lbs_cred);
 	lsm_set_blob_size(&needed->lbs_file, &blob_sizes.lbs_file);
+<<<<<<< HEAD
+=======
+	lsm_set_blob_size(&needed->lbs_ib, &blob_sizes.lbs_ib);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * The inode blob gets an rcu_head in addition to
 	 * what the modules might need.
@@ -226,11 +318,24 @@ static void __init lsm_set_blob_sizes(struct lsm_blob_sizes *needed)
 		blob_sizes.lbs_inode = sizeof(struct rcu_head);
 	lsm_set_blob_size(&needed->lbs_inode, &blob_sizes.lbs_inode);
 	lsm_set_blob_size(&needed->lbs_ipc, &blob_sizes.lbs_ipc);
+<<<<<<< HEAD
 	lsm_set_blob_size(&needed->lbs_msg_msg, &blob_sizes.lbs_msg_msg);
 	lsm_set_blob_size(&needed->lbs_superblock, &blob_sizes.lbs_superblock);
 	lsm_set_blob_size(&needed->lbs_task, &blob_sizes.lbs_task);
 	lsm_set_blob_size(&needed->lbs_xattr_count,
 			  &blob_sizes.lbs_xattr_count);
+=======
+	lsm_set_blob_size(&needed->lbs_key, &blob_sizes.lbs_key);
+	lsm_set_blob_size(&needed->lbs_msg_msg, &blob_sizes.lbs_msg_msg);
+	lsm_set_blob_size(&needed->lbs_perf_event, &blob_sizes.lbs_perf_event);
+	lsm_set_blob_size(&needed->lbs_sock, &blob_sizes.lbs_sock);
+	lsm_set_blob_size(&needed->lbs_superblock, &blob_sizes.lbs_superblock);
+	lsm_set_blob_size(&needed->lbs_task, &blob_sizes.lbs_task);
+	lsm_set_blob_size(&needed->lbs_tun_dev, &blob_sizes.lbs_tun_dev);
+	lsm_set_blob_size(&needed->lbs_xattr_count,
+			  &blob_sizes.lbs_xattr_count);
+	lsm_set_blob_size(&needed->lbs_bdev, &blob_sizes.lbs_bdev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Prepare LSM for initialization. */
@@ -268,7 +373,11 @@ static void __init initialize_lsm(struct lsm_info *lsm)
  * Current index to use while initializing the lsm id list.
  */
 u32 lsm_active_cnt __ro_after_init;
+<<<<<<< HEAD
 const struct lsm_id *lsm_idlist[LSM_CONFIG_COUNT];
+=======
+const struct lsm_id *lsm_idlist[MAX_LSM_COUNT];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Populate ordered LSMs list from comma-separated LSM name list. */
 static void __init ordered_lsm_parse(const char *order, const char *origin)
@@ -350,6 +459,28 @@ static void __init ordered_lsm_parse(const char *order, const char *origin)
 	kfree(sep);
 }
 
+<<<<<<< HEAD
+=======
+static void __init lsm_static_call_init(struct security_hook_list *hl)
+{
+	struct lsm_static_call *scall = hl->scalls;
+	int i;
+
+	for (i = 0; i < MAX_LSM_COUNT; i++) {
+		/* Update the first static call that is not used yet */
+		if (!scall->hl) {
+			__static_call_update(scall->key, scall->trampoline,
+					     hl->hook.lsm_func_addr);
+			scall->hl = hl;
+			static_branch_enable(scall->active);
+			return;
+		}
+		scall++;
+	}
+	panic("%s - Ran out of static slots.\n", __func__);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void __init lsm_early_cred(struct cred *cred);
 static void __init lsm_early_task(struct task_struct *task);
 
@@ -378,9 +509,12 @@ static void __init ordered_lsm_init(void)
 {
 	struct lsm_info **lsm;
 
+<<<<<<< HEAD
 	ordered_lsms = kcalloc(LSM_COUNT + 1, sizeof(*ordered_lsms),
 			       GFP_KERNEL);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (chosen_lsm_order) {
 		if (chosen_major_lsm) {
 			pr_warn("security=%s is ignored because it is superseded by lsm=%s\n",
@@ -398,12 +532,29 @@ static void __init ordered_lsm_init(void)
 
 	init_debug("cred blob size       = %d\n", blob_sizes.lbs_cred);
 	init_debug("file blob size       = %d\n", blob_sizes.lbs_file);
+<<<<<<< HEAD
 	init_debug("inode blob size      = %d\n", blob_sizes.lbs_inode);
 	init_debug("ipc blob size        = %d\n", blob_sizes.lbs_ipc);
 	init_debug("msg_msg blob size    = %d\n", blob_sizes.lbs_msg_msg);
 	init_debug("superblock blob size = %d\n", blob_sizes.lbs_superblock);
 	init_debug("task blob size       = %d\n", blob_sizes.lbs_task);
 	init_debug("xattr slots          = %d\n", blob_sizes.lbs_xattr_count);
+=======
+	init_debug("ib blob size         = %d\n", blob_sizes.lbs_ib);
+	init_debug("inode blob size      = %d\n", blob_sizes.lbs_inode);
+	init_debug("ipc blob size        = %d\n", blob_sizes.lbs_ipc);
+#ifdef CONFIG_KEYS
+	init_debug("key blob size        = %d\n", blob_sizes.lbs_key);
+#endif /* CONFIG_KEYS */
+	init_debug("msg_msg blob size    = %d\n", blob_sizes.lbs_msg_msg);
+	init_debug("sock blob size       = %d\n", blob_sizes.lbs_sock);
+	init_debug("superblock blob size = %d\n", blob_sizes.lbs_superblock);
+	init_debug("perf event blob size = %d\n", blob_sizes.lbs_perf_event);
+	init_debug("task blob size       = %d\n", blob_sizes.lbs_task);
+	init_debug("tun device blob size = %d\n", blob_sizes.lbs_tun_dev);
+	init_debug("xattr slots          = %d\n", blob_sizes.lbs_xattr_count);
+	init_debug("bdev blob size       = %d\n", blob_sizes.lbs_bdev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Create any kmem_caches needed for blobs
@@ -421,19 +572,25 @@ static void __init ordered_lsm_init(void)
 	lsm_early_task(current);
 	for (lsm = ordered_lsms; *lsm; lsm++)
 		initialize_lsm(*lsm);
+<<<<<<< HEAD
 
 	kfree(ordered_lsms);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int __init early_security_init(void)
 {
 	struct lsm_info *lsm;
 
+<<<<<<< HEAD
 #define LSM_HOOK(RET, DEFAULT, NAME, ...) \
 	INIT_HLIST_HEAD(&security_hook_heads.NAME);
 #include "linux/lsm_hook_defs.h"
 #undef LSM_HOOK
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (lsm = __start_early_lsm_info; lsm < __end_early_lsm_info; lsm++) {
 		if (!lsm->enabled)
 			lsm->enabled = &lsm_enabled_true;
@@ -554,14 +711,22 @@ void __init security_add_hooks(struct security_hook_list *hooks, int count,
 	 * Look at the previous entry, if there is one, for duplication.
 	 */
 	if (lsm_active_cnt == 0 || lsm_idlist[lsm_active_cnt - 1] != lsmid) {
+<<<<<<< HEAD
 		if (lsm_active_cnt >= LSM_CONFIG_COUNT)
+=======
+		if (lsm_active_cnt >= MAX_LSM_COUNT)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			panic("%s Too many LSMs registered.\n", __func__);
 		lsm_idlist[lsm_active_cnt++] = lsmid;
 	}
 
 	for (i = 0; i < count; i++) {
 		hooks[i].lsmid = lsmid;
+<<<<<<< HEAD
 		hlist_add_tail_rcu(&hooks[i].list, hooks[i].head);
+=======
+		lsm_static_call_init(&hooks[i]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/*
@@ -596,6 +761,32 @@ int unregister_blocking_lsm_notifier(struct notifier_block *nb)
 EXPORT_SYMBOL(unregister_blocking_lsm_notifier);
 
 /**
+<<<<<<< HEAD
+=======
+ * lsm_blob_alloc - allocate a composite blob
+ * @dest: the destination for the blob
+ * @size: the size of the blob
+ * @gfp: allocation type
+ *
+ * Allocate a blob for all the modules
+ *
+ * Returns 0, or -ENOMEM if memory can't be allocated.
+ */
+static int lsm_blob_alloc(void **dest, size_t size, gfp_t gfp)
+{
+	if (size == 0) {
+		*dest = NULL;
+		return 0;
+	}
+
+	*dest = kzalloc(size, gfp);
+	if (*dest == NULL)
+		return -ENOMEM;
+	return 0;
+}
+
+/**
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * lsm_cred_alloc - allocate a composite cred blob
  * @cred: the cred that needs a blob
  * @gfp: allocation type
@@ -606,6 +797,7 @@ EXPORT_SYMBOL(unregister_blocking_lsm_notifier);
  */
 static int lsm_cred_alloc(struct cred *cred, gfp_t gfp)
 {
+<<<<<<< HEAD
 	if (blob_sizes.lbs_cred == 0) {
 		cred->security = NULL;
 		return 0;
@@ -615,6 +807,9 @@ static int lsm_cred_alloc(struct cred *cred, gfp_t gfp)
 	if (cred->security == NULL)
 		return -ENOMEM;
 	return 0;
+=======
+	return lsm_blob_alloc(&cred->security, blob_sizes.lbs_cred, gfp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -655,19 +850,31 @@ static int lsm_file_alloc(struct file *file)
 /**
  * lsm_inode_alloc - allocate a composite inode blob
  * @inode: the inode that needs a blob
+<<<<<<< HEAD
+=======
+ * @gfp: allocation flags
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Allocate the inode blob for all the modules
  *
  * Returns 0, or -ENOMEM if memory can't be allocated.
  */
+<<<<<<< HEAD
 int lsm_inode_alloc(struct inode *inode)
+=======
+static int lsm_inode_alloc(struct inode *inode, gfp_t gfp)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (!lsm_inode_cache) {
 		inode->i_security = NULL;
 		return 0;
 	}
 
+<<<<<<< HEAD
 	inode->i_security = kmem_cache_zalloc(lsm_inode_cache, GFP_NOFS);
+=======
+	inode->i_security = kmem_cache_zalloc(lsm_inode_cache, gfp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (inode->i_security == NULL)
 		return -ENOMEM;
 	return 0;
@@ -683,6 +890,7 @@ int lsm_inode_alloc(struct inode *inode)
  */
 static int lsm_task_alloc(struct task_struct *task)
 {
+<<<<<<< HEAD
 	if (blob_sizes.lbs_task == 0) {
 		task->security = NULL;
 		return 0;
@@ -692,6 +900,9 @@ static int lsm_task_alloc(struct task_struct *task)
 	if (task->security == NULL)
 		return -ENOMEM;
 	return 0;
+=======
+	return lsm_blob_alloc(&task->security, blob_sizes.lbs_task, GFP_KERNEL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -704,6 +915,7 @@ static int lsm_task_alloc(struct task_struct *task)
  */
 static int lsm_ipc_alloc(struct kern_ipc_perm *kip)
 {
+<<<<<<< HEAD
 	if (blob_sizes.lbs_ipc == 0) {
 		kip->security = NULL;
 		return 0;
@@ -715,6 +927,26 @@ static int lsm_ipc_alloc(struct kern_ipc_perm *kip)
 	return 0;
 }
 
+=======
+	return lsm_blob_alloc(&kip->security, blob_sizes.lbs_ipc, GFP_KERNEL);
+}
+
+#ifdef CONFIG_KEYS
+/**
+ * lsm_key_alloc - allocate a composite key blob
+ * @key: the key that needs a blob
+ *
+ * Allocate the key blob for all the modules
+ *
+ * Returns 0, or -ENOMEM if memory can't be allocated.
+ */
+static int lsm_key_alloc(struct key *key)
+{
+	return lsm_blob_alloc(&key->security, blob_sizes.lbs_key, GFP_KERNEL);
+}
+#endif /* CONFIG_KEYS */
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * lsm_msg_msg_alloc - allocate a composite msg_msg blob
  * @mp: the msg_msg that needs a blob
@@ -725,6 +957,7 @@ static int lsm_ipc_alloc(struct kern_ipc_perm *kip)
  */
 static int lsm_msg_msg_alloc(struct msg_msg *mp)
 {
+<<<<<<< HEAD
 	if (blob_sizes.lbs_msg_msg == 0) {
 		mp->security = NULL;
 		return 0;
@@ -733,6 +966,31 @@ static int lsm_msg_msg_alloc(struct msg_msg *mp)
 	mp->security = kzalloc(blob_sizes.lbs_msg_msg, GFP_KERNEL);
 	if (mp->security == NULL)
 		return -ENOMEM;
+=======
+	return lsm_blob_alloc(&mp->security, blob_sizes.lbs_msg_msg,
+			      GFP_KERNEL);
+}
+
+/**
+ * lsm_bdev_alloc - allocate a composite block_device blob
+ * @bdev: the block_device that needs a blob
+ *
+ * Allocate the block_device blob for all the modules
+ *
+ * Returns 0, or -ENOMEM if memory can't be allocated.
+ */
+static int lsm_bdev_alloc(struct block_device *bdev)
+{
+	if (blob_sizes.lbs_bdev == 0) {
+		bdev->bd_security = NULL;
+		return 0;
+	}
+
+	bdev->bd_security = kzalloc(blob_sizes.lbs_bdev, GFP_KERNEL);
+	if (!bdev->bd_security)
+		return -ENOMEM;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -760,6 +1018,7 @@ static void __init lsm_early_task(struct task_struct *task)
  */
 static int lsm_superblock_alloc(struct super_block *sb)
 {
+<<<<<<< HEAD
 	if (blob_sizes.lbs_superblock == 0) {
 		sb->s_security = NULL;
 		return 0;
@@ -769,6 +1028,10 @@ static int lsm_superblock_alloc(struct super_block *sb)
 	if (sb->s_security == NULL)
 		return -ENOMEM;
 	return 0;
+=======
+	return lsm_blob_alloc(&sb->s_security, blob_sizes.lbs_superblock,
+			      GFP_KERNEL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -853,6 +1116,7 @@ out:
  * call_int_hook:
  *	This is a hook that returns a value.
  */
+<<<<<<< HEAD
 
 #define call_void_hook(FUNC, ...)				\
 	do {							\
@@ -876,6 +1140,45 @@ out:
 	RC;							\
 })
 
+=======
+#define __CALL_STATIC_VOID(NUM, HOOK, ...)				     \
+do {									     \
+	if (static_branch_unlikely(&SECURITY_HOOK_ACTIVE_KEY(HOOK, NUM))) {    \
+		static_call(LSM_STATIC_CALL(HOOK, NUM))(__VA_ARGS__);	     \
+	}								     \
+} while (0);
+
+#define call_void_hook(HOOK, ...)                                 \
+	do {                                                      \
+		LSM_LOOP_UNROLL(__CALL_STATIC_VOID, HOOK, __VA_ARGS__); \
+	} while (0)
+
+
+#define __CALL_STATIC_INT(NUM, R, HOOK, LABEL, ...)			     \
+do {									     \
+	if (static_branch_unlikely(&SECURITY_HOOK_ACTIVE_KEY(HOOK, NUM))) {  \
+		R = static_call(LSM_STATIC_CALL(HOOK, NUM))(__VA_ARGS__);    \
+		if (R != LSM_RET_DEFAULT(HOOK))				     \
+			goto LABEL;					     \
+	}								     \
+} while (0);
+
+#define call_int_hook(HOOK, ...)					\
+({									\
+	__label__ OUT;							\
+	int RC = LSM_RET_DEFAULT(HOOK);					\
+									\
+	LSM_LOOP_UNROLL(__CALL_STATIC_INT, RC, HOOK, OUT, __VA_ARGS__);	\
+OUT:									\
+	RC;								\
+})
+
+#define lsm_for_each_hook(scall, NAME)					\
+	for (scall = static_calls_table.NAME;				\
+	     scall - static_calls_table.NAME < MAX_LSM_COUNT; scall++)  \
+		if (static_key_enabled(&scall->active->key))
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Security operations */
 
 /**
@@ -1110,11 +1413,16 @@ int security_settime64(const struct timespec64 *ts, const struct timezone *tz)
  */
 int security_vm_enough_memory_mm(struct mm_struct *mm, long pages)
 {
+<<<<<<< HEAD
 	struct security_hook_list *hp;
+=======
+	struct lsm_static_call *scall;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int cap_sys_admin = 1;
 	int rc;
 
 	/*
+<<<<<<< HEAD
 	 * The module will respond with a positive value if
 	 * it thinks the __vm_enough_memory() call should be
 	 * made with the cap_sys_admin set. If all of the modules
@@ -1124,6 +1432,16 @@ int security_vm_enough_memory_mm(struct mm_struct *mm, long pages)
 	hlist_for_each_entry(hp, &security_hook_heads.vm_enough_memory, list) {
 		rc = hp->hook.vm_enough_memory(mm, pages);
 		if (rc <= 0) {
+=======
+	 * The module will respond with 0 if it thinks the __vm_enough_memory()
+	 * call should be made with the cap_sys_admin set. If all of the modules
+	 * agree that it should be set it will. If any module thinks it should
+	 * not be set it won't.
+	 */
+	lsm_for_each_hook(scall, vm_enough_memory) {
+		rc = scall->hl->hook.vm_enough_memory(mm, pages);
+		if (rc < 0) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			cap_sys_admin = 0;
 			break;
 		}
@@ -1269,6 +1587,7 @@ int security_fs_context_dup(struct fs_context *fc, struct fs_context *src_fc)
 int security_fs_context_parse_param(struct fs_context *fc,
 				    struct fs_parameter *param)
 {
+<<<<<<< HEAD
 	struct security_hook_list *hp;
 	int trc;
 	int rc = -ENOPARAM;
@@ -1276,6 +1595,14 @@ int security_fs_context_parse_param(struct fs_context *fc,
 	hlist_for_each_entry(hp, &security_hook_heads.fs_context_parse_param,
 			     list) {
 		trc = hp->hook.fs_context_parse_param(fc, param);
+=======
+	struct lsm_static_call *scall;
+	int trc;
+	int rc = -ENOPARAM;
+
+	lsm_for_each_hook(scall, fs_context_parse_param) {
+		trc = scall->hl->hook.fs_context_parse_param(fc, param);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (trc == 0)
 			rc = 0;
 		else if (trc != -ENOPARAM)
@@ -1505,12 +1832,20 @@ int security_sb_set_mnt_opts(struct super_block *sb,
 			     unsigned long kern_flags,
 			     unsigned long *set_kern_flags)
 {
+<<<<<<< HEAD
 	struct security_hook_list *hp;
 	int rc = mnt_opts ? -EOPNOTSUPP : LSM_RET_DEFAULT(sb_set_mnt_opts);
 
 	hlist_for_each_entry(hp, &security_hook_heads.sb_set_mnt_opts,
 			     list) {
 		rc = hp->hook.sb_set_mnt_opts(sb, mnt_opts, kern_flags,
+=======
+	struct lsm_static_call *scall;
+	int rc = mnt_opts ? -EOPNOTSUPP : LSM_RET_DEFAULT(sb_set_mnt_opts);
+
+	lsm_for_each_hook(scall, sb_set_mnt_opts) {
+		rc = scall->hl->hook.sb_set_mnt_opts(sb, mnt_opts, kern_flags,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					      set_kern_flags);
 		if (rc != LSM_RET_DEFAULT(sb_set_mnt_opts))
 			break;
@@ -1575,6 +1910,10 @@ int security_path_notify(const struct path *path, u64 mask,
 /**
  * security_inode_alloc() - Allocate an inode LSM blob
  * @inode: the inode
+<<<<<<< HEAD
+=======
+ * @gfp: allocation flags
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Allocate and attach a security structure to @inode->i_security.  The
  * i_security field is initialized to NULL when the inode structure is
@@ -1582,9 +1921,15 @@ int security_path_notify(const struct path *path, u64 mask,
  *
  * Return: Return 0 if operation was successful.
  */
+<<<<<<< HEAD
 int security_inode_alloc(struct inode *inode)
 {
 	int rc = lsm_inode_alloc(inode);
+=======
+int security_inode_alloc(struct inode *inode, gfp_t gfp)
+{
+	int rc = lsm_inode_alloc(inode, gfp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (unlikely(rc))
 		return rc;
@@ -1596,9 +1941,14 @@ int security_inode_alloc(struct inode *inode)
 
 static void inode_free_by_rcu(struct rcu_head *head)
 {
+<<<<<<< HEAD
 	/*
 	 * The rcu head is at the start of the inode blob
 	 */
+=======
+	/* The rcu head is at the start of the inode blob */
+	call_void_hook(inode_free_security_rcu, head);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kmem_cache_free(lsm_inode_cache, head);
 }
 
@@ -1606,11 +1956,26 @@ static void inode_free_by_rcu(struct rcu_head *head)
  * security_inode_free() - Free an inode's LSM blob
  * @inode: the inode
  *
+<<<<<<< HEAD
  * Deallocate the inode security structure and set @inode->i_security to NULL.
+=======
+ * Release any LSM resources associated with @inode, although due to the
+ * inode's RCU protections it is possible that the resources will not be
+ * fully released until after the current RCU grace period has elapsed.
+ *
+ * It is important for LSMs to note that despite being present in a call to
+ * security_inode_free(), @inode may still be referenced in a VFS path walk
+ * and calls to security_inode_permission() may be made during, or after,
+ * a call to security_inode_free().  For this reason the inode->i_security
+ * field is released via a call_rcu() callback and any LSMs which need to
+ * retain inode state for use in security_inode_permission() should only
+ * release that state in the inode_free_security_rcu() LSM hook callback.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 void security_inode_free(struct inode *inode)
 {
 	call_void_hook(inode_free_security, inode);
+<<<<<<< HEAD
 	/*
 	 * The inode may still be referenced in a path walk and
 	 * a call to security_inode_permission() can be made
@@ -1623,6 +1988,11 @@ void security_inode_free(struct inode *inode)
 	if (inode->i_security)
 		call_rcu((struct rcu_head *)inode->i_security,
 			 inode_free_by_rcu);
+=======
+	if (!inode->i_security)
+		return;
+	call_rcu((struct rcu_head *)inode->i_security, inode_free_by_rcu);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -1705,7 +2075,11 @@ int security_inode_init_security(struct inode *inode, struct inode *dir,
 				 const struct qstr *qstr,
 				 const initxattrs initxattrs, void *fs_data)
 {
+<<<<<<< HEAD
 	struct security_hook_list *hp;
+=======
+	struct lsm_static_call *scall;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct xattr *new_xattrs = NULL;
 	int ret = -EOPNOTSUPP, xattr_count = 0;
 
@@ -1723,9 +2097,14 @@ int security_inode_init_security(struct inode *inode, struct inode *dir,
 			return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	hlist_for_each_entry(hp, &security_hook_heads.inode_init_security,
 			     list) {
 		ret = hp->hook.inode_init_security(inode, dir, qstr, new_xattrs,
+=======
+	lsm_for_each_hook(scall, inode_init_security) {
+		ret = scall->hl->hook.inode_init_security(inode, dir, qstr, new_xattrs,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						  &xattr_count);
 		if (ret && ret != -EOPNOTSUPP)
 			goto out;
@@ -2661,19 +3040,28 @@ EXPORT_SYMBOL(security_inode_copy_up);
  * lower layer to the union/overlay layer.   The caller is responsible for
  * reading and writing the xattrs, this hook is merely a filter.
  *
+<<<<<<< HEAD
  * Return: Returns 0 to accept the xattr, 1 to discard the xattr, -EOPNOTSUPP
  *         if the security module does not know about attribute, or a negative
  *         error code to abort the copy up.
+=======
+ * Return: Returns 0 to accept the xattr, -ECANCELED to discard the xattr,
+ *         -EOPNOTSUPP if the security module does not know about attribute,
+ *         or a negative error code to abort the copy up.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int security_inode_copy_up_xattr(struct dentry *src, const char *name)
 {
 	int rc;
 
+<<<<<<< HEAD
 	/*
 	 * The implementation can return 0 (accept the xattr), 1 (discard the
 	 * xattr), -EOPNOTSUPP if it does not know anything about the xattr or
 	 * any other error code in case of an error.
 	 */
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rc = call_int_hook(inode_copy_up_xattr, src, name);
 	if (rc != LSM_RET_DEFAULT(inode_copy_up_xattr))
 		return rc;
@@ -2683,6 +3071,29 @@ int security_inode_copy_up_xattr(struct dentry *src, const char *name)
 EXPORT_SYMBOL(security_inode_copy_up_xattr);
 
 /**
+<<<<<<< HEAD
+=======
+ * security_inode_setintegrity() - Set the inode's integrity data
+ * @inode: inode
+ * @type: type of integrity, e.g. hash digest, signature, etc
+ * @value: the integrity value
+ * @size: size of the integrity value
+ *
+ * Register a verified integrity measurement of a inode with LSMs.
+ * LSMs should free the previously saved data if @value is NULL.
+ *
+ * Return: Returns 0 on success, negative values on failure.
+ */
+int security_inode_setintegrity(const struct inode *inode,
+				enum lsm_integrity_type type, const void *value,
+				size_t size)
+{
+	return call_int_hook(inode_setintegrity, inode, type, value, size);
+}
+EXPORT_SYMBOL(security_inode_setintegrity);
+
+/**
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * security_kernfs_init_security() - Init LSM context for a kernfs node
  * @kn_dir: parent kernfs node
  * @kn: the kernfs node to initialize
@@ -2931,6 +3342,11 @@ int security_file_fcntl(struct file *file, unsigned int cmd, unsigned long arg)
  * Save owner security information (typically from current->security) in
  * file->f_security for later use by the send_sigiotask hook.
  *
+<<<<<<< HEAD
+=======
+ * This hook is called with file->f_owner.lock held.
+ *
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Return: Returns 0 on success.
  */
 void security_file_set_fowner(struct file *file)
@@ -3557,10 +3973,17 @@ int security_task_prctl(int option, unsigned long arg2, unsigned long arg3,
 {
 	int thisrc;
 	int rc = LSM_RET_DEFAULT(task_prctl);
+<<<<<<< HEAD
 	struct security_hook_list *hp;
 
 	hlist_for_each_entry(hp, &security_hook_heads.task_prctl, list) {
 		thisrc = hp->hook.task_prctl(option, arg2, arg3, arg4, arg5);
+=======
+	struct lsm_static_call *scall;
+
+	lsm_for_each_hook(scall, task_prctl) {
+		thisrc = scall->hl->hook.task_prctl(option, arg2, arg3, arg4, arg5);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (thisrc != LSM_RET_DEFAULT(task_prctl)) {
 			rc = thisrc;
 			if (thisrc != 0)
@@ -3966,7 +4389,11 @@ EXPORT_SYMBOL(security_d_instantiate);
 int security_getselfattr(unsigned int attr, struct lsm_ctx __user *uctx,
 			 u32 __user *size, u32 flags)
 {
+<<<<<<< HEAD
 	struct security_hook_list *hp;
+=======
+	struct lsm_static_call *scall;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct lsm_ctx lctx = { .id = LSM_ID_UNDEF, };
 	u8 __user *base = (u8 __user *)uctx;
 	u32 entrysize;
@@ -4004,13 +4431,22 @@ int security_getselfattr(unsigned int attr, struct lsm_ctx __user *uctx,
 	 * In the usual case gather all the data from the LSMs.
 	 * In the single case only get the data from the LSM specified.
 	 */
+<<<<<<< HEAD
 	hlist_for_each_entry(hp, &security_hook_heads.getselfattr, list) {
 		if (single && lctx.id != hp->lsmid->id)
+=======
+	lsm_for_each_hook(scall, getselfattr) {
+		if (single && lctx.id != scall->hl->lsmid->id)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 		entrysize = left;
 		if (base)
 			uctx = (struct lsm_ctx __user *)(base + total);
+<<<<<<< HEAD
 		rc = hp->hook.getselfattr(attr, uctx, &entrysize, flags);
+=======
+		rc = scall->hl->hook.getselfattr(attr, uctx, &entrysize, flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (rc == -EOPNOTSUPP) {
 			rc = 0;
 			continue;
@@ -4059,7 +4495,11 @@ int security_getselfattr(unsigned int attr, struct lsm_ctx __user *uctx,
 int security_setselfattr(unsigned int attr, struct lsm_ctx __user *uctx,
 			 u32 size, u32 flags)
 {
+<<<<<<< HEAD
 	struct security_hook_list *hp;
+=======
+	struct lsm_static_call *scall;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct lsm_ctx *lctx;
 	int rc = LSM_RET_DEFAULT(setselfattr);
 	u64 required_len;
@@ -4082,9 +4522,15 @@ int security_setselfattr(unsigned int attr, struct lsm_ctx __user *uctx,
 		goto free_out;
 	}
 
+<<<<<<< HEAD
 	hlist_for_each_entry(hp, &security_hook_heads.setselfattr, list)
 		if ((hp->lsmid->id) == lctx->id) {
 			rc = hp->hook.setselfattr(attr, lctx, size, flags);
+=======
+	lsm_for_each_hook(scall, setselfattr)
+		if ((scall->hl->lsmid->id) == lctx->id) {
+			rc = scall->hl->hook.setselfattr(attr, lctx, size, flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		}
 
@@ -4107,12 +4553,21 @@ free_out:
 int security_getprocattr(struct task_struct *p, int lsmid, const char *name,
 			 char **value)
 {
+<<<<<<< HEAD
 	struct security_hook_list *hp;
 
 	hlist_for_each_entry(hp, &security_hook_heads.getprocattr, list) {
 		if (lsmid != 0 && lsmid != hp->lsmid->id)
 			continue;
 		return hp->hook.getprocattr(p, name, value);
+=======
+	struct lsm_static_call *scall;
+
+	lsm_for_each_hook(scall, getprocattr) {
+		if (lsmid != 0 && lsmid != scall->hl->lsmid->id)
+			continue;
+		return scall->hl->hook.getprocattr(p, name, value);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return LSM_RET_DEFAULT(getprocattr);
 }
@@ -4131,12 +4586,21 @@ int security_getprocattr(struct task_struct *p, int lsmid, const char *name,
  */
 int security_setprocattr(int lsmid, const char *name, void *value, size_t size)
 {
+<<<<<<< HEAD
 	struct security_hook_list *hp;
 
 	hlist_for_each_entry(hp, &security_hook_heads.setprocattr, list) {
 		if (lsmid != 0 && lsmid != hp->lsmid->id)
 			continue;
 		return hp->hook.setprocattr(name, value, size);
+=======
+	struct lsm_static_call *scall;
+
+	lsm_for_each_hook(scall, setprocattr) {
+		if (lsmid != 0 && lsmid != scall->hl->lsmid->id)
+			continue;
+		return scall->hl->hook.setprocattr(name, value, size);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return LSM_RET_DEFAULT(setprocattr);
 }
@@ -4674,6 +5138,23 @@ int security_socket_getpeersec_dgram(struct socket *sock,
 EXPORT_SYMBOL(security_socket_getpeersec_dgram);
 
 /**
+<<<<<<< HEAD
+=======
+ * lsm_sock_alloc - allocate a composite sock blob
+ * @sock: the sock that needs a blob
+ * @gfp: allocation mode
+ *
+ * Allocate the sock blob for all the modules
+ *
+ * Returns 0, or -ENOMEM if memory can't be allocated.
+ */
+static int lsm_sock_alloc(struct sock *sock, gfp_t gfp)
+{
+	return lsm_blob_alloc(&sock->sk_security, blob_sizes.lbs_sock, gfp);
+}
+
+/**
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * security_sk_alloc() - Allocate and initialize a sock's LSM blob
  * @sk: sock
  * @family: protocol family
@@ -4686,7 +5167,18 @@ EXPORT_SYMBOL(security_socket_getpeersec_dgram);
  */
 int security_sk_alloc(struct sock *sk, int family, gfp_t priority)
 {
+<<<<<<< HEAD
 	return call_int_hook(sk_alloc_security, sk, family, priority);
+=======
+	int rc = lsm_sock_alloc(sk, priority);
+
+	if (unlikely(rc))
+		return rc;
+	rc = call_int_hook(sk_alloc_security, sk, family, priority);
+	if (unlikely(rc))
+		security_sk_free(sk);
+	return rc;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -4698,6 +5190,11 @@ int security_sk_alloc(struct sock *sk, int family, gfp_t priority)
 void security_sk_free(struct sock *sk)
 {
 	call_void_hook(sk_free_security, sk);
+<<<<<<< HEAD
+=======
+	kfree(sk->sk_security);
+	sk->sk_security = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -4845,7 +5342,22 @@ EXPORT_SYMBOL(security_secmark_refcount_dec);
  */
 int security_tun_dev_alloc_security(void **security)
 {
+<<<<<<< HEAD
 	return call_int_hook(tun_dev_alloc_security, security);
+=======
+	int rc;
+
+	rc = lsm_blob_alloc(security, blob_sizes.lbs_tun_dev, GFP_KERNEL);
+	if (rc)
+		return rc;
+
+	rc = call_int_hook(tun_dev_alloc_security, *security);
+	if (rc) {
+		kfree(*security);
+		*security = NULL;
+	}
+	return rc;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(security_tun_dev_alloc_security);
 
@@ -4857,7 +5369,11 @@ EXPORT_SYMBOL(security_tun_dev_alloc_security);
  */
 void security_tun_dev_free_security(void *security)
 {
+<<<<<<< HEAD
 	call_void_hook(tun_dev_free_security, security);
+=======
+	kfree(security);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(security_tun_dev_free_security);
 
@@ -5053,7 +5569,22 @@ EXPORT_SYMBOL(security_ib_endport_manage_subnet);
  */
 int security_ib_alloc_security(void **sec)
 {
+<<<<<<< HEAD
 	return call_int_hook(ib_alloc_security, sec);
+=======
+	int rc;
+
+	rc = lsm_blob_alloc(sec, blob_sizes.lbs_ib, GFP_KERNEL);
+	if (rc)
+		return rc;
+
+	rc = call_int_hook(ib_alloc_security, *sec);
+	if (rc) {
+		kfree(*sec);
+		*sec = NULL;
+	}
+	return rc;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(security_ib_alloc_security);
 
@@ -5065,7 +5596,11 @@ EXPORT_SYMBOL(security_ib_alloc_security);
  */
 void security_ib_free_security(void *sec)
 {
+<<<<<<< HEAD
 	call_void_hook(ib_free_security, sec);
+=======
+	kfree(sec);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(security_ib_free_security);
 #endif	/* CONFIG_SECURITY_INFINIBAND */
@@ -5223,7 +5758,11 @@ int security_xfrm_state_pol_flow_match(struct xfrm_state *x,
 				       struct xfrm_policy *xp,
 				       const struct flowi_common *flic)
 {
+<<<<<<< HEAD
 	struct security_hook_list *hp;
+=======
+	struct lsm_static_call *scall;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int rc = LSM_RET_DEFAULT(xfrm_state_pol_flow_match);
 
 	/*
@@ -5235,9 +5774,14 @@ int security_xfrm_state_pol_flow_match(struct xfrm_state *x,
 	 * For speed optimization, we explicitly break the loop rather than
 	 * using the macro
 	 */
+<<<<<<< HEAD
 	hlist_for_each_entry(hp, &security_hook_heads.xfrm_state_pol_flow_match,
 			     list) {
 		rc = hp->hook.xfrm_state_pol_flow_match(x, xp, flic);
+=======
+	lsm_for_each_hook(scall, xfrm_state_pol_flow_match) {
+		rc = scall->hl->hook.xfrm_state_pol_flow_match(x, xp, flic);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	}
 	return rc;
@@ -5282,7 +5826,18 @@ EXPORT_SYMBOL(security_skb_classify_flow);
 int security_key_alloc(struct key *key, const struct cred *cred,
 		       unsigned long flags)
 {
+<<<<<<< HEAD
 	return call_int_hook(key_alloc, key, cred, flags);
+=======
+	int rc = lsm_key_alloc(key);
+
+	if (unlikely(rc))
+		return rc;
+	rc = call_int_hook(key_alloc, key, cred, flags);
+	if (unlikely(rc))
+		security_key_free(key);
+	return rc;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -5293,7 +5848,12 @@ int security_key_alloc(struct key *key, const struct cred *cred,
  */
 void security_key_free(struct key *key)
 {
+<<<<<<< HEAD
 	call_void_hook(key_free, key);
+=======
+	kfree(key->security);
+	key->security = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -5510,7 +6070,11 @@ int security_bpf_prog_load(struct bpf_prog *prog, union bpf_attr *attr,
  * Return: Returns 0 on success, error on failure.
  */
 int security_bpf_token_create(struct bpf_token *token, union bpf_attr *attr,
+<<<<<<< HEAD
 			      struct path *path)
+=======
+			      const struct path *path)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return call_int_hook(bpf_token_create, token, attr, path);
 }
@@ -5596,6 +6160,88 @@ int security_locked_down(enum lockdown_reason what)
 }
 EXPORT_SYMBOL(security_locked_down);
 
+<<<<<<< HEAD
+=======
+/**
+ * security_bdev_alloc() - Allocate a block device LSM blob
+ * @bdev: block device
+ *
+ * Allocate and attach a security structure to @bdev->bd_security.  The
+ * security field is initialized to NULL when the bdev structure is
+ * allocated.
+ *
+ * Return: Return 0 if operation was successful.
+ */
+int security_bdev_alloc(struct block_device *bdev)
+{
+	int rc = 0;
+
+	rc = lsm_bdev_alloc(bdev);
+	if (unlikely(rc))
+		return rc;
+
+	rc = call_int_hook(bdev_alloc_security, bdev);
+	if (unlikely(rc))
+		security_bdev_free(bdev);
+
+	return rc;
+}
+EXPORT_SYMBOL(security_bdev_alloc);
+
+/**
+ * security_bdev_free() - Free a block device's LSM blob
+ * @bdev: block device
+ *
+ * Deallocate the bdev security structure and set @bdev->bd_security to NULL.
+ */
+void security_bdev_free(struct block_device *bdev)
+{
+	if (!bdev->bd_security)
+		return;
+
+	call_void_hook(bdev_free_security, bdev);
+
+	kfree(bdev->bd_security);
+	bdev->bd_security = NULL;
+}
+EXPORT_SYMBOL(security_bdev_free);
+
+/**
+ * security_bdev_setintegrity() - Set the device's integrity data
+ * @bdev: block device
+ * @type: type of integrity, e.g. hash digest, signature, etc
+ * @value: the integrity value
+ * @size: size of the integrity value
+ *
+ * Register a verified integrity measurement of a bdev with LSMs.
+ * LSMs should free the previously saved data if @value is NULL.
+ * Please note that the new hook should be invoked every time the security
+ * information is updated to keep these data current. For example, in dm-verity,
+ * if the mapping table is reloaded and configured to use a different dm-verity
+ * target with a new roothash and signing information, the previously stored
+ * data in the LSM blob will become obsolete. It is crucial to re-invoke the
+ * hook to refresh these data and ensure they are up to date. This necessity
+ * arises from the design of device-mapper, where a device-mapper device is
+ * first created, and then targets are subsequently loaded into it. These
+ * targets can be modified multiple times during the device's lifetime.
+ * Therefore, while the LSM blob is allocated during the creation of the block
+ * device, its actual contents are not initialized at this stage and can change
+ * substantially over time. This includes alterations from data that the LSMs
+ * 'trusts' to those they do not, making it essential to handle these changes
+ * correctly. Failure to address this dynamic aspect could potentially allow
+ * for bypassing LSM checks.
+ *
+ * Return: Returns 0 on success, negative values on failure.
+ */
+int security_bdev_setintegrity(struct block_device *bdev,
+			       enum lsm_integrity_type type, const void *value,
+			       size_t size)
+{
+	return call_int_hook(bdev_setintegrity, bdev, type, value, size);
+}
+EXPORT_SYMBOL(security_bdev_setintegrity);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_PERF_EVENTS
 /**
  * security_perf_event_open() - Check if a perf event open is allowed
@@ -5621,7 +6267,23 @@ int security_perf_event_open(struct perf_event_attr *attr, int type)
  */
 int security_perf_event_alloc(struct perf_event *event)
 {
+<<<<<<< HEAD
 	return call_int_hook(perf_event_alloc, event);
+=======
+	int rc;
+
+	rc = lsm_blob_alloc(&event->security, blob_sizes.lbs_perf_event,
+			    GFP_KERNEL);
+	if (rc)
+		return rc;
+
+	rc = call_int_hook(perf_event_alloc, event);
+	if (rc) {
+		kfree(event->security);
+		event->security = NULL;
+	}
+	return rc;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -5632,7 +6294,12 @@ int security_perf_event_alloc(struct perf_event *event)
  */
 void security_perf_event_free(struct perf_event *event)
 {
+<<<<<<< HEAD
 	call_void_hook(perf_event_free, event);
+=======
+	kfree(event->security);
+	event->security = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -5703,3 +6370,16 @@ int security_uring_cmd(struct io_uring_cmd *ioucmd)
 	return call_int_hook(uring_cmd, ioucmd);
 }
 #endif /* CONFIG_IO_URING */
+<<<<<<< HEAD
+=======
+
+/**
+ * security_initramfs_populated() - Notify LSMs that initramfs has been loaded
+ *
+ * Tells the LSMs the initramfs has been unpacked into the rootfs.
+ */
+void security_initramfs_populated(void)
+{
+	call_void_hook(initramfs_populated);
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

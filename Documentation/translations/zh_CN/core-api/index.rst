@@ -49,6 +49,10 @@
    generic-radix-tree
    packing
    this_cpu_ops
+<<<<<<< HEAD
+=======
+   union_find
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 =======
 

@@ -28,7 +28,11 @@ enum method {
 
 /* Global variables. */
 static const char *self;
+<<<<<<< HEAD
 static char *shmaddr;
+=======
+static int *shmaddr;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int shmid;
 
 /*
@@ -47,6 +51,7 @@ void sig_handler(int signo)
 {
 	printf("Received %d.\n", signo);
 	if (signo == SIGINT) {
+<<<<<<< HEAD
 		printf("Deleting the memory\n");
 		if (shmdt((const void *)shmaddr) != 0) {
 			perror("Detach failure");
@@ -56,6 +61,19 @@ void sig_handler(int signo)
 
 		shmctl(shmid, IPC_RMID, NULL);
 		printf("Done deleting the memory\n");
+=======
+		if (shmaddr) {
+			printf("Deleting the memory\n");
+			if (shmdt((const void *)shmaddr) != 0) {
+				perror("Detach failure");
+				shmctl(shmid, IPC_RMID, NULL);
+				exit(4);
+			}
+
+			shmctl(shmid, IPC_RMID, NULL);
+			printf("Done deleting the memory\n");
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	exit(2);
 }
@@ -211,7 +229,12 @@ int main(int argc, char **argv)
 			shmctl(shmid, IPC_RMID, NULL);
 			exit(2);
 		}
+<<<<<<< HEAD
 		printf("shmaddr: %p\n", ptr);
+=======
+		shmaddr = ptr;
+		printf("shmaddr: %p\n", shmaddr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		break;
 	default:

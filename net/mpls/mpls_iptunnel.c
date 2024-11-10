@@ -106,7 +106,11 @@ static int mpls_xmit(struct sk_buff *skb)
 		hh_len = 0;
 
 	/* Ensure there is enough space for the headers in the skb */
+<<<<<<< HEAD
 	if (skb_cow(skb, hh_len + new_header_size))
+=======
+	if (skb_cow_head(skb, hh_len + new_header_size))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto drop;
 
 	skb_set_inner_protocol(skb, skb->protocol);

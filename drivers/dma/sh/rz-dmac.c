@@ -601,6 +601,7 @@ static int rz_dmac_config(struct dma_chan *chan,
 	struct rz_dmac_chan *channel = to_rz_dmac_chan(chan);
 	u32 val;
 
+<<<<<<< HEAD
 	channel->src_per_address = config->src_addr;
 	channel->dst_per_address = config->dst_addr;
 
@@ -617,6 +618,27 @@ static int rz_dmac_config(struct dma_chan *chan,
 
 	channel->chcfg &= ~CHCFG_FILL_SDS_MASK;
 	channel->chcfg |= FIELD_PREP(CHCFG_FILL_SDS_MASK, val);
+=======
+	channel->dst_per_address = config->dst_addr;
+	channel->chcfg &= ~CHCFG_FILL_DDS_MASK;
+	if (channel->dst_per_address) {
+		val = rz_dmac_ds_to_val_mapping(config->dst_addr_width);
+		if (val == CHCFG_DS_INVALID)
+			return -EINVAL;
+
+		channel->chcfg |= FIELD_PREP(CHCFG_FILL_DDS_MASK, val);
+	}
+
+	channel->src_per_address = config->src_addr;
+	channel->chcfg &= ~CHCFG_FILL_SDS_MASK;
+	if (channel->src_per_address) {
+		val = rz_dmac_ds_to_val_mapping(config->src_addr_width);
+		if (val == CHCFG_DS_INVALID)
+			return -EINVAL;
+
+		channel->chcfg |= FIELD_PREP(CHCFG_FILL_SDS_MASK, val);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

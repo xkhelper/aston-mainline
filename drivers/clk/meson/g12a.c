@@ -5616,3 +5616,7 @@ module_platform_driver(g12a_driver);
 
 MODULE_DESCRIPTION("Amlogic G12/SM1 Main Clock Controller driver");
 MODULE_LICENSE("GPL");
+<<<<<<< HEAD
+=======
+MODULE_IMPORT_NS(CLK_MESON);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

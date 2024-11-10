@@ -133,6 +133,7 @@ acpi_status acpi_ex_system_do_stall(u32 how_long_us)
 		 * (ACPI specifies 100 usec as max, but this gives some slack in
 		 * order to support existing BIOSs)
 		 */
+<<<<<<< HEAD
 		ACPI_ERROR((AE_INFO,
 			    "Time parameter is too large (%u)", how_long_us));
 		status = AE_AML_OPERAND_VALUE;
@@ -141,6 +142,17 @@ acpi_status acpi_ex_system_do_stall(u32 how_long_us)
 			ACPI_WARNING((AE_INFO,
 				      "Time parameter %u us > 100 us violating ACPI spec, please fix the firmware.",
 				      how_long_us));
+=======
+		ACPI_ERROR_ONCE((AE_INFO,
+				 "Time parameter is too large (%u)",
+				 how_long_us));
+		status = AE_AML_OPERAND_VALUE;
+	} else {
+		if (how_long_us > 100) {
+			ACPI_WARNING_ONCE((AE_INFO,
+					   "Time parameter %u us > 100 us violating ACPI spec, please fix the firmware.",
+					   how_long_us));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		acpi_os_stall(how_long_us);
 	}

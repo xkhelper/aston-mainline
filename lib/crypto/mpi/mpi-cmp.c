@@ -45,16 +45,23 @@ int mpi_cmp_ui(MPI u, unsigned long v)
 }
 EXPORT_SYMBOL_GPL(mpi_cmp_ui);
 
+<<<<<<< HEAD
 static int do_mpi_cmp(MPI u, MPI v, int absmode)
 {
 	mpi_size_t usize;
 	mpi_size_t vsize;
 	int usign;
 	int vsign;
+=======
+int mpi_cmp(MPI u, MPI v)
+{
+	mpi_size_t usize, vsize;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int cmp;
 
 	mpi_normalize(u);
 	mpi_normalize(v);
+<<<<<<< HEAD
 
 	usize = u->nlimbs;
 	vsize = v->nlimbs;
@@ -96,3 +103,23 @@ int mpi_cmpabs(MPI u, MPI v)
 	return do_mpi_cmp(u, v, 1);
 }
 EXPORT_SYMBOL_GPL(mpi_cmpabs);
+=======
+	usize = u->nlimbs;
+	vsize = v->nlimbs;
+	if (!u->sign && v->sign)
+		return 1;
+	if (u->sign && !v->sign)
+		return -1;
+	if (usize != vsize && !u->sign && !v->sign)
+		return usize - vsize;
+	if (usize != vsize && u->sign && v->sign)
+		return vsize - usize;
+	if (!usize)
+		return 0;
+	cmp = mpihelp_cmp(u->d, v->d, usize);
+	if (u->sign)
+		return -cmp;
+	return cmp;
+}
+EXPORT_SYMBOL_GPL(mpi_cmp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

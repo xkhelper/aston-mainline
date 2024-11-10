@@ -52,4 +52,23 @@ extern bool cma_release(struct cma *cma, const struct page *pages, unsigned long
 extern int cma_for_each_area(int (*it)(struct cma *cma, void *data), void *data);
 
 extern void cma_reserve_pages_on_error(struct cma *cma);
+<<<<<<< HEAD
+=======
+
+#ifdef CONFIG_CMA
+struct folio *cma_alloc_folio(struct cma *cma, int order, gfp_t gfp);
+bool cma_free_folio(struct cma *cma, const struct folio *folio);
+#else
+static inline struct folio *cma_alloc_folio(struct cma *cma, int order, gfp_t gfp)
+{
+	return NULL;
+}
+
+static inline bool cma_free_folio(struct cma *cma, const struct folio *folio)
+{
+	return false;
+}
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

@@ -36,7 +36,10 @@
 #include <linux/mman.h>
 #include <linux/ptrace.h>
 #include <linux/dma-buf.h>
+<<<<<<< HEAD
 #include <linux/fdtable.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/processor.h>
 #include "kfd_priv.h"
 #include "kfd_device_queue_manager.h"
@@ -247,14 +250,23 @@ static int set_queue_properties_from_user(struct queue_properties *q_properties,
 	q_properties->priority = args->queue_priority;
 	q_properties->queue_address = args->ring_base_address;
 	q_properties->queue_size = args->ring_size;
+<<<<<<< HEAD
 	q_properties->read_ptr = (uint32_t *) args->read_pointer_address;
 	q_properties->write_ptr = (uint32_t *) args->write_pointer_address;
+=======
+	q_properties->read_ptr = (void __user *)args->read_pointer_address;
+	q_properties->write_ptr = (void __user *)args->write_pointer_address;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	q_properties->eop_ring_buffer_address = args->eop_buffer_address;
 	q_properties->eop_ring_buffer_size = args->eop_buffer_size;
 	q_properties->ctx_save_restore_area_address =
 			args->ctx_save_restore_address;
 	q_properties->ctx_save_restore_area_size = args->ctx_save_restore_size;
 	q_properties->ctl_stack_size = args->ctl_stack_size;
+<<<<<<< HEAD
+=======
+	q_properties->sdma_engine_id = args->sdma_engine_id;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (args->queue_type == KFD_IOC_QUEUE_TYPE_COMPUTE ||
 		args->queue_type == KFD_IOC_QUEUE_TYPE_COMPUTE_AQL)
 		q_properties->type = KFD_QUEUE_TYPE_COMPUTE;
@@ -262,6 +274,11 @@ static int set_queue_properties_from_user(struct queue_properties *q_properties,
 		q_properties->type = KFD_QUEUE_TYPE_SDMA;
 	else if (args->queue_type == KFD_IOC_QUEUE_TYPE_SDMA_XGMI)
 		q_properties->type = KFD_QUEUE_TYPE_SDMA_XGMI;
+<<<<<<< HEAD
+=======
+	else if (args->queue_type == KFD_IOC_QUEUE_TYPE_SDMA_BY_ENG_ID)
+		q_properties->type = KFD_QUEUE_TYPE_SDMA_BY_ENG_ID;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else
 		return -ENOTSUPP;
 
@@ -306,7 +323,10 @@ static int kfd_ioctl_create_queue(struct file *filep, struct kfd_process *p,
 	struct kfd_process_device *pdd;
 	struct queue_properties q_properties;
 	uint32_t doorbell_offset_in_process = 0;
+<<<<<<< HEAD
 	struct amdgpu_bo *wptr_bo = NULL;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	memset(&q_properties, 0, sizeof(struct queue_properties));
 
@@ -334,6 +354,21 @@ static int kfd_ioctl_create_queue(struct file *filep, struct kfd_process *p,
 		goto err_bind_process;
 	}
 
+<<<<<<< HEAD
+=======
+	if (q_properties.type == KFD_QUEUE_TYPE_SDMA_BY_ENG_ID) {
+		int max_sdma_eng_id = kfd_get_num_sdma_engines(dev) +
+				      kfd_get_num_xgmi_sdma_engines(dev) - 1;
+
+		if (q_properties.sdma_engine_id > max_sdma_eng_id) {
+			err = -EINVAL;
+			pr_err("sdma_engine_id %i exceeds maximum id of %i\n",
+			       q_properties.sdma_engine_id, max_sdma_eng_id);
+			goto err_sdma_engine_id;
+		}
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!pdd->qpd.proc_doorbells) {
 		err = kfd_alloc_process_doorbells(dev->kfd, pdd);
 		if (err) {
@@ -342,6 +377,7 @@ static int kfd_ioctl_create_queue(struct file *filep, struct kfd_process *p,
 		}
 	}
 
+<<<<<<< HEAD
 	/* Starting with GFX11, wptr BOs must be mapped to GART for MES to determine work
 	 * on unmapped queues for usermode queue oversubscription (no aggregated doorbell)
 	 */
@@ -382,13 +418,23 @@ static int kfd_ioctl_create_queue(struct file *filep, struct kfd_process *p,
 			pr_err("Failed to map wptr bo to GART\n");
 			goto err_wptr_map_gart;
 		}
+=======
+	err = kfd_queue_acquire_buffers(pdd, &q_properties);
+	if (err) {
+		pr_debug("failed to acquire user queue buffers\n");
+		goto err_acquire_queue_buf;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	pr_debug("Creating queue for PASID 0x%x on gpu 0x%x\n",
 			p->pasid,
 			dev->id);
 
+<<<<<<< HEAD
 	err = pqm_create_queue(&p->pqm, dev, filep, &q_properties, &queue_id, wptr_bo,
+=======
+	err = pqm_create_queue(&p->pqm, dev, filep, &q_properties, &queue_id,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			NULL, NULL, NULL, &doorbell_offset_in_process);
 	if (err != 0)
 		goto err_create_queue;
@@ -422,9 +468,16 @@ static int kfd_ioctl_create_queue(struct file *filep, struct kfd_process *p,
 	return 0;
 
 err_create_queue:
+<<<<<<< HEAD
 	if (wptr_bo)
 		amdgpu_amdkfd_free_gtt_mem(dev->adev, wptr_bo);
 err_wptr_map_gart:
+=======
+	kfd_queue_unref_bo_vas(pdd, &q_properties);
+	kfd_queue_release_buffers(pdd, &q_properties);
+err_acquire_queue_buf:
+err_sdma_engine_id:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_bind_process:
 err_pdd:
 	mutex_unlock(&p->mutex);
@@ -1170,7 +1223,11 @@ static int kfd_ioctl_alloc_memory_of_gpu(struct file *filep,
 
 		if (flags & KFD_IOC_ALLOC_MEM_FLAGS_AQL_QUEUE_MEM)
 			size >>= 1;
+<<<<<<< HEAD
 		WRITE_ONCE(pdd->vram_usage, pdd->vram_usage + PAGE_ALIGN(size));
+=======
+		atomic64_add(PAGE_ALIGN(size), &pdd->vram_usage);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	mutex_unlock(&p->mutex);
@@ -1241,7 +1298,11 @@ static int kfd_ioctl_free_memory_of_gpu(struct file *filep,
 		kfd_process_device_remove_obj_handle(
 			pdd, GET_IDR_HANDLE(args->handle));
 
+<<<<<<< HEAD
 	WRITE_ONCE(pdd->vram_usage, pdd->vram_usage - size);
+=======
+	atomic64_sub(size, &pdd->vram_usage);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 err_unlock:
 err_pdd:
@@ -1422,8 +1483,12 @@ static int kfd_ioctl_unmap_memory_from_gpu(struct file *filep,
 		err = amdgpu_amdkfd_gpuvm_unmap_memory_from_gpu(
 			peer_pdd->dev->adev, (struct kgd_mem *)mem, peer_pdd->drm_priv);
 		if (err) {
+<<<<<<< HEAD
 			pr_err("Failed to unmap from gpu %d/%d\n",
 			       i, args->n_devices);
+=======
+			pr_debug("Failed to unmap from gpu %d/%d\n", i, args->n_devices);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto unmap_memory_from_gpu_failed;
 		}
 		args->n_success = i+1;
@@ -1857,7 +1922,12 @@ static uint32_t get_process_num_bos(struct kfd_process *p)
 }
 
 static int criu_get_prime_handle(struct kgd_mem *mem,
+<<<<<<< HEAD
 				 int flags, u32 *shared_fd)
+=======
+				 int flags, u32 *shared_fd,
+				 struct file **file)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct dma_buf *dmabuf;
 	int ret;
@@ -1868,13 +1938,21 @@ static int criu_get_prime_handle(struct kgd_mem *mem,
 		return ret;
 	}
 
+<<<<<<< HEAD
 	ret = dma_buf_fd(dmabuf, flags);
+=======
+	ret = get_unused_fd_flags(flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret < 0) {
 		pr_err("dmabuf create fd failed, ret:%d\n", ret);
 		goto out_free_dmabuf;
 	}
 
 	*shared_fd = ret;
+<<<<<<< HEAD
+=======
+	*file = dmabuf->file;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 
 out_free_dmabuf:
@@ -1882,6 +1960,28 @@ out_free_dmabuf:
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static void commit_files(struct file **files,
+			 struct kfd_criu_bo_bucket *bo_buckets,
+			 unsigned int count,
+			 int err)
+{
+	while (count--) {
+		struct file *file = files[count];
+
+		if (!file)
+			continue;
+		if (err) {
+			fput(file);
+			put_unused_fd(bo_buckets[count].dmabuf_fd);
+		} else {
+			fd_install(bo_buckets[count].dmabuf_fd, file);
+		}
+	}
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int criu_checkpoint_bos(struct kfd_process *p,
 			       uint32_t num_bos,
 			       uint8_t __user *user_bos,
@@ -1890,6 +1990,10 @@ static int criu_checkpoint_bos(struct kfd_process *p,
 {
 	struct kfd_criu_bo_bucket *bo_buckets;
 	struct kfd_criu_bo_priv_data *bo_privs;
+<<<<<<< HEAD
+=======
+	struct file **files = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret = 0, pdd_index, bo_index = 0, id;
 	void *mem;
 
@@ -1903,6 +2007,15 @@ static int criu_checkpoint_bos(struct kfd_process *p,
 		goto exit;
 	}
 
+<<<<<<< HEAD
+=======
+	files = kvzalloc(num_bos * sizeof(struct file *), GFP_KERNEL);
+	if (!files) {
+		ret = -ENOMEM;
+		goto exit;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (pdd_index = 0; pdd_index < p->n_pdds; pdd_index++) {
 		struct kfd_process_device *pdd = p->pdds[pdd_index];
 		struct amdgpu_bo *dumper_bo;
@@ -1945,7 +2058,11 @@ static int criu_checkpoint_bos(struct kfd_process *p,
 				ret = criu_get_prime_handle(kgd_mem,
 						bo_bucket->alloc_flags &
 						KFD_IOC_ALLOC_MEM_FLAGS_WRITABLE ? DRM_RDWR : 0,
+<<<<<<< HEAD
 						&bo_bucket->dmabuf_fd);
+=======
+						&bo_bucket->dmabuf_fd, &files[bo_index]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				if (ret)
 					goto exit;
 			} else {
@@ -1963,7 +2080,11 @@ static int criu_checkpoint_bos(struct kfd_process *p,
 				bo_bucket->offset = amdgpu_bo_mmap_offset(dumper_bo);
 
 			for (i = 0; i < p->n_pdds; i++) {
+<<<<<<< HEAD
 				if (amdgpu_amdkfd_bo_mapped_to_dev(p->pdds[i]->dev->adev, kgd_mem))
+=======
+				if (amdgpu_amdkfd_bo_mapped_to_dev(p->pdds[i]->drm_priv, kgd_mem))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					bo_priv->mapped_gpuids[dev_idx++] = p->pdds[i]->user_gpu_id;
 			}
 
@@ -1996,12 +2117,17 @@ static int criu_checkpoint_bos(struct kfd_process *p,
 	*priv_offset += num_bos * sizeof(*bo_privs);
 
 exit:
+<<<<<<< HEAD
 	while (ret && bo_index--) {
 		if (bo_buckets[bo_index].alloc_flags
 		    & (KFD_IOC_ALLOC_MEM_FLAGS_VRAM | KFD_IOC_ALLOC_MEM_FLAGS_GTT))
 			close_fd(bo_buckets[bo_index].dmabuf_fd);
 	}
 
+=======
+	commit_files(files, bo_buckets, bo_index, ret);
+	kvfree(files);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kvfree(bo_buckets);
 	kvfree(bo_privs);
 	return ret;
@@ -2346,14 +2472,23 @@ static int criu_restore_memory_of_gpu(struct kfd_process_device *pdd,
 	} else if (bo_bucket->alloc_flags & KFD_IOC_ALLOC_MEM_FLAGS_VRAM) {
 		bo_bucket->restored_offset = offset;
 		/* Update the VRAM usage count */
+<<<<<<< HEAD
 		WRITE_ONCE(pdd->vram_usage, pdd->vram_usage + bo_bucket->size);
+=======
+		atomic64_add(bo_bucket->size, &pdd->vram_usage);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return 0;
 }
 
 static int criu_restore_bo(struct kfd_process *p,
 			   struct kfd_criu_bo_bucket *bo_bucket,
+<<<<<<< HEAD
 			   struct kfd_criu_bo_priv_data *bo_priv)
+=======
+			   struct kfd_criu_bo_priv_data *bo_priv,
+			   struct file **file)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct kfd_process_device *pdd;
 	struct kgd_mem *kgd_mem;
@@ -2405,7 +2540,11 @@ static int criu_restore_bo(struct kfd_process *p,
 	if (bo_bucket->alloc_flags
 	    & (KFD_IOC_ALLOC_MEM_FLAGS_VRAM | KFD_IOC_ALLOC_MEM_FLAGS_GTT)) {
 		ret = criu_get_prime_handle(kgd_mem, DRM_RDWR,
+<<<<<<< HEAD
 					    &bo_bucket->dmabuf_fd);
+=======
+					    &bo_bucket->dmabuf_fd, file);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret)
 			return ret;
 	} else {
@@ -2422,6 +2561,10 @@ static int criu_restore_bos(struct kfd_process *p,
 {
 	struct kfd_criu_bo_bucket *bo_buckets = NULL;
 	struct kfd_criu_bo_priv_data *bo_privs = NULL;
+<<<<<<< HEAD
+=======
+	struct file **files = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret = 0;
 	uint32_t i = 0;
 
@@ -2435,6 +2578,15 @@ static int criu_restore_bos(struct kfd_process *p,
 	if (!bo_buckets)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	files = kvzalloc(args->num_bos * sizeof(struct file *), GFP_KERNEL);
+	if (!files) {
+		ret = -ENOMEM;
+		goto exit;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = copy_from_user(bo_buckets, (void __user *)args->bos,
 			     args->num_bos * sizeof(*bo_buckets));
 	if (ret) {
@@ -2460,7 +2612,11 @@ static int criu_restore_bos(struct kfd_process *p,
 
 	/* Create and map new BOs */
 	for (; i < args->num_bos; i++) {
+<<<<<<< HEAD
 		ret = criu_restore_bo(p, &bo_buckets[i], &bo_privs[i]);
+=======
+		ret = criu_restore_bo(p, &bo_buckets[i], &bo_privs[i], &files[i]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret) {
 			pr_debug("Failed to restore BO[%d] ret%d\n", i, ret);
 			goto exit;
@@ -2475,11 +2631,16 @@ static int criu_restore_bos(struct kfd_process *p,
 		ret = -EFAULT;
 
 exit:
+<<<<<<< HEAD
 	while (ret && i--) {
 		if (bo_buckets[i].alloc_flags
 		   & (KFD_IOC_ALLOC_MEM_FLAGS_VRAM | KFD_IOC_ALLOC_MEM_FLAGS_GTT))
 			close_fd(bo_buckets[i].dmabuf_fd);
 	}
+=======
+	commit_files(files, bo_buckets, i, ret);
+	kvfree(files);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kvfree(bo_buckets);
 	kvfree(bo_privs);
 	return ret;

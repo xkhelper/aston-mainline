@@ -38,6 +38,7 @@ static inline unsigned char reg_read(struct ak4114 *ak4114, unsigned char reg)
 	return ak4114->read(ak4114->private_data, reg);
 }
 
+<<<<<<< HEAD
 #if 0
 static void reg_dump(struct ak4114 *ak4114)
 {
@@ -49,6 +50,8 @@ static void reg_dump(struct ak4114 *ak4114)
 }
 #endif
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void snd_ak4114_free(struct ak4114 *chip)
 {
 	atomic_inc(&chip->wq_processing);	/* don't schedule new work */
@@ -589,7 +592,10 @@ int snd_ak4114_check_rate_and_errors(struct ak4114 *ak4114, unsigned int flags)
 	if (!(flags & AK4114_CHECK_NO_RATE) && runtime && runtime->rate != res) {
 		snd_pcm_stream_lock_irqsave(ak4114->capture_substream, _flags);
 		if (snd_pcm_running(ak4114->capture_substream)) {
+<<<<<<< HEAD
 			// printk(KERN_DEBUG "rate changed (%i <- %i)\n", runtime->rate, res);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			snd_pcm_stop(ak4114->capture_substream, SNDRV_PCM_STATE_DRAINING);
 			res = 1;
 		}

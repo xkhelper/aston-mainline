@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-only
 
+<<<<<<< HEAD
 /* WARNING: This implemenation is not necessarily the same
+=======
+/* WARNING: This implementation is not necessarily the same
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * as the tcp_cubic.c.  The purpose is mainly for testing
  * the kernel BPF logic.
  *
@@ -314,7 +318,11 @@ static void bictcp_update(struct bpf_bictcp *ca, __u32 cwnd, __u32 acked)
 	 * (so time^3 is done by using 64 bit)
 	 * and without the support of division of 64bit numbers
 	 * (so all divisions are done by using 32 bit)
+<<<<<<< HEAD
 	 *  also NOTE the unit of those veriables
+=======
+	 *  also NOTE the unit of those variables
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 *	  time  = (t - K) / 2^bictcp_HZ
 	 *	  c = bic_scale >> 10
 	 * rtt  = (srtt >> 3) / HZ
@@ -507,7 +515,11 @@ void BPF_PROG(bpf_cubic_acked, struct sock *sk, const struct ack_sample *sample)
 	__u32 delay;
 
 	bpf_cubic_acked_called = 1;
+<<<<<<< HEAD
 	/* Some calls are for duplicates without timetamps */
+=======
+	/* Some calls are for duplicates without timestamps */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (sample->rtt_us < 0)
 		return;
 

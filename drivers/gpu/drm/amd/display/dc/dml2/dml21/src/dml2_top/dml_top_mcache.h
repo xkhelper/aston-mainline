@@ -2,7 +2,10 @@
 //
 // Copyright 2024 Advanced Micro Devices, Inc.
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifndef __DML_TOP_MCACHE_H__
 #define __DML_TOP_MCACHE_H__
 

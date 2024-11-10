@@ -8,7 +8,10 @@
 
 #include <sound/soc-acpi.h>
 #include <sound/soc-acpi-intel-match.h>
+<<<<<<< HEAD
 #include "../skylake/skl.h"
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "soc-acpi-intel-sdw-mockup-match.h"
 
 static const struct snd_soc_acpi_codecs essx_83x6 = {
@@ -16,16 +19,22 @@ static const struct snd_soc_acpi_codecs essx_83x6 = {
 	.codecs = { "ESSX8316", "ESSX8326", "ESSX8336"},
 };
 
+<<<<<<< HEAD
 static struct skl_machine_pdata cnl_pdata = {
 	.use_tplg_pcm = true,
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct snd_soc_acpi_mach snd_soc_acpi_intel_cnl_machines[] = {
 	{
 		.id = "INT34C2",
 		.drv_name = "cnl_rt274",
 		.fw_filename = "intel/dsp_fw_cnl.bin",
+<<<<<<< HEAD
 		.pdata = &cnl_pdata,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.sof_tplg_filename = "sof-cnl-rt274.tplg",
 	},
 	{

@@ -704,8 +704,11 @@ struct sdw_master_device {
 	container_of(d, struct sdw_master_device, dev)
 
 struct sdw_driver {
+<<<<<<< HEAD
 	const char *name;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int (*probe)(struct sdw_slave *sdw,
 			const struct sdw_device_id *id);
 	int (*remove)(struct sdw_slave *sdw);

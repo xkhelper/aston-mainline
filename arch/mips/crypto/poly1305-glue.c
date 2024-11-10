@@ -5,7 +5,11 @@
  * Copyright (C) 2019 Linaro Ltd. <ard.biesheuvel@linaro.org>
  */
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <crypto/algapi.h>
 #include <crypto/internal/hash.h>
 #include <crypto/internal/poly1305.h>

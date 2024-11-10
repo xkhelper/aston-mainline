@@ -90,6 +90,10 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+<<<<<<< HEAD
+=======
+#include <libgen.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <string.h>
 #include <stddef.h>
 #include <sys/mman.h>
@@ -324,6 +328,28 @@ out:
 	return zc_avail;
 }
 
+<<<<<<< HEAD
+=======
+#define MAX_SKB_FRAGS_PATH "/proc/sys/net/core/max_skb_frags"
+static unsigned int get_max_skb_frags(void)
+{
+	unsigned int max_skb_frags = 0;
+	FILE *file;
+
+	file = fopen(MAX_SKB_FRAGS_PATH, "r");
+	if (!file) {
+		ksft_print_msg("Error opening %s\n", MAX_SKB_FRAGS_PATH);
+		return 0;
+	}
+
+	if (fscanf(file, "%u", &max_skb_frags) != 1)
+		ksft_print_msg("Error reading %s\n", MAX_SKB_FRAGS_PATH);
+
+	fclose(file);
+	return max_skb_frags;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct option long_options[] = {
 	{"interface", required_argument, 0, 'i'},
 	{"busy-poll", no_argument, 0, 'b'},
@@ -2244,6 +2270,7 @@ static int testapp_poll_rxq_tmout(struct test_spec *test)
 
 static int testapp_too_many_frags(struct test_spec *test)
 {
+<<<<<<< HEAD
 	struct pkt pkts[2 * XSK_DESC__MAX_SKB_FRAGS + 2] = {};
 	u32 max_frags, i;
 
@@ -2251,6 +2278,26 @@ static int testapp_too_many_frags(struct test_spec *test)
 		max_frags = test->ifobj_tx->xdp_zc_max_segs;
 	else
 		max_frags = XSK_DESC__MAX_SKB_FRAGS;
+=======
+	struct pkt *pkts;
+	u32 max_frags, i;
+	int ret;
+
+	if (test->mode == TEST_MODE_ZC) {
+		max_frags = test->ifobj_tx->xdp_zc_max_segs;
+	} else {
+		max_frags = get_max_skb_frags();
+		if (!max_frags) {
+			ksft_print_msg("Couldn't retrieve MAX_SKB_FRAGS from system, using default (17) value\n");
+			max_frags = 17;
+		}
+		max_frags += 1;
+	}
+
+	pkts = calloc(2 * max_frags + 2, sizeof(struct pkt));
+	if (!pkts)
+		return TEST_FAILURE;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	test->mtu = MAX_ETH_JUMBO_SIZE;
 
@@ -2280,7 +2327,14 @@ static int testapp_too_many_frags(struct test_spec *test)
 	pkts[2 * max_frags + 1].valid = true;
 
 	pkt_stream_generate_custom(test, pkts, 2 * max_frags + 2);
+<<<<<<< HEAD
 	return testapp_validate_traffic(test);
+=======
+	ret = testapp_validate_traffic(test);
+
+	free(pkts);
+	return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int xsk_load_xdp_programs(struct ifobject *ifobj)

@@ -212,6 +212,10 @@ static void mt_post_parse(struct mt_device *td, struct mt_application *app);
 #define MT_CLS_GOOGLE				0x0111
 #define MT_CLS_RAZER_BLADE_STEALTH		0x0112
 #define MT_CLS_SMART_TECH			0x0113
+<<<<<<< HEAD
+=======
+#define MT_CLS_SIS				0x0457
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define MT_DEFAULT_MAXCONTACT	10
 #define MT_MAX_MAXCONTACT	250
@@ -396,6 +400,14 @@ static const struct mt_class mt_classes[] = {
 			MT_QUIRK_CONTACT_CNT_ACCURATE |
 			MT_QUIRK_SEPARATE_APP_REPORT,
 	},
+<<<<<<< HEAD
+=======
+	{ .name = MT_CLS_SIS,
+		.quirks = MT_QUIRK_NOT_SEEN_MEANS_UP |
+			MT_QUIRK_ALWAYS_VALID |
+			MT_QUIRK_CONTACT_CNT_ACCURATE,
+	},
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 
@@ -1441,12 +1453,21 @@ static int mt_event(struct hid_device *hid, struct hid_field *field,
 	return 0;
 }
 
+<<<<<<< HEAD
 static __u8 *mt_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+=======
+static const __u8 *mt_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     unsigned int *size)
 {
 	if (hdev->vendor == I2C_VENDOR_ID_GOODIX &&
 	    (hdev->product == I2C_DEVICE_ID_GOODIX_01E8 ||
+<<<<<<< HEAD
 	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9)) {
+=======
+	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9 ||
+		 hdev->product == I2C_DEVICE_ID_GOODIX_01E0)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (rdesc[607] == 0x15) {
 			rdesc[607] = 0x25;
 			dev_info(
@@ -1811,6 +1832,12 @@ static int mt_probe(struct hid_device *hdev, const struct hid_device_id *id)
 	if (mtclass->quirks & MT_QUIRK_FIX_CONST_CONTACT_ID)
 		mt_fix_const_fields(hdev, HID_DG_CONTACTID);
 
+<<<<<<< HEAD
+=======
+	if (hdev->vendor == USB_VENDOR_ID_SIS_TOUCH)
+		hdev->quirks |= HID_QUIRK_NOGET;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = hid_hw_start(hdev, HID_CONNECT_DEFAULT);
 	if (ret)
 		return ret;
@@ -2016,6 +2043,13 @@ static const struct hid_device_id mt_devices[] = {
 		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
 			USB_VENDOR_ID_ELAN, 0x3148) },
 
+<<<<<<< HEAD
+=======
+	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
+		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
+			USB_VENDOR_ID_ELAN, 0x32ae) },
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Elitegroup panel */
 	{ .driver_data = MT_CLS_SERIAL,
 		MT_USB_DEVICE(USB_VENDOR_ID_ELITEGROUP,
@@ -2065,7 +2099,14 @@ static const struct hid_device_id mt_devices[] = {
 		     I2C_DEVICE_ID_GOODIX_01E8) },
 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
 	  HID_DEVICE(BUS_I2C, HID_GROUP_ANY, I2C_VENDOR_ID_GOODIX,
+<<<<<<< HEAD
 		     I2C_DEVICE_ID_GOODIX_01E8) },
+=======
+		     I2C_DEVICE_ID_GOODIX_01E9) },
+	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
+	  HID_DEVICE(BUS_I2C, HID_GROUP_ANY, I2C_VENDOR_ID_GOODIX,
+		     I2C_DEVICE_ID_GOODIX_01E0) },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* GoodTouch panels */
 	{ .driver_data = MT_CLS_NSMU,
@@ -2082,6 +2123,14 @@ static const struct hid_device_id mt_devices[] = {
 		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
 			0x347d, 0x7853) },
 
+<<<<<<< HEAD
+=======
+	/* HONOR MagicBook Art 14 touchpad */
+	{ .driver_data = MT_CLS_VTL,
+		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
+			0x35cc, 0x0104) },
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Ilitek dual touch panel */
 	{  .driver_data = MT_CLS_NSMU,
 		MT_USB_DEVICE(USB_VENDOR_ID_ILITEK,
@@ -2113,11 +2162,27 @@ static const struct hid_device_id mt_devices[] = {
 			   USB_VENDOR_ID_LENOVO,
 			   USB_DEVICE_ID_LENOVO_X12_TAB) },
 
+<<<<<<< HEAD
+=======
+	/* Lenovo X12 TAB Gen 2 */
+	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
+		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
+			   USB_VENDOR_ID_LENOVO,
+			   USB_DEVICE_ID_LENOVO_X12_TAB2) },
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Logitech devices */
 	{ .driver_data = MT_CLS_NSMU,
 		HID_DEVICE(BUS_BLUETOOTH, HID_GROUP_MULTITOUCH_WIN_8,
 			USB_VENDOR_ID_LOGITECH,
 			USB_DEVICE_ID_LOGITECH_CASA_TOUCHPAD) },
+<<<<<<< HEAD
+=======
+	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
+		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
+			USB_VENDOR_ID_LOGITECH,
+			USB_DEVICE_ID_LOGITECH_BOLT_RECEIVER) },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* MosArt panels */
 	{ .driver_data = MT_CLS_CONFIDENCE_MINUS_ONE,
@@ -2275,6 +2340,14 @@ static const struct hid_device_id mt_devices[] = {
 		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8, USB_VENDOR_ID_GOOGLE,
 			USB_DEVICE_ID_GOOGLE_WHISKERS) },
 
+<<<<<<< HEAD
+=======
+	/* sis */
+	{ .driver_data = MT_CLS_SIS,
+		HID_DEVICE(HID_BUS_ANY, HID_GROUP_ANY, USB_VENDOR_ID_SIS_TOUCH,
+			HID_ANY_ID) },
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Generic MT device */
 	{ HID_DEVICE(HID_BUS_ANY, HID_GROUP_MULTITOUCH, HID_ANY_ID, HID_ANY_ID) },
 

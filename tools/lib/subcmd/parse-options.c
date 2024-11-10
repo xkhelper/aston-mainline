@@ -633,10 +633,18 @@ int parse_options_subcommand(int argc, const char **argv, const struct option *o
 			const char *const subcommands[], const char *usagestr[], int flags)
 {
 	struct parse_opt_ctx_t ctx;
+<<<<<<< HEAD
 	char *buf = NULL;
 
 	/* build usage string if it's not provided */
 	if (subcommands && !usagestr[0]) {
+=======
+
+	/* build usage string if it's not provided */
+	if (subcommands && !usagestr[0]) {
+		char *buf = NULL;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		astrcatf(&buf, "%s %s [<options>] {", subcmd_config.exec_name, argv[0]);
 
 		for (int i = 0; subcommands[i]; i++) {
@@ -678,10 +686,14 @@ int parse_options_subcommand(int argc, const char **argv, const struct option *o
 			astrcatf(&error_buf, "unknown switch `%c'", *ctx.opt);
 		usage_with_options(usagestr, options);
 	}
+<<<<<<< HEAD
 	if (buf) {
 		usagestr[0] = NULL;
 		free(buf);
 	}
+=======
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return parse_options_end(&ctx);
 }
 

@@ -317,8 +317,12 @@ static int dev_get_hwtstamp(struct net_device *dev, struct ifreq *ifr)
  * should take precedence in front of hardware timestamping provided by the
  * netdev. If the netdev driver needs to perform specific actions even for PHY
  * timestamping to work properly (a switch port must trap the timestamped
+<<<<<<< HEAD
  * frames and not forward them), it must set IFF_SEE_ALL_HWTSTAMP_REQUESTS in
  * dev->priv_flags.
+=======
+ * frames and not forward them), it must set dev->see_all_hwtstamp_requests.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int dev_set_hwtstamp_phylib(struct net_device *dev,
 			    struct kernel_hwtstamp_config *cfg,
@@ -332,13 +336,21 @@ int dev_set_hwtstamp_phylib(struct net_device *dev,
 
 	cfg->source = phy_ts ? HWTSTAMP_SOURCE_PHYLIB : HWTSTAMP_SOURCE_NETDEV;
 
+<<<<<<< HEAD
 	if (phy_ts && (dev->priv_flags & IFF_SEE_ALL_HWTSTAMP_REQUESTS)) {
+=======
+	if (phy_ts && dev->see_all_hwtstamp_requests) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = ops->ndo_hwtstamp_get(dev, &old_cfg);
 		if (err)
 			return err;
 	}
 
+<<<<<<< HEAD
 	if (!phy_ts || (dev->priv_flags & IFF_SEE_ALL_HWTSTAMP_REQUESTS)) {
+=======
+	if (!phy_ts || dev->see_all_hwtstamp_requests) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = ops->ndo_hwtstamp_set(dev, cfg, extack);
 		if (err) {
 			if (extack->_msg)
@@ -347,7 +359,11 @@ int dev_set_hwtstamp_phylib(struct net_device *dev,
 		}
 	}
 
+<<<<<<< HEAD
 	if (phy_ts && (dev->priv_flags & IFF_SEE_ALL_HWTSTAMP_REQUESTS))
+=======
+	if (phy_ts && dev->see_all_hwtstamp_requests)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		changed = kernel_hwtstamp_config_changed(&old_cfg, cfg);
 
 	if (phy_ts) {

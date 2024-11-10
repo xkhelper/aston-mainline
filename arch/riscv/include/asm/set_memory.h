@@ -46,7 +46,11 @@ bool kernel_page_present(struct page *page);
 
 #endif /* __ASSEMBLY__ */
 
+<<<<<<< HEAD
 #ifdef CONFIG_STRICT_KERNEL_RWX
+=======
+#if defined(CONFIG_STRICT_KERNEL_RWX) || defined(CONFIG_XIP_KERNEL)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_64BIT
 #define SECTION_ALIGN (1 << 21)
 #else

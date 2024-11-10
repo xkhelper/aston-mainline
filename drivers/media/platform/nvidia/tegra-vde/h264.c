@@ -623,6 +623,7 @@ static int tegra_vde_decode_end(struct tegra_vde *vde)
 	unsigned int read_bytes, macroblocks_nb;
 	struct device *dev = vde->dev;
 	dma_addr_t bsev_ptr;
+<<<<<<< HEAD
 	long timeout;
 	int ret;
 
@@ -631,6 +632,16 @@ static int tegra_vde_decode_end(struct tegra_vde *vde)
 	if (timeout < 0) {
 		ret = timeout;
 	} else if (timeout == 0) {
+=======
+	long time_left;
+	int ret;
+
+	time_left = wait_for_completion_interruptible_timeout(
+			&vde->decode_completion, msecs_to_jiffies(1000));
+	if (time_left < 0) {
+		ret = time_left;
+	} else if (time_left == 0) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		bsev_ptr = tegra_vde_readl(vde, vde->bsev, 0x10);
 		macroblocks_nb = tegra_vde_readl(vde, vde->sxe, 0xC8) & 0x1FFF;
 		read_bytes = bsev_ptr ? bsev_ptr - vde->bitstream_data_addr : 0;

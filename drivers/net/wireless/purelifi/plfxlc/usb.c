@@ -16,7 +16,11 @@
 #include <linux/string.h>
 #include <linux/module.h>
 #include <net/mac80211.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/sysfs.h>
 
 #include "mac.h"

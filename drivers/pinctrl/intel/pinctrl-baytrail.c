@@ -560,9 +560,16 @@ static DEFINE_RAW_SPINLOCK(byt_lock);
 static void __iomem *byt_gpio_reg(struct intel_pinctrl *vg, unsigned int offset,
 				  int reg)
 {
+<<<<<<< HEAD
 	struct intel_community *comm = intel_get_community(vg, offset);
 	u32 reg_offset;
 
+=======
+	const struct intel_community *comm;
+	u32 reg_offset;
+
+	comm = intel_get_community(vg, offset);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!comm)
 		return NULL;
 
@@ -1541,10 +1548,15 @@ static int byt_gpio_probe(struct intel_pinctrl *vg)
 	}
 
 	ret = devm_gpiochip_add_data(vg->dev, gc, vg);
+<<<<<<< HEAD
 	if (ret) {
 		dev_err(vg->dev, "failed adding byt-gpio chip\n");
 		return ret;
 	}
+=======
+	if (ret)
+		dev_err(vg->dev, "failed adding byt-gpio chip\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }

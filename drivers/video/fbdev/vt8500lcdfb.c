@@ -471,7 +471,11 @@ static const struct of_device_id via_dt_ids[] = {
 
 static struct platform_driver vt8500lcd_driver = {
 	.probe		= vt8500lcd_probe,
+<<<<<<< HEAD
 	.remove_new	= vt8500lcd_remove,
+=======
+	.remove		= vt8500lcd_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver		= {
 		.name	= "vt8500-lcd",
 		.of_match_table = of_match_ptr(via_dt_ids),

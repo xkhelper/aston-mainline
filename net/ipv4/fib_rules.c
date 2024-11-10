@@ -37,6 +37,10 @@ struct fib4_rule {
 	u8			dst_len;
 	u8			src_len;
 	dscp_t			dscp;
+<<<<<<< HEAD
+=======
+	u8			dscp_full:1;	/* DSCP or TOS selector */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__be32			src;
 	__be32			srcmask;
 	__be32			dst;
@@ -186,7 +190,19 @@ INDIRECT_CALLABLE_SCOPE int fib4_rule_match(struct fib_rule *rule,
 	    ((daddr ^ r->dst) & r->dstmask))
 		return 0;
 
+<<<<<<< HEAD
 	if (r->dscp && r->dscp != inet_dsfield_to_dscp(fl4->flowi4_tos))
+=======
+	/* When DSCP selector is used we need to match on the entire DSCP field
+	 * in the flow information structure. When TOS selector is used we need
+	 * to mask the upper three DSCP bits prior to matching to maintain
+	 * legacy behavior.
+	 */
+	if (r->dscp_full && r->dscp != inet_dsfield_to_dscp(fl4->flowi4_tos))
+		return 0;
+	else if (!r->dscp_full && r->dscp &&
+		 !fib_dscp_masked_match(r->dscp, fl4))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	if (rule->ip_proto && (rule->ip_proto != fl4->flowi4_proto))
@@ -217,6 +233,23 @@ static struct fib_table *fib_empty_table(struct net *net)
 	return NULL;
 }
 
+<<<<<<< HEAD
+=======
+static int fib4_nl2rule_dscp(const struct nlattr *nla, struct fib4_rule *rule4,
+			     struct netlink_ext_ack *extack)
+{
+	if (rule4->dscp) {
+		NL_SET_ERR_MSG(extack, "Cannot specify both TOS and DSCP");
+		return -EINVAL;
+	}
+
+	rule4->dscp = inet_dsfield_to_dscp(nla_get_u8(nla) << 2);
+	rule4->dscp_full = true;
+
+	return 0;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int fib4_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
 			       struct fib_rule_hdr *frh,
 			       struct nlattr **tb,
@@ -238,6 +271,13 @@ static int fib4_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
 	}
 	rule4->dscp = inet_dsfield_to_dscp(frh->tos);
 
+<<<<<<< HEAD
+=======
+	if (tb[FRA_DSCP] &&
+	    fib4_nl2rule_dscp(tb[FRA_DSCP], rule4, extack) < 0)
+		goto errout;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* split local/main if they are not already split */
 	err = fib_unmerge(net);
 	if (err)
@@ -320,9 +360,25 @@ static int fib4_rule_compare(struct fib_rule *rule, struct fib_rule_hdr *frh,
 	if (frh->dst_len && (rule4->dst_len != frh->dst_len))
 		return 0;
 
+<<<<<<< HEAD
 	if (frh->tos && inet_dscp_to_dsfield(rule4->dscp) != frh->tos)
 		return 0;
 
+=======
+	if (frh->tos &&
+	    (rule4->dscp_full ||
+	     inet_dscp_to_dsfield(rule4->dscp) != frh->tos))
+		return 0;
+
+	if (tb[FRA_DSCP]) {
+		dscp_t dscp;
+
+		dscp = inet_dsfield_to_dscp(nla_get_u8(tb[FRA_DSCP]) << 2);
+		if (!rule4->dscp_full || rule4->dscp != dscp)
+			return 0;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_IP_ROUTE_CLASSID
 	if (tb[FRA_FLOW] && (rule4->tclassid != nla_get_u32(tb[FRA_FLOW])))
 		return 0;
@@ -344,7 +400,19 @@ static int fib4_rule_fill(struct fib_rule *rule, struct sk_buff *skb,
 
 	frh->dst_len = rule4->dst_len;
 	frh->src_len = rule4->src_len;
+<<<<<<< HEAD
 	frh->tos = inet_dscp_to_dsfield(rule4->dscp);
+=======
+
+	if (rule4->dscp_full) {
+		frh->tos = 0;
+		if (nla_put_u8(skb, FRA_DSCP,
+			       inet_dscp_to_dsfield(rule4->dscp) >> 2))
+			goto nla_put_failure;
+	} else {
+		frh->tos = inet_dscp_to_dsfield(rule4->dscp);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if ((rule4->dst_len &&
 	     nla_put_in_addr(skb, FRA_DST, rule4->dst)) ||
@@ -366,7 +434,12 @@ static size_t fib4_rule_nlmsg_payload(struct fib_rule *rule)
 {
 	return nla_total_size(4) /* dst */
 	       + nla_total_size(4) /* src */
+<<<<<<< HEAD
 	       + nla_total_size(4); /* flow */
+=======
+	       + nla_total_size(4) /* flow */
+	       + nla_total_size(1); /* dscp */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void fib4_rule_flush_cache(struct fib_rules_ops *ops)

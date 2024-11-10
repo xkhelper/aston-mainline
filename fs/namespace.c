@@ -1774,7 +1774,11 @@ static void umount_tree(struct mount *mnt, enum umount_tree_flags how)
 		list_del_init(&p->mnt_child);
 	}
 
+<<<<<<< HEAD
 	/* Add propogated mounts to the tmp_list */
+=======
+	/* Add propagated mounts to the tmp_list */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (how & UMOUNT_PROPAGATE)
 		propagate_umount(&tmp_list);
 
@@ -2060,16 +2064,54 @@ static bool is_mnt_ns_file(struct dentry *dentry)
 	       dentry->d_fsdata == &mntns_operations;
 }
 
+<<<<<<< HEAD
 static struct mnt_namespace *to_mnt_ns(struct ns_common *ns)
 {
 	return container_of(ns, struct mnt_namespace, ns);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct ns_common *from_mnt_ns(struct mnt_namespace *mnt)
 {
 	return &mnt->ns;
 }
 
+<<<<<<< HEAD
+=======
+struct mnt_namespace *__lookup_next_mnt_ns(struct mnt_namespace *mntns, bool previous)
+{
+	guard(read_lock)(&mnt_ns_tree_lock);
+	for (;;) {
+		struct rb_node *node;
+
+		if (previous)
+			node = rb_prev(&mntns->mnt_ns_tree_node);
+		else
+			node = rb_next(&mntns->mnt_ns_tree_node);
+		if (!node)
+			return ERR_PTR(-ENOENT);
+
+		mntns = node_to_mnt_ns(node);
+		node = &mntns->mnt_ns_tree_node;
+
+		if (!ns_capable_noaudit(mntns->user_ns, CAP_SYS_ADMIN))
+			continue;
+
+		/*
+		 * Holding mnt_ns_tree_lock prevents the mount namespace from
+		 * being freed but it may well be on it's deathbed. We want an
+		 * active reference, not just a passive one here as we're
+		 * persisting the mount namespace.
+		 */
+		if (!refcount_inc_not_zero(&mntns->ns.count))
+			continue;
+
+		return mntns;
+	}
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool mnt_ns_loop(struct dentry *dentry)
 {
 	/* Could bind mounting the mount namespace inode cause a
@@ -2921,8 +2963,20 @@ static void mnt_warn_timestamp_expiry(struct path *mountpoint, struct vfsmount *
 	if (!__mnt_is_readonly(mnt) &&
 	   (!(sb->s_iflags & SB_I_TS_EXPIRY_WARNED)) &&
 	   (ktime_get_real_seconds() + TIME_UPTIME_SEC_MAX > sb->s_time_max)) {
+<<<<<<< HEAD
 		char *buf = (char *)__get_free_page(GFP_KERNEL);
 		char *mntpath = buf ? d_path(mountpoint, buf, PAGE_SIZE) : ERR_PTR(-ENOMEM);
+=======
+		char *buf, *mntpath;
+
+		buf = (char *)__get_free_page(GFP_KERNEL);
+		if (buf)
+			mntpath = d_path(mountpoint, buf, PAGE_SIZE);
+		else
+			mntpath = ERR_PTR(-ENOMEM);
+		if (IS_ERR(mntpath))
+			mntpath = "(unknown)";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		pr_warn("%s filesystem being %s at %s supports timestamps until %ptTd (0x%llx)\n",
 			sb->s_type->name,
@@ -2930,8 +2984,14 @@ static void mnt_warn_timestamp_expiry(struct path *mountpoint, struct vfsmount *
 			mntpath, &sb->s_time_max,
 			(unsigned long long)sb->s_time_max);
 
+<<<<<<< HEAD
 		free_page((unsigned long)buf);
 		sb->s_iflags |= SB_I_TS_EXPIRY_WARNED;
+=======
+		sb->s_iflags |= SB_I_TS_EXPIRY_WARNED;
+		if (buf)
+			free_page((unsigned long)buf);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -3909,7 +3969,13 @@ struct mnt_namespace *copy_mnt_ns(unsigned long flags, struct mnt_namespace *ns,
 	new = copy_tree(old, old->mnt.mnt_root, copy_flags);
 	if (IS_ERR(new)) {
 		namespace_unlock();
+<<<<<<< HEAD
 		free_mnt_ns(new_ns);
+=======
+		ns_free_inum(&new_ns->ns);
+		dec_mnt_namespaces(new_ns->ucounts);
+		mnt_ns_release(new_ns);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return ERR_CAST(new);
 	}
 	if (user_ns != ns->user_ns) {
@@ -4099,6 +4165,7 @@ SYSCALL_DEFINE3(fsmount, int, fs_fd, unsigned int, flags,
 	}
 
 	f = fdget(fs_fd);
+<<<<<<< HEAD
 	if (!f.file)
 		return -EBADF;
 
@@ -4107,6 +4174,16 @@ SYSCALL_DEFINE3(fsmount, int, fs_fd, unsigned int, flags,
 		goto err_fsfd;
 
 	fc = f.file->private_data;
+=======
+	if (!fd_file(f))
+		return -EBADF;
+
+	ret = -EINVAL;
+	if (fd_file(f)->f_op != &fscontext_fops)
+		goto err_fsfd;
+
+	fc = fd_file(f)->private_data;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = mutex_lock_interruptible(&fc->uapi_mutex);
 	if (ret < 0)
@@ -4436,6 +4513,13 @@ static int can_idmap_mount(const struct mount_kattr *kattr, struct mount *mnt)
 	if (!(m->mnt_sb->s_type->fs_flags & FS_ALLOW_IDMAP))
 		return -EINVAL;
 
+<<<<<<< HEAD
+=======
+	/* The filesystem has turned off idmapped mounts. */
+	if (m->mnt_sb->s_iflags & SB_I_NOIDMAP)
+		return -EINVAL;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* We're not controlling the superblock. */
 	if (!ns_capable(fs_userns, CAP_SYS_ADMIN))
 		return -EPERM;
@@ -4649,15 +4733,26 @@ static int build_mount_idmapped(const struct mount_attr *attr, size_t usize,
 		return -EINVAL;
 
 	f = fdget(attr->userns_fd);
+<<<<<<< HEAD
 	if (!f.file)
 		return -EBADF;
 
 	if (!proc_ns_file(f.file)) {
+=======
+	if (!fd_file(f))
+		return -EBADF;
+
+	if (!proc_ns_file(fd_file(f))) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = -EINVAL;
 		goto out_fput;
 	}
 
+<<<<<<< HEAD
 	ns = get_proc_ns(file_inode(f.file));
+=======
+	ns = get_proc_ns(file_inode(fd_file(f)));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ns->ops->type != CLONE_NEWUSER) {
 		err = -EINVAL;
 		goto out_fput;
@@ -5243,12 +5338,46 @@ static int copy_mnt_id_req(const struct mnt_id_req __user *req,
  * that, or if not simply grab a passive reference on our mount namespace and
  * return that.
  */
+<<<<<<< HEAD
 static struct mnt_namespace *grab_requested_mnt_ns(u64 mnt_ns_id)
 {
 	if (mnt_ns_id)
 		return lookup_mnt_ns(mnt_ns_id);
 	refcount_inc(&current->nsproxy->mnt_ns->passive);
 	return current->nsproxy->mnt_ns;
+=======
+static struct mnt_namespace *grab_requested_mnt_ns(const struct mnt_id_req *kreq)
+{
+	struct mnt_namespace *mnt_ns;
+
+	if (kreq->mnt_ns_id && kreq->spare)
+		return ERR_PTR(-EINVAL);
+
+	if (kreq->mnt_ns_id)
+		return lookup_mnt_ns(kreq->mnt_ns_id);
+
+	if (kreq->spare) {
+		struct ns_common *ns;
+
+		CLASS(fd, f)(kreq->spare);
+		if (fd_empty(f))
+			return ERR_PTR(-EBADF);
+
+		if (!proc_ns_file(fd_file(f)))
+			return ERR_PTR(-EINVAL);
+
+		ns = get_proc_ns(file_inode(fd_file(f)));
+		if (ns->ops->type != CLONE_NEWNS)
+			return ERR_PTR(-EINVAL);
+
+		mnt_ns = to_mnt_ns(ns);
+	} else {
+		mnt_ns = current->nsproxy->mnt_ns;
+	}
+
+	refcount_inc(&mnt_ns->passive);
+	return mnt_ns;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 SYSCALL_DEFINE4(statmount, const struct mnt_id_req __user *, req,
@@ -5269,7 +5398,11 @@ SYSCALL_DEFINE4(statmount, const struct mnt_id_req __user *, req,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ns = grab_requested_mnt_ns(kreq.mnt_ns_id);
+=======
+	ns = grab_requested_mnt_ns(&kreq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ns)
 		return -ENOENT;
 
@@ -5396,7 +5529,11 @@ SYSCALL_DEFINE4(listmount, const struct mnt_id_req __user *, req,
 	if (!kmnt_ids)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	ns = grab_requested_mnt_ns(kreq.mnt_ns_id);
+=======
+	ns = grab_requested_mnt_ns(&kreq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ns)
 		return -ENOENT;
 
@@ -5605,7 +5742,11 @@ static bool mnt_already_visible(struct mnt_namespace *ns,
 			/* Only worry about locked mounts */
 			if (!(child->mnt.mnt_flags & MNT_LOCKED))
 				continue;
+<<<<<<< HEAD
 			/* Is the directory permanetly empty? */
+=======
+			/* Is the directory permanently empty? */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (!is_empty_dir_inode(inode))
 				goto next;
 		}

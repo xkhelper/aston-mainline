@@ -13,6 +13,10 @@
 #include "adf_cfg.h"
 #include "adf_cfg_strings.h"
 #include "adf_cfg_common.h"
+<<<<<<< HEAD
+=======
+#include "adf_pfvf_vf_msg.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "adf_transport_access_macros.h"
 #include "adf_transport_internal.h"
 
@@ -71,10 +75,18 @@ static void adf_dev_stop_async(struct work_struct *work)
 	struct adf_accel_dev *accel_dev = stop_data->accel_dev;
 
 	adf_dev_restarting_notify(accel_dev);
+<<<<<<< HEAD
 	adf_dev_down(accel_dev, false);
 
 	/* Re-enable PF2VF interrupts */
 	adf_enable_pf2vf_interrupts(accel_dev);
+=======
+	adf_dev_down(accel_dev);
+
+	/* Re-enable PF2VF interrupts */
+	adf_enable_pf2vf_interrupts(accel_dev);
+	adf_vf2pf_notify_restart_complete(accel_dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(stop_data);
 }
 

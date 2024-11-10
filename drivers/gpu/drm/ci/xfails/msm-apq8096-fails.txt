@@ -5,4 +5,7 @@ device_reset@unbind-reset-rebind,Fail
 dumb_buffer@invalid-bpp,Fail
 kms_3d,Fail
 kms_lease@lease-uevent,Fail
+<<<<<<< HEAD
 tools_test@tools_test,Fail
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

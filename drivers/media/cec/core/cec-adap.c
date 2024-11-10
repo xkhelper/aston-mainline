@@ -673,8 +673,14 @@ void cec_transmit_done_ts(struct cec_adapter *adap, u8 status,
 		/* Retry this message */
 		data->attempts -= attempts_made;
 		if (msg->timeout)
+<<<<<<< HEAD
 			dprintk(2, "retransmit: %*ph (attempts: %d, wait for 0x%02x)\n",
 				msg->len, msg->msg, data->attempts, msg->reply);
+=======
+			dprintk(2, "retransmit: %*ph (attempts: %d, wait for %*ph)\n",
+				msg->len, msg->msg, data->attempts,
+				data->match_len, data->match_reply);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		else
 			dprintk(2, "retransmit: %*ph (attempts: %d)\n",
 				msg->len, msg->msg, data->attempts);
@@ -780,6 +786,11 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
 {
 	struct cec_data *data;
 	bool is_raw = msg_is_raw(msg);
+<<<<<<< HEAD
+=======
+	bool reply_vendor_id = (msg->flags & CEC_MSG_FL_REPLY_VENDOR_ID) &&
+		msg->len > 1 && msg->msg[1] == CEC_MSG_VENDOR_COMMAND_WITH_ID;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 
 	if (adap->devnode.unregistered)
@@ -794,12 +805,22 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
 	msg->tx_low_drive_cnt = 0;
 	msg->tx_error_cnt = 0;
 	msg->sequence = 0;
+<<<<<<< HEAD
 
 	if (msg->reply && msg->timeout == 0) {
 		/* Make sure the timeout isn't 0. */
 		msg->timeout = 1000;
 	}
 	msg->flags &= CEC_MSG_FL_REPLY_TO_FOLLOWERS | CEC_MSG_FL_RAW;
+=======
+	msg->flags &= CEC_MSG_FL_REPLY_TO_FOLLOWERS | CEC_MSG_FL_RAW |
+		      (reply_vendor_id ? CEC_MSG_FL_REPLY_VENDOR_ID : 0);
+
+	if ((reply_vendor_id || msg->reply) && msg->timeout == 0) {
+		/* Make sure the timeout isn't 0. */
+		msg->timeout = 1000;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!msg->timeout)
 		msg->flags &= ~CEC_MSG_FL_REPLY_TO_FOLLOWERS;
@@ -809,6 +830,14 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
 		dprintk(1, "%s: invalid length %d\n", __func__, msg->len);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
+=======
+	if (reply_vendor_id && msg->len < 6) {
+		dprintk(1, "%s: <Vendor Command With ID> message too short\n",
+			__func__);
+		return -EINVAL;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	memset(msg->msg + msg->len, 0, sizeof(msg->msg) - msg->len);
 
@@ -900,8 +929,14 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
 				__func__);
 			return -ENONET;
 		}
+<<<<<<< HEAD
 		if (msg->reply) {
 			dprintk(1, "%s: invalid msg->reply\n", __func__);
+=======
+		if (reply_vendor_id || msg->reply) {
+			dprintk(1, "%s: adapter is unconfigured so reply is not supported\n",
+				__func__);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EINVAL;
 		}
 	}
@@ -923,6 +958,17 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
 	data->fh = fh;
 	data->adap = adap;
 	data->blocking = block;
+<<<<<<< HEAD
+=======
+	if (reply_vendor_id) {
+		memcpy(data->match_reply, msg->msg + 1, 4);
+		data->match_reply[4] = msg->reply;
+		data->match_len = 5;
+	} else if (msg->timeout) {
+		data->match_reply[0] = msg->reply;
+		data->match_len = 1;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	init_completion(&data->c);
 	INIT_DELAYED_WORK(&data->work, cec_wait_timeout);
@@ -1211,6 +1257,7 @@ void cec_received_msg_ts(struct cec_adapter *adap,
 			if (!abort && dst->msg[1] == CEC_MSG_INITIATE_ARC &&
 			    (cmd == CEC_MSG_REPORT_ARC_INITIATED ||
 			     cmd == CEC_MSG_REPORT_ARC_TERMINATED) &&
+<<<<<<< HEAD
 			    (dst->reply == CEC_MSG_REPORT_ARC_INITIATED ||
 			     dst->reply == CEC_MSG_REPORT_ARC_TERMINATED))
 				dst->reply = cmd;
@@ -1218,6 +1265,17 @@ void cec_received_msg_ts(struct cec_adapter *adap,
 			/* Does the command match? */
 			if ((abort && cmd != dst->msg[1]) ||
 			    (!abort && cmd != dst->reply))
+=======
+			    (data->match_reply[0] == CEC_MSG_REPORT_ARC_INITIATED ||
+			     data->match_reply[0] == CEC_MSG_REPORT_ARC_TERMINATED)) {
+				dst->reply = cmd;
+				data->match_reply[0] = cmd;
+			}
+
+			/* Does the command match? */
+			if ((abort && cmd != dst->msg[1]) ||
+			    (!abort && memcmp(data->match_reply, msg->msg + 1, data->match_len)))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				continue;
 
 			/* Does the addressing match? */
@@ -2318,6 +2376,7 @@ int cec_adap_status(struct seq_file *file, void *priv)
 	}
 	data = adap->transmitting;
 	if (data)
+<<<<<<< HEAD
 		seq_printf(file, "transmitting message: %*ph (reply: %02x, timeout: %ums)\n",
 			   data->msg.len, data->msg.msg, data->msg.reply,
 			   data->msg.timeout);
@@ -2330,6 +2389,23 @@ int cec_adap_status(struct seq_file *file, void *priv)
 	list_for_each_entry(data, &adap->wait_queue, list) {
 		seq_printf(file, "message waiting for reply: %*ph (reply: %02x, timeout: %ums)\n",
 			   data->msg.len, data->msg.msg, data->msg.reply,
+=======
+		seq_printf(file, "transmitting message: %*ph (reply: %*ph, timeout: %ums)\n",
+			   data->msg.len, data->msg.msg,
+			   data->match_len, data->match_reply,
+			   data->msg.timeout);
+	seq_printf(file, "pending transmits: %u\n", adap->transmit_queue_sz);
+	list_for_each_entry(data, &adap->transmit_queue, list) {
+		seq_printf(file, "queued tx message: %*ph (reply: %*ph, timeout: %ums)\n",
+			   data->msg.len, data->msg.msg,
+			   data->match_len, data->match_reply,
+			   data->msg.timeout);
+	}
+	list_for_each_entry(data, &adap->wait_queue, list) {
+		seq_printf(file, "message waiting for reply: %*ph (reply: %*ph, timeout: %ums)\n",
+			   data->msg.len, data->msg.msg,
+			   data->match_len, data->match_reply,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			   data->msg.timeout);
 	}
 

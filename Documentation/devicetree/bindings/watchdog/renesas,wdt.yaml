@@ -75,6 +75,11 @@ properties:
               - renesas,r8a779h0-wdt     # R-Car V4M
           - const: renesas,rcar-gen4-wdt # R-Car Gen4
 
+<<<<<<< HEAD
+=======
+      - const: renesas,r9a09g057-wdt       # RZ/V2H(P)
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   reg:
     maxItems: 1
 
@@ -113,7 +118,10 @@ properties:
 required:
   - compatible
   - reg
+<<<<<<< HEAD
   - interrupts
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - clocks
 
 allOf:
@@ -137,6 +145,10 @@ allOf:
         compatible:
           contains:
             enum:
+<<<<<<< HEAD
+=======
+              - renesas,r9a09g057-wdt
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - renesas,rzg2l-wdt
               - renesas,rzv2m-wdt
     then:
@@ -171,6 +183,22 @@ allOf:
         interrupts:
           maxItems: 1
 
+<<<<<<< HEAD
+=======
+  - if:
+      properties:
+        compatible:
+          contains:
+            const: renesas,r9a09g057-wdt
+    then:
+      properties:
+        interrupts: false
+        interrupt-names: false
+    else:
+      required:
+        - interrupts
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 additionalProperties: false
 
 examples:

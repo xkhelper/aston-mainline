@@ -122,8 +122,13 @@ static int add_map_configs(struct device *dev, struct pinctrl_map **map,
 	if (WARN_ON(*num_maps == *reserved_maps))
 		return -ENOSPC;
 
+<<<<<<< HEAD
 	dup_configs = kmemdup(configs, num_configs * sizeof(*dup_configs),
 			      GFP_KERNEL);
+=======
+	dup_configs = kmemdup_array(configs, num_configs, sizeof(*dup_configs),
+				    GFP_KERNEL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!dup_configs)
 		return -ENOMEM;
 
@@ -251,7 +256,10 @@ static int samsung_dt_node_to_map(struct pinctrl_dev *pctldev,
 {
 	struct samsung_pinctrl_drv_data *drvdata;
 	unsigned reserved_maps;
+<<<<<<< HEAD
 	struct device_node *np;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	drvdata = pinctrl_dev_get_drvdata(pctldev);
@@ -266,12 +274,19 @@ static int samsung_dt_node_to_map(struct pinctrl_dev *pctldev,
 							&reserved_maps,
 							num_maps);
 
+<<<<<<< HEAD
 	for_each_child_of_node(np_config, np) {
+=======
+	for_each_child_of_node_scoped(np_config, np) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = samsung_dt_subnode_to_map(drvdata, pctldev->dev, np, map,
 						&reserved_maps, num_maps);
 		if (ret < 0) {
 			samsung_dt_free_map(pctldev, *map, *num_maps);
+<<<<<<< HEAD
 			of_node_put(np);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return ret;
 		}
 	}
@@ -823,16 +838,26 @@ static struct samsung_pmx_func *samsung_pinctrl_create_functions(
 		struct device_node *func_np;
 
 		if (!of_get_child_count(cfg_np)) {
+<<<<<<< HEAD
 			if (!of_find_property(cfg_np,
 			    "samsung,pin-function", NULL))
+=======
+			if (!of_property_present(cfg_np,
+			    "samsung,pin-function"))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				continue;
 			++func_cnt;
 			continue;
 		}
 
 		for_each_child_of_node(cfg_np, func_np) {
+<<<<<<< HEAD
 			if (!of_find_property(func_np,
 			    "samsung,pin-function", NULL))
+=======
+			if (!of_property_present(func_np,
+			    "samsung,pin-function"))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				continue;
 			++func_cnt;
 		}
@@ -849,6 +874,7 @@ static struct samsung_pmx_func *samsung_pinctrl_create_functions(
 	 * and create pin groups and pin function lists.
 	 */
 	func_cnt = 0;
+<<<<<<< HEAD
 	for_each_child_of_node(dev_np, cfg_np) {
 		struct device_node *func_np;
 
@@ -859,6 +885,14 @@ static struct samsung_pmx_func *samsung_pinctrl_create_functions(
 				of_node_put(cfg_np);
 				return ERR_PTR(ret);
 			}
+=======
+	for_each_child_of_node_scoped(dev_np, cfg_np) {
+		if (!of_get_child_count(cfg_np)) {
+			ret = samsung_pinctrl_create_function(dev, drvdata,
+							cfg_np, func);
+			if (ret < 0)
+				return ERR_PTR(ret);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (ret > 0) {
 				++func;
 				++func_cnt;
@@ -866,6 +900,7 @@ static struct samsung_pmx_func *samsung_pinctrl_create_functions(
 			continue;
 		}
 
+<<<<<<< HEAD
 		for_each_child_of_node(cfg_np, func_np) {
 			ret = samsung_pinctrl_create_function(dev, drvdata,
 						func_np, func);
@@ -874,6 +909,13 @@ static struct samsung_pmx_func *samsung_pinctrl_create_functions(
 				of_node_put(cfg_np);
 				return ERR_PTR(ret);
 			}
+=======
+		for_each_child_of_node_scoped(cfg_np, func_np) {
+			ret = samsung_pinctrl_create_function(dev, drvdata,
+						func_np, func);
+			if (ret < 0)
+				return ERR_PTR(ret);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (ret > 0) {
 				++func;
 				++func_cnt;
@@ -997,6 +1039,80 @@ static int samsung_pinctrl_unregister(struct platform_device *pdev,
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static void samsung_pud_value_init(struct samsung_pinctrl_drv_data *drvdata)
+{
+	unsigned int  *pud_val = drvdata->pud_val;
+
+	pud_val[PUD_PULL_DISABLE] = EXYNOS_PIN_PUD_PULL_DISABLE;
+	pud_val[PUD_PULL_DOWN] = EXYNOS_PIN_PID_PULL_DOWN;
+	pud_val[PUD_PULL_UP] = EXYNOS_PIN_PID_PULL_UP;
+}
+
+/*
+ * Enable or Disable the pull-down and pull-up for the gpio pins in the
+ * PUD register.
+ */
+static void samsung_gpio_set_pud(struct gpio_chip *gc, unsigned int offset,
+				 unsigned int value)
+{
+	struct samsung_pin_bank *bank = gpiochip_get_data(gc);
+	const struct samsung_pin_bank_type *type = bank->type;
+	void __iomem *reg;
+	unsigned int data, mask;
+
+	reg = bank->pctl_base + bank->pctl_offset;
+	data = readl(reg + type->reg_offset[PINCFG_TYPE_PUD]);
+	mask = (1 << type->fld_width[PINCFG_TYPE_PUD]) - 1;
+	data &= ~(mask << (offset * type->fld_width[PINCFG_TYPE_PUD]));
+	data |= value << (offset * type->fld_width[PINCFG_TYPE_PUD]);
+	writel(data, reg + type->reg_offset[PINCFG_TYPE_PUD]);
+}
+
+/*
+ * Identify the type of PUD config based on the gpiolib request to enable
+ * or disable the PUD config.
+ */
+static int samsung_gpio_set_config(struct gpio_chip *gc, unsigned int offset,
+				   unsigned long config)
+{
+	struct samsung_pin_bank *bank = gpiochip_get_data(gc);
+	struct samsung_pinctrl_drv_data *drvdata = bank->drvdata;
+	unsigned int value;
+	int ret = 0;
+	unsigned long flags;
+
+	switch (pinconf_to_config_param(config)) {
+	case PIN_CONFIG_BIAS_DISABLE:
+		value = drvdata->pud_val[PUD_PULL_DISABLE];
+		break;
+	case PIN_CONFIG_BIAS_PULL_DOWN:
+		value = drvdata->pud_val[PUD_PULL_DOWN];
+		break;
+	case PIN_CONFIG_BIAS_PULL_UP:
+		value = drvdata->pud_val[PUD_PULL_UP];
+		break;
+	default:
+		return -ENOTSUPP;
+	}
+
+	ret = clk_enable(drvdata->pclk);
+	if (ret) {
+		dev_err(drvdata->dev, "failed to enable clock\n");
+		return ret;
+	}
+
+	raw_spin_lock_irqsave(&bank->slock, flags);
+	samsung_gpio_set_pud(gc, offset, value);
+	raw_spin_unlock_irqrestore(&bank->slock, flags);
+
+	clk_disable(drvdata->pclk);
+
+	return ret;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct gpio_chip samsung_gpiolib_chip = {
 	.request = gpiochip_generic_request,
 	.free = gpiochip_generic_free,
@@ -1006,6 +1122,10 @@ static const struct gpio_chip samsung_gpiolib_chip = {
 	.direction_output = samsung_gpio_direction_output,
 	.to_irq = samsung_gpio_to_irq,
 	.add_pin_ranges = samsung_add_pin_ranges,
+<<<<<<< HEAD
+=======
+	.set_config = samsung_gpio_set_config,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.owner = THIS_MODULE,
 };
 
@@ -1237,6 +1357,14 @@ static int samsung_pinctrl_probe(struct platform_device *pdev)
 	if (ctrl->eint_wkup_init)
 		ctrl->eint_wkup_init(drvdata);
 
+<<<<<<< HEAD
+=======
+	if (ctrl->pud_value_init)
+		ctrl->pud_value_init(drvdata);
+	else
+		samsung_pud_value_init(drvdata);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = samsung_gpiolib_register(pdev, drvdata);
 	if (ret)
 		goto err_unregister;

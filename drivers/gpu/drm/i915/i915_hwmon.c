@@ -5,6 +5,10 @@
 
 #include <linux/hwmon.h>
 #include <linux/hwmon-sysfs.h>
+<<<<<<< HEAD
+=======
+#include <linux/jiffies.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/types.h>
 
 #include "i915_drv.h"
@@ -36,6 +40,10 @@ struct hwm_reg {
 	i915_reg_t pkg_rapl_limit;
 	i915_reg_t energy_status_all;
 	i915_reg_t energy_status_tile;
+<<<<<<< HEAD
+=======
+	i915_reg_t fan_speed;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct hwm_energy_info {
@@ -43,11 +51,23 @@ struct hwm_energy_info {
 	long accum_energy;			/* Accumulated energy for energy1_input */
 };
 
+<<<<<<< HEAD
+=======
+struct hwm_fan_info {
+	u32 reg_val_prev;
+	u64 time_prev;
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct hwm_drvdata {
 	struct i915_hwmon *hwmon;
 	struct intel_uncore *uncore;
 	struct device *hwmon_dev;
 	struct hwm_energy_info ei;		/*  Energy info for energy1_input */
+<<<<<<< HEAD
+=======
+	struct hwm_fan_info fi;			/*  Fan info for fan1_input */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char name[12];
 	int gt_n;
 	bool reset_in_progress;
@@ -276,6 +296,10 @@ static const struct hwmon_channel_info * const hwm_info[] = {
 	HWMON_CHANNEL_INFO(power, HWMON_P_MAX | HWMON_P_RATED_MAX | HWMON_P_CRIT),
 	HWMON_CHANNEL_INFO(energy, HWMON_E_INPUT),
 	HWMON_CHANNEL_INFO(curr, HWMON_C_CRIT),
+<<<<<<< HEAD
+=======
+	HWMON_CHANNEL_INFO(fan, HWMON_F_INPUT),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	NULL
 };
 
@@ -614,6 +638,72 @@ hwm_curr_write(struct hwm_drvdata *ddat, u32 attr, long val)
 }
 
 static umode_t
+<<<<<<< HEAD
+=======
+hwm_fan_is_visible(const struct hwm_drvdata *ddat, u32 attr)
+{
+	struct i915_hwmon *hwmon = ddat->hwmon;
+
+	if (attr == hwmon_fan_input && i915_mmio_reg_valid(hwmon->rg.fan_speed))
+		return 0444;
+
+	return 0;
+}
+
+static int
+hwm_fan_input_read(struct hwm_drvdata *ddat, long *val)
+{
+	struct i915_hwmon *hwmon = ddat->hwmon;
+	struct hwm_fan_info *fi = &ddat->fi;
+	u64 rotations, time_now, time;
+	intel_wakeref_t wakeref;
+	u32 reg_val;
+	int ret = 0;
+
+	wakeref = intel_runtime_pm_get(ddat->uncore->rpm);
+	mutex_lock(&hwmon->hwmon_lock);
+
+	reg_val = intel_uncore_read(ddat->uncore, hwmon->rg.fan_speed);
+	time_now = get_jiffies_64();
+
+	/*
+	 * HW register value is accumulated count of pulses from
+	 * PWM fan with the scale of 2 pulses per rotation.
+	 */
+	rotations = (reg_val - fi->reg_val_prev) / 2;
+
+	time = jiffies_delta_to_msecs(time_now - fi->time_prev);
+	if (unlikely(!time)) {
+		ret = -EAGAIN;
+		goto exit;
+	}
+
+	/*
+	 * Calculate fan speed in RPM by time averaging two subsequent
+	 * readings in minutes.
+	 * RPM = number of rotations * msecs per minute / time in msecs
+	 */
+	*val = DIV_ROUND_UP_ULL(rotations * (MSEC_PER_SEC * 60), time);
+
+	fi->reg_val_prev = reg_val;
+	fi->time_prev = time_now;
+exit:
+	mutex_unlock(&hwmon->hwmon_lock);
+	intel_runtime_pm_put(ddat->uncore->rpm, wakeref);
+	return ret;
+}
+
+static int
+hwm_fan_read(struct hwm_drvdata *ddat, u32 attr, long *val)
+{
+	if (attr == hwmon_fan_input)
+		return hwm_fan_input_read(ddat, val);
+
+	return -EOPNOTSUPP;
+}
+
+static umode_t
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 hwm_is_visible(const void *drvdata, enum hwmon_sensor_types type,
 	       u32 attr, int channel)
 {
@@ -628,6 +718,11 @@ hwm_is_visible(const void *drvdata, enum hwmon_sensor_types type,
 		return hwm_energy_is_visible(ddat, attr);
 	case hwmon_curr:
 		return hwm_curr_is_visible(ddat, attr);
+<<<<<<< HEAD
+=======
+	case hwmon_fan:
+		return hwm_fan_is_visible(ddat, attr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		return 0;
 	}
@@ -648,6 +743,11 @@ hwm_read(struct device *dev, enum hwmon_sensor_types type, u32 attr,
 		return hwm_energy_read(ddat, attr, val);
 	case hwmon_curr:
 		return hwm_curr_read(ddat, attr, val);
+<<<<<<< HEAD
+=======
+	case hwmon_fan:
+		return hwm_fan_read(ddat, attr, val);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		return -EOPNOTSUPP;
 	}
@@ -739,12 +839,20 @@ hwm_get_preregistration_info(struct drm_i915_private *i915)
 		hwmon->rg.pkg_rapl_limit = PCU_PACKAGE_RAPL_LIMIT;
 		hwmon->rg.energy_status_all = PCU_PACKAGE_ENERGY_STATUS;
 		hwmon->rg.energy_status_tile = INVALID_MMIO_REG;
+<<<<<<< HEAD
+=======
+		hwmon->rg.fan_speed = PCU_PWM_FAN_SPEED;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		hwmon->rg.pkg_power_sku_unit = INVALID_MMIO_REG;
 		hwmon->rg.pkg_power_sku = INVALID_MMIO_REG;
 		hwmon->rg.pkg_rapl_limit = INVALID_MMIO_REG;
 		hwmon->rg.energy_status_all = INVALID_MMIO_REG;
 		hwmon->rg.energy_status_tile = INVALID_MMIO_REG;
+<<<<<<< HEAD
+=======
+		hwmon->rg.fan_speed = INVALID_MMIO_REG;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	with_intel_runtime_pm(uncore->rpm, wakeref) {
@@ -755,6 +863,19 @@ hwm_get_preregistration_info(struct drm_i915_private *i915)
 		if (i915_mmio_reg_valid(hwmon->rg.pkg_power_sku_unit))
 			val_sku_unit = intel_uncore_read(uncore,
 							 hwmon->rg.pkg_power_sku_unit);
+<<<<<<< HEAD
+=======
+
+		/*
+		 * Store the initial fan register value, so that we can use it for
+		 * initial fan speed calculation.
+		 */
+		if (i915_mmio_reg_valid(hwmon->rg.fan_speed)) {
+			ddat->fi.reg_val_prev = intel_uncore_read(uncore,
+								  hwmon->rg.fan_speed);
+			ddat->fi.time_prev = get_jiffies_64();
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	hwmon->scl_shift_power = REG_FIELD_GET(PKG_PWR_UNIT, val_sku_unit);

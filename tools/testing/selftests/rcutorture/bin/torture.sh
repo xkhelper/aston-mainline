@@ -19,10 +19,17 @@ PATH=${RCUTORTURE}/bin:$PATH; export PATH
 
 TORTURE_ALLOTED_CPUS="`identify_qemu_vcpus`"
 MAKE_ALLOTED_CPUS=$((TORTURE_ALLOTED_CPUS*2))
+<<<<<<< HEAD
 HALF_ALLOTED_CPUS=$((TORTURE_ALLOTED_CPUS/2))
 if test "$HALF_ALLOTED_CPUS" -lt 1
 then
 	HALF_ALLOTED_CPUS=1
+=======
+SCALE_ALLOTED_CPUS=$((TORTURE_ALLOTED_CPUS/2))
+if test "$SCALE_ALLOTED_CPUS" -lt 1
+then
+	SCALE_ALLOTED_CPUS=1
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 fi
 VERBOSE_BATCH_CPUS=$((TORTURE_ALLOTED_CPUS/16))
 if test "$VERBOSE_BATCH_CPUS" -lt 2
@@ -90,6 +97,10 @@ usage () {
 	echo "       --do-scftorture / --do-no-scftorture / --no-scftorture"
 	echo "       --do-srcu-lockdep / --do-no-srcu-lockdep / --no-srcu-lockdep"
 	echo "       --duration [ <minutes> | <hours>h | <days>d ]"
+<<<<<<< HEAD
+=======
+	echo "       --guest-cpu-limit N"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	echo "       --kcsan-kmake-arg kernel-make-arguments"
 	exit 1
 }
@@ -203,6 +214,24 @@ do
 		duration_base=$(($ts*mult))
 		shift
 		;;
+<<<<<<< HEAD
+=======
+	--guest-cpu-limit|--guest-cpu-lim)
+		checkarg --guest-cpu-limit "(number)" "$#" "$2" '^[0-9]*$' '^--'
+		if (("$2" <= "$TORTURE_ALLOTED_CPUS" / 2))
+		then
+			SCALE_ALLOTED_CPUS="$2"
+			VERBOSE_BATCH_CPUS="$((SCALE_ALLOTED_CPUS/8))"
+			if (("$VERBOSE_BATCH_CPUS" < 2))
+			then
+				VERBOSE_BATCH_CPUS=0
+			fi
+		else
+			echo "Ignoring value of $2 for --guest-cpu-limit which is greater than (("$TORTURE_ALLOTED_CPUS" / 2))."
+		fi
+		shift
+		;;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	--kcsan-kmake-arg|--kcsan-kmake-args)
 		checkarg --kcsan-kmake-arg "(kernel make arguments)" $# "$2" '.*' '^error$'
 		kcsan_kmake_args="`echo "$kcsan_kmake_args $2" | sed -e 's/^ *//' -e 's/ *$//'`"
@@ -425,9 +454,15 @@ fi
 if test "$do_scftorture" = "yes"
 then
 	# Scale memory based on the number of CPUs.
+<<<<<<< HEAD
 	scfmem=$((3+HALF_ALLOTED_CPUS/16))
 	torture_bootargs="scftorture.nthreads=$HALF_ALLOTED_CPUS torture.disable_onoff_at_boot csdlock_debug=1"
 	torture_set "scftorture" tools/testing/selftests/rcutorture/bin/kvm.sh --torture scf --allcpus --duration "$duration_scftorture" --configs "$configs_scftorture" --kconfig "CONFIG_NR_CPUS=$HALF_ALLOTED_CPUS" --memory ${scfmem}G --trust-make
+=======
+	scfmem=$((3+SCALE_ALLOTED_CPUS/16))
+	torture_bootargs="scftorture.nthreads=$SCALE_ALLOTED_CPUS torture.disable_onoff_at_boot csdlock_debug=1"
+	torture_set "scftorture" tools/testing/selftests/rcutorture/bin/kvm.sh --torture scf --allcpus --duration "$duration_scftorture" --configs "$configs_scftorture" --kconfig "CONFIG_NR_CPUS=$SCALE_ALLOTED_CPUS" --memory ${scfmem}G --trust-make
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 fi
 
 if test "$do_rt" = "yes"
@@ -471,8 +506,13 @@ for prim in $primlist
 do
 	if test -n "$firsttime"
 	then
+<<<<<<< HEAD
 		torture_bootargs="refscale.scale_type="$prim" refscale.nreaders=$HALF_ALLOTED_CPUS refscale.loops=10000 refscale.holdoff=20 torture.disable_onoff_at_boot"
 		torture_set "refscale-$prim" tools/testing/selftests/rcutorture/bin/kvm.sh --torture refscale --allcpus --duration 5 --kconfig "CONFIG_TASKS_TRACE_RCU=y CONFIG_NR_CPUS=$HALF_ALLOTED_CPUS" --bootargs "refscale.verbose_batched=$VERBOSE_BATCH_CPUS torture.verbose_sleep_frequency=8 torture.verbose_sleep_duration=$VERBOSE_BATCH_CPUS" --trust-make
+=======
+		torture_bootargs="refscale.scale_type="$prim" refscale.nreaders=$SCALE_ALLOTED_CPUS refscale.loops=10000 refscale.holdoff=20 torture.disable_onoff_at_boot"
+		torture_set "refscale-$prim" tools/testing/selftests/rcutorture/bin/kvm.sh --torture refscale --allcpus --duration 5 --kconfig "CONFIG_TASKS_TRACE_RCU=y CONFIG_NR_CPUS=$SCALE_ALLOTED_CPUS" --bootargs "refscale.verbose_batched=$VERBOSE_BATCH_CPUS torture.verbose_sleep_frequency=8 torture.verbose_sleep_duration=$VERBOSE_BATCH_CPUS" --trust-make
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mv $T/last-resdir-nodebug $T/first-resdir-nodebug || :
 		if test -f "$T/last-resdir-kasan"
 		then
@@ -520,8 +560,13 @@ for prim in $primlist
 do
 	if test -n "$firsttime"
 	then
+<<<<<<< HEAD
 		torture_bootargs="rcuscale.scale_type="$prim" rcuscale.nwriters=$HALF_ALLOTED_CPUS rcuscale.holdoff=20 torture.disable_onoff_at_boot"
 		torture_set "rcuscale-$prim" tools/testing/selftests/rcutorture/bin/kvm.sh --torture rcuscale --allcpus --duration 5 --kconfig "CONFIG_TASKS_TRACE_RCU=y CONFIG_NR_CPUS=$HALF_ALLOTED_CPUS" --trust-make
+=======
+		torture_bootargs="rcuscale.scale_type="$prim" rcuscale.nwriters=$SCALE_ALLOTED_CPUS rcuscale.holdoff=20 torture.disable_onoff_at_boot"
+		torture_set "rcuscale-$prim" tools/testing/selftests/rcutorture/bin/kvm.sh --torture rcuscale --allcpus --duration 5 --kconfig "CONFIG_TASKS_TRACE_RCU=y CONFIG_NR_CPUS=$SCALE_ALLOTED_CPUS" --trust-make
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mv $T/last-resdir-nodebug $T/first-resdir-nodebug || :
 		if test -f "$T/last-resdir-kasan"
 		then
@@ -559,7 +604,11 @@ do_kcsan="$do_kcsan_save"
 if test "$do_kvfree" = "yes"
 then
 	torture_bootargs="rcuscale.kfree_rcu_test=1 rcuscale.kfree_nthreads=16 rcuscale.holdoff=20 rcuscale.kfree_loops=10000 torture.disable_onoff_at_boot"
+<<<<<<< HEAD
 	torture_set "rcuscale-kvfree" tools/testing/selftests/rcutorture/bin/kvm.sh --torture rcuscale --allcpus --duration $duration_rcutorture --kconfig "CONFIG_NR_CPUS=$HALF_ALLOTED_CPUS" --memory 2G --trust-make
+=======
+	torture_set "rcuscale-kvfree" tools/testing/selftests/rcutorture/bin/kvm.sh --torture rcuscale --allcpus --duration $duration_rcutorture --kconfig "CONFIG_NR_CPUS=$SCALE_ALLOTED_CPUS" --memory 2G --trust-make
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 fi
 
 if test "$do_clocksourcewd" = "yes"

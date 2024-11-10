@@ -288,7 +288,11 @@ static int acpi_reroute_boot_interrupt(struct pci_dev *dev,
 }
 #endif /* CONFIG_X86_IO_APIC */
 
+<<<<<<< HEAD
 static struct acpi_prt_entry *acpi_pci_irq_lookup(struct pci_dev *dev, int pin)
+=======
+struct acpi_prt_entry *acpi_pci_irq_lookup(struct pci_dev *dev, int pin)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct acpi_prt_entry *entry = NULL;
 	struct pci_dev *bridge;

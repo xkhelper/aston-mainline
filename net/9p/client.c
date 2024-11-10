@@ -977,8 +977,15 @@ error:
 struct p9_client *p9_client_create(const char *dev_name, char *options)
 {
 	int err;
+<<<<<<< HEAD
 	struct p9_client *clnt;
 	char *client_id;
+=======
+	static atomic_t seqno = ATOMIC_INIT(0);
+	struct p9_client *clnt;
+	char *client_id;
+	char *cache_name;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	clnt = kmalloc(sizeof(*clnt), GFP_KERNEL);
 	if (!clnt)
@@ -1035,15 +1042,33 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
 	if (err)
 		goto close_trans;
 
+<<<<<<< HEAD
+=======
+	cache_name = kasprintf(GFP_KERNEL,
+		"9p-fcall-cache-%u", atomic_inc_return(&seqno));
+	if (!cache_name) {
+		err = -ENOMEM;
+		goto close_trans;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* P9_HDRSZ + 4 is the smallest packet header we can have that is
 	 * followed by data accessed from userspace by read
 	 */
 	clnt->fcall_cache =
+<<<<<<< HEAD
 		kmem_cache_create_usercopy("9p-fcall-cache", clnt->msize,
+=======
+		kmem_cache_create_usercopy(cache_name, clnt->msize,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					   0, 0, P9_HDRSZ + 4,
 					   clnt->msize - (P9_HDRSZ + 4),
 					   NULL);
 
+<<<<<<< HEAD
+=======
+	kfree(cache_name);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return clnt;
 
 close_trans:

@@ -166,6 +166,7 @@ static inline acpi_object_type get_param_acpi_type(const struct wmi_block *wbloc
 		return ACPI_TYPE_BUFFER;
 }
 
+<<<<<<< HEAD
 static acpi_status get_event_data(const struct wmi_block *wblock, struct acpi_buffer *out)
 {
 	union acpi_object param = {
@@ -182,6 +183,8 @@ static acpi_status get_event_data(const struct wmi_block *wblock, struct acpi_bu
 	return acpi_evaluate_object(wblock->acpi_device->handle, "_WED", &input, out);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int wmidev_match_guid(struct device *dev, const void *data)
 {
 	struct wmi_block *wblock = dev_to_wblock(dev);
@@ -199,6 +202,7 @@ static int wmidev_match_guid(struct device *dev, const void *data)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int wmidev_match_notify_id(struct device *dev, const void *data)
 {
 	struct wmi_block *wblock = dev_to_wblock(dev);
@@ -216,6 +220,8 @@ static int wmidev_match_notify_id(struct device *dev, const void *data)
 	return 0;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct bus_type wmi_bus_type;
 
 static struct wmi_device *wmi_find_device_by_guid(const char *guid_string)
@@ -235,6 +241,7 @@ static struct wmi_device *wmi_find_device_by_guid(const char *guid_string)
 	return dev_to_wdev(dev);
 }
 
+<<<<<<< HEAD
 static struct wmi_device *wmi_find_event_by_notify_id(const u32 notify_id)
 {
 	struct device *dev;
@@ -246,6 +253,8 @@ static struct wmi_device *wmi_find_event_by_notify_id(const u32 notify_id)
 	return to_wmi_device(dev);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void wmi_device_put(struct wmi_device *wdev)
 {
 	put_device(&wdev->dev);
@@ -650,6 +659,7 @@ acpi_status wmi_remove_notify_handler(const char *guid)
 EXPORT_SYMBOL_GPL(wmi_remove_notify_handler);
 
 /**
+<<<<<<< HEAD
  * wmi_get_event_data - Get WMI data associated with an event (deprecated)
  *
  * @event: Event to find
@@ -679,6 +689,8 @@ acpi_status wmi_get_event_data(u32 event, struct acpi_buffer *out)
 EXPORT_SYMBOL_GPL(wmi_get_event_data);
 
 /**
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * wmi_has_guid - Check if a GUID is available
  * @guid_string: 36 char string of the form fa50ff2b-f2e8-45de-83fa-65417f2f49ba
  *
@@ -1186,6 +1198,7 @@ static int parse_wdg(struct device *wmi_bus_dev, struct platform_device *pdev)
 static int wmi_get_notify_data(struct wmi_block *wblock, union acpi_object **obj)
 {
 	struct acpi_buffer data = { ACPI_ALLOCATE_BUFFER, NULL };
+<<<<<<< HEAD
 	acpi_status status;
 
 	if (test_bit(WMI_NO_EVENT_DATA, &wblock->flags)) {
@@ -1194,6 +1207,21 @@ static int wmi_get_notify_data(struct wmi_block *wblock, union acpi_object **obj
 	}
 
 	status = get_event_data(wblock, &data);
+=======
+	union acpi_object param = {
+		.integer = {
+			.type = ACPI_TYPE_INTEGER,
+			.value = wblock->gblock.notify_id,
+		}
+	};
+	struct acpi_object_list input = {
+		.count = 1,
+		.pointer = &param,
+	};
+	acpi_status status;
+
+	status = acpi_evaluate_object(wblock->acpi_device->handle, "_WED", &input, &data);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ACPI_FAILURE(status)) {
 		dev_warn(&wblock->dev.dev, "Failed to get event data\n");
 		return -EIO;
@@ -1220,13 +1248,18 @@ static void wmi_notify_driver(struct wmi_block *wblock, union acpi_object *obj)
 static int wmi_notify_device(struct device *dev, void *data)
 {
 	struct wmi_block *wblock = dev_to_wblock(dev);
+<<<<<<< HEAD
 	union acpi_object *obj;
+=======
+	union acpi_object *obj = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 *event = data;
 	int ret;
 
 	if (!(wblock->gblock.flags & ACPI_WMI_EVENT && wblock->gblock.notify_id == *event))
 		return 0;
 
+<<<<<<< HEAD
 	down_read(&wblock->notify_lock);
 	/* The WMI driver notify handler conflicts with the legacy WMI handler.
 	 * Because of this the WMI driver notify handler takes precedence.
@@ -1261,6 +1294,35 @@ static int wmi_notify_device(struct device *dev, void *data)
 	}
 	up_read(&wblock->notify_lock);
 
+=======
+	/* The ACPI WMI specification says that _WED should be
+	 * evaluated every time an notification is received, even
+	 * if no consumers are present.
+	 *
+	 * Some firmware implementations actually depend on this
+	 * by using a queue for events which will fill up if the
+	 * WMI driver core stops evaluating _WED due to missing
+	 * WMI event consumers.
+	 */
+	if (!test_bit(WMI_NO_EVENT_DATA, &wblock->flags)) {
+		ret = wmi_get_notify_data(wblock, &obj);
+		if (ret < 0)
+			return -EIO;
+	}
+
+	down_read(&wblock->notify_lock);
+
+	if (wblock->dev.dev.driver && wblock->driver_ready)
+		wmi_notify_driver(wblock, obj);
+
+	if (wblock->handler)
+		wblock->handler(obj, wblock->handler_data);
+
+	up_read(&wblock->notify_lock);
+
+	kfree(obj);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	acpi_bus_generate_netlink_event("wmi", acpi_dev_name(wblock->acpi_device), *event, 0);
 
 	return -EBUSY;

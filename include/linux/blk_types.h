@@ -71,6 +71,12 @@ struct block_device {
 
 	struct partition_meta_info *bd_meta_info;
 	int			bd_writers;
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SECURITY
+	void			*bd_security;
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * keep this out-of-line as it's both big and not needed in the fast
 	 * path
@@ -248,11 +254,17 @@ struct bio {
 	struct bio_crypt_ctx	*bi_crypt_context;
 #endif
 
+<<<<<<< HEAD
 	union {
 #if defined(CONFIG_BLK_DEV_INTEGRITY)
 		struct bio_integrity_payload *bi_integrity; /* data integrity */
 #endif
 	};
+=======
+#if defined(CONFIG_BLK_DEV_INTEGRITY)
+	struct bio_integrity_payload *bi_integrity; /* data integrity */
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	unsigned short		bi_vcnt;	/* how many bio_vec's */
 

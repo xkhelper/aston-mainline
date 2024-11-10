@@ -5,7 +5,11 @@
 # Makefile for dcn31.
 
 DCN31 = dcn31_panel_cntl.o \
+<<<<<<< HEAD
 	dcn31_apg.o dcn31_hpo_dp_stream_encoder.o dcn31_hpo_dp_link_encoder.o \
+=======
+	dcn31_apg.o \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dcn31_afmt.o dcn31_vpg.o
 
 AMD_DAL_DCN31 = $(addprefix $(AMDDALPATH)/dc/dcn31/,$(DCN31))

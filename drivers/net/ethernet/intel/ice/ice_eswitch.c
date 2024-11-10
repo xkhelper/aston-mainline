@@ -452,11 +452,17 @@ static void ice_eswitch_start_reprs(struct ice_pf *pf)
 	ice_eswitch_start_all_tx_queues(pf);
 }
 
+<<<<<<< HEAD
 int
 ice_eswitch_attach(struct ice_pf *pf, struct ice_vf *vf)
 {
 	struct devlink *devlink = priv_to_devlink(pf);
 	struct ice_repr *repr;
+=======
+static int
+ice_eswitch_attach(struct ice_pf *pf, struct ice_repr *repr, unsigned long *id)
+{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 
 	if (pf->eswitch_mode == DEVLINK_ESWITCH_MODE_LEGACY)
@@ -470,6 +476,7 @@ ice_eswitch_attach(struct ice_pf *pf, struct ice_vf *vf)
 
 	ice_eswitch_stop_reprs(pf);
 
+<<<<<<< HEAD
 	devl_lock(devlink);
 	repr = ice_repr_add_vf(vf);
 	devl_unlock(devlink);
@@ -477,6 +484,11 @@ ice_eswitch_attach(struct ice_pf *pf, struct ice_vf *vf)
 		err = PTR_ERR(repr);
 		goto err_create_repr;
 	}
+=======
+	err = repr->ops.add(repr);
+	if (err)
+		goto err_create_repr;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = ice_eswitch_setup_repr(pf, repr);
 	if (err)
@@ -486,7 +498,11 @@ ice_eswitch_attach(struct ice_pf *pf, struct ice_vf *vf)
 	if (err)
 		goto err_xa_alloc;
 
+<<<<<<< HEAD
 	vf->repr_id = repr->id;
+=======
+	*id = repr->id;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ice_eswitch_start_reprs(pf);
 
@@ -495,9 +511,13 @@ ice_eswitch_attach(struct ice_pf *pf, struct ice_vf *vf)
 err_xa_alloc:
 	ice_eswitch_release_repr(pf, repr);
 err_setup_repr:
+<<<<<<< HEAD
 	devl_lock(devlink);
 	ice_repr_rem_vf(repr);
 	devl_unlock(devlink);
+=======
+	repr->ops.rem(repr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_create_repr:
 	if (xa_empty(&pf->eswitch.reprs))
 		ice_eswitch_disable_switchdev(pf);
@@ -506,6 +526,7 @@ err_create_repr:
 	return err;
 }
 
+<<<<<<< HEAD
 void ice_eswitch_detach(struct ice_pf *pf, struct ice_vf *vf)
 {
 	struct ice_repr *repr = xa_load(&pf->eswitch.reprs, vf->repr_id);
@@ -515,16 +536,82 @@ void ice_eswitch_detach(struct ice_pf *pf, struct ice_vf *vf)
 		return;
 
 	ice_eswitch_stop_reprs(pf);
+=======
+/**
+ * ice_eswitch_attach_vf - attach VF to a eswitch
+ * @pf: pointer to PF structure
+ * @vf: pointer to VF structure to be attached
+ *
+ * During attaching port representor for VF is created.
+ *
+ * Return: zero on success or an error code on failure.
+ */
+int ice_eswitch_attach_vf(struct ice_pf *pf, struct ice_vf *vf)
+{
+	struct ice_repr *repr = ice_repr_create_vf(vf);
+	struct devlink *devlink = priv_to_devlink(pf);
+	int err;
+
+	if (IS_ERR(repr))
+		return PTR_ERR(repr);
+
+	devl_lock(devlink);
+	err = ice_eswitch_attach(pf, repr, &vf->repr_id);
+	if (err)
+		ice_repr_destroy(repr);
+	devl_unlock(devlink);
+
+	return err;
+}
+
+/**
+ * ice_eswitch_attach_sf - attach SF to a eswitch
+ * @pf: pointer to PF structure
+ * @sf: pointer to SF structure to be attached
+ *
+ * During attaching port representor for SF is created.
+ *
+ * Return: zero on success or an error code on failure.
+ */
+int ice_eswitch_attach_sf(struct ice_pf *pf, struct ice_dynamic_port *sf)
+{
+	struct ice_repr *repr = ice_repr_create_sf(sf);
+	int err;
+
+	if (IS_ERR(repr))
+		return PTR_ERR(repr);
+
+	err = ice_eswitch_attach(pf, repr, &sf->repr_id);
+	if (err)
+		ice_repr_destroy(repr);
+
+	return err;
+}
+
+static void ice_eswitch_detach(struct ice_pf *pf, struct ice_repr *repr)
+{
+	ice_eswitch_stop_reprs(pf);
+	repr->ops.rem(repr);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xa_erase(&pf->eswitch.reprs, repr->id);
 
 	if (xa_empty(&pf->eswitch.reprs))
 		ice_eswitch_disable_switchdev(pf);
 
 	ice_eswitch_release_repr(pf, repr);
+<<<<<<< HEAD
 	devl_lock(devlink);
 	ice_repr_rem_vf(repr);
 
 	if (xa_empty(&pf->eswitch.reprs)) {
+=======
+	ice_repr_destroy(repr);
+
+	if (xa_empty(&pf->eswitch.reprs)) {
+		struct devlink *devlink = priv_to_devlink(pf);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* since all port representors are destroyed, there is
 		 * no point in keeping the nodes
 		 */
@@ -533,10 +620,48 @@ void ice_eswitch_detach(struct ice_pf *pf, struct ice_vf *vf)
 	} else {
 		ice_eswitch_start_reprs(pf);
 	}
+<<<<<<< HEAD
+=======
+}
+
+/**
+ * ice_eswitch_detach_vf - detach VF from a eswitch
+ * @pf: pointer to PF structure
+ * @vf: pointer to VF structure to be detached
+ */
+void ice_eswitch_detach_vf(struct ice_pf *pf, struct ice_vf *vf)
+{
+	struct ice_repr *repr = xa_load(&pf->eswitch.reprs, vf->repr_id);
+	struct devlink *devlink = priv_to_devlink(pf);
+
+	if (!repr)
+		return;
+
+	devl_lock(devlink);
+	ice_eswitch_detach(pf, repr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	devl_unlock(devlink);
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * ice_eswitch_detach_sf - detach SF from a eswitch
+ * @pf: pointer to PF structure
+ * @sf: pointer to SF structure to be detached
+ */
+void ice_eswitch_detach_sf(struct ice_pf *pf, struct ice_dynamic_port *sf)
+{
+	struct ice_repr *repr = xa_load(&pf->eswitch.reprs, sf->repr_id);
+
+	if (!repr)
+		return;
+
+	ice_eswitch_detach(pf, repr);
+}
+
+/**
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * ice_eswitch_get_target - get netdev based on src_vsi from descriptor
  * @rx_ring: ring used to receive the packet
  * @rx_desc: descriptor used to get src_vsi value

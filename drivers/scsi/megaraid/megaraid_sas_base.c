@@ -29,7 +29,11 @@
 #include <linux/uio.h>
 #include <linux/slab.h>
 #include <linux/uaccess.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/fs.h>
 #include <linux/compat.h>
 #include <linux/blkdev.h>
@@ -6380,7 +6384,11 @@ static int megasas_init_fw(struct megasas_instance *instance)
 				GFP_KERNEL);
 			if (!fusion->stream_detect_by_ld[i]) {
 				dev_err(&instance->pdev->dev,
+<<<<<<< HEAD
 					"unable to allocate stream detect by LD\n ");
+=======
+					"unable to allocate stream detect by LD\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				for (j = 0; j < i; ++j)
 					kfree(fusion->stream_detect_by_ld[j]);
 				kfree(fusion->stream_detect_by_ld);

@@ -25,6 +25,10 @@
 #define MAX96714_NPORTS     2
 #define MAX96714_PAD_SINK   0
 #define MAX96714_PAD_SOURCE 1
+<<<<<<< HEAD
+=======
+#define MAX96714_CSI_NLANES 4
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* DEV */
 #define MAX96714_REG13                 CCI_REG8(0x0d)
@@ -52,9 +56,15 @@
 #define MAX96714_PATGEN_V2D            CCI_REG24(0x254)
 #define MAX96714_PATGEN_DE_HIGH        CCI_REG16(0x257)
 #define MAX96714_PATGEN_DE_LOW         CCI_REG16(0x259)
+<<<<<<< HEAD
 #define MAX96714_PATGEN_DE_CNT         CCI_REG16(0x25B)
 #define MAX96714_PATGEN_GRAD_INC       CCI_REG8(0x25d)
 #define MAX96714_PATGEN_CHKB_COLOR_A   CCI_REG24(0x25E)
+=======
+#define MAX96714_PATGEN_DE_CNT         CCI_REG16(0x25b)
+#define MAX96714_PATGEN_GRAD_INC       CCI_REG8(0x25d)
+#define MAX96714_PATGEN_CHKB_COLOR_A   CCI_REG24(0x25e)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define MAX96714_PATGEN_CHKB_COLOR_B   CCI_REG24(0x261)
 #define MAX96714_PATGEN_CHKB_RPT_CNT_A CCI_REG8(0x264)
 #define MAX96714_PATGEN_CHKB_RPT_CNT_B CCI_REG8(0x265)
@@ -724,8 +734,14 @@ static int max96714_init_tx_port(struct max96714_priv *priv)
 	 * Unused lanes need to be mapped as well to not have
 	 * the same lanes mapped twice.
 	 */
+<<<<<<< HEAD
 	for (; lane < 4; lane++) {
 		unsigned int idx = find_first_zero_bit(&lanes_used, 4);
+=======
+	for (; lane < MAX96714_CSI_NLANES; lane++) {
+		unsigned int idx = find_first_zero_bit(&lanes_used,
+						       MAX96714_CSI_NLANES);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		val |= idx << (lane * 2);
 		lanes_used |= BIT(idx);
@@ -757,9 +773,13 @@ static int max96714_rxport_disable_poc(struct max96714_priv *priv)
 static int max96714_parse_dt_txport(struct max96714_priv *priv)
 {
 	struct device *dev = &priv->client->dev;
+<<<<<<< HEAD
 	struct v4l2_fwnode_endpoint vep = {
 		.bus_type = V4L2_MBUS_CSI2_DPHY
 	};
+=======
+	struct v4l2_fwnode_endpoint vep = { .bus_type = V4L2_MBUS_CSI2_DPHY };
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct fwnode_handle *ep_fwnode;
 	u32 num_data_lanes;
 	int ret;
@@ -791,14 +811,22 @@ static int max96714_parse_dt_txport(struct max96714_priv *priv)
 	}
 
 	num_data_lanes = vep.bus.mipi_csi2.num_data_lanes;
+<<<<<<< HEAD
 	if (num_data_lanes < 1 || num_data_lanes > 4) {
+=======
+	if (num_data_lanes < 1 || num_data_lanes > MAX96714_CSI_NLANES) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_err(dev,
 			"tx: invalid number of data lanes must be 1 to 4\n");
 		ret = -EINVAL;
 		goto err_free_vep;
 	}
 
+<<<<<<< HEAD
 	memcpy(&priv->mipi_csi2, &vep.bus.mipi_csi2, sizeof(priv->mipi_csi2));
+=======
+	priv->mipi_csi2 = vep.bus.mipi_csi2;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 err_free_vep:
 	v4l2_fwnode_endpoint_free(&vep);

@@ -769,12 +769,20 @@ static void record_times(struct psi_group_cpu *groupc, u64 now)
 }
 
 static void psi_group_change(struct psi_group *group, int cpu,
+<<<<<<< HEAD
 			     unsigned int clear, unsigned int set, u64 now,
+=======
+			     unsigned int clear, unsigned int set,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     bool wake_clock)
 {
 	struct psi_group_cpu *groupc;
 	unsigned int t, m;
 	u32 state_mask;
+<<<<<<< HEAD
+=======
+	u64 now;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	lockdep_assert_rq_held(cpu_rq(cpu));
 	groupc = per_cpu_ptr(group->pcpu, cpu);
@@ -789,6 +797,10 @@ static void psi_group_change(struct psi_group *group, int cpu,
 	 * SOME and FULL time these may have resulted in.
 	 */
 	write_seqcount_begin(&groupc->seq);
+<<<<<<< HEAD
+=======
+	now = cpu_clock(cpu);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Start with TSK_ONCPU, which doesn't have a corresponding
@@ -899,18 +911,27 @@ void psi_task_change(struct task_struct *task, int clear, int set)
 {
 	int cpu = task_cpu(task);
 	struct psi_group *group;
+<<<<<<< HEAD
 	u64 now;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!task->pid)
 		return;
 
 	psi_flags_change(task, clear, set);
 
+<<<<<<< HEAD
 	now = cpu_clock(cpu);
 
 	group = task_psi_group(task);
 	do {
 		psi_group_change(group, cpu, clear, set, now, true);
+=======
+	group = task_psi_group(task);
+	do {
+		psi_group_change(group, cpu, clear, set, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} while ((group = group->parent));
 }
 
@@ -919,7 +940,10 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
 {
 	struct psi_group *group, *common = NULL;
 	int cpu = task_cpu(prev);
+<<<<<<< HEAD
 	u64 now = cpu_clock(cpu);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (next->pid) {
 		psi_flags_change(next, 0, TSK_ONCPU);
@@ -936,7 +960,11 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
 				break;
 			}
 
+<<<<<<< HEAD
 			psi_group_change(group, cpu, 0, TSK_ONCPU, now, true);
+=======
+			psi_group_change(group, cpu, 0, TSK_ONCPU, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} while ((group = group->parent));
 	}
 
@@ -974,7 +1002,11 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
 		do {
 			if (group == common)
 				break;
+<<<<<<< HEAD
 			psi_group_change(group, cpu, clear, set, now, wake_clock);
+=======
+			psi_group_change(group, cpu, clear, set, wake_clock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} while ((group = group->parent));
 
 		/*
@@ -986,7 +1018,11 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
 		if ((prev->psi_flags ^ next->psi_flags) & ~TSK_ONCPU) {
 			clear &= ~TSK_ONCPU;
 			for (; group; group = group->parent)
+<<<<<<< HEAD
 				psi_group_change(group, cpu, clear, set, now, wake_clock);
+=======
+				psi_group_change(group, cpu, clear, set, wake_clock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 }
@@ -997,8 +1033,13 @@ void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_st
 	int cpu = task_cpu(curr);
 	struct psi_group *group;
 	struct psi_group_cpu *groupc;
+<<<<<<< HEAD
 	u64 now, irq;
 	s64 delta;
+=======
+	s64 delta;
+	u64 irq;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (static_branch_likely(&psi_disabled))
 		return;
@@ -1011,7 +1052,10 @@ void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_st
 	if (prev && task_psi_group(prev) == group)
 		return;
 
+<<<<<<< HEAD
 	now = cpu_clock(cpu);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	irq = irq_time_read(cpu);
 	delta = (s64)(irq - rq->psi_irq_time);
 	if (delta < 0)
@@ -1019,12 +1063,21 @@ void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_st
 	rq->psi_irq_time = irq;
 
 	do {
+<<<<<<< HEAD
+=======
+		u64 now;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!group->enabled)
 			continue;
 
 		groupc = per_cpu_ptr(group->pcpu, cpu);
 
 		write_seqcount_begin(&groupc->seq);
+<<<<<<< HEAD
+=======
+		now = cpu_clock(cpu);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		record_times(groupc, now);
 		groupc->times[PSI_IRQ_FULL] += delta;
@@ -1223,11 +1276,17 @@ void psi_cgroup_restart(struct psi_group *group)
 	for_each_possible_cpu(cpu) {
 		struct rq *rq = cpu_rq(cpu);
 		struct rq_flags rf;
+<<<<<<< HEAD
 		u64 now;
 
 		rq_lock_irq(rq, &rf);
 		now = cpu_clock(cpu);
 		psi_group_change(group, cpu, 0, 0, now, true);
+=======
+
+		rq_lock_irq(rq, &rf);
+		psi_group_change(group, cpu, 0, 0, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rq_unlock_irq(rq, &rf);
 	}
 }

@@ -346,35 +346,57 @@ static int qt1050_apply_fw_data(struct qt1050_priv *ts)
 static int qt1050_parse_fw(struct qt1050_priv *ts)
 {
 	struct device *dev = &ts->client->dev;
+<<<<<<< HEAD
 	struct fwnode_handle *child;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int nbuttons;
 
 	nbuttons = device_get_child_node_count(dev);
 	if (nbuttons == 0 || nbuttons > QT1050_MAX_KEYS)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	device_for_each_child_node(dev, child) {
+=======
+	device_for_each_child_node_scoped(dev, child) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct qt1050_key button;
 
 		/* Required properties */
 		if (fwnode_property_read_u32(child, "linux,code",
 					     &button.keycode)) {
 			dev_err(dev, "Button without keycode\n");
+<<<<<<< HEAD
 			goto err;
+=======
+			return -EINVAL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		if (button.keycode >= KEY_MAX) {
 			dev_err(dev, "Invalid keycode 0x%x\n",
 				button.keycode);
+<<<<<<< HEAD
 			goto err;
+=======
+			return -EINVAL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		if (fwnode_property_read_u32(child, "reg",
 					     &button.num)) {
 			dev_err(dev, "Button without pad number\n");
+<<<<<<< HEAD
 			goto err;
 		}
 		if (button.num < 0 || button.num > QT1050_MAX_KEYS - 1)
 			goto err;
+=======
+			return -EINVAL;
+		}
+		if (button.num < 0 || button.num > QT1050_MAX_KEYS - 1)
+			return -EINVAL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		ts->reg_keys |= BIT(button.num);
 
@@ -424,10 +446,13 @@ static int qt1050_parse_fw(struct qt1050_priv *ts)
 	}
 
 	return 0;
+<<<<<<< HEAD
 
 err:
 	fwnode_handle_put(child);
 	return -EINVAL;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int qt1050_probe(struct i2c_client *client)

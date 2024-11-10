@@ -7,7 +7,11 @@
 #include <linux/kernel.h>
 #include <linux/rmi.h>
 #include <linux/firmware.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/bitops.h>
 
 #include "rmi_driver.h"

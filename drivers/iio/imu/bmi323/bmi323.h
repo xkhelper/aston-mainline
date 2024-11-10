@@ -205,5 +205,9 @@
 struct device;
 int bmi323_core_probe(struct device *dev);
 extern const struct regmap_config bmi323_regmap_config;
+<<<<<<< HEAD
+=======
+extern const struct dev_pm_ops bmi323_core_pm_ops;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif

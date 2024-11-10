@@ -27,6 +27,16 @@
 #define IOMAP_DIO_WRITE		(1U << 30)
 #define IOMAP_DIO_DIRTY		(1U << 31)
 
+<<<<<<< HEAD
+=======
+/*
+ * Used for sub block zeroing in iomap_dio_zero()
+ */
+#define IOMAP_ZERO_PAGE_SIZE (SZ_64K)
+#define IOMAP_ZERO_PAGE_ORDER (get_order(IOMAP_ZERO_PAGE_SIZE))
+static struct page *zero_page;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct iomap_dio {
 	struct kiocb		*iocb;
 	const struct iomap_dio_ops *dops;
@@ -232,6 +242,7 @@ release_bio:
 }
 EXPORT_SYMBOL_GPL(iomap_dio_bio_end_io);
 
+<<<<<<< HEAD
 static void iomap_dio_zero(const struct iomap_iter *iter, struct iomap_dio *dio,
 		loff_t pos, unsigned len)
 {
@@ -239,6 +250,22 @@ static void iomap_dio_zero(const struct iomap_iter *iter, struct iomap_dio *dio,
 	struct page *page = ZERO_PAGE(0);
 	struct bio *bio;
 
+=======
+static int iomap_dio_zero(const struct iomap_iter *iter, struct iomap_dio *dio,
+		loff_t pos, unsigned len)
+{
+	struct inode *inode = file_inode(dio->iocb->ki_filp);
+	struct bio *bio;
+
+	if (!len)
+		return 0;
+	/*
+	 * Max block size supported is 64k
+	 */
+	if (WARN_ON_ONCE(len > IOMAP_ZERO_PAGE_SIZE))
+		return -EINVAL;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bio = iomap_dio_alloc_bio(iter, dio, 1, REQ_OP_WRITE | REQ_SYNC | REQ_IDLE);
 	fscrypt_set_bio_crypt_ctx(bio, inode, pos >> inode->i_blkbits,
 				  GFP_KERNEL);
@@ -246,8 +273,14 @@ static void iomap_dio_zero(const struct iomap_iter *iter, struct iomap_dio *dio,
 	bio->bi_private = dio;
 	bio->bi_end_io = iomap_dio_bio_end_io;
 
+<<<<<<< HEAD
 	__bio_add_page(bio, page, len, 0);
 	iomap_dio_submit_bio(iter, dio, bio, pos);
+=======
+	__bio_add_page(bio, zero_page, len, 0);
+	iomap_dio_submit_bio(iter, dio, bio, pos);
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -356,8 +389,15 @@ static loff_t iomap_dio_bio_iter(const struct iomap_iter *iter,
 	if (need_zeroout) {
 		/* zero out from the start of the block to the write offset */
 		pad = pos & (fs_block_size - 1);
+<<<<<<< HEAD
 		if (pad)
 			iomap_dio_zero(iter, dio, pos - pad, pad);
+=======
+
+		ret = iomap_dio_zero(iter, dio, pos - pad, pad);
+		if (ret)
+			goto out;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/*
@@ -431,7 +471,12 @@ zero_tail:
 		/* zero out from the end of the write to the end of the block */
 		pad = pos & (fs_block_size - 1);
 		if (pad)
+<<<<<<< HEAD
 			iomap_dio_zero(iter, dio, pos, fs_block_size - pad);
+=======
+			ret = iomap_dio_zero(iter, dio, pos,
+					     fs_block_size - pad);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 out:
 	/* Undo iter limitation to current extent */
@@ -753,3 +798,18 @@ iomap_dio_rw(struct kiocb *iocb, struct iov_iter *iter,
 	return iomap_dio_complete(dio);
 }
 EXPORT_SYMBOL_GPL(iomap_dio_rw);
+<<<<<<< HEAD
+=======
+
+static int __init iomap_dio_init(void)
+{
+	zero_page = alloc_pages(GFP_KERNEL | __GFP_ZERO,
+				IOMAP_ZERO_PAGE_ORDER);
+
+	if (!zero_page)
+		return -ENOMEM;
+
+	return 0;
+}
+fs_initcall(iomap_dio_init);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

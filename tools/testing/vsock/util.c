@@ -139,7 +139,11 @@ int vsock_bind_connect(unsigned int cid, unsigned int port, unsigned int bind_po
 }
 
 /* Connect to <cid, port> and return the file descriptor. */
+<<<<<<< HEAD
 static int vsock_connect(unsigned int cid, unsigned int port, int type)
+=======
+int vsock_connect(unsigned int cid, unsigned int port, int type)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	union {
 		struct sockaddr sa;
@@ -226,8 +230,13 @@ static int vsock_listen(unsigned int cid, unsigned int port, int type)
 /* Listen on <cid, port> and return the first incoming connection.  The remote
  * address is stored to clientaddrp.  clientaddrp may be NULL.
  */
+<<<<<<< HEAD
 static int vsock_accept(unsigned int cid, unsigned int port,
 			struct sockaddr_vm *clientaddrp, int type)
+=======
+int vsock_accept(unsigned int cid, unsigned int port,
+		 struct sockaddr_vm *clientaddrp, int type)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	union {
 		struct sockaddr sa;

@@ -171,7 +171,11 @@ static int nft_bitwise_init(const struct nft_ctx *ctx,
 
 	priv->len = len;
 
+<<<<<<< HEAD
 	err = nft_parse_register_load(tb[NFTA_BITWISE_SREG], &priv->sreg,
+=======
+	err = nft_parse_register_load(ctx, tb[NFTA_BITWISE_SREG], &priv->sreg,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      priv->len);
 	if (err < 0)
 		return err;
@@ -365,7 +369,11 @@ static int nft_bitwise_fast_init(const struct nft_ctx *ctx,
 	struct nft_bitwise_fast_expr *priv = nft_expr_priv(expr);
 	int err;
 
+<<<<<<< HEAD
 	err = nft_parse_register_load(tb[NFTA_BITWISE_SREG], &priv->sreg,
+=======
+	err = nft_parse_register_load(ctx, tb[NFTA_BITWISE_SREG], &priv->sreg,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      sizeof(u32));
 	if (err < 0)
 		return err;

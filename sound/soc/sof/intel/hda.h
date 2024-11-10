@@ -920,6 +920,10 @@ extern const struct sof_intel_dsp_desc adls_chip_info;
 extern const struct sof_intel_dsp_desc mtl_chip_info;
 extern const struct sof_intel_dsp_desc arl_s_chip_info;
 extern const struct sof_intel_dsp_desc lnl_chip_info;
+<<<<<<< HEAD
+=======
+extern const struct sof_intel_dsp_desc ptl_chip_info;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Probes support */
 #if IS_ENABLED(CONFIG_SND_SOC_SOF_HDA_PROBES)

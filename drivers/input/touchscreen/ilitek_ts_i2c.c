@@ -15,12 +15,19 @@
 #include <linux/slab.h>
 #include <linux/delay.h>
 #include <linux/interrupt.h>
+<<<<<<< HEAD
 #include <linux/gpio.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/gpio/consumer.h>
 #include <linux/errno.h>
 #include <linux/acpi.h>
 #include <linux/input/touchscreen.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 
 #define ILITEK_TS_NAME					"ilitek_ts"
@@ -37,6 +44,11 @@
 #define ILITEK_TP_CMD_GET_MCU_VER			0x61
 #define ILITEK_TP_CMD_GET_IC_MODE			0xC0
 
+<<<<<<< HEAD
+=======
+#define ILITEK_TP_I2C_REPORT_ID				0x48
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define REPORT_COUNT_ADDRESS				61
 #define ILITEK_SUPPORT_MAX_POINT			40
 
@@ -160,15 +172,28 @@ static int ilitek_process_and_report_v6(struct ilitek_ts_data *ts)
 	error = ilitek_i2c_write_and_read(ts, NULL, 0, 0, buf, 64);
 	if (error) {
 		dev_err(dev, "get touch info failed, err:%d\n", error);
+<<<<<<< HEAD
 		goto err_sync_frame;
+=======
+		return error;
+	}
+
+	if (buf[0] != ILITEK_TP_I2C_REPORT_ID) {
+		dev_err(dev, "get touch info failed. Wrong id: 0x%02X\n", buf[0]);
+		return -EINVAL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	report_max_point = buf[REPORT_COUNT_ADDRESS];
 	if (report_max_point > ts->max_tp) {
 		dev_err(dev, "FW report max point:%d > panel info. max:%d\n",
 			report_max_point, ts->max_tp);
+<<<<<<< HEAD
 		error = -EINVAL;
 		goto err_sync_frame;
+=======
+		return -EINVAL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	count = DIV_ROUND_UP(report_max_point, packet_max_point);
@@ -178,7 +203,11 @@ static int ilitek_process_and_report_v6(struct ilitek_ts_data *ts)
 		if (error) {
 			dev_err(dev, "get touch info. failed, cnt:%d, err:%d\n",
 				count, error);
+<<<<<<< HEAD
 			goto err_sync_frame;
+=======
+			return error;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -203,10 +232,17 @@ static int ilitek_process_and_report_v6(struct ilitek_ts_data *ts)
 		ilitek_touch_down(ts, id, x, y);
 	}
 
+<<<<<<< HEAD
 err_sync_frame:
 	input_mt_sync_frame(input);
 	input_sync(input);
 	return error;
+=======
+	input_mt_sync_frame(input);
+	input_sync(input);
+
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* APIs of cmds for ILITEK Touch IC */

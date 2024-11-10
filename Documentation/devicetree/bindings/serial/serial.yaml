@@ -88,10 +88,19 @@ properties:
       TX FIFO threshold configuration (in bytes).
 
 patternProperties:
+<<<<<<< HEAD
   "^(bluetooth|bluetooth-gnss|gnss|gps|mcu|onewire)$":
     if:
       type: object
     then:
+=======
+  "^(bluetooth|bluetooth-gnss|embedded-controller|gnss|gps|mcu|onewire)$":
+    if:
+      type: object
+    then:
+      additionalProperties: true
+      $ref: serial-peripheral-props.yaml#
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       description:
         Serial attached devices shall be a child node of the host UART device
         the slave device is attached to. It is expected that the attached
@@ -103,6 +112,7 @@ patternProperties:
           description:
             Compatible of the device connected to the serial port.
 
+<<<<<<< HEAD
         max-speed:
           $ref: /schemas/types.yaml#/definitions/uint32
           description:
@@ -125,6 +135,8 @@ patternProperties:
               * device baud rate is configured by its firmware but there is no
                 way to request the actual settings
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       required:
         - compatible
 

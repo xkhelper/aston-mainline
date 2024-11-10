@@ -70,8 +70,13 @@ int omnia_mcu_register_trng(struct omnia_mcu *mcu)
 
 	irq_idx = omnia_int_to_gpio_idx[__bf_shf(OMNIA_INT_TRNG)];
 	irq = gpiod_to_irq(gpio_device_get_desc(mcu->gc.gpiodev, irq_idx));
+<<<<<<< HEAD
 	if (!irq)
 		return dev_err_probe(dev, -ENXIO, "Cannot get TRNG IRQ\n");
+=======
+	if (irq < 0)
+		return dev_err_probe(dev, irq, "Cannot get TRNG IRQ\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * If someone else cleared the TRNG interrupt but did not read the

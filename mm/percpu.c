@@ -2217,6 +2217,7 @@ static void pcpu_balance_workfn(struct work_struct *work)
 }
 
 /**
+<<<<<<< HEAD
  * pcpu_alloc_size - the size of the dynamic percpu area
  * @ptr: pointer to the dynamic percpu area
  *
@@ -2248,6 +2249,8 @@ size_t pcpu_alloc_size(void __percpu *ptr)
 }
 
 /**
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * free_percpu - free percpu area
  * @ptr: pointer to area to free
  *

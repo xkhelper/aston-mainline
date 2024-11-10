@@ -12,7 +12,11 @@
 #include <linux/string.h>
 #include <asm/page.h>
 #include <asm/domain.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/unified.h>
 #include <asm/pgtable.h>
 #include <asm/proc-fns.h>

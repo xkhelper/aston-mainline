@@ -306,8 +306,12 @@ DEFINE_ALLOC_SIZE_TEST_PAIR(vmalloc)
 	orig = kvmalloc(prev_size, gfp);				\
 	KUNIT_EXPECT_TRUE(test, orig != NULL);				\
 	checker(((expected_pages) * PAGE_SIZE) * 2,			\
+<<<<<<< HEAD
 		kvrealloc(orig, prev_size,				\
 			  ((alloc_pages) * PAGE_SIZE) * 2, gfp),	\
+=======
+		kvrealloc(orig, ((alloc_pages) * PAGE_SIZE) * 2, gfp),	\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		kvfree(p));						\
 } while (0)
 DEFINE_ALLOC_SIZE_TEST_PAIR(kvmalloc)

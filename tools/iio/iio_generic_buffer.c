@@ -498,6 +498,13 @@ int main(int argc, char **argv)
 			return -ENOMEM;
 		}
 		trigger_name = malloc(IIO_MAX_NAME_LENGTH);
+<<<<<<< HEAD
+=======
+		if (!trigger_name) {
+			ret = -ENOMEM;
+			goto error;
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = read_sysfs_string("name", trig_dev_name, trigger_name);
 		free(trig_dev_name);
 		if (ret < 0) {

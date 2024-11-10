@@ -260,6 +260,7 @@ out:
 	return err;
 }
 
+<<<<<<< HEAD
 int f2fs_write_inline_data(struct inode *inode, struct page *page)
 {
 	struct dnode_of_data dn;
@@ -283,12 +284,41 @@ int f2fs_write_inline_data(struct inode *inode, struct page *page)
 	set_page_dirty(dn.inode_page);
 
 	f2fs_clear_page_cache_dirty_tag(page);
+=======
+int f2fs_write_inline_data(struct inode *inode, struct folio *folio)
+{
+	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+	struct page *ipage;
+
+	ipage = f2fs_get_node_page(sbi, inode->i_ino);
+	if (IS_ERR(ipage))
+		return PTR_ERR(ipage);
+
+	if (!f2fs_has_inline_data(inode)) {
+		f2fs_put_page(ipage, 1);
+		return -EAGAIN;
+	}
+
+	f2fs_bug_on(F2FS_I_SB(inode), folio->index);
+
+	f2fs_wait_on_page_writeback(ipage, NODE, true, true);
+	memcpy_from_folio(inline_data_addr(inode, ipage),
+			 folio, 0, MAX_INLINE_DATA(inode));
+	set_page_dirty(ipage);
+
+	f2fs_clear_page_cache_dirty_tag(folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	set_inode_flag(inode, FI_APPEND_WRITE);
 	set_inode_flag(inode, FI_DATA_EXIST);
 
+<<<<<<< HEAD
 	clear_page_private_inline(dn.inode_page);
 	f2fs_put_dnode(&dn);
+=======
+	clear_page_private_inline(ipage);
+	f2fs_put_page(ipage, 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 

@@ -163,7 +163,10 @@ static const struct file_operations debug_file_ops = {
 	.write	 = debug_input,
 	.open	 = debug_open,
 	.release = debug_close,
+<<<<<<< HEAD
 	.llseek  = no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct dentry *debug_debugfs_root_entry;

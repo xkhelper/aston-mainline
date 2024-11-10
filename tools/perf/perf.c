@@ -52,6 +52,10 @@ static struct cmd_struct commands[] = {
 	{ "archive",	NULL,	0 },
 	{ "buildid-cache", cmd_buildid_cache, 0 },
 	{ "buildid-list", cmd_buildid_list, 0 },
+<<<<<<< HEAD
+=======
+	{ "check",	cmd_check,	0 },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ "config",	cmd_config,	0 },
 	{ "c2c",	cmd_c2c,	0 },
 	{ "diff",	cmd_diff,	0 },

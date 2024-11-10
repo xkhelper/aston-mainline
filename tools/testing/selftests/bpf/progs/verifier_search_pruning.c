@@ -2,6 +2,10 @@
 /* Converted from tools/testing/selftests/bpf/verifier/search_pruning.c */
 
 #include <linux/bpf.h>
+<<<<<<< HEAD
+=======
+#include <../../../include/linux/filter.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <bpf/bpf_helpers.h>
 #include "bpf_misc.h"
 
@@ -336,4 +340,29 @@ l0_%=:	r1 = 42;					\
 	: __clobber_all);
 }
 
+<<<<<<< HEAD
+=======
+/* Without checkpoint forcibly inserted at the back-edge a loop this
+ * test would take a very long time to verify.
+ */
+SEC("kprobe")
+__failure __log_level(4)
+__msg("BPF program is too large.")
+__naked void short_loop1(void)
+{
+	asm volatile (
+	"   r7 = *(u16 *)(r1 +0);"
+	"1: r7 += 0x1ab064b9;"
+	"   .8byte %[jset];" /* same as 'if r7 & 0x702000 goto 1b;' */
+	"   r7 &= 0x1ee60e;"
+	"   r7 += r1;"
+	"   if r7 s> 0x37d2 goto +0;"
+	"   r0 = 0;"
+	"   exit;"
+	:
+	: __imm_insn(jset, BPF_JMP_IMM(BPF_JSET, BPF_REG_7, 0x702000, -2))
+	: __clobber_all);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 char _license[] SEC("license") = "GPL";

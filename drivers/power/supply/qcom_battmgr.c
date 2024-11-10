@@ -19,7 +19,10 @@
 enum qcom_battmgr_variant {
 	QCOM_BATTMGR_SM8350,
 	QCOM_BATTMGR_SC8280XP,
+<<<<<<< HEAD
 	XIAOMI_BATTMGR_SM8550
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define BATTMGR_BAT_STATUS		0x1
@@ -534,14 +537,22 @@ static int qcom_battmgr_bat_get_property(struct power_supply *psy,
 		val->intval = battmgr->status.power_now;
 		break;
 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+<<<<<<< HEAD
 		if (unit != QCOM_BATTMGR_UNIT_mAh &&
 			battmgr->variant != XIAOMI_BATTMGR_SM8550)
+=======
+		if (unit != QCOM_BATTMGR_UNIT_mAh)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -ENODATA;
 		val->intval = battmgr->info.design_capacity;
 		break;
 	case POWER_SUPPLY_PROP_CHARGE_FULL:
+<<<<<<< HEAD
 		if (unit != QCOM_BATTMGR_UNIT_mAh &&
 			battmgr->variant != XIAOMI_BATTMGR_SM8550)
+=======
+		if (unit != QCOM_BATTMGR_UNIT_mAh)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -ENODATA;
 		val->intval = battmgr->info.last_full_capacity;
 		break;
@@ -789,6 +800,7 @@ static int qcom_battmgr_usb_get_property(struct power_supply *psy,
 	return 0;
 }
 
+<<<<<<< HEAD
 static const enum power_supply_usb_type usb_psy_supported_types[] = {
 	POWER_SUPPLY_USB_TYPE_UNKNOWN,
 	POWER_SUPPLY_USB_TYPE_SDP,
@@ -802,6 +814,8 @@ static const enum power_supply_usb_type usb_psy_supported_types[] = {
 	POWER_SUPPLY_USB_TYPE_APPLE_BRICK_ID,
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const enum power_supply_property sc8280xp_usb_props[] = {
 	POWER_SUPPLY_PROP_ONLINE,
 };
@@ -812,8 +826,21 @@ static const struct power_supply_desc sc8280xp_usb_psy_desc = {
 	.properties = sc8280xp_usb_props,
 	.num_properties = ARRAY_SIZE(sc8280xp_usb_props),
 	.get_property = qcom_battmgr_usb_get_property,
+<<<<<<< HEAD
 	.usb_types = usb_psy_supported_types,
 	.num_usb_types = ARRAY_SIZE(usb_psy_supported_types),
+=======
+	.usb_types = BIT(POWER_SUPPLY_USB_TYPE_UNKNOWN) |
+		     BIT(POWER_SUPPLY_USB_TYPE_SDP)     |
+		     BIT(POWER_SUPPLY_USB_TYPE_DCP)     |
+		     BIT(POWER_SUPPLY_USB_TYPE_CDP)     |
+		     BIT(POWER_SUPPLY_USB_TYPE_ACA)     |
+		     BIT(POWER_SUPPLY_USB_TYPE_C)       |
+		     BIT(POWER_SUPPLY_USB_TYPE_PD)      |
+		     BIT(POWER_SUPPLY_USB_TYPE_PD_DRP)  |
+		     BIT(POWER_SUPPLY_USB_TYPE_PD_PPS)  |
+		     BIT(POWER_SUPPLY_USB_TYPE_APPLE_BRICK_ID),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const enum power_supply_property sm8350_usb_props[] = {
@@ -832,8 +859,21 @@ static const struct power_supply_desc sm8350_usb_psy_desc = {
 	.properties = sm8350_usb_props,
 	.num_properties = ARRAY_SIZE(sm8350_usb_props),
 	.get_property = qcom_battmgr_usb_get_property,
+<<<<<<< HEAD
 	.usb_types = usb_psy_supported_types,
 	.num_usb_types = ARRAY_SIZE(usb_psy_supported_types),
+=======
+	.usb_types = BIT(POWER_SUPPLY_USB_TYPE_UNKNOWN) |
+		     BIT(POWER_SUPPLY_USB_TYPE_SDP)     |
+		     BIT(POWER_SUPPLY_USB_TYPE_DCP)     |
+		     BIT(POWER_SUPPLY_USB_TYPE_CDP)     |
+		     BIT(POWER_SUPPLY_USB_TYPE_ACA)     |
+		     BIT(POWER_SUPPLY_USB_TYPE_C)       |
+		     BIT(POWER_SUPPLY_USB_TYPE_PD)      |
+		     BIT(POWER_SUPPLY_USB_TYPE_PD_DRP)  |
+		     BIT(POWER_SUPPLY_USB_TYPE_PD_PPS)  |
+		     BIT(POWER_SUPPLY_USB_TYPE_APPLE_BRICK_ID),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const u8 sm8350_wls_prop_map[] = {
@@ -958,8 +998,12 @@ static void qcom_battmgr_notification(struct qcom_battmgr *battmgr,
 		power_supply_changed(battmgr->wls_psy);
 		break;
 	default:
+<<<<<<< HEAD
 		if (battmgr->variant != XIAOMI_BATTMGR_SM8550)
 			dev_err(battmgr->dev, "unknown notification: %#x\n", notification);
+=======
+		dev_err(battmgr->dev, "unknown notification: %#x\n", notification);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	}
 }
@@ -1096,6 +1140,7 @@ static void qcom_battmgr_sm8350_callback(struct qcom_battmgr *battmgr,
 	switch (opcode) {
 	case BATTMGR_BAT_PROPERTY_GET:
 		property = le32_to_cpu(resp->intval.property);
+<<<<<<< HEAD
 		if (battmgr->variant == XIAOMI_BATTMGR_SM8550) {
 			/* Xiaomi added BATT_CONSTANT_CURRENT after BATT_CHG_CTRL_LIM_MAX according
 			 * to their code, but it also seems that two properties got removed?
@@ -1104,6 +1149,8 @@ static void qcom_battmgr_sm8350_callback(struct qcom_battmgr *battmgr,
 			if(property > BATT_CHG_CTRL_LIM_MAX)
 				property--;
 		}
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (property == BATT_MODEL_NAME) {
 			if (payload_len != sizeof(resp->strval)) {
 				dev_warn(battmgr->dev,
@@ -1186,8 +1233,12 @@ static void qcom_battmgr_sm8350_callback(struct qcom_battmgr *battmgr,
 			battmgr->status.power_now = le32_to_cpu(resp->intval.value);
 			break;
 		default:
+<<<<<<< HEAD
 			if (battmgr->variant != XIAOMI_BATTMGR_SM8550)
 				dev_warn(battmgr->dev, "unknown property %#x\n", property);
+=======
+			dev_warn(battmgr->dev, "unknown property %#x\n", property);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		}
 		break;
@@ -1271,8 +1322,12 @@ static void qcom_battmgr_sm8350_callback(struct qcom_battmgr *battmgr,
 		battmgr->error = 0;
 		break;
 	default:
+<<<<<<< HEAD
 		if (battmgr->variant != XIAOMI_BATTMGR_SM8550)
 			dev_warn(battmgr->dev, "unknown message %#x\n", opcode);
+=======
+		dev_warn(battmgr->dev, "unknown message %#x\n", opcode);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	}
 
@@ -1325,7 +1380,10 @@ static const struct of_device_id qcom_battmgr_of_variants[] = {
 	{ .compatible = "qcom,sc8180x-pmic-glink", .data = (void *)QCOM_BATTMGR_SC8280XP },
 	{ .compatible = "qcom,sc8280xp-pmic-glink", .data = (void *)QCOM_BATTMGR_SC8280XP },
 	{ .compatible = "qcom,x1e80100-pmic-glink", .data = (void *)QCOM_BATTMGR_SC8280XP },
+<<<<<<< HEAD
 	{ .compatible = "xiaomi,sm8550-pmic-glink", .data = (void *)XIAOMI_BATTMGR_SM8550 },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Unmatched devices falls back to QCOM_BATTMGR_SM8350 */
 	{}
 };

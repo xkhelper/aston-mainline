@@ -73,7 +73,11 @@ static int pcsp_treble_put(struct snd_kcontrol *kcontrol,
 	if (treble != chip->treble) {
 		chip->treble = treble;
 #if PCSP_DEBUG
+<<<<<<< HEAD
 		printk(KERN_INFO "PCSP: rate set to %li\n", PCSP_RATE());
+=======
+		dev_dbg(chip->card->dev, "PCSP: rate set to %li\n", PCSP_RATE());
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 		changed = 1;
 	}

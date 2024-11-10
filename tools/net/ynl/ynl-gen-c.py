@@ -2668,13 +2668,22 @@ def main():
         cw.p('#define ' + hdr_prot)
         cw.nl()
 
+<<<<<<< HEAD
+=======
+    hdr_file=os.path.basename(args.out_file[:-2]) + ".h"
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     if args.mode == 'kernel':
         cw.p('#include <net/netlink.h>')
         cw.p('#include <net/genetlink.h>')
         cw.nl()
         if not args.header:
             if args.out_file:
+<<<<<<< HEAD
                 cw.p(f'#include "{os.path.basename(args.out_file[:-2])}.h"')
+=======
+                cw.p(f'#include "{hdr_file}"')
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
             cw.nl()
         headers = ['uapi/' + parsed.uapi_header]
         headers += parsed.kernel_family.get('headers', [])
@@ -2686,7 +2695,11 @@ def main():
             if family_contains_bitfield32(parsed):
                 cw.p('#include <linux/netlink.h>')
         else:
+<<<<<<< HEAD
             cw.p(f'#include "{parsed.name}-user.h"')
+=======
+            cw.p(f'#include "{hdr_file}"')
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
             cw.p('#include "ynl.h"')
         headers = [parsed.uapi_header]
     for definition in parsed['definitions']:

@@ -79,17 +79,36 @@ __releases(&journal->j_state_lock)
 		if (space_left < nblocks) {
 			int chkpt = journal->j_checkpoint_transactions != NULL;
 			tid_t tid = 0;
+<<<<<<< HEAD
 
 			if (journal->j_committing_transaction)
 				tid = journal->j_committing_transaction->t_tid;
+=======
+			bool has_transaction = false;
+
+			if (journal->j_committing_transaction) {
+				tid = journal->j_committing_transaction->t_tid;
+				has_transaction = true;
+			}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			spin_unlock(&journal->j_list_lock);
 			write_unlock(&journal->j_state_lock);
 			if (chkpt) {
 				jbd2_log_do_checkpoint(journal);
+<<<<<<< HEAD
 			} else if (jbd2_cleanup_journal_tail(journal) == 0) {
 				/* We were able to recover space; yay! */
 				;
 			} else if (tid) {
+=======
+			} else if (jbd2_cleanup_journal_tail(journal) <= 0) {
+				/*
+				 * We were able to recover space or the
+				 * journal was aborted due to an error.
+				 */
+				;
+			} else if (has_transaction) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				/*
 				 * jbd2_journal_commit_transaction() may want
 				 * to take the checkpoint_mutex if JBD2_FLUSHED
@@ -407,6 +426,10 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
 	tid_t tid = 0;
 	unsigned long nr_freed = 0;
 	unsigned long freed;
+<<<<<<< HEAD
+=======
+	bool first_set = false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 again:
 	spin_lock(&journal->j_list_lock);
@@ -426,8 +449,15 @@ again:
 	else
 		transaction = journal->j_checkpoint_transactions;
 
+<<<<<<< HEAD
 	if (!first_tid)
 		first_tid = transaction->t_tid;
+=======
+	if (!first_set) {
+		first_tid = transaction->t_tid;
+		first_set = true;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	last_transaction = journal->j_checkpoint_transactions->t_cpprev;
 	next_transaction = transaction;
 	last_tid = last_transaction->t_tid;
@@ -457,7 +487,11 @@ again:
 	spin_unlock(&journal->j_list_lock);
 	cond_resched();
 
+<<<<<<< HEAD
 	if (*nr_to_scan && next_tid)
+=======
+	if (*nr_to_scan && journal->j_shrink_transaction)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto again;
 out:
 	trace_jbd2_shrink_checkpoint_list(journal, first_tid, tid, last_tid,

@@ -89,7 +89,11 @@ config HISILICON_LPC
 
 config IMX_WEIM
 	bool "Freescale EIM DRIVER"
+<<<<<<< HEAD
 	depends on ARCH_MXC
+=======
+	depends on ARCH_MXC || COMPILE_TEST
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  Driver for i.MX WEIM controller.
 	  The WEIM(Wireless External Interface Module) works like a bus.

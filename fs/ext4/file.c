@@ -306,7 +306,11 @@ out:
 }
 
 static ssize_t ext4_handle_inode_extension(struct inode *inode, loff_t offset,
+<<<<<<< HEAD
 					   ssize_t count)
+=======
+					   ssize_t written, ssize_t count)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	handle_t *handle;
 
@@ -315,7 +319,11 @@ static ssize_t ext4_handle_inode_extension(struct inode *inode, loff_t offset,
 	if (IS_ERR(handle))
 		return PTR_ERR(handle);
 
+<<<<<<< HEAD
 	if (ext4_update_inode_size(inode, offset + count)) {
+=======
+	if (ext4_update_inode_size(inode, offset + written)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		int ret = ext4_mark_inode_dirty(handle, inode);
 		if (unlikely(ret)) {
 			ext4_journal_stop(handle);
@@ -323,21 +331,36 @@ static ssize_t ext4_handle_inode_extension(struct inode *inode, loff_t offset,
 		}
 	}
 
+<<<<<<< HEAD
 	if (inode->i_nlink)
 		ext4_orphan_del(handle, inode);
 	ext4_journal_stop(handle);
 
 	return count;
+=======
+	if ((written == count) && inode->i_nlink)
+		ext4_orphan_del(handle, inode);
+	ext4_journal_stop(handle);
+
+	return written;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
  * Clean up the inode after DIO or DAX extending write has completed and the
  * inode size has been updated using ext4_handle_inode_extension().
  */
+<<<<<<< HEAD
 static void ext4_inode_extension_cleanup(struct inode *inode, ssize_t count)
 {
 	lockdep_assert_held_write(&inode->i_rwsem);
 	if (count < 0) {
+=======
+static void ext4_inode_extension_cleanup(struct inode *inode, bool need_trunc)
+{
+	lockdep_assert_held_write(&inode->i_rwsem);
+	if (need_trunc) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ext4_truncate_failed_write(inode);
 		/*
 		 * If the truncate operation failed early, then the inode may
@@ -393,7 +416,11 @@ static int ext4_dio_write_end_io(struct kiocb *iocb, ssize_t size,
 	if (pos + size <= READ_ONCE(EXT4_I(inode)->i_disksize) &&
 	    pos + size <= i_size_read(inode))
 		return size;
+<<<<<<< HEAD
 	return ext4_handle_inode_extension(inode, pos, size);
+=======
+	return ext4_handle_inode_extension(inode, pos, size, size);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct iomap_dio_ops ext4_dio_write_ops = {
@@ -586,7 +613,11 @@ static ssize_t ext4_dio_write_iter(struct kiocb *iocb, struct iov_iter *from)
 		 * writeback of delalloc blocks.
 		 */
 		WARN_ON_ONCE(ret == -EIOCBQUEUED);
+<<<<<<< HEAD
 		ext4_inode_extension_cleanup(inode, ret);
+=======
+		ext4_inode_extension_cleanup(inode, ret < 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 out:
@@ -669,8 +700,13 @@ ext4_dax_write_iter(struct kiocb *iocb, struct iov_iter *from)
 	ret = dax_iomap_rw(iocb, from, &ext4_iomap_ops);
 
 	if (extend) {
+<<<<<<< HEAD
 		ret = ext4_handle_inode_extension(inode, offset, ret);
 		ext4_inode_extension_cleanup(inode, ret);
+=======
+		ret = ext4_handle_inode_extension(inode, offset, ret, count);
+		ext4_inode_extension_cleanup(inode, ret < (ssize_t)count);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 out:
 	inode_unlock(inode);

@@ -2,7 +2,10 @@
 //
 // Copyright 2024 Advanced Micro Devices, Inc.
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "lib_float_math.h"
 
 #define ASSERT(condition)

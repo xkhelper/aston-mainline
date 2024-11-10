@@ -202,6 +202,7 @@ static int ovl_sync_fs(struct super_block *sb, int wait)
 	int ret;
 
 	ret = ovl_sync_status(ofs);
+<<<<<<< HEAD
 	/*
 	 * We have to always set the err, because the return value isn't
 	 * checked in syncfs, and instead indirectly return an error via
@@ -211,6 +212,11 @@ static int ovl_sync_fs(struct super_block *sb, int wait)
 		errseq_set(&sb->s_wb_err, -EIO);
 		return -EIO;
 	}
+=======
+
+	if (ret < 0)
+		return -EIO;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!ret)
 		return ret;

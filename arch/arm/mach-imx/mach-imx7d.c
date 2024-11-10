@@ -48,7 +48,11 @@ static void __init imx7d_enet_clk_sel(void)
 	}
 }
 
+<<<<<<< HEAD
 static inline void imx7d_enet_init(void)
+=======
+static void __init imx7d_enet_init(void)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	imx7d_enet_phy_init();
 	imx7d_enet_clk_sel();

@@ -13,6 +13,10 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
+=======
+#include <linux/string_choices.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/suspend.h>
 #include "../dual_accel_detect.h"
 
@@ -331,10 +335,15 @@ static int intel_hid_set_enable(struct device *device, bool enable)
 	acpi_handle handle = ACPI_HANDLE(device);
 
 	/* Enable|disable features - power button is always enabled */
+<<<<<<< HEAD
 	if (!intel_hid_execute_method(handle, INTEL_HID_DSM_HDSM_FN,
 				      enable)) {
 		dev_warn(device, "failed to %sable hotkeys\n",
 			 enable ? "en" : "dis");
+=======
+	if (!intel_hid_execute_method(handle, INTEL_HID_DSM_HDSM_FN, enable)) {
+		dev_warn(device, "failed to %s hotkeys\n", str_enable_disable(enable));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EIO;
 	}
 

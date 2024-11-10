@@ -23,6 +23,10 @@
 #define MDIO_MMD_DTEXS		5	/* DTE Extender Sublayer */
 #define MDIO_MMD_TC		6	/* Transmission Convergence */
 #define MDIO_MMD_AN		7	/* Auto-Negotiation */
+<<<<<<< HEAD
+=======
+#define MDIO_MMD_POWER_UNIT	13	/* PHY Power Unit */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define MDIO_MMD_C22EXT		29	/* Clause 22 extension */
 #define MDIO_MMD_VEND1		30	/* Vendor specific 1 */
 #define MDIO_MMD_VEND2		31	/* Vendor specific 2 */

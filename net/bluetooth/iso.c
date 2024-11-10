@@ -93,6 +93,19 @@ static struct sock *iso_get_sock(bdaddr_t *src, bdaddr_t *dst,
 #define ISO_CONN_TIMEOUT	(HZ * 40)
 #define ISO_DISCONN_TIMEOUT	(HZ * 2)
 
+<<<<<<< HEAD
+=======
+static struct sock *iso_sock_hold(struct iso_conn *conn)
+{
+	if (!conn || !bt_sock_linked(&iso_sk_list, conn->sk))
+		return NULL;
+
+	sock_hold(conn->sk);
+
+	return conn->sk;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void iso_sock_timeout(struct work_struct *work)
 {
 	struct iso_conn *conn = container_of(work, struct iso_conn,
@@ -100,9 +113,13 @@ static void iso_sock_timeout(struct work_struct *work)
 	struct sock *sk;
 
 	iso_conn_lock(conn);
+<<<<<<< HEAD
 	sk = conn->sk;
 	if (sk)
 		sock_hold(sk);
+=======
+	sk = iso_sock_hold(conn);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	iso_conn_unlock(conn);
 
 	if (!sk)
@@ -209,9 +226,13 @@ static void iso_conn_del(struct hci_conn *hcon, int err)
 
 	/* Kill socket */
 	iso_conn_lock(conn);
+<<<<<<< HEAD
 	sk = conn->sk;
 	if (sk)
 		sock_hold(sk);
+=======
+	sk = iso_sock_hold(conn);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	iso_conn_unlock(conn);
 
 	if (sk) {
@@ -2301,6 +2322,7 @@ int iso_init(void)
 
 	hci_register_cb(&iso_cb);
 
+<<<<<<< HEAD
 	if (IS_ERR_OR_NULL(bt_debugfs))
 		return 0;
 
@@ -2308,6 +2330,11 @@ int iso_init(void)
 		iso_debugfs = debugfs_create_file("iso", 0444, bt_debugfs,
 						  NULL, &iso_debugfs_fops);
 	}
+=======
+	if (!IS_ERR_OR_NULL(bt_debugfs))
+		iso_debugfs = debugfs_create_file("iso", 0444, bt_debugfs,
+						  NULL, &iso_debugfs_fops);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	iso_inited = true;
 

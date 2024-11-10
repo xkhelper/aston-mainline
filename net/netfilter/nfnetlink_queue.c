@@ -540,6 +540,17 @@ nla_put_failure:
 	return -1;
 }
 
+<<<<<<< HEAD
+=======
+static int nf_queue_checksum_help(struct sk_buff *entskb)
+{
+	if (skb_csum_is_sctp(entskb))
+		return skb_crc32c_csum_help(entskb);
+
+	return skb_checksum_help(entskb);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct sk_buff *
 nfqnl_build_packet_message(struct net *net, struct nfqnl_instance *queue,
 			   struct nf_queue_entry *entry,
@@ -602,7 +613,11 @@ nfqnl_build_packet_message(struct net *net, struct nfqnl_instance *queue,
 	case NFQNL_COPY_PACKET:
 		if (!(queue->flags & NFQA_CFG_F_GSO) &&
 		    entskb->ip_summed == CHECKSUM_PARTIAL &&
+<<<<<<< HEAD
 		    skb_checksum_help(entskb))
+=======
+		    nf_queue_checksum_help(entskb))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return NULL;
 
 		data_len = READ_ONCE(queue->copy_range);
@@ -1014,7 +1029,11 @@ nfqnl_enqueue_packet(struct nf_queue_entry *entry, unsigned int queuenum)
 		break;
 	}
 
+<<<<<<< HEAD
 	if ((queue->flags & NFQA_CFG_F_GSO) || !skb_is_gso(skb))
+=======
+	if (!skb_is_gso(skb) || ((queue->flags & NFQA_CFG_F_GSO) && !skb_is_gso_sctp(skb)))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return __nfqnl_enqueue_packet(net, queue, entry);
 
 	nf_bridge_adjust_skb_data(skb);

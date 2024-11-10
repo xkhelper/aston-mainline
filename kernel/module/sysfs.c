@@ -69,12 +69,20 @@ static void free_sect_attrs(struct module_sect_attrs *sect_attrs)
 	kfree(sect_attrs);
 }
 
+<<<<<<< HEAD
 static void add_sect_attrs(struct module *mod, const struct load_info *info)
+=======
+static int add_sect_attrs(struct module *mod, const struct load_info *info)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int nloaded = 0, i, size[2];
 	struct module_sect_attrs *sect_attrs;
 	struct module_sect_attr *sattr;
 	struct bin_attribute **gattr;
+<<<<<<< HEAD
+=======
+	int ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Count loaded sections and allocate structures */
 	for (i = 0; i < info->hdr->e_shnum; i++)
@@ -85,7 +93,11 @@ static void add_sect_attrs(struct module *mod, const struct load_info *info)
 	size[1] = (nloaded + 1) * sizeof(sect_attrs->grp.bin_attrs[0]);
 	sect_attrs = kzalloc(size[0] + size[1], GFP_KERNEL);
 	if (!sect_attrs)
+<<<<<<< HEAD
 		return;
+=======
+		return -ENOMEM;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Setup section attributes. */
 	sect_attrs->grp.name = "sections";
@@ -103,8 +115,15 @@ static void add_sect_attrs(struct module *mod, const struct load_info *info)
 		sattr->address = sec->sh_addr;
 		sattr->battr.attr.name =
 			kstrdup(info->secstrings + sec->sh_name, GFP_KERNEL);
+<<<<<<< HEAD
 		if (!sattr->battr.attr.name)
 			goto out;
+=======
+		if (!sattr->battr.attr.name) {
+			ret = -ENOMEM;
+			goto out;
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		sect_attrs->nsections++;
 		sattr->battr.read = module_sect_read;
 		sattr->battr.size = MODULE_SECT_READ_SIZE;
@@ -113,6 +132,7 @@ static void add_sect_attrs(struct module *mod, const struct load_info *info)
 	}
 	*gattr = NULL;
 
+<<<<<<< HEAD
 	if (sysfs_create_group(&mod->mkobj.kobj, &sect_attrs->grp))
 		goto out;
 
@@ -120,6 +140,17 @@ static void add_sect_attrs(struct module *mod, const struct load_info *info)
 	return;
 out:
 	free_sect_attrs(sect_attrs);
+=======
+	ret = sysfs_create_group(&mod->mkobj.kobj, &sect_attrs->grp);
+	if (ret)
+		goto out;
+
+	mod->sect_attrs = sect_attrs;
+	return 0;
+out:
+	free_sect_attrs(sect_attrs);
+	return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void remove_sect_attrs(struct module *mod)
@@ -158,15 +189,23 @@ static void free_notes_attrs(struct module_notes_attrs *notes_attrs,
 	kfree(notes_attrs);
 }
 
+<<<<<<< HEAD
 static void add_notes_attrs(struct module *mod, const struct load_info *info)
+=======
+static int add_notes_attrs(struct module *mod, const struct load_info *info)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int notes, loaded, i;
 	struct module_notes_attrs *notes_attrs;
 	struct bin_attribute *nattr;
+<<<<<<< HEAD
 
 	/* failed to create section attributes, so can't create notes */
 	if (!mod->sect_attrs)
 		return;
+=======
+	int ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Count notes sections and allocate structures.  */
 	notes = 0;
@@ -176,12 +215,20 @@ static void add_notes_attrs(struct module *mod, const struct load_info *info)
 			++notes;
 
 	if (notes == 0)
+<<<<<<< HEAD
 		return;
+=======
+		return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	notes_attrs = kzalloc(struct_size(notes_attrs, attrs, notes),
 			      GFP_KERNEL);
 	if (!notes_attrs)
+<<<<<<< HEAD
 		return;
+=======
+		return -ENOMEM;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	notes_attrs->notes = notes;
 	nattr = &notes_attrs->attrs[0];
@@ -201,6 +248,7 @@ static void add_notes_attrs(struct module *mod, const struct load_info *info)
 	}
 
 	notes_attrs->dir = kobject_create_and_add("notes", &mod->mkobj.kobj);
+<<<<<<< HEAD
 	if (!notes_attrs->dir)
 		goto out;
 
@@ -214,6 +262,25 @@ static void add_notes_attrs(struct module *mod, const struct load_info *info)
 
 out:
 	free_notes_attrs(notes_attrs, i);
+=======
+	if (!notes_attrs->dir) {
+		ret = -ENOMEM;
+		goto out;
+	}
+
+	for (i = 0; i < notes; ++i) {
+		ret = sysfs_create_bin_file(notes_attrs->dir, &notes_attrs->attrs[i]);
+		if (ret)
+			goto out;
+	}
+
+	mod->notes_attrs = notes_attrs;
+	return 0;
+
+out:
+	free_notes_attrs(notes_attrs, i);
+	return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void remove_notes_attrs(struct module *mod)
@@ -223,9 +290,21 @@ static void remove_notes_attrs(struct module *mod)
 }
 
 #else /* !CONFIG_KALLSYMS */
+<<<<<<< HEAD
 static inline void add_sect_attrs(struct module *mod, const struct load_info *info) { }
 static inline void remove_sect_attrs(struct module *mod) { }
 static inline void add_notes_attrs(struct module *mod, const struct load_info *info) { }
+=======
+static inline int add_sect_attrs(struct module *mod, const struct load_info *info)
+{
+	return 0;
+}
+static inline void remove_sect_attrs(struct module *mod) { }
+static inline int add_notes_attrs(struct module *mod, const struct load_info *info)
+{
+	return 0;
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void remove_notes_attrs(struct module *mod) { }
 #endif /* CONFIG_KALLSYMS */
 
@@ -385,11 +464,28 @@ int mod_sysfs_setup(struct module *mod,
 	if (err)
 		goto out_unreg_modinfo_attrs;
 
+<<<<<<< HEAD
 	add_sect_attrs(mod, info);
 	add_notes_attrs(mod, info);
 
 	return 0;
 
+=======
+	err = add_sect_attrs(mod, info);
+	if (err)
+		goto out_del_usage_links;
+
+	err = add_notes_attrs(mod, info);
+	if (err)
+		goto out_unreg_sect_attrs;
+
+	return 0;
+
+out_unreg_sect_attrs:
+	remove_sect_attrs(mod);
+out_del_usage_links:
+	del_usage_links(mod);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out_unreg_modinfo_attrs:
 	module_remove_modinfo_attrs(mod, -1);
 out_unreg_param:

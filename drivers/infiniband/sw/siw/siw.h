@@ -94,8 +94,11 @@ struct siw_device {
 	atomic_t num_mr;
 	atomic_t num_srq;
 	atomic_t num_ctx;
+<<<<<<< HEAD
 
 	struct work_struct netdev_down;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct siw_ucontext {

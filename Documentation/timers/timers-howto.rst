@@ -19,7 +19,11 @@ it really need to delay in atomic context?" If so...
 
 ATOMIC CONTEXT:
 	You must use the `*delay` family of functions. These
+<<<<<<< HEAD
 	functions use the jiffie estimation of clock speed
+=======
+	functions use the jiffy estimation of clock speed
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	and will busy wait for enough loop cycles to achieve
 	the desired delay:
 

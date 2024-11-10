@@ -654,6 +654,7 @@ enum davinci_da850_index {
 #ifdef CONFIG_DAVINCI_MUX
 /* setup pin muxing */
 extern int davinci_cfg_reg(unsigned long reg_cfg);
+<<<<<<< HEAD
 extern int davinci_cfg_reg_list(const short pins[]);
 #else
 /* boot loader does it all (no warnings from CONFIG_DAVINCI_MUX_WARNINGS) */
@@ -662,6 +663,11 @@ static inline int davinci_cfg_reg_list(const short pins[])
 {
 	return 0;
 }
+=======
+#else
+/* boot loader does it all (no warnings from CONFIG_DAVINCI_MUX_WARNINGS) */
+static inline int davinci_cfg_reg(unsigned long reg_cfg) { return 0; }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 

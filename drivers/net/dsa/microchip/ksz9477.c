@@ -56,6 +56,7 @@ int ksz9477_change_mtu(struct ksz_device *dev, int port, int mtu)
 				  REG_SW_MTU_MASK, frame_size);
 }
 
+<<<<<<< HEAD
 /**
  * ksz9477_handle_wake_reason - Handle wake reason on a specified port.
  * @dev: The device structure.
@@ -237,6 +238,8 @@ void ksz9477_wol_pre_shutdown(struct ksz_device *dev, bool *wol_enabled)
 		ksz_write8(dev, REG_SW_PME_CTRL, PME_ENABLE);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int ksz9477_wait_vlan_ctrl_ready(struct ksz_device *dev)
 {
 	unsigned int val;
@@ -427,17 +430,73 @@ void ksz9477_freeze_mib(struct ksz_device *dev, int port, bool freeze)
 	mutex_unlock(&p->mib.cnt_mutex);
 }
 
+<<<<<<< HEAD
 int ksz9477_errata_monitor(struct ksz_device *dev, int port,
 			   u64 tx_late_col)
 {
 	u32 pmavbc;
 	u8 status;
 	u16 pqm;
+=======
+static int ksz9477_half_duplex_monitor(struct ksz_device *dev, int port,
+				       u64 tx_late_col)
+{
+	u8 lue_ctrl;
+	u32 pmavbc;
+	u16 pqm;
+	int ret;
+
+	/* Errata DS80000754 recommends monitoring potential faults in
+	 * half-duplex mode. The switch might not be able to communicate anymore
+	 * in these states. If you see this message, please read the
+	 * errata-sheet for more information:
+	 * https://ww1.microchip.com/downloads/aemDocuments/documents/UNG/ProductDocuments/Errata/KSZ9477S-Errata-DS80000754.pdf
+	 * To workaround this issue, half-duplex mode should be avoided.
+	 * A software reset could be implemented to recover from this state.
+	 */
+	dev_warn_once(dev->dev,
+		      "Half-duplex detected on port %d, transmission halt may occur\n",
+		      port);
+	if (tx_late_col != 0) {
+		/* Transmission halt with late collisions */
+		dev_crit_once(dev->dev,
+			      "TX late collisions detected, transmission may be halted on port %d\n",
+			      port);
+	}
+	ret = ksz_read8(dev, REG_SW_LUE_CTRL_0, &lue_ctrl);
+	if (ret)
+		return ret;
+	if (lue_ctrl & SW_VLAN_ENABLE) {
+		ret = ksz_pread16(dev, port, REG_PORT_QM_TX_CNT_0__4, &pqm);
+		if (ret)
+			return ret;
+
+		ret = ksz_read32(dev, REG_PMAVBC, &pmavbc);
+		if (ret)
+			return ret;
+
+		if ((FIELD_GET(PMAVBC_MASK, pmavbc) <= PMAVBC_MIN) ||
+		    (FIELD_GET(PORT_QM_TX_CNT_M, pqm) >= PORT_QM_TX_CNT_MAX)) {
+			/* Transmission halt with Half-Duplex and VLAN */
+			dev_crit_once(dev->dev,
+				      "resources out of limits, transmission may be halted\n");
+		}
+	}
+
+	return ret;
+}
+
+int ksz9477_errata_monitor(struct ksz_device *dev, int port,
+			   u64 tx_late_col)
+{
+	u8 status;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	ret = ksz_pread8(dev, port, REG_PORT_STATUS_0, &status);
 	if (ret)
 		return ret;
+<<<<<<< HEAD
 	if (!(FIELD_GET(PORT_INTF_SPEED_MASK, status) == PORT_INTF_SPEED_NONE) &&
 	    !(status & PORT_INTF_FULL_DUPLEX)) {
 		/* Errata DS80000754 recommends monitoring potential faults in
@@ -475,6 +534,15 @@ int ksz9477_errata_monitor(struct ksz_device *dev, int port,
 			}
 		}
 	}
+=======
+
+	if (!(FIELD_GET(PORT_INTF_SPEED_MASK, status)
+	      == PORT_INTF_SPEED_NONE) &&
+	    !(status & PORT_INTF_FULL_DUPLEX)) {
+		ret = ksz9477_half_duplex_monitor(dev, port, tx_late_col);
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -1188,6 +1256,10 @@ void ksz9477_port_queue_split(struct ksz_device *dev, int port)
 
 void ksz9477_port_setup(struct ksz_device *dev, int port, bool cpu_port)
 {
+<<<<<<< HEAD
+=======
+	const u16 *regs = dev->info->regs;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct dsa_switch *ds = dev->ds;
 	u16 data16;
 	u8 member;
@@ -1232,12 +1304,20 @@ void ksz9477_port_setup(struct ksz_device *dev, int port, bool cpu_port)
 	ksz9477_port_acl_init(dev, port);
 
 	/* clear pending wake flags */
+<<<<<<< HEAD
 	ksz9477_handle_wake_reason(dev, port);
+=======
+	ksz_handle_wake_reason(dev, port);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Disable all WoL options by default. Otherwise
 	 * ksz_switch_macaddr_get/put logic will not work properly.
 	 */
+<<<<<<< HEAD
 	ksz_pwrite8(dev, port, REG_PORT_PME_CTRL, 0);
+=======
+	ksz_pwrite8(dev, port, regs[REG_PORT_PME_CTRL], 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void ksz9477_config_cpu_port(struct dsa_switch *ds)
@@ -1334,6 +1414,10 @@ int ksz9477_enable_stp_addr(struct ksz_device *dev)
 int ksz9477_setup(struct dsa_switch *ds)
 {
 	struct ksz_device *dev = ds->priv;
+<<<<<<< HEAD
+=======
+	const u16 *regs = dev->info->regs;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret = 0;
 
 	ds->mtu_enforcement_ingress = true;
@@ -1364,6 +1448,7 @@ int ksz9477_setup(struct dsa_switch *ds)
 	/* enable global MIB counter freeze function */
 	ksz_cfg(dev, REG_SW_MAC_CTRL_6, SW_MIB_COUNTER_FREEZE, true);
 
+<<<<<<< HEAD
 	/* Make sure PME (WoL) is not enabled. If requested, it will be
 	 * enabled by ksz9477_wol_pre_shutdown(). Otherwise, some PMICs do not
 	 * like PME events changes before shutdown.
@@ -1371,6 +1456,13 @@ int ksz9477_setup(struct dsa_switch *ds)
 	ksz_write8(dev, REG_SW_PME_CTRL, 0);
 
 	return 0;
+=======
+	/* Make sure PME (WoL) is not enabled. If requested, it will
+	 * be enabled by ksz_wol_pre_shutdown(). Otherwise, some PMICs
+	 * do not like PME events changes before shutdown.
+	 */
+	return ksz_write8(dev, regs[REG_SW_PME_CTRL], 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 u32 ksz9477_get_port_addr(int port, int offset)

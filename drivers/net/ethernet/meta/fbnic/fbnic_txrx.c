@@ -273,6 +273,12 @@ fbnic_xmit_frame_ring(struct sk_buff *skb, struct fbnic_ring *ring)
 err_free:
 	dev_kfree_skb_any(skb);
 err_count:
+<<<<<<< HEAD
+=======
+	u64_stats_update_begin(&ring->stats.syncp);
+	ring->stats.dropped++;
+	u64_stats_update_end(&ring->stats.syncp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return NETDEV_TX_OK;
 }
 
@@ -363,10 +369,25 @@ static void fbnic_clean_twq0(struct fbnic_napi_vector *nv, int napi_budget,
 	txq = txring_txq(nv->napi.dev, ring);
 
 	if (unlikely(discard)) {
+<<<<<<< HEAD
+=======
+		u64_stats_update_begin(&ring->stats.syncp);
+		ring->stats.dropped += total_packets;
+		u64_stats_update_end(&ring->stats.syncp);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		netdev_tx_completed_queue(txq, total_packets, total_bytes);
 		return;
 	}
 
+<<<<<<< HEAD
+=======
+	u64_stats_update_begin(&ring->stats.syncp);
+	ring->stats.bytes += total_bytes;
+	ring->stats.packets += total_packets;
+	u64_stats_update_end(&ring->stats.syncp);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	netif_txq_completed_wake(txq, total_packets, total_bytes,
 				 fbnic_desc_unused(ring),
 				 FBNIC_TX_DESC_WAKEUP);
@@ -730,12 +751,19 @@ static bool fbnic_rcd_metadata_err(u64 rcd)
 static int fbnic_clean_rcq(struct fbnic_napi_vector *nv,
 			   struct fbnic_q_triad *qt, int budget)
 {
+<<<<<<< HEAD
+=======
+	unsigned int packets = 0, bytes = 0, dropped = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct fbnic_ring *rcq = &qt->cmpl;
 	struct fbnic_pkt_buff *pkt;
 	s32 head0 = -1, head1 = -1;
 	__le64 *raw_rcd, done;
 	u32 head = rcq->head;
+<<<<<<< HEAD
 	u64 packets = 0;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	done = (head & (rcq->size_mask + 1)) ? cpu_to_le64(FBNIC_RCD_DONE) : 0;
 	raw_rcd = &rcq->desc[head & rcq->size_mask];
@@ -780,9 +808,17 @@ static int fbnic_clean_rcq(struct fbnic_napi_vector *nv,
 				fbnic_populate_skb_fields(nv, rcd, skb, qt);
 
 				packets++;
+<<<<<<< HEAD
 
 				napi_gro_receive(&nv->napi, skb);
 			} else {
+=======
+				bytes += skb->len;
+
+				napi_gro_receive(&nv->napi, skb);
+			} else {
+				dropped++;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				fbnic_put_pkt_buff(nv, pkt, 1);
 			}
 
@@ -799,6 +835,17 @@ static int fbnic_clean_rcq(struct fbnic_napi_vector *nv,
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	u64_stats_update_begin(&rcq->stats.syncp);
+	rcq->stats.packets += packets;
+	rcq->stats.bytes += bytes;
+	/* Re-add ethernet header length (removed in fbnic_build_skb) */
+	rcq->stats.bytes += ETH_HLEN * packets;
+	rcq->stats.dropped += dropped;
+	u64_stats_update_end(&rcq->stats.syncp);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Unmap and free processed buffers */
 	if (head0 >= 0)
 		fbnic_clean_bdq(nv, budget, &qt->sub0, head0);
@@ -865,12 +912,42 @@ static irqreturn_t fbnic_msix_clean_rings(int __always_unused irq, void *data)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
+=======
+static void fbnic_aggregate_ring_rx_counters(struct fbnic_net *fbn,
+					     struct fbnic_ring *rxr)
+{
+	struct fbnic_queue_stats *stats = &rxr->stats;
+
+	/* Capture stats from queues before dissasociating them */
+	fbn->rx_stats.bytes += stats->bytes;
+	fbn->rx_stats.packets += stats->packets;
+	fbn->rx_stats.dropped += stats->dropped;
+}
+
+static void fbnic_aggregate_ring_tx_counters(struct fbnic_net *fbn,
+					     struct fbnic_ring *txr)
+{
+	struct fbnic_queue_stats *stats = &txr->stats;
+
+	/* Capture stats from queues before dissasociating them */
+	fbn->tx_stats.bytes += stats->bytes;
+	fbn->tx_stats.packets += stats->packets;
+	fbn->tx_stats.dropped += stats->dropped;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void fbnic_remove_tx_ring(struct fbnic_net *fbn,
 				 struct fbnic_ring *txr)
 {
 	if (!(txr->flags & FBNIC_RING_F_STATS))
 		return;
 
+<<<<<<< HEAD
+=======
+	fbnic_aggregate_ring_tx_counters(fbn, txr);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Remove pointer to the Tx ring */
 	WARN_ON(fbn->tx[txr->q_idx] && fbn->tx[txr->q_idx] != txr);
 	fbn->tx[txr->q_idx] = NULL;
@@ -882,6 +959,11 @@ static void fbnic_remove_rx_ring(struct fbnic_net *fbn,
 	if (!(rxr->flags & FBNIC_RING_F_STATS))
 		return;
 
+<<<<<<< HEAD
+=======
+	fbnic_aggregate_ring_rx_counters(fbn, rxr);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Remove pointer to the Rx ring */
 	WARN_ON(fbn->rx[rxr->q_idx] && fbn->rx[rxr->q_idx] != rxr);
 	fbn->rx[rxr->q_idx] = NULL;
@@ -974,6 +1056,10 @@ static int fbnic_alloc_nv_page_pool(struct fbnic_net *fbn,
 static void fbnic_ring_init(struct fbnic_ring *ring, u32 __iomem *doorbell,
 			    int q_idx, u8 flags)
 {
+<<<<<<< HEAD
+=======
+	u64_stats_init(&ring->stats.syncp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ring->doorbell = doorbell;
 	ring->q_idx = q_idx;
 	ring->flags = flags;
@@ -1012,14 +1098,24 @@ static int fbnic_alloc_napi_vector(struct fbnic_dev *fbd, struct fbnic_net *fbn,
 	nv->fbd = fbd;
 	nv->v_idx = v_idx;
 
+<<<<<<< HEAD
 	/* Record IRQ to NAPI struct */
 	netif_napi_set_irq(&nv->napi,
 			   pci_irq_vector(to_pci_dev(fbd->dev), nv->v_idx));
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Tie napi to netdev */
 	list_add(&nv->napis, &fbn->napis);
 	netif_napi_add(fbn->netdev, &nv->napi, fbnic_poll);
 
+<<<<<<< HEAD
+=======
+	/* Record IRQ to NAPI struct */
+	netif_napi_set_irq(&nv->napi,
+			   pci_irq_vector(to_pci_dev(fbd->dev), nv->v_idx));
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Tie nv back to PCIe dev */
 	nv->dev = fbd->dev;
 

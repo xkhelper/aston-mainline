@@ -38,6 +38,7 @@
 		seq_printf(m, fmt);	\
 })
 
+<<<<<<< HEAD
 /*
  * The page dumper groups page table entries of the same type into a single
  * description. It uses pg_state to track the range information while
@@ -65,6 +66,9 @@ struct prot_bits {
 };
 
 static const struct prot_bits pte_bits[] = {
+=======
+static const struct ptdump_prot_bits pte_bits[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{
 		.mask	= PTE_VALID,
 		.val	= PTE_VALID,
@@ -143,6 +147,7 @@ static const struct prot_bits pte_bits[] = {
 	}
 };
 
+<<<<<<< HEAD
 struct pg_level {
 	const struct prot_bits *bits;
 	char name[4];
@@ -151,6 +156,9 @@ struct pg_level {
 };
 
 static struct pg_level pg_level[] __ro_after_init = {
+=======
+static struct ptdump_pg_level kernel_pg_levels[] __ro_after_init = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ /* pgd */
 		.name	= "PGD",
 		.bits	= pte_bits,
@@ -174,7 +182,11 @@ static struct pg_level pg_level[] __ro_after_init = {
 	},
 };
 
+<<<<<<< HEAD
 static void dump_prot(struct pg_state *st, const struct prot_bits *bits,
+=======
+static void dump_prot(struct ptdump_pg_state *st, const struct ptdump_prot_bits *bits,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			size_t num)
 {
 	unsigned i;
@@ -192,7 +204,11 @@ static void dump_prot(struct pg_state *st, const struct prot_bits *bits,
 	}
 }
 
+<<<<<<< HEAD
 static void note_prot_uxn(struct pg_state *st, unsigned long addr)
+=======
+static void note_prot_uxn(struct ptdump_pg_state *st, unsigned long addr)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (!st->check_wx)
 		return;
@@ -206,7 +222,11 @@ static void note_prot_uxn(struct pg_state *st, unsigned long addr)
 	st->uxn_pages += (addr - st->start_address) / PAGE_SIZE;
 }
 
+<<<<<<< HEAD
 static void note_prot_wx(struct pg_state *st, unsigned long addr)
+=======
+static void note_prot_wx(struct ptdump_pg_state *st, unsigned long addr)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (!st->check_wx)
 		return;
@@ -221,16 +241,29 @@ static void note_prot_wx(struct pg_state *st, unsigned long addr)
 	st->wx_pages += (addr - st->start_address) / PAGE_SIZE;
 }
 
+<<<<<<< HEAD
 static void note_page(struct ptdump_state *pt_st, unsigned long addr, int level,
 		      u64 val)
 {
 	struct pg_state *st = container_of(pt_st, struct pg_state, ptdump);
+=======
+void note_page(struct ptdump_state *pt_st, unsigned long addr, int level,
+	       u64 val)
+{
+	struct ptdump_pg_state *st = container_of(pt_st, struct ptdump_pg_state, ptdump);
+	struct ptdump_pg_level *pg_level = st->pg_level;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	static const char units[] = "KMGTPE";
 	u64 prot = 0;
 
 	/* check if the current level has been folded dynamically */
+<<<<<<< HEAD
 	if ((level == 1 && mm_p4d_folded(st->mm)) ||
 	    (level == 2 && mm_pud_folded(st->mm)))
+=======
+	if (st->mm && ((level == 1 && mm_p4d_folded(st->mm)) ||
+	    (level == 2 && mm_pud_folded(st->mm))))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		level = 0;
 
 	if (level >= 0)
@@ -286,15 +319,27 @@ static void note_page(struct ptdump_state *pt_st, unsigned long addr, int level,
 void ptdump_walk(struct seq_file *s, struct ptdump_info *info)
 {
 	unsigned long end = ~0UL;
+<<<<<<< HEAD
 	struct pg_state st;
+=======
+	struct ptdump_pg_state st;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (info->base_addr < TASK_SIZE_64)
 		end = TASK_SIZE_64;
 
+<<<<<<< HEAD
 	st = (struct pg_state){
 		.seq = s,
 		.marker = info->markers,
 		.mm = info->mm,
+=======
+	st = (struct ptdump_pg_state){
+		.seq = s,
+		.marker = info->markers,
+		.mm = info->mm,
+		.pg_level = &kernel_pg_levels[0],
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.level = -1,
 		.ptdump = {
 			.note_page = note_page,
@@ -312,10 +357,17 @@ static void __init ptdump_initialize(void)
 {
 	unsigned i, j;
 
+<<<<<<< HEAD
 	for (i = 0; i < ARRAY_SIZE(pg_level); i++)
 		if (pg_level[i].bits)
 			for (j = 0; j < pg_level[i].num; j++)
 				pg_level[i].mask |= pg_level[i].bits[j].mask;
+=======
+	for (i = 0; i < ARRAY_SIZE(kernel_pg_levels); i++)
+		if (kernel_pg_levels[i].bits)
+			for (j = 0; j < kernel_pg_levels[i].num; j++)
+				kernel_pg_levels[i].mask |= kernel_pg_levels[i].bits[j].mask;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct ptdump_info kernel_ptdump_info __ro_after_init = {
@@ -324,12 +376,20 @@ static struct ptdump_info kernel_ptdump_info __ro_after_init = {
 
 bool ptdump_check_wx(void)
 {
+<<<<<<< HEAD
 	struct pg_state st = {
+=======
+	struct ptdump_pg_state st = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.seq = NULL,
 		.marker = (struct addr_marker[]) {
 			{ 0, NULL},
 			{ -1, NULL},
 		},
+<<<<<<< HEAD
+=======
+		.pg_level = &kernel_pg_levels[0],
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.level = -1,
 		.check_wx = true,
 		.ptdump = {

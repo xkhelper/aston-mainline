@@ -570,6 +570,10 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
 	u32 errors = 0;
 	struct davinci_spi_config *spicfg;
 	struct davinci_spi_platform_data *pdata;
+<<<<<<< HEAD
+=======
+	unsigned long timeout;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dspi = spi_controller_get_devdata(spi->controller);
 	pdata = &dspi->pdata;
@@ -661,7 +665,16 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
 
 	/* Wait for the transfer to complete */
 	if (spicfg->io_type != SPI_IO_TYPE_POLL) {
+<<<<<<< HEAD
 		if (wait_for_completion_timeout(&dspi->done, HZ) == 0)
+=======
+		timeout = DIV_ROUND_UP(t->speed_hz, MSEC_PER_SEC);
+		timeout = DIV_ROUND_UP(t->len * 8, timeout);
+		/* Assume we are at most 2x slower than the nominal bus speed */
+		timeout = 2 * msecs_to_jiffies(timeout);
+
+		if (wait_for_completion_timeout(&dspi->done, timeout) == 0)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			errors = SPIFLG_TIMEOUT_MASK;
 	} else {
 		while (dspi->rcount > 0 || dspi->wcount > 0) {

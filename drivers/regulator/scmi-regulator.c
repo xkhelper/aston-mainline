@@ -297,7 +297,11 @@ static int process_scmi_regulator_of_node(struct scmi_device *sdev,
 static int scmi_regulator_probe(struct scmi_device *sdev)
 {
 	int d, ret, num_doms;
+<<<<<<< HEAD
 	struct device_node *np, *child;
+=======
+	struct device_node *np;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct scmi_handle *handle = sdev->handle;
 	struct scmi_regulator_info *rinfo;
 	struct scmi_protocol_handle *ph;
@@ -341,6 +345,7 @@ static int scmi_regulator_probe(struct scmi_device *sdev)
 	 */
 	of_node_get(handle->dev->of_node);
 	np = of_find_node_by_name(handle->dev->of_node, "regulators");
+<<<<<<< HEAD
 	for_each_child_of_node(np, child) {
 		ret = process_scmi_regulator_of_node(sdev, ph, child, rinfo);
 		/* abort on any mem issue */
@@ -348,6 +353,13 @@ static int scmi_regulator_probe(struct scmi_device *sdev)
 			of_node_put(child);
 			return ret;
 		}
+=======
+	for_each_child_of_node_scoped(np, child) {
+		ret = process_scmi_regulator_of_node(sdev, ph, child, rinfo);
+		/* abort on any mem issue */
+		if (ret == -ENOMEM)
+			return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	of_node_put(np);
 	/*

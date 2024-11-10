@@ -940,6 +940,7 @@ static int zynq_gpio_probe(struct platform_device *pdev)
 	chip->ngpio = gpio->p_data->ngpio;
 
 	/* Retrieve GPIO clock */
+<<<<<<< HEAD
 	gpio->clk = devm_clk_get(&pdev->dev, NULL);
 	if (IS_ERR(gpio->clk))
 		return dev_err_probe(&pdev->dev, PTR_ERR(gpio->clk), "input clock not found.\n");
@@ -950,6 +951,12 @@ static int zynq_gpio_probe(struct platform_device *pdev)
 		return ret;
 	}
 
+=======
+	gpio->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+	if (IS_ERR(gpio->clk))
+		return dev_err_probe(&pdev->dev, PTR_ERR(gpio->clk), "input clock not found.\n");
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_lock_init(&gpio->dirlock);
 
 	pm_runtime_set_active(&pdev->dev);
@@ -999,7 +1006,10 @@ err_pm_put:
 	pm_runtime_put(&pdev->dev);
 err_pm_dis:
 	pm_runtime_disable(&pdev->dev);
+<<<<<<< HEAD
 	clk_disable_unprepare(gpio->clk);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }
@@ -1019,7 +1029,10 @@ static void zynq_gpio_remove(struct platform_device *pdev)
 	if (ret < 0)
 		dev_warn(&pdev->dev, "pm_runtime_get_sync() Failed\n");
 	gpiochip_remove(&gpio->chip);
+<<<<<<< HEAD
 	clk_disable_unprepare(gpio->clk);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	device_set_wakeup_capable(&pdev->dev, 0);
 	pm_runtime_disable(&pdev->dev);
 }

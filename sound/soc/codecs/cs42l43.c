@@ -2461,7 +2461,11 @@ static struct platform_driver cs42l43_codec_driver = {
 	},
 
 	.probe		= cs42l43_codec_probe,
+<<<<<<< HEAD
 	.remove_new	= cs42l43_codec_remove,
+=======
+	.remove		= cs42l43_codec_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.id_table	= cs42l43_codec_id_table,
 };
 module_platform_driver(cs42l43_codec_driver);

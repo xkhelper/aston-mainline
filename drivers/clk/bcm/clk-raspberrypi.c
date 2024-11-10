@@ -458,7 +458,11 @@ static struct platform_driver raspberrypi_clk_driver = {
 		.of_match_table = raspberrypi_clk_match,
 	},
 	.probe          = raspberrypi_clk_probe,
+<<<<<<< HEAD
 	.remove_new	= raspberrypi_clk_remove,
+=======
+	.remove		= raspberrypi_clk_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(raspberrypi_clk_driver);
 

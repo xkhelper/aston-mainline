@@ -77,7 +77,11 @@
 #include <linux/timer.h>
 #include <linux/uaccess.h>
 #include <net/checksum.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static unsigned char *encode(unsigned char *cp, unsigned short n);
 static long decode(unsigned char **cpp);
@@ -643,6 +647,7 @@ bad:
 int
 slhc_remember(struct slcompress *comp, unsigned char *icp, int isize)
 {
+<<<<<<< HEAD
 	struct cstate *cs;
 	unsigned ihl;
 
@@ -662,10 +667,39 @@ slhc_remember(struct slcompress *comp, unsigned char *icp, int isize)
 	}
 	index = icp[9];
 	icp[9] = IPPROTO_TCP;
+=======
+	const struct tcphdr *th;
+	unsigned char index;
+	struct iphdr *iph;
+	struct cstate *cs;
+	unsigned int ihl;
+
+	/* The packet is shorter than a legal IP header.
+	 * Also make sure isize is positive.
+	 */
+	if (isize < (int)sizeof(struct iphdr)) {
+runt:
+		comp->sls_i_runt++;
+		return slhc_toss(comp);
+	}
+	iph = (struct iphdr *)icp;
+	/* Peek at the IP header's IHL field to find its length */
+	ihl = iph->ihl;
+	/* The IP header length field is too small,
+	 * or packet is shorter than the IP header followed
+	 * by minimal tcp header.
+	 */
+	if (ihl < 5 || isize < ihl * 4 + sizeof(struct tcphdr))
+		goto runt;
+
+	index = iph->protocol;
+	iph->protocol = IPPROTO_TCP;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (ip_fast_csum(icp, ihl)) {
 		/* Bad IP header checksum; discard */
 		comp->sls_i_badcheck++;
+<<<<<<< HEAD
 		return slhc_toss( comp );
 	}
 	if(index > comp->rslot_limit) {
@@ -683,6 +717,29 @@ slhc_remember(struct slcompress *comp, unsigned char *icp, int isize)
 	if (cs->cs_tcp.doff > 5)
 	  memcpy(cs->cs_tcpopt, icp + ihl*4 + sizeof(struct tcphdr), (cs->cs_tcp.doff - 5) * 4);
 	cs->cs_hsize = ihl*2 + cs->cs_tcp.doff*2;
+=======
+		return slhc_toss(comp);
+	}
+	if (index > comp->rslot_limit) {
+		comp->sls_i_error++;
+		return slhc_toss(comp);
+	}
+	th = (struct tcphdr *)(icp + ihl * 4);
+	if (th->doff < sizeof(struct tcphdr) / 4)
+		goto runt;
+	if (isize < ihl * 4 + th->doff * 4)
+		goto runt;
+	/* Update local state */
+	cs = &comp->rstate[comp->recv_current = index];
+	comp->flags &=~ SLF_TOSS;
+	memcpy(&cs->cs_ip, iph, sizeof(*iph));
+	memcpy(&cs->cs_tcp, th, sizeof(*th));
+	if (ihl > 5)
+	  memcpy(cs->cs_ipopt, &iph[1], (ihl - 5) * 4);
+	if (th->doff > 5)
+	  memcpy(cs->cs_tcpopt, &th[1], (th->doff - 5) * 4);
+	cs->cs_hsize = ihl*2 + th->doff*2;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cs->initialized = true;
 	/* Put headers back on packet
 	 * Neither header checksum is recalculated

@@ -3,7 +3,11 @@
 #include <linux/buffer_head.h>
 #include <linux/exportfs.h>
 #include <linux/iso_fs.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 enum isofs_file_format {
 	isofs_file_normal = 0,

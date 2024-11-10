@@ -290,7 +290,11 @@ static void idma64_desc_fill(struct idma64_chan *idma64c,
 		desc->length += hw->len;
 	} while (i);
 
+<<<<<<< HEAD
 	/* Trigger an interrupt after the last block is transfered */
+=======
+	/* Trigger an interrupt after the last block is transferred */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	lli->ctllo |= IDMA64C_CTLL_INT_EN;
 
 	/* Disable LLP transfer in the last block */
@@ -364,7 +368,11 @@ static size_t idma64_active_desc_size(struct idma64_chan *idma64c)
 	if (!i)
 		return bytes;
 
+<<<<<<< HEAD
 	/* The current chunk is not fully transfered yet */
+=======
+	/* The current chunk is not fully transferred yet */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bytes += desc->hw[--i].len;
 
 	return bytes - IDMA64C_CTLH_BLOCK_TS(ctlhi);
@@ -598,9 +606,13 @@ static int idma64_probe(struct idma64_chip *chip)
 
 	idma64->dma.dev = chip->sysdev;
 
+<<<<<<< HEAD
 	ret = dma_set_max_seg_size(idma64->dma.dev, IDMA64C_CTLH_BLOCK_TS_MASK);
 	if (ret)
 		return ret;
+=======
+	dma_set_max_seg_size(idma64->dma.dev, IDMA64C_CTLH_BLOCK_TS_MASK);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = dma_async_device_register(&idma64->dma);
 	if (ret)

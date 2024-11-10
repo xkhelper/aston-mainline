@@ -505,7 +505,11 @@ struct pqi_vendor_general_request {
 			__le64	buffer_address;
 			__le32	buffer_length;
 			u8	reserved[40];
+<<<<<<< HEAD
 		} ofa_memory_allocation;
+=======
+		} host_memory_allocation;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} data;
 };
 
@@ -517,6 +521,7 @@ struct pqi_vendor_general_response {
 	u8	reserved[2];
 };
 
+<<<<<<< HEAD
 #define PQI_VENDOR_GENERAL_CONFIG_TABLE_UPDATE	0
 #define PQI_VENDOR_GENERAL_HOST_MEMORY_UPDATE	1
 
@@ -526,12 +531,36 @@ struct pqi_vendor_general_response {
 
 struct pqi_ofa_memory {
 	__le64	signature;	/* "OFA_QRM" */
+=======
+#define PQI_VENDOR_GENERAL_CONFIG_TABLE_UPDATE		0
+#define PQI_VENDOR_GENERAL_OFA_MEMORY_UPDATE		1
+#define PQI_VENDOR_GENERAL_CTRL_LOG_MEMORY_UPDATE	2
+
+#define PQI_OFA_VERSION			1
+#define PQI_OFA_SIGNATURE		"OFA_QRM"
+#define PQI_CTRL_LOG_VERSION		1
+#define PQI_CTRL_LOG_SIGNATURE		"FW_DATA"
+#define PQI_HOST_MAX_SG_DESCRIPTORS	64
+
+struct pqi_host_memory {
+	__le64	signature;	/* "OFA_QRM", "FW_DATA", etc. */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__le16	version;	/* version of this struct (1 = 1st version) */
 	u8	reserved[62];
 	__le32	bytes_allocated;	/* total allocated memory in bytes */
 	__le16	num_memory_descriptors;
 	u8	reserved1[2];
+<<<<<<< HEAD
 	struct pqi_sg_descriptor sg_descriptor[PQI_OFA_MAX_SG_DESCRIPTORS];
+=======
+	struct pqi_sg_descriptor sg_descriptor[PQI_HOST_MAX_SG_DESCRIPTORS];
+};
+
+struct pqi_host_memory_descriptor {
+	struct pqi_host_memory *host_memory;
+	dma_addr_t		host_memory_dma_handle;
+	void			**host_chunk_virt_address;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct pqi_aio_error_info {
@@ -867,7 +896,12 @@ struct pqi_config_table_firmware_features {
 #define PQI_FIRMWARE_FEATURE_FW_TRIAGE				17
 #define PQI_FIRMWARE_FEATURE_RPL_EXTENDED_FORMAT_4_5		18
 #define PQI_FIRMWARE_FEATURE_MULTI_LUN_DEVICE_SUPPORT           21
+<<<<<<< HEAD
 #define PQI_FIRMWARE_FEATURE_MAXIMUM                            21
+=======
+#define PQI_FIRMWARE_FEATURE_CTRL_LOGGING			22
+#define PQI_FIRMWARE_FEATURE_MAXIMUM				22
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct pqi_config_table_debug {
 	struct pqi_config_table_section_header header;
@@ -1096,6 +1130,14 @@ struct pqi_tmf_work {
 	u8	scsi_opcode;
 };
 
+<<<<<<< HEAD
+=======
+struct pqi_raid_io_stats {
+	u64	raid_bypass_cnt;
+	u64	write_stream_cnt;
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct pqi_scsi_dev {
 	int	devtype;		/* as reported by INQUIRY command */
 	u8	device_type;		/* as reported by */
@@ -1158,7 +1200,11 @@ struct pqi_scsi_dev {
 
 	struct pqi_stream_data stream_data[NUM_STREAMS_PER_LUN];
 	atomic_t scsi_cmds_outstanding[PQI_MAX_LUNS_PER_DEVICE];
+<<<<<<< HEAD
 	unsigned int raid_bypass_cnt;
+=======
+	struct pqi_raid_io_stats __percpu *raid_io_stats;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	struct pqi_tmf_work tmf_work[PQI_MAX_LUNS_PER_DEVICE];
 };
@@ -1357,6 +1403,10 @@ struct pqi_ctrl_info {
 	u8		firmware_triage_supported : 1;
 	u8		rpl_extended_format_4_5_supported : 1;
 	u8		multi_lun_device_supported : 1;
+<<<<<<< HEAD
+=======
+	u8		ctrl_logging_supported : 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8		enable_r1_writes : 1;
 	u8		enable_r5_writes : 1;
 	u8		enable_r6_writes : 1;
@@ -1398,13 +1448,21 @@ struct pqi_ctrl_info {
 	wait_queue_head_t block_requests_wait;
 
 	struct mutex	ofa_mutex;
+<<<<<<< HEAD
 	struct pqi_ofa_memory *pqi_ofa_mem_virt_addr;
 	dma_addr_t	pqi_ofa_mem_dma_handle;
 	void		**pqi_ofa_chunk_virt_addr;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct work_struct ofa_memory_alloc_work;
 	struct work_struct ofa_quiesce_work;
 	u32		ofa_bytes_requested;
 	u16		ofa_cancel_reason;
+<<<<<<< HEAD
+=======
+	struct pqi_host_memory_descriptor ofa_memory;
+	struct pqi_host_memory_descriptor ctrl_log_memory;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	enum pqi_ctrl_removal_state ctrl_removal_state;
 };
 

@@ -78,7 +78,10 @@ static int fscontext_release(struct inode *inode, struct file *file)
 const struct file_operations fscontext_fops = {
 	.read		= fscontext_read,
 	.release	= fscontext_release,
+<<<<<<< HEAD
 	.llseek		= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
@@ -394,6 +397,7 @@ SYSCALL_DEFINE5(fsconfig,
 	}
 
 	f = fdget(fd);
+<<<<<<< HEAD
 	if (!f.file)
 		return -EBADF;
 	ret = -EINVAL;
@@ -401,6 +405,15 @@ SYSCALL_DEFINE5(fsconfig,
 		goto out_f;
 
 	fc = f.file->private_data;
+=======
+	if (!fd_file(f))
+		return -EBADF;
+	ret = -EINVAL;
+	if (fd_file(f)->f_op != &fscontext_fops)
+		goto out_f;
+
+	fc = fd_file(f)->private_data;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (fc->ops == &legacy_fs_context_ops) {
 		switch (cmd) {
 		case FSCONFIG_SET_BINARY:

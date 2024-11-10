@@ -837,7 +837,11 @@ static int qtnf_channel_switch(struct wiphy *wiphy, struct net_device *dev,
 static int qtnf_start_radar_detection(struct wiphy *wiphy,
 				      struct net_device *ndev,
 				      struct cfg80211_chan_def *chandef,
+<<<<<<< HEAD
 				      u32 cac_time_ms)
+=======
+				      u32 cac_time_ms, int link_id)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct qtnf_vif *vif = qtnf_netdev_get_priv(ndev);
 	int ret;

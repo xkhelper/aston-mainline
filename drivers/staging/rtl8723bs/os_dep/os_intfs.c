@@ -5,7 +5,10 @@
  *
  ******************************************************************************/
 #include <drv_types.h>
+<<<<<<< HEAD
 #include <rtw_debug.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <hal_data.h>
 
 MODULE_LICENSE("GPL");

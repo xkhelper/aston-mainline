@@ -9,6 +9,10 @@
 #include <string.h>
 
 #include <list.h>
+<<<<<<< HEAD
+=======
+#include <xalloc.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "lkc.h"
 #include "internal.h"
 
@@ -78,10 +82,15 @@ void menu_add_entry(struct symbol *sym)
 	*last_entry_ptr = menu;
 	last_entry_ptr = &menu->next;
 	current_entry = menu;
+<<<<<<< HEAD
 	if (sym) {
 		menu_add_symbol(P_SYMBOL, sym, NULL);
 		list_add_tail(&menu->link, &sym->menus);
 	}
+=======
+	if (sym)
+		list_add_tail(&menu->link, &sym->menus);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 struct menu *menu_add_menu(void)
@@ -108,12 +117,22 @@ static struct expr *rewrite_m(struct expr *e)
 
 	switch (e->type) {
 	case E_NOT:
+<<<<<<< HEAD
 		e->left.expr = rewrite_m(e->left.expr);
 		break;
 	case E_OR:
 	case E_AND:
 		e->left.expr = rewrite_m(e->left.expr);
 		e->right.expr = rewrite_m(e->right.expr);
+=======
+		e = expr_alloc_one(E_NOT, rewrite_m(e->left.expr));
+		break;
+	case E_OR:
+	case E_AND:
+		e = expr_alloc_two(e->type,
+				   rewrite_m(e->left.expr),
+				   rewrite_m(e->right.expr));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case E_SYMBOL:
 		/* change 'm' into 'm' && MODULES */
@@ -193,6 +212,7 @@ struct property *menu_add_prompt(enum prop_type type, const char *prompt,
 		struct menu *menu = current_entry;
 
 		while ((menu = menu->parent) != NULL) {
+<<<<<<< HEAD
 			struct expr *dup_expr;
 
 			if (!menu->visibility)
@@ -208,6 +228,13 @@ struct property *menu_add_prompt(enum prop_type type, const char *prompt,
 
 			prop->visible.expr = expr_alloc_and(prop->visible.expr,
 							    dup_expr);
+=======
+
+			if (!menu->visibility)
+				continue;
+			prop->visible.expr = expr_alloc_and(prop->visible.expr,
+							    menu->visibility);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -323,7 +350,11 @@ static void _menu_finalize(struct menu *parent, bool inside_choice)
 			 */
 			basedep = rewrite_m(menu->dep);
 			basedep = expr_transform(basedep);
+<<<<<<< HEAD
 			basedep = expr_alloc_and(expr_copy(parent->dep), basedep);
+=======
+			basedep = expr_alloc_and(parent->dep, basedep);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			basedep = expr_eliminate_dups(basedep);
 			menu->dep = basedep;
 
@@ -367,7 +398,11 @@ static void _menu_finalize(struct menu *parent, bool inside_choice)
 				 */
 				dep = rewrite_m(prop->visible.expr);
 				dep = expr_transform(dep);
+<<<<<<< HEAD
 				dep = expr_alloc_and(expr_copy(basedep), dep);
+=======
+				dep = expr_alloc_and(basedep, dep);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				dep = expr_eliminate_dups(dep);
 				prop->visible.expr = dep;
 
@@ -378,11 +413,19 @@ static void _menu_finalize(struct menu *parent, bool inside_choice)
 				if (prop->type == P_SELECT) {
 					struct symbol *es = prop_get_symbol(prop);
 					es->rev_dep.expr = expr_alloc_or(es->rev_dep.expr,
+<<<<<<< HEAD
 							expr_alloc_and(expr_alloc_symbol(menu->sym), expr_copy(dep)));
 				} else if (prop->type == P_IMPLY) {
 					struct symbol *es = prop_get_symbol(prop);
 					es->implied.expr = expr_alloc_or(es->implied.expr,
 							expr_alloc_and(expr_alloc_symbol(menu->sym), expr_copy(dep)));
+=======
+							expr_alloc_and(expr_alloc_symbol(menu->sym), dep));
+				} else if (prop->type == P_IMPLY) {
+					struct symbol *es = prop_get_symbol(prop);
+					es->implied.expr = expr_alloc_or(es->implied.expr,
+							expr_alloc_and(expr_alloc_symbol(menu->sym), dep));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				}
 			}
 		}
@@ -442,6 +485,7 @@ static void _menu_finalize(struct menu *parent, bool inside_choice)
 			 */
 			dep = expr_trans_compare(dep, E_UNEQUAL, &symbol_no);
 			dep = expr_eliminate_dups(expr_transform(dep));
+<<<<<<< HEAD
 			dep2 = expr_copy(basedep);
 			expr_eliminate_eq(&dep, &dep2);
 			expr_free(dep);
@@ -452,12 +496,24 @@ static void _menu_finalize(struct menu *parent, bool inside_choice)
 			}
 			/* Superset, put in submenu */
 			expr_free(dep2);
+=======
+			dep2 = basedep;
+			expr_eliminate_eq(&dep, &dep2);
+			if (!expr_is_yes(dep2)) {
+				/* Not superset, quit */
+				break;
+			}
+			/* Superset, put in submenu */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		next:
 			_menu_finalize(menu, false);
 			menu->parent = parent;
 			last_menu = menu;
 		}
+<<<<<<< HEAD
 		expr_free(basedep);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (last_menu) {
 			parent->list = parent->next;
 			parent->next = last_menu->next;
@@ -547,6 +603,10 @@ bool menu_is_empty(struct menu *menu)
 
 bool menu_is_visible(struct menu *menu)
 {
+<<<<<<< HEAD
+=======
+	struct menu *child;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct symbol *sym;
 	tristate visible;
 
@@ -565,7 +625,21 @@ bool menu_is_visible(struct menu *menu)
 	} else
 		visible = menu->prompt->visible.tri = expr_calc_value(menu->prompt->visible.expr);
 
+<<<<<<< HEAD
 	return visible != no;
+=======
+	if (visible != no)
+		return true;
+
+	if (!sym || sym_get_tristate_value(menu->sym) == no)
+		return false;
+
+	for (child = menu->list; child; child = child->next)
+		if (menu_is_visible(child))
+			return true;
+
+	return false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 const char *menu_get_prompt(const struct menu *menu)

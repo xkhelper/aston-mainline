@@ -13,6 +13,10 @@ static int has_steal_clock;
 struct static_key paravirt_steal_enabled;
 struct static_key paravirt_steal_rq_enabled;
 static DEFINE_PER_CPU(struct kvm_steal_time, steal_time) __aligned(64);
+<<<<<<< HEAD
+=======
+DEFINE_STATIC_KEY_FALSE(virt_spin_lock_key);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static u64 native_steal_clock(int cpu)
 {
@@ -134,6 +138,14 @@ static irqreturn_t pv_ipi_interrupt(int irq, void *dev)
 		info->ipi_irqs[IPI_IRQ_WORK]++;
 	}
 
+<<<<<<< HEAD
+=======
+	if (action & SMP_CLEAR_VECTOR) {
+		complete_irq_moving();
+		info->ipi_irqs[IPI_CLEAR_VECTOR]++;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return IRQ_HANDLED;
 }
 
@@ -151,11 +163,21 @@ static void pv_init_ipi(void)
 }
 #endif
 
+<<<<<<< HEAD
 static bool kvm_para_available(void)
+=======
+bool kvm_para_available(void)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int config;
 	static int hypervisor_type;
 
+<<<<<<< HEAD
+=======
+	if (!cpu_has_hypervisor)
+		return false;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!hypervisor_type) {
 		config = read_cpucfg(CPUCFG_KVM_SIG);
 		if (!memcmp(&config, KVM_SIGNATURE, 4))
@@ -165,6 +187,7 @@ static bool kvm_para_available(void)
 	return hypervisor_type == HYPERVISOR_KVM;
 }
 
+<<<<<<< HEAD
 int __init pv_ipi_init(void)
 {
 	int feature;
@@ -176,6 +199,24 @@ int __init pv_ipi_init(void)
 
 	feature = read_cpucfg(CPUCFG_KVM_FEATURE);
 	if (!(feature & KVM_FEATURE_IPI))
+=======
+unsigned int kvm_arch_para_features(void)
+{
+	static unsigned int feature;
+
+	if (!kvm_para_available())
+		return 0;
+
+	if (!feature)
+		feature = read_cpucfg(CPUCFG_KVM_FEATURE);
+
+	return feature;
+}
+
+int __init pv_ipi_init(void)
+{
+	if (!kvm_para_has_feature(KVM_FEATURE_IPI))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 #ifdef CONFIG_SMP
@@ -206,7 +247,11 @@ static int pv_enable_steal_time(void)
 	}
 
 	addr |= KVM_STEAL_PHYS_VALID;
+<<<<<<< HEAD
 	kvm_hypercall2(KVM_HCALL_FUNC_NOTIFY, KVM_FEATURE_STEAL_TIME, addr);
+=======
+	kvm_hypercall2(KVM_HCALL_FUNC_NOTIFY, BIT(KVM_FEATURE_STEAL_TIME), addr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -214,7 +259,11 @@ static int pv_enable_steal_time(void)
 static void pv_disable_steal_time(void)
 {
 	if (has_steal_clock)
+<<<<<<< HEAD
 		kvm_hypercall2(KVM_HCALL_FUNC_NOTIFY, KVM_FEATURE_STEAL_TIME, 0);
+=======
+		kvm_hypercall2(KVM_HCALL_FUNC_NOTIFY, BIT(KVM_FEATURE_STEAL_TIME), 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #ifdef CONFIG_SMP
@@ -258,6 +307,7 @@ static struct notifier_block pv_reboot_nb = {
 
 int __init pv_time_init(void)
 {
+<<<<<<< HEAD
 	int r, feature;
 
 	if (!cpu_has_hypervisor)
@@ -267,6 +317,11 @@ int __init pv_time_init(void)
 
 	feature = read_cpucfg(CPUCFG_KVM_FEATURE);
 	if (!(feature & KVM_FEATURE_STEAL_TIME))
+=======
+	int r;
+
+	if (!kvm_para_has_feature(KVM_FEATURE_STEAL_TIME))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	has_steal_clock = 1;
@@ -300,3 +355,16 @@ int __init pv_time_init(void)
 
 	return 0;
 }
+<<<<<<< HEAD
+=======
+
+int __init pv_spinlock_init(void)
+{
+	if (!cpu_has_hypervisor)
+		return 0;
+
+	static_branch_enable(&virt_spin_lock_key);
+
+	return 0;
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

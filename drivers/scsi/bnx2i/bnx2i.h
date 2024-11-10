@@ -815,11 +815,14 @@ extern struct bnx2i_hba *get_adapter_list_head(void);
 struct bnx2i_conn *bnx2i_get_conn_from_id(struct bnx2i_hba *hba,
 					  u16 iscsi_cid);
 
+<<<<<<< HEAD
 int bnx2i_alloc_ep_pool(void);
 void bnx2i_release_ep_pool(void);
 struct bnx2i_endpoint *bnx2i_ep_ofld_list_next(struct bnx2i_hba *hba);
 struct bnx2i_endpoint *bnx2i_ep_destroy_list_next(struct bnx2i_hba *hba);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct bnx2i_hba *bnx2i_find_hba_for_cnic(struct cnic_dev *cnic);
 
 struct bnx2i_hba *bnx2i_alloc_hba(struct cnic_dev *cnic);
@@ -869,12 +872,15 @@ extern int bnx2i_arm_cq_event_coalescing(struct bnx2i_endpoint *ep, u8 action);
 
 extern int bnx2i_hw_ep_disconnect(struct bnx2i_endpoint *bnx2i_ep);
 
+<<<<<<< HEAD
 /* Debug related function prototypes */
 extern void bnx2i_print_pend_cmd_queue(struct bnx2i_conn *conn);
 extern void bnx2i_print_active_cmd_queue(struct bnx2i_conn *conn);
 extern void bnx2i_print_xmit_pdu_queue(struct bnx2i_conn *conn);
 extern void bnx2i_print_recv_state(struct bnx2i_conn *conn);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern int bnx2i_percpu_io_thread(void *arg);
 extern int bnx2i_process_scsi_cmd_resp(struct iscsi_session *session,
 				       struct bnx2i_conn *bnx2i_conn,

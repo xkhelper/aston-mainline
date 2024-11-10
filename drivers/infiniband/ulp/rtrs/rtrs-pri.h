@@ -69,6 +69,10 @@ struct rtrs_ib_dev;
 
 struct rtrs_rdma_dev_pd_ops {
 	int (*init)(struct rtrs_ib_dev *dev);
+<<<<<<< HEAD
+=======
+	void (*deinit)(struct rtrs_ib_dev *dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct rtrs_rdma_dev_pd {
@@ -84,6 +88,10 @@ struct rtrs_ib_dev {
 	struct kref		 ref;
 	struct list_head	 entry;
 	struct rtrs_rdma_dev_pd *pool;
+<<<<<<< HEAD
+=======
+	struct ib_event_handler	 event_handler;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct rtrs_con {

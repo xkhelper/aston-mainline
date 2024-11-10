@@ -87,8 +87,14 @@ static bool check_atom_bios(uint8_t *bios, size_t size)
  * part of the system bios.  On boot, the system bios puts a
  * copy of the igp rom at the start of vram if a discrete card is
  * present.
+<<<<<<< HEAD
  */
 static bool igp_read_bios_from_vram(struct amdgpu_device *adev)
+=======
+ * For SR-IOV, the vbios image is also put in VRAM in the VF.
+ */
+static bool amdgpu_read_bios_from_vram(struct amdgpu_device *adev)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	uint8_t __iomem *bios;
 	resource_size_t vram_base;
@@ -284,10 +290,13 @@ static bool amdgpu_atrm_get_bios(struct amdgpu_device *adev)
 	acpi_status status;
 	bool found = false;
 
+<<<<<<< HEAD
 	/* ATRM is for the discrete card only */
 	if (adev->flags & AMD_IS_APU)
 		return false;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* ATRM is for on-platform devices only */
 	if (dev_is_removable(&adev->pdev->dev))
 		return false;
@@ -343,11 +352,16 @@ static inline bool amdgpu_atrm_get_bios(struct amdgpu_device *adev)
 
 static bool amdgpu_read_disabled_bios(struct amdgpu_device *adev)
 {
+<<<<<<< HEAD
 	if (adev->flags & AMD_IS_APU)
 		return igp_read_bios_from_vram(adev);
 	else
 		return (!adev->asic_funcs || !adev->asic_funcs->read_disabled_bios) ?
 			false : amdgpu_asic_read_disabled_bios(adev);
+=======
+	return (!adev->asic_funcs || !adev->asic_funcs->read_disabled_bios) ?
+		false : amdgpu_asic_read_disabled_bios(adev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #ifdef CONFIG_ACPI
@@ -414,7 +428,40 @@ static inline bool amdgpu_acpi_vfct_bios(struct amdgpu_device *adev)
 }
 #endif
 
+<<<<<<< HEAD
 bool amdgpu_get_bios(struct amdgpu_device *adev)
+=======
+static bool amdgpu_get_bios_apu(struct amdgpu_device *adev)
+{
+	if (amdgpu_acpi_vfct_bios(adev)) {
+		dev_info(adev->dev, "Fetched VBIOS from VFCT\n");
+		goto success;
+	}
+
+	if (amdgpu_read_bios_from_vram(adev)) {
+		dev_info(adev->dev, "Fetched VBIOS from VRAM BAR\n");
+		goto success;
+	}
+
+	if (amdgpu_read_bios(adev)) {
+		dev_info(adev->dev, "Fetched VBIOS from ROM BAR\n");
+		goto success;
+	}
+
+	if (amdgpu_read_platform_bios(adev)) {
+		dev_info(adev->dev, "Fetched VBIOS from platform\n");
+		goto success;
+	}
+
+	dev_err(adev->dev, "Unable to locate a BIOS ROM\n");
+	return false;
+
+success:
+	return true;
+}
+
+static bool amdgpu_get_bios_dgpu(struct amdgpu_device *adev)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (amdgpu_atrm_get_bios(adev)) {
 		dev_info(adev->dev, "Fetched VBIOS from ATRM\n");
@@ -426,11 +473,24 @@ bool amdgpu_get_bios(struct amdgpu_device *adev)
 		goto success;
 	}
 
+<<<<<<< HEAD
 	if (igp_read_bios_from_vram(adev)) {
+=======
+	/* this is required for SR-IOV */
+	if (amdgpu_read_bios_from_vram(adev)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_info(adev->dev, "Fetched VBIOS from VRAM BAR\n");
 		goto success;
 	}
 
+<<<<<<< HEAD
+=======
+	if (amdgpu_read_platform_bios(adev)) {
+		dev_info(adev->dev, "Fetched VBIOS from platform\n");
+		goto success;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (amdgpu_read_bios(adev)) {
 		dev_info(adev->dev, "Fetched VBIOS from ROM BAR\n");
 		goto success;
@@ -446,19 +506,43 @@ bool amdgpu_get_bios(struct amdgpu_device *adev)
 		goto success;
 	}
 
+<<<<<<< HEAD
 	if (amdgpu_read_platform_bios(adev)) {
 		dev_info(adev->dev, "Fetched VBIOS from platform\n");
 		goto success;
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev_err(adev->dev, "Unable to locate a BIOS ROM\n");
 	return false;
 
 success:
+<<<<<<< HEAD
 	adev->is_atom_fw = adev->asic_type >= CHIP_VEGA10;
 	return true;
 }
 
+=======
+	return true;
+}
+
+bool amdgpu_get_bios(struct amdgpu_device *adev)
+{
+	bool found;
+
+	if (adev->flags & AMD_IS_APU)
+		found = amdgpu_get_bios_apu(adev);
+	else
+		found = amdgpu_get_bios_dgpu(adev);
+
+	if (found)
+		adev->is_atom_fw = adev->asic_type >= CHIP_VEGA10;
+
+	return found;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* helper function for soc15 and onwards to read bios from rom */
 bool amdgpu_soc15_read_bios_from_rom(struct amdgpu_device *adev,
 				     u8 *bios, u32 length_bytes)

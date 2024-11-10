@@ -24,7 +24,11 @@
 #include <asm/dwarf.h>
 #include <asm/unwinder.h>
 #include <asm/sections.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/stacktrace.h>
 
 /* Reserve enough memory for two stack frames */

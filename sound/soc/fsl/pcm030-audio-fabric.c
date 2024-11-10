@@ -124,7 +124,11 @@ MODULE_DEVICE_TABLE(of, pcm030_audio_match);
 
 static struct platform_driver pcm030_fabric_driver = {
 	.probe		= pcm030_fabric_probe,
+<<<<<<< HEAD
 	.remove_new	= pcm030_fabric_remove,
+=======
+	.remove		= pcm030_fabric_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver		= {
 		.name	= DRV_NAME,
 		.of_match_table    = pcm030_audio_match,

@@ -424,7 +424,11 @@ int amdgpu_vmid_grab(struct amdgpu_vm *vm, struct amdgpu_ring *ring,
 	if (r || !idle)
 		goto error;
 
+<<<<<<< HEAD
 	if (amdgpu_vmid_uses_reserved(vm, vmhub)) {
+=======
+	if (amdgpu_vmid_uses_reserved(adev, vm, vmhub)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		r = amdgpu_vmid_grab_reserved(vm, ring, job, &id, fence);
 		if (r || !id)
 			goto error;
@@ -476,15 +480,29 @@ error:
 
 /*
  * amdgpu_vmid_uses_reserved - check if a VM will use a reserved VMID
+<<<<<<< HEAD
+=======
+ * @adev: amdgpu_device pointer
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @vm: the VM to check
  * @vmhub: the VMHUB which will be used
  *
  * Returns: True if the VM will use a reserved VMID.
  */
+<<<<<<< HEAD
 bool amdgpu_vmid_uses_reserved(struct amdgpu_vm *vm, unsigned int vmhub)
 {
 	return vm->reserved_vmid[vmhub] ||
 		(enforce_isolation && (vmhub == AMDGPU_GFXHUB(0)));
+=======
+bool amdgpu_vmid_uses_reserved(struct amdgpu_device *adev,
+			       struct amdgpu_vm *vm, unsigned int vmhub)
+{
+	return vm->reserved_vmid[vmhub] ||
+		(adev->enforce_isolation[(vm->root.bo->xcp_id != AMDGPU_XCP_NO_PARTITION) ?
+					 vm->root.bo->xcp_id : 0] &&
+		 AMDGPU_IS_GFXHUB(vmhub));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int amdgpu_vmid_alloc_reserved(struct amdgpu_device *adev,
@@ -600,9 +618,16 @@ void amdgpu_vmid_mgr_init(struct amdgpu_device *adev)
 		}
 	}
 	/* alloc a default reserved vmid to enforce isolation */
+<<<<<<< HEAD
 	if (enforce_isolation)
 		amdgpu_vmid_alloc_reserved(adev, AMDGPU_GFXHUB(0));
 
+=======
+	for (i = 0; i < (adev->xcp_mgr ? adev->xcp_mgr->num_xcps : 1); i++) {
+		if (adev->enforce_isolation[i])
+			amdgpu_vmid_alloc_reserved(adev, AMDGPU_GFXHUB(i));
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**

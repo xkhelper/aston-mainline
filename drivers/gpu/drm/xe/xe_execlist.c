@@ -123,8 +123,13 @@ static void __xe_execlist_port_idle(struct xe_execlist_port *port)
 	if (!port->running_exl)
 		return;
 
+<<<<<<< HEAD
 	xe_lrc_write_ring(port->hwe->kernel_lrc, noop, sizeof(noop));
 	__start_lrc(port->hwe, port->hwe->kernel_lrc, 0);
+=======
+	xe_lrc_write_ring(port->lrc, noop, sizeof(noop));
+	__start_lrc(port->hwe, port->lrc, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	port->running_exl = NULL;
 }
 
@@ -254,6 +259,7 @@ struct xe_execlist_port *xe_execlist_port_create(struct xe_device *xe,
 {
 	struct drm_device *drm = &xe->drm;
 	struct xe_execlist_port *port;
+<<<<<<< HEAD
 	int i;
 
 	port = drmm_kzalloc(drm, sizeof(*port), GFP_KERNEL);
@@ -262,6 +268,24 @@ struct xe_execlist_port *xe_execlist_port_create(struct xe_device *xe,
 
 	port->hwe = hwe;
 
+=======
+	int i, err;
+
+	port = drmm_kzalloc(drm, sizeof(*port), GFP_KERNEL);
+	if (!port) {
+		err = -ENOMEM;
+		goto err;
+	}
+
+	port->hwe = hwe;
+
+	port->lrc = xe_lrc_create(hwe, NULL, SZ_16K);
+	if (IS_ERR(port->lrc)) {
+		err = PTR_ERR(port->lrc);
+		goto err;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_lock_init(&port->lock);
 	for (i = 0; i < ARRAY_SIZE(port->active); i++)
 		INIT_LIST_HEAD(&port->active[i]);
@@ -277,6 +301,12 @@ struct xe_execlist_port *xe_execlist_port_create(struct xe_device *xe,
 	add_timer(&port->irq_fail);
 
 	return port;
+<<<<<<< HEAD
+=======
+
+err:
+	return ERR_PTR(err);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void xe_execlist_port_destroy(struct xe_execlist_port *port)
@@ -287,6 +317,11 @@ void xe_execlist_port_destroy(struct xe_execlist_port *port)
 	spin_lock_irq(&gt_to_xe(port->hwe->gt)->irq.lock);
 	port->hwe->irq_handler = NULL;
 	spin_unlock_irq(&gt_to_xe(port->hwe->gt)->irq.lock);
+<<<<<<< HEAD
+=======
+
+	xe_lrc_put(port->lrc);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct dma_fence *
@@ -422,10 +457,18 @@ static int execlist_exec_queue_suspend(struct xe_exec_queue *q)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void execlist_exec_queue_suspend_wait(struct xe_exec_queue *q)
 
 {
 	/* NIY */
+=======
+static int execlist_exec_queue_suspend_wait(struct xe_exec_queue *q)
+
+{
+	/* NIY */
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void execlist_exec_queue_resume(struct xe_exec_queue *q)

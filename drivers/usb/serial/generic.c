@@ -63,7 +63,10 @@ static int usb_serial_generic_calc_num_ports(struct usb_serial *serial,
 
 static struct usb_serial_driver usb_serial_generic_device = {
 	.driver = {
+<<<<<<< HEAD
 		.owner =	THIS_MODULE,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name =		"generic",
 	},
 	.id_table =		generic_device_ids,

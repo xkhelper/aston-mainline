@@ -2403,6 +2403,10 @@ static void pxafb_remove(struct platform_device *dev)
 	info = &fbi->fb;
 
 	pxafb_overlay_exit(fbi);
+<<<<<<< HEAD
+=======
+	cancel_work_sync(&fbi->task);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unregister_framebuffer(info);
 
 	pxafb_disable_controller(fbi);
@@ -2426,7 +2430,11 @@ MODULE_DEVICE_TABLE(of, pxafb_of_dev_id);
 
 static struct platform_driver pxafb_driver = {
 	.probe		= pxafb_probe,
+<<<<<<< HEAD
 	.remove_new 	= pxafb_remove,
+=======
+	.remove		= pxafb_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver		= {
 		.name	= "pxa2xx-fb",
 		.of_match_table = pxafb_of_dev_id,

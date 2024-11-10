@@ -558,6 +558,7 @@ static void acpi_thermal_zone_device_critical(struct thermal_zone_device *therma
 	thermal_zone_device_critical(thermal);
 }
 
+<<<<<<< HEAD
 struct acpi_thermal_bind_data {
 	struct thermal_zone_device *thermal;
 	struct thermal_cooling_device *cdev;
@@ -570,11 +571,20 @@ static int bind_unbind_cdev_cb(struct thermal_trip *trip, void *arg)
 	struct acpi_thermal_bind_data *bd = arg;
 	struct thermal_zone_device *thermal = bd->thermal;
 	struct thermal_cooling_device *cdev = bd->cdev;
+=======
+static bool acpi_thermal_should_bind_cdev(struct thermal_zone_device *thermal,
+					  const struct thermal_trip *trip,
+					  struct thermal_cooling_device *cdev,
+					  struct cooling_spec *c)
+{
+	struct acpi_thermal_trip *acpi_trip = trip->priv;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct acpi_device *cdev_adev = cdev->devdata;
 	int i;
 
 	/* Skip critical and hot trips. */
 	if (!acpi_trip)
+<<<<<<< HEAD
 		return 0;
 
 	for (i = 0; i < acpi_trip->devices.count; i++) {
@@ -629,6 +639,22 @@ acpi_thermal_unbind_cooling_device(struct thermal_zone_device *thermal,
 static const struct thermal_zone_device_ops acpi_thermal_zone_ops = {
 	.bind = acpi_thermal_bind_cooling_device,
 	.unbind	= acpi_thermal_unbind_cooling_device,
+=======
+		return false;
+
+	for (i = 0; i < acpi_trip->devices.count; i++) {
+		acpi_handle handle = acpi_trip->devices.handles[i];
+
+		if (acpi_fetch_acpi_dev(handle) == cdev_adev)
+			return true;
+	}
+
+	return false;
+}
+
+static const struct thermal_zone_device_ops acpi_thermal_zone_ops = {
+	.should_bind = acpi_thermal_should_bind_cdev,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.get_temp = thermal_get_temp,
 	.get_trend = thermal_get_trend,
 	.hot = acpi_thermal_zone_device_hot,

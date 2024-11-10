@@ -28,9 +28,12 @@
 #include <linux/platform_device.h>
 #include <linux/regulator/consumer.h>
 
+<<<<<<< HEAD
 #include <asm/smp_plat.h>
 #include <asm/cpu.h>
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* OPP tolerance in percentage */
 #define	OPP_TOLERANCE	4
 

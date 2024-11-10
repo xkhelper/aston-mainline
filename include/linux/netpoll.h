@@ -64,6 +64,10 @@ int netpoll_setup(struct netpoll *np);
 void __netpoll_cleanup(struct netpoll *np);
 void __netpoll_free(struct netpoll *np);
 void netpoll_cleanup(struct netpoll *np);
+<<<<<<< HEAD
+=======
+void do_netpoll_cleanup(struct netpoll *np);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 netdev_tx_t netpoll_send_skb(struct netpoll *np, struct sk_buff *skb);
 
 #ifdef CONFIG_NETPOLL

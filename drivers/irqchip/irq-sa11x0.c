@@ -127,8 +127,12 @@ static int __init sa1100irq_init_devicefs(void)
 
 device_initcall(sa1100irq_init_devicefs);
 
+<<<<<<< HEAD
 static asmlinkage void __exception_irq_entry
 sa1100_handle_irq(struct pt_regs *regs)
+=======
+static void __exception_irq_entry sa1100_handle_irq(struct pt_regs *regs)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	uint32_t icip, icmr, mask;
 

@@ -10,7 +10,11 @@
 #define TELEM_MAX_EVENTS_SRAM		28
 #define TELEM_MAX_OS_ALLOCATED_EVENTS	20
 
+<<<<<<< HEAD
 #include <asm/intel_scu_ipc.h>
+=======
+#include <linux/platform_data/x86/intel_scu_ipc.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 enum telemetry_unit {
 	TELEM_PSS = 0,

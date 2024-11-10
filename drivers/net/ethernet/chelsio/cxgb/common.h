@@ -329,8 +329,11 @@ irqreturn_t t1_slow_intr_handler(adapter_t *adapter);
 
 int t1_link_start(struct cphy *phy, struct cmac *mac, struct link_config *lc);
 const struct board_info *t1_get_board_info(unsigned int board_id);
+<<<<<<< HEAD
 const struct board_info *t1_get_board_info_from_ids(unsigned int devid,
 						    unsigned short ssid);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int t1_seeprom_read(adapter_t *adapter, u32 addr, __le32 *data);
 int t1_get_board_rev(adapter_t *adapter, const struct board_info *bi,
 		     struct adapter_params *p);

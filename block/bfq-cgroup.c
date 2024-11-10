@@ -679,12 +679,16 @@ void bfq_bfqq_move(struct bfq_data *bfqd, struct bfq_queue *bfqq,
 		bfq_put_idle_entity(bfq_entity_service_tree(entity), entity);
 	bfqg_and_blkg_put(old_parent);
 
+<<<<<<< HEAD
 	if (entity->parent &&
 	    entity->parent->last_bfqq_created == bfqq)
 		entity->parent->last_bfqq_created = NULL;
 	else if (bfqd->last_bfqq_created == bfqq)
 		bfqd->last_bfqq_created = NULL;
 
+=======
+	bfq_reassign_last_bfqq(bfqq, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	entity->parent = bfqg->my_entity;
 	entity->sched_data = &bfqg->sched_data;
 	/* pin down bfqg and its associated blkg  */
@@ -741,7 +745,10 @@ static void bfq_sync_bfqq_move(struct bfq_data *bfqd,
 		 */
 		bfq_put_cooperator(sync_bfqq);
 		bic_set_bfqq(bic, NULL, true, act_idx);
+<<<<<<< HEAD
 		bfq_release_process_ref(bfqd, sync_bfqq);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 

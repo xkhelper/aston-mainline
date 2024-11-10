@@ -29,7 +29,11 @@
 int
 head507d_procamp(struct nv50_head *head, struct nv50_head_atom *asyh)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = nv50_disp(head->base.base.dev)->core->chan.push;
+=======
+	struct nvif_push *push = &nv50_disp(head->base.base.dev)->core->chan.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const int i = head->base.index;
 	int ret;
 
@@ -48,7 +52,11 @@ head507d_procamp(struct nv50_head *head, struct nv50_head_atom *asyh)
 int
 head507d_dither(struct nv50_head *head, struct nv50_head_atom *asyh)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = nv50_disp(head->base.base.dev)->core->chan.push;
+=======
+	struct nvif_push *push = &nv50_disp(head->base.base.dev)->core->chan.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const int i = head->base.index;
 	int ret;
 
@@ -66,7 +74,11 @@ head507d_dither(struct nv50_head *head, struct nv50_head_atom *asyh)
 int
 head507d_ovly(struct nv50_head *head, struct nv50_head_atom *asyh)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = nv50_disp(head->base.base.dev)->core->chan.push;
+=======
+	struct nvif_push *push = &nv50_disp(head->base.base.dev)->core->chan.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const int i = head->base.index;
 	u32 bounds = 0;
 	int ret;
@@ -94,7 +106,11 @@ head507d_ovly(struct nv50_head *head, struct nv50_head_atom *asyh)
 int
 head507d_base(struct nv50_head *head, struct nv50_head_atom *asyh)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = nv50_disp(head->base.base.dev)->core->chan.push;
+=======
+	struct nvif_push *push = &nv50_disp(head->base.base.dev)->core->chan.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const int i = head->base.index;
 	u32 bounds = 0;
 	int ret;
@@ -122,7 +138,11 @@ head507d_base(struct nv50_head *head, struct nv50_head_atom *asyh)
 static int
 head507d_curs_clr(struct nv50_head *head)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = nv50_disp(head->base.base.dev)->core->chan.push;
+=======
+	struct nvif_push *push = &nv50_disp(head->base.base.dev)->core->chan.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const int i = head->base.index;
 	int ret;
 
@@ -139,7 +159,11 @@ head507d_curs_clr(struct nv50_head *head)
 static int
 head507d_curs_set(struct nv50_head *head, struct nv50_head_atom *asyh)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = nv50_disp(head->base.base.dev)->core->chan.push;
+=======
+	struct nvif_push *push = &nv50_disp(head->base.base.dev)->core->chan.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const int i = head->base.index;
 	int ret;
 
@@ -188,7 +212,11 @@ head507d_curs_layout(struct nv50_head *head, struct nv50_wndw_atom *asyw,
 int
 head507d_core_clr(struct nv50_head *head)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = nv50_disp(head->base.base.dev)->core->chan.push;
+=======
+	struct nvif_push *push = &nv50_disp(head->base.base.dev)->core->chan.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const int i = head->base.index;
 	int ret;
 
@@ -202,7 +230,11 @@ head507d_core_clr(struct nv50_head *head)
 static int
 head507d_core_set(struct nv50_head *head, struct nv50_head_atom *asyh)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = nv50_disp(head->base.base.dev)->core->chan.push;
+=======
+	struct nvif_push *push = &nv50_disp(head->base.base.dev)->core->chan.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const int i = head->base.index;
 	int ret;
 
@@ -278,7 +310,11 @@ head507d_core_calc(struct nv50_head *head, struct nv50_head_atom *asyh)
 static int
 head507d_olut_clr(struct nv50_head *head)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = nv50_disp(head->base.base.dev)->core->chan.push;
+=======
+	struct nvif_push *push = &nv50_disp(head->base.base.dev)->core->chan.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const int i = head->base.index;
 	int ret;
 
@@ -293,7 +329,11 @@ head507d_olut_clr(struct nv50_head *head)
 static int
 head507d_olut_set(struct nv50_head *head, struct nv50_head_atom *asyh)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = nv50_disp(head->base.base.dev)->core->chan.push;
+=======
+	struct nvif_push *push = &nv50_disp(head->base.base.dev)->core->chan.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const int i = head->base.index;
 	int ret;
 
@@ -345,7 +385,11 @@ head507d_olut(struct nv50_head *head, struct nv50_head_atom *asyh, int size)
 int
 head507d_mode(struct nv50_head *head, struct nv50_head_atom *asyh)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = nv50_disp(head->base.base.dev)->core->chan.push;
+=======
+	struct nvif_push *push = &nv50_disp(head->base.base.dev)->core->chan.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct nv50_head_mode *m = &asyh->mode;
 	const int i = head->base.index;
 	int ret;
@@ -400,7 +444,11 @@ head507d_mode(struct nv50_head *head, struct nv50_head_atom *asyh)
 int
 head507d_view(struct nv50_head *head, struct nv50_head_atom *asyh)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = nv50_disp(head->base.base.dev)->core->chan.push;
+=======
+	struct nvif_push *push = &nv50_disp(head->base.base.dev)->core->chan.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const int i = head->base.index;
 	int ret;
 

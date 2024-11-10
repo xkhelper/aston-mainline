@@ -86,6 +86,10 @@ enum hist_column {
 	HISTC_TYPE,
 	HISTC_TYPE_OFFSET,
 	HISTC_SYMBOL_OFFSET,
+<<<<<<< HEAD
+=======
+	HISTC_TYPE_CACHELINE,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	HISTC_NR_COLS, /* Last entry */
 };
 
@@ -371,6 +375,10 @@ void hists__inc_stats(struct hists *hists, struct hist_entry *h);
 void hists__inc_nr_events(struct hists *hists);
 void hists__inc_nr_samples(struct hists *hists, bool filtered);
 void hists__inc_nr_lost_samples(struct hists *hists, u32 lost);
+<<<<<<< HEAD
+=======
+void hists__inc_nr_dropped_samples(struct hists *hists, u32 lost);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 size_t hists__fprintf(struct hists *hists, bool show_header, int max_rows,
 		      int max_cols, float min_pcnt, FILE *fp,
@@ -742,7 +750,11 @@ unsigned int hists__overhead_width(struct hists *hists);
 
 void hist__account_cycles(struct branch_stack *bs, struct addr_location *al,
 			  struct perf_sample *sample, bool nonany_branch_mode,
+<<<<<<< HEAD
 			  u64 *total_cycles);
+=======
+			  u64 *total_cycles, struct evsel *evsel);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct option;
 int parse_filter_percentage(const struct option *opt, const char *arg, int unset);

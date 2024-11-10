@@ -181,7 +181,11 @@ Bridge Operations
 Bridge Connector Helper
 -----------------------
 
+<<<<<<< HEAD
 .. kernel-doc:: drivers/gpu/drm/drm_bridge_connector.c
+=======
+.. kernel-doc:: drivers/gpu/drm/display/drm_bridge_connector.c
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
    :doc: overview
 
 
@@ -204,7 +208,11 @@ MIPI-DSI bridge operation
 Bridge Connector Helper Reference
 ---------------------------------
 
+<<<<<<< HEAD
 .. kernel-doc:: drivers/gpu/drm/drm_bridge_connector.c
+=======
+.. kernel-doc:: drivers/gpu/drm/display/drm_bridge_connector.c
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
    :export:
 
 Panel-Bridge Helper Reference

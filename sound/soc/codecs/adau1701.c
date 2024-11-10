@@ -21,7 +21,11 @@
 #include <sound/pcm_params.h>
 #include <sound/soc.h>
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "sigmadsp.h"
 #include "adau1701.h"

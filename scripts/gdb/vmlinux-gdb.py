@@ -49,3 +49,7 @@ else:
     import linux.page_owner
     import linux.slab
     import linux.vmalloc
+<<<<<<< HEAD
+=======
+    import linux.kasan
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -161,8 +161,12 @@ static long change_pte_range(struct mmu_gather *tlb,
 				if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_NORMAL) &&
 				    toptier)
 					continue;
+<<<<<<< HEAD
 				if (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING &&
 				    !toptier)
+=======
+				if (folio_use_access_time(folio))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					folio_xchg_access_time(folio,
 						jiffies_to_msecs(jiffies));
 			}
@@ -303,8 +307,14 @@ pgtable_split_needed(struct vm_area_struct *vma, unsigned long cp_flags)
 {
 	/*
 	 * pte markers only resides in pte level, if we need pte markers,
+<<<<<<< HEAD
 	 * we need to split.  We cannot wr-protect shmem thp because file
 	 * thp is handled differently when split by erasing the pmd so far.
+=======
+	 * we need to split.  For example, we cannot wr-protect a file thp
+	 * (e.g. 2M shmem) because file thp is handled differently when
+	 * split by erasing the pmd so far.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	return (cp_flags & MM_CP_UFFD_WP) && !vma_is_anonymous(vma);
 }
@@ -364,9 +374,12 @@ static inline long change_pmd_range(struct mmu_gather *tlb,
 	unsigned long next;
 	long pages = 0;
 	unsigned long nr_huge_updates = 0;
+<<<<<<< HEAD
 	struct mmu_notifier_range range;
 
 	range.start = 0;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pmd = pmd_offset(pud, addr);
 	do {
@@ -384,6 +397,7 @@ again:
 		if (pmd_none(*pmd))
 			goto next;
 
+<<<<<<< HEAD
 		/* invoke the mmu notifier if the pmd is populated */
 		if (!range.start) {
 			mmu_notifier_range_init(&range,
@@ -392,6 +406,8 @@ again:
 			mmu_notifier_invalidate_range_start(&range);
 		}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		_pmd = pmdp_get_lockless(pmd);
 		if (is_swap_pmd(_pmd) || pmd_trans_huge(_pmd) || pmd_devmap(_pmd)) {
 			if ((next - addr != HPAGE_PMD_SIZE) ||
@@ -432,9 +448,12 @@ next:
 		cond_resched();
 	} while (pmd++, addr = next, addr != end);
 
+<<<<<<< HEAD
 	if (range.start)
 		mmu_notifier_invalidate_range_end(&range);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (nr_huge_updates)
 		count_vm_numa_events(NUMA_HUGE_PTE_UPDATES, nr_huge_updates);
 	return pages;
@@ -444,6 +463,7 @@ static inline long change_pud_range(struct mmu_gather *tlb,
 		struct vm_area_struct *vma, p4d_t *p4d, unsigned long addr,
 		unsigned long end, pgprot_t newprot, unsigned long cp_flags)
 {
+<<<<<<< HEAD
 	pud_t *pud;
 	unsigned long next;
 	long pages = 0, ret;
@@ -459,6 +479,59 @@ static inline long change_pud_range(struct mmu_gather *tlb,
 		pages += change_pmd_range(tlb, vma, pud, addr, next, newprot,
 					  cp_flags);
 	} while (pud++, addr = next, addr != end);
+=======
+	struct mmu_notifier_range range;
+	pud_t *pudp, pud;
+	unsigned long next;
+	long pages = 0, ret;
+
+	range.start = 0;
+
+	pudp = pud_offset(p4d, addr);
+	do {
+again:
+		next = pud_addr_end(addr, end);
+		ret = change_prepare(vma, pudp, pmd, addr, cp_flags);
+		if (ret) {
+			pages = ret;
+			break;
+		}
+
+		pud = READ_ONCE(*pudp);
+		if (pud_none(pud))
+			continue;
+
+		if (!range.start) {
+			mmu_notifier_range_init(&range,
+						MMU_NOTIFY_PROTECTION_VMA, 0,
+						vma->vm_mm, addr, end);
+			mmu_notifier_invalidate_range_start(&range);
+		}
+
+		if (pud_leaf(pud)) {
+			if ((next - addr != PUD_SIZE) ||
+			    pgtable_split_needed(vma, cp_flags)) {
+				__split_huge_pud(vma, pudp, addr);
+				goto again;
+			} else {
+				ret = change_huge_pud(tlb, vma, pudp,
+						      addr, newprot, cp_flags);
+				if (ret == 0)
+					goto again;
+				/* huge pud was handled */
+				if (ret == HPAGE_PUD_NR)
+					pages += HPAGE_PUD_NR;
+				continue;
+			}
+		}
+
+		pages += change_pmd_range(tlb, vma, pudp, addr, next, newprot,
+					  cp_flags);
+	} while (pudp++, addr = next, addr != end);
+
+	if (range.start)
+		mmu_notifier_invalidate_range_end(&range);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return pages;
 }
@@ -589,6 +662,12 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
 	unsigned long charged = 0;
 	int error;
 
+<<<<<<< HEAD
+=======
+	if (!can_modify_vma(vma))
+		return -EPERM;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (newflags == oldflags) {
 		*pprev = vma;
 		return 0;
@@ -747,6 +826,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
 		}
 	}
 
+<<<<<<< HEAD
 	/*
 	 * checking if memory is sealed.
 	 * can_modify_mm assumes we have acquired the lock on MM.
@@ -756,6 +836,8 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
 		goto out;
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	prev = vma_prev(&vmi);
 	if (start > vma->vm_start)
 		prev = vma;
@@ -794,7 +876,11 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
 			break;
 		}
 
+<<<<<<< HEAD
 		if (map_deny_write_exec(vma, newflags)) {
+=======
+		if (map_deny_write_exec(vma->vm_flags, newflags)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			error = -EACCES;
 			break;
 		}

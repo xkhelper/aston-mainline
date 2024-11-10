@@ -33,6 +33,10 @@
 #include <net/udp.h>
 #include <net/tc_act/tc_gact.h>
 #include <net/tc_act/tc_mirred.h>
+<<<<<<< HEAD
+=======
+#include <net/tc_act/tc_skbedit.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "iavf_type.h"
 #include <linux/avf/virtchnl.h>
@@ -393,6 +397,11 @@ struct iavf_adapter {
 			     VIRTCHNL_VF_OFFLOAD_VLAN_V2)
 #define CRC_OFFLOAD_ALLOWED(_a) ((_a)->vf_res->vf_cap_flags & \
 				 VIRTCHNL_VF_OFFLOAD_CRC)
+<<<<<<< HEAD
+=======
+#define TC_U32_SUPPORT(_a) ((_a)->vf_res->vf_cap_flags & \
+			    VIRTCHNL_VF_OFFLOAD_TC_U32)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define VLAN_V2_FILTERING_ALLOWED(_a) \
 	(VLAN_V2_ALLOWED((_a)) && \
 	 ((_a)->vlan_v2_caps.filtering.filtering_support.outer || \
@@ -437,6 +446,10 @@ struct iavf_adapter {
 
 #define IAVF_MAX_FDIR_FILTERS 128	/* max allowed Flow Director filters */
 	u16 fdir_active_fltr;
+<<<<<<< HEAD
+=======
+	u16 raw_fdir_active_fltr;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct list_head fdir_list_head;
 	spinlock_t fdir_fltr_lock;	/* protect the Flow Director filter list */
 
@@ -444,6 +457,35 @@ struct iavf_adapter {
 	spinlock_t adv_rss_lock;	/* protect the RSS management list */
 };
 
+<<<<<<< HEAD
+=======
+/* Must be called with fdir_fltr_lock lock held */
+static inline bool iavf_fdir_max_reached(struct iavf_adapter *adapter)
+{
+	return adapter->fdir_active_fltr + adapter->raw_fdir_active_fltr >=
+			IAVF_MAX_FDIR_FILTERS;
+}
+
+static inline void
+iavf_inc_fdir_active_fltr(struct iavf_adapter *adapter,
+			  struct iavf_fdir_fltr *fltr)
+{
+	if (iavf_is_raw_fdir(fltr))
+		adapter->raw_fdir_active_fltr++;
+	else
+		adapter->fdir_active_fltr++;
+}
+
+static inline void
+iavf_dec_fdir_active_fltr(struct iavf_adapter *adapter,
+			  struct iavf_fdir_fltr *fltr)
+{
+	if (iavf_is_raw_fdir(fltr))
+		adapter->raw_fdir_active_fltr--;
+	else
+		adapter->fdir_active_fltr--;
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Ethtool Private Flags */
 

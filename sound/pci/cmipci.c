@@ -1570,6 +1570,7 @@ static const struct snd_pcm_hardware snd_cmipci_capture_spdif =
 	.fifo_size =		0,
 };
 
+<<<<<<< HEAD
 static const unsigned int rate_constraints[] = { 5512, 8000, 11025, 16000, 22050,
 			32000, 44100, 48000, 88200, 96000, 128000 };
 static const struct snd_pcm_hw_constraint_list hw_constraints_rates = {
@@ -1578,6 +1579,8 @@ static const struct snd_pcm_hw_constraint_list hw_constraints_rates = {
 		.mask = 0,
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * check device open/close
  */
@@ -1649,11 +1652,17 @@ static int snd_cmipci_playback_open(struct snd_pcm_substream *substream)
 				     SNDRV_PCM_RATE_96000;
 		runtime->hw.rate_max = 96000;
 	} else if (cm->chip_version == 55) {
+<<<<<<< HEAD
 		err = snd_pcm_hw_constraint_list(runtime, 0,
 			SNDRV_PCM_HW_PARAM_RATE, &hw_constraints_rates);
 		if (err < 0)
 			return err;
 		runtime->hw.rates |= SNDRV_PCM_RATE_KNOT;
+=======
+		runtime->hw.rates |= SNDRV_PCM_RATE_88200 |
+				     SNDRV_PCM_RATE_96000 |
+				     SNDRV_PCM_RATE_128000;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		runtime->hw.rate_max = 128000;
 	}
 	snd_pcm_hw_constraint_minmax(runtime, SNDRV_PCM_HW_PARAM_BUFFER_SIZE, 0, 0x10000);
@@ -1675,11 +1684,17 @@ static int snd_cmipci_capture_open(struct snd_pcm_substream *substream)
 		runtime->hw.rate_min = 41000;
 		runtime->hw.rates = SNDRV_PCM_RATE_44100 | SNDRV_PCM_RATE_48000;
 	} else if (cm->chip_version == 55) {
+<<<<<<< HEAD
 		err = snd_pcm_hw_constraint_list(runtime, 0,
 			SNDRV_PCM_HW_PARAM_RATE, &hw_constraints_rates);
 		if (err < 0)
 			return err;
 		runtime->hw.rates |= SNDRV_PCM_RATE_KNOT;
+=======
+		runtime->hw.rates |= SNDRV_PCM_RATE_88200 |
+				     SNDRV_PCM_RATE_96000 |
+				     SNDRV_PCM_RATE_128000;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		runtime->hw.rate_max = 128000;
 	}
 	snd_pcm_hw_constraint_minmax(runtime, SNDRV_PCM_HW_PARAM_BUFFER_SIZE, 0, 0x10000);
@@ -1715,11 +1730,17 @@ static int snd_cmipci_playback2_open(struct snd_pcm_substream *substream)
 				     SNDRV_PCM_RATE_96000;
 		runtime->hw.rate_max = 96000;
 	} else if (cm->chip_version == 55) {
+<<<<<<< HEAD
 		err = snd_pcm_hw_constraint_list(runtime, 0,
 			SNDRV_PCM_HW_PARAM_RATE, &hw_constraints_rates);
 		if (err < 0)
 			return err;
 		runtime->hw.rates |= SNDRV_PCM_RATE_KNOT;
+=======
+		runtime->hw.rates |= SNDRV_PCM_RATE_88200 |
+				     SNDRV_PCM_RATE_96000 |
+				     SNDRV_PCM_RATE_128000;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		runtime->hw.rate_max = 128000;
 	}
 	snd_pcm_hw_constraint_minmax(runtime, SNDRV_PCM_HW_PARAM_BUFFER_SIZE, 0, 0x10000);

@@ -98,6 +98,7 @@ static int _rsa_dec_crt(const struct rsa_mpi_key *key, MPI m_or_m1_or_h, MPI c)
 		goto err_free_mpi;
 
 	/* (2iii) h = (m_1 - m_2) * qInv mod p */
+<<<<<<< HEAD
 	mpi_sub(m12_or_qh, m_or_m1_or_h, m2);
 	mpi_mulm(m_or_m1_or_h, m12_or_qh, key->qinv, key->p);
 
@@ -106,6 +107,15 @@ static int _rsa_dec_crt(const struct rsa_mpi_key *key, MPI m_or_m1_or_h, MPI c)
 	mpi_addm(m_or_m1_or_h, m2, m12_or_qh, key->n);
 
 	ret = 0;
+=======
+	ret = mpi_sub(m12_or_qh, m_or_m1_or_h, m2) ?:
+	      mpi_mulm(m_or_m1_or_h, m12_or_qh, key->qinv, key->p);
+
+	/* (2iv) m = m_2 + q * h */
+	ret = ret ?:
+	      mpi_mul(m12_or_qh, key->q, m_or_m1_or_h) ?:
+	      mpi_addm(m_or_m1_or_h, m2, m12_or_qh, key->n);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 err_free_mpi:
 	mpi_free(m12_or_qh);
@@ -236,6 +246,10 @@ static int rsa_check_key_length(unsigned int len)
 static int rsa_check_exponent_fips(MPI e)
 {
 	MPI e_max = NULL;
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* check if odd */
 	if (!mpi_test_bit(e, 0)) {
@@ -250,7 +264,16 @@ static int rsa_check_exponent_fips(MPI e)
 	e_max = mpi_alloc(0);
 	if (!e_max)
 		return -ENOMEM;
+<<<<<<< HEAD
 	mpi_set_bit(e_max, 256);
+=======
+
+	err = mpi_set_bit(e_max, 256);
+	if (err) {
+		mpi_free(e_max);
+		return err;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (mpi_cmp(e, e_max) >= 0) {
 		mpi_free(e_max);

@@ -27,7 +27,10 @@
 #include <linux/timer.h>
 #include <linux/cper.h>
 #include <linux/cleanup.h>
+<<<<<<< HEAD
 #include <linux/cxl-event.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/platform_device.h>
 #include <linux/mutex.h>
 #include <linux/ratelimit.h>
@@ -50,6 +53,10 @@
 #include <acpi/apei.h>
 #include <asm/fixmap.h>
 #include <asm/tlbflush.h>
+<<<<<<< HEAD
+=======
+#include <cxl/event.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <ras/ras_event.h>
 
 #include "apei-internal.h"

@@ -18,8 +18,14 @@
 #include <linux/kgdb.h>
 #include <asm/entry.h>
 #include <asm/setup.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
 #include <asm/kprobes.h>
+=======
+#include <linux/unaligned.h>
+#include <asm/kprobes.h>
+#include "unaligned.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void die(const char *str, struct pt_regs *regs, unsigned long address)
 {

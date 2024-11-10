@@ -100,11 +100,14 @@ static irqreturn_t imx_snvs_pwrkey_interrupt(int irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 static void imx_snvs_pwrkey_disable_clk(void *data)
 {
 	clk_disable_unprepare(data);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void imx_snvs_pwrkey_act(void *pdata)
 {
 	struct pwrkey_drv_data *pd = pdata;
@@ -141,12 +144,17 @@ static int imx_snvs_pwrkey_probe(struct platform_device *pdev)
 		dev_warn(&pdev->dev, "KEY_POWER without setting in dts\n");
 	}
 
+<<<<<<< HEAD
 	clk = devm_clk_get_optional(&pdev->dev, NULL);
+=======
+	clk = devm_clk_get_optional_enabled(&pdev->dev, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(clk)) {
 		dev_err(&pdev->dev, "Failed to get snvs clock (%pe)\n", clk);
 		return PTR_ERR(clk);
 	}
 
+<<<<<<< HEAD
 	error = clk_prepare_enable(clk);
 	if (error) {
 		dev_err(&pdev->dev, "Failed to enable snvs clock (%pe)\n",
@@ -163,6 +171,8 @@ static int imx_snvs_pwrkey_probe(struct platform_device *pdev)
 		return error;
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pdata->wakeup = of_property_read_bool(np, "wakeup-source");
 
 	pdata->irq = platform_get_irq(pdev, 0);
@@ -204,7 +214,10 @@ static int imx_snvs_pwrkey_probe(struct platform_device *pdev)
 	error = devm_request_irq(&pdev->dev, pdata->irq,
 			       imx_snvs_pwrkey_interrupt,
 			       0, pdev->name, pdev);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (error) {
 		dev_err(&pdev->dev, "interrupt not available.\n");
 		return error;

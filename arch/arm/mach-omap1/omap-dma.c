@@ -59,6 +59,7 @@ static struct omap_dma_dev_attr *d;
 static int enable_1510_mode;
 static u32 errata;
 
+<<<<<<< HEAD
 struct dma_link_info {
 	int *linked_dmach_q;
 	int no_of_lchs_linked;
@@ -72,6 +73,8 @@ struct dma_link_info {
 
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int dma_lch_count;
 static int dma_chan_count;
 static int omap_dma_reserve_channels;

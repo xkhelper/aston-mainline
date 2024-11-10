@@ -160,6 +160,9 @@ extern void prom_identify_arch(u32);
 extern void prom_init_cmdline(s32, s32 *, u32);
 
 extern void register_prom_console(void);
+<<<<<<< HEAD
 extern void unregister_prom_console(void);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* _ASM_DEC_PROM_H */

@@ -82,7 +82,10 @@ static const struct hantro_fmt rockchip_vpu981_postproc_fmts[] = {
 	{
 		.fourcc = V4L2_PIX_FMT_NV12,
 		.codec_mode = HANTRO_MODE_NONE,
+<<<<<<< HEAD
 		.match_depth = true,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.postprocessed = true,
 		.frmsize = {
 			.min_width = ROCKCHIP_VPU981_MIN_SIZE,

@@ -116,6 +116,10 @@ properties:
           - const: atmel,24c02
       - items:
           - enum:
+<<<<<<< HEAD
+=======
+              - giantec,gt24c04a
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - onnn,cat24c04
               - onnn,cat24c05
               - rohm,br24g04

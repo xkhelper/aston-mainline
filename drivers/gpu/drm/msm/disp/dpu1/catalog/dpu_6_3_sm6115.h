@@ -12,7 +12,10 @@ static const struct dpu_caps sm6115_dpu_caps = {
 	.max_mixer_blendstages = 0x4,
 	.has_dim_layer = true,
 	.has_idle_pc = true,
+<<<<<<< HEAD
 	.has_active_ctls = true,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.max_linewidth = 2160,
 	.pixel_ram_size = DEFAULT_PIXEL_RAM_SIZE,
 };

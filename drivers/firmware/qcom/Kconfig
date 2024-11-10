@@ -41,6 +41,7 @@ config QCOM_TZMEM_MODE_SHMBRIDGE
 
 endchoice
 
+<<<<<<< HEAD
 config QCOM_SCM_DOWNLOAD_MODE_DEFAULT
 	bool "Qualcomm download mode enabled by default"
 	depends on QCOM_SCM
@@ -52,6 +53,8 @@ config QCOM_SCM_DOWNLOAD_MODE_DEFAULT
 
 	  Say Y here to enable "download mode" by default.
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config QCOM_QSEECOM
 	bool "Qualcomm QSEECOM interface driver"
 	depends on QCOM_SCM=y

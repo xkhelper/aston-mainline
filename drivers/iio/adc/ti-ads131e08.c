@@ -23,7 +23,11 @@
 #include <linux/regulator/consumer.h>
 #include <linux/spi/spi.h>
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Commands */
 #define ADS131E08_CMD_RESET		0x06
@@ -637,7 +641,11 @@ static irqreturn_t ads131e08_trigger_handler(int irq, void *private)
 	if (ret)
 		goto out;
 
+<<<<<<< HEAD
 	for_each_set_bit(chn, indio_dev->active_scan_mask, indio_dev->masklength) {
+=======
+	iio_for_each_active_channel(indio_dev, chn) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		src = st->rx_buf + ADS131E08_NUM_STATUS_BYTES + chn * num_bytes;
 		dest = st->tmp_buf.data + i * ADS131E08_NUM_STORAGE_BYTES;
 
@@ -918,7 +926,11 @@ static const struct of_device_id ads131e08_of_match[] = {
 	  .data = &ads131e08_info_tbl[ads131e06], },
 	{ .compatible = "ti,ads131e08",
 	  .data = &ads131e08_info_tbl[ads131e08], },
+<<<<<<< HEAD
 	{}
+=======
+	{ }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(of, ads131e08_of_match);
 
@@ -926,7 +938,11 @@ static const struct spi_device_id ads131e08_ids[] = {
 	{ "ads131e04", (kernel_ulong_t)&ads131e08_info_tbl[ads131e04] },
 	{ "ads131e06", (kernel_ulong_t)&ads131e08_info_tbl[ads131e06] },
 	{ "ads131e08", (kernel_ulong_t)&ads131e08_info_tbl[ads131e08] },
+<<<<<<< HEAD
 	{}
+=======
+	{ }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(spi, ads131e08_ids);
 

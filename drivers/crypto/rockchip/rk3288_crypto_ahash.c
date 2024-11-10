@@ -9,7 +9,11 @@
  * Some ideas are from marvell/cesa.c and s5p-sss.c driver.
  */
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <crypto/internal/hash.h>
 #include <linux/device.h>
 #include <linux/err.h>

@@ -109,7 +109,10 @@ static int cxl_mem_probe(struct device *dev)
 	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
 	struct cxl_dev_state *cxlds = cxlmd->cxlds;
 	struct device *endpoint_parent;
+<<<<<<< HEAD
 	struct cxl_port *parent_port;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cxl_dport *dport;
 	struct dentry *dentry;
 	int rc;
@@ -146,7 +149,12 @@ static int cxl_mem_probe(struct device *dev)
 	if (rc)
 		return rc;
 
+<<<<<<< HEAD
 	parent_port = cxl_mem_find_port(cxlmd, &dport);
+=======
+	struct cxl_port *parent_port __free(put_cxl_port) =
+		cxl_mem_find_port(cxlmd, &dport);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!parent_port) {
 		dev_err(dev, "CXL port topology not found\n");
 		return -ENXIO;
@@ -166,6 +174,7 @@ static int cxl_mem_probe(struct device *dev)
 	else
 		endpoint_parent = &parent_port->dev;
 
+<<<<<<< HEAD
 	cxl_setup_parent_dport(dev, dport);
 
 	device_lock(endpoint_parent);
@@ -183,6 +192,22 @@ unlock:
 	if (rc)
 		return rc;
 
+=======
+	cxl_dport_init_ras_reporting(dport, dev);
+
+	scoped_guard(device, endpoint_parent) {
+		if (!endpoint_parent->driver) {
+			dev_err(dev, "CXL port topology %s not enabled\n",
+				dev_name(endpoint_parent));
+			return -ENXIO;
+		}
+
+		rc = devm_cxl_add_endpoint(endpoint_parent, cxlmd, dport);
+		if (rc)
+			return rc;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * The kernel may be operating out of CXL memory on this device,
 	 * there is no spec defined way to determine whether this device

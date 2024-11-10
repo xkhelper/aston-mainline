@@ -2,7 +2,11 @@
 #include <linux/compiler.h>
 
 static int s390_call__parse(struct arch *arch, struct ins_operands *ops,
+<<<<<<< HEAD
 			    struct map_symbol *ms)
+=======
+			    struct map_symbol *ms, struct disasm_line *dl __maybe_unused)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	char *endptr, *tok, *name;
 	struct map *map = ms->map;
@@ -52,7 +56,12 @@ static struct ins_ops s390_call_ops = {
 
 static int s390_mov__parse(struct arch *arch __maybe_unused,
 			   struct ins_operands *ops,
+<<<<<<< HEAD
 			   struct map_symbol *ms __maybe_unused)
+=======
+			   struct map_symbol *ms __maybe_unused,
+			   struct disasm_line *dl __maybe_unused)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	char *s = strchr(ops->raw, ','), *target, *endptr;
 

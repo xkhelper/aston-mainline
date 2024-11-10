@@ -228,6 +228,7 @@ static nokprobe_inline void set_current_kprobe(struct kprobe *p, struct pt_regs 
 	kcb->kprobe_saved_msr = regs->msr;
 }
 
+<<<<<<< HEAD
 void arch_prepare_kretprobe(struct kretprobe_instance *ri, struct pt_regs *regs)
 {
 	ri->ret_addr = (kprobe_opcode_t *)regs->link;
@@ -238,6 +239,8 @@ void arch_prepare_kretprobe(struct kretprobe_instance *ri, struct pt_regs *regs)
 }
 NOKPROBE_SYMBOL(arch_prepare_kretprobe);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int try_to_emulate(struct kprobe *p, struct pt_regs *regs)
 {
 	int ret;
@@ -395,6 +398,7 @@ no_kprobe:
 NOKPROBE_SYMBOL(kprobe_handler);
 
 /*
+<<<<<<< HEAD
  * Function return probe trampoline:
  * 	- init_kprobes() establishes a probepoint here
  * 	- When the probed function returns, this probe
@@ -438,6 +442,8 @@ static int trampoline_probe_handler(struct kprobe *p, struct pt_regs *regs)
 NOKPROBE_SYMBOL(trampoline_probe_handler);
 
 /*
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Called after single-stepping.  p->addr is the address of the
  * instruction whose first byte has been replaced by the "breakpoint"
  * instruction.  To avoid the SMP problems that can occur when we
@@ -539,6 +545,7 @@ int kprobe_fault_handler(struct pt_regs *regs, int trapnr)
 }
 NOKPROBE_SYMBOL(kprobe_fault_handler);
 
+<<<<<<< HEAD
 static struct kprobe trampoline_p = {
 	.addr = (kprobe_opcode_t *) &__kretprobe_trampoline,
 	.pre_handler = trampoline_probe_handler
@@ -552,6 +559,11 @@ int __init arch_init_kprobes(void)
 int arch_trampoline_kprobe(struct kprobe *p)
 {
 	if (p->addr == (kprobe_opcode_t *)&__kretprobe_trampoline)
+=======
+int arch_trampoline_kprobe(struct kprobe *p)
+{
+	if (p->addr == (kprobe_opcode_t *)&arch_rethook_trampoline)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 1;
 
 	return 0;

@@ -607,7 +607,11 @@ static struct platform_driver img_i2s_in_driver = {
 		.pm = &img_i2s_in_pm_ops
 	},
 	.probe = img_i2s_in_probe,
+<<<<<<< HEAD
 	.remove_new = img_i2s_in_dev_remove
+=======
+	.remove = img_i2s_in_dev_remove
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(img_i2s_in_driver);
 

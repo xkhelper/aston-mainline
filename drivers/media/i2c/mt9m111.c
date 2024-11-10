@@ -1383,7 +1383,11 @@ static const struct of_device_id mt9m111_of_match[] = {
 MODULE_DEVICE_TABLE(of, mt9m111_of_match);
 
 static const struct i2c_device_id mt9m111_id[] = {
+<<<<<<< HEAD
 	{ "mt9m111", 0 },
+=======
+	{ "mt9m111" },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, mt9m111_id);

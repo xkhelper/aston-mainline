@@ -48,8 +48,12 @@ static struct nfs_pgio_header *nfs_readhdr_alloc(void)
 
 static void nfs_readhdr_free(struct nfs_pgio_header *rhdr)
 {
+<<<<<<< HEAD
 	if (rhdr->res.scratch != NULL)
 		kfree(rhdr->res.scratch);
+=======
+	kfree(rhdr->res.scratch);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kmem_cache_free(nfs_rdata_cachep, rhdr);
 }
 

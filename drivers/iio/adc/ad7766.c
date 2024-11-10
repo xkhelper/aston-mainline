@@ -291,6 +291,7 @@ static int ad7766_probe(struct spi_device *spi)
 }
 
 static const struct spi_device_id ad7766_id[] = {
+<<<<<<< HEAD
 	{"ad7766", ID_AD7766},
 	{"ad7766-1", ID_AD7766_1},
 	{"ad7766-2", ID_AD7766_2},
@@ -298,6 +299,15 @@ static const struct spi_device_id ad7766_id[] = {
 	{"ad7767-1", ID_AD7766_1},
 	{"ad7767-2", ID_AD7766_2},
 	{}
+=======
+	{ "ad7766", ID_AD7766 },
+	{ "ad7766-1", ID_AD7766_1 },
+	{ "ad7766-2", ID_AD7766_2 },
+	{ "ad7767", ID_AD7766 },
+	{ "ad7767-1", ID_AD7766_1 },
+	{ "ad7767-2", ID_AD7766_2 },
+	{ }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(spi, ad7766_id);
 

@@ -316,7 +316,11 @@ static u64 ehl_err_addr_to_imc_addr(u64 eaddr, int mc)
 	if (igen6_tom <= _4GB)
 		return eaddr + igen6_tolud - _4GB;
 
+<<<<<<< HEAD
 	if (eaddr < _4GB)
+=======
+	if (eaddr >= igen6_tom)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return eaddr + igen6_tolud - igen6_tom;
 
 	return eaddr;

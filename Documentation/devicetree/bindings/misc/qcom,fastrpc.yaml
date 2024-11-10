@@ -26,6 +26,10 @@ properties:
       - mdsp
       - sdsp
       - cdsp
+<<<<<<< HEAD
+=======
+      - cdsp1
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   memory-region:
     maxItems: 1
@@ -81,7 +85,11 @@ patternProperties:
 
       iommus:
         minItems: 1
+<<<<<<< HEAD
         maxItems: 3
+=======
+        maxItems: 10
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
       qcom,nsessions:
         $ref: /schemas/types.yaml#/definitions/uint32

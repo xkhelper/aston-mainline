@@ -17,7 +17,10 @@ extern struct iscsi_r2t *iscsit_get_r2t_for_eos(struct iscsit_cmd *, u32, u32);
 extern struct iscsi_r2t *iscsit_get_r2t_from_list(struct iscsit_cmd *);
 extern void iscsit_free_r2t(struct iscsi_r2t *, struct iscsit_cmd *);
 extern void iscsit_free_r2ts_from_list(struct iscsit_cmd *);
+<<<<<<< HEAD
 extern struct iscsit_cmd *iscsit_alloc_cmd(struct iscsit_conn *, gfp_t);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern struct iscsit_cmd *iscsit_allocate_cmd(struct iscsit_conn *, int);
 extern struct iscsi_seq *iscsit_get_seq_holder_for_datain(struct iscsit_cmd *, u32);
 extern struct iscsi_seq *iscsit_get_seq_holder_for_r2t(struct iscsit_cmd *);
@@ -34,7 +37,10 @@ extern void iscsit_add_cmd_to_immediate_queue(struct iscsit_cmd *, struct iscsit
 extern struct iscsi_queue_req *iscsit_get_cmd_from_immediate_queue(struct iscsit_conn *);
 extern int iscsit_add_cmd_to_response_queue(struct iscsit_cmd *, struct iscsit_conn *, u8);
 extern struct iscsi_queue_req *iscsit_get_cmd_from_response_queue(struct iscsit_conn *);
+<<<<<<< HEAD
 extern void iscsit_remove_cmd_from_tx_queues(struct iscsit_cmd *, struct iscsit_conn *);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern bool iscsit_conn_all_queues_empty(struct iscsit_conn *);
 extern void iscsit_free_queue_reqs_for_conn(struct iscsit_conn *);
 extern void iscsit_release_cmd(struct iscsit_cmd *);
@@ -64,9 +70,12 @@ extern int iscsit_send_tx_data(struct iscsit_cmd *, struct iscsit_conn *, int);
 extern int iscsit_fe_sendpage_sg(struct iscsit_cmd *, struct iscsit_conn *);
 extern int iscsit_tx_login_rsp(struct iscsit_conn *, u8, u8);
 extern void iscsit_print_session_params(struct iscsit_session *);
+<<<<<<< HEAD
 extern int iscsit_print_dev_to_proc(char *, char **, off_t, int);
 extern int iscsit_print_sessions_to_proc(char *, char **, off_t, int);
 extern int iscsit_print_tpg_to_proc(char *, char **, off_t, int);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern int rx_data(struct iscsit_conn *, struct kvec *, int, int);
 extern int tx_data(struct iscsit_conn *, struct kvec *, int, int);
 extern void iscsit_collect_login_stats(struct iscsit_conn *, u8, u8);

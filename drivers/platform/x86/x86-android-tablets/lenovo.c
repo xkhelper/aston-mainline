@@ -59,7 +59,11 @@ static struct lp855x_platform_data lenovo_lp8557_reg_only_pdata = {
 	.initial_brightness = 128,
 };
 
+<<<<<<< HEAD
 /* Lenovo Yoga Book X90F / X90L's Android factory img has everything hardcoded */
+=======
+/* Lenovo Yoga Book X90F / X90L's Android factory image has everything hardcoded */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const struct property_entry lenovo_yb1_x90_wacom_props[] = {
 	PROPERTY_ENTRY_U32("hid-descr-addr", 0x0001),
@@ -262,7 +266,11 @@ const struct x86_dev_info lenovo_yogabook_x90_info __initconst = {
 	.init = lenovo_yb1_x90_init,
 };
 
+<<<<<<< HEAD
 /* Lenovo Yoga Book X91F/L Windows tablet needs manual instantiation of the fg client */
+=======
+/* Lenovo Yoga Book X91F/L Windows tablet needs manual instantiation of the fuel-gauge client */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct x86_i2c_client_info lenovo_yogabook_x91_i2c_clients[] __initconst = {
 	{
 		/* BQ27542 fuel-gauge */
@@ -281,7 +289,11 @@ const struct x86_dev_info lenovo_yogabook_x91_info __initconst = {
 	.i2c_client_count = ARRAY_SIZE(lenovo_yogabook_x91_i2c_clients),
 };
 
+<<<<<<< HEAD
 /* Lenovo Yoga Tablet 2 1050F/L's Android factory img has everything hardcoded */
+=======
+/* Lenovo Yoga Tablet 2 1050F/L's Android factory image has everything hardcoded */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct property_entry lenovo_yoga_tab2_830_1050_bq24190_props[] = {
 	PROPERTY_ENTRY_STRING_ARRAY_LEN("supplied-from", tusb1211_chg_det_psy, 1),
 	PROPERTY_ENTRY_REF("monitored-battery", &generic_lipo_hv_4v35_battery_node),
@@ -521,9 +533,15 @@ err_put_device:
 }
 
 /*
+<<<<<<< HEAD
  * These tablet's DSDT does not set acpi_gbl_reduced_hardware, so acpi_power_off
  * gets used as pm_power_off handler. This causes "poweroff" on these tablets
  * to hang hard. Requiring pressing the powerbutton for 30 seconds *twice*
+=======
+ * These tablet's DSDT does not set acpi_gbl_reduced_hardware, so acpi_power_off()
+ * gets used as pm_power_off handler. This causes "poweroff" on these tablets
+ * to hang hard. Requiring pressing the power button for 30 seconds *twice*
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * followed by a normal 3 second press to recover. Avoid this by doing an EFI
  * poweroff instead.
  */
@@ -546,7 +564,11 @@ static int __init lenovo_yoga_tab2_830_1050_init(struct device *dev)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	/* SYS_OFF_PRIO_FIRMWARE + 1 so that it runs before acpi_power_off */
+=======
+	/* SYS_OFF_PRIO_FIRMWARE + 1 so that it runs before acpi_power_off() */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	lenovo_yoga_tab2_830_1050_sys_off_handler =
 		register_sys_off_handler(SYS_OFF_MODE_POWER_OFF, SYS_OFF_PRIO_FIRMWARE + 1,
 					 lenovo_yoga_tab2_830_1050_power_off, NULL);
@@ -742,7 +764,11 @@ static int __init lenovo_yoga_tab2_1380_init(struct device *dev)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	/* SYS_OFF_PRIO_FIRMWARE + 1 so that it runs before acpi_power_off */
+=======
+	/* SYS_OFF_PRIO_FIRMWARE + 1 so that it runs before acpi_power_off() */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	lenovo_yoga_tab2_830_1050_sys_off_handler =
 		register_sys_off_handler(SYS_OFF_MODE_POWER_OFF, SYS_OFF_PRIO_FIRMWARE + 1,
 					 lenovo_yoga_tab2_830_1050_power_off, NULL);
@@ -799,7 +825,11 @@ static const struct software_node fg_bq25890_1_supply_node = {
 	.properties = fg_bq25890_1_supply_props,
 };
 
+<<<<<<< HEAD
 /* bq25892 charger settings for the flat lipo battery behind the screen */
+=======
+/* bq25892 charger settings for the flat LiPo battery behind the screen */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct property_entry lenovo_yt3_bq25892_0_props[] = {
 	PROPERTY_ENTRY_STRING_ARRAY("supplied-from", lenovo_yt3_bq25892_0_suppliers),
 	PROPERTY_ENTRY_U32("linux,iinlim-percentage", 40),
@@ -833,7 +863,11 @@ static const struct software_node lenovo_yt3_hideep_ts_node = {
 
 static const struct x86_i2c_client_info lenovo_yt3_i2c_clients[] __initconst = {
 	{
+<<<<<<< HEAD
 		/* bq27500 fuel-gauge for the flat lipo battery behind the screen */
+=======
+		/* bq27500 fuel-gauge for the flat LiPo battery behind the screen */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.board_info = {
 			.type = "bq27500",
 			.addr = 0x55,
@@ -842,7 +876,11 @@ static const struct x86_i2c_client_info lenovo_yt3_i2c_clients[] __initconst = {
 		},
 		.adapter_path = "\\_SB_.PCI0.I2C1",
 	}, {
+<<<<<<< HEAD
 		/* bq25892 charger for the flat lipo battery behind the screen */
+=======
+		/* bq25892 charger for the flat LiPo battery behind the screen */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.board_info = {
 			.type = "bq25892",
 			.addr = 0x6b,
@@ -859,7 +897,11 @@ static const struct x86_i2c_client_info lenovo_yt3_i2c_clients[] __initconst = {
 			.con_id = "bq25892_0_irq",
 		},
 	}, {
+<<<<<<< HEAD
 		/* bq27500 fuel-gauge for the round li-ion cells in the hinge */
+=======
+		/* bq27500 fuel-gauge for the round Li-ion cells in the hinge */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.board_info = {
 			.type = "bq27500",
 			.addr = 0x55,

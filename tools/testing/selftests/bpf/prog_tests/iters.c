@@ -14,6 +14,10 @@
 #include "iters_state_safety.skel.h"
 #include "iters_looping.skel.h"
 #include "iters_num.skel.h"
+<<<<<<< HEAD
+=======
+#include "iters_testmod.skel.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "iters_testmod_seq.skel.h"
 #include "iters_task_vma.skel.h"
 #include "iters_task.skel.h"
@@ -297,8 +301,15 @@ void test_iters(void)
 	RUN_TESTS(iters);
 	RUN_TESTS(iters_css_task);
 
+<<<<<<< HEAD
 	if (env.has_testmod)
 		RUN_TESTS(iters_testmod_seq);
+=======
+	if (env.has_testmod) {
+		RUN_TESTS(iters_testmod);
+		RUN_TESTS(iters_testmod_seq);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (test__start_subtest("num"))
 		subtest_num_iters();

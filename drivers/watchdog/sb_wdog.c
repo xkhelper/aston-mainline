@@ -234,7 +234,10 @@ static int sbwdog_notify_sys(struct notifier_block *this, unsigned long code,
 
 static const struct file_operations sbwdog_fops = {
 	.owner		= THIS_MODULE,
+<<<<<<< HEAD
 	.llseek		= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.write		= sbwdog_write,
 	.unlocked_ioctl	= sbwdog_ioctl,
 	.compat_ioctl	= compat_ptr_ioctl,

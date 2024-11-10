@@ -21,7 +21,10 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  *
  */
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "reg_helper.h"
 #include "dcn35_dwb.h"
 

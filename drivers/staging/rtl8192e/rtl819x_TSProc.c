@@ -14,7 +14,11 @@ static void RxPktPendingTimeout(struct timer_list *t)
 	struct rtllib_device *ieee = container_of(ts, struct rtllib_device,
 						  rx_ts_records[ts->num]);
 
+<<<<<<< HEAD
 	struct rx_reorder_entry *pReorderEntry = NULL;
+=======
+	struct rx_reorder_entry *reorder_entry = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	unsigned long flags = 0;
 	u8 index = 0;
@@ -23,6 +27,7 @@ static void RxPktPendingTimeout(struct timer_list *t)
 	spin_lock_irqsave(&(ieee->reorder_spinlock), flags);
 	if (ts->rx_timeout_indicate_seq != 0xffff) {
 		while (!list_empty(&ts->rx_pending_pkt_list)) {
+<<<<<<< HEAD
 			pReorderEntry = (struct rx_reorder_entry *)
 					list_entry(ts->rx_pending_pkt_list.prev,
 					struct rx_reorder_entry, list);
@@ -36,11 +41,27 @@ static void RxPktPendingTimeout(struct timer_list *t)
 				list_del_init(&pReorderEntry->list);
 
 				if (SN_EQUAL(pReorderEntry->SeqNum,
+=======
+			reorder_entry = (struct rx_reorder_entry *)
+					list_entry(ts->rx_pending_pkt_list.prev,
+					struct rx_reorder_entry, list);
+			if (index == 0)
+				ts->rx_indicate_seq = reorder_entry->seq_num;
+
+			if (SN_LESS(reorder_entry->seq_num,
+				    ts->rx_indicate_seq) ||
+			    SN_EQUAL(reorder_entry->seq_num,
+				     ts->rx_indicate_seq)) {
+				list_del_init(&reorder_entry->list);
+
+				if (SN_EQUAL(reorder_entry->seq_num,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    ts->rx_indicate_seq))
 					ts->rx_indicate_seq =
 					      (ts->rx_indicate_seq + 1) % 4096;
 
 				netdev_dbg(ieee->dev,
+<<<<<<< HEAD
 					   "%s(): Indicate SeqNum: %d\n",
 					   __func__, pReorderEntry->SeqNum);
 				ieee->stats_IndicateArray[index] =
@@ -48,6 +69,15 @@ static void RxPktPendingTimeout(struct timer_list *t)
 				index++;
 
 				list_add_tail(&pReorderEntry->list,
+=======
+					   "%s(): Indicate seq_num: %d\n",
+					   __func__, reorder_entry->seq_num);
+				ieee->stats_IndicateArray[index] =
+							 reorder_entry->prxb;
+				index++;
+
+				list_add_tail(&reorder_entry->list,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					      &ieee->RxReorder_Unused_List);
 			} else {
 				pkt_in_buf = true;
@@ -225,7 +255,11 @@ static void MakeTSEntry(struct ts_common_info *ts_common_info, u8 *addr,
 }
 
 bool rtllib_get_ts(struct rtllib_device *ieee, struct ts_common_info **ppTS,
+<<<<<<< HEAD
 	   u8 *addr, u8 TID, enum tr_select tx_rx_select, bool bAddNewTs)
+=======
+	   u8 *addr, u8 TID, enum tr_select tx_rx_select, bool add_new_ts)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u8	UP = 0;
 	struct qos_tsinfo tspec;
@@ -269,7 +303,11 @@ bool rtllib_get_ts(struct rtllib_device *ieee, struct ts_common_info **ppTS,
 	if (*ppTS)
 		return true;
 
+<<<<<<< HEAD
 	if (!bAddNewTs) {
+=======
+	if (!add_new_ts) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		netdev_dbg(ieee->dev, "add new TS failed(tid:%d)\n", UP);
 		return false;
 	}
@@ -336,8 +374,13 @@ static void RemoveTsEntry(struct rtllib_device *ieee,
 			pRxReorderEntry = (struct rx_reorder_entry *)
 					list_entry(ts->rx_pending_pkt_list.prev,
 					struct rx_reorder_entry, list);
+<<<<<<< HEAD
 			netdev_dbg(ieee->dev,  "%s(): Delete SeqNum %d!\n",
 				   __func__, pRxReorderEntry->SeqNum);
+=======
+			netdev_dbg(ieee->dev,  "%s(): Delete seq_num %d!\n",
+				   __func__, pRxReorderEntry->seq_num);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			list_del_init(&pRxReorderEntry->list);
 			{
 				int i = 0;

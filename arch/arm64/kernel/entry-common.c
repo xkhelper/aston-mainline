@@ -103,7 +103,11 @@ static void noinstr exit_to_kernel_mode(struct pt_regs *regs)
 static __always_inline void __enter_from_user_mode(void)
 {
 	lockdep_hardirqs_off(CALLER_ADDR0);
+<<<<<<< HEAD
 	CT_WARN_ON(ct_state() != CONTEXT_USER);
+=======
+	CT_WARN_ON(ct_state() != CT_STATE_USER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	user_exit_irqoff();
 	trace_hardirqs_off_finish();
 	mte_disable_tco_entry(current);

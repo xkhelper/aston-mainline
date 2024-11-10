@@ -67,6 +67,7 @@ static void test_snd_soc_card_get_kcontrol(struct kunit *test)
 	KUNIT_EXPECT_NULL(test, kc);
 }
 
+<<<<<<< HEAD
 static void test_snd_soc_card_get_kcontrol_locked(struct kunit *test)
 {
 	struct soc_card_test_priv *priv = test->priv;
@@ -123,6 +124,8 @@ static void test_snd_soc_card_get_kcontrol_locked(struct kunit *test)
 	KUNIT_EXPECT_NULL(test, kc);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int soc_card_test_case_init(struct kunit *test)
 {
 	struct soc_card_test_priv *priv;
@@ -169,7 +172,10 @@ static void soc_card_test_case_exit(struct kunit *test)
 
 static struct kunit_case soc_card_test_cases[] = {
 	KUNIT_CASE(test_snd_soc_card_get_kcontrol),
+<<<<<<< HEAD
 	KUNIT_CASE(test_snd_soc_card_get_kcontrol_locked),
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 

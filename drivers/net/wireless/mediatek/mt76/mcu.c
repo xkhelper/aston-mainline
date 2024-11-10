@@ -73,6 +73,11 @@ int mt76_mcu_skb_send_and_get_msg(struct mt76_dev *dev, struct sk_buff *skb,
 				  int cmd, bool wait_resp,
 				  struct sk_buff **ret_skb)
 {
+<<<<<<< HEAD
+=======
+	unsigned int retry = 0;
+	struct sk_buff *orig_skb = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long expires;
 	int ret, seq;
 
@@ -81,6 +86,20 @@ int mt76_mcu_skb_send_and_get_msg(struct mt76_dev *dev, struct sk_buff *skb,
 
 	mutex_lock(&dev->mcu.mutex);
 
+<<<<<<< HEAD
+=======
+	if (dev->mcu_ops->mcu_skb_prepare_msg) {
+		orig_skb = skb;
+		ret = dev->mcu_ops->mcu_skb_prepare_msg(dev, skb, cmd, &seq);
+		if (ret < 0)
+			goto out;
+	}
+
+retry:
+	/* orig skb might be needed for retry, mcu_skb_send_msg consumes it */
+	if (orig_skb)
+		skb_get(orig_skb);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = dev->mcu_ops->mcu_skb_send_msg(dev, skb, cmd, &seq);
 	if (ret < 0)
 		goto out;
@@ -94,6 +113,17 @@ int mt76_mcu_skb_send_and_get_msg(struct mt76_dev *dev, struct sk_buff *skb,
 
 	do {
 		skb = mt76_mcu_get_response(dev, expires);
+<<<<<<< HEAD
+=======
+		if (!skb && !test_bit(MT76_MCU_RESET, &dev->phy.state) &&
+		    orig_skb && retry++ < dev->mcu_ops->max_retry) {
+			dev_err(dev->dev, "Retry message %08x (seq %d)\n",
+				cmd, seq);
+			skb = orig_skb;
+			goto retry;
+		}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = dev->mcu_ops->mcu_parse_response(dev, cmd, skb, seq);
 		if (!ret && ret_skb)
 			*ret_skb = skb;
@@ -101,7 +131,13 @@ int mt76_mcu_skb_send_and_get_msg(struct mt76_dev *dev, struct sk_buff *skb,
 			dev_kfree_skb(skb);
 	} while (ret == -EAGAIN);
 
+<<<<<<< HEAD
 out:
+=======
+
+out:
+	dev_kfree_skb(orig_skb);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_unlock(&dev->mcu.mutex);
 
 	return ret;

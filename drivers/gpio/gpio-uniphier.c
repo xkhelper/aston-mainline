@@ -11,6 +11,10 @@
 #include <linux/of.h>
 #include <linux/of_irq.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
+=======
+#include <linux/property.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/spinlock.h>
 #include <dt-bindings/gpio/uniphier-gpio.h>
 
@@ -164,7 +168,11 @@ static int uniphier_gpio_to_irq(struct gpio_chip *chip, unsigned int offset)
 	if (offset < UNIPHIER_GPIO_IRQ_OFFSET)
 		return -ENXIO;
 
+<<<<<<< HEAD
 	fwspec.fwnode = of_node_to_fwnode(chip->parent->of_node);
+=======
+	fwspec.fwnode = dev_fwnode(chip->parent);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fwspec.param_count = 2;
 	fwspec.param[0] = offset - UNIPHIER_GPIO_IRQ_OFFSET;
 	/*
@@ -404,7 +412,11 @@ static int uniphier_gpio_probe(struct platform_device *pdev)
 	priv->domain = irq_domain_create_hierarchy(
 					parent_domain, 0,
 					UNIPHIER_GPIO_IRQ_MAX_NUM,
+<<<<<<< HEAD
 					of_node_to_fwnode(dev->of_node),
+=======
+					dev_fwnode(dev),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					&uniphier_gpio_irq_domain_ops, priv);
 	if (!priv->domain)
 		return -ENOMEM;

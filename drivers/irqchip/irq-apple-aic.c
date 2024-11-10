@@ -234,7 +234,14 @@ enum fiq_hwirq {
 	AIC_NR_FIQ
 };
 
+<<<<<<< HEAD
 static DEFINE_STATIC_KEY_TRUE(use_fast_ipi);
+=======
+/* True if UNCORE/UNCORE2 and Sn_... IPI registers are present and used (A11+) */
+static DEFINE_STATIC_KEY_TRUE(use_fast_ipi);
+/* True if SYS_IMP_APL_IPI_RR_LOCAL_EL1 exists for local fast IPIs (M1+) */
+static DEFINE_STATIC_KEY_TRUE(use_local_fast_ipi);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct aic_info {
 	int version;
@@ -252,6 +259,10 @@ struct aic_info {
 
 	/* Features */
 	bool fast_ipi;
+<<<<<<< HEAD
+=======
+	bool local_fast_ipi;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct aic_info aic1_info __initconst = {
@@ -270,17 +281,41 @@ static const struct aic_info aic1_fipi_info __initconst = {
 	.fast_ipi	= true,
 };
 
+<<<<<<< HEAD
+=======
+static const struct aic_info aic1_local_fipi_info __initconst = {
+	.version	= 1,
+
+	.event		= AIC_EVENT,
+	.target_cpu	= AIC_TARGET_CPU,
+
+	.fast_ipi	= true,
+	.local_fast_ipi = true,
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct aic_info aic2_info __initconst = {
 	.version	= 2,
 
 	.irq_cfg	= AIC2_IRQ_CFG,
 
 	.fast_ipi	= true,
+<<<<<<< HEAD
+=======
+	.local_fast_ipi = true,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct of_device_id aic_info_match[] = {
 	{
 		.compatible = "apple,t8103-aic",
+<<<<<<< HEAD
+=======
+		.data = &aic1_local_fipi_info,
+	},
+	{
+		.compatible = "apple,t8015-aic",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.data = &aic1_fipi_info,
 	},
 	{
@@ -532,6 +567,7 @@ static void __exception_irq_entry aic_handle_fiq(struct pt_regs *regs)
 	 * we check for everything here, even things we don't support yet.
 	 */
 
+<<<<<<< HEAD
 	if (read_sysreg_s(SYS_IMP_APL_IPI_SR_EL1) & IPI_SR_PENDING) {
 		if (static_branch_likely(&use_fast_ipi)) {
 			aic_handle_ipi(regs);
@@ -540,6 +576,11 @@ static void __exception_irq_entry aic_handle_fiq(struct pt_regs *regs)
 			write_sysreg_s(IPI_SR_PENDING, SYS_IMP_APL_IPI_SR_EL1);
 		}
 	}
+=======
+	if (static_branch_likely(&use_fast_ipi) &&
+	    (read_sysreg_s(SYS_IMP_APL_IPI_SR_EL1) & IPI_SR_PENDING))
+		aic_handle_ipi(regs);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (TIMER_FIRING(read_sysreg(cntp_ctl_el0)))
 		generic_handle_domain_irq(aic_irqc->hw_domain,
@@ -574,8 +615,14 @@ static void __exception_irq_entry aic_handle_fiq(struct pt_regs *regs)
 					  AIC_FIQ_HWIRQ(irq));
 	}
 
+<<<<<<< HEAD
 	if (FIELD_GET(UPMCR0_IMODE, read_sysreg_s(SYS_IMP_APL_UPMCR0_EL1)) == UPMCR0_IMODE_FIQ &&
 			(read_sysreg_s(SYS_IMP_APL_UPMSR_EL1) & UPMSR_IACT)) {
+=======
+	if (static_branch_likely(&use_fast_ipi) &&
+	    (FIELD_GET(UPMCR0_IMODE, read_sysreg_s(SYS_IMP_APL_UPMCR0_EL1)) == UPMCR0_IMODE_FIQ) &&
+	    (read_sysreg_s(SYS_IMP_APL_UPMSR_EL1) & UPMSR_IACT)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Same story with uncore PMCs */
 		pr_err_ratelimited("Uncore PMC FIQ fired. Masking.\n");
 		sysreg_clear_set_s(SYS_IMP_APL_UPMCR0_EL1, UPMCR0_IMODE,
@@ -750,12 +797,21 @@ static void aic_ipi_send_fast(int cpu)
 	u64 cluster = MPIDR_CLUSTER(mpidr);
 	u64 idx = MPIDR_CPU(mpidr);
 
+<<<<<<< HEAD
 	if (MPIDR_CLUSTER(my_mpidr) == cluster)
 		write_sysreg_s(FIELD_PREP(IPI_RR_CPU, idx),
 			       SYS_IMP_APL_IPI_RR_LOCAL_EL1);
 	else
 		write_sysreg_s(FIELD_PREP(IPI_RR_CPU, idx) | FIELD_PREP(IPI_RR_CLUSTER, cluster),
 			       SYS_IMP_APL_IPI_RR_GLOBAL_EL1);
+=======
+	if (static_branch_likely(&use_local_fast_ipi) && MPIDR_CLUSTER(my_mpidr) == cluster) {
+		write_sysreg_s(FIELD_PREP(IPI_RR_CPU, idx), SYS_IMP_APL_IPI_RR_LOCAL_EL1);
+	} else {
+		write_sysreg_s(FIELD_PREP(IPI_RR_CPU, idx) | FIELD_PREP(IPI_RR_CLUSTER, cluster),
+			       SYS_IMP_APL_IPI_RR_GLOBAL_EL1);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	isb();
 }
 
@@ -811,7 +867,12 @@ static int aic_init_cpu(unsigned int cpu)
 	/* Mask all hard-wired per-CPU IRQ/FIQ sources */
 
 	/* Pending Fast IPI FIQs */
+<<<<<<< HEAD
 	write_sysreg_s(IPI_SR_PENDING, SYS_IMP_APL_IPI_SR_EL1);
+=======
+	if (static_branch_likely(&use_fast_ipi))
+		write_sysreg_s(IPI_SR_PENDING, SYS_IMP_APL_IPI_SR_EL1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Timer FIQs */
 	sysreg_clear_set(cntp_ctl_el0, 0, ARCH_TIMER_CTRL_IT_MASK);
@@ -832,8 +893,15 @@ static int aic_init_cpu(unsigned int cpu)
 			   FIELD_PREP(PMCR0_IMODE, PMCR0_IMODE_OFF));
 
 	/* Uncore PMC FIQ */
+<<<<<<< HEAD
 	sysreg_clear_set_s(SYS_IMP_APL_UPMCR0_EL1, UPMCR0_IMODE,
 			   FIELD_PREP(UPMCR0_IMODE, UPMCR0_IMODE_OFF));
+=======
+	if (static_branch_likely(&use_fast_ipi)) {
+		sysreg_clear_set_s(SYS_IMP_APL_UPMCR0_EL1, UPMCR0_IMODE,
+				   FIELD_PREP(UPMCR0_IMODE, UPMCR0_IMODE_OFF));
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Commit all of the above */
 	isb();
@@ -987,11 +1055,20 @@ static int __init aic_of_ic_init(struct device_node *node, struct device_node *p
 	off += sizeof(u32) * (irqc->max_irq >> 5); /* MASK_CLR */
 	off += sizeof(u32) * (irqc->max_irq >> 5); /* HW_STATE */
 
+<<<<<<< HEAD
 	if (irqc->info.fast_ipi)
 		static_branch_enable(&use_fast_ipi);
 	else
 		static_branch_disable(&use_fast_ipi);
 
+=======
+	if (!irqc->info.fast_ipi)
+		static_branch_disable(&use_fast_ipi);
+
+	if (!irqc->info.local_fast_ipi)
+		static_branch_disable(&use_local_fast_ipi);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	irqc->info.die_stride = off - start_off;
 
 	irqc->hw_domain = irq_domain_create_tree(of_node_to_fwnode(node),

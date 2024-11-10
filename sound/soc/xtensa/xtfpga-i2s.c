@@ -635,7 +635,11 @@ static const struct dev_pm_ops xtfpga_i2s_pm_ops = {
 
 static struct platform_driver xtfpga_i2s_driver = {
 	.probe   = xtfpga_i2s_probe,
+<<<<<<< HEAD
 	.remove_new = xtfpga_i2s_remove,
+=======
+	.remove = xtfpga_i2s_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver  = {
 		.name = "xtfpga-i2s",
 		.of_match_table = of_match_ptr(xtfpga_i2s_of_match),

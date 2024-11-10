@@ -178,6 +178,16 @@ struct nfs_client *nfs_alloc_client(const struct nfs_client_initdata *cl_init)
 	clp->cl_max_connect = cl_init->max_connect ? cl_init->max_connect : 1;
 	clp->cl_net = get_net(cl_init->net);
 
+<<<<<<< HEAD
+=======
+#if IS_ENABLED(CONFIG_NFS_LOCALIO)
+	seqlock_init(&clp->cl_boot_lock);
+	ktime_get_real_ts64(&clp->cl_nfssvc_boot);
+	nfs_uuid_init(&clp->cl_uuid);
+	spin_lock_init(&clp->cl_localio_lock);
+#endif /* CONFIG_NFS_LOCALIO */
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	clp->cl_principal = "*";
 	clp->cl_xprtsec = cl_init->xprtsec;
 	return clp;
@@ -233,6 +243,11 @@ static void pnfs_init_server(struct nfs_server *server)
  */
 void nfs_free_client(struct nfs_client *clp)
 {
+<<<<<<< HEAD
+=======
+	nfs_local_disable(clp);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* -EIO all pending I/O */
 	if (!IS_ERR(clp->cl_rpcclient))
 		rpc_shutdown_client(clp->cl_rpcclient);
@@ -424,7 +439,14 @@ struct nfs_client *nfs_get_client(const struct nfs_client_initdata *cl_init)
 			list_add_tail(&new->cl_share_link,
 					&nn->nfs_client_list);
 			spin_unlock(&nn->nfs_client_lock);
+<<<<<<< HEAD
 			return rpc_ops->init_client(new, cl_init);
+=======
+			new = rpc_ops->init_client(new, cl_init);
+			if (!IS_ERR(new))
+				 nfs_local_probe(new);
+			return new;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		spin_unlock(&nn->nfs_client_lock);
@@ -983,6 +1005,10 @@ struct nfs_server *nfs_alloc_server(void)
 	INIT_LIST_HEAD(&server->layouts);
 	INIT_LIST_HEAD(&server->state_owners_lru);
 	INIT_LIST_HEAD(&server->ss_copies);
+<<<<<<< HEAD
+=======
+	INIT_LIST_HEAD(&server->ss_src_copies);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	atomic_set(&server->active, 0);
 
@@ -997,8 +1023,13 @@ struct nfs_server *nfs_alloc_server(void)
 	init_waitqueue_head(&server->write_congestion_wait);
 	atomic_long_set(&server->writeback, 0);
 
+<<<<<<< HEAD
 	ida_init(&server->openowner_id);
 	ida_init(&server->lockowner_id);
+=======
+	atomic64_set(&server->owner_ctr, 0);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pnfs_init_server(server);
 	rpc_init_wait_queue(&server->uoc_rpcwaitq, "NFS UOC");
 
@@ -1037,8 +1068,11 @@ void nfs_free_server(struct nfs_server *server)
 	}
 	ida_free(&s_sysfs_ids, server->s_sysfs_id);
 
+<<<<<<< HEAD
 	ida_destroy(&server->lockowner_id);
 	ida_destroy(&server->openowner_id);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	put_cred(server->cred);
 	nfs_release_automount_timer();
 	call_rcu(&server->rcu, delayed_free);

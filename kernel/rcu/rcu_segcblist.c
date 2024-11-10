@@ -261,6 +261,7 @@ void rcu_segcblist_disable(struct rcu_segcblist *rsclp)
 }
 
 /*
+<<<<<<< HEAD
  * Mark the specified rcu_segcblist structure as offloaded (or not)
  */
 void rcu_segcblist_offload(struct rcu_segcblist *rsclp, bool offload)
@@ -272,6 +273,8 @@ void rcu_segcblist_offload(struct rcu_segcblist *rsclp, bool offload)
 }
 
 /*
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Does the specified rcu_segcblist structure contain callbacks that
  * are ready to be invoked?
  */

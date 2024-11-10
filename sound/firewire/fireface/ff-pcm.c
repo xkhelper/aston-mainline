@@ -390,6 +390,10 @@ int snd_ff_create_pcm_devices(struct snd_ff *ff)
 		return err;
 
 	pcm->private_data = ff;
+<<<<<<< HEAD
+=======
+	pcm->nonatomic = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	snprintf(pcm->name, sizeof(pcm->name),
 		 "%s PCM", ff->card->shortname);
 	snd_pcm_set_ops(pcm, SNDRV_PCM_STREAM_PLAYBACK, &pcm_playback_ops);

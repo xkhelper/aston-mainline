@@ -201,7 +201,11 @@ void afs_wait_for_operation(struct afs_operation *op)
 		}
 	}
 
+<<<<<<< HEAD
 	if (op->call_responded)
+=======
+	if (op->call_responded && op->server)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		set_bit(AFS_SERVER_FL_RESPONDING, &op->server->flags);
 
 	if (!afs_op_error(op)) {

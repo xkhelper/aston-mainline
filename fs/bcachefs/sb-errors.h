@@ -6,6 +6,11 @@
 
 extern const char * const bch2_sb_error_strs[];
 
+<<<<<<< HEAD
+=======
+void bch2_sb_error_id_to_text(struct printbuf *, enum bch_sb_error_id);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern const struct bch_sb_field_ops bch_sb_field_ops_errors;
 
 void bch2_sb_error_count(struct bch_fs *, enum bch_sb_error_id);

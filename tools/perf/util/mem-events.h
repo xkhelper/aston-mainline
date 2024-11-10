@@ -6,7 +6,10 @@
 #include <linux/types.h>
 
 struct perf_mem_event {
+<<<<<<< HEAD
 	bool		record;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool		supported;
 	bool		ldlat;
 	u32		aux_event;
@@ -28,9 +31,16 @@ struct perf_pmu;
 
 extern unsigned int perf_mem_events__loads_ldlat;
 extern struct perf_mem_event perf_mem_events[PERF_MEM_EVENTS__MAX];
+<<<<<<< HEAD
 
 int perf_pmu__mem_events_parse(struct perf_pmu *pmu, const char *str);
 int perf_pmu__mem_events_init(struct perf_pmu *pmu);
+=======
+extern bool perf_mem_record[PERF_MEM_EVENTS__MAX];
+
+int perf_pmu__mem_events_parse(struct perf_pmu *pmu, const char *str);
+int perf_pmu__mem_events_init(void);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct perf_mem_event *perf_pmu__mem_events_ptr(struct perf_pmu *pmu, int i);
 struct perf_pmu *perf_mem_events_find_pmu(void);

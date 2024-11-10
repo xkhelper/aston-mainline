@@ -369,7 +369,11 @@ static struct bcm2835_desc *bcm2835_dma_create_cb_chain(
 	/* the last frame requires extra flags */
 	d->cb_list[d->frames - 1].cb->info |= finalextrainfo;
 
+<<<<<<< HEAD
 	/* detect a size missmatch */
+=======
+	/* detect a size mismatch */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (buf_len && (d->size != buf_len))
 		goto error_cb;
 

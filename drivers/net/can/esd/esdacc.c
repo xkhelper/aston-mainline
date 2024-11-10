@@ -17,6 +17,12 @@
 /* esdACC DLC register layout */
 #define ACC_DLC_DLC_MASK GENMASK(3, 0)
 #define ACC_DLC_RTR_FLAG BIT(4)
+<<<<<<< HEAD
+=======
+#define ACC_DLC_SSTX_FLAG BIT(24)	/* Single Shot TX */
+
+/* esdACC DLC in struct acc_bmmsg_rxtxdone::acc_dlc.len only! */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define ACC_DLC_TXD_FLAG BIT(5)
 
 /* ecc value of esdACC equals SJA1000's ECC register */
@@ -43,8 +49,13 @@
 
 static void acc_resetmode_enter(struct acc_core *core)
 {
+<<<<<<< HEAD
 	acc_set_bits(core, ACC_CORE_OF_CTRL_MODE,
 		     ACC_REG_CONTROL_MASK_MODE_RESETMODE);
+=======
+	acc_set_bits(core, ACC_CORE_OF_CTRL,
+		     ACC_REG_CTRL_MASK_RESETMODE);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Read back reset mode bit to flush PCI write posting */
 	acc_resetmode_entered(core);
@@ -52,14 +63,23 @@ static void acc_resetmode_enter(struct acc_core *core)
 
 static void acc_resetmode_leave(struct acc_core *core)
 {
+<<<<<<< HEAD
 	acc_clear_bits(core, ACC_CORE_OF_CTRL_MODE,
 		       ACC_REG_CONTROL_MASK_MODE_RESETMODE);
+=======
+	acc_clear_bits(core, ACC_CORE_OF_CTRL,
+		       ACC_REG_CTRL_MASK_RESETMODE);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Read back reset mode bit to flush PCI write posting */
 	acc_resetmode_entered(core);
 }
 
+<<<<<<< HEAD
 static void acc_txq_put(struct acc_core *core, u32 acc_id, u8 acc_dlc,
+=======
+static void acc_txq_put(struct acc_core *core, u32 acc_id, u32 acc_dlc,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			const void *data)
 {
 	acc_write32_noswap(core, ACC_CORE_OF_TXFIFO_DATA_1,
@@ -172,7 +192,11 @@ int acc_open(struct net_device *netdev)
 	struct acc_net_priv *priv = netdev_priv(netdev);
 	struct acc_core *core = priv->core;
 	u32 tx_fifo_status;
+<<<<<<< HEAD
 	u32 ctrl_mode;
+=======
+	u32 ctrl;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 
 	/* Retry to enter RESET mode if out of sync. */
@@ -187,6 +211,7 @@ int acc_open(struct net_device *netdev)
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	ctrl_mode = ACC_REG_CONTROL_MASK_IE_RXTX |
 			ACC_REG_CONTROL_MASK_IE_TXERROR |
 			ACC_REG_CONTROL_MASK_IE_ERRWARN |
@@ -200,6 +225,21 @@ int acc_open(struct net_device *netdev)
 		ctrl_mode |= ACC_REG_CONTROL_MASK_MODE_LOM;
 
 	acc_set_bits(core, ACC_CORE_OF_CTRL_MODE, ctrl_mode);
+=======
+	ctrl = ACC_REG_CTRL_MASK_IE_RXTX |
+		ACC_REG_CTRL_MASK_IE_TXERROR |
+		ACC_REG_CTRL_MASK_IE_ERRWARN |
+		ACC_REG_CTRL_MASK_IE_OVERRUN |
+		ACC_REG_CTRL_MASK_IE_ERRPASS;
+
+	if (priv->can.ctrlmode & CAN_CTRLMODE_BERR_REPORTING)
+		ctrl |= ACC_REG_CTRL_MASK_IE_BUSERR;
+
+	if (priv->can.ctrlmode & CAN_CTRLMODE_LISTENONLY)
+		ctrl |= ACC_REG_CTRL_MASK_LOM;
+
+	acc_set_bits(core, ACC_CORE_OF_CTRL, ctrl);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	acc_resetmode_leave(core);
 	priv->can.state = CAN_STATE_ERROR_ACTIVE;
@@ -218,6 +258,7 @@ int acc_close(struct net_device *netdev)
 	struct acc_net_priv *priv = netdev_priv(netdev);
 	struct acc_core *core = priv->core;
 
+<<<<<<< HEAD
 	acc_clear_bits(core, ACC_CORE_OF_CTRL_MODE,
 		       ACC_REG_CONTROL_MASK_IE_RXTX |
 		       ACC_REG_CONTROL_MASK_IE_TXERROR |
@@ -225,6 +266,15 @@ int acc_close(struct net_device *netdev)
 		       ACC_REG_CONTROL_MASK_IE_OVERRUN |
 		       ACC_REG_CONTROL_MASK_IE_ERRPASS |
 		       ACC_REG_CONTROL_MASK_IE_BUSERR);
+=======
+	acc_clear_bits(core, ACC_CORE_OF_CTRL,
+		       ACC_REG_CTRL_MASK_IE_RXTX |
+		       ACC_REG_CTRL_MASK_IE_TXERROR |
+		       ACC_REG_CTRL_MASK_IE_ERRWARN |
+		       ACC_REG_CTRL_MASK_IE_OVERRUN |
+		       ACC_REG_CTRL_MASK_IE_ERRPASS |
+		       ACC_REG_CTRL_MASK_IE_BUSERR);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	netif_stop_queue(netdev);
 	acc_resetmode_enter(core);
@@ -233,9 +283,15 @@ int acc_close(struct net_device *netdev)
 	/* Mark pending TX requests to be aborted after controller restart. */
 	acc_write32(core, ACC_CORE_OF_TX_ABORT_MASK, 0xffff);
 
+<<<<<<< HEAD
 	/* ACC_REG_CONTROL_MASK_MODE_LOM is only accessible in RESET mode */
 	acc_clear_bits(core, ACC_CORE_OF_CTRL_MODE,
 		       ACC_REG_CONTROL_MASK_MODE_LOM);
+=======
+	/* ACC_REG_CTRL_MASK_LOM is only accessible in RESET mode */
+	acc_clear_bits(core, ACC_CORE_OF_CTRL,
+		       ACC_REG_CTRL_MASK_LOM);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	close_candev(netdev);
 	return 0;
@@ -249,7 +305,11 @@ netdev_tx_t acc_start_xmit(struct sk_buff *skb, struct net_device *netdev)
 	u8 tx_fifo_head = core->tx_fifo_head;
 	int fifo_usage;
 	u32 acc_id;
+<<<<<<< HEAD
 	u8 acc_dlc;
+=======
+	u32 acc_dlc;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (can_dropped_invalid_skb(netdev, skb))
 		return NETDEV_TX_OK;
@@ -274,6 +334,11 @@ netdev_tx_t acc_start_xmit(struct sk_buff *skb, struct net_device *netdev)
 	acc_dlc = can_get_cc_dlc(cf, priv->can.ctrlmode);
 	if (cf->can_id & CAN_RTR_FLAG)
 		acc_dlc |= ACC_DLC_RTR_FLAG;
+<<<<<<< HEAD
+=======
+	if (priv->can.ctrlmode & CAN_CTRLMODE_ONE_SHOT)
+		acc_dlc |= ACC_DLC_SSTX_FLAG;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (cf->can_id & CAN_EFF_FLAG) {
 		acc_id = cf->can_id & CAN_EFF_MASK;

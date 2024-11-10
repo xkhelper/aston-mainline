@@ -7,6 +7,10 @@
 
 #include <linux/arm_ffa.h>
 #include <linux/errno.h>
+<<<<<<< HEAD
+=======
+#include <linux/rpmb.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/scatterlist.h>
 #include <linux/sched.h>
 #include <linux/slab.h>
@@ -909,6 +913,13 @@ static int optee_ffa_probe(struct ffa_device *ffa_dev)
 	optee->ffa.bottom_half_value = U32_MAX;
 	optee->rpc_param_count = rpc_param_count;
 
+<<<<<<< HEAD
+=======
+	if (IS_REACHABLE(CONFIG_RPMB) &&
+	    (sec_caps & OPTEE_FFA_SEC_CAP_RPMB_PROBE))
+		optee->in_kernel_rpmb_routing = true;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	teedev = tee_device_alloc(&optee_ffa_clnt_desc, NULL, optee->pool,
 				  optee);
 	if (IS_ERR(teedev)) {
@@ -925,6 +936,11 @@ static int optee_ffa_probe(struct ffa_device *ffa_dev)
 	}
 	optee->supp_teedev = teedev;
 
+<<<<<<< HEAD
+=======
+	optee_set_dev_group(optee);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rc = tee_device_register(optee->teedev);
 	if (rc)
 		goto err_unreg_supp_teedev;
@@ -940,6 +956,10 @@ static int optee_ffa_probe(struct ffa_device *ffa_dev)
 	optee_cq_init(&optee->call_queue, 0);
 	optee_supp_init(&optee->supp);
 	optee_shm_arg_cache_init(optee, arg_cache_flags);
+<<<<<<< HEAD
+=======
+	mutex_init(&optee->rpmb_dev_mutex);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ffa_dev_set_drvdata(ffa_dev, optee);
 	ctx = teedev_open(optee->teedev);
 	if (IS_ERR(ctx)) {
@@ -961,6 +981,13 @@ static int optee_ffa_probe(struct ffa_device *ffa_dev)
 	if (rc)
 		goto err_unregister_devices;
 
+<<<<<<< HEAD
+=======
+	INIT_WORK(&optee->rpmb_scan_bus_work, optee_bus_scan_rpmb);
+	optee->rpmb_intf.notifier_call = optee_rpmb_intf_rdev;
+	blocking_notifier_chain_register(&optee_rpmb_intf_added,
+					 &optee->rpmb_intf);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pr_info("initialized driver\n");
 	return 0;
 
@@ -974,6 +1001,11 @@ err_close_ctx:
 	teedev_close_context(ctx);
 err_rhashtable_free:
 	rhashtable_free_and_destroy(&optee->ffa.global_ids, rh_free_fn, NULL);
+<<<<<<< HEAD
+=======
+	rpmb_dev_put(optee->rpmb_dev);
+	mutex_destroy(&optee->rpmb_dev_mutex);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	optee_supp_uninit(&optee->supp);
 	mutex_destroy(&optee->call_queue.mutex);
 	mutex_destroy(&optee->ffa.mutex);

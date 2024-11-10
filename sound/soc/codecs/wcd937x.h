@@ -391,6 +391,13 @@
 #define WCD937X_DIGITAL_PDM_WD_CTL0		0x3465
 #define WCD937X_DIGITAL_PDM_WD_CTL1		0x3466
 #define WCD937X_DIGITAL_PDM_WD_CTL2		0x3467
+<<<<<<< HEAD
+=======
+#define WCD937X_DIGITAL_PDM_WD_CTL2_HOLD_OFF	BIT(2)
+#define WCD937X_DIGITAL_PDM_WD_CTL2_TIMEOUT_SEL	BIT(1)
+#define WCD937X_DIGITAL_PDM_WD_CTL2_EN		BIT(0)
+#define WCD937X_DIGITAL_PDM_WD_CTL2_MASK	GENMASK(2, 0)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define WCD937X_DIGITAL_INTR_MODE		0x346A
 #define WCD937X_DIGITAL_INTR_MASK_0		0x346B
 #define WCD937X_DIGITAL_INTR_MASK_1		0x346C
@@ -484,10 +491,32 @@
 
 #define WCD937X_MAX_MICBIAS			3
 #define WCD937X_MAX_BULK_SUPPLY			4
+<<<<<<< HEAD
 #define WCD937X_MAX_TX_SWR_PORTS		4
 #define WCD937X_MAX_SWR_PORTS			5
 #define WCD937X_MAX_SWR_CH_IDS			15
 
+=======
+#define WCD937X_MAX_SWR_CH_IDS			15
+
+enum wcd937x_tx_sdw_ports {
+	WCD937X_ADC_1_PORT = 1,
+	WCD937X_ADC_2_3_PORT,
+	WCD937X_DMIC_0_3_MBHC_PORT,
+	WCD937X_DMIC_4_6_PORT,
+	WCD937X_MAX_TX_SWR_PORTS = WCD937X_DMIC_4_6_PORT,
+};
+
+enum wcd937x_rx_sdw_ports {
+	WCD937X_HPH_PORT = 1,
+	WCD937X_CLSH_PORT,
+	WCD937X_COMP_PORT,
+	WCD937X_LO_PORT,
+	WCD937X_DSD_PORT,
+	WCD937X_MAX_SWR_PORTS = WCD937X_DSD_PORT,
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct wcd937x_sdw_ch_info {
 	int port_num;
 	unsigned int ch_mask;
@@ -581,6 +610,7 @@ enum {
 	WCD937X_NUM_IRQS,
 };
 
+<<<<<<< HEAD
 enum wcd937x_tx_sdw_ports {
 	WCD937X_ADC_1_PORT = 1,
 	WCD937X_ADC_2_3_PORT,
@@ -588,6 +618,8 @@ enum wcd937x_tx_sdw_ports {
 	WCD937X_DMIC_4_6_PORT,
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum wcd937x_tx_sdw_channels {
 	WCD937X_ADC1,
 	WCD937X_ADC2,
@@ -602,6 +634,7 @@ enum wcd937x_tx_sdw_channels {
 	WCD937X_DMIC6,
 };
 
+<<<<<<< HEAD
 enum wcd937x_rx_sdw_ports {
 	WCD937X_HPH_PORT = 1,
 	WCD937X_CLSH_PORT,
@@ -610,6 +643,8 @@ enum wcd937x_rx_sdw_ports {
 	WCD937X_DSD_PORT,
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum wcd937x_rx_sdw_channels {
 	WCD937X_HPH_L,
 	WCD937X_HPH_R,

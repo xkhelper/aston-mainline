@@ -1176,7 +1176,10 @@ static const struct file_operations mei_fops = {
 	.poll = mei_poll,
 	.fsync = mei_fsync,
 	.fasync = mei_fasync,
+<<<<<<< HEAD
 	.llseek = no_llseek
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**

@@ -526,7 +526,10 @@ static const struct file_operations charlcd_fops = {
 	.write   = charlcd_write,
 	.open    = charlcd_open,
 	.release = charlcd_release,
+<<<<<<< HEAD
 	.llseek  = no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct miscdevice charlcd_dev = {

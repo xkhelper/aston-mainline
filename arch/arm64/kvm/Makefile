@@ -17,7 +17,11 @@ kvm-y += arm.o mmu.o mmio.o psci.o hypercalls.o pvtime.o \
 	 inject_fault.o va_layout.o handle_exit.o \
 	 guest.o debug.o reset.o sys_regs.o stacktrace.o \
 	 vgic-sys-reg-v3.o fpsimd.o pkvm.o \
+<<<<<<< HEAD
 	 arch_timer.o trng.o vmid.o emulate-nested.o nested.o \
+=======
+	 arch_timer.o trng.o vmid.o emulate-nested.o nested.o at.o \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 vgic/vgic.o vgic/vgic-init.o \
 	 vgic/vgic-irqfd.o vgic/vgic-v2.o \
 	 vgic/vgic-v3.o vgic/vgic-v4.o \
@@ -27,6 +31,10 @@ kvm-y += arm.o mmu.o mmio.o psci.o hypercalls.o pvtime.o \
 
 kvm-$(CONFIG_HW_PERF_EVENTS)  += pmu-emul.o pmu.o
 kvm-$(CONFIG_ARM64_PTR_AUTH)  += pauth.o
+<<<<<<< HEAD
+=======
+kvm-$(CONFIG_PTDUMP_STAGE2_DEBUGFS) += ptdump.o
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 always-y := hyp_constants.h hyp-constants.s
 

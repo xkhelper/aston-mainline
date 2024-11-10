@@ -47,7 +47,12 @@ ia_css_de_dump(
     const struct sh_css_isp_de_params *de,
     unsigned int level)
 {
+<<<<<<< HEAD
 	if (!de) return;
+=======
+	if (!de)
+		return;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ia_css_debug_dtrace(level, "Demosaic:\n");
 	ia_css_debug_dtrace(level, "\t%-32s = %d\n",
 			    "de_pixelnoise", de->pixelnoise);

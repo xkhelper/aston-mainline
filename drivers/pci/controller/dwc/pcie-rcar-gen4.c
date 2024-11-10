@@ -141,10 +141,17 @@ static int rcar_gen4_pcie_start_link(struct dw_pcie *dw)
 	}
 
 	/*
+<<<<<<< HEAD
 	 * Require direct speed change with retrying here if the link_gen is
 	 * PCIe Gen2 or higher.
 	 */
 	changes = min_not_zero(dw->link_gen, RCAR_MAX_LINK_SPEED) - 1;
+=======
+	 * Require direct speed change with retrying here if the max_link_speed
+	 * is PCIe Gen2 or higher.
+	 */
+	changes = min_not_zero(dw->max_link_speed, RCAR_MAX_LINK_SPEED) - 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Since dw_pcie_setup_rc() sets it once, PCIe Gen2 will be trained.
@@ -606,7 +613,16 @@ static int rcar_gen4_pcie_reg_test_bit(struct rcar_gen4_pcie *rcar,
 static int rcar_gen4_pcie_download_phy_firmware(struct rcar_gen4_pcie *rcar)
 {
 	/* The check_addr values are magical numbers in the datasheet */
+<<<<<<< HEAD
 	const u32 check_addr[] = { 0x00101018, 0x00101118, 0x00101021, 0x00101121};
+=======
+	static const u32 check_addr[] = {
+		0x00101018,
+		0x00101118,
+		0x00101021,
+		0x00101121,
+	};
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct dw_pcie *dw = &rcar->dw;
 	const struct firmware *fw;
 	unsigned int i, timeout;

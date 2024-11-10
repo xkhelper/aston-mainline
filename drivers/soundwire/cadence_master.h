@@ -117,6 +117,11 @@ struct sdw_cdns_dai_runtime {
  * @link_up: Link status
  * @msg_count: Messages sent on bus
  * @dai_runtime_array: runtime context for each allocated DAI.
+<<<<<<< HEAD
+=======
+ * @status_update_lock: protect concurrency between interrupt-based and delayed work
+ * status update
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct sdw_cdns {
 	struct device *dev;
@@ -148,10 +153,19 @@ struct sdw_cdns {
 	bool interrupt_enabled;
 
 	struct work_struct work;
+<<<<<<< HEAD
+=======
+	struct delayed_work attach_dwork;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	struct list_head list;
 
 	struct sdw_cdns_dai_runtime **dai_runtime_array;
+<<<<<<< HEAD
+=======
+
+	struct mutex status_update_lock; /* add mutual exclusion to sdw_handle_slave_status() */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define bus_to_cdns(_bus) container_of(_bus, struct sdw_cdns, bus)

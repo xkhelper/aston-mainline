@@ -1597,15 +1597,24 @@ static void hp_wmi_devm_notify_remove(void *ignored)
 }
 
 /* hp_wmi_notify - WMI event notification handler */
+<<<<<<< HEAD
 static void hp_wmi_notify(u32 value, void *context)
 {
 	struct hp_wmi_info *temp_info[HP_WMI_MAX_INSTANCES] = {};
 	struct acpi_buffer out = { ACPI_ALLOCATE_BUFFER, NULL };
+=======
+static void hp_wmi_notify(union acpi_object *wobj, void *context)
+{
+	struct hp_wmi_info *temp_info[HP_WMI_MAX_INSTANCES] = {};
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct hp_wmi_sensors *state = context;
 	struct device *dev = &state->wdev->dev;
 	struct hp_wmi_event event = {};
 	struct hp_wmi_info *fan_info;
+<<<<<<< HEAD
 	union acpi_object *wobj;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	acpi_status err;
 	int event_type;
 	u8 count;
@@ -1630,6 +1639,7 @@ static void hp_wmi_notify(u32 value, void *context)
 	 * HPBIOS_BIOSEvent instance.
 	 */
 
+<<<<<<< HEAD
 	mutex_lock(&state->lock);
 
 	err = wmi_get_event_data(value, &out);
@@ -1639,11 +1649,21 @@ static void hp_wmi_notify(u32 value, void *context)
 	wobj = out.pointer;
 	if (!wobj)
 		goto out_unlock;
+=======
+	if (!wobj)
+		return;
+
+	mutex_lock(&state->lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = populate_event_from_wobj(dev, &event, wobj);
 	if (err) {
 		dev_warn(dev, "Bad event data (ACPI type %d)\n", wobj->type);
+<<<<<<< HEAD
 		goto out_free_wobj;
+=======
+		goto out_free;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	event_type = classify_event(event.name, event.category);
@@ -1668,6 +1688,7 @@ static void hp_wmi_notify(u32 value, void *context)
 		break;
 	}
 
+<<<<<<< HEAD
 out_free_wobj:
 	kfree(wobj);
 
@@ -1675,6 +1696,12 @@ out_free_wobj:
 	devm_kfree(dev, event.description);
 
 out_unlock:
+=======
+out_free:
+	devm_kfree(dev, event.name);
+	devm_kfree(dev, event.description);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_unlock(&state->lock);
 }
 

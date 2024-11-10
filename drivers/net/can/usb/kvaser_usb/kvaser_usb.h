@@ -22,6 +22,11 @@
  */
 
 #include <linux/completion.h>
+<<<<<<< HEAD
+=======
+#include <linux/ktime.h>
+#include <linux/math64.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/spinlock.h>
 #include <linux/types.h>
 #include <linux/usb.h>
@@ -39,7 +44,10 @@
 #define KVASER_USB_QUIRK_HAS_SILENT_MODE	BIT(0)
 #define KVASER_USB_QUIRK_HAS_TXRX_ERRORS	BIT(1)
 #define KVASER_USB_QUIRK_IGNORE_CLK_FREQ	BIT(2)
+<<<<<<< HEAD
 #define KVASER_USB_QUIRK_HAS_HARDWARE_TIMESTAMP	BIT(3)
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Device capabilities */
 #define KVASER_USB_CAP_BERR_CAP			0x01
@@ -68,6 +76,10 @@ struct kvaser_usb_dev_card_data {
 	u32 ctrlmode_supported;
 	u32 capabilities;
 	struct kvaser_usb_dev_card_data_hydra hydra;
+<<<<<<< HEAD
+=======
+	u32 usbcan_timestamp_msb;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* Context for an outstanding, not yet ACKed, transmission */
@@ -216,4 +228,29 @@ int kvaser_usb_can_rx_over_error(struct net_device *netdev);
 
 extern const struct can_bittiming_const kvaser_usb_flexc_bittiming_const;
 
+<<<<<<< HEAD
+=======
+static inline ktime_t kvaser_usb_ticks_to_ktime(const struct kvaser_usb_dev_cfg *cfg,
+						u64 ticks)
+{
+	return ns_to_ktime(div_u64(ticks * 1000, cfg->timestamp_freq));
+}
+
+static inline ktime_t kvaser_usb_timestamp48_to_ktime(const struct kvaser_usb_dev_cfg *cfg,
+						      const __le16 *timestamp)
+{
+	u64 ticks = le16_to_cpu(timestamp[0]) |
+		    (u64)(le16_to_cpu(timestamp[1])) << 16 |
+		    (u64)(le16_to_cpu(timestamp[2])) << 32;
+
+	return kvaser_usb_ticks_to_ktime(cfg, ticks);
+}
+
+static inline ktime_t kvaser_usb_timestamp64_to_ktime(const struct kvaser_usb_dev_cfg *cfg,
+						      __le64 timestamp)
+{
+	return kvaser_usb_ticks_to_ktime(cfg, le64_to_cpu(timestamp));
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* KVASER_USB_H */

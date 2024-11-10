@@ -202,6 +202,10 @@ struct fbtft_par {
 	u8 *buf;
 	u8 startbyte;
 	struct fbtft_ops fbtftops;
+<<<<<<< HEAD
+=======
+	/* Spinlock to ensure thread-safe access to dirty_lines_start and dirty_lines_end */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spinlock_t dirty_lock;
 	unsigned int dirty_lines_start;
 	unsigned int dirty_lines_end;
@@ -218,6 +222,10 @@ struct fbtft_par {
 	} gpio;
 	const s16 *init_sequence;
 	struct {
+<<<<<<< HEAD
+=======
+		/* Mutex to synchronize access to gamma curve locking */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct mutex lock;
 		u32 *curves;
 		int num_values;

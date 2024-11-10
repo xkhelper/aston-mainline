@@ -176,7 +176,11 @@ static DEFINE_PER_CPU(struct loongson3_freq_data *, freq_data);
 static inline int do_service_request(u32 id, u32 info, u32 cmd, u32 val, u32 extra)
 {
 	int retries;
+<<<<<<< HEAD
 	unsigned int cpu = smp_processor_id();
+=======
+	unsigned int cpu = raw_smp_processor_id();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int package = cpu_data[cpu].package;
 	union smc_message msg, last;
 

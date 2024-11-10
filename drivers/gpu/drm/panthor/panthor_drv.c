@@ -1383,6 +1383,10 @@ static const struct file_operations panthor_drm_driver_fops = {
 	.read = drm_read,
 	.llseek = noop_llseek,
 	.mmap = panthor_mmap,
+<<<<<<< HEAD
+=======
+	.fop_flags = FOP_UNSIGNED_OFFSET,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #ifdef CONFIG_DEBUG_FS

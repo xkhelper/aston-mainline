@@ -185,6 +185,24 @@ unlock_dma_resv:
 	return err;
 }
 
+<<<<<<< HEAD
+=======
+static struct xe_vm *asid_to_vm(struct xe_device *xe, u32 asid)
+{
+	struct xe_vm *vm;
+
+	down_read(&xe->usm.lock);
+	vm = xa_load(&xe->usm.asid_to_vm, asid);
+	if (vm && xe_vm_in_fault_mode(vm))
+		xe_vm_get(vm);
+	else
+		vm = ERR_PTR(-EINVAL);
+	up_read(&xe->usm.lock);
+
+	return vm;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int handle_pagefault(struct xe_gt *gt, struct pagefault *pf)
 {
 	struct xe_device *xe = gt_to_xe(gt);
@@ -197,6 +215,7 @@ static int handle_pagefault(struct xe_gt *gt, struct pagefault *pf)
 	if (pf->trva_fault)
 		return -EFAULT;
 
+<<<<<<< HEAD
 	/* ASID to VM */
 	mutex_lock(&xe->usm.lock);
 	vm = xa_load(&xe->usm.asid_to_vm, pf->asid);
@@ -207,11 +226,25 @@ static int handle_pagefault(struct xe_gt *gt, struct pagefault *pf)
 	mutex_unlock(&xe->usm.lock);
 	if (!vm)
 		return -EINVAL;
+=======
+	vm = asid_to_vm(xe, pf->asid);
+	if (IS_ERR(vm))
+		return PTR_ERR(vm);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * TODO: Change to read lock? Using write lock for simplicity.
 	 */
 	down_write(&vm->lock);
+<<<<<<< HEAD
+=======
+
+	if (xe_vm_is_closed(vm)) {
+		err = -ENOENT;
+		goto unlock_vm;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	vma = lookup_vma(vm, pf->page_addr);
 	if (!vma) {
 		err = -EINVAL;
@@ -287,7 +320,11 @@ static bool get_pagefault(struct pf_queue *pf_queue, struct pagefault *pf)
 			PFD_VIRTUAL_ADDR_LO_SHIFT;
 
 		pf_queue->tail = (pf_queue->tail + PF_MSG_LEN_DW) %
+<<<<<<< HEAD
 			PF_QUEUE_NUM_DW;
+=======
+			pf_queue->num_dw;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = true;
 	}
 	spin_unlock_irq(&pf_queue->lock);
@@ -299,7 +336,12 @@ static bool pf_queue_full(struct pf_queue *pf_queue)
 {
 	lockdep_assert_held(&pf_queue->lock);
 
+<<<<<<< HEAD
 	return CIRC_SPACE(pf_queue->head, pf_queue->tail, PF_QUEUE_NUM_DW) <=
+=======
+	return CIRC_SPACE(pf_queue->head, pf_queue->tail,
+			  pf_queue->num_dw) <=
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		PF_MSG_LEN_DW;
 }
 
@@ -312,22 +354,38 @@ int xe_guc_pagefault_handler(struct xe_guc *guc, u32 *msg, u32 len)
 	u32 asid;
 	bool full;
 
+<<<<<<< HEAD
 	/*
 	 * The below logic doesn't work unless PF_QUEUE_NUM_DW % PF_MSG_LEN_DW == 0
 	 */
 	BUILD_BUG_ON(PF_QUEUE_NUM_DW % PF_MSG_LEN_DW);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (unlikely(len != PF_MSG_LEN_DW))
 		return -EPROTO;
 
 	asid = FIELD_GET(PFD_ASID, msg[1]);
 	pf_queue = gt->usm.pf_queue + (asid % NUM_PF_QUEUE);
 
+<<<<<<< HEAD
+=======
+	/*
+	 * The below logic doesn't work unless PF_QUEUE_NUM_DW % PF_MSG_LEN_DW == 0
+	 */
+	xe_gt_assert(gt, !(pf_queue->num_dw % PF_MSG_LEN_DW));
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_lock_irqsave(&pf_queue->lock, flags);
 	full = pf_queue_full(pf_queue);
 	if (!full) {
 		memcpy(pf_queue->data + pf_queue->head, msg, len * sizeof(u32));
+<<<<<<< HEAD
 		pf_queue->head = (pf_queue->head + len) % PF_QUEUE_NUM_DW;
+=======
+		pf_queue->head = (pf_queue->head + len) %
+			pf_queue->num_dw;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		queue_work(gt->usm.pf_wq, &pf_queue->worker);
 	} else {
 		drm_warn(&xe->drm, "PF Queue full, shouldn't be possible");
@@ -394,18 +452,60 @@ static void pagefault_fini(void *arg)
 	destroy_workqueue(gt->usm.pf_wq);
 }
 
+<<<<<<< HEAD
 int xe_gt_pagefault_init(struct xe_gt *gt)
 {
 	struct xe_device *xe = gt_to_xe(gt);
 	int i;
+=======
+static int xe_alloc_pf_queue(struct xe_gt *gt, struct pf_queue *pf_queue)
+{
+	struct xe_device *xe = gt_to_xe(gt);
+	xe_dss_mask_t all_dss;
+	int num_dss, num_eus;
+
+	bitmap_or(all_dss, gt->fuse_topo.g_dss_mask, gt->fuse_topo.c_dss_mask,
+		  XE_MAX_DSS_FUSE_BITS);
+
+	num_dss = bitmap_weight(all_dss, XE_MAX_DSS_FUSE_BITS);
+	num_eus = bitmap_weight(gt->fuse_topo.eu_mask_per_dss,
+				XE_MAX_EU_FUSE_BITS) * num_dss;
+
+	/* user can issue separate page faults per EU and per CS */
+	pf_queue->num_dw =
+		(num_eus + XE_NUM_HW_ENGINES) * PF_MSG_LEN_DW;
+
+	pf_queue->gt = gt;
+	pf_queue->data = devm_kcalloc(xe->drm.dev, pf_queue->num_dw,
+				      sizeof(u32), GFP_KERNEL);
+	if (!pf_queue->data)
+		return -ENOMEM;
+
+	spin_lock_init(&pf_queue->lock);
+	INIT_WORK(&pf_queue->worker, pf_queue_work_func);
+
+	return 0;
+}
+
+int xe_gt_pagefault_init(struct xe_gt *gt)
+{
+	struct xe_device *xe = gt_to_xe(gt);
+	int i, ret = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!xe->info.has_usm)
 		return 0;
 
 	for (i = 0; i < NUM_PF_QUEUE; ++i) {
+<<<<<<< HEAD
 		gt->usm.pf_queue[i].gt = gt;
 		spin_lock_init(&gt->usm.pf_queue[i].lock);
 		INIT_WORK(&gt->usm.pf_queue[i].worker, pf_queue_work_func);
+=======
+		ret = xe_alloc_pf_queue(gt, &gt->usm.pf_queue[i]);
+		if (ret)
+			return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	for (i = 0; i < NUM_ACC_QUEUE; ++i) {
 		gt->usm.acc_queue[i].gt = gt;
@@ -511,6 +611,7 @@ static int handle_acc(struct xe_gt *gt, struct acc *acc)
 	if (acc->access_type != ACC_TRIGGER)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	/* ASID to VM */
 	mutex_lock(&xe->usm.lock);
 	vm = xa_load(&xe->usm.asid_to_vm, acc->asid);
@@ -519,6 +620,11 @@ static int handle_acc(struct xe_gt *gt, struct acc *acc)
 	mutex_unlock(&xe->usm.lock);
 	if (!vm || !xe_vm_in_fault_mode(vm))
 		return -EINVAL;
+=======
+	vm = asid_to_vm(xe, acc->asid);
+	if (IS_ERR(vm))
+		return PTR_ERR(vm);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	down_read(&vm->lock);
 

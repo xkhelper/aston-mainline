@@ -2,6 +2,10 @@
 /* Copyright (c) 2022 Meta Platforms, Inc. and affiliates. */
 #define _GNU_SOURCE
 #include <argp.h>
+<<<<<<< HEAD
+=======
+#include <libgen.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <string.h>
 #include <stdlib.h>
 #include <sched.h>
@@ -784,13 +788,21 @@ static int parse_stat(const char *stat_name, struct stat_specs *specs)
 static int parse_stats(const char *stats_str, struct stat_specs *specs)
 {
 	char *input, *state = NULL, *next;
+<<<<<<< HEAD
 	int err;
+=======
+	int err, cnt = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	input = strdup(stats_str);
 	if (!input)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	while ((next = strtok_r(state ? NULL : input, ",", &state))) {
+=======
+	while ((next = strtok_r(cnt++ ? NULL : input, ",", &state))) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = parse_stat(next, specs);
 		if (err) {
 			free(input);
@@ -988,8 +1000,13 @@ skip_freplace_fixup:
 
 static int process_prog(const char *filename, struct bpf_object *obj, struct bpf_program *prog)
 {
+<<<<<<< HEAD
 	const char *prog_name = bpf_program__name(prog);
 	const char *base_filename = basename(filename);
+=======
+	const char *base_filename = basename(strdupa(filename));
+	const char *prog_name = bpf_program__name(prog);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char *buf;
 	int buf_sz, log_level;
 	struct verif_stats *stats;
@@ -1056,13 +1073,21 @@ static int process_prog(const char *filename, struct bpf_object *obj, struct bpf
 
 static int process_obj(const char *filename)
 {
+<<<<<<< HEAD
+=======
+	const char *base_filename = basename(strdupa(filename));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct bpf_object *obj = NULL, *tobj;
 	struct bpf_program *prog, *tprog, *lprog;
 	libbpf_print_fn_t old_libbpf_print_fn;
 	LIBBPF_OPTS(bpf_object_open_opts, opts);
 	int err = 0, prog_cnt = 0;
 
+<<<<<<< HEAD
 	if (!should_process_file_prog(basename(filename), NULL)) {
+=======
+	if (!should_process_file_prog(base_filename, NULL)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (env.verbose)
 			printf("Skipping '%s' due to filters...\n", filename);
 		env.files_skipped++;
@@ -1076,7 +1101,11 @@ static int process_obj(const char *filename)
 	}
 
 	if (!env.quiet && env.out_fmt == RESFMT_TABLE)
+<<<<<<< HEAD
 		printf("Processing '%s'...\n", basename(filename));
+=======
+		printf("Processing '%s'...\n", base_filename);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	old_libbpf_print_fn = libbpf_set_print(libbpf_print_fn);
 	obj = bpf_object__open_file(filename, &opts);
@@ -1493,7 +1522,11 @@ static int parse_stats_csv(const char *filename, struct stat_specs *specs,
 	while (fgets(line, sizeof(line), f)) {
 		char *input = line, *state = NULL, *next;
 		struct verif_stats *st = NULL;
+<<<<<<< HEAD
 		int col = 0;
+=======
+		int col = 0, cnt = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (!header) {
 			void *tmp;
@@ -1511,7 +1544,11 @@ static int parse_stats_csv(const char *filename, struct stat_specs *specs,
 			*stat_cntp += 1;
 		}
 
+<<<<<<< HEAD
 		while ((next = strtok_r(state ? NULL : input, ",\n", &state))) {
+=======
+		while ((next = strtok_r(cnt++ ? NULL : input, ",\n", &state))) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (header) {
 				/* for the first line, set up spec stats */
 				err = parse_stat(next, specs);

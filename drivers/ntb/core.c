@@ -72,7 +72,11 @@ MODULE_VERSION(DRIVER_VERSION);
 MODULE_AUTHOR(DRIVER_AUTHOR);
 MODULE_DESCRIPTION(DRIVER_DESCRIPTION);
 
+<<<<<<< HEAD
 static struct bus_type ntb_bus;
+=======
+static const struct bus_type ntb_bus;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void ntb_dev_release(struct device *dev);
 
 int __ntb_register_client(struct ntb_client *client, struct module *mod,
@@ -298,7 +302,11 @@ static void ntb_dev_release(struct device *dev)
 	complete(&ntb->released);
 }
 
+<<<<<<< HEAD
 static struct bus_type ntb_bus = {
+=======
+static const struct bus_type ntb_bus = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name = "ntb",
 	.probe = ntb_probe,
 	.remove = ntb_remove,

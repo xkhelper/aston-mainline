@@ -60,11 +60,24 @@ static ssize_t show_attr(struct uncore_data *data, char *buf, enum uncore_index 
 static ssize_t store_attr(struct uncore_data *data, const char *buf, ssize_t count,
 			  enum uncore_index index)
 {
+<<<<<<< HEAD
 	unsigned int input;
 	int ret;
 
 	if (kstrtouint(buf, 10, &input))
 		return -EINVAL;
+=======
+	unsigned int input = 0;
+	int ret;
+
+	if (index == UNCORE_INDEX_EFF_LAT_CTRL_HIGH_THRESHOLD_ENABLE) {
+		if (kstrtobool(buf, (bool *)&input))
+			return -EINVAL;
+	} else {
+		if (kstrtouint(buf, 10, &input))
+			return -EINVAL;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_lock(&uncore_lock);
 	ret = uncore_write(data, input, index);
@@ -103,6 +116,21 @@ show_uncore_attr(max_freq_khz, UNCORE_INDEX_MAX_FREQ);
 
 show_uncore_attr(current_freq_khz, UNCORE_INDEX_CURRENT_FREQ);
 
+<<<<<<< HEAD
+=======
+store_uncore_attr(elc_low_threshold_percent, UNCORE_INDEX_EFF_LAT_CTRL_LOW_THRESHOLD);
+store_uncore_attr(elc_high_threshold_percent, UNCORE_INDEX_EFF_LAT_CTRL_HIGH_THRESHOLD);
+store_uncore_attr(elc_high_threshold_enable,
+		  UNCORE_INDEX_EFF_LAT_CTRL_HIGH_THRESHOLD_ENABLE);
+store_uncore_attr(elc_floor_freq_khz, UNCORE_INDEX_EFF_LAT_CTRL_FREQ);
+
+show_uncore_attr(elc_low_threshold_percent, UNCORE_INDEX_EFF_LAT_CTRL_LOW_THRESHOLD);
+show_uncore_attr(elc_high_threshold_percent, UNCORE_INDEX_EFF_LAT_CTRL_HIGH_THRESHOLD);
+show_uncore_attr(elc_high_threshold_enable,
+		 UNCORE_INDEX_EFF_LAT_CTRL_HIGH_THRESHOLD_ENABLE);
+show_uncore_attr(elc_floor_freq_khz, UNCORE_INDEX_EFF_LAT_CTRL_FREQ);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define show_uncore_data(member_name)					\
 	static ssize_t show_##member_name(struct kobject *kobj,	\
 					   struct kobj_attribute *attr, char *buf)\
@@ -146,7 +174,12 @@ show_uncore_data(initial_max_freq_khz);
 
 static int create_attr_group(struct uncore_data *data, char *name)
 {
+<<<<<<< HEAD
 	int ret, freq, index = 0;
+=======
+	int ret, index = 0;
+	unsigned int val;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	init_attribute_rw(max_freq_khz);
 	init_attribute_rw(min_freq_khz);
@@ -168,10 +201,31 @@ static int create_attr_group(struct uncore_data *data, char *name)
 	data->uncore_attrs[index++] = &data->initial_min_freq_khz_kobj_attr.attr;
 	data->uncore_attrs[index++] = &data->initial_max_freq_khz_kobj_attr.attr;
 
+<<<<<<< HEAD
 	ret = uncore_read(data, &freq, UNCORE_INDEX_CURRENT_FREQ);
 	if (!ret)
 		data->uncore_attrs[index++] = &data->current_freq_khz_kobj_attr.attr;
 
+=======
+	ret = uncore_read(data, &val, UNCORE_INDEX_CURRENT_FREQ);
+	if (!ret)
+		data->uncore_attrs[index++] = &data->current_freq_khz_kobj_attr.attr;
+
+	ret = uncore_read(data, &val, UNCORE_INDEX_EFF_LAT_CTRL_LOW_THRESHOLD);
+	if (!ret) {
+		init_attribute_rw(elc_low_threshold_percent);
+		init_attribute_rw(elc_high_threshold_percent);
+		init_attribute_rw(elc_high_threshold_enable);
+		init_attribute_rw(elc_floor_freq_khz);
+
+		data->uncore_attrs[index++] = &data->elc_low_threshold_percent_kobj_attr.attr;
+		data->uncore_attrs[index++] = &data->elc_high_threshold_percent_kobj_attr.attr;
+		data->uncore_attrs[index++] =
+			&data->elc_high_threshold_enable_kobj_attr.attr;
+		data->uncore_attrs[index++] = &data->elc_floor_freq_khz_kobj_attr.attr;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	data->uncore_attrs[index] = NULL;
 
 	data->uncore_attr_group.name = name;

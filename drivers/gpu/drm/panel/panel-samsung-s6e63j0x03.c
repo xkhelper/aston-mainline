@@ -225,7 +225,11 @@ static int s6e63j0x03_disable(struct drm_panel *panel)
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	ctx->bl_dev->props.power = FB_BLANK_NORMAL;
+=======
+	ctx->bl_dev->props.power = BACKLIGHT_POWER_REDUCED;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = mipi_dsi_dcs_enter_sleep_mode(dsi);
 	if (ret < 0)
@@ -245,7 +249,11 @@ static int s6e63j0x03_unprepare(struct drm_panel *panel)
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	ctx->bl_dev->props.power = FB_BLANK_POWERDOWN;
+=======
+	ctx->bl_dev->props.power = BACKLIGHT_POWER_OFF;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -332,7 +340,11 @@ static int s6e63j0x03_prepare(struct drm_panel *panel)
 	if (ret < 0)
 		goto err;
 
+<<<<<<< HEAD
 	ctx->bl_dev->props.power = FB_BLANK_NORMAL;
+=======
+	ctx->bl_dev->props.power = BACKLIGHT_POWER_REDUCED;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 
@@ -393,7 +405,11 @@ static int s6e63j0x03_enable(struct drm_panel *panel)
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	ctx->bl_dev->props.power = FB_BLANK_UNBLANK;
+=======
+	ctx->bl_dev->props.power = BACKLIGHT_POWER_ON;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -473,7 +489,11 @@ static int s6e63j0x03_probe(struct mipi_dsi_device *dsi)
 
 	ctx->bl_dev->props.max_brightness = MAX_BRIGHTNESS;
 	ctx->bl_dev->props.brightness = DEFAULT_BRIGHTNESS;
+<<<<<<< HEAD
 	ctx->bl_dev->props.power = FB_BLANK_POWERDOWN;
+=======
+	ctx->bl_dev->props.power = BACKLIGHT_POWER_OFF;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	drm_panel_add(&ctx->panel);
 

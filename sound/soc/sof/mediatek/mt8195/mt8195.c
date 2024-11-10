@@ -612,7 +612,11 @@ MODULE_DEVICE_TABLE(of, sof_of_mt8195_ids);
 /* DT driver definition */
 static struct platform_driver snd_sof_of_mt8195_driver = {
 	.probe = sof_of_probe,
+<<<<<<< HEAD
 	.remove_new = sof_of_remove,
+=======
+	.remove = sof_of_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.shutdown = sof_of_shutdown,
 	.driver = {
 	.name = "sof-audio-of-mt8195",

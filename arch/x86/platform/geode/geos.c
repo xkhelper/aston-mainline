@@ -16,15 +16,19 @@
 #include <linux/init.h>
 #include <linux/io.h>
 #include <linux/string.h>
+<<<<<<< HEAD
 #include <linux/leds.h>
 #include <linux/platform_device.h>
 #include <linux/input.h>
 #include <linux/gpio_keys.h>
 #include <linux/gpio/machine.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/dmi.h>
 
 #include <asm/geode.h>
 
+<<<<<<< HEAD
 static struct gpio_keys_button geos_gpio_buttons[] = {
 	{
 		.code = KEY_RESTART,
@@ -91,13 +95,26 @@ static struct platform_device geos_leds_dev = {
 static struct platform_device *geos_devs[] __initdata = {
 	&geos_buttons_dev,
 	&geos_leds_dev,
+=======
+#include "geode-common.h"
+
+static const struct geode_led geos_leds[] __initconst = {
+	{ 6, true },
+	{ 25, false },
+	{ 27, false },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void __init register_geos(void)
 {
+<<<<<<< HEAD
 	/* Setup LED control through leds-gpio driver */
 	gpiod_add_lookup_table(&geos_leds_gpio_table);
 	platform_add_devices(geos_devs, ARRAY_SIZE(geos_devs));
+=======
+	geode_create_restart_key(3);
+	geode_create_leds("geos", geos_leds, ARRAY_SIZE(geos_leds));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int __init geos_init(void)

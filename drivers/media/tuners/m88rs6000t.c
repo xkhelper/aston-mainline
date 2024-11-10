@@ -709,7 +709,11 @@ static void m88rs6000t_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id m88rs6000t_id[] = {
+<<<<<<< HEAD
 	{"m88rs6000t", 0},
+=======
+	{ "m88rs6000t" },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 MODULE_DEVICE_TABLE(i2c, m88rs6000t_id);

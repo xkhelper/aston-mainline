@@ -127,7 +127,10 @@ struct lirc_fh {
  * @min_timeout: minimum timeout supported by device
  * @max_timeout: maximum timeout supported by device
  * @rx_resolution : resolution (in us) of input sampler
+<<<<<<< HEAD
  * @tx_resolution: resolution (in us) of output sampler
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @lirc_dev: lirc device
  * @lirc_cdev: lirc char cdev
  * @gap_start: start time for gap after timeout if non-zero
@@ -194,7 +197,10 @@ struct rc_dev {
 	u32				min_timeout;
 	u32				max_timeout;
 	u32				rx_resolution;
+<<<<<<< HEAD
 	u32				tx_resolution;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_LIRC
 	struct device			lirc_dev;
 	struct cdev			lirc_cdev;

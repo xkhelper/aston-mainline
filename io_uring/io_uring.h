@@ -39,8 +39,17 @@ struct io_wait_queue {
 	struct wait_queue_entry wq;
 	struct io_ring_ctx *ctx;
 	unsigned cq_tail;
+<<<<<<< HEAD
 	unsigned nr_timeouts;
 	ktime_t timeout;
+=======
+	unsigned cq_min_tail;
+	unsigned nr_timeouts;
+	int hit_timeout;
+	ktime_t min_timeout;
+	ktime_t timeout;
+	struct hrtimer t;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_NET_RX_BUSY_POLL
 	ktime_t napi_busy_poll_dt;
@@ -90,6 +99,10 @@ int io_uring_alloc_task_context(struct task_struct *task,
 
 int io_ring_add_registered_file(struct io_uring_task *tctx, struct file *file,
 				     int start, int end);
+<<<<<<< HEAD
+=======
+void io_req_queue_iowq(struct io_kiocb *req);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int io_poll_issue(struct io_kiocb *req, struct io_tw_state *ts);
 int io_submit_sqes(struct io_ring_ctx *ctx, unsigned int nr);
@@ -279,7 +292,18 @@ static inline bool io_sqring_full(struct io_ring_ctx *ctx)
 {
 	struct io_rings *r = ctx->rings;
 
+<<<<<<< HEAD
 	return READ_ONCE(r->sq.tail) - ctx->cached_sq_head == ctx->sq_entries;
+=======
+	/*
+	 * SQPOLL must use the actual sqring head, as using the cached_sq_head
+	 * is race prone if the SQPOLL thread has grabbed entries but not yet
+	 * committed them to the ring. For !SQPOLL, this doesn't matter, but
+	 * since this helper is just used for SQPOLL sqring waits (or POLLOUT),
+	 * just read the actual sqring head unconditionally.
+	 */
+	return READ_ONCE(r->sq.tail) - READ_ONCE(r->sq.head) == ctx->sq_entries;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline unsigned int io_sqring_entries(struct io_ring_ctx *ctx)
@@ -315,6 +339,10 @@ static inline int io_run_task_work(void)
 		if (current->io_uring) {
 			unsigned int count = 0;
 
+<<<<<<< HEAD
+=======
+			__set_current_state(TASK_RUNNING);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			tctx_task_work_run(current->io_uring, UINT_MAX, &count);
 			if (count)
 				ret = true;
@@ -437,6 +465,17 @@ static inline bool io_file_can_poll(struct io_kiocb *req)
 	return false;
 }
 
+<<<<<<< HEAD
+=======
+static inline ktime_t io_get_time(struct io_ring_ctx *ctx)
+{
+	if (ctx->clockid == CLOCK_MONOTONIC)
+		return ktime_get();
+
+	return ktime_get_with_offset(ctx->clock_offset);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum {
 	IO_CHECK_CQ_OVERFLOW_BIT,
 	IO_CHECK_CQ_DROPPED_BIT,

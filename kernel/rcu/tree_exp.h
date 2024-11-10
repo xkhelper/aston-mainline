@@ -7,6 +7,10 @@
  * Authors: Paul E. McKenney <paulmck@linux.ibm.com>
  */
 
+<<<<<<< HEAD
+=======
+#include <linux/console.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/lockdep.h>
 
 static void rcu_exp_handler(void *unused);
@@ -376,11 +380,19 @@ static void __sync_rcu_exp_select_node_cpus(struct rcu_exp_work *rewp)
 			 * post grace period updater's accesses is enforced by the
 			 * below acquire semantic.
 			 */
+<<<<<<< HEAD
 			snap = ct_dynticks_cpu_acquire(cpu);
 			if (rcu_dynticks_in_eqs(snap))
 				mask_ofl_test |= mask;
 			else
 				rdp->exp_dynticks_snap = snap;
+=======
+			snap = ct_rcu_watching_cpu_acquire(cpu);
+			if (rcu_watching_snap_in_eqs(snap))
+				mask_ofl_test |= mask;
+			else
+				rdp->exp_watching_snap = snap;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 	mask_ofl_ipi = rnp->expmask & ~mask_ofl_test;
@@ -400,7 +412,11 @@ static void __sync_rcu_exp_select_node_cpus(struct rcu_exp_work *rewp)
 		unsigned long mask = rdp->grpmask;
 
 retry_ipi:
+<<<<<<< HEAD
 		if (rcu_dynticks_in_eqs_since(rdp, rdp->exp_dynticks_snap)) {
+=======
+		if (rcu_watching_snap_stopped_since(rdp, rdp->exp_watching_snap)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			mask_ofl_test |= mask;
 			continue;
 		}
@@ -543,6 +559,70 @@ static bool synchronize_rcu_expedited_wait_once(long tlimit)
 }
 
 /*
+<<<<<<< HEAD
+=======
+ * Print out an expedited RCU CPU stall warning message.
+ */
+static void synchronize_rcu_expedited_stall(unsigned long jiffies_start, unsigned long j)
+{
+	int cpu;
+	unsigned long mask;
+	int ndetected;
+	struct rcu_node *rnp;
+	struct rcu_node *rnp_root = rcu_get_root();
+
+	if (READ_ONCE(csd_lock_suppress_rcu_stall) && csd_lock_is_stuck()) {
+		pr_err("INFO: %s detected expedited stalls, but suppressed full report due to a stuck CSD-lock.\n", rcu_state.name);
+		return;
+	}
+	pr_err("INFO: %s detected expedited stalls on CPUs/tasks: {", rcu_state.name);
+	ndetected = 0;
+	rcu_for_each_leaf_node(rnp) {
+		ndetected += rcu_print_task_exp_stall(rnp);
+		for_each_leaf_node_possible_cpu(rnp, cpu) {
+			struct rcu_data *rdp;
+
+			mask = leaf_node_cpu_bit(rnp, cpu);
+			if (!(READ_ONCE(rnp->expmask) & mask))
+				continue;
+			ndetected++;
+			rdp = per_cpu_ptr(&rcu_data, cpu);
+			pr_cont(" %d-%c%c%c%c", cpu,
+				"O."[!!cpu_online(cpu)],
+				"o."[!!(rdp->grpmask & rnp->expmaskinit)],
+				"N."[!!(rdp->grpmask & rnp->expmaskinitnext)],
+				"D."[!!data_race(rdp->cpu_no_qs.b.exp)]);
+		}
+	}
+	pr_cont(" } %lu jiffies s: %lu root: %#lx/%c\n",
+		j - jiffies_start, rcu_state.expedited_sequence, data_race(rnp_root->expmask),
+		".T"[!!data_race(rnp_root->exp_tasks)]);
+	if (ndetected) {
+		pr_err("blocking rcu_node structures (internal RCU debug):");
+		rcu_for_each_node_breadth_first(rnp) {
+			if (rnp == rnp_root)
+				continue; /* printed unconditionally */
+			if (sync_rcu_exp_done_unlocked(rnp))
+				continue;
+			pr_cont(" l=%u:%d-%d:%#lx/%c",
+				rnp->level, rnp->grplo, rnp->grphi, data_race(rnp->expmask),
+				".T"[!!data_race(rnp->exp_tasks)]);
+		}
+		pr_cont("\n");
+	}
+	rcu_for_each_leaf_node(rnp) {
+		for_each_leaf_node_possible_cpu(rnp, cpu) {
+			mask = leaf_node_cpu_bit(rnp, cpu);
+			if (!(READ_ONCE(rnp->expmask) & mask))
+				continue;
+			dump_cpu_task(cpu);
+		}
+		rcu_exp_print_detail_task_stall_rnp(rnp);
+	}
+}
+
+/*
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Wait for the expedited grace period to elapse, issuing any needed
  * RCU CPU stall warnings along the way.
  */
@@ -553,10 +633,15 @@ static void synchronize_rcu_expedited_wait(void)
 	unsigned long jiffies_stall;
 	unsigned long jiffies_start;
 	unsigned long mask;
+<<<<<<< HEAD
 	int ndetected;
 	struct rcu_data *rdp;
 	struct rcu_node *rnp;
 	struct rcu_node *rnp_root = rcu_get_root();
+=======
+	struct rcu_data *rdp;
+	struct rcu_node *rnp;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long flags;
 
 	trace_rcu_exp_grace_period(rcu_state.name, rcu_exp_gp_seq_endval(), TPS("startwait"));
@@ -590,6 +675,7 @@ static void synchronize_rcu_expedited_wait(void)
 			return;
 		if (rcu_stall_is_suppressed())
 			continue;
+<<<<<<< HEAD
 		j = jiffies;
 		rcu_stall_notifier_call_chain(RCU_STALL_NOTIFY_EXP, (void *)(j - jiffies_start));
 		trace_rcu_stall_warning(rcu_state.name, TPS("ExpeditedStall"));
@@ -643,6 +729,19 @@ static void synchronize_rcu_expedited_wait(void)
 			rcu_exp_print_detail_task_stall_rnp(rnp);
 		}
 		jiffies_stall = 3 * rcu_exp_jiffies_till_stall_check() + 3;
+=======
+
+		nbcon_cpu_emergency_enter();
+
+		j = jiffies;
+		rcu_stall_notifier_call_chain(RCU_STALL_NOTIFY_EXP, (void *)(j - jiffies_start));
+		trace_rcu_stall_warning(rcu_state.name, TPS("ExpeditedStall"));
+		synchronize_rcu_expedited_stall(jiffies_start, j);
+		jiffies_stall = 3 * rcu_exp_jiffies_till_stall_check() + 3;
+
+		nbcon_cpu_emergency_exit();
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		panic_on_rcu_stall();
 	}
 }

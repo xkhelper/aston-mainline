@@ -1,9 +1,16 @@
+<<<<<<< HEAD
+=======
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Spreadtrum SC2731 PMIC dts file
  *
  * Copyright (C) 2018, Spreadtrum Communications Inc.
+<<<<<<< HEAD
  *
  * SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 &adi_bus {
@@ -95,7 +102,11 @@
 			nvmem-cells = <&adc_big_scale>, <&adc_small_scale>;
 		};
 
+<<<<<<< HEAD
 		fgu@a00 {
+=======
+		fuel-gauge@a00 {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			compatible = "sprd,sc2731-fgu";
 			reg = <0xa00>;
 			bat-detect-gpio = <&pmic_eic 9 GPIO_ACTIVE_HIGH>;

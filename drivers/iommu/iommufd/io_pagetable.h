@@ -6,8 +6,13 @@
 #define __IO_PAGETABLE_H
 
 #include <linux/interval_tree.h>
+<<<<<<< HEAD
 #include <linux/mutex.h>
 #include <linux/kref.h>
+=======
+#include <linux/kref.h>
+#include <linux/mutex.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/xarray.h>
 
 #include "iommufd_private.h"

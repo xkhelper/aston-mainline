@@ -150,7 +150,11 @@ static int node_name_cmp(const struct device_node *dn1,
 static int adjust_local_phandle_references(struct device_node *local_fixups,
 		struct device_node *overlay, int phandle_delta)
 {
+<<<<<<< HEAD
 	struct device_node *child, *overlay_child;
+=======
+	struct device_node *overlay_child;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct property *prop_fix, *prop;
 	int err, i, count;
 	unsigned int off;
@@ -194,7 +198,11 @@ static int adjust_local_phandle_references(struct device_node *local_fixups,
 	 * The roots of the subtrees are the overlay's __local_fixups__ node
 	 * and the overlay's root node.
 	 */
+<<<<<<< HEAD
 	for_each_child_of_node(local_fixups, child) {
+=======
+	for_each_child_of_node_scoped(local_fixups, child) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		for_each_child_of_node(overlay, overlay_child)
 			if (!node_name_cmp(child, overlay_child)) {
@@ -202,6 +210,7 @@ static int adjust_local_phandle_references(struct device_node *local_fixups,
 				break;
 			}
 
+<<<<<<< HEAD
 		if (!overlay_child) {
 			of_node_put(child);
 			return -EINVAL;
@@ -213,6 +222,15 @@ static int adjust_local_phandle_references(struct device_node *local_fixups,
 			of_node_put(child);
 			return err;
 		}
+=======
+		if (!overlay_child)
+			return -EINVAL;
+
+		err = adjust_local_phandle_references(child, overlay_child,
+				phandle_delta);
+		if (err)
+			return err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;

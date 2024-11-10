@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/bin/sh
+=======
+#!/bin/bash
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # perf annotate basic tests
 # SPDX-License-Identifier: GPL-2.0
 
@@ -28,6 +32,10 @@ cleanup() {
 }
 
 trap_cleanup() {
+<<<<<<< HEAD
+=======
+  echo "Unexpected signal in ${FUNCNAME[1]}"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   cleanup
   exit 1
 }

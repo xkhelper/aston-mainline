@@ -1879,6 +1879,10 @@ static const struct dmi_system_id vlv_dsi_dmi_quirk_table[] = {
 
 void vlv_dsi_init(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
+=======
+	struct intel_display *display = &dev_priv->display;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_dsi *intel_dsi;
 	struct intel_encoder *encoder;
 	struct intel_connector *connector;
@@ -1890,7 +1894,11 @@ void vlv_dsi_init(struct drm_i915_private *dev_priv)
 	drm_dbg_kms(&dev_priv->drm, "\n");
 
 	/* There is no detection method for MIPI so rely on VBT */
+<<<<<<< HEAD
 	if (!intel_bios_is_dsi_present(dev_priv, &port))
+=======
+	if (!intel_bios_is_dsi_present(display, &port))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	if (IS_GEMINILAKE(dev_priv) || IS_BROXTON(dev_priv))
@@ -1945,7 +1953,11 @@ void vlv_dsi_init(struct drm_i915_private *dev_priv)
 
 	intel_dsi->panel_power_off_time = ktime_get_boottime();
 
+<<<<<<< HEAD
 	intel_bios_init_panel_late(dev_priv, &connector->panel, NULL, NULL);
+=======
+	intel_bios_init_panel_late(display, &connector->panel, NULL, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (connector->panel.vbt.dsi.config->dual_link)
 		intel_dsi->ports = BIT(PORT_A) | BIT(PORT_C);

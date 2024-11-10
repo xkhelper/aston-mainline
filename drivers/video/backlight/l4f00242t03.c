@@ -166,6 +166,10 @@ static const struct lcd_ops l4f_ops = {
 static int l4f00242t03_probe(struct spi_device *spi)
 {
 	struct l4f00242t03_priv *priv;
+<<<<<<< HEAD
+=======
+	int ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	priv = devm_kzalloc(&spi->dev, sizeof(struct l4f00242t03_priv),
 				GFP_KERNEL);
@@ -174,7 +178,13 @@ static int l4f00242t03_probe(struct spi_device *spi)
 
 	spi_set_drvdata(spi, priv);
 	spi->bits_per_word = 9;
+<<<<<<< HEAD
 	spi_setup(spi);
+=======
+	ret = spi_setup(spi);
+	if (ret < 0)
+		return dev_err_probe(&spi->dev, ret, "Unable to setup spi.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	priv->spi = spi;
 

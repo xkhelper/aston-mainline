@@ -263,10 +263,13 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &pinctrl {
 	aspeed,external-nodes = <&gfx &lhc>;
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &gpio {
 	pin_gpio_b0 {
 		gpio-hog;

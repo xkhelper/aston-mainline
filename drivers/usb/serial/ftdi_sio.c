@@ -2871,7 +2871,10 @@ static int ftdi_ioctl(struct tty_struct *tty,
 
 static struct usb_serial_driver ftdi_device = {
 	.driver = {
+<<<<<<< HEAD
 		.owner =	THIS_MODULE,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name =		"ftdi_sio",
 		.dev_groups =	ftdi_groups,
 	},

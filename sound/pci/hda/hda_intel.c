@@ -40,7 +40,10 @@
 
 #ifdef CONFIG_X86
 /* for snoop control */
+<<<<<<< HEAD
 #include <linux/dma-map-ops.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/set_memory.h>
 #include <asm/cpufeature.h>
 #endif
@@ -176,8 +179,13 @@ module_param(power_save, xint, 0644);
 MODULE_PARM_DESC(power_save, "Automatic power-saving timeout "
 		 "(in second, 0 = disable).");
 
+<<<<<<< HEAD
 static bool pm_blacklist = true;
 module_param(pm_blacklist, bool, 0644);
+=======
+static int pm_blacklist = -1;
+module_param(pm_blacklist, bint, 0644);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_PARM_DESC(pm_blacklist, "Enable power-management denylist");
 
 /* reset the HD-audio controller in power save mode.
@@ -189,7 +197,11 @@ module_param(power_save_controller, bool, 0644);
 MODULE_PARM_DESC(power_save_controller, "Reset controller in power save mode.");
 #else /* CONFIG_PM */
 #define power_save	0
+<<<<<<< HEAD
 #define pm_blacklist	false
+=======
+#define pm_blacklist	0
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define power_save_controller	false
 #endif /* CONFIG_PM */
 
@@ -307,7 +319,11 @@ enum {
 
 /* quirks for ATI HDMI with snoop off */
 #define AZX_DCAPS_PRESET_ATI_HDMI_NS \
+<<<<<<< HEAD
 	(AZX_DCAPS_PRESET_ATI_HDMI | AZX_DCAPS_AMD_ALLOC_FIX)
+=======
+	(AZX_DCAPS_PRESET_ATI_HDMI | AZX_DCAPS_SNOOP_OFF)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* quirks for AMD SB */
 #define AZX_DCAPS_PRESET_AMD_SB \
@@ -931,10 +947,21 @@ static int __maybe_unused param_set_xint(const char *val, const struct kernel_pa
 	if (ret || prev == power_save)
 		return ret;
 
+<<<<<<< HEAD
 	mutex_lock(&card_list_lock);
 	list_for_each_entry(hda, &card_list, list) {
 		chip = &hda->chip;
 		if (!hda->probe_continued || chip->disabled)
+=======
+	if (pm_blacklist > 0)
+		return 0;
+
+	mutex_lock(&card_list_lock);
+	list_for_each_entry(hda, &card_list, list) {
+		chip = &hda->chip;
+		if (!hda->probe_continued || chip->disabled ||
+		    hda->runtime_pm_disabled)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 		snd_hda_set_power_save(&chip->bus, power_save * 1000);
 	}
@@ -1703,6 +1730,7 @@ static void azx_check_snoop_available(struct azx *chip)
 	if (chip->driver_caps & AZX_DCAPS_SNOOP_OFF)
 		snoop = false;
 
+<<<<<<< HEAD
 #ifdef CONFIG_X86
 	/* check the presence of DMA ops (i.e. IOMMU), disable snoop conditionally */
 	if ((chip->driver_caps & AZX_DCAPS_AMD_ALLOC_FIX) &&
@@ -1710,6 +1738,8 @@ static void azx_check_snoop_available(struct azx *chip)
 		snoop = false;
 #endif
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	chip->snoop = snoop;
 	if (!snoop) {
 		dev_info(chip->card->dev, "Force to non-snoop mode\n");
@@ -1817,7 +1847,11 @@ static int azx_create(struct snd_card *card, struct pci_dev *pci,
 
 	/* use the non-cached pages in non-snoop mode */
 	if (!azx_snoop(chip))
+<<<<<<< HEAD
 		azx_bus(chip)->dma_type = SNDRV_DMA_TYPE_DEV_WC_SG;
+=======
+		azx_bus(chip)->dma_type = SNDRV_DMA_TYPE_DEV_WC;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (chip->driver_type == AZX_DRIVER_NVIDIA) {
 		dev_dbg(chip->card->dev, "Enable delay in RIRB handling\n");
@@ -2251,9 +2285,16 @@ static const struct snd_pci_quirk power_save_denylist[] = {
 
 static void set_default_power_save(struct azx *chip)
 {
+<<<<<<< HEAD
 	int val = power_save;
 
 	if (pm_blacklist) {
+=======
+	struct hda_intel *hda = container_of(chip, struct hda_intel, chip);
+	int val = power_save;
+
+	if (pm_blacklist < 0) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		const struct snd_pci_quirk *q;
 
 		q = snd_pci_quirk_lookup(chip->pci, power_save_denylist);
@@ -2261,7 +2302,15 @@ static void set_default_power_save(struct azx *chip)
 			dev_info(chip->card->dev, "device %04x:%04x is on the power_save denylist, forcing power_save to 0\n",
 				 q->subvendor, q->subdevice);
 			val = 0;
+<<<<<<< HEAD
 		}
+=======
+			hda->runtime_pm_disabled = 1;
+		}
+	} else if (pm_blacklist > 0) {
+		dev_info(chip->card->dev, "Forcing power_save to 0 via option\n");
+		val = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	snd_hda_set_power_save(&chip->bus, val * 1000);
 }
@@ -2679,7 +2728,11 @@ static const struct pci_device_id azx_ids[] = {
 	  .driver_data = AZX_DRIVER_ATIHDMI_NS | AZX_DCAPS_PRESET_ATI_HDMI_NS |
 	  AZX_DCAPS_PM_RUNTIME },
 	/* GLENFLY */
+<<<<<<< HEAD
 	{ PCI_DEVICE(0x6766, PCI_ANY_ID),
+=======
+	{ PCI_DEVICE(PCI_VENDOR_ID_GLENFLY, PCI_ANY_ID),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	  .class = PCI_CLASS_MULTIMEDIA_HD_AUDIO << 8,
 	  .class_mask = 0xffffff,
 	  .driver_data = AZX_DRIVER_GFHDMI | AZX_DCAPS_POSFIX_LPIB |

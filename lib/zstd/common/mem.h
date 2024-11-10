@@ -15,7 +15,11 @@
 /*-****************************************
 *  Dependencies
 ******************************************/
+<<<<<<< HEAD
 #include <asm/unaligned.h>  /* get_unaligned, put_unaligned* */
+=======
+#include <linux/unaligned.h>  /* get_unaligned, put_unaligned* */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/compiler.h>  /* inline */
 #include <linux/swab.h>  /* swab32, swab64 */
 #include <linux/types.h>  /* size_t, ptrdiff_t */

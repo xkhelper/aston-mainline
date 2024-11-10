@@ -134,12 +134,20 @@ int vfio_virqfd_enable(void *opaque,
 	INIT_WORK(&virqfd->flush_inject, virqfd_flush_inject);
 
 	irqfd = fdget(fd);
+<<<<<<< HEAD
 	if (!irqfd.file) {
+=======
+	if (!fd_file(irqfd)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EBADF;
 		goto err_fd;
 	}
 
+<<<<<<< HEAD
 	ctx = eventfd_ctx_fileget(irqfd.file);
+=======
+	ctx = eventfd_ctx_fileget(fd_file(irqfd));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(ctx)) {
 		ret = PTR_ERR(ctx);
 		goto err_ctx;
@@ -171,7 +179,11 @@ int vfio_virqfd_enable(void *opaque,
 	init_waitqueue_func_entry(&virqfd->wait, virqfd_wakeup);
 	init_poll_funcptr(&virqfd->pt, virqfd_ptable_queue_proc);
 
+<<<<<<< HEAD
 	events = vfs_poll(irqfd.file, &virqfd->pt);
+=======
+	events = vfs_poll(fd_file(irqfd), &virqfd->pt);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Check if there was an event already pending on the eventfd

@@ -7,6 +7,10 @@
  */
 
 #include <linux/debugfs.h>
+<<<<<<< HEAD
+=======
+#include <linux/delay.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/kernel.h>
 #include <linux/math64.h>
 #include <linux/module.h>
@@ -110,6 +114,11 @@ struct pmbus_data {
 
 	int vout_low[PMBUS_PAGES];	/* voltage low margin */
 	int vout_high[PMBUS_PAGES];	/* voltage high margin */
+<<<<<<< HEAD
+=======
+	ktime_t write_time;		/* Last SMBUS write timestamp */
+	ktime_t access_time;		/* Last SMBUS access timestamp */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct pmbus_debugfs_entry {
@@ -160,6 +169,42 @@ void pmbus_set_update(struct i2c_client *client, u8 reg, bool update)
 }
 EXPORT_SYMBOL_NS_GPL(pmbus_set_update, PMBUS);
 
+<<<<<<< HEAD
+=======
+/* Some chips need a delay between accesses. */
+static void pmbus_wait(struct i2c_client *client)
+{
+	struct pmbus_data *data = i2c_get_clientdata(client);
+	const struct pmbus_driver_info *info = data->info;
+	s64 delta;
+
+	if (info->access_delay) {
+		delta = ktime_us_delta(ktime_get(), data->access_time);
+
+		if (delta < info->access_delay)
+			fsleep(info->access_delay - delta);
+	} else if (info->write_delay) {
+		delta = ktime_us_delta(ktime_get(), data->write_time);
+
+		if (delta < info->write_delay)
+			fsleep(info->write_delay - delta);
+	}
+}
+
+/* Sets the last accessed timestamp for pmbus_wait */
+static void pmbus_update_ts(struct i2c_client *client, bool write_op)
+{
+	struct pmbus_data *data = i2c_get_clientdata(client);
+	const struct pmbus_driver_info *info = data->info;
+
+	if (info->access_delay) {
+		data->access_time = ktime_get();
+	} else if (info->write_delay && write_op) {
+		data->write_time = ktime_get();
+	}
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int pmbus_set_page(struct i2c_client *client, int page, int phase)
 {
 	struct pmbus_data *data = i2c_get_clientdata(client);
@@ -170,11 +215,23 @@ int pmbus_set_page(struct i2c_client *client, int page, int phase)
 
 	if (!(data->info->func[page] & PMBUS_PAGE_VIRTUAL) &&
 	    data->info->pages > 1 && page != data->currpage) {
+<<<<<<< HEAD
 		rv = i2c_smbus_write_byte_data(client, PMBUS_PAGE, page);
 		if (rv < 0)
 			return rv;
 
 		rv = i2c_smbus_read_byte_data(client, PMBUS_PAGE);
+=======
+		pmbus_wait(client);
+		rv = i2c_smbus_write_byte_data(client, PMBUS_PAGE, page);
+		pmbus_update_ts(client, true);
+		if (rv < 0)
+			return rv;
+
+		pmbus_wait(client);
+		rv = i2c_smbus_read_byte_data(client, PMBUS_PAGE);
+		pmbus_update_ts(client, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (rv < 0)
 			return rv;
 
@@ -185,8 +242,15 @@ int pmbus_set_page(struct i2c_client *client, int page, int phase)
 
 	if (data->info->phases[page] && data->currphase != phase &&
 	    !(data->info->func[page] & PMBUS_PHASE_VIRTUAL)) {
+<<<<<<< HEAD
 		rv = i2c_smbus_write_byte_data(client, PMBUS_PHASE,
 					       phase);
+=======
+		pmbus_wait(client);
+		rv = i2c_smbus_write_byte_data(client, PMBUS_PHASE,
+					       phase);
+		pmbus_update_ts(client, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (rv)
 			return rv;
 	}
@@ -204,7 +268,15 @@ int pmbus_write_byte(struct i2c_client *client, int page, u8 value)
 	if (rv < 0)
 		return rv;
 
+<<<<<<< HEAD
 	return i2c_smbus_write_byte(client, value);
+=======
+	pmbus_wait(client);
+	rv = i2c_smbus_write_byte(client, value);
+	pmbus_update_ts(client, true);
+
+	return rv;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_NS_GPL(pmbus_write_byte, PMBUS);
 
@@ -235,7 +307,15 @@ int pmbus_write_word_data(struct i2c_client *client, int page, u8 reg,
 	if (rv < 0)
 		return rv;
 
+<<<<<<< HEAD
 	return i2c_smbus_write_word_data(client, reg, word);
+=======
+	pmbus_wait(client);
+	rv = i2c_smbus_write_word_data(client, reg, word);
+	pmbus_update_ts(client, true);
+
+	return rv;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_NS_GPL(pmbus_write_word_data, PMBUS);
 
@@ -353,7 +433,15 @@ int pmbus_read_word_data(struct i2c_client *client, int page, int phase, u8 reg)
 	if (rv < 0)
 		return rv;
 
+<<<<<<< HEAD
 	return i2c_smbus_read_word_data(client, reg);
+=======
+	pmbus_wait(client);
+	rv = i2c_smbus_read_word_data(client, reg);
+	pmbus_update_ts(client, false);
+
+	return rv;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_NS_GPL(pmbus_read_word_data, PMBUS);
 
@@ -412,7 +500,15 @@ int pmbus_read_byte_data(struct i2c_client *client, int page, u8 reg)
 	if (rv < 0)
 		return rv;
 
+<<<<<<< HEAD
 	return i2c_smbus_read_byte_data(client, reg);
+=======
+	pmbus_wait(client);
+	rv = i2c_smbus_read_byte_data(client, reg);
+	pmbus_update_ts(client, false);
+
+	return rv;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_NS_GPL(pmbus_read_byte_data, PMBUS);
 
@@ -424,7 +520,15 @@ int pmbus_write_byte_data(struct i2c_client *client, int page, u8 reg, u8 value)
 	if (rv < 0)
 		return rv;
 
+<<<<<<< HEAD
 	return i2c_smbus_write_byte_data(client, reg, value);
+=======
+	pmbus_wait(client);
+	rv = i2c_smbus_write_byte_data(client, reg, value);
+	pmbus_update_ts(client, true);
+
+	return rv;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_NS_GPL(pmbus_write_byte_data, PMBUS);
 
@@ -456,7 +560,15 @@ static int pmbus_read_block_data(struct i2c_client *client, int page, u8 reg,
 	if (rv < 0)
 		return rv;
 
+<<<<<<< HEAD
 	return i2c_smbus_read_block_data(client, reg, data_buf);
+=======
+	pmbus_wait(client);
+	rv = i2c_smbus_read_block_data(client, reg, data_buf);
+	pmbus_update_ts(client, false);
+
+	return rv;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct pmbus_sensor *pmbus_find_sensor(struct pmbus_data *data, int page,
@@ -2457,9 +2569,17 @@ static int pmbus_read_coefficients(struct i2c_client *client,
 	data.block[1] = attr->reg;
 	data.block[2] = 0x01;
 
+<<<<<<< HEAD
 	rv = i2c_smbus_xfer(client->adapter, client->addr, client->flags,
 			    I2C_SMBUS_WRITE, PMBUS_COEFFICIENTS,
 			    I2C_SMBUS_BLOCK_PROC_CALL, &data);
+=======
+	pmbus_wait(client);
+	rv = i2c_smbus_xfer(client->adapter, client->addr, client->flags,
+			    I2C_SMBUS_WRITE, PMBUS_COEFFICIENTS,
+			    I2C_SMBUS_BLOCK_PROC_CALL, &data);
+	pmbus_update_ts(client, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (rv < 0)
 		return rv;
@@ -2611,7 +2731,14 @@ static int pmbus_init_common(struct i2c_client *client, struct pmbus_data *data,
 
 	/* Enable PEC if the controller and bus supports it */
 	if (!(data->flags & PMBUS_NO_CAPABILITY)) {
+<<<<<<< HEAD
 		ret = i2c_smbus_read_byte_data(client, PMBUS_CAPABILITY);
+=======
+		pmbus_wait(client);
+		ret = i2c_smbus_read_byte_data(client, PMBUS_CAPABILITY);
+		pmbus_update_ts(client, false);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret >= 0 && (ret & PB_CAPABILITY_ERROR_CHECK)) {
 			if (i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_PEC))
 				client->flags |= I2C_CLIENT_PEC;
@@ -2624,10 +2751,23 @@ static int pmbus_init_common(struct i2c_client *client, struct pmbus_data *data,
 	 * Bail out if both registers are not supported.
 	 */
 	data->read_status = pmbus_read_status_word;
+<<<<<<< HEAD
 	ret = i2c_smbus_read_word_data(client, PMBUS_STATUS_WORD);
 	if (ret < 0 || ret == 0xffff) {
 		data->read_status = pmbus_read_status_byte;
 		ret = i2c_smbus_read_byte_data(client, PMBUS_STATUS_BYTE);
+=======
+	pmbus_wait(client);
+	ret = i2c_smbus_read_word_data(client, PMBUS_STATUS_WORD);
+	pmbus_update_ts(client, false);
+
+	if (ret < 0 || ret == 0xffff) {
+		data->read_status = pmbus_read_status_byte;
+		pmbus_wait(client);
+		ret = i2c_smbus_read_byte_data(client, PMBUS_STATUS_BYTE);
+		pmbus_update_ts(client, false);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret < 0 || ret == 0xff) {
 			dev_err(dev, "PMBus status register not found\n");
 			return -ENODEV;
@@ -2642,7 +2782,14 @@ static int pmbus_init_common(struct i2c_client *client, struct pmbus_data *data,
 	 * limit registers need to be disabled.
 	 */
 	if (!(data->flags & PMBUS_NO_WRITE_PROTECT)) {
+<<<<<<< HEAD
 		ret = i2c_smbus_read_byte_data(client, PMBUS_WRITE_PROTECT);
+=======
+		pmbus_wait(client);
+		ret = i2c_smbus_read_byte_data(client, PMBUS_WRITE_PROTECT);
+		pmbus_update_ts(client, false);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret > 0 && (ret & PB_WP_ANY))
 			data->flags |= PMBUS_WRITE_PROTECTED | PMBUS_SKIP_STATUS_CHECK;
 	}

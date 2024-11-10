@@ -72,6 +72,14 @@
 	};
 };
 
+<<<<<<< HEAD
+=======
+&clks {
+	assigned-clocks = <&clks IMX6SX_CLK_ENET_REF>;
+	assigned-clock-rates = <50000000>;
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &fec1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_enet1>;

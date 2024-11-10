@@ -56,7 +56,10 @@ struct sigcontext {
 
 #if _MIPS_SIM == _MIPS_SIM_ABI64 || _MIPS_SIM == _MIPS_SIM_NABI32
 
+<<<<<<< HEAD
 #include <linux/posix_types.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Keep this struct definition in sync with the sigcontext fragment
  * in arch/mips/kernel/asm-offsets.c

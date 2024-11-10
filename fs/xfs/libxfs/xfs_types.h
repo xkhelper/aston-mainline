@@ -235,6 +235,7 @@ bool xfs_verify_fileoff(struct xfs_mount *mp, xfs_fileoff_t off);
 bool xfs_verify_fileext(struct xfs_mount *mp, xfs_fileoff_t off,
 		xfs_fileoff_t len);
 
+<<<<<<< HEAD
 /* Do we support an rt volume having this number of rtextents? */
 static inline bool
 xfs_validate_rtextents(
@@ -247,4 +248,6 @@ xfs_validate_rtextents(
 	return true;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif	/* __XFS_TYPES_H__ */

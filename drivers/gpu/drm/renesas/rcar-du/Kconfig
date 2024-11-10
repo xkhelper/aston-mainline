@@ -62,6 +62,7 @@ config DRM_RCAR_MIPI_DSI
 	select DRM_MIPI_DSI
 	select RESET_CONTROLLER
 
+<<<<<<< HEAD
 config DRM_RZG2L_MIPI_DSI
 	tristate "RZ/G2L MIPI DSI Encoder Support"
 	depends on DRM && DRM_BRIDGE && OF
@@ -70,6 +71,8 @@ config DRM_RZG2L_MIPI_DSI
 	help
 	  Enable support for the RZ/G2L Display Unit embedded MIPI DSI encoders.
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config DRM_RCAR_VSP
 	bool "R-Car DU VSP Compositor Support" if ARM
 	default y if ARM64

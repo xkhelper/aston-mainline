@@ -604,6 +604,24 @@ static int spi_geni_prepare_message(struct spi_controller *spi,
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
+=======
+static void spi_geni_release_dma_chan(void *data)
+{
+	struct spi_geni_master *mas = data;
+
+	if (mas->rx) {
+		dma_release_channel(mas->rx);
+		mas->rx = NULL;
+	}
+
+	if (mas->tx) {
+		dma_release_channel(mas->tx);
+		mas->tx = NULL;
+	}
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int spi_geni_grab_gpi_chan(struct spi_geni_master *mas)
 {
 	int ret;
@@ -622,6 +640,15 @@ static int spi_geni_grab_gpi_chan(struct spi_geni_master *mas)
 		goto err_rx;
 	}
 
+<<<<<<< HEAD
+=======
+	ret = devm_add_action_or_reset(mas->dev, spi_geni_release_dma_chan, mas);
+	if (ret) {
+		dev_err(mas->dev, "Unable to add action.\n");
+		return ret;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 
 err_rx:
@@ -632,6 +659,7 @@ err_tx:
 	return ret;
 }
 
+<<<<<<< HEAD
 static void spi_geni_release_dma_chan(struct spi_geni_master *mas)
 {
 	if (mas->rx) {
@@ -645,6 +673,8 @@ static void spi_geni_release_dma_chan(struct spi_geni_master *mas)
 	}
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int spi_geni_init(struct spi_geni_master *mas)
 {
 	struct spi_controller *spi = dev_get_drvdata(mas->dev);
@@ -1108,6 +1138,14 @@ static int spi_geni_probe(struct platform_device *pdev)
 	init_completion(&mas->tx_reset_done);
 	init_completion(&mas->rx_reset_done);
 	spin_lock_init(&mas->lock);
+<<<<<<< HEAD
+=======
+
+	ret = geni_icc_get(&mas->se, NULL);
+	if (ret)
+		return ret;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pm_runtime_use_autosuspend(&pdev->dev);
 	pm_runtime_set_autosuspend_delay(&pdev->dev, 250);
 	ret = devm_pm_runtime_enable(dev);
@@ -1117,9 +1155,12 @@ static int spi_geni_probe(struct platform_device *pdev)
 	if (device_property_read_bool(&pdev->dev, "spi-slave"))
 		spi->target = true;
 
+<<<<<<< HEAD
 	ret = geni_icc_get(&mas->se, NULL);
 	if (ret)
 		return ret;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Set the bus quota to a reasonable value for register access */
 	mas->se.icc_paths[GENI_TO_CORE].avg_bw = Bps_to_icc(CORE_2X_50_MHZ);
 	mas->se.icc_paths[CPU_TO_GENI].avg_bw = GENI_DEFAULT_BW;
@@ -1146,6 +1187,7 @@ static int spi_geni_probe(struct platform_device *pdev)
 	if (mas->cur_xfer_mode == GENI_GPI_DMA)
 		spi->flags = SPI_CONTROLLER_MUST_TX;
 
+<<<<<<< HEAD
 	ret = request_irq(mas->irq, geni_spi_isr, 0, dev_name(dev), spi);
 	if (ret)
 		goto spi_geni_release_dma;
@@ -1173,6 +1215,13 @@ static void spi_geni_remove(struct platform_device *pdev)
 	free_irq(mas->irq, spi);
 
 	spi_geni_release_dma_chan(mas);
+=======
+	ret = devm_request_irq(dev, mas->irq, geni_spi_isr, 0, dev_name(dev), spi);
+	if (ret)
+		return ret;
+
+	return devm_spi_register_controller(dev, spi);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int __maybe_unused spi_geni_runtime_suspend(struct device *dev)
@@ -1254,7 +1303,10 @@ MODULE_DEVICE_TABLE(of, spi_geni_dt_match);
 
 static struct platform_driver spi_geni_driver = {
 	.probe  = spi_geni_probe,
+<<<<<<< HEAD
 	.remove_new = spi_geni_remove,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "geni_spi",
 		.pm = &spi_geni_pm_ops,

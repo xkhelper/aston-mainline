@@ -621,6 +621,10 @@ void LZ4_resetStreamHC(LZ4_streamHC_t *LZ4_streamHCPtr, int compressionLevel)
 	LZ4_streamHCPtr->internal_donotuse.base = NULL;
 	LZ4_streamHCPtr->internal_donotuse.compressionLevel = (unsigned int)compressionLevel;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(LZ4_resetStreamHC);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int LZ4_loadDictHC(LZ4_streamHC_t *LZ4_streamHCPtr,
 	const char *dictionary,

@@ -1410,7 +1410,11 @@ static void rj54n1_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id rj54n1_id[] = {
+<<<<<<< HEAD
 	{ "rj54n1cb0c", 0 },
+=======
+	{ "rj54n1cb0c" },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, rj54n1_id);

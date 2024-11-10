@@ -606,7 +606,11 @@ static void iproc_adc_remove(struct platform_device *pdev)
 
 static const struct of_device_id iproc_adc_of_match[] = {
 	{.compatible = "brcm,iproc-static-adc", },
+<<<<<<< HEAD
 	{ },
+=======
+	{ }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(of, iproc_adc_of_match);
 

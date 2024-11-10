@@ -355,6 +355,11 @@ just do it. As a result, a sequence of smaller series gets merged quicker and
 with better review coverage. Re-posting large series also increases the mailing
 list traffic.
 
+<<<<<<< HEAD
+=======
+.. _rcs:
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Local variable ordering ("reverse xmas tree", "RCS")
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -391,6 +396,24 @@ APIs and helpers, especially scoped iterators. However, direct use of
 ``__free()`` within networking core and drivers is discouraged.
 Similar guidance applies to declaring variables mid-function.
 
+<<<<<<< HEAD
+=======
+Clean-up patches
+~~~~~~~~~~~~~~~~
+
+Netdev discourages patches which perform simple clean-ups, which are not in
+the context of other work. For example:
+
+* Addressing ``checkpatch.pl`` warnings
+* Addressing :ref:`Local variable ordering<rcs>` issues
+* Conversions to device-managed APIs (``devm_`` helpers)
+
+This is because it is felt that the churn that such changes produce comes
+at a greater cost than the value of such clean-ups.
+
+Conversely, spelling and grammar fixes are not discouraged.
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Resending after review
 ~~~~~~~~~~~~~~~~~~~~~~
 

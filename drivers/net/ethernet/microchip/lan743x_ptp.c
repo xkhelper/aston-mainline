@@ -401,6 +401,7 @@ static int lan743x_ptpci_settime64(struct ptp_clock_info *ptpci,
 	u32 nano_seconds = 0;
 	u32 seconds = 0;
 
+<<<<<<< HEAD
 	if (ts) {
 		if (ts->tv_sec > 0xFFFFFFFFLL ||
 		    ts->tv_sec < 0) {
@@ -423,6 +424,23 @@ static int lan743x_ptpci_settime64(struct ptp_clock_info *ptpci,
 		netif_warn(adapter, drv, adapter->netdev, "ts == NULL\n");
 		return -EINVAL;
 	}
+=======
+	if (ts->tv_sec > 0xFFFFFFFFLL) {
+		netif_warn(adapter, drv, adapter->netdev,
+			   "ts->tv_sec out of range, %lld\n",
+			   ts->tv_sec);
+		return -ERANGE;
+	}
+	if (ts->tv_nsec < 0) {
+		netif_warn(adapter, drv, adapter->netdev,
+			   "ts->tv_nsec out of range, %ld\n",
+			   ts->tv_nsec);
+		return -ERANGE;
+	}
+	seconds = ts->tv_sec;
+	nano_seconds = ts->tv_nsec;
+	lan743x_ptp_clock_set(adapter, seconds, nano_seconds, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

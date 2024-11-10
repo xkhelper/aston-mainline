@@ -28,6 +28,16 @@
 
 #define MICFIL_OSR_DEFAULT	16
 
+<<<<<<< HEAD
+=======
+#define MICFIL_NUM_RATES	7
+#define MICFIL_CLK_SRC_NUM	3
+/* clock source ids */
+#define MICFIL_AUDIO_PLL1	0
+#define MICFIL_AUDIO_PLL2	1
+#define MICFIL_CLK_EXT3		2
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum quality {
 	QUALITY_HIGH,
 	QUALITY_MEDIUM,
@@ -45,9 +55,18 @@ struct fsl_micfil {
 	struct clk *mclk;
 	struct clk *pll8k_clk;
 	struct clk *pll11k_clk;
+<<<<<<< HEAD
 	struct snd_dmaengine_dai_dma_data dma_params_rx;
 	struct sdma_peripheral_config sdmacfg;
 	struct snd_soc_card *card;
+=======
+	struct clk *clk_src[MICFIL_CLK_SRC_NUM];
+	struct snd_dmaengine_dai_dma_data dma_params_rx;
+	struct sdma_peripheral_config sdmacfg;
+	struct snd_soc_card *card;
+	struct snd_pcm_hw_constraint_list constraint_rates;
+	unsigned int constraint_rates_list[MICFIL_NUM_RATES];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int dataline;
 	char name[32];
 	int irq[MICFIL_IRQ_LINES];
@@ -67,6 +86,10 @@ struct fsl_micfil_soc_data {
 	bool imx;
 	bool use_edma;
 	bool use_verid;
+<<<<<<< HEAD
+=======
+	bool volume_sx;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64  formats;
 };
 
@@ -76,6 +99,10 @@ static struct fsl_micfil_soc_data fsl_micfil_imx8mm = {
 	.fifo_depth = 8,
 	.dataline =  0xf,
 	.formats = SNDRV_PCM_FMTBIT_S16_LE,
+<<<<<<< HEAD
+=======
+	.volume_sx = true,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct fsl_micfil_soc_data fsl_micfil_imx8mp = {
@@ -84,6 +111,10 @@ static struct fsl_micfil_soc_data fsl_micfil_imx8mp = {
 	.fifo_depth = 32,
 	.dataline =  0xf,
 	.formats = SNDRV_PCM_FMTBIT_S32_LE,
+<<<<<<< HEAD
+=======
+	.volume_sx = false,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct fsl_micfil_soc_data fsl_micfil_imx93 = {
@@ -94,6 +125,10 @@ static struct fsl_micfil_soc_data fsl_micfil_imx93 = {
 	.formats = SNDRV_PCM_FMTBIT_S32_LE,
 	.use_edma = true,
 	.use_verid = true,
+<<<<<<< HEAD
+=======
+	.volume_sx = false,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct of_device_id fsl_micfil_dt_ids[] = {
@@ -317,7 +352,30 @@ static int hwvad_detected(struct snd_kcontrol *kcontrol,
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct snd_kcontrol_new fsl_micfil_snd_controls[] = {
+=======
+static const struct snd_kcontrol_new fsl_micfil_volume_controls[] = {
+	SOC_SINGLE_TLV("CH0 Volume", REG_MICFIL_OUT_CTRL,
+		       MICFIL_OUTGAIN_CHX_SHIFT(0), 0xF, 0, gain_tlv),
+	SOC_SINGLE_TLV("CH1 Volume", REG_MICFIL_OUT_CTRL,
+		       MICFIL_OUTGAIN_CHX_SHIFT(1), 0xF, 0, gain_tlv),
+	SOC_SINGLE_TLV("CH2 Volume", REG_MICFIL_OUT_CTRL,
+		       MICFIL_OUTGAIN_CHX_SHIFT(2), 0xF, 0, gain_tlv),
+	SOC_SINGLE_TLV("CH3 Volume", REG_MICFIL_OUT_CTRL,
+		       MICFIL_OUTGAIN_CHX_SHIFT(3), 0xF, 0, gain_tlv),
+	SOC_SINGLE_TLV("CH4 Volume", REG_MICFIL_OUT_CTRL,
+		       MICFIL_OUTGAIN_CHX_SHIFT(4), 0xF, 0, gain_tlv),
+	SOC_SINGLE_TLV("CH5 Volume", REG_MICFIL_OUT_CTRL,
+		       MICFIL_OUTGAIN_CHX_SHIFT(5), 0xF, 0, gain_tlv),
+	SOC_SINGLE_TLV("CH6 Volume", REG_MICFIL_OUT_CTRL,
+		       MICFIL_OUTGAIN_CHX_SHIFT(6), 0xF, 0, gain_tlv),
+	SOC_SINGLE_TLV("CH7 Volume", REG_MICFIL_OUT_CTRL,
+		       MICFIL_OUTGAIN_CHX_SHIFT(7), 0xF, 0, gain_tlv),
+};
+
+static const struct snd_kcontrol_new fsl_micfil_volume_sx_controls[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	SOC_SINGLE_SX_TLV("CH0 Volume", REG_MICFIL_OUT_CTRL,
 			  MICFIL_OUTGAIN_CHX_SHIFT(0), 0x8, 0xF, gain_tlv),
 	SOC_SINGLE_SX_TLV("CH1 Volume", REG_MICFIL_OUT_CTRL,
@@ -334,6 +392,12 @@ static const struct snd_kcontrol_new fsl_micfil_snd_controls[] = {
 			  MICFIL_OUTGAIN_CHX_SHIFT(6), 0x8, 0xF, gain_tlv),
 	SOC_SINGLE_SX_TLV("CH7 Volume", REG_MICFIL_OUT_CTRL,
 			  MICFIL_OUTGAIN_CHX_SHIFT(7), 0x8, 0xF, gain_tlv),
+<<<<<<< HEAD
+=======
+};
+
+static const struct snd_kcontrol_new fsl_micfil_snd_controls[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	SOC_ENUM_EXT("MICFIL Quality Select",
 		     fsl_micfil_quality_enum,
 		     micfil_quality_get, micfil_quality_set),
@@ -449,12 +513,40 @@ static int fsl_micfil_startup(struct snd_pcm_substream *substream,
 			      struct snd_soc_dai *dai)
 {
 	struct fsl_micfil *micfil = snd_soc_dai_get_drvdata(dai);
+<<<<<<< HEAD
+=======
+	unsigned int rates[MICFIL_NUM_RATES] = {8000, 11025, 16000, 22050, 32000, 44100, 48000};
+	int i, j, k = 0;
+	u64 clk_rate;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!micfil) {
 		dev_err(dai->dev, "micfil dai priv_data not set\n");
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
+=======
+	micfil->constraint_rates.list = micfil->constraint_rates_list;
+	micfil->constraint_rates.count = 0;
+
+	for (j = 0; j < MICFIL_NUM_RATES; j++) {
+		for (i = 0; i < MICFIL_CLK_SRC_NUM; i++) {
+			clk_rate = clk_get_rate(micfil->clk_src[i]);
+			if (clk_rate != 0 && do_div(clk_rate, rates[j]) == 0) {
+				micfil->constraint_rates_list[k++] = rates[j];
+				micfil->constraint_rates.count++;
+				break;
+			}
+		}
+	}
+
+	if (micfil->constraint_rates.count > 0)
+		snd_pcm_hw_constraint_list(substream->runtime, 0,
+					   SNDRV_PCM_HW_PARAM_RATE,
+					   &micfil->constraint_rates);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -801,6 +893,23 @@ static int fsl_micfil_dai_probe(struct snd_soc_dai *cpu_dai)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int fsl_micfil_component_probe(struct snd_soc_component *component)
+{
+	struct fsl_micfil *micfil = snd_soc_component_get_drvdata(component);
+
+	if (micfil->soc->volume_sx)
+		snd_soc_add_component_controls(component, fsl_micfil_volume_sx_controls,
+					       ARRAY_SIZE(fsl_micfil_volume_sx_controls));
+	else
+		snd_soc_add_component_controls(component, fsl_micfil_volume_controls,
+					       ARRAY_SIZE(fsl_micfil_volume_controls));
+
+	return 0;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct snd_soc_dai_ops fsl_micfil_dai_ops = {
 	.probe		= fsl_micfil_dai_probe,
 	.startup	= fsl_micfil_startup,
@@ -821,6 +930,10 @@ static struct snd_soc_dai_driver fsl_micfil_dai = {
 
 static const struct snd_soc_component_driver fsl_micfil_component = {
 	.name		= "fsl-micfil-dai",
+<<<<<<< HEAD
+=======
+	.probe		= fsl_micfil_component_probe,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.controls       = fsl_micfil_snd_controls,
 	.num_controls   = ARRAY_SIZE(fsl_micfil_snd_controls),
 	.legacy_dai_naming      = 1,
@@ -1134,6 +1247,15 @@ static int fsl_micfil_probe(struct platform_device *pdev)
 	fsl_asoc_get_pll_clocks(&pdev->dev, &micfil->pll8k_clk,
 				&micfil->pll11k_clk);
 
+<<<<<<< HEAD
+=======
+	micfil->clk_src[MICFIL_AUDIO_PLL1] = micfil->pll8k_clk;
+	micfil->clk_src[MICFIL_AUDIO_PLL2] = micfil->pll11k_clk;
+	micfil->clk_src[MICFIL_CLK_EXT3] = devm_clk_get(&pdev->dev, "clkext3");
+	if (IS_ERR(micfil->clk_src[MICFIL_CLK_EXT3]))
+		micfil->clk_src[MICFIL_CLK_EXT3] = NULL;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* init regmap */
 	regs = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
 	if (IS_ERR(regs))
@@ -1317,7 +1439,11 @@ static const struct dev_pm_ops fsl_micfil_pm_ops = {
 
 static struct platform_driver fsl_micfil_driver = {
 	.probe = fsl_micfil_probe,
+<<<<<<< HEAD
 	.remove_new = fsl_micfil_remove,
+=======
+	.remove = fsl_micfil_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "fsl-micfil-dai",
 		.pm = &fsl_micfil_pm_ops,

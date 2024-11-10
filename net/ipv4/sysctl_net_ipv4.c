@@ -601,6 +601,7 @@ static struct ctl_table ipv4_table[] = {
 		.proc_handler   = proc_tcp_available_ulp,
 	},
 	{
+<<<<<<< HEAD
 		.procname	= "icmp_msgs_per_sec",
 		.data		= &sysctl_icmp_msgs_per_sec,
 		.maxlen		= sizeof(int),
@@ -617,6 +618,8 @@ static struct ctl_table ipv4_table[] = {
 		.extra1		= SYSCTL_ZERO,
 	},
 	{
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.procname	= "udp_mem",
 		.data		= &sysctl_udp_mem,
 		.maxlen		= sizeof(sysctl_udp_mem),
@@ -702,6 +705,25 @@ static struct ctl_table ipv4_net_table[] = {
 		.proc_handler	= proc_dointvec
 	},
 	{
+<<<<<<< HEAD
+=======
+		.procname	= "icmp_msgs_per_sec",
+		.data		= &init_net.ipv4.sysctl_icmp_msgs_per_sec,
+		.maxlen		= sizeof(int),
+		.mode		= 0644,
+		.proc_handler	= proc_dointvec_minmax,
+		.extra1		= SYSCTL_ZERO,
+	},
+	{
+		.procname	= "icmp_msgs_burst",
+		.data		= &init_net.ipv4.sysctl_icmp_msgs_burst,
+		.maxlen		= sizeof(int),
+		.mode		= 0644,
+		.proc_handler	= proc_dointvec_minmax,
+		.extra1		= SYSCTL_ZERO,
+	},
+	{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.procname	= "ping_group_range",
 		.data		= &init_net.ipv4.ping_group_range.range,
 		.maxlen		= sizeof(gid_t)*2,

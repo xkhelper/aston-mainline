@@ -178,8 +178,11 @@
 };
 
 &lpi2c2 {
+<<<<<<< HEAD
 	#address-cells = <1>;
 	#size-cells = <0>;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	clock-frequency = <400000>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_lpi2c2>;

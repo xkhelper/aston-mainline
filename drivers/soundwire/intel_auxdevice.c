@@ -317,6 +317,23 @@ static int intel_link_probe(struct auxiliary_device *auxdev,
 	bus->link_id = auxdev->id;
 	bus->clk_stop_timeout = 1;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * paranoia check: make sure ACPI-reported number of links is aligned with
+	 * hardware capabilities.
+	 */
+	ret = sdw_intel_get_link_count(sdw);
+	if (ret < 0) {
+		dev_err(dev, "%s: sdw_intel_get_link_count failed: %d\n", __func__, ret);
+		return ret;
+	}
+	if (ret <= sdw->instance) {
+		dev_err(dev, "%s: invalid link id %d, link count %d\n", __func__, auxdev->id, ret);
+		return -EINVAL;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sdw_cdns_probe(cdns);
 
 	/* Set ops */
@@ -475,6 +492,10 @@ static void intel_link_remove(struct auxiliary_device *auxdev)
 	 */
 	if (!bus->prop.hw_disabled) {
 		sdw_intel_debugfs_exit(sdw);
+<<<<<<< HEAD
+=======
+		cancel_delayed_work_sync(&cdns->attach_dwork);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		sdw_cdns_enable_interrupt(cdns, false);
 	}
 	sdw_bus_master_delete(bus);

@@ -184,6 +184,12 @@ void __snd_pcm_xrun(struct snd_pcm_substream *substream)
 		pcm_warn(substream->pcm, "XRUN: %s\n", name);
 		dump_stack_on_xrun(substream);
 	}
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SND_PCM_XRUN_DEBUG
+	substream->xrun_counter++;
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #ifdef CONFIG_SND_PCM_XRUN_DEBUG

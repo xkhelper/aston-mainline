@@ -1368,7 +1368,10 @@ static int lpg_add_led(struct lpg *lpg, struct device_node *np)
 {
 	struct led_init_data init_data = {};
 	struct led_classdev *cdev;
+<<<<<<< HEAD
 	struct device_node *child;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct mc_subled *info;
 	struct lpg_led *led;
 	const char *state;
@@ -1399,12 +1402,19 @@ static int lpg_add_led(struct lpg *lpg, struct device_node *np)
 		if (!info)
 			return -ENOMEM;
 		i = 0;
+<<<<<<< HEAD
 		for_each_available_child_of_node(np, child) {
 			ret = lpg_parse_channel(lpg, child, &led->channels[i]);
 			if (ret < 0) {
 				of_node_put(child);
 				return ret;
 			}
+=======
+		for_each_available_child_of_node_scoped(np, child) {
+			ret = lpg_parse_channel(lpg, child, &led->channels[i]);
+			if (ret < 0)
+				return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			info[i].color_index = led->channels[i]->color;
 			info[i].intensity = 0;
@@ -1600,7 +1610,10 @@ static int lpg_init_sdam(struct lpg *lpg)
 
 static int lpg_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct device_node *np;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct lpg *lpg;
 	int ret;
 	int i;
@@ -1640,12 +1653,19 @@ static int lpg_probe(struct platform_device *pdev)
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	for_each_available_child_of_node(pdev->dev.of_node, np) {
 		ret = lpg_add_led(lpg, np);
 		if (ret) {
 			of_node_put(np);
 			return ret;
 		}
+=======
+	for_each_available_child_of_node_scoped(pdev->dev.of_node, np) {
+		ret = lpg_add_led(lpg, np);
+		if (ret)
+			return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	for (i = 0; i < lpg->num_channels; i++)

@@ -38,9 +38,15 @@ static struct xt_target classify_tg_reg[] __read_mostly = {
 	{
 		.name       = "CLASSIFY",
 		.revision   = 0,
+<<<<<<< HEAD
 		.family     = NFPROTO_UNSPEC,
 		.hooks      = (1 << NF_INET_LOCAL_OUT) | (1 << NF_INET_FORWARD) |
 		              (1 << NF_INET_POST_ROUTING),
+=======
+		.family     = NFPROTO_IPV4,
+		.hooks      = (1 << NF_INET_LOCAL_OUT) | (1 << NF_INET_FORWARD) |
+			      (1 << NF_INET_POST_ROUTING),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.target     = classify_tg,
 		.targetsize = sizeof(struct xt_classify_target_info),
 		.me         = THIS_MODULE,
@@ -54,6 +60,21 @@ static struct xt_target classify_tg_reg[] __read_mostly = {
 		.targetsize = sizeof(struct xt_classify_target_info),
 		.me         = THIS_MODULE,
 	},
+<<<<<<< HEAD
+=======
+#if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
+	{
+		.name       = "CLASSIFY",
+		.revision   = 0,
+		.family     = NFPROTO_IPV6,
+		.hooks      = (1 << NF_INET_LOCAL_OUT) | (1 << NF_INET_FORWARD) |
+			      (1 << NF_INET_POST_ROUTING),
+		.target     = classify_tg,
+		.targetsize = sizeof(struct xt_classify_target_info),
+		.me         = THIS_MODULE,
+	},
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int __init classify_tg_init(void)

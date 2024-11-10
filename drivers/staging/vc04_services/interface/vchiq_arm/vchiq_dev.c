@@ -304,6 +304,14 @@ static int vchiq_irq_queue_bulk_tx_rx(struct vchiq_instance *instance,
 		}
 
 		userdata = &waiter->bulk_waiter;
+<<<<<<< HEAD
+=======
+
+		status = vchiq_bulk_xfer_blocking_interruptible(instance, args->handle,
+								NULL, args->data, args->size,
+								userdata, dir);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else if (args->mode == VCHIQ_BULK_MODE_WAITING) {
 		mutex_lock(&instance->bulk_waiter_list_mutex);
 		list_for_each_entry(iter, &instance->bulk_waiter_list,
@@ -324,12 +332,25 @@ static int vchiq_irq_queue_bulk_tx_rx(struct vchiq_instance *instance,
 		dev_dbg(service->state->dev, "arm: found bulk_waiter %pK for pid %d\n",
 			waiter, current->pid);
 		userdata = &waiter->bulk_waiter;
+<<<<<<< HEAD
 	} else {
 		userdata = args->userdata;
 	}
 
 	status = vchiq_bulk_transfer(instance, args->handle, NULL, args->data, args->size,
 				     userdata, args->mode, dir);
+=======
+
+		status = vchiq_bulk_xfer_waiting_interruptible(instance, args->handle, userdata);
+	} else {
+		userdata = args->userdata;
+
+		status = vchiq_bulk_xfer_callback_interruptible(instance, args->handle, NULL,
+								args->data, args->size,
+								args->mode, userdata, dir);
+
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!waiter) {
 		ret = 0;

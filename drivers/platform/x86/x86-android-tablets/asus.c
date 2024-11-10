@@ -37,7 +37,11 @@ static const struct x86_gpio_button asus_me176c_tf103c_lid __initconst = {
 	.pin = 12,
 };
 
+<<<<<<< HEAD
 /* Asus ME176C tablets have an Android factory img with everything hardcoded */
+=======
+/* Asus ME176C tablets have an Android factory image with everything hardcoded */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const char * const asus_me176c_accel_mount_matrix[] = {
 	"-1", "0", "0",
 	"0", "1", "0",
@@ -112,7 +116,11 @@ static const struct x86_i2c_client_info asus_me176c_i2c_clients[] __initconst = 
 		},
 		.adapter_path = "\\_SB_.I2C5",
 	}, {
+<<<<<<< HEAD
 		/* kxtj21009 accel */
+=======
+		/* kxtj21009 accelerometer */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.board_info = {
 			.type = "kxtj21009",
 			.addr = 0x0f,
@@ -181,7 +189,11 @@ const struct x86_dev_info asus_me176c_info __initconst = {
 	.modules = bq24190_modules,
 };
 
+<<<<<<< HEAD
 /* Asus TF103C tablets have an Android factory img with everything hardcoded */
+=======
+/* Asus TF103C tablets have an Android factory image with everything hardcoded */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const char * const asus_tf103c_accel_mount_matrix[] = {
 	"0", "-1", "0",
 	"-1", "0", "0",
@@ -280,7 +292,11 @@ static const struct x86_i2c_client_info asus_tf103c_i2c_clients[] __initconst = 
 		},
 		.adapter_path = "\\_SB_.I2C5",
 	}, {
+<<<<<<< HEAD
 		/* kxtj21009 accel */
+=======
+		/* kxtj21009 accelerometer */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.board_info = {
 			.type = "kxtj21009",
 			.addr = 0x0f,

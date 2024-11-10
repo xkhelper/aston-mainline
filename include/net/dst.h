@@ -341,7 +341,11 @@ static inline void __skb_tunnel_rx(struct sk_buff *skb, struct net_device *dev,
 	skb->dev = dev;
 
 	/*
+<<<<<<< HEAD
 	 * Clear hash so that we can recalulate the hash for the
+=======
+	 * Clear hash so that we can recalculate the hash for the
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * encapsulated packet, unless we have already determine the hash
 	 * over the L4 4-tuple.
 	 */

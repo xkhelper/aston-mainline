@@ -2127,6 +2127,7 @@ static const struct iio_info st_lsm6dsx_gyro_info = {
 	.write_raw_get_fmt = st_lsm6dsx_write_raw_get_fmt,
 };
 
+<<<<<<< HEAD
 static int st_lsm6dsx_get_drdy_pin(struct st_lsm6dsx_hw *hw, int *drdy_pin)
 {
 	struct device *dev = hw->dev;
@@ -2137,15 +2138,25 @@ static int st_lsm6dsx_get_drdy_pin(struct st_lsm6dsx_hw *hw, int *drdy_pin)
 	return device_property_read_u32(dev, "st,drdy-int-pin", drdy_pin);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int
 st_lsm6dsx_get_drdy_reg(struct st_lsm6dsx_hw *hw,
 			const struct st_lsm6dsx_reg **drdy_reg)
 {
+<<<<<<< HEAD
 	int err = 0, drdy_pin;
 
 	if (st_lsm6dsx_get_drdy_pin(hw, &drdy_pin) < 0) {
 		struct st_sensors_platform_data *pdata;
 		struct device *dev = hw->dev;
+=======
+	struct device *dev = hw->dev;
+	int err = 0, drdy_pin;
+
+	if (device_property_read_u32(dev, "st,drdy-int-pin", &drdy_pin) < 0) {
+		struct st_sensors_platform_data *pdata;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		pdata = (struct st_sensors_platform_data *)dev->platform_data;
 		drdy_pin = pdata ? pdata->drdy_int_pin : 1;
@@ -2180,7 +2191,11 @@ static int st_lsm6dsx_init_shub(struct st_lsm6dsx_hw *hw)
 	hub_settings = &hw->settings->shub_settings;
 
 	pdata = (struct st_sensors_platform_data *)dev->platform_data;
+<<<<<<< HEAD
 	if ((dev_fwnode(dev) && device_property_read_bool(dev, "st,pullups")) ||
+=======
+	if (device_property_read_bool(dev, "st,pullups") ||
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    (pdata && pdata->pullups)) {
 		if (hub_settings->pullup_en.sec_page) {
 			err = st_lsm6dsx_set_page(hw, true);
@@ -2565,7 +2580,11 @@ static int st_lsm6dsx_irq_setup(struct st_lsm6dsx_hw *hw)
 		return err;
 
 	pdata = (struct st_sensors_platform_data *)dev->platform_data;
+<<<<<<< HEAD
 	if ((dev_fwnode(dev) && device_property_read_bool(dev, "drive-open-drain")) ||
+=======
+	if (device_property_read_bool(dev, "drive-open-drain") ||
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    (pdata && pdata->open_drain)) {
 		reg = &hw->settings->irq_config.od;
 		err = regmap_update_bits(hw->regmap, reg->addr, reg->mask,
@@ -2646,6 +2665,7 @@ static int st_lsm6dsx_init_regulators(struct device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_ACPI
 
 static int lsm6dsx_get_acpi_mount_matrix(struct device *dev,
@@ -2713,6 +2733,8 @@ static int lsm6dsx_get_acpi_mount_matrix(struct device *dev,
 
 #endif
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
 		     struct regmap *regmap)
 {
@@ -2760,8 +2782,12 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
 
 	hub_settings = &hw->settings->shub_settings;
 	if (hub_settings->master_en.addr &&
+<<<<<<< HEAD
 	    (!dev_fwnode(dev) ||
 	     !device_property_read_bool(dev, "st,disable-sensor-hub"))) {
+=======
+	    !device_property_read_bool(dev, "st,disable-sensor-hub")) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = st_lsm6dsx_shub_probe(hw, name);
 		if (err < 0)
 			return err;
@@ -2787,8 +2813,12 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
 			return err;
 	}
 
+<<<<<<< HEAD
 	err = lsm6dsx_get_acpi_mount_matrix(hw->dev, &hw->orientation);
 	if (err) {
+=======
+	if (!iio_read_acpi_mount_matrix(hw->dev, &hw->orientation, "ROTM")) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = iio_read_mount_matrix(hw->dev, &hw->orientation);
 		if (err)
 			return err;
@@ -2803,7 +2833,11 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
 			return err;
 	}
 
+<<<<<<< HEAD
 	if ((dev_fwnode(dev) && device_property_read_bool(dev, "wakeup-source")) ||
+=======
+	if (device_property_read_bool(dev, "wakeup-source") ||
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    (pdata && pdata->wakeup_source))
 		device_init_wakeup(dev, true);
 

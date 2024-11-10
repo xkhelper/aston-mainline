@@ -12,6 +12,10 @@
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/power/qcom-rpmpd.h>
 #include <dt-bindings/reset/qcom,gcc-msm8974.h>
+<<<<<<< HEAD
+=======
+#include <dt-bindings/thermal/thermal.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 / {
 	#address-cells = <1>;
@@ -44,8 +48,16 @@
 			device_type = "cpu";
 			reg = <0>;
 			next-level-cache = <&L2>;
+<<<<<<< HEAD
 			qcom,acc = <&acc0>;
 			qcom,saw = <&saw0>;
+=======
+			clocks = <&apcs>;
+			operating-points-v2 = <&cpu_opp_table>;
+			qcom,acc = <&acc0>;
+			qcom,saw = <&saw0>;
+			#cooling-cells = <2>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		CPU1: cpu@1 {
@@ -54,8 +66,16 @@
 			device_type = "cpu";
 			reg = <1>;
 			next-level-cache = <&L2>;
+<<<<<<< HEAD
 			qcom,acc = <&acc1>;
 			qcom,saw = <&saw1>;
+=======
+			clocks = <&apcs>;
+			operating-points-v2 = <&cpu_opp_table>;
+			qcom,acc = <&acc1>;
+			qcom,saw = <&saw1>;
+			#cooling-cells = <2>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		CPU2: cpu@2 {
@@ -64,8 +84,16 @@
 			device_type = "cpu";
 			reg = <2>;
 			next-level-cache = <&L2>;
+<<<<<<< HEAD
 			qcom,acc = <&acc2>;
 			qcom,saw = <&saw2>;
+=======
+			clocks = <&apcs>;
+			operating-points-v2 = <&cpu_opp_table>;
+			qcom,acc = <&acc2>;
+			qcom,saw = <&saw2>;
+			#cooling-cells = <2>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		CPU3: cpu@3 {
@@ -74,8 +102,16 @@
 			device_type = "cpu";
 			reg = <3>;
 			next-level-cache = <&L2>;
+<<<<<<< HEAD
 			qcom,acc = <&acc3>;
 			qcom,saw = <&saw3>;
+=======
+			clocks = <&apcs>;
+			operating-points-v2 = <&cpu_opp_table>;
+			qcom,acc = <&acc3>;
+			qcom,saw = <&saw3>;
+			#cooling-cells = <2>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		L2: l2-cache {
@@ -98,6 +134,32 @@
 		reg = <0x0 0x0>;
 	};
 
+<<<<<<< HEAD
+=======
+	cpu_opp_table: opp-table-cpu {
+		compatible = "operating-points-v2";
+		opp-shared;
+
+		opp-300000000 {
+			opp-hz = /bits/ 64 <300000000>;
+		};
+
+		opp-384000000 {
+			opp-hz = /bits/ 64 <384000000>;
+		};
+
+		opp-600000000 {
+			opp-hz = /bits/ 64 <600000000>;
+		};
+
+		opp-787200000 {
+			opp-hz = /bits/ 64 <787200000>;
+		};
+
+		/* Higher CPU frequencies need speedbin support */
+	};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pmu {
 		compatible = "arm,cortex-a7-pmu";
 		interrupts = <GIC_PPI 7 (GIC_CPU_MASK_SIMPLE(4) |
@@ -121,11 +183,19 @@
 
 		smd-edge {
 			interrupts = <GIC_SPI 168 IRQ_TYPE_EDGE_RISING>;
+<<<<<<< HEAD
 			qcom,ipc = <&apcs 8 0>;
 			qcom,smd-edge = <15>;
 
 			rpm_requests: rpm-requests {
 				compatible = "qcom,rpm-msm8226";
+=======
+			mboxes = <&apcs 0>;
+			qcom,smd-edge = <15>;
+
+			rpm_requests: rpm-requests {
+				compatible = "qcom,rpm-msm8226", "qcom,smd-rpm";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				qcom,smd-channels = "rpm_requests";
 
 				rpmcc: clock-controller {
@@ -199,7 +269,11 @@
 		interrupt-parent = <&intc>;
 		interrupts = <GIC_SPI 158 IRQ_TYPE_EDGE_RISING>;
 
+<<<<<<< HEAD
 		qcom,ipc = <&apcs 8 10>;
+=======
+		mboxes = <&apcs 10>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		qcom,local-pid = <0>;
 		qcom,remote-pid = <2>;
@@ -231,9 +305,81 @@
 			#interrupt-cells = <3>;
 		};
 
+<<<<<<< HEAD
 		apcs: syscon@f9011000 {
 			compatible = "syscon";
 			reg = <0xf9011000 0x1000>;
+=======
+		apcs: mailbox@f9011000 {
+			compatible = "qcom,msm8226-apcs-kpss-global",
+				     "qcom,msm8916-apcs-kpss-global", "syscon";
+			reg = <0xf9011000 0x1000>;
+			#mbox-cells = <1>;
+			clocks = <&a7pll>, <&gcc GPLL0_VOTE>;
+			clock-names = "pll", "aux";
+			#clock-cells = <0>;
+		};
+
+		a7pll: clock@f9016000 {
+			compatible = "qcom,msm8226-a7pll";
+			reg = <0xf9016000 0x40>;
+			#clock-cells = <0>;
+			clocks = <&xo_board>;
+			clock-names = "xo";
+			operating-points-v2 = <&a7pll_opp_table>;
+
+			a7pll_opp_table: opp-table {
+				compatible = "operating-points-v2";
+
+				opp-768000000 {
+					opp-hz = /bits/ 64 <768000000>;
+				};
+
+				opp-787200000 {
+					opp-hz = /bits/ 64 <787200000>;
+				};
+
+				opp-998400000 {
+					opp-hz = /bits/ 64 <998400000>;
+				};
+
+				opp-1094400000 {
+					opp-hz = /bits/ 64 <1094400000>;
+				};
+
+				opp-1190400000 {
+					opp-hz = /bits/ 64 <1190400000>;
+				};
+
+				opp-1305600000 {
+					opp-hz = /bits/ 64 <1305600000>;
+				};
+
+				opp-1344000000 {
+					opp-hz = /bits/ 64 <1344000000>;
+				};
+
+				opp-1401600000 {
+					opp-hz = /bits/ 64 <1401600000>;
+				};
+
+				opp-1497600000 {
+					opp-hz = /bits/ 64 <1497600000>;
+				};
+
+				opp-1593600000 {
+					opp-hz = /bits/ 64 <1593600000>;
+				};
+
+				opp-1689600000 {
+					opp-hz = /bits/ 64 <1689600000>;
+				};
+
+				opp-1785600000 {
+					opp-hz = /bits/ 64 <1785600000>;
+				};
+			};
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		saw_l2: power-manager@f9012000 {
@@ -571,7 +717,11 @@
 			#reset-cells = <1>;
 			#power-domain-cells = <1>;
 
+<<<<<<< HEAD
 			clocks = <&rpmcc RPM_SMD_XO_CLK_SRC>,
+=======
+			clocks = <&xo_board>,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				 <&sleep_clk>;
 			clock-names = "xo",
 				      "sleep_clk";
@@ -1130,7 +1280,11 @@
 			smd-edge {
 				interrupts = <GIC_SPI 156 IRQ_TYPE_EDGE_RISING>;
 
+<<<<<<< HEAD
 				qcom,ipc = <&apcs 8 8>;
+=======
+				mboxes = <&apcs 8>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				qcom,smd-edge = <1>;
 
 				label = "lpass";
@@ -1159,6 +1313,19 @@
 
 			thermal-sensors = <&tsens 5>;
 
+<<<<<<< HEAD
+=======
+			cooling-maps {
+				map0 {
+					trip = <&cpu_alert0>;
+					cooling-device = <&CPU0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+							 <&CPU1 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+							 <&CPU2 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+							 <&CPU3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
+				};
+			};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			trips {
 				cpu_alert0: trip0 {
 					temperature = <75000>;
@@ -1180,6 +1347,19 @@
 
 			thermal-sensors = <&tsens 2>;
 
+<<<<<<< HEAD
+=======
+			cooling-maps {
+				map0 {
+					trip = <&cpu_alert1>;
+					cooling-device = <&CPU0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+							 <&CPU1 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+							 <&CPU2 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+							 <&CPU3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
+				};
+			};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			trips {
 				cpu_alert1: trip0 {
 					temperature = <75000>;

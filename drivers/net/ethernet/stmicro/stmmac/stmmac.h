@@ -146,6 +146,35 @@ struct stmmac_channel {
 	u32 index;
 };
 
+<<<<<<< HEAD
+=======
+/* FPE link-partner hand-shaking mPacket type */
+enum stmmac_mpacket_type {
+	MPACKET_VERIFY = 0,
+	MPACKET_RESPONSE = 1,
+};
+
+#define STMMAC_FPE_MM_MAX_VERIFY_RETRIES	3
+#define STMMAC_FPE_MM_MAX_VERIFY_TIME_MS	128
+
+struct stmmac_fpe_cfg {
+	/* Serialize access to MAC Merge state between ethtool requests
+	 * and link state updates.
+	 */
+	spinlock_t lock;
+
+	u32 fpe_csr;				/* MAC_FPE_CTRL_STS reg cache */
+
+	enum ethtool_mm_verify_status status;
+	struct timer_list verify_timer;
+	bool verify_enabled;
+	int verify_retries;
+	bool pmac_enabled;
+	u32 verify_time;
+	bool tx_enabled;
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct stmmac_tc_entry {
 	bool in_use;
 	bool in_hw;
@@ -339,11 +368,16 @@ struct stmmac_priv {
 	struct workqueue_struct *wq;
 	struct work_struct service_task;
 
+<<<<<<< HEAD
 	/* Workqueue for handling FPE hand-shaking */
 	unsigned long fpe_task_state;
 	struct workqueue_struct *fpe_wq;
 	struct work_struct fpe_task;
 	char wq_name[IFNAMSIZ + 4];
+=======
+	/* Frame Preemption feature (FPE) */
+	struct stmmac_fpe_cfg fpe_cfg;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* TC Handling */
 	unsigned int tc_entries_max;
@@ -397,7 +431,11 @@ bool stmmac_eee_init(struct stmmac_priv *priv);
 int stmmac_reinit_queues(struct net_device *dev, u32 rx_cnt, u32 tx_cnt);
 int stmmac_reinit_ringparam(struct net_device *dev, u32 rx_size, u32 tx_size);
 int stmmac_bus_clks_config(struct stmmac_priv *priv, bool enabled);
+<<<<<<< HEAD
 void stmmac_fpe_handshake(struct stmmac_priv *priv, bool enable);
+=======
+void stmmac_fpe_apply(struct stmmac_priv *priv);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline bool stmmac_xdp_is_enabled(struct stmmac_priv *priv)
 {

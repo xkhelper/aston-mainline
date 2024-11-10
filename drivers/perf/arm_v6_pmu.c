@@ -64,6 +64,10 @@ enum armv6_counters {
 	ARMV6_CYCLE_COUNTER = 0,
 	ARMV6_COUNTER0,
 	ARMV6_COUNTER1,
+<<<<<<< HEAD
+=======
+	ARMV6_NUM_COUNTERS
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
@@ -254,7 +258,11 @@ armv6pmu_handle_irq(struct arm_pmu *cpu_pmu)
 	 */
 	armv6_pmcr_write(pmcr);
 
+<<<<<<< HEAD
 	for (idx = 0; idx < cpu_pmu->num_events; ++idx) {
+=======
+	for_each_set_bit(idx, cpu_pmu->cntr_mask, ARMV6_NUM_COUNTERS) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct perf_event *event = cpuc->events[idx];
 		struct hw_perf_event *hwc;
 
@@ -391,7 +399,12 @@ static void armv6pmu_init(struct arm_pmu *cpu_pmu)
 	cpu_pmu->start		= armv6pmu_start;
 	cpu_pmu->stop		= armv6pmu_stop;
 	cpu_pmu->map_event	= armv6_map_event;
+<<<<<<< HEAD
 	cpu_pmu->num_events	= 3;
+=======
+
+	bitmap_set(cpu_pmu->cntr_mask, 0, ARMV6_NUM_COUNTERS);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int armv6_1136_pmu_init(struct arm_pmu *cpu_pmu)

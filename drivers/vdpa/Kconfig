@@ -11,8 +11,12 @@ if VDPA
 
 config VDPA_SIM
 	tristate "vDPA device simulator core"
+<<<<<<< HEAD
 	depends on RUNTIME_TESTING_MENU && HAS_DMA
 	select DMA_OPS
+=======
+	depends on RUNTIME_TESTING_MENU
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select VHOST_RING
 	select IOMMU_IOVA
 	help
@@ -36,7 +40,16 @@ config VDPA_SIM_BLOCK
 config VDPA_USER
 	tristate "VDUSE (vDPA Device in Userspace) support"
 	depends on EVENTFD && MMU && HAS_DMA
+<<<<<<< HEAD
 	select DMA_OPS
+=======
+	#
+	# This driver incorrectly tries to override the dma_ops.  It should
+	# never have done that, but for now keep it working on architectures
+	# that use dma ops
+	#
+	depends on ARCH_HAS_DMA_OPS
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select VHOST_IOTLB
 	select IOMMU_IOVA
 	help

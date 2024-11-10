@@ -62,6 +62,7 @@ properties:
               - renesas,r9a08g045-gbeth # RZ/G3S
           - const: renesas,rzg2l-gbeth  # RZ/{G2L,G2UL,V2L} family
 
+<<<<<<< HEAD
   reg: true
 
   interrupts: true
@@ -71,6 +72,29 @@ properties:
   clocks: true
 
   clock-names: true
+=======
+  reg:
+    minItems: 1
+    items:
+      - description: MAC register block
+      - description: Stream buffer
+
+  interrupts:
+    minItems: 1
+    maxItems: 29
+
+  interrupt-names:
+    minItems: 1
+    maxItems: 29
+
+  clocks:
+    minItems: 1
+    maxItems: 3
+
+  clock-names:
+    minItems: 1
+    maxItems: 3
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   iommus:
     maxItems: 1
@@ -150,6 +174,7 @@ allOf:
     then:
       properties:
         reg:
+<<<<<<< HEAD
           items:
             - description: MAC register block
             - description: Stream buffer
@@ -158,6 +183,13 @@ allOf:
         reg:
           items:
             - description: MAC register block
+=======
+          minItems: 2
+    else:
+      properties:
+        reg:
+          maxItems: 1
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   - if:
       properties:

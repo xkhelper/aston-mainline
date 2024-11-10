@@ -12,6 +12,10 @@
 struct ksmbd_user *ksmbd_login_user(const char *account)
 {
 	struct ksmbd_login_response *resp;
+<<<<<<< HEAD
+=======
+	struct ksmbd_login_response_ext *resp_ext = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ksmbd_user *user = NULL;
 
 	resp = ksmbd_ipc_login_request(account);
@@ -21,15 +25,29 @@ struct ksmbd_user *ksmbd_login_user(const char *account)
 	if (!(resp->status & KSMBD_USER_FLAG_OK))
 		goto out;
 
+<<<<<<< HEAD
 	user = ksmbd_alloc_user(resp);
+=======
+	if (resp->status & KSMBD_USER_FLAG_EXTENSION)
+		resp_ext = ksmbd_ipc_login_request_ext(account);
+
+	user = ksmbd_alloc_user(resp, resp_ext);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out:
 	kvfree(resp);
 	return user;
 }
 
+<<<<<<< HEAD
 struct ksmbd_user *ksmbd_alloc_user(struct ksmbd_login_response *resp)
 {
 	struct ksmbd_user *user = NULL;
+=======
+struct ksmbd_user *ksmbd_alloc_user(struct ksmbd_login_response *resp,
+		struct ksmbd_login_response_ext *resp_ext)
+{
+	struct ksmbd_user *user;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	user = kmalloc(sizeof(struct ksmbd_user), GFP_KERNEL);
 	if (!user)
@@ -44,6 +62,7 @@ struct ksmbd_user *ksmbd_alloc_user(struct ksmbd_login_response *resp)
 	if (user->passkey)
 		memcpy(user->passkey, resp->hash, resp->hash_sz);
 
+<<<<<<< HEAD
 	if (!user->name || !user->passkey) {
 		kfree(user->name);
 		kfree(user->passkey);
@@ -51,11 +70,47 @@ struct ksmbd_user *ksmbd_alloc_user(struct ksmbd_login_response *resp)
 		user = NULL;
 	}
 	return user;
+=======
+	user->ngroups = 0;
+	user->sgid = NULL;
+
+	if (!user->name || !user->passkey)
+		goto err_free;
+
+	if (resp_ext) {
+		if (resp_ext->ngroups > NGROUPS_MAX) {
+			pr_err("ngroups(%u) from login response exceeds max groups(%d)\n",
+					resp_ext->ngroups, NGROUPS_MAX);
+			goto err_free;
+		}
+
+		user->sgid = kmemdup(resp_ext->____payload,
+				     resp_ext->ngroups * sizeof(gid_t),
+				     GFP_KERNEL);
+		if (!user->sgid)
+			goto err_free;
+
+		user->ngroups = resp_ext->ngroups;
+		ksmbd_debug(SMB, "supplementary groups : %d\n", user->ngroups);
+	}
+
+	return user;
+
+err_free:
+	kfree(user->name);
+	kfree(user->passkey);
+	kfree(user);
+	return NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void ksmbd_free_user(struct ksmbd_user *user)
 {
 	ksmbd_ipc_logout_request(user->name, user->flags);
+<<<<<<< HEAD
+=======
+	kfree(user->sgid);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(user->name);
 	kfree(user->passkey);
 	kfree(user);

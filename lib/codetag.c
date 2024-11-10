@@ -228,6 +228,12 @@ bool codetag_unload_module(struct module *mod)
 	if (!mod)
 		return true;
 
+<<<<<<< HEAD
+=======
+	/* await any module's kfree_rcu() operations to complete */
+	kvfree_rcu_barrier();
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_lock(&codetag_lock);
 	list_for_each_entry(cttype, &codetag_types, link) {
 		struct codetag_module *found = NULL;

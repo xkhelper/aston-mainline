@@ -454,18 +454,30 @@ static int comp_probe_channel(struct most_interface *iface, int channel_idx,
 	struct most_video_dev *mdev = get_comp_dev(iface, channel_idx);
 
 	if (mdev) {
+<<<<<<< HEAD
 		pr_err("channel already linked\n");
+=======
+		pr_err("Channel already linked\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EEXIST;
 	}
 
 	if (ccfg->direction != MOST_CH_RX) {
+<<<<<<< HEAD
 		pr_err("wrong direction, expect rx\n");
+=======
+		pr_err("Wrong direction, expected rx\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 
 	if (ccfg->data_type != MOST_CH_SYNC &&
 	    ccfg->data_type != MOST_CH_ISOC) {
+<<<<<<< HEAD
 		pr_err("wrong channel type, expect sync or isoc\n");
+=======
+		pr_err("Wrong channel type, expected sync or isoc\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 

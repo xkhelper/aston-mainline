@@ -12,6 +12,10 @@
 #include <linux/ptrace.h>
 #include <linux/uaccess.h>
 #include <asm/disasm.h>
+<<<<<<< HEAD
+=======
+#include "unaligned.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_CPU_BIG_ENDIAN
 #define BE		1

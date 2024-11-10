@@ -614,6 +614,7 @@ static u64 mmu_spte_get_lockless(u64 *sptep)
 	return __get_spte_lockless(sptep);
 }
 
+<<<<<<< HEAD
 /* Returns the Accessed status of the PTE and resets it at the same time. */
 static bool mmu_spte_age(u64 *sptep)
 {
@@ -640,6 +641,8 @@ static bool mmu_spte_age(u64 *sptep)
 	return true;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline bool is_tdp_mmu_active(struct kvm_vcpu *vcpu)
 {
 	return tdp_mmu_enabled && vcpu->arch.mmu->root_role.direct;
@@ -938,6 +941,10 @@ static struct kvm_memory_slot *gfn_to_memslot_dirty_bitmap(struct kvm_vcpu *vcpu
  * in this rmap chain. Otherwise, (rmap_head->val & ~1) points to a struct
  * pte_list_desc containing more mappings.
  */
+<<<<<<< HEAD
+=======
+#define KVM_RMAP_MANY	BIT(0)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Returns the number of pointers in the rmap chain, not counting the new one.
@@ -950,16 +957,27 @@ static int pte_list_add(struct kvm_mmu_memory_cache *cache, u64 *spte,
 
 	if (!rmap_head->val) {
 		rmap_head->val = (unsigned long)spte;
+<<<<<<< HEAD
 	} else if (!(rmap_head->val & 1)) {
+=======
+	} else if (!(rmap_head->val & KVM_RMAP_MANY)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		desc = kvm_mmu_memory_cache_alloc(cache);
 		desc->sptes[0] = (u64 *)rmap_head->val;
 		desc->sptes[1] = spte;
 		desc->spte_count = 2;
 		desc->tail_count = 0;
+<<<<<<< HEAD
 		rmap_head->val = (unsigned long)desc | 1;
 		++count;
 	} else {
 		desc = (struct pte_list_desc *)(rmap_head->val & ~1ul);
+=======
+		rmap_head->val = (unsigned long)desc | KVM_RMAP_MANY;
+		++count;
+	} else {
+		desc = (struct pte_list_desc *)(rmap_head->val & ~KVM_RMAP_MANY);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		count = desc->tail_count + desc->spte_count;
 
 		/*
@@ -968,10 +986,17 @@ static int pte_list_add(struct kvm_mmu_memory_cache *cache, u64 *spte,
 		 */
 		if (desc->spte_count == PTE_LIST_EXT) {
 			desc = kvm_mmu_memory_cache_alloc(cache);
+<<<<<<< HEAD
 			desc->more = (struct pte_list_desc *)(rmap_head->val & ~1ul);
 			desc->spte_count = 0;
 			desc->tail_count = count;
 			rmap_head->val = (unsigned long)desc | 1;
+=======
+			desc->more = (struct pte_list_desc *)(rmap_head->val & ~KVM_RMAP_MANY);
+			desc->spte_count = 0;
+			desc->tail_count = count;
+			rmap_head->val = (unsigned long)desc | KVM_RMAP_MANY;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		desc->sptes[desc->spte_count++] = spte;
 	}
@@ -982,7 +1007,11 @@ static void pte_list_desc_remove_entry(struct kvm *kvm,
 				       struct kvm_rmap_head *rmap_head,
 				       struct pte_list_desc *desc, int i)
 {
+<<<<<<< HEAD
 	struct pte_list_desc *head_desc = (struct pte_list_desc *)(rmap_head->val & ~1ul);
+=======
+	struct pte_list_desc *head_desc = (struct pte_list_desc *)(rmap_head->val & ~KVM_RMAP_MANY);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int j = head_desc->spte_count - 1;
 
 	/*
@@ -1011,7 +1040,11 @@ static void pte_list_desc_remove_entry(struct kvm *kvm,
 	if (!head_desc->more)
 		rmap_head->val = 0;
 	else
+<<<<<<< HEAD
 		rmap_head->val = (unsigned long)head_desc->more | 1;
+=======
+		rmap_head->val = (unsigned long)head_desc->more | KVM_RMAP_MANY;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mmu_free_pte_list_desc(head_desc);
 }
 
@@ -1024,13 +1057,21 @@ static void pte_list_remove(struct kvm *kvm, u64 *spte,
 	if (KVM_BUG_ON_DATA_CORRUPTION(!rmap_head->val, kvm))
 		return;
 
+<<<<<<< HEAD
 	if (!(rmap_head->val & 1)) {
+=======
+	if (!(rmap_head->val & KVM_RMAP_MANY)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (KVM_BUG_ON_DATA_CORRUPTION((u64 *)rmap_head->val != spte, kvm))
 			return;
 
 		rmap_head->val = 0;
 	} else {
+<<<<<<< HEAD
 		desc = (struct pte_list_desc *)(rmap_head->val & ~1ul);
+=======
+		desc = (struct pte_list_desc *)(rmap_head->val & ~KVM_RMAP_MANY);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		while (desc) {
 			for (i = 0; i < desc->spte_count; ++i) {
 				if (desc->sptes[i] == spte) {
@@ -1063,12 +1104,20 @@ static bool kvm_zap_all_rmap_sptes(struct kvm *kvm,
 	if (!rmap_head->val)
 		return false;
 
+<<<<<<< HEAD
 	if (!(rmap_head->val & 1)) {
+=======
+	if (!(rmap_head->val & KVM_RMAP_MANY)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mmu_spte_clear_track_bits(kvm, (u64 *)rmap_head->val);
 		goto out;
 	}
 
+<<<<<<< HEAD
 	desc = (struct pte_list_desc *)(rmap_head->val & ~1ul);
+=======
+	desc = (struct pte_list_desc *)(rmap_head->val & ~KVM_RMAP_MANY);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (; desc; desc = next) {
 		for (i = 0; i < desc->spte_count; i++)
@@ -1088,10 +1137,17 @@ unsigned int pte_list_count(struct kvm_rmap_head *rmap_head)
 
 	if (!rmap_head->val)
 		return 0;
+<<<<<<< HEAD
 	else if (!(rmap_head->val & 1))
 		return 1;
 
 	desc = (struct pte_list_desc *)(rmap_head->val & ~1ul);
+=======
+	else if (!(rmap_head->val & KVM_RMAP_MANY))
+		return 1;
+
+	desc = (struct pte_list_desc *)(rmap_head->val & ~KVM_RMAP_MANY);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return desc->tail_count + desc->spte_count;
 }
 
@@ -1153,13 +1209,21 @@ static u64 *rmap_get_first(struct kvm_rmap_head *rmap_head,
 	if (!rmap_head->val)
 		return NULL;
 
+<<<<<<< HEAD
 	if (!(rmap_head->val & 1)) {
+=======
+	if (!(rmap_head->val & KVM_RMAP_MANY)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		iter->desc = NULL;
 		sptep = (u64 *)rmap_head->val;
 		goto out;
 	}
 
+<<<<<<< HEAD
 	iter->desc = (struct pte_list_desc *)(rmap_head->val & ~1ul);
+=======
+	iter->desc = (struct pte_list_desc *)(rmap_head->val & ~KVM_RMAP_MANY);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	iter->pos = 0;
 	sptep = iter->desc->sptes[iter->pos];
 out:
@@ -1307,6 +1371,7 @@ static bool __rmap_clear_dirty(struct kvm *kvm, struct kvm_rmap_head *rmap_head,
 	return flush;
 }
 
+<<<<<<< HEAD
 /**
  * kvm_mmu_write_protect_pt_masked - write protect selected PT level pages
  * @kvm: kvm instance
@@ -1316,6 +1381,8 @@ static bool __rmap_clear_dirty(struct kvm *kvm, struct kvm_rmap_head *rmap_head,
  *
  * Used when we do not need to care about huge page mappings.
  */
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void kvm_mmu_write_protect_pt_masked(struct kvm *kvm,
 				     struct kvm_memory_slot *slot,
 				     gfn_t gfn_offset, unsigned long mask)
@@ -1339,6 +1406,7 @@ static void kvm_mmu_write_protect_pt_masked(struct kvm *kvm,
 	}
 }
 
+<<<<<<< HEAD
 /**
  * kvm_mmu_clear_dirty_pt_masked - clear MMU D-bit for PT level pages, or write
  * protect the page if the D-bit isn't supported.
@@ -1349,6 +1417,8 @@ static void kvm_mmu_write_protect_pt_masked(struct kvm *kvm,
  *
  * Used for PML to re-log the dirty GPAs after userspace querying dirty_bitmap.
  */
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void kvm_mmu_clear_dirty_pt_masked(struct kvm *kvm,
 					 struct kvm_memory_slot *slot,
 					 gfn_t gfn_offset, unsigned long mask)
@@ -1372,6 +1442,7 @@ static void kvm_mmu_clear_dirty_pt_masked(struct kvm *kvm,
 	}
 }
 
+<<<<<<< HEAD
 /**
  * kvm_arch_mmu_enable_log_dirty_pt_masked - enable dirty logging for selected
  * PT level pages.
@@ -1382,14 +1453,24 @@ static void kvm_mmu_clear_dirty_pt_masked(struct kvm *kvm,
  * We need to care about huge page mappings: e.g. during dirty logging we may
  * have such mappings.
  */
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void kvm_arch_mmu_enable_log_dirty_pt_masked(struct kvm *kvm,
 				struct kvm_memory_slot *slot,
 				gfn_t gfn_offset, unsigned long mask)
 {
 	/*
+<<<<<<< HEAD
 	 * Huge pages are NOT write protected when we start dirty logging in
 	 * initially-all-set mode; must write protect them here so that they
 	 * are split to 4K on the first write.
+=======
+	 * If the slot was assumed to be "initially all dirty", write-protect
+	 * huge pages to ensure they are split to 4KiB on the first write (KVM
+	 * dirty logs at 4KiB granularity). If eager page splitting is enabled,
+	 * immediately try to split huge pages, e.g. so that vCPUs don't get
+	 * saddled with the cost of splitting.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 *
 	 * The gfn_offset is guaranteed to be aligned to 64, but the base_gfn
 	 * of memslot has no such restriction, so the range can cross two large
@@ -1411,7 +1492,20 @@ void kvm_arch_mmu_enable_log_dirty_pt_masked(struct kvm *kvm,
 						       PG_LEVEL_2M);
 	}
 
+<<<<<<< HEAD
 	/* Now handle 4K PTEs.  */
+=======
+	/*
+	 * (Re)Enable dirty logging for all 4KiB SPTEs that map the GFNs in
+	 * mask.  If PML is enabled and the GFN doesn't need to be write-
+	 * protected for other reasons, e.g. shadow paging, clear the Dirty bit.
+	 * Otherwise clear the Writable bit.
+	 *
+	 * Note that kvm_mmu_clear_dirty_pt_masked() is called whenever PML is
+	 * enabled but it chooses between clearing the Dirty bit and Writeable
+	 * bit based on the context.
+	 */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (kvm_x86_ops.cpu_dirty_log_size)
 		kvm_mmu_clear_dirty_pt_masked(kvm, slot, gfn_offset, mask);
 	else
@@ -1453,18 +1547,26 @@ static bool kvm_vcpu_write_protect_gfn(struct kvm_vcpu *vcpu, u64 gfn)
 	return kvm_mmu_slot_gfn_write_protect(vcpu->kvm, slot, gfn, PG_LEVEL_4K);
 }
 
+<<<<<<< HEAD
 static bool __kvm_zap_rmap(struct kvm *kvm, struct kvm_rmap_head *rmap_head,
 			   const struct kvm_memory_slot *slot)
+=======
+static bool kvm_zap_rmap(struct kvm *kvm, struct kvm_rmap_head *rmap_head,
+			 const struct kvm_memory_slot *slot)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return kvm_zap_all_rmap_sptes(kvm, rmap_head);
 }
 
+<<<<<<< HEAD
 static bool kvm_zap_rmap(struct kvm *kvm, struct kvm_rmap_head *rmap_head,
 			 struct kvm_memory_slot *slot, gfn_t gfn, int level)
 {
 	return __kvm_zap_rmap(kvm, rmap_head, slot);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct slot_rmap_walk_iterator {
 	/* input fields. */
 	const struct kvm_memory_slot *slot;
@@ -1513,7 +1615,11 @@ static bool slot_rmap_walk_okay(struct slot_rmap_walk_iterator *iterator)
 static void slot_rmap_walk_next(struct slot_rmap_walk_iterator *iterator)
 {
 	while (++iterator->rmap <= iterator->end_rmap) {
+<<<<<<< HEAD
 		iterator->gfn += (1UL << KVM_HPAGE_GFN_SHIFT(iterator->level));
+=======
+		iterator->gfn += KVM_PAGES_PER_HPAGE(iterator->level);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (iterator->rmap->val)
 			return;
@@ -1534,6 +1640,7 @@ static void slot_rmap_walk_next(struct slot_rmap_walk_iterator *iterator)
 	     slot_rmap_walk_okay(_iter_);				\
 	     slot_rmap_walk_next(_iter_))
 
+<<<<<<< HEAD
 typedef bool (*rmap_handler_t)(struct kvm *kvm, struct kvm_rmap_head *rmap_head,
 			       struct kvm_memory_slot *slot, gfn_t gfn,
 			       int level);
@@ -1551,14 +1658,99 @@ static __always_inline bool kvm_handle_gfn_range(struct kvm *kvm,
 			       iterator.level);
 
 	return ret;
+=======
+/* The return value indicates if tlb flush on all vcpus is needed. */
+typedef bool (*slot_rmaps_handler) (struct kvm *kvm,
+				    struct kvm_rmap_head *rmap_head,
+				    const struct kvm_memory_slot *slot);
+
+static __always_inline bool __walk_slot_rmaps(struct kvm *kvm,
+					      const struct kvm_memory_slot *slot,
+					      slot_rmaps_handler fn,
+					      int start_level, int end_level,
+					      gfn_t start_gfn, gfn_t end_gfn,
+					      bool can_yield, bool flush_on_yield,
+					      bool flush)
+{
+	struct slot_rmap_walk_iterator iterator;
+
+	lockdep_assert_held_write(&kvm->mmu_lock);
+
+	for_each_slot_rmap_range(slot, start_level, end_level, start_gfn,
+			end_gfn, &iterator) {
+		if (iterator.rmap)
+			flush |= fn(kvm, iterator.rmap, slot);
+
+		if (!can_yield)
+			continue;
+
+		if (need_resched() || rwlock_needbreak(&kvm->mmu_lock)) {
+			if (flush && flush_on_yield) {
+				kvm_flush_remote_tlbs_range(kvm, start_gfn,
+							    iterator.gfn - start_gfn + 1);
+				flush = false;
+			}
+			cond_resched_rwlock_write(&kvm->mmu_lock);
+		}
+	}
+
+	return flush;
+}
+
+static __always_inline bool walk_slot_rmaps(struct kvm *kvm,
+					    const struct kvm_memory_slot *slot,
+					    slot_rmaps_handler fn,
+					    int start_level, int end_level,
+					    bool flush_on_yield)
+{
+	return __walk_slot_rmaps(kvm, slot, fn, start_level, end_level,
+				 slot->base_gfn, slot->base_gfn + slot->npages - 1,
+				 true, flush_on_yield, false);
+}
+
+static __always_inline bool walk_slot_rmaps_4k(struct kvm *kvm,
+					       const struct kvm_memory_slot *slot,
+					       slot_rmaps_handler fn,
+					       bool flush_on_yield)
+{
+	return walk_slot_rmaps(kvm, slot, fn, PG_LEVEL_4K, PG_LEVEL_4K, flush_on_yield);
+}
+
+static bool __kvm_rmap_zap_gfn_range(struct kvm *kvm,
+				     const struct kvm_memory_slot *slot,
+				     gfn_t start, gfn_t end, bool can_yield,
+				     bool flush)
+{
+	return __walk_slot_rmaps(kvm, slot, kvm_zap_rmap,
+				 PG_LEVEL_4K, KVM_MAX_HUGEPAGE_LEVEL,
+				 start, end - 1, can_yield, true, flush);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
 {
 	bool flush = false;
 
+<<<<<<< HEAD
 	if (kvm_memslots_have_rmaps(kvm))
 		flush = kvm_handle_gfn_range(kvm, range, kvm_zap_rmap);
+=======
+	/*
+	 * To prevent races with vCPUs faulting in a gfn using stale data,
+	 * zapping a gfn range must be protected by mmu_invalidate_in_progress
+	 * (and mmu_invalidate_seq).  The only exception is memslot deletion;
+	 * in that case, SRCU synchronization ensures that SPTEs are zapped
+	 * after all vCPUs have unlocked SRCU, guaranteeing that vCPUs see the
+	 * invalid slot.
+	 */
+	lockdep_assert_once(kvm->mmu_invalidate_in_progress ||
+			    lockdep_is_held(&kvm->slots_lock));
+
+	if (kvm_memslots_have_rmaps(kvm))
+		flush = __kvm_rmap_zap_gfn_range(kvm, range->slot,
+						 range->start, range->end,
+						 range->may_block, flush);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (tdp_mmu_enabled)
 		flush = kvm_tdp_mmu_unmap_gfn_range(kvm, range, flush);
@@ -1570,6 +1762,7 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
 	return flush;
 }
 
+<<<<<<< HEAD
 static bool kvm_age_rmap(struct kvm *kvm, struct kvm_rmap_head *rmap_head,
 			 struct kvm_memory_slot *slot, gfn_t gfn, int level)
 {
@@ -1595,6 +1788,8 @@ static bool kvm_test_age_rmap(struct kvm *kvm, struct kvm_rmap_head *rmap_head,
 	return false;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define RMAP_RECYCLE_THRESHOLD 1000
 
 static void __rmap_add(struct kvm *kvm,
@@ -1629,12 +1824,59 @@ static void rmap_add(struct kvm_vcpu *vcpu, const struct kvm_memory_slot *slot,
 	__rmap_add(vcpu->kvm, cache, slot, spte, gfn, access);
 }
 
+<<<<<<< HEAD
+=======
+static bool kvm_rmap_age_gfn_range(struct kvm *kvm,
+				   struct kvm_gfn_range *range, bool test_only)
+{
+	struct slot_rmap_walk_iterator iterator;
+	struct rmap_iterator iter;
+	bool young = false;
+	u64 *sptep;
+
+	for_each_slot_rmap_range(range->slot, PG_LEVEL_4K, KVM_MAX_HUGEPAGE_LEVEL,
+				 range->start, range->end - 1, &iterator) {
+		for_each_rmap_spte(iterator.rmap, &iter, sptep) {
+			u64 spte = *sptep;
+
+			if (!is_accessed_spte(spte))
+				continue;
+
+			if (test_only)
+				return true;
+
+			if (spte_ad_enabled(spte)) {
+				clear_bit((ffs(shadow_accessed_mask) - 1),
+					(unsigned long *)sptep);
+			} else {
+				/*
+				 * Capture the dirty status of the page, so that
+				 * it doesn't get lost when the SPTE is marked
+				 * for access tracking.
+				 */
+				if (is_writable_pte(spte))
+					kvm_set_pfn_dirty(spte_to_pfn(spte));
+
+				spte = mark_spte_for_access_track(spte);
+				mmu_spte_update_no_track(sptep, spte);
+			}
+			young = true;
+		}
+	}
+	return young;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool kvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
 {
 	bool young = false;
 
 	if (kvm_memslots_have_rmaps(kvm))
+<<<<<<< HEAD
 		young = kvm_handle_gfn_range(kvm, range, kvm_age_rmap);
+=======
+		young = kvm_rmap_age_gfn_range(kvm, range, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (tdp_mmu_enabled)
 		young |= kvm_tdp_mmu_age_gfn_range(kvm, range);
@@ -1647,7 +1889,11 @@ bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
 	bool young = false;
 
 	if (kvm_memslots_have_rmaps(kvm))
+<<<<<<< HEAD
 		young = kvm_handle_gfn_range(kvm, range, kvm_test_age_rmap);
+=======
+		young = kvm_rmap_age_gfn_range(kvm, range, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (tdp_mmu_enabled)
 		young |= kvm_tdp_mmu_test_age_gfn(kvm, range);
@@ -2713,6 +2959,7 @@ void kvm_mmu_change_mmu_pages(struct kvm *kvm, unsigned long goal_nr_mmu_pages)
 	write_unlock(&kvm->mmu_lock);
 }
 
+<<<<<<< HEAD
 int kvm_mmu_unprotect_page(struct kvm *kvm, gfn_t gfn)
 {
 	struct kvm_mmu_page *sp;
@@ -2743,6 +2990,51 @@ static int kvm_mmu_unprotect_page_virt(struct kvm_vcpu *vcpu, gva_t gva)
 
 	r = kvm_mmu_unprotect_page(vcpu->kvm, gpa >> PAGE_SHIFT);
 
+=======
+bool __kvm_mmu_unprotect_gfn_and_retry(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+				       bool always_retry)
+{
+	struct kvm *kvm = vcpu->kvm;
+	LIST_HEAD(invalid_list);
+	struct kvm_mmu_page *sp;
+	gpa_t gpa = cr2_or_gpa;
+	bool r = false;
+
+	/*
+	 * Bail early if there aren't any write-protected shadow pages to avoid
+	 * unnecessarily taking mmu_lock lock, e.g. if the gfn is write-tracked
+	 * by a third party.  Reading indirect_shadow_pages without holding
+	 * mmu_lock is safe, as this is purely an optimization, i.e. a false
+	 * positive is benign, and a false negative will simply result in KVM
+	 * skipping the unprotect+retry path, which is also an optimization.
+	 */
+	if (!READ_ONCE(kvm->arch.indirect_shadow_pages))
+		goto out;
+
+	if (!vcpu->arch.mmu->root_role.direct) {
+		gpa = kvm_mmu_gva_to_gpa_write(vcpu, cr2_or_gpa, NULL);
+		if (gpa == INVALID_GPA)
+			goto out;
+	}
+
+	write_lock(&kvm->mmu_lock);
+	for_each_gfn_valid_sp_with_gptes(kvm, sp, gpa_to_gfn(gpa))
+		kvm_mmu_prepare_zap_page(kvm, sp, &invalid_list);
+
+	/*
+	 * Snapshot the result before zapping, as zapping will remove all list
+	 * entries, i.e. checking the list later would yield a false negative.
+	 */
+	r = !list_empty(&invalid_list);
+	kvm_mmu_commit_zap_page(kvm, &invalid_list);
+	write_unlock(&kvm->mmu_lock);
+
+out:
+	if (r || always_retry) {
+		vcpu->arch.last_retry_eip = kvm_rip_read(vcpu);
+		vcpu->arch.last_retry_addr = cr2_or_gpa;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return r;
 }
 
@@ -2914,10 +3206,15 @@ static int mmu_set_spte(struct kvm_vcpu *vcpu, struct kvm_memory_slot *slot,
 		trace_kvm_mmu_set_spte(level, gfn, sptep);
 	}
 
+<<<<<<< HEAD
 	if (wrprot) {
 		if (write_fault)
 			ret = RET_PF_EMULATE;
 	}
+=======
+	if (wrprot && write_fault)
+		ret = RET_PF_WRITE_PROTECTED;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (flush)
 		kvm_flush_remote_tlbs_gfn(vcpu->kvm, gfn, level);
@@ -4549,7 +4846,11 @@ static int direct_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
 		return RET_PF_RETRY;
 
 	if (page_fault_handle_page_track(vcpu, fault))
+<<<<<<< HEAD
 		return RET_PF_EMULATE;
+=======
+		return RET_PF_WRITE_PROTECTED;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	r = fast_page_fault(vcpu, fault);
 	if (r != RET_PF_INVALID)
@@ -4618,8 +4919,11 @@ int kvm_handle_page_fault(struct kvm_vcpu *vcpu, u64 error_code,
 	if (!flags) {
 		trace_kvm_page_fault(vcpu, fault_address, error_code);
 
+<<<<<<< HEAD
 		if (kvm_event_needs_reinjection(vcpu))
 			kvm_mmu_unprotect_page_virt(vcpu, fault_address);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		r = kvm_mmu_page_fault(vcpu, fault_address, error_code, insn,
 				insn_len);
 	} else if (flags & KVM_PV_REASON_PAGE_NOT_PRESENT) {
@@ -4642,7 +4946,11 @@ static int kvm_tdp_mmu_page_fault(struct kvm_vcpu *vcpu,
 	int r;
 
 	if (page_fault_handle_page_track(vcpu, fault))
+<<<<<<< HEAD
 		return RET_PF_EMULATE;
+=======
+		return RET_PF_WRITE_PROTECTED;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	r = fast_page_fault(vcpu, fault);
 	if (r != RET_PF_INVALID)
@@ -4719,6 +5027,10 @@ static int kvm_tdp_map_page(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code,
 	switch (r) {
 	case RET_PF_FIXED:
 	case RET_PF_SPURIOUS:
+<<<<<<< HEAD
+=======
+	case RET_PF_WRITE_PROTECTED:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	case RET_PF_EMULATE:
@@ -5963,6 +6275,109 @@ void kvm_mmu_track_write(struct kvm_vcpu *vcpu, gpa_t gpa, const u8 *new,
 	write_unlock(&vcpu->kvm->mmu_lock);
 }
 
+<<<<<<< HEAD
+=======
+static bool is_write_to_guest_page_table(u64 error_code)
+{
+	const u64 mask = PFERR_GUEST_PAGE_MASK | PFERR_WRITE_MASK | PFERR_PRESENT_MASK;
+
+	return (error_code & mask) == mask;
+}
+
+static int kvm_mmu_write_protect_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+				       u64 error_code, int *emulation_type)
+{
+	bool direct = vcpu->arch.mmu->root_role.direct;
+
+	/*
+	 * Do not try to unprotect and retry if the vCPU re-faulted on the same
+	 * RIP with the same address that was previously unprotected, as doing
+	 * so will likely put the vCPU into an infinite.  E.g. if the vCPU uses
+	 * a non-page-table modifying instruction on the PDE that points to the
+	 * instruction, then unprotecting the gfn will unmap the instruction's
+	 * code, i.e. make it impossible for the instruction to ever complete.
+	 */
+	if (vcpu->arch.last_retry_eip == kvm_rip_read(vcpu) &&
+	    vcpu->arch.last_retry_addr == cr2_or_gpa)
+		return RET_PF_EMULATE;
+
+	/*
+	 * Reset the unprotect+retry values that guard against infinite loops.
+	 * The values will be refreshed if KVM explicitly unprotects a gfn and
+	 * retries, in all other cases it's safe to retry in the future even if
+	 * the next page fault happens on the same RIP+address.
+	 */
+	vcpu->arch.last_retry_eip = 0;
+	vcpu->arch.last_retry_addr = 0;
+
+	/*
+	 * It should be impossible to reach this point with an MMIO cache hit,
+	 * as RET_PF_WRITE_PROTECTED is returned if and only if there's a valid,
+	 * writable memslot, and creating a memslot should invalidate the MMIO
+	 * cache by way of changing the memslot generation.  WARN and disallow
+	 * retry if MMIO is detected, as retrying MMIO emulation is pointless
+	 * and could put the vCPU into an infinite loop because the processor
+	 * will keep faulting on the non-existent MMIO address.
+	 */
+	if (WARN_ON_ONCE(mmio_info_in_cache(vcpu, cr2_or_gpa, direct)))
+		return RET_PF_EMULATE;
+
+	/*
+	 * Before emulating the instruction, check to see if the access was due
+	 * to a read-only violation while the CPU was walking non-nested NPT
+	 * page tables, i.e. for a direct MMU, for _guest_ page tables in L1.
+	 * If L1 is sharing (a subset of) its page tables with L2, e.g. by
+	 * having nCR3 share lower level page tables with hCR3, then when KVM
+	 * (L0) write-protects the nested NPTs, i.e. npt12 entries, KVM is also
+	 * unknowingly write-protecting L1's guest page tables, which KVM isn't
+	 * shadowing.
+	 *
+	 * Because the CPU (by default) walks NPT page tables using a write
+	 * access (to ensure the CPU can do A/D updates), page walks in L1 can
+	 * trigger write faults for the above case even when L1 isn't modifying
+	 * PTEs.  As a result, KVM will unnecessarily emulate (or at least, try
+	 * to emulate) an excessive number of L1 instructions; because L1's MMU
+	 * isn't shadowed by KVM, there is no need to write-protect L1's gPTEs
+	 * and thus no need to emulate in order to guarantee forward progress.
+	 *
+	 * Try to unprotect the gfn, i.e. zap any shadow pages, so that L1 can
+	 * proceed without triggering emulation.  If one or more shadow pages
+	 * was zapped, skip emulation and resume L1 to let it natively execute
+	 * the instruction.  If no shadow pages were zapped, then the write-
+	 * fault is due to something else entirely, i.e. KVM needs to emulate,
+	 * as resuming the guest will put it into an infinite loop.
+	 *
+	 * Note, this code also applies to Intel CPUs, even though it is *very*
+	 * unlikely that an L1 will share its page tables (IA32/PAE/paging64
+	 * format) with L2's page tables (EPT format).
+	 *
+	 * For indirect MMUs, i.e. if KVM is shadowing the current MMU, try to
+	 * unprotect the gfn and retry if an event is awaiting reinjection.  If
+	 * KVM emulates multiple instructions before completing event injection,
+	 * the event could be delayed beyond what is architecturally allowed,
+	 * e.g. KVM could inject an IRQ after the TPR has been raised.
+	 */
+	if (((direct && is_write_to_guest_page_table(error_code)) ||
+	     (!direct && kvm_event_needs_reinjection(vcpu))) &&
+	    kvm_mmu_unprotect_gfn_and_retry(vcpu, cr2_or_gpa))
+		return RET_PF_RETRY;
+
+	/*
+	 * The gfn is write-protected, but if KVM detects its emulating an
+	 * instruction that is unlikely to be used to modify page tables, or if
+	 * emulation fails, KVM can try to unprotect the gfn and let the CPU
+	 * re-execute the instruction that caused the page fault.  Do not allow
+	 * retrying an instruction from a nested guest as KVM is only explicitly
+	 * shadowing L1's page tables, i.e. unprotecting something for L1 isn't
+	 * going to magically fix whatever issue caused L2 to fail.
+	 */
+	if (!is_guest_mode(vcpu))
+		*emulation_type |= EMULTYPE_ALLOW_RETRY_PF;
+
+	return RET_PF_EMULATE;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int noinline kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 error_code,
 		       void *insn, int insn_len)
 {
@@ -6008,6 +6423,13 @@ int noinline kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 err
 	if (r < 0)
 		return r;
 
+<<<<<<< HEAD
+=======
+	if (r == RET_PF_WRITE_PROTECTED)
+		r = kvm_mmu_write_protect_fault(vcpu, cr2_or_gpa, error_code,
+						&emulation_type);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (r == RET_PF_FIXED)
 		vcpu->stat.pf_fixed++;
 	else if (r == RET_PF_EMULATE)
@@ -6018,6 +6440,7 @@ int noinline kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 err
 	if (r != RET_PF_EMULATE)
 		return 1;
 
+<<<<<<< HEAD
 	/*
 	 * Before emulating the instruction, check if the error code
 	 * was due to a RO violation while translating the guest page.
@@ -6044,6 +6467,8 @@ int noinline kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 err
 	 */
 	if (!mmio_info_in_cache(vcpu, cr2_or_gpa, direct) && !is_guest_mode(vcpu))
 		emulation_type |= EMULTYPE_ALLOW_RETRY_PF;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 emulate:
 	return x86_emulate_instruction(vcpu, cr2_or_gpa, emulation_type, insn,
 				       insn_len);
@@ -6202,6 +6627,7 @@ void kvm_configure_mmu(bool enable_tdp, int tdp_forced_root_level,
 }
 EXPORT_SYMBOL_GPL(kvm_configure_mmu);
 
+<<<<<<< HEAD
 /* The return value indicates if tlb flush on all vcpus is needed. */
 typedef bool (*slot_rmaps_handler) (struct kvm *kvm,
 				    struct kvm_rmap_head *rmap_head,
@@ -6255,6 +6681,8 @@ static __always_inline bool walk_slot_rmaps_4k(struct kvm *kvm,
 	return walk_slot_rmaps(kvm, slot, fn, PG_LEVEL_4K, PG_LEVEL_4K, flush_on_yield);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void free_mmu_pages(struct kvm_mmu *mmu)
 {
 	if (!tdp_enabled && mmu->pae_root)
@@ -6528,9 +6956,14 @@ static bool kvm_rmap_zap_gfn_range(struct kvm *kvm, gfn_t gfn_start, gfn_t gfn_e
 			if (WARN_ON_ONCE(start >= end))
 				continue;
 
+<<<<<<< HEAD
 			flush = __walk_slot_rmaps(kvm, memslot, __kvm_zap_rmap,
 						  PG_LEVEL_4K, KVM_MAX_HUGEPAGE_LEVEL,
 						  start, end - 1, true, flush);
+=======
+			flush = __kvm_rmap_zap_gfn_range(kvm, memslot, start,
+							 end, true, flush);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -6818,7 +7251,11 @@ static void kvm_shadow_mmu_try_split_huge_pages(struct kvm *kvm,
 	 */
 	for (level = KVM_MAX_HUGEPAGE_LEVEL; level > target_level; level--)
 		__walk_slot_rmaps(kvm, slot, shadow_mmu_try_split_huge_pages,
+<<<<<<< HEAD
 				  level, level, start, end - 1, true, false);
+=======
+				  level, level, start, end - 1, true, true, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Must be called with the mmu_lock held in write-mode. */
@@ -6997,10 +7434,77 @@ void kvm_arch_flush_shadow_all(struct kvm *kvm)
 	kvm_mmu_zap_all(kvm);
 }
 
+<<<<<<< HEAD
 void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
 				   struct kvm_memory_slot *slot)
 {
 	kvm_mmu_zap_all_fast(kvm);
+=======
+static void kvm_mmu_zap_memslot_pages_and_flush(struct kvm *kvm,
+						struct kvm_memory_slot *slot,
+						bool flush)
+{
+	LIST_HEAD(invalid_list);
+	unsigned long i;
+
+	if (list_empty(&kvm->arch.active_mmu_pages))
+		goto out_flush;
+
+	/*
+	 * Since accounting information is stored in struct kvm_arch_memory_slot,
+	 * all MMU pages that are shadowing guest PTEs must be zapped before the
+	 * memslot is deleted, as freeing such pages after the memslot is freed
+	 * will result in use-after-free, e.g. in unaccount_shadowed().
+	 */
+	for (i = 0; i < slot->npages; i++) {
+		struct kvm_mmu_page *sp;
+		gfn_t gfn = slot->base_gfn + i;
+
+		for_each_gfn_valid_sp_with_gptes(kvm, sp, gfn)
+			kvm_mmu_prepare_zap_page(kvm, sp, &invalid_list);
+
+		if (need_resched() || rwlock_needbreak(&kvm->mmu_lock)) {
+			kvm_mmu_remote_flush_or_zap(kvm, &invalid_list, flush);
+			flush = false;
+			cond_resched_rwlock_write(&kvm->mmu_lock);
+		}
+	}
+
+out_flush:
+	kvm_mmu_remote_flush_or_zap(kvm, &invalid_list, flush);
+}
+
+static void kvm_mmu_zap_memslot(struct kvm *kvm,
+				struct kvm_memory_slot *slot)
+{
+	struct kvm_gfn_range range = {
+		.slot = slot,
+		.start = slot->base_gfn,
+		.end = slot->base_gfn + slot->npages,
+		.may_block = true,
+	};
+	bool flush;
+
+	write_lock(&kvm->mmu_lock);
+	flush = kvm_unmap_gfn_range(kvm, &range);
+	kvm_mmu_zap_memslot_pages_and_flush(kvm, slot, flush);
+	write_unlock(&kvm->mmu_lock);
+}
+
+static inline bool kvm_memslot_flush_zap_all(struct kvm *kvm)
+{
+	return kvm->arch.vm_type == KVM_X86_DEFAULT_VM &&
+	       kvm_check_has_quirk(kvm, KVM_X86_QUIRK_SLOT_ZAP_ALL);
+}
+
+void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
+				   struct kvm_memory_slot *slot)
+{
+	if (kvm_memslot_flush_zap_all(kvm))
+		kvm_mmu_zap_all_fast(kvm);
+	else
+		kvm_mmu_zap_memslot(kvm, slot);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void kvm_mmu_invalidate_mmio_sptes(struct kvm *kvm, u64 gen)

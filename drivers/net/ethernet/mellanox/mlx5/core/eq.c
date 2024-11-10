@@ -835,6 +835,7 @@ static void comp_irq_release_pci(struct mlx5_core_dev *dev, u16 vecidx)
 	mlx5_irq_release_vector(irq);
 }
 
+<<<<<<< HEAD
 static int mlx5_cpumask_default_spread(int numa_node, int index)
 {
 	const struct cpumask *prev = cpu_none_mask;
@@ -857,6 +858,11 @@ static int mlx5_cpumask_default_spread(int numa_node, int index)
 spread_done:
 	rcu_read_unlock();
 	return found_cpu;
+=======
+static int mlx5_cpumask_default_spread(struct mlx5_core_dev *dev, int index)
+{
+	return cpumask_local_spread(index, dev->priv.numa_node);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct cpu_rmap *mlx5_eq_table_get_pci_rmap(struct mlx5_core_dev *dev)
@@ -880,7 +886,11 @@ static int comp_irq_request_pci(struct mlx5_core_dev *dev, u16 vecidx)
 	int cpu;
 
 	rmap = mlx5_eq_table_get_pci_rmap(dev);
+<<<<<<< HEAD
 	cpu = mlx5_cpumask_default_spread(dev->priv.numa_node, vecidx);
+=======
+	cpu = mlx5_cpumask_default_spread(dev, vecidx);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	irq = mlx5_irq_request_vector(dev, cpu, vecidx, &rmap);
 	if (IS_ERR(irq))
 		return PTR_ERR(irq);
@@ -915,7 +925,11 @@ static int comp_irq_request_sf(struct mlx5_core_dev *dev, u16 vecidx)
 	if (!mlx5_irq_pool_is_sf_pool(pool))
 		return comp_irq_request_pci(dev, vecidx);
 
+<<<<<<< HEAD
 	af_desc.is_managed = 1;
+=======
+	af_desc.is_managed = false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cpumask_copy(&af_desc.mask, cpu_online_mask);
 	cpumask_andnot(&af_desc.mask, &af_desc.mask, &table->used_cpus);
 	irq = mlx5_irq_affinity_request(dev, pool, &af_desc);
@@ -1080,6 +1094,15 @@ int mlx5_comp_eqn_get(struct mlx5_core_dev *dev, u16 vecidx, int *eqn)
 	struct mlx5_eq_comp *eq;
 	int ret = 0;
 
+<<<<<<< HEAD
+=======
+	if (vecidx >= table->max_comp_eqs) {
+		mlx5_core_dbg(dev, "Requested vector index %u should be less than %u",
+			      vecidx, table->max_comp_eqs);
+		return -EINVAL;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_lock(&table->comp_lock);
 	eq = xa_load(&table->comp_eqs, vecidx);
 	if (eq) {
@@ -1145,7 +1168,11 @@ int mlx5_comp_vector_get_cpu(struct mlx5_core_dev *dev, int vector)
 	if (mask)
 		cpu = cpumask_first(mask);
 	else
+<<<<<<< HEAD
 		cpu = mlx5_cpumask_default_spread(dev->priv.numa_node, vector);
+=======
+		cpu = mlx5_cpumask_default_spread(dev, vector);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return cpu;
 }

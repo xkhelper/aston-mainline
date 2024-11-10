@@ -121,6 +121,12 @@ static struct uvcg_format *find_format_by_pix(struct uvc_device *uvc,
 	list_for_each_entry(format, &uvc->header->formats, entry) {
 		const struct uvc_format_desc *fmtdesc = to_uvc_format(format->fmt);
 
+<<<<<<< HEAD
+=======
+		if (IS_ERR(fmtdesc))
+			continue;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (fmtdesc->fcc == pixelformat) {
 			uformat = format->fmt;
 			break;
@@ -240,6 +246,10 @@ uvc_v4l2_try_format(struct file *file, void *fh, struct v4l2_format *fmt)
 	struct uvc_video *video = &uvc->video;
 	struct uvcg_format *uformat;
 	struct uvcg_frame *uframe;
+<<<<<<< HEAD
+=======
+	const struct uvc_format_desc *fmtdesc;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 *fcc;
 
 	if (fmt->type != video->queue.queue.type)
@@ -277,7 +287,14 @@ uvc_v4l2_try_format(struct file *file, void *fh, struct v4l2_format *fmt)
 		fmt->fmt.pix.height = uframe->frame.w_height;
 		fmt->fmt.pix.bytesperline = uvc_v4l2_get_bytesperline(uformat, uframe);
 		fmt->fmt.pix.sizeimage = uvc_get_frame_size(uformat, uframe);
+<<<<<<< HEAD
 		fmt->fmt.pix.pixelformat = to_uvc_format(uformat)->fcc;
+=======
+		fmtdesc = to_uvc_format(uformat);
+		if (IS_ERR(fmtdesc))
+			return PTR_ERR(fmtdesc);
+		fmt->fmt.pix.pixelformat = fmtdesc->fcc;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	fmt->fmt.pix.field = V4L2_FIELD_NONE;
 	fmt->fmt.pix.colorspace = V4L2_COLORSPACE_SRGB;
@@ -389,6 +406,12 @@ uvc_v4l2_enum_format(struct file *file, void *fh, struct v4l2_fmtdesc *f)
 		return -EINVAL;
 
 	fmtdesc = to_uvc_format(uformat);
+<<<<<<< HEAD
+=======
+	if (IS_ERR(fmtdesc))
+		return PTR_ERR(fmtdesc);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	f->pixelformat = fmtdesc->fcc;
 
 	return 0;

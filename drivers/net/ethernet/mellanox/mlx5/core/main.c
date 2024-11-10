@@ -454,8 +454,13 @@ static int handle_hca_cap_atomic(struct mlx5_core_dev *dev, void *set_ctx)
 
 static int handle_hca_cap_odp(struct mlx5_core_dev *dev, void *set_ctx)
 {
+<<<<<<< HEAD
 	void *set_hca_cap;
 	bool do_set = false;
+=======
+	bool do_set = false, mem_page_fault = false;
+	void *set_hca_cap;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 
 	if (!IS_ENABLED(CONFIG_INFINIBAND_ON_DEMAND_PAGING) ||
@@ -470,6 +475,20 @@ static int handle_hca_cap_odp(struct mlx5_core_dev *dev, void *set_ctx)
 	memcpy(set_hca_cap, dev->caps.hca[MLX5_CAP_ODP]->cur,
 	       MLX5_ST_SZ_BYTES(odp_cap));
 
+<<<<<<< HEAD
+=======
+	/* For best performance, enable memory scheme ODP only when
+	 * it has page prefetch enabled.
+	 */
+	if (MLX5_CAP_ODP_MAX(dev, mem_page_fault) &&
+	    MLX5_CAP_ODP_MAX(dev, memory_page_fault_scheme_cap.page_prefetch)) {
+		mem_page_fault = true;
+		do_set = true;
+		MLX5_SET(odp_cap, set_hca_cap, mem_page_fault, mem_page_fault);
+		goto set;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define ODP_CAP_SET_MAX(dev, field)                                            \
 	do {                                                                   \
 		u32 _res = MLX5_CAP_ODP_MAX(dev, field);                       \
@@ -479,6 +498,7 @@ static int handle_hca_cap_odp(struct mlx5_core_dev *dev, void *set_ctx)
 		}                                                              \
 	} while (0)
 
+<<<<<<< HEAD
 	ODP_CAP_SET_MAX(dev, ud_odp_caps.srq_receive);
 	ODP_CAP_SET_MAX(dev, rc_odp_caps.srq_receive);
 	ODP_CAP_SET_MAX(dev, xrc_odp_caps.srq_receive);
@@ -498,6 +518,30 @@ static int handle_hca_cap_odp(struct mlx5_core_dev *dev, void *set_ctx)
 		return 0;
 
 	return set_caps(dev, set_ctx, MLX5_SET_HCA_CAP_OP_MOD_ODP);
+=======
+	ODP_CAP_SET_MAX(dev, transport_page_fault_scheme_cap.ud_odp_caps.srq_receive);
+	ODP_CAP_SET_MAX(dev, transport_page_fault_scheme_cap.rc_odp_caps.srq_receive);
+	ODP_CAP_SET_MAX(dev, transport_page_fault_scheme_cap.xrc_odp_caps.srq_receive);
+	ODP_CAP_SET_MAX(dev, transport_page_fault_scheme_cap.xrc_odp_caps.send);
+	ODP_CAP_SET_MAX(dev, transport_page_fault_scheme_cap.xrc_odp_caps.receive);
+	ODP_CAP_SET_MAX(dev, transport_page_fault_scheme_cap.xrc_odp_caps.write);
+	ODP_CAP_SET_MAX(dev, transport_page_fault_scheme_cap.xrc_odp_caps.read);
+	ODP_CAP_SET_MAX(dev, transport_page_fault_scheme_cap.xrc_odp_caps.atomic);
+	ODP_CAP_SET_MAX(dev, transport_page_fault_scheme_cap.dc_odp_caps.srq_receive);
+	ODP_CAP_SET_MAX(dev, transport_page_fault_scheme_cap.dc_odp_caps.send);
+	ODP_CAP_SET_MAX(dev, transport_page_fault_scheme_cap.dc_odp_caps.receive);
+	ODP_CAP_SET_MAX(dev, transport_page_fault_scheme_cap.dc_odp_caps.write);
+	ODP_CAP_SET_MAX(dev, transport_page_fault_scheme_cap.dc_odp_caps.read);
+	ODP_CAP_SET_MAX(dev, transport_page_fault_scheme_cap.dc_odp_caps.atomic);
+
+set:
+	if (do_set)
+		err = set_caps(dev, set_ctx, MLX5_SET_HCA_CAP_OP_MOD_ODP);
+
+	mlx5_core_dbg(dev, "Using ODP %s scheme\n",
+		      mem_page_fault ? "memory" : "transport");
+	return err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int max_uc_list_get_devlink_param(struct mlx5_core_dev *dev)
@@ -619,6 +663,12 @@ static int handle_hca_cap(struct mlx5_core_dev *dev, void *set_ctx)
 	if (MLX5_CAP_GEN_MAX(dev, pci_sync_for_fw_update_with_driver_unload))
 		MLX5_SET(cmd_hca_cap, set_hca_cap,
 			 pci_sync_for_fw_update_with_driver_unload, 1);
+<<<<<<< HEAD
+=======
+	if (MLX5_CAP_GEN_MAX(dev, pcie_reset_using_hotreset_method))
+		MLX5_SET(cmd_hca_cap, set_hca_cap,
+			 pcie_reset_using_hotreset_method, 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (MLX5_CAP_GEN_MAX(dev, num_vhca_ports))
 		MLX5_SET(cmd_hca_cap,
@@ -923,6 +973,14 @@ static int mlx5_pci_init(struct mlx5_core_dev *dev, struct pci_dev *pdev,
 	}
 
 	mlx5_pci_vsc_init(dev);
+<<<<<<< HEAD
+=======
+
+	err = pci_enable_ptm(pdev, NULL);
+	if (err)
+		mlx5_core_info(dev, "PTM is not supported by PCIe\n");
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 
 err_clr_master:
@@ -939,6 +997,10 @@ static void mlx5_pci_close(struct mlx5_core_dev *dev)
 	 * before removing the pci bars
 	 */
 	mlx5_drain_health_wq(dev);
+<<<<<<< HEAD
+=======
+	pci_disable_ptm(dev->pdev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	iounmap(dev->iseg);
 	release_bar(dev->pdev);
 	mlx5_pci_disable_device(dev);

@@ -30,12 +30,15 @@
 #include <nvif/if0000.h>
 
 int
+<<<<<<< HEAD
 nvif_client_ioctl(struct nvif_client *client, void *data, u32 size)
 {
 	return client->driver->ioctl(client->object.priv, data, size, NULL);
 }
 
 int
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 nvif_client_suspend(struct nvif_client *client)
 {
 	return client->driver->suspend(client->object.priv);
@@ -51,6 +54,7 @@ void
 nvif_client_dtor(struct nvif_client *client)
 {
 	nvif_object_dtor(&client->object);
+<<<<<<< HEAD
 	if (client->driver) {
 		if (client->driver->fini)
 			client->driver->fini(client->object.priv);
@@ -67,6 +71,15 @@ nvif_client_ctor(struct nvif_client *parent, const char *name, u64 device,
 		struct nvif_ioctl_v0 ioctl;
 		struct nvif_ioctl_nop_v0 nop;
 	} nop = {};
+=======
+	client->driver = NULL;
+}
+
+int
+nvif_client_ctor(struct nvif_client *parent, const char *name, struct nvif_client *client)
+{
+	struct nvif_client_v0 args = {};
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	strscpy_pad(args.name, name, sizeof(args.name));
@@ -79,6 +92,7 @@ nvif_client_ctor(struct nvif_client *parent, const char *name, u64 device,
 
 	client->object.client = client;
 	client->object.handle = ~0;
+<<<<<<< HEAD
 	client->route = NVIF_IOCTL_V0_ROUTE_NVIF;
 	client->driver = parent->driver;
 
@@ -90,4 +104,8 @@ nvif_client_ctor(struct nvif_client *parent, const char *name, u64 device,
 	if (ret)
 		nvif_client_dtor(client);
 	return ret;
+=======
+	client->driver = parent->driver;
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

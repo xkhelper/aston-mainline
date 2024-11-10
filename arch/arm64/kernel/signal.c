@@ -19,6 +19,10 @@
 #include <linux/ratelimit.h>
 #include <linux/rseq.h>
 #include <linux/syscalls.h>
+<<<<<<< HEAD
+=======
+#include <linux/pkeys.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/daifflags.h>
 #include <asm/debug-monitors.h>
@@ -61,14 +65,77 @@ struct rt_sigframe_user_layout {
 	unsigned long za_offset;
 	unsigned long zt_offset;
 	unsigned long fpmr_offset;
+<<<<<<< HEAD
+=======
+	unsigned long poe_offset;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long extra_offset;
 	unsigned long end_offset;
 };
 
+<<<<<<< HEAD
+=======
+/*
+ * Holds any EL0-controlled state that influences unprivileged memory accesses.
+ * This includes both accesses done in userspace and uaccess done in the kernel.
+ *
+ * This state needs to be carefully managed to ensure that it doesn't cause
+ * uaccess to fail when setting up the signal frame, and the signal handler
+ * itself also expects a well-defined state when entered.
+ */
+struct user_access_state {
+	u64 por_el0;
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define BASE_SIGFRAME_SIZE round_up(sizeof(struct rt_sigframe), 16)
 #define TERMINATOR_SIZE round_up(sizeof(struct _aarch64_ctx), 16)
 #define EXTRA_CONTEXT_SIZE round_up(sizeof(struct extra_context), 16)
 
+<<<<<<< HEAD
+=======
+/*
+ * Save the user access state into ua_state and reset it to disable any
+ * restrictions.
+ */
+static void save_reset_user_access_state(struct user_access_state *ua_state)
+{
+	if (system_supports_poe()) {
+		u64 por_enable_all = 0;
+
+		for (int pkey = 0; pkey < arch_max_pkey(); pkey++)
+			por_enable_all |= POE_RXW << (pkey * POR_BITS_PER_PKEY);
+
+		ua_state->por_el0 = read_sysreg_s(SYS_POR_EL0);
+		write_sysreg_s(por_enable_all, SYS_POR_EL0);
+		/* Ensure that any subsequent uaccess observes the updated value */
+		isb();
+	}
+}
+
+/*
+ * Set the user access state for invoking the signal handler.
+ *
+ * No uaccess should be done after that function is called.
+ */
+static void set_handler_user_access_state(void)
+{
+	if (system_supports_poe())
+		write_sysreg_s(POR_EL0_INIT, SYS_POR_EL0);
+}
+
+/*
+ * Restore the user access state to the values saved in ua_state.
+ *
+ * No uaccess should be done after that function is called.
+ */
+static void restore_user_access_state(const struct user_access_state *ua_state)
+{
+	if (system_supports_poe())
+		write_sysreg_s(ua_state->por_el0, SYS_POR_EL0);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void init_user_layout(struct rt_sigframe_user_layout *user)
 {
 	const size_t reserved_size =
@@ -185,6 +252,11 @@ struct user_ctxs {
 	u32 zt_size;
 	struct fpmr_context __user *fpmr;
 	u32 fpmr_size;
+<<<<<<< HEAD
+=======
+	struct poe_context __user *poe;
+	u32 poe_size;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int preserve_fpsimd_context(struct fpsimd_context __user *ctx)
@@ -258,6 +330,37 @@ static int restore_fpmr_context(struct user_ctxs *user)
 	return err;
 }
 
+<<<<<<< HEAD
+=======
+static int preserve_poe_context(struct poe_context __user *ctx,
+				const struct user_access_state *ua_state)
+{
+	int err = 0;
+
+	__put_user_error(POE_MAGIC, &ctx->head.magic, err);
+	__put_user_error(sizeof(*ctx), &ctx->head.size, err);
+	__put_user_error(ua_state->por_el0, &ctx->por_el0, err);
+
+	return err;
+}
+
+static int restore_poe_context(struct user_ctxs *user,
+			       struct user_access_state *ua_state)
+{
+	u64 por_el0;
+	int err = 0;
+
+	if (user->poe_size != sizeof(*user->poe))
+		return -EINVAL;
+
+	__get_user_error(por_el0, &(user->poe->por_el0), err);
+	if (!err)
+		ua_state->por_el0 = por_el0;
+
+	return err;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_ARM64_SVE
 
 static int preserve_sve_context(struct sve_context __user *ctx)
@@ -621,6 +724,10 @@ static int parse_user_sigframe(struct user_ctxs *user,
 	user->za = NULL;
 	user->zt = NULL;
 	user->fpmr = NULL;
+<<<<<<< HEAD
+=======
+	user->poe = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!IS_ALIGNED((unsigned long)base, 16))
 		goto invalid;
@@ -671,6 +778,20 @@ static int parse_user_sigframe(struct user_ctxs *user,
 			/* ignore */
 			break;
 
+<<<<<<< HEAD
+=======
+		case POE_MAGIC:
+			if (!system_supports_poe())
+				goto invalid;
+
+			if (user->poe)
+				goto invalid;
+
+			user->poe = (struct poe_context __user *)head;
+			user->poe_size = size;
+			break;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		case SVE_MAGIC:
 			if (!system_supports_sve() && !system_supports_sme())
 				goto invalid;
@@ -809,7 +930,12 @@ invalid:
 }
 
 static int restore_sigframe(struct pt_regs *regs,
+<<<<<<< HEAD
 			    struct rt_sigframe __user *sf)
+=======
+			    struct rt_sigframe __user *sf,
+			    struct user_access_state *ua_state)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	sigset_t set;
 	int i, err;
@@ -857,6 +983,12 @@ static int restore_sigframe(struct pt_regs *regs,
 	if (err == 0 && system_supports_sme2() && user.zt)
 		err = restore_zt_context(&user);
 
+<<<<<<< HEAD
+=======
+	if (err == 0 && system_supports_poe() && user.poe)
+		err = restore_poe_context(&user, ua_state);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
@@ -864,6 +996,10 @@ SYSCALL_DEFINE0(rt_sigreturn)
 {
 	struct pt_regs *regs = current_pt_regs();
 	struct rt_sigframe __user *frame;
+<<<<<<< HEAD
+=======
+	struct user_access_state ua_state;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Always make any pending restarted system calls return -EINTR */
 	current->restart_block.fn = do_no_restart_syscall;
@@ -880,12 +1016,21 @@ SYSCALL_DEFINE0(rt_sigreturn)
 	if (!access_ok(frame, sizeof (*frame)))
 		goto badframe;
 
+<<<<<<< HEAD
 	if (restore_sigframe(regs, frame))
+=======
+	if (restore_sigframe(regs, frame, &ua_state))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto badframe;
 
 	if (restore_altstack(&frame->uc.uc_stack))
 		goto badframe;
 
+<<<<<<< HEAD
+=======
+	restore_user_access_state(&ua_state);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return regs->regs[0];
 
 badframe:
@@ -980,11 +1125,26 @@ static int setup_sigframe_layout(struct rt_sigframe_user_layout *user,
 			return err;
 	}
 
+<<<<<<< HEAD
+=======
+	if (system_supports_poe()) {
+		err = sigframe_alloc(user, &user->poe_offset,
+				     sizeof(struct poe_context));
+		if (err)
+			return err;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return sigframe_alloc_end(user);
 }
 
 static int setup_sigframe(struct rt_sigframe_user_layout *user,
+<<<<<<< HEAD
 			  struct pt_regs *regs, sigset_t *set)
+=======
+			  struct pt_regs *regs, sigset_t *set,
+			  const struct user_access_state *ua_state)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int i, err = 0;
 	struct rt_sigframe __user *sf = user->sigframe;
@@ -1042,6 +1202,16 @@ static int setup_sigframe(struct rt_sigframe_user_layout *user,
 		err |= preserve_fpmr_context(fpmr_ctx);
 	}
 
+<<<<<<< HEAD
+=======
+	if (system_supports_poe() && err == 0 && user->poe_offset) {
+		struct poe_context __user *poe_ctx =
+			apply_user_offset(user, user->poe_offset);
+
+		err |= preserve_poe_context(poe_ctx, ua_state);
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* ZA state if present */
 	if (system_supports_sme() && err == 0 && user->za_offset) {
 		struct za_context __user *za_ctx =
@@ -1191,6 +1361,10 @@ static int setup_rt_frame(int usig, struct ksignal *ksig, sigset_t *set,
 {
 	struct rt_sigframe_user_layout user;
 	struct rt_sigframe __user *frame;
+<<<<<<< HEAD
+=======
+	struct user_access_state ua_state;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err = 0;
 
 	fpsimd_signal_preserve_current_state();
@@ -1198,13 +1372,21 @@ static int setup_rt_frame(int usig, struct ksignal *ksig, sigset_t *set,
 	if (get_sigframe(&user, ksig, regs))
 		return 1;
 
+<<<<<<< HEAD
+=======
+	save_reset_user_access_state(&ua_state);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	frame = user.sigframe;
 
 	__put_user_error(0, &frame->uc.uc_flags, err);
 	__put_user_error(NULL, &frame->uc.uc_link, err);
 
 	err |= __save_altstack(&frame->uc.uc_stack, regs->sp);
+<<<<<<< HEAD
 	err |= setup_sigframe(&user, regs, set);
+=======
+	err |= setup_sigframe(&user, regs, set, &ua_state);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err == 0) {
 		setup_return(regs, &ksig->ka, &user, usig);
 		if (ksig->ka.sa.sa_flags & SA_SIGINFO) {
@@ -1214,6 +1396,14 @@ static int setup_rt_frame(int usig, struct ksignal *ksig, sigset_t *set,
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	if (err == 0)
+		set_handler_user_access_state();
+	else
+		restore_user_access_state(&ua_state);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 

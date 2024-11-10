@@ -70,7 +70,11 @@ bool bch2_bkey_normalize(struct bch_fs *, struct bkey_s);
 static inline bool bch2_bkey_maybe_mergable(const struct bkey *l, const struct bkey *r)
 {
 	return l->type == r->type &&
+<<<<<<< HEAD
 		!bversion_cmp(l->version, r->version) &&
+=======
+		!bversion_cmp(l->bversion, r->bversion) &&
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		bpos_eq(l->p, bkey_start_pos(r));
 }
 

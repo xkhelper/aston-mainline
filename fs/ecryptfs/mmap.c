@@ -19,7 +19,11 @@
 #include <linux/scatterlist.h>
 #include <linux/slab.h>
 #include <linux/xattr.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "ecryptfs_kernel.h"
 
 /*
@@ -234,17 +238,30 @@ out:
 /*
  * Called with lower inode mutex held.
  */
+<<<<<<< HEAD
 static int fill_zeros_to_end_of_page(struct page *page, unsigned int to)
 {
 	struct inode *inode = page->mapping->host;
 	int end_byte_in_page;
 
 	if ((i_size_read(inode) / PAGE_SIZE) != page->index)
+=======
+static int fill_zeros_to_end_of_page(struct folio *folio, unsigned int to)
+{
+	struct inode *inode = folio->mapping->host;
+	int end_byte_in_page;
+
+	if ((i_size_read(inode) / PAGE_SIZE) != folio->index)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 	end_byte_in_page = i_size_read(inode) % PAGE_SIZE;
 	if (to > end_byte_in_page)
 		end_byte_in_page = to;
+<<<<<<< HEAD
 	zero_user_segment(page, end_byte_in_page, PAGE_SIZE);
+=======
+	folio_zero_segment(folio, end_byte_in_page, PAGE_SIZE);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out:
 	return 0;
 }
@@ -255,7 +272,11 @@ out:
  * @mapping: The eCryptfs object
  * @pos: The file offset at which to start writing
  * @len: Length of the write
+<<<<<<< HEAD
  * @pagep: Pointer to return the page
+=======
+ * @foliop: Pointer to return the folio
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @fsdata: Pointer to return fs data (unused)
  *
  * This function must zero any hole we create
@@ -265,6 +286,7 @@ out:
 static int ecryptfs_write_begin(struct file *file,
 			struct address_space *mapping,
 			loff_t pos, unsigned len,
+<<<<<<< HEAD
 			struct page **pagep, void **fsdata)
 {
 	pgoff_t index = pos >> PAGE_SHIFT;
@@ -279,16 +301,38 @@ static int ecryptfs_write_begin(struct file *file,
 
 	prev_page_end_size = ((loff_t)index << PAGE_SHIFT);
 	if (!PageUptodate(page)) {
+=======
+			struct folio **foliop, void **fsdata)
+{
+	pgoff_t index = pos >> PAGE_SHIFT;
+	struct folio *folio;
+	loff_t prev_page_end_size;
+	int rc = 0;
+
+	folio = __filemap_get_folio(mapping, index, FGP_WRITEBEGIN,
+			mapping_gfp_mask(mapping));
+	if (IS_ERR(folio))
+		return PTR_ERR(folio);
+	*foliop = folio;
+
+	prev_page_end_size = ((loff_t)index << PAGE_SHIFT);
+	if (!folio_test_uptodate(folio)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct ecryptfs_crypt_stat *crypt_stat =
 			&ecryptfs_inode_to_private(mapping->host)->crypt_stat;
 
 		if (!(crypt_stat->flags & ECRYPTFS_ENCRYPTED)) {
 			rc = ecryptfs_read_lower_page_segment(
+<<<<<<< HEAD
 				page, index, 0, PAGE_SIZE, mapping->host);
+=======
+				&folio->page, index, 0, PAGE_SIZE, mapping->host);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (rc) {
 				printk(KERN_ERR "%s: Error attempting to read "
 				       "lower page segment; rc = [%d]\n",
 				       __func__, rc);
+<<<<<<< HEAD
 				ClearPageUptodate(page);
 				goto out;
 			} else
@@ -297,6 +341,16 @@ static int ecryptfs_write_begin(struct file *file,
 			if (crypt_stat->flags & ECRYPTFS_METADATA_IN_XATTR) {
 				rc = ecryptfs_copy_up_encrypted_with_header(
 					page, crypt_stat);
+=======
+				folio_clear_uptodate(folio);
+				goto out;
+			} else
+				folio_mark_uptodate(folio);
+		} else if (crypt_stat->flags & ECRYPTFS_VIEW_AS_ENCRYPTED) {
+			if (crypt_stat->flags & ECRYPTFS_METADATA_IN_XATTR) {
+				rc = ecryptfs_copy_up_encrypted_with_header(
+					&folio->page, crypt_stat);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				if (rc) {
 					printk(KERN_ERR "%s: Error attempting "
 					       "to copy the encrypted content "
@@ -304,6 +358,7 @@ static int ecryptfs_write_begin(struct file *file,
 					       "inserting the metadata from "
 					       "the xattr into the header; rc "
 					       "= [%d]\n", __func__, rc);
+<<<<<<< HEAD
 					ClearPageUptodate(page);
 					goto out;
 				}
@@ -311,11 +366,21 @@ static int ecryptfs_write_begin(struct file *file,
 			} else {
 				rc = ecryptfs_read_lower_page_segment(
 					page, index, 0, PAGE_SIZE,
+=======
+					folio_clear_uptodate(folio);
+					goto out;
+				}
+				folio_mark_uptodate(folio);
+			} else {
+				rc = ecryptfs_read_lower_page_segment(
+					&folio->page, index, 0, PAGE_SIZE,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					mapping->host);
 				if (rc) {
 					printk(KERN_ERR "%s: Error reading "
 					       "page; rc = [%d]\n",
 					       __func__, rc);
+<<<<<<< HEAD
 					ClearPageUptodate(page);
 					goto out;
 				}
@@ -328,22 +393,48 @@ static int ecryptfs_write_begin(struct file *file,
 				SetPageUptodate(page);
 			} else if (len < PAGE_SIZE) {
 				rc = ecryptfs_decrypt_page(page);
+=======
+					folio_clear_uptodate(folio);
+					goto out;
+				}
+				folio_mark_uptodate(folio);
+			}
+		} else {
+			if (prev_page_end_size
+			    >= i_size_read(mapping->host)) {
+				folio_zero_range(folio, 0, PAGE_SIZE);
+				folio_mark_uptodate(folio);
+			} else if (len < PAGE_SIZE) {
+				rc = ecryptfs_decrypt_page(&folio->page);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				if (rc) {
 					printk(KERN_ERR "%s: Error decrypting "
 					       "page at index [%ld]; "
 					       "rc = [%d]\n",
+<<<<<<< HEAD
 					       __func__, page->index, rc);
 					ClearPageUptodate(page);
 					goto out;
 				}
 				SetPageUptodate(page);
+=======
+					       __func__, folio->index, rc);
+					folio_clear_uptodate(folio);
+					goto out;
+				}
+				folio_mark_uptodate(folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 		}
 	}
 	/* If creating a page or more of holes, zero them out via truncate.
 	 * Note, this will increase i_size. */
 	if (index != 0) {
+<<<<<<< HEAD
 		if (prev_page_end_size > i_size_read(page->mapping->host)) {
+=======
+		if (prev_page_end_size > i_size_read(mapping->host)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			rc = ecryptfs_truncate(file->f_path.dentry,
 					       prev_page_end_size);
 			if (rc) {
@@ -359,12 +450,20 @@ static int ecryptfs_write_begin(struct file *file,
 	 * of page?  Zero it out. */
 	if ((i_size_read(mapping->host) == prev_page_end_size)
 	    && (pos != 0))
+<<<<<<< HEAD
 		zero_user(page, 0, PAGE_SIZE);
 out:
 	if (unlikely(rc)) {
 		unlock_page(page);
 		put_page(page);
 		*pagep = NULL;
+=======
+		folio_zero_range(folio, 0, PAGE_SIZE);
+out:
+	if (unlikely(rc)) {
+		folio_unlock(folio);
+		folio_put(folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return rc;
 }
@@ -457,13 +556,21 @@ int ecryptfs_write_inode_size_to_metadata(struct inode *ecryptfs_inode)
  * @pos: The file position
  * @len: The length of the data (unused)
  * @copied: The amount of data copied
+<<<<<<< HEAD
  * @page: The eCryptfs page
+=======
+ * @folio: The eCryptfs folio
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @fsdata: The fsdata (unused)
  */
 static int ecryptfs_write_end(struct file *file,
 			struct address_space *mapping,
 			loff_t pos, unsigned len, unsigned copied,
+<<<<<<< HEAD
 			struct page *page, void *fsdata)
+=======
+			struct folio *folio, void *fsdata)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	pgoff_t index = pos >> PAGE_SHIFT;
 	unsigned from = pos & (PAGE_SIZE - 1);
@@ -476,8 +583,13 @@ static int ecryptfs_write_end(struct file *file,
 	ecryptfs_printk(KERN_DEBUG, "Calling fill_zeros_to_end_of_page"
 			"(page w/ index = [0x%.16lx], to = [%d])\n", index, to);
 	if (!(crypt_stat->flags & ECRYPTFS_ENCRYPTED)) {
+<<<<<<< HEAD
 		rc = ecryptfs_write_lower_page_segment(ecryptfs_inode, page, 0,
 						       to);
+=======
+		rc = ecryptfs_write_lower_page_segment(ecryptfs_inode,
+				&folio->page, 0, to);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!rc) {
 			rc = copied;
 			fsstack_copy_inode_size(ecryptfs_inode,
@@ -485,21 +597,36 @@ static int ecryptfs_write_end(struct file *file,
 		}
 		goto out;
 	}
+<<<<<<< HEAD
 	if (!PageUptodate(page)) {
+=======
+	if (!folio_test_uptodate(folio)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (copied < PAGE_SIZE) {
 			rc = 0;
 			goto out;
 		}
+<<<<<<< HEAD
 		SetPageUptodate(page);
 	}
 	/* Fills in zeros if 'to' goes beyond inode size */
 	rc = fill_zeros_to_end_of_page(page, to);
+=======
+		folio_mark_uptodate(folio);
+	}
+	/* Fills in zeros if 'to' goes beyond inode size */
+	rc = fill_zeros_to_end_of_page(folio, to);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc) {
 		ecryptfs_printk(KERN_WARNING, "Error attempting to fill "
 			"zeros in page with index = [0x%.16lx]\n", index);
 		goto out;
 	}
+<<<<<<< HEAD
 	rc = ecryptfs_encrypt_page(page);
+=======
+	rc = ecryptfs_encrypt_page(&folio->page);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc) {
 		ecryptfs_printk(KERN_WARNING, "Error encrypting page (upper "
 				"index [0x%.16lx])\n", index);
@@ -518,8 +645,13 @@ static int ecryptfs_write_end(struct file *file,
 	else
 		rc = copied;
 out:
+<<<<<<< HEAD
 	unlock_page(page);
 	put_page(page);
+=======
+	folio_unlock(folio);
+	folio_put(folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rc;
 }
 

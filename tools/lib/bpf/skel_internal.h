@@ -107,7 +107,11 @@ static inline void skel_free(const void *p)
  * The loader program will perform probe_read_kernel() from maps.rodata.initial_value.
  * skel_finalize_map_data() sets skel->rodata to point to actual value in a bpf map and
  * does maps.rodata.initial_value = ~0ULL to signal skel_free_map_data() that kvfree
+<<<<<<< HEAD
  * is not nessary.
+=======
+ * is not necessary.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * For user space:
  * skel_prep_map_data() mmaps anon memory into skel->rodata that can be accessed directly.

@@ -70,7 +70,11 @@ bool io_kbuf_recycle_legacy(struct io_kiocb *req, unsigned issue_flags)
 	return true;
 }
 
+<<<<<<< HEAD
 void __io_put_kbuf(struct io_kiocb *req, unsigned issue_flags)
+=======
+void __io_put_kbuf(struct io_kiocb *req, int len, unsigned issue_flags)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	/*
 	 * We can add this buffer back to two lists:
@@ -88,12 +92,20 @@ void __io_put_kbuf(struct io_kiocb *req, unsigned issue_flags)
 		struct io_ring_ctx *ctx = req->ctx;
 
 		spin_lock(&ctx->completion_lock);
+<<<<<<< HEAD
 		__io_put_kbuf_list(req, &ctx->io_buffers_comp);
+=======
+		__io_put_kbuf_list(req, len, &ctx->io_buffers_comp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		spin_unlock(&ctx->completion_lock);
 	} else {
 		lockdep_assert_held(&req->ctx->uring_lock);
 
+<<<<<<< HEAD
 		__io_put_kbuf_list(req, &req->ctx->io_buffers_cache);
+=======
+		__io_put_kbuf_list(req, len, &req->ctx->io_buffers_cache);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -132,12 +144,15 @@ static int io_provided_buffers_select(struct io_kiocb *req, size_t *len,
 	return 1;
 }
 
+<<<<<<< HEAD
 static struct io_uring_buf *io_ring_head_to_buf(struct io_uring_buf_ring *br,
 						__u16 head, __u16 mask)
 {
 	return &br->bufs[head & mask];
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void __user *io_ring_buffer_select(struct io_kiocb *req, size_t *len,
 					  struct io_buffer_list *bl,
 					  unsigned int issue_flags)
@@ -171,9 +186,14 @@ static void __user *io_ring_buffer_select(struct io_kiocb *req, size_t *len,
 		 * the transfer completes (or if we get -EAGAIN and must poll of
 		 * retry).
 		 */
+<<<<<<< HEAD
 		req->flags &= ~REQ_F_BUFFERS_COMMIT;
 		req->buf_list = NULL;
 		bl->head++;
+=======
+		io_kbuf_commit(req, bl, *len, 1);
+		req->buf_list = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return u64_to_user_ptr(buf->addr);
 }
@@ -189,7 +209,11 @@ void __user *io_buffer_select(struct io_kiocb *req, size_t *len,
 
 	bl = io_buffer_get_list(ctx, req->buf_index);
 	if (likely(bl)) {
+<<<<<<< HEAD
 		if (bl->is_buf_ring)
+=======
+		if (bl->flags & IOBL_BUF_RING)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ret = io_ring_buffer_select(req, len, bl, issue_flags);
 		else
 			ret = io_provided_buffer_select(req, len, bl);
@@ -219,6 +243,7 @@ static int io_ring_buffers_peek(struct io_kiocb *req, struct buf_sel_arg *arg,
 	buf = io_ring_head_to_buf(br, head, bl->mask);
 	if (arg->max_len) {
 		u32 len = READ_ONCE(buf->len);
+<<<<<<< HEAD
 		size_t needed;
 
 		if (unlikely(!len))
@@ -227,6 +252,27 @@ static int io_ring_buffers_peek(struct io_kiocb *req, struct buf_sel_arg *arg,
 		needed = min_not_zero(needed, (size_t) PEEK_MAX_IMPORT);
 		if (nr_avail > needed)
 			nr_avail = needed;
+=======
+
+		if (unlikely(!len))
+			return -ENOBUFS;
+		/*
+		 * Limit incremental buffers to 1 segment. No point trying
+		 * to peek ahead and map more than we need, when the buffers
+		 * themselves should be large when setup with
+		 * IOU_PBUF_RING_INC.
+		 */
+		if (bl->flags & IOBL_INC) {
+			nr_avail = 1;
+		} else {
+			size_t needed;
+
+			needed = (arg->max_len + len - 1) / len;
+			needed = min_not_zero(needed, (size_t) PEEK_MAX_IMPORT);
+			if (nr_avail > needed)
+				nr_avail = needed;
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/*
@@ -251,6 +297,7 @@ static int io_ring_buffers_peek(struct io_kiocb *req, struct buf_sel_arg *arg,
 
 	req->buf_index = buf->bid;
 	do {
+<<<<<<< HEAD
 		/* truncate end piece, if needed */
 		if (buf->len > arg->max_len)
 			buf->len = arg->max_len;
@@ -261,6 +308,23 @@ static int io_ring_buffers_peek(struct io_kiocb *req, struct buf_sel_arg *arg,
 
 		arg->out_len += buf->len;
 		arg->max_len -= buf->len;
+=======
+		u32 len = buf->len;
+
+		/* truncate end piece, if needed, for non partial buffers */
+		if (len > arg->max_len) {
+			len = arg->max_len;
+			if (!(bl->flags & IOBL_INC))
+				buf->len = len;
+		}
+
+		iov->iov_base = u64_to_user_ptr(buf->addr);
+		iov->iov_len = len;
+		iov++;
+
+		arg->out_len += len;
+		arg->max_len -= len;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!arg->max_len)
 			break;
 
@@ -287,7 +351,11 @@ int io_buffers_select(struct io_kiocb *req, struct buf_sel_arg *arg,
 	if (unlikely(!bl))
 		goto out_unlock;
 
+<<<<<<< HEAD
 	if (bl->is_buf_ring) {
+=======
+	if (bl->flags & IOBL_BUF_RING) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = io_ring_buffers_peek(req, arg, bl);
 		/*
 		 * Don't recycle these buffers if we need to go through poll.
@@ -297,8 +365,13 @@ int io_buffers_select(struct io_kiocb *req, struct buf_sel_arg *arg,
 		 * committed them, they cannot be put back in the queue.
 		 */
 		if (ret > 0) {
+<<<<<<< HEAD
 			req->flags |= REQ_F_BL_NO_RECYCLE;
 			req->buf_list->head += ret;
+=======
+			req->flags |= REQ_F_BUFFERS_COMMIT | REQ_F_BL_NO_RECYCLE;
+			io_kbuf_commit(req, bl, arg->out_len, ret);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	} else {
 		ret = io_provided_buffers_select(req, &arg->out_len, bl, arg->iovs);
@@ -320,7 +393,11 @@ int io_buffers_peek(struct io_kiocb *req, struct buf_sel_arg *arg)
 	if (unlikely(!bl))
 		return -ENOENT;
 
+<<<<<<< HEAD
 	if (bl->is_buf_ring) {
+=======
+	if (bl->flags & IOBL_BUF_RING) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = io_ring_buffers_peek(req, arg, bl);
 		if (ret > 0)
 			req->flags |= REQ_F_BUFFERS_COMMIT;
@@ -340,22 +417,39 @@ static int __io_remove_buffers(struct io_ring_ctx *ctx,
 	if (!nbufs)
 		return 0;
 
+<<<<<<< HEAD
 	if (bl->is_buf_ring) {
+=======
+	if (bl->flags & IOBL_BUF_RING) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		i = bl->buf_ring->tail - bl->head;
 		if (bl->buf_nr_pages) {
 			int j;
 
+<<<<<<< HEAD
 			if (!bl->is_mmap) {
+=======
+			if (!(bl->flags & IOBL_MMAP)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				for (j = 0; j < bl->buf_nr_pages; j++)
 					unpin_user_page(bl->buf_pages[j]);
 			}
 			io_pages_unmap(bl->buf_ring, &bl->buf_pages,
+<<<<<<< HEAD
 					&bl->buf_nr_pages, bl->is_mmap);
 			bl->is_mmap = 0;
 		}
 		/* make sure it's seen as empty */
 		INIT_LIST_HEAD(&bl->buf_list);
 		bl->is_buf_ring = 0;
+=======
+					&bl->buf_nr_pages, bl->flags & IOBL_MMAP);
+			bl->flags &= ~IOBL_MMAP;
+		}
+		/* make sure it's seen as empty */
+		INIT_LIST_HEAD(&bl->buf_list);
+		bl->flags &= ~IOBL_BUF_RING;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return i;
 	}
 
@@ -442,7 +536,11 @@ int io_remove_buffers(struct io_kiocb *req, unsigned int issue_flags)
 	if (bl) {
 		ret = -EINVAL;
 		/* can't use provide/remove buffers command on mapped buffers */
+<<<<<<< HEAD
 		if (!bl->is_buf_ring)
+=======
+		if (!(bl->flags & IOBL_BUF_RING))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ret = __io_remove_buffers(ctx, bl, p->nbufs);
 	}
 	io_ring_submit_unlock(ctx, issue_flags);
@@ -589,7 +687,11 @@ int io_provide_buffers(struct io_kiocb *req, unsigned int issue_flags)
 		}
 	}
 	/* can't add buffers via this command for a mapped buffer ring */
+<<<<<<< HEAD
 	if (bl->is_buf_ring) {
+=======
+	if (bl->flags & IOBL_BUF_RING) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EINVAL;
 		goto err;
 	}
@@ -641,8 +743,13 @@ static int io_pin_pbuf_ring(struct io_uring_buf_reg *reg,
 	bl->buf_pages = pages;
 	bl->buf_nr_pages = nr_pages;
 	bl->buf_ring = br;
+<<<<<<< HEAD
 	bl->is_buf_ring = 1;
 	bl->is_mmap = 0;
+=======
+	bl->flags |= IOBL_BUF_RING;
+	bl->flags &= ~IOBL_MMAP;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 error_unpin:
 	unpin_user_pages(pages, nr_pages);
@@ -665,8 +772,12 @@ static int io_alloc_pbuf_ring(struct io_ring_ctx *ctx,
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	bl->is_buf_ring = 1;
 	bl->is_mmap = 1;
+=======
+	bl->flags |= (IOBL_BUF_RING | IOBL_MMAP);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -683,7 +794,11 @@ int io_register_pbuf_ring(struct io_ring_ctx *ctx, void __user *arg)
 
 	if (reg.resv[0] || reg.resv[1] || reg.resv[2])
 		return -EINVAL;
+<<<<<<< HEAD
 	if (reg.flags & ~IOU_PBUF_RING_MMAP)
+=======
+	if (reg.flags & ~(IOU_PBUF_RING_MMAP | IOU_PBUF_RING_INC))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	if (!(reg.flags & IOU_PBUF_RING_MMAP)) {
 		if (!reg.ring_addr)
@@ -705,7 +820,11 @@ int io_register_pbuf_ring(struct io_ring_ctx *ctx, void __user *arg)
 	bl = io_buffer_get_list(ctx, reg.bgid);
 	if (bl) {
 		/* if mapped buffer ring OR classic exists, don't allow */
+<<<<<<< HEAD
 		if (bl->is_buf_ring || !list_empty(&bl->buf_list))
+=======
+		if (bl->flags & IOBL_BUF_RING || !list_empty(&bl->buf_list))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EEXIST;
 	} else {
 		free_bl = bl = kzalloc(sizeof(*bl), GFP_KERNEL);
@@ -721,6 +840,11 @@ int io_register_pbuf_ring(struct io_ring_ctx *ctx, void __user *arg)
 	if (!ret) {
 		bl->nr_entries = reg.ring_entries;
 		bl->mask = reg.ring_entries - 1;
+<<<<<<< HEAD
+=======
+		if (reg.flags & IOU_PBUF_RING_INC)
+			bl->flags |= IOBL_INC;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		io_buffer_add_list(ctx, bl, reg.bgid);
 		return 0;
@@ -747,7 +871,11 @@ int io_unregister_pbuf_ring(struct io_ring_ctx *ctx, void __user *arg)
 	bl = io_buffer_get_list(ctx, reg.bgid);
 	if (!bl)
 		return -ENOENT;
+<<<<<<< HEAD
 	if (!bl->is_buf_ring)
+=======
+	if (!(bl->flags & IOBL_BUF_RING))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	xa_erase(&ctx->io_bl_xa, bl->bgid);
@@ -771,7 +899,11 @@ int io_register_pbuf_status(struct io_ring_ctx *ctx, void __user *arg)
 	bl = io_buffer_get_list(ctx, buf_status.buf_group);
 	if (!bl)
 		return -ENOENT;
+<<<<<<< HEAD
 	if (!bl->is_buf_ring)
+=======
+	if (!(bl->flags & IOBL_BUF_RING))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	buf_status.head = bl->head;
@@ -802,7 +934,11 @@ struct io_buffer_list *io_pbuf_get_bl(struct io_ring_ctx *ctx,
 	bl = xa_load(&ctx->io_bl_xa, bgid);
 	/* must be a mmap'able buffer ring and have pages */
 	ret = false;
+<<<<<<< HEAD
 	if (bl && bl->is_mmap)
+=======
+	if (bl && bl->flags & IOBL_MMAP)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = atomic_inc_not_zero(&bl->refs);
 	rcu_read_unlock();
 

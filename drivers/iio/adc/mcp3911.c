@@ -23,7 +23,11 @@
 #include <linux/iio/trigger_consumer.h>
 #include <linux/iio/trigger.h>
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define MCP3911_REG_CHANNEL0		0x00
 #define MCP3911_REG_CHANNEL1		0x03
@@ -103,7 +107,11 @@ struct mcp3911_chip_info {
 	const struct iio_chan_spec *channels;
 	unsigned int num_channels;
 
+<<<<<<< HEAD
 	int (*config)(struct mcp3911 *adc);
+=======
+	int (*config)(struct mcp3911 *adc, bool external_vref);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int (*get_osr)(struct mcp3911 *adc, u32 *val);
 	int (*set_osr)(struct mcp3911 *adc, u32 val);
 	int (*enable_offset)(struct mcp3911 *adc, bool enable);
@@ -115,7 +123,10 @@ struct mcp3911_chip_info {
 struct mcp3911 {
 	struct spi_device *spi;
 	struct mutex lock;
+<<<<<<< HEAD
 	struct regulator *vref;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct clk *clki;
 	u32 dev_addr;
 	struct iio_trigger *trig;
@@ -385,6 +396,7 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
 	}
 }
 
+<<<<<<< HEAD
 static int mcp3911_calc_scale_table(struct mcp3911 *adc)
 {
 	struct device *dev = &adc->spi->dev;
@@ -402,6 +414,13 @@ static int mcp3911_calc_scale_table(struct mcp3911 *adc)
 		ref = ret / 1000;
 	}
 
+=======
+static int mcp3911_calc_scale_table(u32 vref_mv)
+{
+	u32 div;
+	u64 tmp;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * For 24-bit Conversion
 	 * Raw = ((Voltage)/(Vref) * 2^23 * Gain * 1.5
@@ -412,7 +431,11 @@ static int mcp3911_calc_scale_table(struct mcp3911 *adc)
 	 */
 	for (int i = 0; i < MCP3911_NUM_SCALES; i++) {
 		div = 12582912 * BIT(i);
+<<<<<<< HEAD
 		tmp = div_s64((s64)ref * 1000000000LL, div);
+=======
+		tmp = div_s64((s64)vref_mv * 1000000000LL, div);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		mcp3911_scale_table[i][0] = 0;
 		mcp3911_scale_table[i][1] = tmp;
@@ -523,7 +546,11 @@ static irqreturn_t mcp3911_trigger_handler(int irq, void *p)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	for_each_set_bit(scan_index, indio_dev->active_scan_mask, indio_dev->masklength) {
+=======
+	iio_for_each_active_channel(indio_dev, scan_index) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		const struct iio_chan_spec *scan_chan = &indio_dev->channels[scan_index];
 
 		adc->scan.channels[i] = get_unaligned_be24(&adc->rx_buf[scan_chan->channel * 3]);
@@ -544,7 +571,11 @@ static const struct iio_info mcp3911_info = {
 	.write_raw_get_fmt = mcp3911_write_raw_get_fmt,
 };
 
+<<<<<<< HEAD
 static int mcp3911_config(struct mcp3911 *adc)
+=======
+static int mcp3911_config(struct mcp3911 *adc, bool external_vref)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct device *dev = &adc->spi->dev;
 	u32 regval;
@@ -555,7 +586,11 @@ static int mcp3911_config(struct mcp3911 *adc)
 		return ret;
 
 	regval &= ~MCP3911_CONFIG_VREFEXT;
+<<<<<<< HEAD
 	if (adc->vref) {
+=======
+	if (external_vref) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_dbg(dev, "use external voltage reference\n");
 		regval |= FIELD_PREP(MCP3911_CONFIG_VREFEXT, 1);
 	} else {
@@ -610,7 +645,11 @@ static int mcp3911_config(struct mcp3911 *adc)
 	return mcp3911_write(adc, MCP3911_REG_GAIN, regval, 1);
 }
 
+<<<<<<< HEAD
 static int mcp3910_config(struct mcp3911 *adc)
+=======
+static int mcp3910_config(struct mcp3911 *adc, bool external_vref)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct device *dev = &adc->spi->dev;
 	u32 regval;
@@ -621,7 +660,11 @@ static int mcp3910_config(struct mcp3911 *adc)
 		return ret;
 
 	regval &= ~MCP3910_CONFIG1_VREFEXT;
+<<<<<<< HEAD
 	if (adc->vref) {
+=======
+	if (external_vref) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_dbg(dev, "use external voltage reference\n");
 		regval |= FIELD_PREP(MCP3910_CONFIG1_VREFEXT, 1);
 	} else {
@@ -677,11 +720,14 @@ static int mcp3910_config(struct mcp3911 *adc)
 	return adc->chip->enable_offset(adc, 0);
 }
 
+<<<<<<< HEAD
 static void mcp3911_cleanup_regulator(void *vref)
 {
 	regulator_disable(vref);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int mcp3911_set_trigger_state(struct iio_trigger *trig, bool enable)
 {
 	struct mcp3911 *adc = iio_trigger_get_drvdata(trig);
@@ -704,6 +750,11 @@ static int mcp3911_probe(struct spi_device *spi)
 	struct device *dev = &spi->dev;
 	struct iio_dev *indio_dev;
 	struct mcp3911 *adc;
+<<<<<<< HEAD
+=======
+	bool external_vref;
+	u32 vref_mv;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	indio_dev = devm_iio_device_alloc(dev, sizeof(*adc));
@@ -714,6 +765,7 @@ static int mcp3911_probe(struct spi_device *spi)
 	adc->spi = spi;
 	adc->chip = spi_get_device_match_data(spi);
 
+<<<<<<< HEAD
 	adc->vref = devm_regulator_get_optional(dev, "vref");
 	if (IS_ERR(adc->vref)) {
 		if (PTR_ERR(adc->vref) == -ENODEV) {
@@ -731,6 +783,14 @@ static int mcp3911_probe(struct spi_device *spi)
 		if (ret)
 			return ret;
 	}
+=======
+	ret = devm_regulator_get_enable_read_voltage(dev, "vref");
+	if (ret < 0 && ret != -ENODEV)
+		return dev_err_probe(dev, ret, "failed to get vref voltage\n");
+
+	external_vref = ret != -ENODEV;
+	vref_mv = external_vref ? ret / 1000 : MCP3911_INT_VREF_MV;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	adc->clki = devm_clk_get_enabled(dev, NULL);
 	if (IS_ERR(adc->clki)) {
@@ -755,11 +815,19 @@ static int mcp3911_probe(struct spi_device *spi)
 	}
 	dev_dbg(dev, "use device address %i\n", adc->dev_addr);
 
+<<<<<<< HEAD
 	ret = adc->chip->config(adc);
 	if (ret)
 		return ret;
 
 	ret = mcp3911_calc_scale_table(adc);
+=======
+	ret = adc->chip->config(adc, external_vref);
+	if (ret)
+		return ret;
+
+	ret = mcp3911_calc_scale_table(vref_mv);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 

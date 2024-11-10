@@ -150,6 +150,7 @@ PECOFF_FILE_ALIGNMENT = 0x200;
 #define PECOFF_EDATA_PADDING
 #endif
 
+<<<<<<< HEAD
 /*
  * Set FDT pointer 2MB aligned to ensure
  * it don't cross a 2-megabyte boundary.
@@ -162,6 +163,8 @@ FDT_FILE_ALIGNMENT = (1 << 21);
 #define FDT_EDATA_PADDING
 #endif
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 SECTIONS
 {
 	/*
@@ -276,8 +279,12 @@ SECTIONS
 		EXIT_DATA
 	}
 
+<<<<<<< HEAD
 	RUNTIME_CONST(shift, d_hash_shift)
 	RUNTIME_CONST(ptr, dentry_hashtable)
+=======
+	RUNTIME_CONST_VARIABLES
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	PERCPU_SECTION(L1_CACHE_BYTES)
 	HYPERVISOR_PERCPU_SECTION
@@ -324,6 +331,7 @@ SECTIONS
 
 	PECOFF_EDATA_PADDING
 	__pecoff_data_rawsize = ABSOLUTE(. - __initdata_begin);
+<<<<<<< HEAD
 	FDT_EDATA_PADDING /* 2MB aligned */
 	_edata = .;
 
@@ -331,6 +339,10 @@ SECTIONS
 	. += (1 << 21);
 #endif
 
+=======
+	_edata = .;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* start of zero-init region */
 	BSS_SECTION(SBSS_ALIGN, 0, 0)
 

@@ -23,6 +23,10 @@
 #include <linux/freezer.h>
 #include <linux/page_owner.h>
 #include <linux/psi.h>
+<<<<<<< HEAD
+=======
+#include <linux/cpuset.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "internal.h"
 
 #ifdef CONFIG_COMPACTION
@@ -86,6 +90,7 @@ static struct page *mark_allocated_noprof(struct page *page, unsigned int order,
 }
 #define mark_allocated(...)	alloc_hooks(mark_allocated_noprof(__VA_ARGS__))
 
+<<<<<<< HEAD
 static void split_map_pages(struct list_head *freepages)
 {
 	unsigned int i, order;
@@ -113,6 +118,8 @@ static void split_map_pages(struct list_head *freepages)
 	}
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static unsigned long release_free_list(struct list_head *freepages)
 {
 	int order;
@@ -742,11 +749,19 @@ isolate_fail:
  *
  * Non-free pages, invalid PFNs, or zone boundaries within the
  * [start_pfn, end_pfn) range are considered errors, cause function to
+<<<<<<< HEAD
  * undo its actions and return zero.
  *
  * Otherwise, function returns one-past-the-last PFN of isolated page
  * (which may be greater then end_pfn if end fell in a middle of
  * a free page).
+=======
+ * undo its actions and return zero. cc->freepages[] are empty.
+ *
+ * Otherwise, function returns one-past-the-last PFN of isolated page
+ * (which may be greater then end_pfn if end fell in a middle of
+ * a free page). cc->freepages[] contain free pages isolated.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 unsigned long
 isolate_freepages_range(struct compact_control *cc,
@@ -754,10 +769,16 @@ isolate_freepages_range(struct compact_control *cc,
 {
 	unsigned long isolated, pfn, block_start_pfn, block_end_pfn;
 	int order;
+<<<<<<< HEAD
 	struct list_head tmp_freepages[NR_PAGE_ORDERS];
 
 	for (order = 0; order < NR_PAGE_ORDERS; order++)
 		INIT_LIST_HEAD(&tmp_freepages[order]);
+=======
+
+	for (order = 0; order < NR_PAGE_ORDERS; order++)
+		INIT_LIST_HEAD(&cc->freepages[order]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pfn = start_pfn;
 	block_start_pfn = pageblock_start_pfn(pfn);
@@ -788,7 +809,11 @@ isolate_freepages_range(struct compact_control *cc,
 			break;
 
 		isolated = isolate_freepages_block(cc, &isolate_start_pfn,
+<<<<<<< HEAD
 					block_end_pfn, tmp_freepages, 0, true);
+=======
+					block_end_pfn, cc->freepages, 0, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * In strict mode, isolate_freepages_block() returns 0 if
@@ -807,6 +832,7 @@ isolate_freepages_range(struct compact_control *cc,
 
 	if (pfn < end_pfn) {
 		/* Loop terminated early, cleanup. */
+<<<<<<< HEAD
 		release_free_list(tmp_freepages);
 		return 0;
 	}
@@ -814,6 +840,12 @@ isolate_freepages_range(struct compact_control *cc,
 	/* __isolate_free_page() does not map the pages */
 	split_map_pages(tmp_freepages);
 
+=======
+		release_free_list(cc->freepages);
+		return 0;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* We don't use freelists for anything. */
 	return pfn;
 }
@@ -2853,6 +2885,14 @@ enum compact_result try_to_compact_pages(gfp_t gfp_mask, unsigned int order,
 					ac->highest_zoneidx, ac->nodemask) {
 		enum compact_result status;
 
+<<<<<<< HEAD
+=======
+		if (cpusets_enabled() &&
+			(alloc_flags & ALLOC_CPUSET) &&
+			!__cpuset_zone_allowed(zone, gfp_mask))
+				continue;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (prio > MIN_COMPACT_PRIORITY
 					&& compaction_deferred(zone, order)) {
 			rc = max_t(enum compact_result, COMPACT_DEFERRED, rc);

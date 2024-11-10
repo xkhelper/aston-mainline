@@ -316,16 +316,24 @@ static const u32 isc_sama7g5_gamma_table[][GAMMA_ENTRIES] = {
 static int xisc_parse_dt(struct device *dev, struct isc_device *isc)
 {
 	struct device_node *np = dev->of_node;
+<<<<<<< HEAD
 	struct device_node *epn = NULL;
 	struct isc_subdev_entity *subdev_entity;
 	unsigned int flags;
 	int ret;
+=======
+	struct device_node *epn;
+	struct isc_subdev_entity *subdev_entity;
+	unsigned int flags;
+	int ret = -EINVAL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool mipi_mode;
 
 	INIT_LIST_HEAD(&isc->subdev_entities);
 
 	mipi_mode = of_property_read_bool(np, "microchip,mipi-mode");
 
+<<<<<<< HEAD
 	while (1) {
 		struct v4l2_fwnode_endpoint v4l2_epn = { .bus_type = 0 };
 
@@ -333,6 +341,11 @@ static int xisc_parse_dt(struct device *dev, struct isc_device *isc)
 		if (!epn)
 			return 0;
 
+=======
+	for_each_endpoint_of_node(np, epn) {
+		struct v4l2_fwnode_endpoint v4l2_epn = { .bus_type = 0 };
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = v4l2_fwnode_endpoint_parse(of_fwnode_handle(epn),
 						 &v4l2_epn);
 		if (ret) {

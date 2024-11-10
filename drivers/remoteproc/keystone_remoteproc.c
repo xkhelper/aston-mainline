@@ -366,8 +366,11 @@ static int keystone_rproc_probe(struct platform_device *pdev)
 	struct rproc *rproc;
 	int dsp_id;
 	char *fw_name = NULL;
+<<<<<<< HEAD
 	char *template = "keystone-dsp%d-fw";
 	int name_len = 0;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret = 0;
 
 	if (!np) {
@@ -382,6 +385,7 @@ static int keystone_rproc_probe(struct platform_device *pdev)
 	}
 
 	/* construct a custom default fw name - subject to change in future */
+<<<<<<< HEAD
 	name_len = strlen(template); /* assuming a single digit alias */
 	fw_name = devm_kzalloc(dev, name_len, GFP_KERNEL);
 	if (!fw_name)
@@ -390,6 +394,14 @@ static int keystone_rproc_probe(struct platform_device *pdev)
 
 	rproc = rproc_alloc(dev, dev_name(dev), &keystone_rproc_ops, fw_name,
 			    sizeof(*ksproc));
+=======
+	fw_name = devm_kasprintf(dev, GFP_KERNEL, "keystone-dsp%d-fw", dsp_id);
+	if (!fw_name)
+		return -ENOMEM;
+
+	rproc = devm_rproc_alloc(dev, dev_name(dev), &keystone_rproc_ops,
+				 fw_name, sizeof(*ksproc));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!rproc)
 		return -ENOMEM;
 
@@ -400,6 +412,7 @@ static int keystone_rproc_probe(struct platform_device *pdev)
 
 	ret = keystone_rproc_of_get_dev_syscon(pdev, ksproc);
 	if (ret)
+<<<<<<< HEAD
 		goto free_rproc;
 
 	ksproc->reset = devm_reset_control_get_exclusive(dev, NULL);
@@ -407,6 +420,13 @@ static int keystone_rproc_probe(struct platform_device *pdev)
 		ret = PTR_ERR(ksproc->reset);
 		goto free_rproc;
 	}
+=======
+		return ret;
+
+	ksproc->reset = devm_reset_control_get_exclusive(dev, NULL);
+	if (IS_ERR(ksproc->reset))
+		return PTR_ERR(ksproc->reset);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* enable clock for accessing DSP internal memories */
 	pm_runtime_enable(dev);
@@ -471,8 +491,11 @@ disable_clk:
 	pm_runtime_put_sync(dev);
 disable_rpm:
 	pm_runtime_disable(dev);
+<<<<<<< HEAD
 free_rproc:
 	rproc_free(rproc);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -484,7 +507,10 @@ static void keystone_rproc_remove(struct platform_device *pdev)
 	gpiod_put(ksproc->kick_gpio);
 	pm_runtime_put_sync(&pdev->dev);
 	pm_runtime_disable(&pdev->dev);
+<<<<<<< HEAD
 	rproc_free(ksproc->rproc);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	of_reserved_mem_device_release(&pdev->dev);
 }
 

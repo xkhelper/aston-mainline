@@ -1838,8 +1838,15 @@ static inline int snd_hdspm_midi_output_possible (struct hdspm *hdspm, int id)
 
 static void snd_hdspm_flush_midi_input(struct hdspm *hdspm, int id)
 {
+<<<<<<< HEAD
 	while (snd_hdspm_midi_input_available (hdspm, id))
 		snd_hdspm_midi_read_byte (hdspm, id);
+=======
+	int count = 256;
+
+	while (snd_hdspm_midi_input_available(hdspm, id) && --count)
+		snd_hdspm_midi_read_byte(hdspm, id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int snd_hdspm_midi_output_write (struct hdspm_midi *hmidi)
@@ -3081,7 +3088,11 @@ static int snd_hdspm_get_autosync_ref(struct snd_kcontrol *kcontrol,
 
 
 
+<<<<<<< HEAD
 #define HDSPM_TCO_VIDEO_INPUT_FORMAT(xname, xindex) \
+=======
+#define HDSPM_TCO_VIDEO_INPUT_FORMAT(xname) \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {	.iface = SNDRV_CTL_ELEM_IFACE_MIXER, \
 	.name = xname, \
 	.access = SNDRV_CTL_ELEM_ACCESS_READ |\
@@ -3127,7 +3138,11 @@ static int snd_hdspm_get_tco_video_input_format(struct snd_kcontrol *kcontrol,
 
 
 
+<<<<<<< HEAD
 #define HDSPM_TCO_LTC_FRAMES(xname, xindex) \
+=======
+#define HDSPM_TCO_LTC_FRAMES(xname) \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {	.iface = SNDRV_CTL_ELEM_IFACE_MIXER, \
 	.name = xname, \
 	.access = SNDRV_CTL_ELEM_ACCESS_READ |\
@@ -4628,8 +4643,13 @@ static const struct snd_kcontrol_new snd_hdspm_controls_tco[] = {
 	HDSPM_TCO_WORD_TERM("TCO Word Term", 0),
 	HDSPM_TCO_LOCK_CHECK("TCO Input Check", 11),
 	HDSPM_TCO_LOCK_CHECK("TCO LTC Valid", 12),
+<<<<<<< HEAD
 	HDSPM_TCO_LTC_FRAMES("TCO Detected Frame Rate", 0),
 	HDSPM_TCO_VIDEO_INPUT_FORMAT("Video Input Format", 0)
+=======
+	HDSPM_TCO_LTC_FRAMES("TCO Detected Frame Rate"),
+	HDSPM_TCO_VIDEO_INPUT_FORMAT("Video Input Format")
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 
@@ -5610,15 +5630,23 @@ static int snd_hdspm_hw_params(struct snd_pcm_substream *substream,
 	/*
 	   dev_dbg(hdspm->card->dev,
 	   "Allocated sample buffer for %s at 0x%08X\n",
+<<<<<<< HEAD
 	   substream->stream == SNDRV_PCM_STREAM_PLAYBACK ?
 	   "playback" : "capture",
+=======
+	   snd_pcm_direction_name(substream->stream),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	   snd_pcm_sgbuf_get_addr(substream, 0));
 	   */
 	/*
 	   dev_dbg(hdspm->card->dev,
 	   "set_hwparams: %s %d Hz, %d channels, bs = %d\n",
+<<<<<<< HEAD
 	   substream->stream == SNDRV_PCM_STREAM_PLAYBACK ?
 	   "playback" : "capture",
+=======
+	   snd_pcm_direction_name(substream->stream),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	   params_rate(params), params_channels(params),
 	   params_buffer_size(params));
 	   */
@@ -6032,6 +6060,7 @@ static int snd_hdspm_hw_rule_out_channels(struct snd_pcm_hw_params *params,
 	return snd_interval_list(c, 3, list, 0);
 }
 
+<<<<<<< HEAD
 
 static const unsigned int hdspm_aes32_sample_rates[] = {
 	32000, 44100, 48000, 64000, 88200, 96000, 128000, 176400, 192000
@@ -6044,6 +6073,8 @@ hdspm_hw_constraints_aes32_sample_rates = {
 	.mask = 0
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int snd_hdspm_open(struct snd_pcm_substream *substream)
 {
 	struct hdspm *hdspm = snd_pcm_substream_chip(substream);
@@ -6096,9 +6127,13 @@ static int snd_hdspm_open(struct snd_pcm_substream *substream)
 	}
 
 	if (AES32 == hdspm->io_type) {
+<<<<<<< HEAD
 		runtime->hw.rates |= SNDRV_PCM_RATE_KNOT;
 		snd_pcm_hw_constraint_list(runtime, 0, SNDRV_PCM_HW_PARAM_RATE,
 				&hdspm_hw_constraints_aes32_sample_rates);
+=======
+		runtime->hw.rates |= SNDRV_PCM_RATE_128000;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		snd_pcm_hw_rule_add(runtime, 0, SNDRV_PCM_HW_PARAM_RATE,
 				(playback ?

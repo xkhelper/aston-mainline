@@ -294,7 +294,11 @@ static int rate_action(struct snd_pcm_plugin *plugin,
 	default:
 		break;
 	}
+<<<<<<< HEAD
 	return 0;	/* silenty ignore other actions */
+=======
+	return 0;	/* silently ignore other actions */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int snd_pcm_plugin_build_rate(struct snd_pcm_substream *plug,

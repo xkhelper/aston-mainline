@@ -19,6 +19,10 @@ enum mt753x_id {
 	ID_MT7621 = 1,
 	ID_MT7531 = 2,
 	ID_MT7988 = 3,
+<<<<<<< HEAD
+=======
+	ID_EN7581 = 4,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define	NUM_TRGMII_CTRL			5
@@ -64,6 +68,7 @@ enum mt753x_id {
 #define  MT7531_CPU_PMAP(x)		FIELD_PREP(MT7531_CPU_PMAP_MASK, x)
 
 #define MT753X_MIRROR_REG(id)		((id == ID_MT7531 || \
+<<<<<<< HEAD
 					  id == ID_MT7988) ? \
 					 MT7531_CFC : MT753X_MFC)
 
@@ -73,16 +78,40 @@ enum mt753x_id {
 
 #define MT753X_MIRROR_PORT_MASK(id)	((id == ID_MT7531 || \
 					  id == ID_MT7988) ? \
+=======
+					  id == ID_MT7988 || \
+					  id == ID_EN7581) ? \
+					 MT7531_CFC : MT753X_MFC)
+
+#define MT753X_MIRROR_EN(id)		((id == ID_MT7531 || \
+					  id == ID_MT7988 || \
+					  id == ID_EN7581) ? \
+					 MT7531_MIRROR_EN : MT7530_MIRROR_EN)
+
+#define MT753X_MIRROR_PORT_MASK(id)	((id == ID_MT7531 || \
+					  id == ID_MT7988 || \
+					  id == ID_EN7581) ? \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					 MT7531_MIRROR_PORT_MASK : \
 					 MT7530_MIRROR_PORT_MASK)
 
 #define MT753X_MIRROR_PORT_GET(id, val)	((id == ID_MT7531 || \
+<<<<<<< HEAD
 					  id == ID_MT7988) ? \
+=======
+					  id == ID_MT7988 || \
+					  id == ID_EN7581) ? \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					 MT7531_MIRROR_PORT_GET(val) : \
 					 MT7530_MIRROR_PORT_GET(val))
 
 #define MT753X_MIRROR_PORT_SET(id, val)	((id == ID_MT7531 || \
+<<<<<<< HEAD
 					  id == ID_MT7988) ? \
+=======
+					  id == ID_MT7988 || \
+					  id == ID_EN7581) ? \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					 MT7531_MIRROR_PORT_SET(val) : \
 					 MT7530_MIRROR_PORT_SET(val))
 
@@ -355,6 +384,13 @@ enum mt7530_vlan_port_acc_frm {
 					 MT7531_FORCE_MODE_TX_FC | \
 					 MT7531_FORCE_MODE_EEE100 | \
 					 MT7531_FORCE_MODE_EEE1G)
+<<<<<<< HEAD
+=======
+#define  MT753X_FORCE_MODE(id)		((id == ID_MT7531 || \
+					  id == ID_MT7988) ? \
+					 MT7531_FORCE_MODE_MASK : \
+					 MT7530_FORCE_MODE)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define  PMCR_LINK_SETTINGS_MASK	(PMCR_MAC_TX_EN | PMCR_MAC_RX_EN | \
 					 PMCR_FORCE_EEE1G | \
 					 PMCR_FORCE_EEE100 | \

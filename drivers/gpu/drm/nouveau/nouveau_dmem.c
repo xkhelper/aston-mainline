@@ -193,7 +193,11 @@ static vm_fault_t nouveau_dmem_migrate_to_ram(struct vm_fault *vmf)
 	if (!spage || !(src & MIGRATE_PFN_MIGRATE))
 		goto done;
 
+<<<<<<< HEAD
 	dpage = alloc_page_vma(GFP_HIGHUSER, vmf->vma, vmf->address);
+=======
+	dpage = alloc_page_vma(GFP_HIGHUSER | __GFP_ZERO, vmf->vma, vmf->address);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!dpage)
 		goto done;
 
@@ -294,7 +298,11 @@ nouveau_dmem_chunk_alloc(struct nouveau_drm *drm, struct page **ppage)
 out_bo_unpin:
 	nouveau_bo_unpin(chunk->bo);
 out_bo_free:
+<<<<<<< HEAD
 	nouveau_bo_ref(NULL, &chunk->bo);
+=======
+	nouveau_bo_fini(chunk->bo);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out_release:
 	release_mem_region(chunk->pagemap.range.start, range_len(&chunk->pagemap.range));
 out_free:
@@ -426,7 +434,11 @@ nouveau_dmem_fini(struct nouveau_drm *drm)
 	list_for_each_entry_safe(chunk, tmp, &drm->dmem->chunks, list) {
 		nouveau_dmem_evict_chunk(chunk);
 		nouveau_bo_unpin(chunk->bo);
+<<<<<<< HEAD
 		nouveau_bo_ref(NULL, &chunk->bo);
+=======
+		nouveau_bo_fini(chunk->bo);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		WARN_ON(chunk->callocated);
 		list_del(&chunk->list);
 		memunmap_pages(&chunk->pagemap);
@@ -443,7 +455,11 @@ nvc0b5_migrate_copy(struct nouveau_drm *drm, u64 npages,
 		    enum nouveau_aper dst_aper, u64 dst_addr,
 		    enum nouveau_aper src_aper, u64 src_addr)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = drm->dmem->migrate.chan->chan.push;
+=======
+	struct nvif_push *push = &drm->dmem->migrate.chan->chan.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 launch_dma = 0;
 	int ret;
 
@@ -516,7 +532,11 @@ static int
 nvc0b5_migrate_clear(struct nouveau_drm *drm, u32 length,
 		     enum nouveau_aper dst_aper, u64 dst_addr)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = drm->dmem->migrate.chan->chan.push;
+=======
+	struct nvif_push *push = &drm->dmem->migrate.chan->chan.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 launch_dma = 0;
 	int ret;
 

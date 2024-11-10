@@ -39,7 +39,11 @@ static struct fw_node *fw_node_create(u32 sid, int port_count, int color)
 	node->initiated_reset = phy_packet_self_id_zero_get_initiated_reset(sid);
 	node->port_count = port_count;
 
+<<<<<<< HEAD
 	refcount_set(&node->ref_count, 1);
+=======
+	kref_init(&node->kref);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	INIT_LIST_HEAD(&node->link);
 
 	return node;
@@ -204,7 +208,11 @@ static struct fw_node *build_tree(struct fw_card *card, const u32 *sid, int self
 				// the node->ports array where the parent node should be.  Later,
 				// when we handle the parent node, we fix up the reference.
 				++parent_count;
+<<<<<<< HEAD
 				node->color = i;
+=======
+				node->color = port_index;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				break;
 
 			case PHY_PACKET_SELF_ID_PORT_STATUS_CHILD:
@@ -455,11 +463,18 @@ void fw_core_handle_bus_reset(struct fw_card *card, int node_id, int generation,
 			      int self_id_count, u32 *self_ids, bool bm_abdicate)
 {
 	struct fw_node *local_node;
+<<<<<<< HEAD
 	unsigned long flags;
 
 	trace_bus_reset_handle(card->index, generation, node_id, bm_abdicate, self_ids, self_id_count);
 
 	spin_lock_irqsave(&card->lock, flags);
+=======
+
+	trace_bus_reset_handle(card->index, generation, node_id, bm_abdicate, self_ids, self_id_count);
+
+	guard(spinlock_irqsave)(&card->lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * If the selfID buffer is not the immediate successor of the
@@ -500,7 +515,10 @@ void fw_core_handle_bus_reset(struct fw_card *card, int node_id, int generation,
 	} else {
 		update_tree(card, local_node);
 	}
+<<<<<<< HEAD
 
 	spin_unlock_irqrestore(&card->lock, flags);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(fw_core_handle_bus_reset);

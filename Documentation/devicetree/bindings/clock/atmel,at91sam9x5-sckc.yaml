@@ -18,7 +18,13 @@ properties:
           - atmel,sama5d4-sckc
           - microchip,sam9x60-sckc
       - items:
+<<<<<<< HEAD
           - const: microchip,sama7g5-sckc
+=======
+          - enum:
+              - microchip,sam9x7-sckc
+              - microchip,sama7g5-sckc
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - const: microchip,sam9x60-sckc
 
   reg:

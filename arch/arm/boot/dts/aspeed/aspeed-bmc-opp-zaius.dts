@@ -466,8 +466,11 @@
 };
 
 &pinctrl {
+<<<<<<< HEAD
 	aspeed,external-nodes = <&gfx &lhc>;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pinctrl_gpioh_unbiased: gpioi_unbiased {
 		pins = "A8", "C7", "B7", "A7", "D7", "B6", "A6", "E7";
 		bias-disable;

@@ -45,6 +45,10 @@ properties:
       - rockchip,rk3368-pinctrl
       - rockchip,rk3399-pinctrl
       - rockchip,rk3568-pinctrl
+<<<<<<< HEAD
+=======
+      - rockchip,rk3576-pinctrl
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       - rockchip,rk3588-pinctrl
       - rockchip,rv1108-pinctrl
       - rockchip,rv1126-pinctrl

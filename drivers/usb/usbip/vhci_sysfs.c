@@ -283,6 +283,10 @@ static int valid_args(__u32 *pdev_nr, __u32 *rhport,
 	case USB_SPEED_HIGH:
 	case USB_SPEED_WIRELESS:
 	case USB_SPEED_SUPER:
+<<<<<<< HEAD
+=======
+	case USB_SPEED_SUPER_PLUS:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		pr_err("Failed attach request for unsupported USB speed: %s\n",
@@ -349,7 +353,11 @@ static ssize_t attach_store(struct device *dev, struct device_attribute *attr,
 	vhci_hcd = hcd_to_vhci_hcd(hcd);
 	vhci = vhci_hcd->vhci;
 
+<<<<<<< HEAD
 	if (speed == USB_SPEED_SUPER)
+=======
+	if (speed >= USB_SPEED_SUPER)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		vdev = &vhci->vhci_hcd_ss->vdev[rhport];
 	else
 		vdev = &vhci->vhci_hcd_hs->vdev[rhport];

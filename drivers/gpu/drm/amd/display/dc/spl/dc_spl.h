@@ -9,16 +9,22 @@
 #define BLACK_OFFSET_RGB_Y 0x0
 #define BLACK_OFFSET_CBCR  0x8000
 
+<<<<<<< HEAD
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* SPL interfaces */
 
 bool spl_calculate_scaler_params(struct spl_in *spl_in, struct spl_out *spl_out);
 
+<<<<<<< HEAD
 #ifdef __cplusplus
 }
 #endif
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __DC_SPL_H__ */

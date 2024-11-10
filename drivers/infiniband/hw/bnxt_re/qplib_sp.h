@@ -40,6 +40,10 @@
 #ifndef __BNXT_QPLIB_SP_H__
 #define __BNXT_QPLIB_SP_H__
 
+<<<<<<< HEAD
+=======
+#include <rdma/bnxt_re-abi.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define BNXT_QPLIB_RESERVED_QP_WRS	128
 
 struct bnxt_qplib_dev_attr {
@@ -55,6 +59,10 @@ struct bnxt_qplib_dev_attr {
 	u32				max_qp_wqes;
 	u32				max_qp_sges;
 	u32				max_cq;
+<<<<<<< HEAD
+=======
+#define BNXT_QPLIB_MAX_CQ_WQES          0xfffff
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32				max_cq_wqes;
 	u32				max_cq_sges;
 	u32				max_mr;
@@ -108,7 +116,11 @@ struct bnxt_qplib_ah {
 struct bnxt_qplib_mrw {
 	struct bnxt_qplib_pd		*pd;
 	int				type;
+<<<<<<< HEAD
 	u32				flags;
+=======
+	u32				access_flags;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define BNXT_QPLIB_FR_PMR		0x80000000
 	u32				lkey;
 	u32				rkey;
@@ -116,6 +128,10 @@ struct bnxt_qplib_mrw {
 	u64				va;
 	u64				total_size;
 	u32				npages;
+<<<<<<< HEAD
+=======
+	u16				flags;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64				mr_handle;
 	struct bnxt_qplib_hwq		hwq;
 };
@@ -351,4 +367,14 @@ int bnxt_qplib_qext_stat(struct bnxt_qplib_rcfw *rcfw, u32 fid,
 int bnxt_qplib_modify_cc(struct bnxt_qplib_res *res,
 			 struct bnxt_qplib_cc_param *cc_param);
 
+<<<<<<< HEAD
+=======
+#define BNXT_VAR_MAX_WQE       4352
+#define BNXT_VAR_MAX_SLOT_ALIGN 256
+#define BNXT_VAR_MAX_SGE        13
+#define BNXT_RE_MAX_RQ_WQES     65536
+
+#define BNXT_STATIC_MAX_SGE	6
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __BNXT_QPLIB_SP_H__*/

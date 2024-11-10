@@ -126,6 +126,10 @@ static int __damon_va_three_regions(struct mm_struct *mm,
 	 * If this is too slow, it can be optimised to examine the maple
 	 * tree gaps.
 	 */
+<<<<<<< HEAD
+=======
+	rcu_read_lock();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for_each_vma(vmi, vma) {
 		unsigned long gap;
 
@@ -146,6 +150,10 @@ static int __damon_va_three_regions(struct mm_struct *mm,
 next:
 		prev = vma;
 	}
+<<<<<<< HEAD
+=======
+	rcu_read_unlock();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!sz_range(&second_gap) || !sz_range(&first_gap))
 		return -EINVAL;
@@ -730,4 +738,8 @@ static int __init damon_va_initcall(void)
 
 subsys_initcall(damon_va_initcall);
 
+<<<<<<< HEAD
 #include "vaddr-test.h"
+=======
+#include "tests/vaddr-kunit.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

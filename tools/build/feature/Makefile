@@ -73,7 +73,11 @@ FILES=                                          \
          test-libopencsd.bin			\
          test-clang.bin				\
          test-llvm.bin				\
+<<<<<<< HEAD
          test-llvm-version.bin			\
+=======
+         test-llvm-perf.bin   \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
          test-libaio.bin			\
          test-libzstd.bin			\
          test-clang-bpf-co-re.bin		\
@@ -172,7 +176,11 @@ DWARFLIBS := -ldw
 ifeq ($(findstring -static,${LDFLAGS}),-static)
   DWARFLIBS += -lelf -lz -llzma -lbz2 -lzstd
 
+<<<<<<< HEAD
   LIBDW_VERSION := $(shell $(PKG_CONFIG) --modversion libdw)
+=======
+  LIBDW_VERSION := $(shell $(PKG_CONFIG) --modversion libdw).0.0
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   LIBDW_VERSION_1 := $(word 1, $(subst ., ,$(LIBDW_VERSION)))
   LIBDW_VERSION_2 := $(word 2, $(subst ., ,$(LIBDW_VERSION)))
 
@@ -181,6 +189,12 @@ ifeq ($(findstring -static,${LDFLAGS}),-static)
   ifeq ($(shell test $(LIBDW_VERSION_2) -lt 177; echo $$?),0)
     DWARFLIBS += -lebl
   endif
+<<<<<<< HEAD
+=======
+
+  # Must put -ldl after -lebl for dependency
+  DWARFLIBS += -ldl
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 endif
 
 $(OUTPUT)test-dwarf.bin:
@@ -388,9 +402,18 @@ $(OUTPUT)test-llvm.bin:
 		$(shell $(LLVM_CONFIG) --system-libs)		\
 		> $(@:.bin=.make.output) 2>&1
 
+<<<<<<< HEAD
 $(OUTPUT)test-llvm-version.bin:
 	$(BUILDXX) -std=gnu++17					\
 		-I$(shell $(LLVM_CONFIG) --includedir)		\
+=======
+$(OUTPUT)test-llvm-perf.bin:
+	$(BUILDXX) -std=gnu++17 				\
+		-I$(shell $(LLVM_CONFIG) --includedir) 		\
+		-L$(shell $(LLVM_CONFIG) --libdir)		\
+		$(shell $(LLVM_CONFIG) --libs Core BPF)		\
+		$(shell $(LLVM_CONFIG) --system-libs)		\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		> $(@:.bin=.make.output) 2>&1
 
 $(OUTPUT)test-clang.bin:

@@ -149,6 +149,12 @@ static void parport_attach(struct parport *port)
 	}
 
 	index = ida_alloc(&pps_client_index, GFP_KERNEL);
+<<<<<<< HEAD
+=======
+	if (index < 0)
+		goto err_free_device;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	memset(&pps_client_cb, 0, sizeof(pps_client_cb));
 	pps_client_cb.private = device;
 	pps_client_cb.irq_func = parport_irq;
@@ -159,7 +165,11 @@ static void parport_attach(struct parport *port)
 						    index);
 	if (!device->pardev) {
 		pr_err("couldn't register with %s\n", port->name);
+<<<<<<< HEAD
 		goto err_free;
+=======
+		goto err_free_ida;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (parport_claim_or_block(device->pardev) < 0) {
@@ -187,8 +197,14 @@ err_release_dev:
 	parport_release(device->pardev);
 err_unregister_dev:
 	parport_unregister_device(device->pardev);
+<<<<<<< HEAD
 err_free:
 	ida_free(&pps_client_index, index);
+=======
+err_free_ida:
+	ida_free(&pps_client_index, index);
+err_free_device:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(device);
 }
 

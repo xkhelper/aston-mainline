@@ -10,7 +10,12 @@ description: |
   Common properties for PCI Endpoint Controller Nodes.
 
 maintainers:
+<<<<<<< HEAD
   - Kishon Vijay Abraham I <kishon@ti.com>
+=======
+  - Kishon Vijay Abraham I <kishon@kernel.org>
+  - Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 properties:
   $nodename:
@@ -41,6 +46,20 @@ properties:
     default: 1
     maximum: 16
 
+<<<<<<< HEAD
+=======
+  linux,pci-domain:
+    description:
+      If present this property assigns a fixed PCI domain number to a PCI
+      Endpoint Controller, otherwise an unstable (across boots) unique number
+      will be assigned. It is required to either not set this property at all
+      or set it for all PCI endpoint controllers in the system, otherwise
+      potentially conflicting domain numbers may be assigned to endpoint
+      controllers. The domain number for each endpoint controller in the system
+      must be unique.
+    $ref: /schemas/types.yaml#/definitions/uint32
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 required:
   - compatible
 

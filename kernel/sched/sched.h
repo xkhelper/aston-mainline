@@ -68,6 +68,10 @@
 #include <linux/wait_api.h>
 #include <linux/wait_bit.h>
 #include <linux/workqueue_api.h>
+<<<<<<< HEAD
+=======
+#include <linux/delayacct.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <trace/events/power.h>
 #include <trace/events/sched.h>
@@ -192,9 +196,24 @@ static inline int idle_policy(int policy)
 	return policy == SCHED_IDLE;
 }
 
+<<<<<<< HEAD
 static inline int fair_policy(int policy)
 {
 	return policy == SCHED_NORMAL || policy == SCHED_BATCH;
+=======
+static inline int normal_policy(int policy)
+{
+#ifdef CONFIG_SCHED_CLASS_EXT
+	if (policy == SCHED_EXT)
+		return true;
+#endif
+	return policy == SCHED_NORMAL;
+}
+
+static inline int fair_policy(int policy)
+{
+	return normal_policy(policy) || policy == SCHED_BATCH;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline int rt_policy(int policy)
@@ -245,6 +264,27 @@ static inline void update_avg(u64 *avg, u64 sample)
 	(val >> min_t(typeof(shift), shift, BITS_PER_TYPE(typeof(val)) - 1))
 
 /*
+<<<<<<< HEAD
+=======
+ * cgroup weight knobs should use the common MIN, DFL and MAX values which are
+ * 1, 100 and 10000 respectively. While it loses a bit of range on both ends, it
+ * maps pretty well onto the shares value used by scheduler and the round-trip
+ * conversions preserve the original value over the entire range.
+ */
+static inline unsigned long sched_weight_from_cgroup(unsigned long cgrp_weight)
+{
+	return DIV_ROUND_CLOSEST_ULL(cgrp_weight * 1024, CGROUP_WEIGHT_DFL);
+}
+
+static inline unsigned long sched_weight_to_cgroup(unsigned long weight)
+{
+	return clamp_t(unsigned long,
+		       DIV_ROUND_CLOSEST_ULL(weight * CGROUP_WEIGHT_DFL, 1024),
+		       CGROUP_WEIGHT_MIN, CGROUP_WEIGHT_MAX);
+}
+
+/*
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * !! For sched_setattr_nocheck() (kernel) only !!
  *
  * This is actually gross. :(
@@ -335,7 +375,11 @@ extern bool __checkparam_dl(const struct sched_attr *attr);
 extern bool dl_param_changed(struct task_struct *p, const struct sched_attr *attr);
 extern int  dl_cpuset_cpumask_can_shrink(const struct cpumask *cur, const struct cpumask *trial);
 extern int  dl_bw_check_overflow(int cpu);
+<<<<<<< HEAD
 
+=======
+extern s64 dl_scaled_delta_exec(struct rq *rq, struct sched_dl_entity *dl_se, s64 delta_exec);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * SCHED_DEADLINE supports servers (nested scheduling) with the following
  * interface:
@@ -361,7 +405,18 @@ extern void dl_server_start(struct sched_dl_entity *dl_se);
 extern void dl_server_stop(struct sched_dl_entity *dl_se);
 extern void dl_server_init(struct sched_dl_entity *dl_se, struct rq *rq,
 		    dl_server_has_tasks_f has_tasks,
+<<<<<<< HEAD
 		    dl_server_pick_f pick);
+=======
+		    dl_server_pick_f pick_task);
+
+extern void dl_server_update_idle_time(struct rq *rq,
+		    struct task_struct *p);
+extern void fair_server_init(struct rq *rq);
+extern void __dl_server_attach_root(struct sched_dl_entity *dl_se, struct rq *rq);
+extern int dl_server_apply_params(struct sched_dl_entity *dl_se,
+		    u64 runtime, u64 period, bool init);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_CGROUP_SCHED
 
@@ -397,16 +452,27 @@ struct cfs_bandwidth {
 struct task_group {
 	struct cgroup_subsys_state css;
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_GROUP_SCHED_WEIGHT
+	/* A positive value indicates that this is a SCHED_IDLE group. */
+	int			idle;
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_FAIR_GROUP_SCHED
 	/* schedulable entities of this group on each CPU */
 	struct sched_entity	**se;
 	/* runqueue "owned" by this group on each CPU */
 	struct cfs_rq		**cfs_rq;
 	unsigned long		shares;
+<<<<<<< HEAD
 
 	/* A positive value indicates that this is a SCHED_IDLE group. */
 	int			idle;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef	CONFIG_SMP
 	/*
 	 * load_avg can be heavily contended at clock tick time, so put
@@ -424,6 +490,14 @@ struct task_group {
 	struct rt_bandwidth	rt_bandwidth;
 #endif
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_EXT_GROUP_SCHED
+	u32			scx_flags;	/* SCX_TG_* */
+	u32			scx_weight;
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct rcu_head		rcu;
 	struct list_head	list;
 
@@ -448,7 +522,11 @@ struct task_group {
 
 };
 
+<<<<<<< HEAD
 #ifdef CONFIG_FAIR_GROUP_SCHED
+=======
+#ifdef CONFIG_GROUP_SCHED_WEIGHT
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define ROOT_TASK_GROUP_LOAD	NICE_0_LOAD
 
 /*
@@ -479,6 +557,14 @@ static inline int walk_tg_tree(tg_visitor down, tg_visitor up, void *data)
 	return walk_tg_tree_from(&root_task_group, down, up, data);
 }
 
+<<<<<<< HEAD
+=======
+static inline struct task_group *css_tg(struct cgroup_subsys_state *css)
+{
+	return css ? container_of(css, struct task_group, css) : NULL;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern int tg_nop(struct task_group *tg, void *data);
 
 #ifdef CONFIG_FAIR_GROUP_SCHED
@@ -535,6 +621,12 @@ extern void set_task_rq_fair(struct sched_entity *se,
 static inline void set_task_rq_fair(struct sched_entity *se,
 			     struct cfs_rq *prev, struct cfs_rq *next) { }
 #endif /* CONFIG_SMP */
+<<<<<<< HEAD
+=======
+#else /* !CONFIG_FAIR_GROUP_SCHED */
+static inline int sched_group_set_shares(struct task_group *tg, unsigned long shares) { return 0; }
+static inline int sched_group_set_idle(struct task_group *tg, long idle) { return 0; }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* CONFIG_FAIR_GROUP_SCHED */
 
 #else /* CONFIG_CGROUP_SCHED */
@@ -588,6 +680,14 @@ do {									\
 # define u64_u32_load(var)		u64_u32_load_copy(var, var##_copy)
 # define u64_u32_store(var, val)	u64_u32_store_copy(var, var##_copy, val)
 
+<<<<<<< HEAD
+=======
+struct balance_callback {
+	struct balance_callback *next;
+	void (*func)(struct rq *rq);
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* CFS-related fields in a runqueue */
 struct cfs_rq {
 	struct load_weight	load;
@@ -599,17 +699,23 @@ struct cfs_rq {
 	s64			avg_vruntime;
 	u64			avg_load;
 
+<<<<<<< HEAD
 	u64			exec_clock;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64			min_vruntime;
 #ifdef CONFIG_SCHED_CORE
 	unsigned int		forceidle_seq;
 	u64			min_vruntime_fi;
 #endif
 
+<<<<<<< HEAD
 #ifndef CONFIG_64BIT
 	u64			min_vruntime_copy;
 #endif
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct rb_root_cached	tasks_timeline;
 
 	/*
@@ -619,10 +725,13 @@ struct cfs_rq {
 	struct sched_entity	*curr;
 	struct sched_entity	*next;
 
+<<<<<<< HEAD
 #ifdef	CONFIG_SCHED_DEBUG
 	unsigned int		nr_spread_over;
 #endif
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_SMP
 	/*
 	 * CFS load tracking
@@ -696,6 +805,47 @@ struct cfs_rq {
 #endif /* CONFIG_FAIR_GROUP_SCHED */
 };
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SCHED_CLASS_EXT
+/* scx_rq->flags, protected by the rq lock */
+enum scx_rq_flags {
+	/*
+	 * A hotplugged CPU starts scheduling before rq_online_scx(). Track
+	 * ops.cpu_on/offline() state so that ops.enqueue/dispatch() are called
+	 * only while the BPF scheduler considers the CPU to be online.
+	 */
+	SCX_RQ_ONLINE		= 1 << 0,
+	SCX_RQ_CAN_STOP_TICK	= 1 << 1,
+	SCX_RQ_BAL_KEEP		= 1 << 2, /* balance decided to keep current */
+	SCX_RQ_BYPASSING	= 1 << 3,
+
+	SCX_RQ_IN_WAKEUP	= 1 << 16,
+	SCX_RQ_IN_BALANCE	= 1 << 17,
+};
+
+struct scx_rq {
+	struct scx_dispatch_q	local_dsq;
+	struct list_head	runnable_list;		/* runnable tasks on this rq */
+	struct list_head	ddsp_deferred_locals;	/* deferred ddsps from enq */
+	unsigned long		ops_qseq;
+	u64			extra_enq_flags;	/* see move_task_to_local_dsq() */
+	u32			nr_running;
+	u32			flags;
+	u32			cpuperf_target;		/* [0, SCHED_CAPACITY_SCALE] */
+	bool			cpu_released;
+	cpumask_var_t		cpus_to_kick;
+	cpumask_var_t		cpus_to_kick_if_idle;
+	cpumask_var_t		cpus_to_preempt;
+	cpumask_var_t		cpus_to_wait;
+	unsigned long		pnt_seq;
+	struct balance_callback	deferred_bal_cb;
+	struct irq_work		deferred_irq_work;
+	struct irq_work		kick_cpus_irq_work;
+};
+#endif /* CONFIG_SCHED_CLASS_EXT */
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int rt_bandwidth_enabled(void)
 {
 	return sysctl_sched_rt_runtime >= 0;
@@ -726,13 +876,20 @@ struct rt_rq {
 #endif /* CONFIG_SMP */
 	int			rt_queued;
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_RT_GROUP_SCHED
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int			rt_throttled;
 	u64			rt_time;
 	u64			rt_runtime;
 	/* Nests inside the rq lock: */
 	raw_spinlock_t		rt_runtime_lock;
 
+<<<<<<< HEAD
 #ifdef CONFIG_RT_GROUP_SCHED
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int		rt_nr_boosted;
 
 	struct rq		*rq;
@@ -820,6 +977,12 @@ static inline void se_update_runnable(struct sched_entity *se)
 
 static inline long se_runnable(struct sched_entity *se)
 {
+<<<<<<< HEAD
+=======
+	if (se->sched_delayed)
+		return false;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (entity_is_task(se))
 		return !!se->on_rq;
 	else
@@ -834,6 +997,12 @@ static inline void se_update_runnable(struct sched_entity *se) { }
 
 static inline long se_runnable(struct sched_entity *se)
 {
+<<<<<<< HEAD
+=======
+	if (se->sched_delayed)
+		return false;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return !!se->on_rq;
 }
 
@@ -996,11 +1165,14 @@ struct uclamp_rq {
 DECLARE_STATIC_KEY_FALSE(sched_uclamp_used);
 #endif /* CONFIG_UCLAMP_TASK */
 
+<<<<<<< HEAD
 struct balance_callback {
 	struct balance_callback *next;
 	void (*func)(struct rq *rq);
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * This is the main, per-CPU runqueue data structure.
  *
@@ -1043,6 +1215,14 @@ struct rq {
 	struct cfs_rq		cfs;
 	struct rt_rq		rt;
 	struct dl_rq		dl;
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SCHED_CLASS_EXT
+	struct scx_rq		scx;
+#endif
+
+	struct sched_dl_entity	fair_server;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_FAIR_GROUP_SCHED
 	/* list of leaf cfs_rq on this CPU: */
@@ -1059,6 +1239,10 @@ struct rq {
 	unsigned int		nr_uninterruptible;
 
 	struct task_struct __rcu	*curr;
+<<<<<<< HEAD
+=======
+	struct sched_dl_entity	*dl_server;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct task_struct	*idle;
 	struct task_struct	*stop;
 	unsigned long		next_balance;
@@ -1158,7 +1342,10 @@ struct rq {
 	/* latency stats */
 	struct sched_info	rq_sched_info;
 	unsigned long long	rq_cpu_time;
+<<<<<<< HEAD
 	/* could above be rq->cfs_rq.exec_clock + rq->rt_rq.rt_runtime ? */
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* sys_sched_yield() stats */
 	unsigned int		yld_count;
@@ -1187,6 +1374,10 @@ struct rq {
 	/* per rq */
 	struct rq		*core;
 	struct task_struct	*core_pick;
+<<<<<<< HEAD
+=======
+	struct sched_dl_entity	*core_dl_server;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int		core_enabled;
 	unsigned int		core_sched_seq;
 	struct rb_root		core_tree;
@@ -2202,6 +2393,10 @@ static inline int task_on_rq_migrating(struct task_struct *p)
 #define WF_SYNC			0x10 /* Waker goes to sleep after wakeup */
 #define WF_MIGRATED		0x20 /* Internal use, task got migrated */
 #define WF_CURRENT_CPU		0x40 /* Prefer to move the wakee to the current CPU. */
+<<<<<<< HEAD
+=======
+#define WF_RQ_SELECTED		0x80 /* ->select_task_rq() was called */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_SMP
 static_assert(WF_EXEC == SD_BALANCE_EXEC);
@@ -2244,6 +2439,7 @@ extern const u32		sched_prio_to_wmult[40];
  * ENQUEUE_HEAD      - place at front of runqueue (tail if not specified)
  * ENQUEUE_REPLENISH - CBS (replenish runtime and postpone deadline)
  * ENQUEUE_MIGRATED  - the task was migrated during wakeup
+<<<<<<< HEAD
  *
  */
 
@@ -2252,6 +2448,19 @@ extern const u32		sched_prio_to_wmult[40];
 #define DEQUEUE_MOVE		0x04 /* Matches ENQUEUE_MOVE */
 #define DEQUEUE_NOCLOCK		0x08 /* Matches ENQUEUE_NOCLOCK */
 #define DEQUEUE_MIGRATING	0x100 /* Matches ENQUEUE_MIGRATING */
+=======
+ * ENQUEUE_RQ_SELECTED - ->select_task_rq() was called
+ *
+ */
+
+#define DEQUEUE_SLEEP		0x01 /* Matches ENQUEUE_WAKEUP */
+#define DEQUEUE_SAVE		0x02 /* Matches ENQUEUE_RESTORE */
+#define DEQUEUE_MOVE		0x04 /* Matches ENQUEUE_MOVE */
+#define DEQUEUE_NOCLOCK		0x08 /* Matches ENQUEUE_NOCLOCK */
+#define DEQUEUE_SPECIAL		0x10
+#define DEQUEUE_MIGRATING	0x100 /* Matches ENQUEUE_MIGRATING */
+#define DEQUEUE_DELAYED		0x200 /* Matches ENQUEUE_DELAYED */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define ENQUEUE_WAKEUP		0x01
 #define ENQUEUE_RESTORE		0x02
@@ -2267,6 +2476,11 @@ extern const u32		sched_prio_to_wmult[40];
 #endif
 #define ENQUEUE_INITIAL		0x80
 #define ENQUEUE_MIGRATING	0x100
+<<<<<<< HEAD
+=======
+#define ENQUEUE_DELAYED		0x200
+#define ENQUEUE_RQ_SELECTED	0x400
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define RETRY_TASK		((void *)-1UL)
 
@@ -2285,12 +2499,17 @@ struct sched_class {
 #endif
 
 	void (*enqueue_task) (struct rq *rq, struct task_struct *p, int flags);
+<<<<<<< HEAD
 	void (*dequeue_task) (struct rq *rq, struct task_struct *p, int flags);
+=======
+	bool (*dequeue_task) (struct rq *rq, struct task_struct *p, int flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void (*yield_task)   (struct rq *rq);
 	bool (*yield_to_task)(struct rq *rq, struct task_struct *p);
 
 	void (*wakeup_preempt)(struct rq *rq, struct task_struct *p, int flags);
 
+<<<<<<< HEAD
 	struct task_struct *(*pick_next_task)(struct rq *rq);
 
 	void (*put_prev_task)(struct rq *rq, struct task_struct *p);
@@ -2302,6 +2521,27 @@ struct sched_class {
 
 	struct task_struct * (*pick_task)(struct rq *rq);
 
+=======
+	int (*balance)(struct rq *rq, struct task_struct *prev, struct rq_flags *rf);
+	struct task_struct *(*pick_task)(struct rq *rq);
+	/*
+	 * Optional! When implemented pick_next_task() should be equivalent to:
+	 *
+	 *   next = pick_task();
+	 *   if (next) {
+	 *       put_prev_task(prev);
+	 *       set_next_task_first(next);
+	 *   }
+	 */
+	struct task_struct *(*pick_next_task)(struct rq *rq, struct task_struct *prev);
+
+	void (*put_prev_task)(struct rq *rq, struct task_struct *p, struct task_struct *next);
+	void (*set_next_task)(struct rq *rq, struct task_struct *p, bool first);
+
+#ifdef CONFIG_SMP
+	int  (*select_task_rq)(struct task_struct *p, int task_cpu, int flags);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void (*migrate_task_rq)(struct task_struct *p, int new_cpu);
 
 	void (*task_woken)(struct rq *this_rq, struct task_struct *task);
@@ -2323,8 +2563,16 @@ struct sched_class {
 	 * cannot assume the switched_from/switched_to pair is serialized by
 	 * rq->lock. They are however serialized by p->pi_lock.
 	 */
+<<<<<<< HEAD
 	void (*switched_from)(struct rq *this_rq, struct task_struct *task);
 	void (*switched_to)  (struct rq *this_rq, struct task_struct *task);
+=======
+	void (*switching_to) (struct rq *this_rq, struct task_struct *task);
+	void (*switched_from)(struct rq *this_rq, struct task_struct *task);
+	void (*switched_to)  (struct rq *this_rq, struct task_struct *task);
+	void (*reweight_task)(struct rq *this_rq, struct task_struct *task,
+			      const struct load_weight *lw);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void (*prio_changed) (struct rq *this_rq, struct task_struct *task,
 			      int oldprio);
 
@@ -2345,7 +2593,11 @@ struct sched_class {
 static inline void put_prev_task(struct rq *rq, struct task_struct *prev)
 {
 	WARN_ON_ONCE(rq->curr != prev);
+<<<<<<< HEAD
 	prev->sched_class->put_prev_task(rq, prev);
+=======
+	prev->sched_class->put_prev_task(rq, prev, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline void set_next_task(struct rq *rq, struct task_struct *next)
@@ -2353,6 +2605,33 @@ static inline void set_next_task(struct rq *rq, struct task_struct *next)
 	next->sched_class->set_next_task(rq, next, false);
 }
 
+<<<<<<< HEAD
+=======
+static inline void
+__put_prev_set_next_dl_server(struct rq *rq,
+			      struct task_struct *prev,
+			      struct task_struct *next)
+{
+	prev->dl_server = NULL;
+	next->dl_server = rq->dl_server;
+	rq->dl_server = NULL;
+}
+
+static inline void put_prev_set_next_task(struct rq *rq,
+					  struct task_struct *prev,
+					  struct task_struct *next)
+{
+	WARN_ON_ONCE(rq->curr != prev);
+
+	__put_prev_set_next_dl_server(rq, prev, next);
+
+	if (next == prev)
+		return;
+
+	prev->sched_class->put_prev_task(rq, prev, next);
+	next->sched_class->set_next_task(rq, next, true);
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Helper to define a sched_class instance; each one is placed in a separate
@@ -2373,12 +2652,51 @@ const struct sched_class name##_sched_class \
 extern struct sched_class __sched_class_highest[];
 extern struct sched_class __sched_class_lowest[];
 
+<<<<<<< HEAD
+=======
+extern const struct sched_class stop_sched_class;
+extern const struct sched_class dl_sched_class;
+extern const struct sched_class rt_sched_class;
+extern const struct sched_class fair_sched_class;
+extern const struct sched_class idle_sched_class;
+
+#ifdef CONFIG_SCHED_CLASS_EXT
+extern const struct sched_class ext_sched_class;
+
+DECLARE_STATIC_KEY_FALSE(__scx_ops_enabled);	/* SCX BPF scheduler loaded */
+DECLARE_STATIC_KEY_FALSE(__scx_switched_all);	/* all fair class tasks on SCX */
+
+#define scx_enabled()		static_branch_unlikely(&__scx_ops_enabled)
+#define scx_switched_all()	static_branch_unlikely(&__scx_switched_all)
+#else /* !CONFIG_SCHED_CLASS_EXT */
+#define scx_enabled()		false
+#define scx_switched_all()	false
+#endif /* !CONFIG_SCHED_CLASS_EXT */
+
+/*
+ * Iterate only active classes. SCX can take over all fair tasks or be
+ * completely disabled. If the former, skip fair. If the latter, skip SCX.
+ */
+static inline const struct sched_class *next_active_class(const struct sched_class *class)
+{
+	class++;
+#ifdef CONFIG_SCHED_CLASS_EXT
+	if (scx_switched_all() && class == &fair_sched_class)
+		class++;
+	if (!scx_enabled() && class == &ext_sched_class)
+		class++;
+#endif
+	return class;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define for_class_range(class, _from, _to) \
 	for (class = (_from); class < (_to); class++)
 
 #define for_each_class(class) \
 	for_class_range(class, __sched_class_highest, __sched_class_lowest)
 
+<<<<<<< HEAD
 #define sched_class_above(_a, _b)	((_a) < (_b))
 
 extern const struct sched_class stop_sched_class;
@@ -2386,6 +2704,15 @@ extern const struct sched_class dl_sched_class;
 extern const struct sched_class rt_sched_class;
 extern const struct sched_class fair_sched_class;
 extern const struct sched_class idle_sched_class;
+=======
+#define for_active_class_range(class, _from, _to)				\
+	for (class = (_from); class != (_to); class = next_active_class(class))
+
+#define for_each_active_class(class)						\
+	for_active_class_range(class, __sched_class_highest, __sched_class_lowest)
+
+#define sched_class_above(_a, _b)	((_a) < (_b))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline bool sched_stop_runnable(struct rq *rq)
 {
@@ -2408,7 +2735,11 @@ static inline bool sched_fair_runnable(struct rq *rq)
 }
 
 extern struct task_struct *pick_next_task_fair(struct rq *rq, struct task_struct *prev, struct rq_flags *rf);
+<<<<<<< HEAD
 extern struct task_struct *pick_next_task_idle(struct rq *rq);
+=======
+extern struct task_struct *pick_task_idle(struct rq *rq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define SCA_CHECK		0x01
 #define SCA_MIGRATE_DISABLE	0x02
@@ -2424,6 +2755,22 @@ extern void sched_balance_trigger(struct rq *rq);
 extern int __set_cpus_allowed_ptr(struct task_struct *p, struct affinity_context *ctx);
 extern void set_cpus_allowed_common(struct task_struct *p, struct affinity_context *ctx);
 
+<<<<<<< HEAD
+=======
+static inline bool task_allowed_on_cpu(struct task_struct *p, int cpu)
+{
+	/* When not in the task's cpumask, no point in looking further. */
+	if (!cpumask_test_cpu(cpu, p->cpus_ptr))
+		return false;
+
+	/* Can @cpu run a user thread? */
+	if (!(p->flags & PF_KTHREAD) && !task_cpu_possible(cpu, p))
+		return false;
+
+	return true;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline cpumask_t *alloc_user_cpus_ptr(int node)
 {
 	/*
@@ -2457,6 +2804,14 @@ extern int push_cpu_stop(void *arg);
 
 #else /* !CONFIG_SMP: */
 
+<<<<<<< HEAD
+=======
+static inline bool task_allowed_on_cpu(struct task_struct *p, int cpu)
+{
+	return true;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int __set_cpus_allowed_ptr(struct task_struct *p,
 					 struct affinity_context *ctx)
 {
@@ -2510,12 +2865,18 @@ extern void init_sched_dl_class(void);
 extern void init_sched_rt_class(void);
 extern void init_sched_fair_class(void);
 
+<<<<<<< HEAD
 extern void reweight_task(struct task_struct *p, const struct load_weight *lw);
 
 extern void resched_curr(struct rq *rq);
 extern void resched_cpu(int cpu);
 
 extern struct rt_bandwidth def_rt_bandwidth;
+=======
+extern void resched_curr(struct rq *rq);
+extern void resched_cpu(int cpu);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void init_rt_bandwidth(struct rt_bandwidth *rt_b, u64 period, u64 runtime);
 extern bool sched_rt_bandwidth_account(struct rt_rq *rt_rq);
 
@@ -2586,6 +2947,52 @@ static inline void sub_nr_running(struct rq *rq, unsigned count)
 	sched_update_tick_dependency(rq);
 }
 
+<<<<<<< HEAD
+=======
+static inline void __block_task(struct rq *rq, struct task_struct *p)
+{
+	if (p->sched_contributes_to_load)
+		rq->nr_uninterruptible++;
+
+	if (p->in_iowait) {
+		atomic_inc(&rq->nr_iowait);
+		delayacct_blkio_start();
+	}
+
+	ASSERT_EXCLUSIVE_WRITER(p->on_rq);
+
+	/*
+	 * The moment this write goes through, ttwu() can swoop in and migrate
+	 * this task, rendering our rq->__lock ineffective.
+	 *
+	 * __schedule()				try_to_wake_up()
+	 *   LOCK rq->__lock			  LOCK p->pi_lock
+	 *   pick_next_task()
+	 *     pick_next_task_fair()
+	 *       pick_next_entity()
+	 *         dequeue_entities()
+	 *           __block_task()
+	 *             RELEASE p->on_rq = 0	  if (p->on_rq && ...)
+	 *					    break;
+	 *
+	 *					  ACQUIRE (after ctrl-dep)
+	 *
+	 *					  cpu = select_task_rq();
+	 *					  set_task_cpu(p, cpu);
+	 *					  ttwu_queue()
+	 *					    ttwu_do_activate()
+	 *					      LOCK rq->__lock
+	 *					      activate_task()
+	 *					        STORE p->on_rq = 1
+	 *   UNLOCK rq->__lock
+	 *
+	 * Callers must ensure to not reference @p after this -- we no longer
+	 * own it.
+	 */
+	smp_store_release(&p->on_rq, 0);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void activate_task(struct rq *rq, struct task_struct *p, int flags);
 extern void deactivate_task(struct rq *rq, struct task_struct *p, int flags);
 
@@ -3099,6 +3506,11 @@ static inline unsigned long cpu_util_rt(struct rq *rq)
 	return READ_ONCE(rq->avg_rt.util_avg);
 }
 
+<<<<<<< HEAD
+=======
+#else /* !CONFIG_SMP */
+static inline bool update_other_load_avgs(struct rq *rq) { return false; }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* CONFIG_SMP */
 
 #ifdef CONFIG_UCLAMP_TASK
@@ -3604,11 +4016,21 @@ static inline int rt_effective_prio(struct task_struct *p, int prio)
 
 extern int __sched_setscheduler(struct task_struct *p, const struct sched_attr *attr, bool user, bool pi);
 extern int __sched_setaffinity(struct task_struct *p, struct affinity_context *ctx);
+<<<<<<< HEAD
 extern void __setscheduler_prio(struct task_struct *p, int prio);
 extern void set_load_weight(struct task_struct *p, bool update_load);
 extern void enqueue_task(struct rq *rq, struct task_struct *p, int flags);
 extern void dequeue_task(struct rq *rq, struct task_struct *p, int flags);
 
+=======
+extern const struct sched_class *__setscheduler_class(int policy, int prio);
+extern void set_load_weight(struct task_struct *p, bool update_load);
+extern void enqueue_task(struct rq *rq, struct task_struct *p, int flags);
+extern bool dequeue_task(struct rq *rq, struct task_struct *p, int flags);
+
+extern void check_class_changing(struct rq *rq, struct task_struct *p,
+				 const struct sched_class *prev_class);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void check_class_changed(struct rq *rq, struct task_struct *p,
 				const struct sched_class *prev_class,
 				int oldprio);
@@ -3629,4 +4051,27 @@ static inline void balance_callbacks(struct rq *rq, struct balance_callback *hea
 
 #endif
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SCHED_CLASS_EXT
+/*
+ * Used by SCX in the enable/disable paths to move tasks between sched_classes
+ * and establish invariants.
+ */
+struct sched_enq_and_set_ctx {
+	struct task_struct	*p;
+	int			queue_flags;
+	bool			queued;
+	bool			running;
+};
+
+void sched_deq_and_put_task(struct task_struct *p, int queue_flags,
+			    struct sched_enq_and_set_ctx *ctx);
+void sched_enq_and_set_task(struct sched_enq_and_set_ctx *ctx);
+
+#endif /* CONFIG_SCHED_CLASS_EXT */
+
+#include "ext.h"
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _KERNEL_SCHED_SCHED_H */

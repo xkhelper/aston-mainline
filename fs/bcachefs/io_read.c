@@ -262,7 +262,12 @@ err:
 		bio_free_pages(&(*rbio)->bio);
 	kfree(*rbio);
 	*rbio = NULL;
+<<<<<<< HEAD
 	kfree(op);
+=======
+	/* We may have added to the rhashtable and thus need rcu freeing: */
+	kfree_rcu(op, rcu);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bch2_write_ref_put(c, BCH_WRITE_REF_promote);
 	return ERR_PTR(ret);
 }
@@ -286,7 +291,11 @@ static struct promote_op *promote_alloc(struct btree_trans *trans,
 	 */
 	bool promote_full = (failed ||
 			     *read_full ||
+<<<<<<< HEAD
 			     READ_ONCE(c->promote_whole_extents));
+=======
+			     READ_ONCE(c->opts.promote_whole_extents));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* data might have to be decompressed in the write path: */
 	unsigned sectors = promote_full
 		? max(pick->crc.compressed_size, pick->crc.live_size)
@@ -409,8 +418,13 @@ retry:
 	bch2_trans_begin(trans);
 	rbio->bio.bi_status = 0;
 
+<<<<<<< HEAD
 	k = bch2_btree_iter_peek_slot(&iter);
 	if (bkey_err(k))
+=======
+	ret = lockrestart_do(trans, bkey_err(k = bch2_btree_iter_peek_slot(&iter)));
+	if (ret)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto err;
 
 	bch2_bkey_buf_reassemble(&sk, c, k);
@@ -517,7 +531,11 @@ static int __bch2_rbio_narrow_crcs(struct btree_trans *trans,
 	if ((ret = bkey_err(k)))
 		goto out;
 
+<<<<<<< HEAD
 	if (bversion_cmp(k.k->version, rbio->version) ||
+=======
+	if (bversion_cmp(k.k->bversion, rbio->version) ||
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    !bch2_bkey_matches_ptr(c, k, rbio->pick.ptr, data_offset))
 		goto out;
 
@@ -557,8 +575,13 @@ out:
 
 static noinline void bch2_rbio_narrow_crcs(struct bch_read_bio *rbio)
 {
+<<<<<<< HEAD
 	bch2_trans_do(rbio->c, NULL, NULL, BCH_TRANS_COMMIT_no_enospc,
 		      __bch2_rbio_narrow_crcs(trans, rbio));
+=======
+	bch2_trans_commit_do(rbio->c, NULL, NULL, BCH_TRANS_COMMIT_no_enospc,
+			     __bch2_rbio_narrow_crcs(trans, rbio));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Inner part that may run in process context */
@@ -777,7 +800,11 @@ int __bch2_read_indirect_extent(struct btree_trans *trans,
 			orig_k->k->k.size,
 			reflink_offset);
 		bch2_inconsistent_error(trans->c);
+<<<<<<< HEAD
 		ret = -EIO;
+=======
+		ret = -BCH_ERR_missing_indirect_extent;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto err;
 	}
 
@@ -802,16 +829,25 @@ static noinline void read_from_stale_dirty_pointer(struct btree_trans *trans,
 			     PTR_BUCKET_POS(ca, &ptr),
 			     BTREE_ITER_cached);
 
+<<<<<<< HEAD
 	u8 *gen = bucket_gen(ca, iter.pos.offset);
 	if (gen) {
 
+=======
+	int gen = bucket_gen_get(ca, iter.pos.offset);
+	if (gen >= 0) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		prt_printf(&buf, "Attempting to read from stale dirty pointer:\n");
 		printbuf_indent_add(&buf, 2);
 
 		bch2_bkey_val_to_text(&buf, c, k);
 		prt_newline(&buf);
 
+<<<<<<< HEAD
 		prt_printf(&buf, "memory gen: %u", *gen);
+=======
+		prt_printf(&buf, "memory gen: %u", gen);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		ret = lockrestart_do(trans, bkey_err(k = bch2_btree_iter_peek_slot(&iter)));
 		if (!ret) {
@@ -869,9 +905,21 @@ retry_pick:
 		goto hole;
 
 	if (pick_ret < 0) {
+<<<<<<< HEAD
 		bch_err_inum_offset_ratelimited(c,
 				read_pos.inode, read_pos.offset << 9,
 				"no device to read from");
+=======
+		struct printbuf buf = PRINTBUF;
+		bch2_bkey_val_to_text(&buf, c, k);
+
+		bch_err_inum_offset_ratelimited(c,
+				read_pos.inode, read_pos.offset << 9,
+				"no device to read from: %s\n  %s",
+				bch2_err_str(pick_ret),
+				buf.buf);
+		printbuf_exit(&buf);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto err;
 	}
 
@@ -1025,7 +1073,11 @@ get_bio:
 	rbio->read_pos		= read_pos;
 	rbio->data_btree	= data_btree;
 	rbio->data_pos		= data_pos;
+<<<<<<< HEAD
 	rbio->version		= k.k->version;
+=======
+	rbio->version		= k.k->bversion;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rbio->promote		= promote;
 	INIT_WORK(&rbio->work, NULL);
 
@@ -1086,7 +1138,11 @@ get_bio:
 		trans->notrace_relock_fail = true;
 	} else {
 		/* Attempting reconstruct read: */
+<<<<<<< HEAD
 		if (bch2_ec_read_extent(trans, rbio)) {
+=======
+		if (bch2_ec_read_extent(trans, rbio, k)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			bch2_rbio_error(rbio, READ_RETRY_AVOID, BLK_STS_IOERR);
 			goto out;
 		}
@@ -1214,10 +1270,13 @@ void __bch2_read(struct bch_fs *c, struct bch_read_bio *rbio,
 
 		swap(bvec_iter.bi_size, bytes);
 		bio_advance_iter(&rbio->bio, &bvec_iter, bytes);
+<<<<<<< HEAD
 
 		ret = btree_trans_too_many_iters(trans);
 		if (ret)
 			goto err;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err:
 		if (ret &&
 		    !bch2_err_matches(ret, BCH_ERR_transaction_restart) &&

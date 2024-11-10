@@ -231,9 +231,13 @@ if X86
 source "drivers/cpufreq/Kconfig.x86"
 endif
 
+<<<<<<< HEAD
 if ARM || ARM64
 source "drivers/cpufreq/Kconfig.arm"
 endif
+=======
+source "drivers/cpufreq/Kconfig.arm"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 if PPC32 || PPC64
 source "drivers/cpufreq/Kconfig.powerpc"

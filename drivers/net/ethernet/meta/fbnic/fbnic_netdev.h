@@ -40,6 +40,12 @@ struct fbnic_net {
 	u32 rss_key[FBNIC_RPC_RSS_KEY_DWORD_LEN];
 	u32 rss_flow_hash[FBNIC_NUM_HASH_OPT];
 
+<<<<<<< HEAD
+=======
+	/* Storage for stats after ring destruction */
+	struct fbnic_queue_stats tx_stats;
+	struct fbnic_queue_stats rx_stats;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 link_down_events;
 
 	struct list_head napis;
@@ -55,6 +61,10 @@ int fbnic_netdev_register(struct net_device *netdev);
 void fbnic_netdev_unregister(struct net_device *netdev);
 void fbnic_reset_queues(struct fbnic_net *fbn,
 			unsigned int tx, unsigned int rx);
+<<<<<<< HEAD
+=======
+void fbnic_set_ethtool_ops(struct net_device *dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void __fbnic_set_rx_mode(struct net_device *netdev);
 void fbnic_clear_rx_mode(struct net_device *netdev);

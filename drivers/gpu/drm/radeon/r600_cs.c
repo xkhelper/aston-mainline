@@ -884,7 +884,11 @@ int r600_cs_common_vline_parse(struct radeon_cs_parser *p,
 	crtc_id = radeon_get_ib_value(p, h_idx + 2 + 7 + 1);
 	reg = R600_CP_PACKET0_GET_REG(header);
 
+<<<<<<< HEAD
 	crtc = drm_crtc_find(p->rdev->ddev, p->filp, crtc_id);
+=======
+	crtc = drm_crtc_find(rdev_to_drm(p->rdev), p->filp, crtc_id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!crtc) {
 		DRM_ERROR("cannot find crtc %d\n", crtc_id);
 		return -ENOENT;

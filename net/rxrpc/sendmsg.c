@@ -303,6 +303,14 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
 	sk_clear_bit(SOCKWQ_ASYNC_NOSPACE, sk);
 
 reload:
+<<<<<<< HEAD
+=======
+	txb = call->tx_pending;
+	call->tx_pending = NULL;
+	if (txb)
+		rxrpc_see_txbuf(txb, rxrpc_txbuf_see_send_more);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = -EPIPE;
 	if (sk->sk_shutdown & SEND_SHUTDOWN)
 		goto maybe_error;
@@ -329,11 +337,14 @@ reload:
 			goto maybe_error;
 	}
 
+<<<<<<< HEAD
 	txb = call->tx_pending;
 	call->tx_pending = NULL;
 	if (txb)
 		rxrpc_see_txbuf(txb, rxrpc_txbuf_see_send_more);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	do {
 		if (!txb) {
 			size_t remain;

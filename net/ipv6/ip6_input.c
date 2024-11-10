@@ -111,9 +111,14 @@ static void ip6_list_rcv_finish(struct net *net, struct sock *sk,
 {
 	struct sk_buff *skb, *next, *hint = NULL;
 	struct dst_entry *curr_dst = NULL;
+<<<<<<< HEAD
 	struct list_head sublist;
 
 	INIT_LIST_HEAD(&sublist);
+=======
+	LIST_HEAD(sublist);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	list_for_each_entry_safe(skb, next, head, list) {
 		struct dst_entry *dst;
 
@@ -327,9 +332,14 @@ void ipv6_list_rcv(struct list_head *head, struct packet_type *pt,
 	struct net_device *curr_dev = NULL;
 	struct net *curr_net = NULL;
 	struct sk_buff *skb, *next;
+<<<<<<< HEAD
 	struct list_head sublist;
 
 	INIT_LIST_HEAD(&sublist);
+=======
+	LIST_HEAD(sublist);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	list_for_each_entry_safe(skb, next, head, list) {
 		struct net_device *dev = skb->dev;
 		struct net *net = dev_net(dev);

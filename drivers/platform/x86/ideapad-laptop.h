@@ -9,9 +9,12 @@
 #ifndef _IDEAPAD_LAPTOP_H_
 #define _IDEAPAD_LAPTOP_H_
 
+<<<<<<< HEAD
 #include <linux/acpi.h>
 #include <linux/jiffies.h>
 #include <linux/errno.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/notifier.h>
 
 enum ideapad_laptop_notifier_actions {
@@ -22,6 +25,7 @@ int ideapad_laptop_register_notifier(struct notifier_block *nb);
 int ideapad_laptop_unregister_notifier(struct notifier_block *nb);
 void ideapad_laptop_call_notifier(unsigned long action, void *data);
 
+<<<<<<< HEAD
 enum {
 	VPCCMD_R_VPC1 = 0x10,
 	VPCCMD_R_BL_MAX,
@@ -158,4 +162,6 @@ static inline int write_ec_cmd(acpi_handle handle, unsigned long cmd, unsigned l
 }
 
 #undef IDEAPAD_EC_TIMEOUT
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* !_IDEAPAD_LAPTOP_H_ */

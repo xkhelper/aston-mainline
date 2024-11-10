@@ -2,7 +2,10 @@
 //
 // Copyright 2024 Advanced Micro Devices, Inc.
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "dml2_dpmm_dcn4.h"
 #include "dml2_internal_shared_types.h"
 #include "dml_top_types.h"
@@ -83,9 +86,15 @@ static void calculate_system_active_minimums(struct dml2_dpmm_map_mode_to_soc_dp
 
 	get_minimum_clocks_for_latency(in_out, &min_uclk_latency, &min_fclk_latency, &min_dcfclk_latency);
 
+<<<<<<< HEAD
 	in_out->programming->min_clocks.dcn4.active.uclk_khz = dml_round_up(min_uclk_bw > min_uclk_latency ? min_uclk_bw : min_uclk_latency);
 	in_out->programming->min_clocks.dcn4.active.fclk_khz = dml_round_up(min_fclk_bw > min_fclk_latency ? min_fclk_bw : min_fclk_latency);
 	in_out->programming->min_clocks.dcn4.active.dcfclk_khz = dml_round_up(min_dcfclk_bw > min_dcfclk_latency ? min_dcfclk_bw : min_dcfclk_latency);
+=======
+	in_out->programming->min_clocks.dcn4x.active.uclk_khz = dml_round_up(min_uclk_bw > min_uclk_latency ? min_uclk_bw : min_uclk_latency);
+	in_out->programming->min_clocks.dcn4x.active.fclk_khz = dml_round_up(min_fclk_bw > min_fclk_latency ? min_fclk_bw : min_fclk_latency);
+	in_out->programming->min_clocks.dcn4x.active.dcfclk_khz = dml_round_up(min_dcfclk_bw > min_dcfclk_latency ? min_dcfclk_bw : min_dcfclk_latency);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void calculate_svp_prefetch_minimums(struct dml2_dpmm_map_mode_to_soc_dpm_params_in_out *in_out)
@@ -123,9 +132,15 @@ static void calculate_svp_prefetch_minimums(struct dml2_dpmm_map_mode_to_soc_dpm
 
 	get_minimum_clocks_for_latency(in_out, &min_uclk_latency, &min_fclk_latency, &min_dcfclk_latency);
 
+<<<<<<< HEAD
 	in_out->programming->min_clocks.dcn4.svp_prefetch.uclk_khz = dml_round_up(min_uclk_bw > min_uclk_latency ? min_uclk_bw : min_uclk_latency);
 	in_out->programming->min_clocks.dcn4.svp_prefetch.fclk_khz = dml_round_up(min_fclk_bw > min_fclk_latency ? min_fclk_bw : min_fclk_latency);
 	in_out->programming->min_clocks.dcn4.svp_prefetch.dcfclk_khz = dml_round_up(min_dcfclk_bw > min_dcfclk_latency ? min_dcfclk_bw : min_dcfclk_latency);
+=======
+	in_out->programming->min_clocks.dcn4x.svp_prefetch.uclk_khz = dml_round_up(min_uclk_bw > min_uclk_latency ? min_uclk_bw : min_uclk_latency);
+	in_out->programming->min_clocks.dcn4x.svp_prefetch.fclk_khz = dml_round_up(min_fclk_bw > min_fclk_latency ? min_fclk_bw : min_fclk_latency);
+	in_out->programming->min_clocks.dcn4x.svp_prefetch.dcfclk_khz = dml_round_up(min_dcfclk_bw > min_dcfclk_latency ? min_dcfclk_bw : min_dcfclk_latency);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void calculate_idle_minimums(struct dml2_dpmm_map_mode_to_soc_dpm_params_in_out *in_out)
@@ -147,9 +162,15 @@ static void calculate_idle_minimums(struct dml2_dpmm_map_mode_to_soc_dpm_params_
 
 	get_minimum_clocks_for_latency(in_out, &min_uclk_latency, &min_fclk_latency, &min_dcfclk_latency);
 
+<<<<<<< HEAD
 	in_out->programming->min_clocks.dcn4.idle.uclk_khz = dml_round_up(min_uclk_avg > min_uclk_latency ? min_uclk_avg : min_uclk_latency);
 	in_out->programming->min_clocks.dcn4.idle.fclk_khz = dml_round_up(min_fclk_avg > min_fclk_latency ? min_fclk_avg : min_fclk_latency);
 	in_out->programming->min_clocks.dcn4.idle.dcfclk_khz = dml_round_up(min_dcfclk_avg > min_dcfclk_latency ? min_dcfclk_avg : min_dcfclk_latency);
+=======
+	in_out->programming->min_clocks.dcn4x.idle.uclk_khz = dml_round_up(min_uclk_avg > min_uclk_latency ? min_uclk_avg : min_uclk_latency);
+	in_out->programming->min_clocks.dcn4x.idle.fclk_khz = dml_round_up(min_fclk_avg > min_fclk_latency ? min_fclk_avg : min_fclk_latency);
+	in_out->programming->min_clocks.dcn4x.idle.dcfclk_khz = dml_round_up(min_dcfclk_avg > min_dcfclk_latency ? min_dcfclk_avg : min_dcfclk_latency);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static bool add_margin_and_round_to_dfs_grainularity(double clock_khz, double margin, unsigned long vco_freq_khz, unsigned long *rounded_khz, uint32_t *divider_id)
@@ -204,6 +225,29 @@ static bool add_margin_and_round_to_dfs_grainularity(double clock_khz, double ma
 	return true;
 }
 
+<<<<<<< HEAD
+=======
+static bool round_to_non_dfs_granularity(unsigned long dispclk_khz, unsigned long dpprefclk_khz, unsigned long dtbrefclk_khz,
+	unsigned long *rounded_dispclk_khz, unsigned long *rounded_dpprefclk_khz, unsigned long *rounded_dtbrefclk_khz)
+{
+	unsigned long pll_frequency_khz;
+
+	pll_frequency_khz = (unsigned long) math_max2(600000, math_ceil2(math_max3(dispclk_khz, dpprefclk_khz, dtbrefclk_khz), 1000));
+
+	*rounded_dispclk_khz = pll_frequency_khz / (unsigned long) math_min2(pll_frequency_khz / dispclk_khz, 32);
+
+	*rounded_dpprefclk_khz = pll_frequency_khz / (unsigned long) math_min2(pll_frequency_khz / dpprefclk_khz, 32);
+
+	if (dtbrefclk_khz > 0) {
+		*rounded_dtbrefclk_khz = pll_frequency_khz / (unsigned long) math_min2(pll_frequency_khz / dtbrefclk_khz, 32);
+	} else {
+		*rounded_dtbrefclk_khz = 0;
+	}
+
+	return true;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool round_up_and_copy_to_next_dpm(unsigned long min_value, unsigned long *rounded_value, const struct dml2_clk_table *clock_table)
 {
 	bool result = false;
@@ -233,6 +277,7 @@ static bool map_soc_min_clocks_to_dpm_fine_grained(struct dml2_display_cfg_progr
 {
 	bool result;
 
+<<<<<<< HEAD
 	result = round_up_to_next_dpm(&display_cfg->min_clocks.dcn4.active.dcfclk_khz, &state_table->dcfclk);
 	if (result)
 		result = round_up_to_next_dpm(&display_cfg->min_clocks.dcn4.active.fclk_khz, &state_table->fclk);
@@ -252,6 +297,27 @@ static bool map_soc_min_clocks_to_dpm_fine_grained(struct dml2_display_cfg_progr
 		result = round_up_to_next_dpm(&display_cfg->min_clocks.dcn4.idle.fclk_khz, &state_table->fclk);
 	if (result)
 		result = round_up_to_next_dpm(&display_cfg->min_clocks.dcn4.idle.uclk_khz, &state_table->uclk);
+=======
+	result = round_up_to_next_dpm(&display_cfg->min_clocks.dcn4x.active.dcfclk_khz, &state_table->dcfclk);
+	if (result)
+		result = round_up_to_next_dpm(&display_cfg->min_clocks.dcn4x.active.fclk_khz, &state_table->fclk);
+	if (result)
+		result = round_up_to_next_dpm(&display_cfg->min_clocks.dcn4x.active.uclk_khz, &state_table->uclk);
+
+	if (result)
+		result = round_up_to_next_dpm(&display_cfg->min_clocks.dcn4x.svp_prefetch.dcfclk_khz, &state_table->dcfclk);
+	if (result)
+		result = round_up_to_next_dpm(&display_cfg->min_clocks.dcn4x.svp_prefetch.fclk_khz, &state_table->fclk);
+	if (result)
+		result = round_up_to_next_dpm(&display_cfg->min_clocks.dcn4x.svp_prefetch.uclk_khz, &state_table->uclk);
+
+	if (result)
+		result = round_up_to_next_dpm(&display_cfg->min_clocks.dcn4x.idle.dcfclk_khz, &state_table->dcfclk);
+	if (result)
+		result = round_up_to_next_dpm(&display_cfg->min_clocks.dcn4x.idle.fclk_khz, &state_table->fclk);
+	if (result)
+		result = round_up_to_next_dpm(&display_cfg->min_clocks.dcn4x.idle.uclk_khz, &state_table->uclk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return result;
 }
@@ -263,12 +329,21 @@ static bool map_soc_min_clocks_to_dpm_coarse_grained(struct dml2_display_cfg_pro
 
 	result = false;
 	for (index = 0; index < state_table->uclk.num_clk_values; index++) {
+<<<<<<< HEAD
 		if (display_cfg->min_clocks.dcn4.active.dcfclk_khz <= state_table->dcfclk.clk_values_khz[index] &&
 			display_cfg->min_clocks.dcn4.active.fclk_khz <= state_table->fclk.clk_values_khz[index] &&
 			display_cfg->min_clocks.dcn4.active.uclk_khz <= state_table->uclk.clk_values_khz[index]) {
 			display_cfg->min_clocks.dcn4.active.dcfclk_khz = state_table->dcfclk.clk_values_khz[index];
 			display_cfg->min_clocks.dcn4.active.fclk_khz = state_table->fclk.clk_values_khz[index];
 			display_cfg->min_clocks.dcn4.active.uclk_khz = state_table->uclk.clk_values_khz[index];
+=======
+		if (display_cfg->min_clocks.dcn4x.active.dcfclk_khz <= state_table->dcfclk.clk_values_khz[index] &&
+			display_cfg->min_clocks.dcn4x.active.fclk_khz <= state_table->fclk.clk_values_khz[index] &&
+			display_cfg->min_clocks.dcn4x.active.uclk_khz <= state_table->uclk.clk_values_khz[index]) {
+			display_cfg->min_clocks.dcn4x.active.dcfclk_khz = state_table->dcfclk.clk_values_khz[index];
+			display_cfg->min_clocks.dcn4x.active.fclk_khz = state_table->fclk.clk_values_khz[index];
+			display_cfg->min_clocks.dcn4x.active.uclk_khz = state_table->uclk.clk_values_khz[index];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			result = true;
 			break;
 		}
@@ -277,12 +352,21 @@ static bool map_soc_min_clocks_to_dpm_coarse_grained(struct dml2_display_cfg_pro
 	if (result) {
 		result = false;
 		for (index = 0; index < state_table->uclk.num_clk_values; index++) {
+<<<<<<< HEAD
 			if (display_cfg->min_clocks.dcn4.idle.dcfclk_khz <= state_table->dcfclk.clk_values_khz[index] &&
 				display_cfg->min_clocks.dcn4.idle.fclk_khz <= state_table->fclk.clk_values_khz[index] &&
 				display_cfg->min_clocks.dcn4.idle.uclk_khz <= state_table->uclk.clk_values_khz[index]) {
 				display_cfg->min_clocks.dcn4.idle.dcfclk_khz = state_table->dcfclk.clk_values_khz[index];
 				display_cfg->min_clocks.dcn4.idle.fclk_khz = state_table->fclk.clk_values_khz[index];
 				display_cfg->min_clocks.dcn4.idle.uclk_khz = state_table->uclk.clk_values_khz[index];
+=======
+			if (display_cfg->min_clocks.dcn4x.idle.dcfclk_khz <= state_table->dcfclk.clk_values_khz[index] &&
+				display_cfg->min_clocks.dcn4x.idle.fclk_khz <= state_table->fclk.clk_values_khz[index] &&
+				display_cfg->min_clocks.dcn4x.idle.uclk_khz <= state_table->uclk.clk_values_khz[index]) {
+				display_cfg->min_clocks.dcn4x.idle.dcfclk_khz = state_table->dcfclk.clk_values_khz[index];
+				display_cfg->min_clocks.dcn4x.idle.fclk_khz = state_table->fclk.clk_values_khz[index];
+				display_cfg->min_clocks.dcn4x.idle.uclk_khz = state_table->uclk.clk_values_khz[index];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				result = true;
 				break;
 			}
@@ -290,9 +374,15 @@ static bool map_soc_min_clocks_to_dpm_coarse_grained(struct dml2_display_cfg_pro
 	}
 
 	// SVP is not supported on any coarse grained SoCs
+<<<<<<< HEAD
 	display_cfg->min_clocks.dcn4.svp_prefetch.dcfclk_khz = 0;
 	display_cfg->min_clocks.dcn4.svp_prefetch.fclk_khz = 0;
 	display_cfg->min_clocks.dcn4.svp_prefetch.uclk_khz = 0;
+=======
+	display_cfg->min_clocks.dcn4x.svp_prefetch.dcfclk_khz = 0;
+	display_cfg->min_clocks.dcn4x.svp_prefetch.fclk_khz = 0;
+	display_cfg->min_clocks.dcn4x.svp_prefetch.uclk_khz = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return result;
 }
@@ -325,6 +415,7 @@ static bool map_min_clocks_to_dpm(const struct dml2_core_mode_support_result *mo
 		result = map_soc_min_clocks_to_dpm_coarse_grained(display_cfg, state_table);
 
 	if (result)
+<<<<<<< HEAD
 		result = round_up_to_next_dpm(&display_cfg->min_clocks.dcn4.dispclk_khz, &state_table->dispclk);
 
 	if (result)
@@ -333,10 +424,21 @@ static bool map_min_clocks_to_dpm(const struct dml2_core_mode_support_result *mo
 	for (i = 0; i < DML2_MAX_DCN_PIPES; i++) {
 		if (result)
 			result = round_up_to_next_dpm(&display_cfg->plane_programming[i].min_clocks.dcn4.dppclk_khz, &state_table->dppclk);
+=======
+		result = round_up_to_next_dpm(&display_cfg->min_clocks.dcn4x.dispclk_khz, &state_table->dispclk);
+
+	if (result)
+		result = round_up_to_next_dpm(&display_cfg->min_clocks.dcn4x.deepsleep_dcfclk_khz, &state_table->dcfclk);
+
+	for (i = 0; i < DML2_MAX_DCN_PIPES; i++) {
+		if (result)
+			result = round_up_to_next_dpm(&display_cfg->plane_programming[i].min_clocks.dcn4x.dppclk_khz, &state_table->dppclk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	for (i = 0; i < display_cfg->display_config.num_streams; i++) {
 		if (result)
+<<<<<<< HEAD
 			result = round_up_and_copy_to_next_dpm(mode_support_result->per_stream[i].dscclk_khz, &display_cfg->stream_programming[i].min_clocks.dcn4.dscclk_khz, &state_table->dscclk);
 		if (result)
 			result = round_up_and_copy_to_next_dpm(mode_support_result->per_stream[i].dtbclk_khz, &display_cfg->stream_programming[i].min_clocks.dcn4.dtbclk_khz, &state_table->dtbclk);
@@ -349,6 +451,20 @@ static bool map_min_clocks_to_dpm(const struct dml2_core_mode_support_result *mo
 
 	if (result)
 		result = round_up_to_next_dpm(&display_cfg->min_clocks.dcn4.dtbrefclk_khz, &state_table->dtbclk);
+=======
+			result = round_up_and_copy_to_next_dpm(mode_support_result->per_stream[i].dscclk_khz, &display_cfg->stream_programming[i].min_clocks.dcn4x.dscclk_khz, &state_table->dscclk);
+		if (result)
+			result = round_up_and_copy_to_next_dpm(mode_support_result->per_stream[i].dtbclk_khz, &display_cfg->stream_programming[i].min_clocks.dcn4x.dtbclk_khz, &state_table->dtbclk);
+		if (result)
+			result = round_up_and_copy_to_next_dpm(mode_support_result->per_stream[i].phyclk_khz, &display_cfg->stream_programming[i].min_clocks.dcn4x.phyclk_khz, &state_table->phyclk);
+	}
+
+	if (result)
+		result = round_up_to_next_dpm(&display_cfg->min_clocks.dcn4x.dpprefclk_khz, &state_table->dppclk);
+
+	if (result)
+		result = round_up_to_next_dpm(&display_cfg->min_clocks.dcn4x.dtbrefclk_khz, &state_table->dtbclk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return result;
 }
@@ -516,15 +632,26 @@ static bool determine_power_management_features_with_fams(struct dml2_dpmm_map_m
 
 static void clamp_uclk_to_max(struct dml2_dpmm_map_mode_to_soc_dpm_params_in_out *in_out)
 {
+<<<<<<< HEAD
 	in_out->programming->min_clocks.dcn4.active.uclk_khz = in_out->soc_bb->clk_table.uclk.clk_values_khz[in_out->soc_bb->clk_table.uclk.num_clk_values - 1];
 	in_out->programming->min_clocks.dcn4.svp_prefetch.uclk_khz = in_out->soc_bb->clk_table.uclk.clk_values_khz[in_out->soc_bb->clk_table.uclk.num_clk_values - 1];
 	in_out->programming->min_clocks.dcn4.idle.uclk_khz = in_out->soc_bb->clk_table.uclk.clk_values_khz[in_out->soc_bb->clk_table.uclk.num_clk_values - 1];
+=======
+	in_out->programming->min_clocks.dcn4x.active.uclk_khz = in_out->soc_bb->clk_table.uclk.clk_values_khz[in_out->soc_bb->clk_table.uclk.num_clk_values - 1];
+	in_out->programming->min_clocks.dcn4x.svp_prefetch.uclk_khz = in_out->soc_bb->clk_table.uclk.clk_values_khz[in_out->soc_bb->clk_table.uclk.num_clk_values - 1];
+	in_out->programming->min_clocks.dcn4x.idle.uclk_khz = in_out->soc_bb->clk_table.uclk.clk_values_khz[in_out->soc_bb->clk_table.uclk.num_clk_values - 1];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void clamp_fclk_to_max(struct dml2_dpmm_map_mode_to_soc_dpm_params_in_out *in_out)
 {
+<<<<<<< HEAD
 	in_out->programming->min_clocks.dcn4.active.fclk_khz = in_out->soc_bb->clk_table.fclk.clk_values_khz[in_out->soc_bb->clk_table.fclk.num_clk_values - 1];
 	in_out->programming->min_clocks.dcn4.idle.fclk_khz = in_out->soc_bb->clk_table.fclk.clk_values_khz[in_out->soc_bb->clk_table.fclk.num_clk_values - 1];
+=======
+	in_out->programming->min_clocks.dcn4x.active.fclk_khz = in_out->soc_bb->clk_table.fclk.clk_values_khz[in_out->soc_bb->clk_table.fclk.num_clk_values - 1];
+	in_out->programming->min_clocks.dcn4x.idle.fclk_khz = in_out->soc_bb->clk_table.fclk.clk_values_khz[in_out->soc_bb->clk_table.fclk.num_clk_values - 1];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static bool map_mode_to_soc_dpm(struct dml2_dpmm_map_mode_to_soc_dpm_params_in_out *in_out)
@@ -540,6 +667,7 @@ static bool map_mode_to_soc_dpm(struct dml2_dpmm_map_mode_to_soc_dpm_params_in_o
 
 	// In NV4, there's no support for FCLK or DCFCLK DPM change before SVP prefetch starts, therefore
 	// active minimums must be boosted to prefetch minimums
+<<<<<<< HEAD
 	if (in_out->programming->min_clocks.dcn4.svp_prefetch.uclk_khz > in_out->programming->min_clocks.dcn4.active.uclk_khz)
 		in_out->programming->min_clocks.dcn4.active.uclk_khz = in_out->programming->min_clocks.dcn4.svp_prefetch.uclk_khz;
 
@@ -548,6 +676,16 @@ static bool map_mode_to_soc_dpm(struct dml2_dpmm_map_mode_to_soc_dpm_params_in_o
 
 	if (in_out->programming->min_clocks.dcn4.svp_prefetch.dcfclk_khz > in_out->programming->min_clocks.dcn4.active.dcfclk_khz)
 		in_out->programming->min_clocks.dcn4.active.dcfclk_khz = in_out->programming->min_clocks.dcn4.svp_prefetch.dcfclk_khz;
+=======
+	if (in_out->programming->min_clocks.dcn4x.svp_prefetch.uclk_khz > in_out->programming->min_clocks.dcn4x.active.uclk_khz)
+		in_out->programming->min_clocks.dcn4x.active.uclk_khz = in_out->programming->min_clocks.dcn4x.svp_prefetch.uclk_khz;
+
+	if (in_out->programming->min_clocks.dcn4x.svp_prefetch.fclk_khz > in_out->programming->min_clocks.dcn4x.active.fclk_khz)
+		in_out->programming->min_clocks.dcn4x.active.fclk_khz = in_out->programming->min_clocks.dcn4x.svp_prefetch.fclk_khz;
+
+	if (in_out->programming->min_clocks.dcn4x.svp_prefetch.dcfclk_khz > in_out->programming->min_clocks.dcn4x.active.dcfclk_khz)
+		in_out->programming->min_clocks.dcn4x.active.dcfclk_khz = in_out->programming->min_clocks.dcn4x.svp_prefetch.dcfclk_khz;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	// need some massaging for the dispclk ramping cases:
 	dispclk_khz = mode_support_result->global.dispclk_khz * (1 + in_out->soc_bb->dcn_downspread_percent / 100.0) * (1.0 + in_out->ip->dispclk_ramp_margin_percent / 100.0);
@@ -556,6 +694,7 @@ static bool map_mode_to_soc_dpm(struct dml2_dpmm_map_mode_to_soc_dpm_params_in_o
 	// but still the required dispclk can be more than the maximum dispclk speed:
 	dispclk_khz = math_max2(dispclk_khz, mode_support_result->global.dispclk_khz * (1 + in_out->soc_bb->dcn_downspread_percent / 100.0));
 
+<<<<<<< HEAD
 	add_margin_and_round_to_dfs_grainularity(dispclk_khz, 0.0,
 		(unsigned long)(in_out->soc_bb->dispclk_dppclk_vco_speed_mhz * 1000), &in_out->programming->min_clocks.dcn4.dispclk_khz, &in_out->programming->min_clocks.dcn4.divider_ids.dispclk_did);
 
@@ -584,6 +723,44 @@ static bool map_mode_to_soc_dpm(struct dml2_dpmm_map_mode_to_soc_dpm_params_in_o
 
 	in_out->programming->min_clocks.dcn4.deepsleep_dcfclk_khz = mode_support_result->global.dcfclk_deepsleep_khz;
 	in_out->programming->min_clocks.dcn4.socclk_khz = mode_support_result->global.socclk_khz;
+=======
+	// DPP Ref is always set to max of all DPP clocks
+	for (i = 0; i < DML2_MAX_DCN_PIPES; i++) {
+		if (in_out->programming->min_clocks.dcn4x.dpprefclk_khz < mode_support_result->per_plane[i].dppclk_khz)
+			in_out->programming->min_clocks.dcn4x.dpprefclk_khz = mode_support_result->per_plane[i].dppclk_khz;
+	}
+	in_out->programming->min_clocks.dcn4x.dpprefclk_khz = (unsigned long) (in_out->programming->min_clocks.dcn4x.dpprefclk_khz * (1 + in_out->soc_bb->dcn_downspread_percent / 100.0));
+
+	// DTB Ref is always set to max of all DTB clocks
+	for (i = 0; i < DML2_MAX_DCN_PIPES; i++) {
+		if (in_out->programming->min_clocks.dcn4x.dtbrefclk_khz < mode_support_result->per_stream[i].dtbclk_khz)
+			in_out->programming->min_clocks.dcn4x.dtbrefclk_khz = mode_support_result->per_stream[i].dtbclk_khz;
+	}
+	in_out->programming->min_clocks.dcn4x.dtbrefclk_khz = (unsigned long)(in_out->programming->min_clocks.dcn4x.dtbrefclk_khz * (1 + in_out->soc_bb->dcn_downspread_percent / 100.0));
+
+	if (in_out->soc_bb->no_dfs) {
+		round_to_non_dfs_granularity((unsigned long)dispclk_khz, in_out->programming->min_clocks.dcn4x.dpprefclk_khz, in_out->programming->min_clocks.dcn4x.dtbrefclk_khz,
+			&in_out->programming->min_clocks.dcn4x.dispclk_khz, &in_out->programming->min_clocks.dcn4x.dpprefclk_khz, &in_out->programming->min_clocks.dcn4x.dtbrefclk_khz);
+	} else {
+		add_margin_and_round_to_dfs_grainularity(dispclk_khz, 0.0,
+			(unsigned long)(in_out->soc_bb->dispclk_dppclk_vco_speed_mhz * 1000), &in_out->programming->min_clocks.dcn4x.dispclk_khz, &in_out->programming->min_clocks.dcn4x.divider_ids.dispclk_did);
+
+		add_margin_and_round_to_dfs_grainularity(in_out->programming->min_clocks.dcn4x.dpprefclk_khz, 0.0,
+			(unsigned long)(in_out->soc_bb->dispclk_dppclk_vco_speed_mhz * 1000), &in_out->programming->min_clocks.dcn4x.dpprefclk_khz, &in_out->programming->min_clocks.dcn4x.divider_ids.dpprefclk_did);
+
+		add_margin_and_round_to_dfs_grainularity(in_out->programming->min_clocks.dcn4x.dtbrefclk_khz, 0.0,
+			(unsigned long)(in_out->soc_bb->dispclk_dppclk_vco_speed_mhz * 1000), &in_out->programming->min_clocks.dcn4x.dtbrefclk_khz, &in_out->programming->min_clocks.dcn4x.divider_ids.dtbrefclk_did);
+	}
+
+
+	for (i = 0; i < DML2_MAX_DCN_PIPES; i++) {
+		in_out->programming->plane_programming[i].min_clocks.dcn4x.dppclk_khz = (unsigned long)(in_out->programming->min_clocks.dcn4x.dpprefclk_khz / 255.0
+			* math_ceil2(in_out->display_cfg->mode_support_result.per_plane[i].dppclk_khz * (1.0 + in_out->soc_bb->dcn_downspread_percent / 100.0) * 255.0 / in_out->programming->min_clocks.dcn4x.dpprefclk_khz, 1.0));
+	}
+
+	in_out->programming->min_clocks.dcn4x.deepsleep_dcfclk_khz = mode_support_result->global.dcfclk_deepsleep_khz;
+	in_out->programming->min_clocks.dcn4x.socclk_khz = mode_support_result->global.socclk_khz;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	result = map_min_clocks_to_dpm(mode_support_result, in_out->programming, &in_out->soc_bb->clk_table);
 

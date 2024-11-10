@@ -391,7 +391,10 @@ nouveau_user_framebuffer_create(struct drm_device *dev,
 
 static const struct drm_mode_config_funcs nouveau_mode_config_funcs = {
 	.fb_create = nouveau_user_framebuffer_create,
+<<<<<<< HEAD
 	.output_poll_changed = drm_fb_helper_output_poll_changed,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 
@@ -446,10 +449,15 @@ static struct nouveau_drm_prop_enum_list dither_depth[] = {
 } while(0)
 
 void
+<<<<<<< HEAD
 nouveau_display_hpd_resume(struct drm_device *dev)
 {
 	struct nouveau_drm *drm = nouveau_drm(dev);
 
+=======
+nouveau_display_hpd_resume(struct nouveau_drm *drm)
+{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (drm->headless)
 		return;
 

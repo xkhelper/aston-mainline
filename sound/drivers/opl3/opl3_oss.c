@@ -193,14 +193,22 @@ static int snd_opl3_load_patch_seq_oss(struct snd_seq_oss_arg *arg, int format,
 		return -EINVAL;
 
 	if (count < (int)sizeof(sbi)) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "FM Error: Patch record too short\n");
+=======
+		dev_err(opl3->card->dev, "FM Error: Patch record too short\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 	if (copy_from_user(&sbi, buf, sizeof(sbi)))
 		return -EFAULT;
 
 	if (sbi.channel < 0 || sbi.channel >= SBFM_MAXINSTR) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "FM Error: Invalid instrument number %d\n",
+=======
+		dev_err(opl3->card->dev, "FM Error: Invalid instrument number %d\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			   sbi.channel);
 		return -EINVAL;
 	}
@@ -220,6 +228,7 @@ static int snd_opl3_load_patch_seq_oss(struct snd_seq_oss_arg *arg, int format,
 static int snd_opl3_ioctl_seq_oss(struct snd_seq_oss_arg *arg, unsigned int cmd,
 				  unsigned long ioarg)
 {
+<<<<<<< HEAD
 	if (snd_BUG_ON(!arg))
 		return -ENXIO;
 	switch (cmd) {
@@ -227,6 +236,17 @@ static int snd_opl3_ioctl_seq_oss(struct snd_seq_oss_arg *arg, unsigned int cmd,
 			snd_printk(KERN_ERR "OPL3: "
 				   "Obsolete ioctl(SNDCTL_FM_LOAD_INSTR) used. "
 				   "Fix the program.\n");
+=======
+	struct snd_opl3 *opl3;
+
+	if (snd_BUG_ON(!arg))
+		return -ENXIO;
+	opl3 = arg->private_data;
+	switch (cmd) {
+		case SNDCTL_FM_LOAD_INSTR:
+			dev_err(opl3->card->dev,
+				"OPL3: Obsolete ioctl(SNDCTL_FM_LOAD_INSTR) used. Fix the program.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EINVAL;
 
 		case SNDCTL_SYNTH_MEMAVL:

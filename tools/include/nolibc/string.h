@@ -7,6 +7,10 @@
 #ifndef _NOLIBC_STRING_H
 #define _NOLIBC_STRING_H
 
+<<<<<<< HEAD
+=======
+#include "arch.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "std.h"
 
 static void *malloc(size_t len);

@@ -1495,6 +1495,7 @@ struct htt_ppdu_stats_user_rate {
 #define HTT_TX_INFO_PEERID(_flags) \
 			u32_get_bits(_flags, HTT_PPDU_STATS_TX_INFO_FLAGS_PEERID_M)
 
+<<<<<<< HEAD
 struct htt_tx_ppdu_stats_info {
 	struct htt_tlv tlv_hdr;
 	__le32 tx_success_bytes;
@@ -1507,6 +1508,8 @@ struct htt_tx_ppdu_stats_info {
 	__le16 tx_duration; /* united in us */
 } __packed;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum  htt_ppdu_stats_usr_compln_status {
 	HTT_PPDU_STATS_USER_STATUS_OK,
 	HTT_PPDU_STATS_USER_STATUS_FILTERED,

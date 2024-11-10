@@ -72,7 +72,11 @@ static int adxl367_write(void *context, const void *val_buf, size_t val_size)
 	return spi_sync(st->spi, &st->reg_write_msg);
 }
 
+<<<<<<< HEAD
 static struct regmap_bus adxl367_spi_regmap_bus = {
+=======
+static const struct regmap_bus adxl367_spi_regmap_bus = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.read = adxl367_read,
 	.write = adxl367_write,
 };

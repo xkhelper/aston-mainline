@@ -108,7 +108,11 @@ compute_coring(int coring)
 	 * factor. Clip to [0, isp_scale-1).
 	 */
 	isp_coring = ((coring * isp_scale) + offset) / host_scale;
+<<<<<<< HEAD
 	return min(max(isp_coring, 0), isp_scale - 1);
+=======
+	return clamp(isp_coring, 0, isp_scale - 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -168,15 +172,26 @@ ia_css_xnr3_encode(
 	to->alpha.y0 = alpha_y0;
 	to->alpha.u0 = alpha_u0;
 	to->alpha.v0 = alpha_v0;
+<<<<<<< HEAD
 	to->alpha.ydiff = min(max(alpha_ydiff, min_diff), max_diff);
 	to->alpha.udiff = min(max(alpha_udiff, min_diff), max_diff);
 	to->alpha.vdiff = min(max(alpha_vdiff, min_diff), max_diff);
+=======
+	to->alpha.ydiff = clamp(alpha_ydiff, min_diff, max_diff);
+	to->alpha.udiff = clamp(alpha_udiff, min_diff, max_diff);
+	to->alpha.vdiff = clamp(alpha_vdiff, min_diff, max_diff);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* coring parameters are expressed in q1.NN format */
 	to->coring.u0 = coring_u0;
 	to->coring.v0 = coring_v0;
+<<<<<<< HEAD
 	to->coring.udiff = min(max(coring_udiff, min_diff), max_diff);
 	to->coring.vdiff = min(max(coring_vdiff, min_diff), max_diff);
+=======
+	to->coring.udiff = clamp(coring_udiff, min_diff, max_diff);
+	to->coring.vdiff = clamp(coring_vdiff, min_diff, max_diff);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* blending strength is expressed in q1.NN format */
 	to->blending.strength = blending;

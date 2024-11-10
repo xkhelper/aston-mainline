@@ -14,7 +14,10 @@ static const struct dpu_caps sm8450_dpu_caps = {
 	.has_dim_layer = true,
 	.has_idle_pc = true,
 	.has_3d_merge = true,
+<<<<<<< HEAD
 	.has_active_ctls = true,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.max_linewidth = 5120,
 	.pixel_ram_size = DEFAULT_PIXEL_RAM_SIZE,
 };
@@ -37,16 +40,28 @@ static const struct dpu_mdp_cfg sm8450_mdp = {
 	},
 };
 
+<<<<<<< HEAD
+=======
+/* FIXME: get rid of DPU_CTL_SPLIT_DISPLAY in favour of proper ACTIVE_CTL support */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct dpu_ctl_cfg sm8450_ctl[] = {
 	{
 		.name = "ctl_0", .id = CTL_0,
 		.base = 0x15000, .len = 0x204,
+<<<<<<< HEAD
 		.features = CTL_SC7280_MASK,
+=======
+		.features = BIT(DPU_CTL_SPLIT_DISPLAY) | CTL_SC7280_MASK,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.intr_start = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR2, 9),
 	}, {
 		.name = "ctl_1", .id = CTL_1,
 		.base = 0x16000, .len = 0x204,
+<<<<<<< HEAD
 		.features = CTL_SC7280_MASK,
+=======
+		.features = BIT(DPU_CTL_SPLIT_DISPLAY) | CTL_SC7280_MASK,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.intr_start = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR2, 10),
 	}, {
 		.name = "ctl_2", .id = CTL_2,

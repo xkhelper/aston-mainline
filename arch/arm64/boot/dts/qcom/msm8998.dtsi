@@ -352,7 +352,11 @@
 			mboxes = <&apcs_glb 0>;
 
 			rpm_requests: rpm-requests {
+<<<<<<< HEAD
 				compatible = "qcom,rpm-msm8998";
+=======
+				compatible = "qcom,rpm-msm8998", "qcom,glink-smd-rpm";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				qcom,glink-channels = "rpm_requests";
 
 				rpmcc: clock-controller {
@@ -1586,6 +1590,36 @@
 				      "gpll0";
 		};
 
+<<<<<<< HEAD
+=======
+		lpass_q6_smmu: iommu@5100000 {
+			compatible = "qcom,msm8998-smmu-v2", "qcom,smmu-v2";
+			reg = <0x05100000 0x40000>;
+			clocks = <&gcc HLOS1_VOTE_LPASS_ADSP_SMMU_CLK>;
+			clock-names = "bus";
+
+			#global-interrupts = <0>;
+			#iommu-cells = <1>;
+			interrupts =
+				<GIC_SPI 226 IRQ_TYPE_LEVEL_HIGH>,
+				<GIC_SPI 393 IRQ_TYPE_LEVEL_HIGH>,
+				<GIC_SPI 394 IRQ_TYPE_LEVEL_HIGH>,
+				<GIC_SPI 395 IRQ_TYPE_LEVEL_HIGH>,
+				<GIC_SPI 396 IRQ_TYPE_LEVEL_HIGH>,
+				<GIC_SPI 397 IRQ_TYPE_LEVEL_HIGH>,
+				<GIC_SPI 398 IRQ_TYPE_LEVEL_HIGH>,
+				<GIC_SPI 399 IRQ_TYPE_LEVEL_HIGH>,
+				<GIC_SPI 400 IRQ_TYPE_LEVEL_HIGH>,
+				<GIC_SPI 401 IRQ_TYPE_LEVEL_HIGH>,
+				<GIC_SPI 402 IRQ_TYPE_LEVEL_HIGH>,
+				<GIC_SPI 403 IRQ_TYPE_LEVEL_HIGH>,
+				<GIC_SPI 137 IRQ_TYPE_LEVEL_HIGH>;
+
+			power-domains = <&gcc LPASS_ADSP_GDSC>;
+			status = "disabled";
+		};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		remoteproc_slpi: remoteproc@5800000 {
 			compatible = "qcom,msm8998-slpi-pas";
 			reg = <0x05800000 0x4040>;

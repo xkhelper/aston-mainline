@@ -130,14 +130,26 @@ const struct clk_ops meson_clk_dualdiv_ops = {
 	.determine_rate	= meson_clk_dualdiv_determine_rate,
 	.set_rate	= meson_clk_dualdiv_set_rate,
 };
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(meson_clk_dualdiv_ops);
+=======
+EXPORT_SYMBOL_NS_GPL(meson_clk_dualdiv_ops, CLK_MESON);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 const struct clk_ops meson_clk_dualdiv_ro_ops = {
 	.recalc_rate	= meson_clk_dualdiv_recalc_rate,
 };
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(meson_clk_dualdiv_ro_ops);
+=======
+EXPORT_SYMBOL_NS_GPL(meson_clk_dualdiv_ro_ops, CLK_MESON);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 MODULE_DESCRIPTION("Amlogic dual divider driver");
 MODULE_AUTHOR("Neil Armstrong <narmstrong@baylibre.com>");
 MODULE_AUTHOR("Jerome Brunet <jbrunet@baylibre.com>");
 MODULE_LICENSE("GPL");
+<<<<<<< HEAD
+=======
+MODULE_IMPORT_NS(CLK_MESON);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

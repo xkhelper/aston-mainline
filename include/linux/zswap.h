@@ -13,6 +13,7 @@ extern atomic_t zswap_stored_pages;
 
 struct zswap_lruvec_state {
 	/*
+<<<<<<< HEAD
 	 * Number of pages in zswap that should be protected from the shrinker.
 	 * This number is an estimate of the following counts:
 	 *
@@ -24,6 +25,17 @@ struct zswap_lruvec_state {
 	 * to swap.
 	 */
 	atomic_long_t nr_zswap_protected;
+=======
+	 * Number of swapped in pages from disk, i.e not found in the zswap pool.
+	 *
+	 * This is consumed and subtracted from the lru size in
+	 * zswap_shrinker_count() to penalize past overshrinking that led to disk
+	 * swapins. The idea is that had we considered this many more pages in the
+	 * LRU active/protected and not written them back, we would not have had to
+	 * swapped them in.
+	 */
+	atomic_long_t nr_disk_swapins;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 unsigned long zswap_total_pages(void);

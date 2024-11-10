@@ -1086,7 +1086,11 @@ struct journal_s
 	int			j_revoke_records_per_block;
 
 	/**
+<<<<<<< HEAD
 	 * @j_transaction_overhead:
+=======
+	 * @j_transaction_overhead_buffers:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 *
 	 * Number of blocks each transaction needs for its own bookkeeping
 	 */
@@ -1675,7 +1679,11 @@ int jbd2_fc_get_buf(journal_t *journal, struct buffer_head **bh_out);
 int jbd2_submit_inode_data(journal_t *journal, struct jbd2_inode *jinode);
 int jbd2_wait_inode_data(journal_t *journal, struct jbd2_inode *jinode);
 int jbd2_fc_wait_bufs(journal_t *journal, int num_blks);
+<<<<<<< HEAD
 int jbd2_fc_release_bufs(journal_t *journal);
+=======
+void jbd2_fc_release_bufs(journal_t *journal);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * is_journal_abort

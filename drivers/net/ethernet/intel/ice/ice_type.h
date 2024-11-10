@@ -61,6 +61,10 @@ static inline u32 ice_round_to_num(u32 N, u32 R)
 				 ICE_DBG_AQ_DESC	| \
 				 ICE_DBG_AQ_DESC_BUF	| \
 				 ICE_DBG_AQ_CMD)
+<<<<<<< HEAD
+=======
+#define ICE_DBG_PARSER		BIT_ULL(28)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define ICE_DBG_USER		BIT_ULL(31)
 
@@ -158,6 +162,10 @@ enum ice_vsi_type {
 	ICE_VSI_CTRL = 3,	/* equates to ICE_VSI_PF with 1 queue pair */
 	ICE_VSI_CHNL = 4,
 	ICE_VSI_LB = 6,
+<<<<<<< HEAD
+=======
+	ICE_VSI_SF = 9,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct ice_link_status {

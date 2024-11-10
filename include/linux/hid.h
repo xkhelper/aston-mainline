@@ -46,7 +46,11 @@ struct hid_item {
 	    __s16  s16;
 	    __u32  u32;
 	    __s32  s32;
+<<<<<<< HEAD
 	    __u8  *longdata;
+=======
+	    const __u8  *longdata;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} data;
 };
 
@@ -600,9 +604,15 @@ struct hid_driver;
 struct hid_ll_driver;
 
 struct hid_device {							/* device report descriptor */
+<<<<<<< HEAD
 	__u8 *dev_rdesc;
 	unsigned dev_rsize;
 	__u8 *rdesc;
+=======
+	const __u8 *dev_rdesc;
+	unsigned dev_rsize;
+	const __u8 *rdesc;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned rsize;
 	struct hid_collection *collection;				/* List of HID collections */
 	unsigned collection_size;					/* Number of allocated hid_collections */
@@ -822,7 +832,11 @@ struct hid_driver {
 			struct hid_usage *usage, __s32 value);
 	void (*report)(struct hid_device *hdev, struct hid_report *report);
 
+<<<<<<< HEAD
 	__u8 *(*report_fixup)(struct hid_device *hdev, __u8 *buf,
+=======
+	const __u8 *(*report_fixup)(struct hid_device *hdev, __u8 *buf,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			unsigned int *size);
 
 	int (*input_mapping)(struct hid_device *hdev,
@@ -940,6 +954,11 @@ extern void hidinput_report_event(struct hid_device *hid, struct hid_report *rep
 extern int hidinput_connect(struct hid_device *hid, unsigned int force);
 extern void hidinput_disconnect(struct hid_device *);
 
+<<<<<<< HEAD
+=======
+struct hid_field *hid_find_field(struct hid_device *hdev, unsigned int report_type,
+				 unsigned int application, unsigned int usage);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int hid_set_field(struct hid_field *, unsigned, __s32);
 int hid_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data, u32 size,
 		     int interrupt);
@@ -953,7 +972,11 @@ struct hid_device *hid_allocate_device(void);
 struct hid_report *hid_register_report(struct hid_device *device,
 				       enum hid_report_type type, unsigned int id,
 				       unsigned int application);
+<<<<<<< HEAD
 int hid_parse_report(struct hid_device *hid, __u8 *start, unsigned size);
+=======
+int hid_parse_report(struct hid_device *hid, const __u8 *start, unsigned size);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct hid_report *hid_validate_values(struct hid_device *hid,
 				       enum hid_report_type type, unsigned int id,
 				       unsigned int field_index,

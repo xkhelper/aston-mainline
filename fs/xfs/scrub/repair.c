@@ -1084,9 +1084,17 @@ xrep_metadata_inode_forks(
 		return error;
 
 	/* Make sure the attr fork looks ok before we delete it. */
+<<<<<<< HEAD
 	error = xrep_metadata_inode_subtype(sc, XFS_SCRUB_TYPE_BMBTA);
 	if (error)
 		return error;
+=======
+	if (xfs_inode_hasattr(sc->ip)) {
+		error = xrep_metadata_inode_subtype(sc, XFS_SCRUB_TYPE_BMBTA);
+		if (error)
+			return error;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Clear the reflink flag since metadata never shares. */
 	if (xfs_is_reflink_inode(sc->ip)) {

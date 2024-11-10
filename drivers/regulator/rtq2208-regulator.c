@@ -568,7 +568,11 @@ static int rtq2208_probe(struct i2c_client *i2c)
 	struct regmap *regmap;
 	struct rtq2208_regulator_desc *rdesc[RTQ2208_LDO_MAX];
 	struct regulator_dev *rdev;
+<<<<<<< HEAD
 	struct regulator_config cfg;
+=======
+	struct regulator_config cfg = {};
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct rtq2208_rdev_map *rdev_map;
 	int i, ret = 0, idx, n_regulator = 0;
 	unsigned int regulator_idx_table[RTQ2208_LDO_MAX],

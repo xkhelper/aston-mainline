@@ -467,6 +467,10 @@ static inline __init_memblock bool memblock_bottom_up(void)
 
 phys_addr_t memblock_phys_mem_size(void);
 phys_addr_t memblock_reserved_size(void);
+<<<<<<< HEAD
+=======
+unsigned long memblock_estimated_nr_free_pages(void);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 phys_addr_t memblock_start_of_DRAM(void);
 phys_addr_t memblock_end_of_DRAM(void);
 void memblock_enforce_memory_limit(phys_addr_t memory_limit);

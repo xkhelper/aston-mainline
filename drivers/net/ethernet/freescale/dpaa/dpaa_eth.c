@@ -229,7 +229,11 @@ static int dpaa_netdev_init(struct net_device *net_dev,
 	net_dev->max_mtu = dpaa_get_max_mtu();
 
 	net_dev->hw_features |= (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM |
+<<<<<<< HEAD
 				 NETIF_F_LLTX | NETIF_F_RXHASH);
+=======
+				 NETIF_F_RXHASH);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	net_dev->hw_features |= NETIF_F_SG | NETIF_F_HIGHDMA;
 	/* The kernels enables GSO automatically, if we declare NETIF_F_SG.
@@ -239,6 +243,10 @@ static int dpaa_netdev_init(struct net_device *net_dev,
 	net_dev->features |= NETIF_F_RXCSUM;
 
 	net_dev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
+<<<<<<< HEAD
+=======
+	net_dev->lltx = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* we do not want shared skbs on TX */
 	net_dev->priv_flags &= ~IFF_TX_SKB_SHARING;
 
@@ -3163,8 +3171,14 @@ static void dpaa_napi_del(struct net_device *net_dev)
 	for_each_possible_cpu(cpu) {
 		percpu_priv = per_cpu_ptr(priv->percpu_priv, cpu);
 
+<<<<<<< HEAD
 		netif_napi_del(&percpu_priv->np.napi);
 	}
+=======
+		__netif_napi_del(&percpu_priv->np.napi);
+	}
+	synchronize_net();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline void dpaa_bp_free_pf(const struct dpaa_bp *bp,

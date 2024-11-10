@@ -157,7 +157,11 @@ __seqprop_##lockname##_const_ptr(const seqcount_##lockname##_t *s)	\
 static __always_inline unsigned						\
 __seqprop_##lockname##_sequence(const seqcount_##lockname##_t *s)	\
 {									\
+<<<<<<< HEAD
 	unsigned seq = READ_ONCE(s->seqcount.sequence);			\
+=======
+	unsigned seq = smp_load_acquire(&s->seqcount.sequence);		\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 									\
 	if (!IS_ENABLED(CONFIG_PREEMPT_RT))				\
 		return seq;						\
@@ -170,7 +174,11 @@ __seqprop_##lockname##_sequence(const seqcount_##lockname##_t *s)	\
 		 * Re-read the sequence counter since the (possibly	\
 		 * preempted) writer made progress.			\
 		 */							\
+<<<<<<< HEAD
 		seq = READ_ONCE(s->seqcount.sequence);			\
+=======
+		seq = smp_load_acquire(&s->seqcount.sequence);		\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}								\
 									\
 	return seq;							\
@@ -208,7 +216,11 @@ static inline const seqcount_t *__seqprop_const_ptr(const seqcount_t *s)
 
 static inline unsigned __seqprop_sequence(const seqcount_t *s)
 {
+<<<<<<< HEAD
 	return READ_ONCE(s->sequence);
+=======
+	return smp_load_acquire(&s->sequence);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline bool __seqprop_preemptible(const seqcount_t *s)
@@ -263,6 +275,7 @@ SEQCOUNT_LOCKNAME(mutex,        struct mutex,    true,     mutex)
 #define seqprop_assert(s)		__seqprop(s, assert)(s)
 
 /**
+<<<<<<< HEAD
  * __read_seqcount_begin() - begin a seqcount_t read section w/o barrier
  * @s: Pointer to seqcount_t or any of the seqcount_LOCKNAME_t variants
  *
@@ -274,6 +287,11 @@ SEQCOUNT_LOCKNAME(mutex,        struct mutex,    true,     mutex)
  * Use carefully, only in critical code, and comment how the barrier is
  * provided.
  *
+=======
+ * __read_seqcount_begin() - begin a seqcount_t read section
+ * @s: Pointer to seqcount_t or any of the seqcount_LOCKNAME_t variants
+ *
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Return: count to be passed to read_seqcount_retry()
  */
 #define __read_seqcount_begin(s)					\
@@ -293,6 +311,7 @@ SEQCOUNT_LOCKNAME(mutex,        struct mutex,    true,     mutex)
  *
  * Return: count to be passed to read_seqcount_retry()
  */
+<<<<<<< HEAD
 #define raw_read_seqcount_begin(s)					\
 ({									\
 	unsigned _seq = __read_seqcount_begin(s);			\
@@ -300,6 +319,9 @@ SEQCOUNT_LOCKNAME(mutex,        struct mutex,    true,     mutex)
 	smp_rmb();							\
 	_seq;								\
 })
+=======
+#define raw_read_seqcount_begin(s) __read_seqcount_begin(s)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * read_seqcount_begin() - begin a seqcount_t read critical section
@@ -328,7 +350,10 @@ SEQCOUNT_LOCKNAME(mutex,        struct mutex,    true,     mutex)
 ({									\
 	unsigned __seq = seqprop_sequence(s);				\
 									\
+<<<<<<< HEAD
 	smp_rmb();							\
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kcsan_atomic_next(KCSAN_SEQLOCK_REGION_MAX);			\
 	__seq;								\
 })

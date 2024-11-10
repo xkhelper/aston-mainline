@@ -759,7 +759,11 @@ MODULE_DEVICE_TABLE(of, mvebu_audio_of_match);
 
 static struct platform_driver kirkwood_i2s_driver = {
 	.probe  = kirkwood_i2s_dev_probe,
+<<<<<<< HEAD
 	.remove_new = kirkwood_i2s_dev_remove,
+=======
+	.remove = kirkwood_i2s_dev_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = DRV_NAME,
 		.of_match_table = of_match_ptr(mvebu_audio_of_match),

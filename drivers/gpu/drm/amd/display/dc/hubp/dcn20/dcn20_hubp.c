@@ -927,7 +927,12 @@ bool hubp2_is_flip_pending(struct hubp *hubp)
 	if (flip_pending)
 		return true;
 
+<<<<<<< HEAD
 	if (earliest_inuse_address.grph.addr.quad_part != hubp->request_address.grph.addr.quad_part)
+=======
+	if (hubp &&
+	    earliest_inuse_address.grph.addr.quad_part != hubp->request_address.grph.addr.quad_part)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return true;
 
 	return false;

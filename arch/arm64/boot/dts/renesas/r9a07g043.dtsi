@@ -725,6 +725,13 @@
 			power-domains = <&cpg>;
 			#reset-cells = <1>;
 			status = "disabled";
+<<<<<<< HEAD
+=======
+
+			usb0_vbus_otg: regulator-vbus {
+				regulator-name = "vbus";
+			};
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		ohci0: usb@11c50000 {

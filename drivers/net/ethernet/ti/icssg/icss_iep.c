@@ -53,6 +53,7 @@
 #define IEP_CAP_CFG_CAPNR_1ST_EVENT_EN(n)	BIT(LATCH_INDEX(n))
 #define IEP_CAP_CFG_CAP_ASYNC_EN(n)		BIT(LATCH_INDEX(n) + 10)
 
+<<<<<<< HEAD
 enum {
 	ICSS_IEP_GLOBAL_CFG_REG,
 	ICSS_IEP_GLOBAL_STATUS_REG,
@@ -125,6 +126,8 @@ struct icss_iep {
 	struct work_struct work;
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * icss_iep_get_count_hi() - Get the upper 32 bit IEP counter
  * @iep: Pointer to structure representing IEP.

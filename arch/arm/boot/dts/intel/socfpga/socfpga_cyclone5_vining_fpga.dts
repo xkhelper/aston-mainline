@@ -130,8 +130,13 @@
 		#gpio-cells = <2>;
 	};
 
+<<<<<<< HEAD
 	temp: lm75@48 {
 		compatible = "lm75";
+=======
+	temp: temperature-sensor@48 {
+		compatible = "national,lm75";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		reg = <0x48>;
 	};
 

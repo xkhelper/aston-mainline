@@ -55,7 +55,11 @@
 #include <linux/export.h>
 #include <linux/rculist.h>
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <scsi/libfc.h>
 
@@ -2263,7 +2267,12 @@ struct fc4_prov fc_rport_t0_prov = {
  */
 int fc_setup_rport(void)
 {
+<<<<<<< HEAD
 	rport_event_queue = create_singlethread_workqueue("fc_rport_eq");
+=======
+	rport_event_queue =
+		alloc_ordered_workqueue("%s", WQ_MEM_RECLAIM, "fc_rport_eq");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!rport_event_queue)
 		return -ENOMEM;
 	return 0;

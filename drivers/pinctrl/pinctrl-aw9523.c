@@ -987,8 +987,15 @@ static int aw9523_probe(struct i2c_client *client)
 	lockdep_set_subclass(&awi->i2c_lock, i2c_adapter_depth(client->adapter));
 
 	pdesc = devm_kzalloc(dev, sizeof(*pdesc), GFP_KERNEL);
+<<<<<<< HEAD
 	if (!pdesc)
 		return -ENOMEM;
+=======
+	if (!pdesc) {
+		ret = -ENOMEM;
+		goto err_disable_vregs;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = aw9523_hw_init(awi);
 	if (ret)

@@ -90,6 +90,10 @@ CAN_BUILD_X86_64 := $(shell ./../x86/check_cc.sh "$(CC)" ../x86/trivial_64bit_pr
 CAN_BUILD_WITH_NOPIE := $(shell ./../x86/check_cc.sh "$(CC)" ../x86/trivial_program.c -no-pie)
 
 VMTARGETS := protection_keys
+<<<<<<< HEAD
+=======
+VMTARGETS += pkey_sighandler_tests
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 BINARIES_32 := $(VMTARGETS:%=%_32)
 BINARIES_64 := $(VMTARGETS:%=%_64)
 
@@ -106,13 +110,21 @@ TEST_GEN_FILES += $(BINARIES_64)
 endif
 else
 
+<<<<<<< HEAD
 ifneq (,$(findstring $(ARCH),powerpc))
+=======
+ifneq (,$(filter $(ARCH),arm64 powerpc))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 TEST_GEN_FILES += protection_keys
 endif
 
 endif
 
+<<<<<<< HEAD
 ifneq (,$(filter $(ARCH),arm64 ia64 mips64 parisc64 powerpc riscv64 s390x sparc64 x86_64 s390))
+=======
+ifneq (,$(filter $(ARCH),arm64 mips64 parisc64 powerpc riscv64 s390x sparc64 x86_64 s390))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 TEST_GEN_FILES += va_high_addr_switch
 TEST_GEN_FILES += virtual_address_range
 TEST_GEN_FILES += write_to_hugetlbfs

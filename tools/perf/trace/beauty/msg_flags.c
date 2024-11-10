@@ -11,6 +11,12 @@
 #ifndef MSG_BATCH
 #define MSG_BATCH		   0x40000
 #endif
+<<<<<<< HEAD
+=======
+#ifndef MSG_SOCK_DEVMEM
+#define MSG_SOCK_DEVMEM		 0x2000000
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifndef MSG_ZEROCOPY
 #define MSG_ZEROCOPY		 0x4000000
 #endif
@@ -57,6 +63,10 @@ static size_t syscall_arg__scnprintf_msg_flags(char *bf, size_t size,
 	P_MSG_FLAG(MORE);
 	P_MSG_FLAG(WAITFORONE);
 	P_MSG_FLAG(BATCH);
+<<<<<<< HEAD
+=======
+	P_MSG_FLAG(SOCK_DEVMEM);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	P_MSG_FLAG(ZEROCOPY);
 	P_MSG_FLAG(SPLICE_PAGES);
 	P_MSG_FLAG(FASTOPEN);

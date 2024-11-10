@@ -203,6 +203,7 @@ nvkm_udevice_mthd(struct nvkm_object *object, u32 mthd, void *data, u32 size)
 }
 
 static int
+<<<<<<< HEAD
 nvkm_udevice_rd08(struct nvkm_object *object, u64 addr, u8 *data)
 {
 	struct nvkm_udevice *udev = nvkm_udevice(object);
@@ -251,6 +252,8 @@ nvkm_udevice_wr32(struct nvkm_object *object, u64 addr, u32 data)
 }
 
 static int
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 nvkm_udevice_map(struct nvkm_object *object, void *argv, u32 argc,
 		 enum nvkm_object_map *type, u64 *addr, u64 *size)
 {
@@ -322,8 +325,12 @@ nvkm_udevice_child_get(struct nvkm_object *object, int index,
 	struct nvkm_engine *engine;
 	u64 mask = (1ULL << NVKM_ENGINE_DMAOBJ) |
 		   (1ULL << NVKM_ENGINE_FIFO) |
+<<<<<<< HEAD
 		   (1ULL << NVKM_ENGINE_DISP) |
 		   (1ULL << NVKM_ENGINE_PM);
+=======
+		   (1ULL << NVKM_ENGINE_DISP);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct nvkm_device_oclass *sclass = NULL;
 	int i;
 
@@ -358,6 +365,7 @@ nvkm_udevice_child_get(struct nvkm_object *object, int index,
 }
 
 static const struct nvkm_object_func
+<<<<<<< HEAD
 nvkm_udevice_super = {
 	.init = nvkm_udevice_init,
 	.fini = nvkm_udevice_fini,
@@ -373,10 +381,16 @@ nvkm_udevice_super = {
 };
 
 static const struct nvkm_object_func
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 nvkm_udevice = {
 	.init = nvkm_udevice_init,
 	.fini = nvkm_udevice_fini,
 	.mthd = nvkm_udevice_mthd,
+<<<<<<< HEAD
+=======
+	.map = nvkm_udevice_map,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sclass = nvkm_udevice_child_get,
 };
 
@@ -384,6 +398,7 @@ static int
 nvkm_udevice_new(const struct nvkm_oclass *oclass, void *data, u32 size,
 		 struct nvkm_object **pobject)
 {
+<<<<<<< HEAD
 	union {
 		struct nv_device_v0 v0;
 	} *args = data;
@@ -416,6 +431,18 @@ nvkm_udevice_new(const struct nvkm_oclass *oclass, void *data, u32 size,
 		udev->device = nvkm_device_find(args->v0.device);
 	else
 		udev->device = nvkm_device_find(client->device);
+=======
+	struct nvkm_client *client = oclass->client;
+	struct nvkm_udevice *udev;
+
+	if (!(udev = kzalloc(sizeof(*udev), GFP_KERNEL)))
+		return -ENOMEM;
+	nvkm_object_ctor(&nvkm_udevice, oclass, &udev->object);
+	*pobject = &udev->object;
+
+	/* find the device that matches what the client requested */
+	udev->device = nvkm_device_find(client->device);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!udev->device)
 		return -ENODEV;
 

@@ -15,6 +15,10 @@
 #define __LL		"ll.w	"
 #define __SC		"sc.w	"
 #define __AMADD		"amadd.w	"
+<<<<<<< HEAD
+=======
+#define __AMOR		"amor.w		"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define __AMAND_DB	"amand_db.w	"
 #define __AMOR_DB	"amor_db.w	"
 #define __AMXOR_DB	"amxor_db.w	"
@@ -22,6 +26,10 @@
 #define __LL		"ll.d	"
 #define __SC		"sc.d	"
 #define __AMADD		"amadd.d	"
+<<<<<<< HEAD
+=======
+#define __AMOR		"amor.d		"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define __AMAND_DB	"amand_db.d	"
 #define __AMOR_DB	"amor_db.d	"
 #define __AMXOR_DB	"amxor_db.d	"

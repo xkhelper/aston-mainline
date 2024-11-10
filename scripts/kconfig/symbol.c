@@ -9,6 +9,11 @@
 #include <string.h>
 #include <regex.h>
 
+<<<<<<< HEAD
+=======
+#include <hash.h>
+#include <xalloc.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "internal.h"
 #include "lkc.h"
 
@@ -517,6 +522,10 @@ void sym_clear_all_valid(void)
 
 	for_all_symbols(sym)
 		sym->flags &= ~SYMBOL_VALID;
+<<<<<<< HEAD
+=======
+	expr_invalidate_all();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	conf_set_changed(true);
 	sym_calc_value(modules_sym);
 }
@@ -892,7 +901,11 @@ struct symbol *sym_lookup(const char *name, int flags)
 			case 'n': return &symbol_no;
 			}
 		}
+<<<<<<< HEAD
 		hash = strhash(name);
+=======
+		hash = hash_str(name);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		hash_for_each_possible(sym_hashtable, symbol, node, hash) {
 			if (symbol->name &&
@@ -935,7 +948,11 @@ struct symbol *sym_find(const char *name)
 		case 'n': return &symbol_no;
 		}
 	}
+<<<<<<< HEAD
 	hash = strhash(name);
+=======
+	hash = hash_str(name);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	hash_for_each_possible(sym_hashtable, symbol, node, hash) {
 		if (symbol->name &&
@@ -1321,8 +1338,11 @@ const char *prop_get_type_name(enum prop_type type)
 		return "imply";
 	case P_RANGE:
 		return "range";
+<<<<<<< HEAD
 	case P_SYMBOL:
 		return "symbol";
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case P_UNKNOWN:
 		break;
 	}

@@ -587,6 +587,7 @@ static struct notifier_block skx_mce_dec = {
 	.priority	= MCE_PRIO_EDAC,
 };
 
+<<<<<<< HEAD
 #ifdef CONFIG_EDAC_DEBUG
 /*
  * Debug feature.
@@ -635,6 +636,8 @@ static inline void setup_skx_debug(void) {}
 static inline void teardown_skx_debug(void) {}
 #endif /*CONFIG_EDAC_DEBUG*/
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * skx_init:
  *	make sure we are running on the correct cpu model
@@ -728,7 +731,11 @@ static int __init skx_init(void)
 	/* Ensure that the OPSTATE is set correctly for POLL or NMI */
 	opstate_init();
 
+<<<<<<< HEAD
 	setup_skx_debug();
+=======
+	skx_setup_debug("skx_test");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mce_register_decode_chain(&skx_mce_dec);
 
@@ -742,7 +749,11 @@ static void __exit skx_exit(void)
 {
 	edac_dbg(2, "\n");
 	mce_unregister_decode_chain(&skx_mce_dec);
+<<<<<<< HEAD
 	teardown_skx_debug();
+=======
+	skx_teardown_debug();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (nvdimm_count)
 		skx_adxl_put();
 	skx_remove();

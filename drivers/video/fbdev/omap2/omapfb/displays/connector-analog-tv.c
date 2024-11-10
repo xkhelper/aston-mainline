@@ -245,7 +245,11 @@ MODULE_DEVICE_TABLE(of, tvc_of_match);
 
 static struct platform_driver tvc_connector_driver = {
 	.probe	= tvc_probe,
+<<<<<<< HEAD
 	.remove_new = tvc_remove,
+=======
+	.remove	= tvc_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver	= {
 		.name	= "connector-analog-tv",
 		.of_match_table = tvc_of_match,

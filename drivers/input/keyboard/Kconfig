@@ -421,6 +421,7 @@ config KEYBOARD_MAX7359
 	  To compile this driver as a module, choose M here: the
 	  module will be called max7359_keypad.
 
+<<<<<<< HEAD
 config KEYBOARD_MCS
 	tristate "MELFAS MCS Touchkey"
 	depends on I2C
@@ -433,6 +434,8 @@ config KEYBOARD_MCS
 	  To compile this driver as a module, choose M here: the
 	  module will be called mcs_touchkey.
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config KEYBOARD_MPR121
 	tristate "Freescale MPR121 Touchkey"
 	depends on I2C
@@ -466,6 +469,20 @@ config KEYBOARD_IMX
 	  To compile this driver as a module, choose M here: the
 	  module will be called imx_keypad.
 
+<<<<<<< HEAD
+=======
+config KEYBOARD_IMX_BBM_SCMI
+	tristate "IMX BBM SCMI Key Driver"
+	depends on IMX_SCMI_BBM_EXT || COMPILE_TEST
+	default y if ARCH_MXC
+	help
+	  This is the BBM key driver for NXP i.MX SoCs managed through
+	  SCMI protocol.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called scmi-imx-bbm-key.
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config KEYBOARD_IMX_SC_KEY
 	tristate "IMX SCU Key Driver"
 	depends on IMX_SCU
@@ -485,6 +502,7 @@ config KEYBOARD_NEWTON
 	  To compile this driver as a module, choose M here: the
 	  module will be called newtonkbd.
 
+<<<<<<< HEAD
 config KEYBOARD_NOMADIK
 	tristate "ST-Ericsson Nomadik SKE keyboard"
 	depends on (ARCH_NOMADIK || ARCH_U8500 || COMPILE_TEST)
@@ -496,6 +514,8 @@ config KEYBOARD_NOMADIK
 	  To compile this driver as a module, choose M here: the
 	  module will be called nmk-ske-keypad.
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config KEYBOARD_NSPIRE
 	tristate "TI-NSPIRE built-in keyboard"
 	depends on ARCH_NSPIRE && OF

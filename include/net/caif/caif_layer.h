@@ -20,7 +20,11 @@ struct caif_payload_info;
  * @assert: expression to evaluate.
  *
  * This function will print a error message and a do WARN_ON if the
+<<<<<<< HEAD
  * assertion failes. Normally this will do a stack up at the current location.
+=======
+ * assertion fails. Normally this will do a stack up at the current location.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 #define caif_assert(assert)					\
 do {								\
@@ -116,7 +120,11 @@ enum caif_direction {
  * @dn:		Pointer down to the layer below.
  * @node:	List node used when layer participate in a list.
  * @receive:	Packet receive function.
+<<<<<<< HEAD
  * @transmit:	Packet transmit funciton.
+=======
+ * @transmit:	Packet transmit function.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @ctrlcmd:	Used for control signalling upwards in the stack.
  * @modemcmd:	Used for control signaling downwards in the stack.
  * @id:		The identity of this layer

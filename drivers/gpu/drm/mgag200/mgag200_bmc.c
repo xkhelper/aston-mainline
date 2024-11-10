@@ -9,12 +9,16 @@
 
 #include "mgag200_drv.h"
 
+<<<<<<< HEAD
 static struct mgag200_bmc_connector *to_mgag200_bmc_connector(struct drm_connector *connector)
 {
 	return container_of(connector, struct mgag200_bmc_connector, base);
 }
 
 void mgag200_bmc_disable_vidrst(struct mga_device *mdev)
+=======
+void mgag200_bmc_stop_scanout(struct mga_device *mdev)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u8 tmp;
 	int iter_max;
@@ -73,6 +77,7 @@ void mgag200_bmc_disable_vidrst(struct mga_device *mdev)
 	}
 }
 
+<<<<<<< HEAD
 void mgag200_bmc_enable_vidrst(struct mga_device *mdev)
 {
 	u8 tmp;
@@ -82,6 +87,12 @@ void mgag200_bmc_enable_vidrst(struct mga_device *mdev)
 	tmp = RREG8(MGAREG_CRTCEXT_DATA);
 	WREG8(MGAREG_CRTCEXT_DATA, tmp | 0x88);
 
+=======
+void mgag200_bmc_start_scanout(struct mga_device *mdev)
+{
+	u8 tmp;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Assert rstlvl2 */
 	WREG8(DAC_INDEX, MGA1064_REMHEADCTL2);
 	tmp = RREG8(DAC_DATA);
@@ -107,6 +118,7 @@ void mgag200_bmc_enable_vidrst(struct mga_device *mdev)
 	tmp &= ~0x10;
 	WREG_DAC(MGA1064_GEN_IO_DATA, tmp);
 }
+<<<<<<< HEAD
 
 static const struct drm_encoder_funcs mgag200_bmc_encoder_funcs = {
 	.destroy = drm_encoder_cleanup,
@@ -204,3 +216,5 @@ int mgag200_bmc_output_init(struct mga_device *mdev, struct drm_connector *physi
 
 	return 0;
 }
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

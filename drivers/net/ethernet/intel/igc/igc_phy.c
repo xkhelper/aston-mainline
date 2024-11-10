@@ -240,7 +240,11 @@ static s32 igc_phy_setup_autoneg(struct igc_hw *hw)
 		/* Read the MULTI GBT AN Control Register - reg 7.32 */
 		ret_val = phy->ops.read_reg(hw, (STANDARD_AN_REG_MASK <<
 					    MMD_DEVADDR_SHIFT) |
+<<<<<<< HEAD
 					    ANEG_MULTIGBT_AN_CTRL,
+=======
+					    IGC_ANEG_MULTIGBT_AN_CTRL,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					    &aneg_multigbt_an_ctrl);
 
 		if (ret_val)
@@ -380,7 +384,11 @@ static s32 igc_phy_setup_autoneg(struct igc_hw *hw)
 		ret_val = phy->ops.write_reg(hw,
 					     (STANDARD_AN_REG_MASK <<
 					     MMD_DEVADDR_SHIFT) |
+<<<<<<< HEAD
 					     ANEG_MULTIGBT_AN_CTRL,
+=======
+					     IGC_ANEG_MULTIGBT_AN_CTRL,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					     aneg_multigbt_an_ctrl);
 
 	return ret_val;

@@ -23,6 +23,10 @@
 #include "common.h"
 #include "lpass.h"
 #include "qdsp6/q6afe.h"
+<<<<<<< HEAD
+=======
+#include "sdw.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define DEFAULT_MCLK_RATE              19200000
 #define RT5682_PLL_FREQ (48000 * 512)
@@ -316,6 +320,10 @@ static void sc7280_snd_shutdown(struct snd_pcm_substream *substream)
 	struct snd_soc_card *card = rtd->card;
 	struct sc7280_snd_data *data = snd_soc_card_get_drvdata(card);
 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
+<<<<<<< HEAD
+=======
+	struct sdw_stream_runtime *sruntime = data->sruntime[cpu_dai->id];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	switch (cpu_dai->id) {
 	case MI2S_PRIMARY:
@@ -333,6 +341,12 @@ static void sc7280_snd_shutdown(struct snd_pcm_substream *substream)
 	default:
 		break;
 	}
+<<<<<<< HEAD
+=======
+
+	data->sruntime[cpu_dai->id] = NULL;
+	sdw_release_stream(sruntime);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int sc7280_snd_startup(struct snd_pcm_substream *substream)
@@ -347,6 +361,11 @@ static int sc7280_snd_startup(struct snd_pcm_substream *substream)
 	switch (cpu_dai->id) {
 	case MI2S_PRIMARY:
 		ret = sc7280_rt5682_init(rtd);
+<<<<<<< HEAD
+=======
+		if (ret)
+			return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case SECONDARY_MI2S_RX:
 		codec_dai_fmt |= SND_SOC_DAIFMT_NB_NF | SND_SOC_DAIFMT_I2S;
@@ -360,7 +379,12 @@ static int sc7280_snd_startup(struct snd_pcm_substream *substream)
 	default:
 		break;
 	}
+<<<<<<< HEAD
 	return ret;
+=======
+
+	return qcom_snd_sdw_startup(substream);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct snd_soc_ops sc7280_ops = {

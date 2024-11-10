@@ -599,7 +599,11 @@ static int rtl8366rb_setup_cascaded_irq(struct realtek_priv *priv)
 	}
 
 	/* Fetch IRQ edge information from the descriptor */
+<<<<<<< HEAD
 	irq_trig = irqd_get_trigger_type(irq_get_irq_data(irq));
+=======
+	irq_trig = irq_get_trigger_type(irq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (irq_trig) {
 	case IRQF_TRIGGER_RISING:
 	case IRQF_TRIGGER_HIGH:
@@ -1009,8 +1013,13 @@ static int rtl8366rb_setup_all_leds_off(struct realtek_priv *priv)
 
 static int rtl8366rb_setup_leds(struct realtek_priv *priv)
 {
+<<<<<<< HEAD
 	struct device_node *leds_np, *led_np;
 	struct dsa_switch *ds = &priv->ds;
+=======
+	struct dsa_switch *ds = &priv->ds;
+	struct device_node *leds_np;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct dsa_port *dp;
 	int ret = 0;
 
@@ -1025,6 +1034,7 @@ static int rtl8366rb_setup_leds(struct realtek_priv *priv)
 			continue;
 		}
 
+<<<<<<< HEAD
 		for_each_child_of_node(leds_np, led_np) {
 			ret = rtl8366rb_setup_led(priv, dp,
 						  of_fwnode_handle(led_np));
@@ -1032,6 +1042,13 @@ static int rtl8366rb_setup_leds(struct realtek_priv *priv)
 				of_node_put(led_np);
 				break;
 			}
+=======
+		for_each_child_of_node_scoped(leds_np, led_np) {
+			ret = rtl8366rb_setup_led(priv, dp,
+						  of_fwnode_handle(led_np));
+			if (ret)
+				break;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		of_node_put(leds_np);

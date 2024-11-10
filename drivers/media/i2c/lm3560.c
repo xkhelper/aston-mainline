@@ -455,8 +455,13 @@ static void lm3560_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id lm3560_id_table[] = {
+<<<<<<< HEAD
 	{LM3559_NAME, 0},
 	{LM3560_NAME, 0},
+=======
+	{ LM3559_NAME },
+	{ LM3560_NAME },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 

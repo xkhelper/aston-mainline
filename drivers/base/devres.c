@@ -1231,6 +1231,10 @@ void devm_free_percpu(struct device *dev, void __percpu *pdata)
 	 * devm_free_pages() does.
 	 */
 	WARN_ON(devres_release(dev, devm_percpu_release, devm_percpu_match,
+<<<<<<< HEAD
 			       (__force void *)pdata));
+=======
+			       (void *)(__force unsigned long)pdata));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(devm_free_percpu);

@@ -238,7 +238,11 @@ static void __init mv2120_init(void)
 	if (gpio_request(MV2120_GPIO_POWER_OFF, "POWEROFF") != 0 ||
 	    gpio_direction_output(MV2120_GPIO_POWER_OFF, 1) != 0)
 		pr_err("mv2120: failed to setup power-off GPIO\n");
+<<<<<<< HEAD
 	pm_power_off = mv2120_power_off;
+=======
+	register_platform_power_off(mv2120_power_off);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Warning: HP uses a wrong mach-type (=526) in their bootloader */

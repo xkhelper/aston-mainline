@@ -9,7 +9,11 @@ segments between trusted peers. It adds a new TCP header option with
 a Message Authentication Code (MAC). MACs are produced from the content
 of a TCP segment using a hashing function with a password known to both peers.
 The intent of TCP-AO is to deprecate TCP-MD5 providing better security,
+<<<<<<< HEAD
 key rotation and support for variety of hashing algorithms.
+=======
+key rotation and support for a variety of hashing algorithms.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 1. Introduction
 ===============
@@ -164,9 +168,15 @@ A: It should not, no action needs to be performed [7.5.2.e]::
        is not available, no action is required (RNextKeyID of a received
        segment needs to match the MKT’s SendID).
 
+<<<<<<< HEAD
 Q: How current_key is set and when does it change? It is a user-triggered
 change, or is it by a request from the remote peer? Is it set by the user
 explicitly, or by a matching rule?
+=======
+Q: How is current_key set, and when does it change? Is it a user-triggered
+change, or is it triggered by a request from the remote peer? Is it set by the
+user explicitly, or by a matching rule?
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 A: current_key is set by RNextKeyID [6.1]::
 
@@ -233,8 +243,13 @@ always have one current_key [3.3]::
 
 Q: Can a non-TCP-AO connection become a TCP-AO-enabled one?
 
+<<<<<<< HEAD
 A: No: for already established non-TCP-AO connection it would be impossible
 to switch using TCP-AO as the traffic key generation requires the initial
+=======
+A: No: for an already established non-TCP-AO connection it would be impossible
+to switch to using TCP-AO, as the traffic key generation requires the initial
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 sequence numbers. Paraphrasing, starting using TCP-AO would require
 re-establishing the TCP connection.
 
@@ -292,7 +307,11 @@ no transparency is really needed and modern BGP daemons already have
 
 Linux provides a set of ``setsockopt()s`` and ``getsockopt()s`` that let
 userspace manage TCP-AO on a per-socket basis. In order to add/delete MKTs
+<<<<<<< HEAD
 ``TCP_AO_ADD_KEY`` and ``TCP_AO_DEL_KEY`` TCP socket options must be used
+=======
+``TCP_AO_ADD_KEY`` and ``TCP_AO_DEL_KEY`` TCP socket options must be used.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 It is not allowed to add a key on an established non-TCP-AO connection
 as well as to remove the last key from TCP-AO connection.
 
@@ -361,7 +380,11 @@ not implemented.
 4. ``setsockopt()`` vs ``accept()`` race
 ========================================
 
+<<<<<<< HEAD
 In contrast with TCP-MD5 established connection which has just one key,
+=======
+In contrast with an established TCP-MD5 connection which has just one key,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 TCP-AO connections may have many keys, which means that accepted connections
 on a listen socket may have any amount of keys as well. As copying all those
 keys on a first properly signed SYN would make the request socket bigger, that
@@ -374,7 +397,11 @@ keys from sockets that were already established, but not yet ``accept()``'ed,
 hanging in the accept queue.
 
 The reverse is valid as well: if userspace adds a new key for a peer on
+<<<<<<< HEAD
 a listener socket, the established sockets in accept queue won't
+=======
+a listener socket, the established sockets in the accept queue won't
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 have the new keys.
 
 At this moment, the resolution for the two races:
@@ -382,7 +409,11 @@ At this moment, the resolution for the two races:
 and ``setsockopt(TCP_AO_DEL_KEY)`` vs ``accept()`` is delegated to userspace.
 This means that it's expected that userspace would check the MKTs on the socket
 that was returned by ``accept()`` to verify that any key rotation that
+<<<<<<< HEAD
 happened on listen socket is reflected on the newly established connection.
+=======
+happened on the listen socket is reflected on the newly established connection.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 This is a similar "do-nothing" approach to TCP-MD5 from the kernel side and
 may be changed later by introducing new flags to ``tcp_ao_add``

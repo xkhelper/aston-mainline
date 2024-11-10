@@ -113,7 +113,11 @@ static int nft_lookup_init(const struct nft_ctx *ctx,
 	if (IS_ERR(set))
 		return PTR_ERR(set);
 
+<<<<<<< HEAD
 	err = nft_parse_register_load(tb[NFTA_LOOKUP_SREG], &priv->sreg,
+=======
+	err = nft_parse_register_load(ctx, tb[NFTA_LOOKUP_SREG], &priv->sreg,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      set->klen);
 	if (err < 0)
 		return err;
@@ -206,8 +210,12 @@ nla_put_failure:
 }
 
 static int nft_lookup_validate(const struct nft_ctx *ctx,
+<<<<<<< HEAD
 			       const struct nft_expr *expr,
 			       const struct nft_data **d)
+=======
+			       const struct nft_expr *expr)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	const struct nft_lookup *priv = nft_expr_priv(expr);
 	struct nft_set_iter iter;

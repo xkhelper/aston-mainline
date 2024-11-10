@@ -140,7 +140,11 @@
 })
 
 /* startup code */
+<<<<<<< HEAD
 void __attribute__((weak, noreturn, optimize("Os", "omit-frame-pointer"))) __no_stack_protector _start(void)
+=======
+void __attribute__((weak, noreturn)) __nolibc_entrypoint __no_stack_protector _start(void)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	__asm__ volatile (
 		".option push\n"
@@ -151,7 +155,11 @@ void __attribute__((weak, noreturn, optimize("Os", "omit-frame-pointer"))) __no_
 		"andi sp, a0, -16\n"      /* sp must be 16-byte aligned                    */
 		"call _start_c\n"         /* transfer to c runtime                         */
 	);
+<<<<<<< HEAD
 	__builtin_unreachable();
+=======
+	__nolibc_entrypoint_epilogue();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #endif /* _NOLIBC_ARCH_RISCV_H */

@@ -699,6 +699,11 @@ static const struct sfp_upstream_ops qca807x_sfp_ops = {
 	.detach = phy_sfp_detach,
 	.module_insert = qca807x_sfp_insert,
 	.module_remove = qca807x_sfp_remove,
+<<<<<<< HEAD
+=======
+	.connect_phy = phy_sfp_connect_phy,
+	.disconnect_phy = phy_sfp_disconnect_phy,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int qca807x_probe(struct phy_device *phydev)
@@ -733,6 +738,7 @@ static int qca807x_probe(struct phy_device *phydev)
 								     "qcom,dac-disable-bias-current-tweak");
 
 #if IS_ENABLED(CONFIG_GPIOLIB)
+<<<<<<< HEAD
 	/* Make sure we don't have mixed leds node and gpio-controller
 	 * to prevent registering leds and having gpio-controller usage
 	 * conflicting with them.
@@ -743,6 +749,8 @@ static int qca807x_probe(struct phy_device *phydev)
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Do not register a GPIO controller unless flagged for it */
 	if (of_property_read_bool(node, "gpio-controller")) {
 		ret = qca807x_gpio(phydev);

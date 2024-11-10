@@ -637,7 +637,11 @@ static struct platform_driver snd_cht_mc_driver = {
 		.name = "cht-bsw-max98090",
 	},
 	.probe = snd_cht_mc_probe,
+<<<<<<< HEAD
 	.remove_new = snd_cht_mc_remove,
+=======
+	.remove = snd_cht_mc_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(snd_cht_mc_driver)

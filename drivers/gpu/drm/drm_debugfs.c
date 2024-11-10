@@ -520,8 +520,11 @@ static const struct file_operations drm_connector_fops = {
 	.write = connector_write
 };
 
+<<<<<<< HEAD
 #define HDMI_MAX_INFOFRAME_SIZE		29
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static ssize_t
 audio_infoframe_read(struct file *filp, char __user *ubuf, size_t count, loff_t *ppos)
 {
@@ -579,7 +582,11 @@ static ssize_t _f##_read_infoframe(struct file *filp, \
 	struct drm_connector *connector; \
 	union hdmi_infoframe *frame; \
 	struct drm_device *dev; \
+<<<<<<< HEAD
 	u8 buf[HDMI_MAX_INFOFRAME_SIZE]; \
+=======
+	u8 buf[HDMI_INFOFRAME_SIZE(MAX)]; \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ssize_t len = 0; \
 	\
 	connector = filp->private_data; \

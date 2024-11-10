@@ -67,7 +67,13 @@ properties:
       - const: dirmap
       - const: wbuf
 
+<<<<<<< HEAD
   clocks: true
+=======
+  clocks:
+    minItems: 1
+    maxItems: 2
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   interrupts:
     maxItems: 1

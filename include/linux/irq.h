@@ -991,7 +991,10 @@ void irq_init_desc(unsigned int irq);
  * @ack:	Ack register offset to reg_base
  * @eoi:	Eoi register offset to reg_base
  * @type:	Type configuration register offset to reg_base
+<<<<<<< HEAD
  * @polarity:	Polarity configuration register offset to reg_base
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct irq_chip_regs {
 	unsigned long		enable;
@@ -1000,7 +1003,10 @@ struct irq_chip_regs {
 	unsigned long		ack;
 	unsigned long		eoi;
 	unsigned long		type;
+<<<<<<< HEAD
 	unsigned long		polarity;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**
@@ -1040,8 +1046,11 @@ struct irq_chip_type {
  * @irq_base:		Interrupt base nr for this chip
  * @irq_cnt:		Number of interrupts handled by this chip
  * @mask_cache:		Cached mask register shared between all chip types
+<<<<<<< HEAD
  * @type_cache:		Cached type register
  * @polarity_cache:	Cached polarity register
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @wake_enabled:	Interrupt can wakeup from suspend
  * @wake_active:	Interrupt is marked as an wakeup from suspend source
  * @num_ct:		Number of available irq_chip_type instances (usually 1)
@@ -1068,8 +1077,11 @@ struct irq_chip_generic {
 	unsigned int		irq_base;
 	unsigned int		irq_cnt;
 	u32			mask_cache;
+<<<<<<< HEAD
 	u32			type_cache;
 	u32			polarity_cache;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32			wake_enabled;
 	u32			wake_active;
 	unsigned int		num_ct;

@@ -125,7 +125,11 @@ int mmu_ci_restrictions;
 #endif
 static u8 *linear_map_hash_slots;
 static unsigned long linear_map_hash_count;
+<<<<<<< HEAD
 struct mmu_hash_ops mmu_hash_ops;
+=======
+struct mmu_hash_ops mmu_hash_ops __ro_after_init;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 EXPORT_SYMBOL(mmu_hash_ops);
 
 /*

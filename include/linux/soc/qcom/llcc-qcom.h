@@ -125,6 +125,10 @@ struct llcc_edac_reg_offset {
  * @num_banks: Number of llcc banks
  * @bitmap: Bit map to track the active slice ids
  * @ecc_irq: interrupt for llcc cache error detection and reporting
+<<<<<<< HEAD
+=======
+ * @ecc_irq_configured: 'True' if firmware has already configured the irq propagation
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @version: Indicates the LLCC version
  */
 struct llcc_drv_data {
@@ -139,6 +143,10 @@ struct llcc_drv_data {
 	u32 num_banks;
 	unsigned long *bitmap;
 	int ecc_irq;
+<<<<<<< HEAD
+=======
+	bool ecc_irq_configured;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 version;
 };
 

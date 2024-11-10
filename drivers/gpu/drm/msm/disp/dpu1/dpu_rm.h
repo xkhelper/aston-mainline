@@ -35,7 +35,10 @@ struct dpu_rm {
 	struct dpu_hw_blk *dsc_blks[DSC_MAX - DSC_0];
 	struct dpu_hw_sspp *hw_sspp[SSPP_MAX - SSPP_NONE];
 	struct dpu_hw_blk *cdm_blk;
+<<<<<<< HEAD
 	bool has_active_ctls;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**

@@ -242,7 +242,11 @@ static irqreturn_t isi_interrupt(int irq, void *dev_id)
 #define	WAIT_ISI_DISABLE	0
 static int atmel_isi_wait_status(struct atmel_isi *isi, int wait_reset)
 {
+<<<<<<< HEAD
 	unsigned long timeout;
+=======
+	unsigned long time_left;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * The reset or disable will only succeed if we have a
 	 * pixel clock from the camera.
@@ -257,9 +261,15 @@ static int atmel_isi_wait_status(struct atmel_isi *isi, int wait_reset)
 		isi_writel(isi, ISI_CTRL, ISI_CTRL_DIS);
 	}
 
+<<<<<<< HEAD
 	timeout = wait_for_completion_timeout(&isi->complete,
 			msecs_to_jiffies(500));
 	if (timeout == 0)
+=======
+	time_left = wait_for_completion_timeout(&isi->complete,
+						msecs_to_jiffies(500));
+	if (time_left == 0)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ETIMEDOUT;
 
 	return 0;

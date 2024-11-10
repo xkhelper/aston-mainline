@@ -12,6 +12,10 @@ struct bpf_iter_testmod_seq {
 
 extern int bpf_iter_testmod_seq_new(struct bpf_iter_testmod_seq *it, s64 value, int cnt) __ksym;
 extern s64 *bpf_iter_testmod_seq_next(struct bpf_iter_testmod_seq *it) __ksym;
+<<<<<<< HEAD
+=======
+extern s64 bpf_iter_testmod_seq_value(int blah, struct bpf_iter_testmod_seq *it) __ksym;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void bpf_iter_testmod_seq_destroy(struct bpf_iter_testmod_seq *it) __ksym;
 
 const volatile __s64 exp_empty = 0 + 1;
@@ -76,4 +80,56 @@ int testmod_seq_truncated(const void *ctx)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+SEC("?raw_tp")
+__failure
+__msg("expected an initialized iter_testmod_seq as arg #2")
+int testmod_seq_getter_before_bad(const void *ctx)
+{
+	struct bpf_iter_testmod_seq it;
+
+	return bpf_iter_testmod_seq_value(0, &it);
+}
+
+SEC("?raw_tp")
+__failure
+__msg("expected an initialized iter_testmod_seq as arg #2")
+int testmod_seq_getter_after_bad(const void *ctx)
+{
+	struct bpf_iter_testmod_seq it;
+	s64 sum = 0, *v;
+
+	bpf_iter_testmod_seq_new(&it, 100, 100);
+
+	while ((v = bpf_iter_testmod_seq_next(&it))) {
+		sum += *v;
+	}
+
+	bpf_iter_testmod_seq_destroy(&it);
+
+	return sum + bpf_iter_testmod_seq_value(0, &it);
+}
+
+SEC("?socket")
+__success __retval(1000000)
+int testmod_seq_getter_good(const void *ctx)
+{
+	struct bpf_iter_testmod_seq it;
+	s64 sum = 0, *v;
+
+	bpf_iter_testmod_seq_new(&it, 100, 100);
+
+	while ((v = bpf_iter_testmod_seq_next(&it))) {
+		sum += *v;
+	}
+
+	sum *= bpf_iter_testmod_seq_value(0, &it);
+
+	bpf_iter_testmod_seq_destroy(&it);
+
+	return sum;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 char _license[] SEC("license") = "GPL";

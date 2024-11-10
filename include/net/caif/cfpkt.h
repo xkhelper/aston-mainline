@@ -18,7 +18,11 @@ struct cfpkt *cfpkt_create(u16 len);
 
 /*
  * Destroy a CAIF Packet.
+<<<<<<< HEAD
  * pkt Packet to be destoyed.
+=======
+ * pkt Packet to be destroyed.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 void cfpkt_destroy(struct cfpkt *pkt);
 

@@ -307,7 +307,11 @@ static void cc770_isa_remove(struct platform_device *pdev)
 
 static struct platform_driver cc770_isa_driver = {
 	.probe = cc770_isa_probe,
+<<<<<<< HEAD
 	.remove_new = cc770_isa_remove,
+=======
+	.remove = cc770_isa_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = KBUILD_MODNAME,
 	},

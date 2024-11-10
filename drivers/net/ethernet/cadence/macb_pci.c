@@ -19,8 +19,12 @@
 #define PCI_DRIVER_NAME "macb_pci"
 #define PLAT_DRIVER_NAME "macb"
 
+<<<<<<< HEAD
 #define CDNS_VENDOR_ID 0x17cd
 #define CDNS_DEVICE_ID 0xe007
+=======
+#define PCI_DEVICE_ID_CDNS_MACB 0xe007
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define GEM_PCLK_RATE 50000000
 #define GEM_HCLK_RATE 50000000
@@ -117,7 +121,11 @@ static void macb_remove(struct pci_dev *pdev)
 }
 
 static const struct pci_device_id dev_id_table[] = {
+<<<<<<< HEAD
 	{ PCI_DEVICE(CDNS_VENDOR_ID, CDNS_DEVICE_ID), },
+=======
+	{ PCI_VDEVICE(CDNS, PCI_DEVICE_ID_CDNS_MACB) },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ 0, }
 };
 

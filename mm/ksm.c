@@ -608,6 +608,7 @@ static inline bool ksm_test_exit(struct mm_struct *mm)
 	return atomic_read(&mm->mm_users) == 0;
 }
 
+<<<<<<< HEAD
 static int break_ksm_pmd_entry(pmd_t *pmd, unsigned long addr, unsigned long next,
 			struct mm_walk *walk)
 {
@@ -649,6 +650,8 @@ static const struct mm_walk_ops break_ksm_lock_vma_ops = {
 	.walk_lock = PGWALK_WRLOCK,
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * We use break_ksm to break COW on a ksm page by triggering unsharing,
  * such that the ksm page will get replaced by an exclusive anonymous page.
@@ -665,6 +668,7 @@ static const struct mm_walk_ops break_ksm_lock_vma_ops = {
 static int break_ksm(struct vm_area_struct *vma, unsigned long addr, bool lock_vma)
 {
 	vm_fault_t ret = 0;
+<<<<<<< HEAD
 	const struct mm_walk_ops *ops = lock_vma ?
 				&break_ksm_lock_vma_ops : &break_ksm_ops;
 
@@ -675,6 +679,28 @@ static int break_ksm(struct vm_area_struct *vma, unsigned long addr, bool lock_v
 		ksm_page = walk_page_range_vma(vma, addr, addr + 1, ops, NULL);
 		if (WARN_ON_ONCE(ksm_page < 0))
 			return ksm_page;
+=======
+
+	if (lock_vma)
+		vma_start_write(vma);
+
+	do {
+		bool ksm_page = false;
+		struct folio_walk fw;
+		struct folio *folio;
+
+		cond_resched();
+		folio = folio_walk_start(&fw, vma, addr,
+					 FW_MIGRATION | FW_ZEROPAGE);
+		if (folio) {
+			/* Small folio implies FW_LEVEL_PTE. */
+			if (!folio_test_large(folio) &&
+			    (folio_test_ksm(folio) || is_ksm_zero_pte(fw.pte)))
+				ksm_page = true;
+			folio_walk_end(&fw, vma);
+		}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!ksm_page)
 			return 0;
 		ret = handle_mm_fault(vma, addr,
@@ -767,13 +793,20 @@ static struct page *get_mergeable_page(struct ksm_rmap_item *rmap_item)
 	struct mm_struct *mm = rmap_item->mm;
 	unsigned long addr = rmap_item->address;
 	struct vm_area_struct *vma;
+<<<<<<< HEAD
 	struct page *page;
+=======
+	struct page *page = NULL;
+	struct folio_walk fw;
+	struct folio *folio;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mmap_read_lock(mm);
 	vma = find_mergeable_vma(mm, addr);
 	if (!vma)
 		goto out;
 
+<<<<<<< HEAD
 	page = follow_page(vma, addr, FOLL_GET);
 	if (IS_ERR_OR_NULL(page))
 		goto out;
@@ -787,6 +820,21 @@ out_putpage:
 		put_page(page);
 out:
 		page = NULL;
+=======
+	folio = folio_walk_start(&fw, vma, addr, 0);
+	if (folio) {
+		if (!folio_is_zone_device(folio) &&
+		    folio_test_anon(folio)) {
+			folio_get(folio);
+			page = fw.page;
+		}
+		folio_walk_end(&fw, vma);
+	}
+out:
+	if (page) {
+		flush_anon_page(vma, page, addr);
+		flush_dcache_page(page);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	mmap_read_unlock(mm);
 	return page;
@@ -938,12 +986,22 @@ again:
 	 */
 	while (!folio_try_get(folio)) {
 		/*
+<<<<<<< HEAD
 		 * Another check for page->mapping != expected_mapping would
 		 * work here too.  We have chosen the !PageSwapCache test to
 		 * optimize the common case, when the page is or is about to
 		 * be freed: PageSwapCache is cleared (under spin_lock_irq)
 		 * in the ref_freeze section of __remove_mapping(); but Anon
 		 * folio->mapping reset to NULL later, in free_pages_prepare().
+=======
+		 * Another check for folio->mapping != expected_mapping
+		 * would work here too.  We have chosen to test the
+		 * swapcache flag to optimize the common case, when the
+		 * folio is or is about to be freed: the swapcache flag
+		 * is cleared (under spin_lock_irq) in the ref_freeze
+		 * section of __remove_mapping(); but anon folio->mapping
+		 * is reset to NULL later, in free_pages_prepare().
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 */
 		if (!folio_test_swapcache(folio))
 			goto stale;
@@ -974,7 +1032,11 @@ again:
 
 stale:
 	/*
+<<<<<<< HEAD
 	 * We come here from above when page->mapping or !PageSwapCache
+=======
+	 * We come here from above when folio->mapping or the swapcache flag
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * suggests that the node is stale; but it might be under migration.
 	 * We need smp_rmb(), matching the smp_wmb() in folio_migrate_ksm(),
 	 * before checking whether node->kpfn has been changed.
@@ -1481,7 +1543,11 @@ static int try_to_merge_one_page(struct vm_area_struct *vma,
 		goto out;
 
 	/*
+<<<<<<< HEAD
 	 * We need the page lock to read a stable PageSwapCache in
+=======
+	 * We need the folio lock to read a stable swapcache flag in
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * write_protect_page().  We use trylock_page() instead of
 	 * lock_page() because we don't want to wait here - we
 	 * prefer to continue scanning and merging different pages,
@@ -2562,6 +2628,7 @@ next_mm:
 			ksm_scan.address = vma->vm_end;
 
 		while (ksm_scan.address < vma->vm_end) {
+<<<<<<< HEAD
 			if (ksm_test_exit(mm))
 				break;
 			*page = follow_page(vma, ksm_scan.address, FOLL_GET);
@@ -2575,23 +2642,61 @@ next_mm:
 			if (PageAnon(*page)) {
 				flush_anon_page(vma, *page, ksm_scan.address);
 				flush_dcache_page(*page);
+=======
+			struct page *tmp_page = NULL;
+			struct folio_walk fw;
+			struct folio *folio;
+
+			if (ksm_test_exit(mm))
+				break;
+
+			folio = folio_walk_start(&fw, vma, ksm_scan.address, 0);
+			if (folio) {
+				if (!folio_is_zone_device(folio) &&
+				     folio_test_anon(folio)) {
+					folio_get(folio);
+					tmp_page = fw.page;
+				}
+				folio_walk_end(&fw, vma);
+			}
+
+			if (tmp_page) {
+				flush_anon_page(vma, tmp_page, ksm_scan.address);
+				flush_dcache_page(tmp_page);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				rmap_item = get_next_rmap_item(mm_slot,
 					ksm_scan.rmap_list, ksm_scan.address);
 				if (rmap_item) {
 					ksm_scan.rmap_list =
 							&rmap_item->rmap_list;
 
+<<<<<<< HEAD
 					if (should_skip_rmap_item(*page, rmap_item))
 						goto next_page;
 
 					ksm_scan.address += PAGE_SIZE;
 				} else
 					put_page(*page);
+=======
+					if (should_skip_rmap_item(tmp_page, rmap_item)) {
+						folio_put(folio);
+						goto next_page;
+					}
+
+					ksm_scan.address += PAGE_SIZE;
+					*page = tmp_page;
+				} else {
+					folio_put(folio);
+				}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				mmap_read_unlock(mm);
 				return rmap_item;
 			}
 next_page:
+<<<<<<< HEAD
 			put_page(*page);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ksm_scan.address += PAGE_SIZE;
 			cond_resched();
 		}
@@ -3142,7 +3247,11 @@ void folio_migrate_ksm(struct folio *newfolio, struct folio *folio)
 		 * newfolio->mapping was set in advance; now we need smp_wmb()
 		 * to make sure that the new stable_node->kpfn is visible
 		 * to ksm_get_folio() before it can see that folio->mapping
+<<<<<<< HEAD
 		 * has gone stale (or that folio_test_swapcache has been cleared).
+=======
+		 * has gone stale (or that the swapcache flag has been cleared).
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 */
 		smp_wmb();
 		folio_set_stable_node(folio, NULL);

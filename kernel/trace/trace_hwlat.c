@@ -520,6 +520,11 @@ static void hwlat_hotplug_workfn(struct work_struct *dummy)
 	if (!hwlat_busy || hwlat_data.thread_mode != MODE_PER_CPU)
 		goto out_unlock;
 
+<<<<<<< HEAD
+=======
+	if (!cpu_online(cpu))
+		goto out_unlock;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!cpumask_test_cpu(cpu, tr->tracing_cpumask))
 		goto out_unlock;
 

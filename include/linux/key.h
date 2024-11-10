@@ -436,9 +436,12 @@ extern key_ref_t keyring_search(key_ref_t keyring,
 				const char *description,
 				bool recurse);
 
+<<<<<<< HEAD
 extern int keyring_add_key(struct key *keyring,
 			   struct key *key);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern int keyring_restrict(key_ref_t keyring, const char *type,
 			    const char *restriction);
 

@@ -280,7 +280,11 @@ ath9k_dfs_process_radar_pulse(struct ath_softc *sc, struct pulse_event *pe)
 	if (!pd->add_pulse(pd, pe, NULL))
 		return;
 	DFS_STAT_INC(sc, radar_detected);
+<<<<<<< HEAD
 	ieee80211_radar_detected(sc->hw);
+=======
+	ieee80211_radar_detected(sc->hw, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*

@@ -439,7 +439,11 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
 }
 
 /* preload SMP state for boot cpu */
+<<<<<<< HEAD
 void smp_prepare_boot_cpu(void)
+=======
+void __init smp_prepare_boot_cpu(void)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (mp_ops->prepare_boot_cpu)
 		mp_ops->prepare_boot_cpu();

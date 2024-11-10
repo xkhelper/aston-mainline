@@ -643,7 +643,11 @@ int bch2_bkey_format_invalid(struct bch_fs *c,
 			     enum bch_validate_flags flags,
 			     struct printbuf *err)
 {
+<<<<<<< HEAD
 	unsigned i, bits = KEY_PACKED_BITS_START;
+=======
+	unsigned bits = KEY_PACKED_BITS_START;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (f->nr_fields != BKEY_NR_FIELDS) {
 		prt_printf(err, "incorrect number of fields: got %u, should be %u",
@@ -655,9 +659,14 @@ int bch2_bkey_format_invalid(struct bch_fs *c,
 	 * Verify that the packed format can't represent fields larger than the
 	 * unpacked format:
 	 */
+<<<<<<< HEAD
 	for (i = 0; i < f->nr_fields; i++) {
 		if ((!c || c->sb.version_min >= bcachefs_metadata_version_snapshot) &&
 		    bch2_bkey_format_field_overflows(f, i)) {
+=======
+	for (unsigned i = 0; i < f->nr_fields; i++) {
+		if (bch2_bkey_format_field_overflows(f, i)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			unsigned unpacked_bits = bch2_bkey_format_current.bits_per_field[i];
 			u64 unpacked_max = ~((~0ULL << 1) << (unpacked_bits - 1));
 			unsigned packed_bits = min(64, f->bits_per_field[i]);

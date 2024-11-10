@@ -360,8 +360,13 @@ static struct irq_chip mobiveil_msi_irq_chip = {
 };
 
 static struct msi_domain_info mobiveil_msi_domain_info = {
+<<<<<<< HEAD
 	.flags	= (MSI_FLAG_USE_DEF_DOM_OPS | MSI_FLAG_USE_DEF_CHIP_OPS |
 		   MSI_FLAG_PCI_MSIX),
+=======
+	.flags	= MSI_FLAG_USE_DEF_DOM_OPS | MSI_FLAG_USE_DEF_CHIP_OPS |
+		  MSI_FLAG_NO_AFFINITY | MSI_FLAG_PCI_MSIX,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.chip	= &mobiveil_msi_irq_chip,
 };
 
@@ -378,6 +383,7 @@ static void mobiveil_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
 		(int)data->hwirq, msg->address_hi, msg->address_lo);
 }
 
+<<<<<<< HEAD
 static int mobiveil_msi_set_affinity(struct irq_data *irq_data,
 				     const struct cpumask *mask, bool force)
 {
@@ -388,6 +394,11 @@ static struct irq_chip mobiveil_msi_bottom_irq_chip = {
 	.name			= "Mobiveil MSI",
 	.irq_compose_msi_msg	= mobiveil_compose_msi_msg,
 	.irq_set_affinity	= mobiveil_msi_set_affinity,
+=======
+static struct irq_chip mobiveil_msi_bottom_irq_chip = {
+	.name			= "Mobiveil MSI",
+	.irq_compose_msi_msg	= mobiveil_compose_msi_msg,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int mobiveil_irq_msi_domain_alloc(struct irq_domain *domain,

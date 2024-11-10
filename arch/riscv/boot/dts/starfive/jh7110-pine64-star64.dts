@@ -44,8 +44,12 @@
 };
 
 &phy0 {
+<<<<<<< HEAD
 	rx-internal-delay-ps = <1900>;
 	tx-internal-delay-ps = <1500>;
+=======
+	rx-internal-delay-ps = <1500>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	motorcomm,rx-clk-drv-microamp = <2910>;
 	motorcomm,rx-data-drv-microamp = <2910>;
 	motorcomm,tx-clk-adj-enabled;

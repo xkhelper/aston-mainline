@@ -16,7 +16,11 @@
 #include <linux/kthread.h>
 #include <linux/io.h>
 #include <linux/random.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <soc.h>
 #include <chipcommon.h>

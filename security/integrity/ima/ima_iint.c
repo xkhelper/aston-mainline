@@ -109,6 +109,7 @@ struct ima_iint_cache *ima_inode_get(struct inode *inode)
 }
 
 /**
+<<<<<<< HEAD
  * ima_inode_free - Called on inode free
  * @inode: Pointer to the inode
  *
@@ -125,6 +126,20 @@ void ima_inode_free(struct inode *inode)
 	ima_inode_set_iint(inode, NULL);
 
 	ima_iint_free(iint);
+=======
+ * ima_inode_free_rcu - Called to free an inode via a RCU callback
+ * @inode_security: The inode->i_security pointer
+ *
+ * Free the IMA data associated with an inode.
+ */
+void ima_inode_free_rcu(void *inode_security)
+{
+	struct ima_iint_cache **iint_p = inode_security + ima_blob_sizes.lbs_inode;
+
+	/* *iint_p should be NULL if !IS_IMA(inode) */
+	if (*iint_p)
+		ima_iint_free(*iint_p);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void ima_iint_init_once(void *foo)

@@ -1,10 +1,18 @@
+<<<<<<< HEAD
+=======
+/* SPDX-License-Identifier: 0BSD */
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Definitions for handling the .xz file format
  *
  * Author: Lasse Collin <lasse.collin@tukaani.org>
+<<<<<<< HEAD
  *
  * This file has been put into the public domain.
  * You can do whatever you want with this file.
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 #ifndef XZ_STREAM_H

@@ -520,6 +520,7 @@ static int qtnf_event_handle_radar(struct qtnf_vif *vif,
 		cfg80211_radar_event(wiphy, &chandef, GFP_KERNEL);
 		break;
 	case QLINK_RADAR_CAC_FINISHED:
+<<<<<<< HEAD
 		if (!vif->wdev.cac_started)
 			break;
 
@@ -535,6 +536,23 @@ static int qtnf_event_handle_radar(struct qtnf_vif *vif,
 		break;
 	case QLINK_RADAR_CAC_STARTED:
 		if (vif->wdev.cac_started)
+=======
+		if (!vif->wdev.links[0].cac_started)
+			break;
+
+		cfg80211_cac_event(vif->netdev, &chandef,
+				   NL80211_RADAR_CAC_FINISHED, GFP_KERNEL, 0);
+		break;
+	case QLINK_RADAR_CAC_ABORTED:
+		if (!vif->wdev.links[0].cac_started)
+			break;
+
+		cfg80211_cac_event(vif->netdev, &chandef,
+				   NL80211_RADAR_CAC_ABORTED, GFP_KERNEL, 0);
+		break;
+	case QLINK_RADAR_CAC_STARTED:
+		if (vif->wdev.links[0].cac_started)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 
 		if (!wiphy_ext_feature_isset(wiphy,
@@ -542,7 +560,11 @@ static int qtnf_event_handle_radar(struct qtnf_vif *vif,
 			break;
 
 		cfg80211_cac_event(vif->netdev, &chandef,
+<<<<<<< HEAD
 				   NL80211_RADAR_CAC_STARTED, GFP_KERNEL);
+=======
+				   NL80211_RADAR_CAC_STARTED, GFP_KERNEL, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		pr_warn("%s: unhandled radar event %u\n",

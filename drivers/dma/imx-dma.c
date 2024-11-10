@@ -167,7 +167,10 @@ struct imxdma_channel {
 
 enum imx_dma_type {
 	IMX1_DMA,
+<<<<<<< HEAD
 	IMX21_DMA,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	IMX27_DMA,
 };
 
@@ -195,8 +198,11 @@ static const struct of_device_id imx_dma_of_dev_id[] = {
 	{
 		.compatible = "fsl,imx1-dma", .data = (const void *)IMX1_DMA,
 	}, {
+<<<<<<< HEAD
 		.compatible = "fsl,imx21-dma", .data = (const void *)IMX21_DMA,
 	}, {
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.compatible = "fsl,imx27-dma", .data = (const void *)IMX27_DMA,
 	}, {
 		/* sentinel */

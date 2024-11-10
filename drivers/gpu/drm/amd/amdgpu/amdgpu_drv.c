@@ -117,9 +117,16 @@
  * - 3.56.0 - Update IB start address and size alignment for decode and encode
  * - 3.57.0 - Compute tunneling on GFX10+
  * - 3.58.0 - Add GFX12 DCC support
+<<<<<<< HEAD
  */
 #define KMS_DRIVER_MAJOR	3
 #define KMS_DRIVER_MINOR	58
+=======
+ * - 3.59.0 - Cleared VRAM
+ */
+#define KMS_DRIVER_MAJOR	3
+#define KMS_DRIVER_MINOR	59
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define KMS_DRIVER_PATCHLEVEL	0
 
 /*
@@ -131,6 +138,10 @@ enum AMDGPU_DEBUG_MASK {
 	AMDGPU_DEBUG_DISABLE_GPU_SOFT_RECOVERY = BIT(2),
 	AMDGPU_DEBUG_USE_VRAM_FW_BUF = BIT(3),
 	AMDGPU_DEBUG_ENABLE_RAS_ACA = BIT(4),
+<<<<<<< HEAD
+=======
+	AMDGPU_DEBUG_ENABLE_EXP_RESETS = BIT(5),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 unsigned int amdgpu_vram_limit = UINT_MAX;
@@ -168,6 +179,19 @@ uint amdgpu_sdma_phase_quantum = 32;
 char *amdgpu_disable_cu;
 char *amdgpu_virtual_display;
 bool enforce_isolation;
+<<<<<<< HEAD
+=======
+
+/* Specifies the default granularity for SVM, used in buffer
+ * migration and restoration of backing memory when handling
+ * recoverable page faults.
+ *
+ * The value is given as log(numPages(buffer)); for a 2 MiB
+ * buffer it computes to be 9
+ */
+uint amdgpu_svm_default_granularity = 9;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * OverDrive(bit 14) disabled by default
  * GFX DCS(bit 19) disabled by default
@@ -320,6 +344,16 @@ MODULE_PARM_DESC(msi, "MSI support (1 = enable, 0 = disable, -1 = auto)");
 module_param_named(msi, amdgpu_msi, int, 0444);
 
 /**
+<<<<<<< HEAD
+=======
+ * DOC: svm_default_granularity (uint)
+ * Used in buffer migration and handling of recoverable page faults
+ */
+MODULE_PARM_DESC(svm_default_granularity, "SVM's default granularity in log(2^Pages), default 9 = 2^9 = 2 MiB");
+module_param_named(svm_default_granularity, amdgpu_svm_default_granularity, uint, 0644);
+
+/**
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * DOC: lockup_timeout (string)
  * Set GPU scheduler timeout value in ms.
  *
@@ -2199,6 +2233,14 @@ static void amdgpu_init_debug_options(struct amdgpu_device *adev)
 		pr_info("debug: enable RAS ACA\n");
 		adev->debug_enable_ras_aca = true;
 	}
+<<<<<<< HEAD
+=======
+
+	if (amdgpu_debug_mask & AMDGPU_DEBUG_ENABLE_EXP_RESETS) {
+		pr_info("debug: enable experimental reset features\n");
+		adev->debug_exp_resets = true;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static unsigned long amdgpu_fix_asic_type(struct pci_dev *pdev, unsigned long flags)
@@ -2908,6 +2950,10 @@ static const struct file_operations amdgpu_driver_kms_fops = {
 #ifdef CONFIG_PROC_FS
 	.show_fdinfo = drm_show_fdinfo,
 #endif
+<<<<<<< HEAD
+=======
+	.fop_flags = FOP_UNSIGNED_OFFSET,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 int amdgpu_file_to_fpriv(struct file *filp, struct amdgpu_fpriv **fpriv)
@@ -2953,7 +2999,10 @@ static const struct drm_driver amdgpu_kms_driver = {
 	    DRIVER_SYNCOBJ_TIMELINE,
 	.open = amdgpu_driver_open_kms,
 	.postclose = amdgpu_driver_postclose_kms,
+<<<<<<< HEAD
 	.lastclose = amdgpu_driver_lastclose_kms,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.ioctls = amdgpu_ioctls_kms,
 	.num_ioctls = ARRAY_SIZE(amdgpu_ioctls_kms),
 	.dumb_create = amdgpu_mode_dumb_create,
@@ -2980,7 +3029,10 @@ const struct drm_driver amdgpu_partition_driver = {
 	    DRIVER_SYNCOBJ_TIMELINE,
 	.open = amdgpu_driver_open_kms,
 	.postclose = amdgpu_driver_postclose_kms,
+<<<<<<< HEAD
 	.lastclose = amdgpu_driver_lastclose_kms,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.ioctls = amdgpu_ioctls_kms,
 	.num_ioctls = ARRAY_SIZE(amdgpu_ioctls_kms),
 	.dumb_create = amdgpu_mode_dumb_create,

@@ -12,6 +12,10 @@
 #include "xe_gt_printk.h"
 #include "xe_guc.h"
 #include "xe_guc_ct.h"
+<<<<<<< HEAD
+=======
+#include "xe_gt_stats.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "xe_mmio.h"
 #include "xe_pm.h"
 #include "xe_sriov.h"
@@ -36,6 +40,18 @@ static long tlb_timeout_jiffies(struct xe_gt *gt)
 	return hw_tlb_timeout + 2 * delay;
 }
 
+<<<<<<< HEAD
+=======
+static void xe_gt_tlb_invalidation_fence_fini(struct xe_gt_tlb_invalidation_fence *fence)
+{
+	if (WARN_ON_ONCE(!fence->gt))
+		return;
+
+	xe_pm_runtime_put(gt_to_xe(fence->gt));
+	fence->gt = NULL; /* fini() should be called once */
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void
 __invalidation_fence_signal(struct xe_device *xe, struct xe_gt_tlb_invalidation_fence *fence)
 {
@@ -62,6 +78,11 @@ static void xe_gt_tlb_fence_timeout(struct work_struct *work)
 	struct xe_device *xe = gt_to_xe(gt);
 	struct xe_gt_tlb_invalidation_fence *fence, *next;
 
+<<<<<<< HEAD
+=======
+	LNL_FLUSH_WORK(&gt->uc.guc.ct.g2h_worker);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_lock_irq(&gt->tlb_invalidation.pending_lock);
 	list_for_each_entry_safe(fence, next,
 				 &gt->tlb_invalidation.pending_fences, link) {
@@ -203,7 +224,11 @@ static int send_tlb_invalidation(struct xe_guc *guc,
 						   tlb_timeout_jiffies(gt));
 		}
 		spin_unlock_irq(&gt->tlb_invalidation.pending_lock);
+<<<<<<< HEAD
 	} else if (ret < 0) {
+=======
+	} else {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__invalidation_fence_signal(xe, fence);
 	}
 	if (!ret) {
@@ -213,6 +238,10 @@ static int send_tlb_invalidation(struct xe_guc *guc,
 			gt->tlb_invalidation.seqno = 1;
 	}
 	mutex_unlock(&guc->ct.lock);
+<<<<<<< HEAD
+=======
+	xe_gt_stats_incr(gt, XE_GT_STATS_ID_TLB_INVAL, 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }
@@ -265,10 +294,15 @@ int xe_gt_tlb_invalidation_ggtt(struct xe_gt *gt)
 
 		xe_gt_tlb_invalidation_fence_init(gt, &fence, true);
 		ret = xe_gt_tlb_invalidation_guc(gt, &fence);
+<<<<<<< HEAD
 		if (ret < 0) {
 			xe_gt_tlb_invalidation_fence_fini(&fence);
 			return ret;
 		}
+=======
+		if (ret)
+			return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		xe_gt_tlb_invalidation_fence_wait(&fence);
 	} else if (xe_device_uc_enabled(xe) && !xe_device_wedged(xe)) {
@@ -494,7 +528,12 @@ static const struct dma_fence_ops invalidation_fence_ops = {
  * @stack: fence is stack variable
  *
  * Initialize TLB invalidation fence for use. xe_gt_tlb_invalidation_fence_fini
+<<<<<<< HEAD
  * must be called if fence is not signaled.
+=======
+ * will be automatically called when fence is signalled (all fences must signal),
+ * even on error.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 void xe_gt_tlb_invalidation_fence_init(struct xe_gt *gt,
 				       struct xe_gt_tlb_invalidation_fence *fence,
@@ -514,6 +553,7 @@ void xe_gt_tlb_invalidation_fence_init(struct xe_gt *gt,
 		dma_fence_get(&fence->base);
 	fence->gt = gt;
 }
+<<<<<<< HEAD
 
 /**
  * xe_gt_tlb_invalidation_fence_fini - Finalize TLB invalidation fence
@@ -525,3 +565,5 @@ void xe_gt_tlb_invalidation_fence_fini(struct xe_gt_tlb_invalidation_fence *fenc
 {
 	xe_pm_runtime_put(gt_to_xe(fence->gt));
 }
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

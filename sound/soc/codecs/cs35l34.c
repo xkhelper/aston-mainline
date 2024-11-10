@@ -562,6 +562,7 @@ static int cs35l34_pcm_hw_params(struct snd_pcm_substream *substream,
 	return ret;
 }
 
+<<<<<<< HEAD
 static const unsigned int cs35l34_src_rates[] = {
 	8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000
 };
@@ -582,6 +583,8 @@ static int cs35l34_pcm_startup(struct snd_pcm_substream *substream,
 }
 
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int cs35l34_set_tristate(struct snd_soc_dai *dai, int tristate)
 {
 
@@ -639,7 +642,10 @@ static int cs35l34_dai_set_sysclk(struct snd_soc_dai *dai,
 }
 
 static const struct snd_soc_dai_ops cs35l34_ops = {
+<<<<<<< HEAD
 	.startup = cs35l34_pcm_startup,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.set_tristate = cs35l34_set_tristate,
 	.set_fmt = cs35l34_set_dai_fmt,
 	.hw_params = cs35l34_pcm_hw_params,

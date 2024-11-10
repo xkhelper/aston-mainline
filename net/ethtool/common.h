@@ -20,6 +20,11 @@ struct link_mode_info {
 	u8				duplex;
 };
 
+<<<<<<< HEAD
+=======
+struct genl_info;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern const char
 netdev_features_strings[NETDEV_FEATURE_COUNT][ETH_GSTRING_LEN];
 extern const char
@@ -42,8 +47,14 @@ int __ethtool_get_link(struct net_device *dev);
 bool convert_legacy_settings_to_link_ksettings(
 	struct ethtool_link_ksettings *link_ksettings,
 	const struct ethtool_cmd *legacy_settings);
+<<<<<<< HEAD
 u32 ethtool_get_max_rxfh_channel(struct net_device *dev);
 int ethtool_get_max_rxnfc_channel(struct net_device *dev, u64 *max);
+=======
+int ethtool_check_max_channel(struct net_device *dev,
+			      struct ethtool_channels channels,
+			      struct genl_info *info);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int __ethtool_get_ts_info(struct net_device *dev, struct kernel_ethtool_ts_info *info);
 
 extern const struct ethtool_phy_ops *ethtool_phy_ops;

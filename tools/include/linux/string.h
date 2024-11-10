@@ -12,6 +12,11 @@ void argv_free(char **argv);
 
 int strtobool(const char *s, bool *res);
 
+<<<<<<< HEAD
+=======
+#define strscpy strcpy
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * glibc based builds needs the extern while uClibc doesn't.
  * However uClibc headers also define __GLIBC__ hence the hack below
@@ -46,5 +51,12 @@ extern char * __must_check skip_spaces(const char *);
 
 extern char *strim(char *);
 
+<<<<<<< HEAD
 extern void *memchr_inv(const void *start, int c, size_t bytes);
+=======
+extern void remove_spaces(char *s);
+
+extern void *memchr_inv(const void *start, int c, size_t bytes);
+extern unsigned long long memparse(const char *ptr, char **retptr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _TOOLS_LINUX_STRING_H_ */

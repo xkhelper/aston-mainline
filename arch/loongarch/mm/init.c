@@ -201,7 +201,13 @@ pte_t * __init populate_kernel_pte(unsigned long addr)
 		pte = memblock_alloc(PAGE_SIZE, PAGE_SIZE);
 		if (!pte)
 			panic("%s: Failed to allocate memory\n", __func__);
+<<<<<<< HEAD
 		pmd_populate_kernel(&init_mm, pmd, pte);
+=======
+
+		pmd_populate_kernel(&init_mm, pmd, pte);
+		kernel_pte_init(pte);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return pte_offset_kernel(pmd, addr);

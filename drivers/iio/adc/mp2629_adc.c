@@ -184,8 +184,13 @@ static void mp2629_adc_remove(struct platform_device *pdev)
 }
 
 static const struct of_device_id mp2629_adc_of_match[] = {
+<<<<<<< HEAD
 	{ .compatible = "mps,mp2629_adc"},
 	{}
+=======
+	{ .compatible = "mps,mp2629_adc" },
+	{ }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(of, mp2629_adc_of_match);
 

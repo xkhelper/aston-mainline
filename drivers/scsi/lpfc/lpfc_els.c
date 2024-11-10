@@ -979,7 +979,11 @@ lpfc_cmpl_els_flogi(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
 				phba->fcoe_cvl_eventtag_attn =
 					phba->fcoe_cvl_eventtag;
 			lpfc_printf_log(phba, KERN_WARNING, LOG_FIP | LOG_ELS,
+<<<<<<< HEAD
 					"2611 FLOGI failed on FCF (x%x), "
+=======
+					"2611 FLOGI FCF (x%x), "
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					"status:x%x/x%x, tmo:x%x, perform "
 					"roundrobin FCF failover\n",
 					phba->fcf.current_rec.fcf_indx,
@@ -997,11 +1001,19 @@ stop_rr_fcf_flogi:
 		if (!(ulp_status == IOSTAT_LOCAL_REJECT &&
 		      ((ulp_word4 & IOERR_PARAM_MASK) ==
 					IOERR_LOOP_OPEN_FAILURE)))
+<<<<<<< HEAD
 			lpfc_printf_vlog(vport, KERN_ERR, LOG_TRACE_EVENT,
 					 "2858 FLOGI failure Status:x%x/x%x TMO"
 					 ":x%x Data x%lx x%x\n",
 					 ulp_status, ulp_word4, tmo,
 					 phba->hba_flag, phba->fcf.fcf_flag);
+=======
+			lpfc_vlog_msg(vport, KERN_WARNING, LOG_ELS,
+				      "2858 FLOGI Status:x%x/x%x TMO"
+				      ":x%x Data x%lx x%x\n",
+				      ulp_status, ulp_word4, tmo,
+				      phba->hba_flag, phba->fcf.fcf_flag);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* Check for retry */
 		if (lpfc_els_retry(phba, cmdiocb, rspiocb)) {
@@ -1023,7 +1035,11 @@ stop_rr_fcf_flogi:
 			lpfc_nlp_put(ndlp);
 
 		lpfc_printf_vlog(vport, KERN_WARNING, LOG_ELS,
+<<<<<<< HEAD
 				 "0150 FLOGI failure Status:x%x/x%x "
+=======
+				 "0150 FLOGI Status:x%x/x%x "
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				 "xri x%x TMO:x%x refcnt %d\n",
 				 ulp_status, ulp_word4, cmdiocb->sli4_xritag,
 				 tmo, kref_read(&ndlp->kref));
@@ -1032,11 +1048,19 @@ stop_rr_fcf_flogi:
 		if (!(ulp_status == IOSTAT_LOCAL_REJECT &&
 		      ((ulp_word4 & IOERR_PARAM_MASK) ==
 					IOERR_LOOP_OPEN_FAILURE))) {
+<<<<<<< HEAD
 			/* FLOGI failure */
 			lpfc_printf_vlog(vport, KERN_ERR, LOG_TRACE_EVENT,
 					 "0100 FLOGI failure Status:x%x/x%x "
 					 "TMO:x%x\n",
 					 ulp_status, ulp_word4, tmo);
+=======
+			/* Warn FLOGI status */
+			lpfc_vlog_msg(vport, KERN_WARNING, LOG_ELS,
+				      "0100 FLOGI Status:x%x/x%x "
+				      "TMO:x%x\n",
+				      ulp_status, ulp_word4, tmo);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto flogifail;
 		}
 
@@ -1099,8 +1123,15 @@ stop_rr_fcf_flogi:
 			 sp->cmn.priority_tagging, kref_read(&ndlp->kref));
 
 	/* reinitialize the VMID datastructure before returning */
+<<<<<<< HEAD
 	if (lpfc_is_vmid_enabled(phba))
 		lpfc_reinit_vmid(vport);
+=======
+	if (lpfc_is_vmid_enabled(phba)) {
+		lpfc_reinit_vmid(vport);
+		vport->vmid_flag = 0;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (sp->cmn.priority_tagging)
 		vport->phba->pport->vmid_flag |= (LPFC_VMID_ISSUE_QFPA |
 						  LPFC_VMID_TYPE_PRIO);
@@ -1390,7 +1421,11 @@ lpfc_issue_els_flogi(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
 	phba->link_flag &= ~LS_EXTERNAL_LOOPBACK;
 
 	/* Check for a deferred FLOGI ACC condition */
+<<<<<<< HEAD
 	if (phba->defer_flogi_acc_flag) {
+=======
+	if (phba->defer_flogi_acc.flag) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* lookup ndlp for received FLOGI */
 		ndlp = lpfc_findnode_did(vport, 0);
 		if (!ndlp)
@@ -1404,6 +1439,7 @@ lpfc_issue_els_flogi(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
 		if (phba->sli_rev == LPFC_SLI_REV4) {
 			bf_set(wqe_ctxt_tag,
 			       &defer_flogi_acc.wqe.xmit_els_rsp.wqe_com,
+<<<<<<< HEAD
 			       phba->defer_flogi_acc_rx_id);
 			bf_set(wqe_rcvoxid,
 			       &defer_flogi_acc.wqe.xmit_els_rsp.wqe_com,
@@ -1413,18 +1449,35 @@ lpfc_issue_els_flogi(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
 			icmd->ulpContext = phba->defer_flogi_acc_rx_id;
 			icmd->unsli3.rcvsli3.ox_id =
 				phba->defer_flogi_acc_ox_id;
+=======
+			       phba->defer_flogi_acc.rx_id);
+			bf_set(wqe_rcvoxid,
+			       &defer_flogi_acc.wqe.xmit_els_rsp.wqe_com,
+			       phba->defer_flogi_acc.ox_id);
+		} else {
+			icmd = &defer_flogi_acc.iocb;
+			icmd->ulpContext = phba->defer_flogi_acc.rx_id;
+			icmd->unsli3.rcvsli3.ox_id =
+				phba->defer_flogi_acc.ox_id;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		lpfc_printf_vlog(vport, KERN_INFO, LOG_ELS,
 				 "3354 Xmit deferred FLOGI ACC: rx_id: x%x,"
 				 " ox_id: x%x, hba_flag x%lx\n",
+<<<<<<< HEAD
 				 phba->defer_flogi_acc_rx_id,
 				 phba->defer_flogi_acc_ox_id, phba->hba_flag);
+=======
+				 phba->defer_flogi_acc.rx_id,
+				 phba->defer_flogi_acc.ox_id, phba->hba_flag);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* Send deferred FLOGI ACC */
 		lpfc_els_rsp_acc(vport, ELS_CMD_FLOGI, &defer_flogi_acc,
 				 ndlp, NULL);
 
+<<<<<<< HEAD
 		phba->defer_flogi_acc_flag = false;
 		vport->fc_myDID = did;
 
@@ -1432,6 +1485,19 @@ lpfc_issue_els_flogi(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
 		 * released when other references are removed.
 		 */
 		lpfc_nlp_put(ndlp);
+=======
+		phba->defer_flogi_acc.flag = false;
+
+		/* Decrement the held ndlp that was incremented when the
+		 * deferred flogi acc flag was set.
+		 */
+		if (phba->defer_flogi_acc.ndlp) {
+			lpfc_nlp_put(phba->defer_flogi_acc.ndlp);
+			phba->defer_flogi_acc.ndlp = NULL;
+		}
+
+		vport->fc_myDID = did;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
@@ -1958,16 +2024,28 @@ lpfc_cmpl_els_rrq(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
 
 	if (ulp_status) {
 		/* Check for retry */
+<<<<<<< HEAD
 		/* RRQ failed Don't print the vport to vport rjts */
+=======
+		/* Warn RRQ status Don't print the vport to vport rjts */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ulp_status != IOSTAT_LS_RJT ||
 		    (((ulp_word4) >> 16 != LSRJT_INVALID_CMD) &&
 		     ((ulp_word4) >> 16 != LSRJT_UNABLE_TPC)) ||
 		    (phba)->pport->cfg_log_verbose & LOG_ELS)
+<<<<<<< HEAD
 			lpfc_printf_vlog(vport, KERN_ERR, LOG_TRACE_EVENT,
 					 "2881 RRQ failure DID:%06X Status:"
 					 "x%x/x%x\n",
 					 ndlp->nlp_DID, ulp_status,
 					 ulp_word4);
+=======
+			lpfc_vlog_msg(vport, KERN_WARNING, LOG_ELS,
+				      "2881 RRQ DID:%06X Status:"
+				      "x%x/x%x\n",
+				      ndlp->nlp_DID, ulp_status,
+				      ulp_word4);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	lpfc_clr_rrq_active(phba, rrq->xritag, rrq);
@@ -2071,16 +2149,28 @@ lpfc_cmpl_els_plogi(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
 			}
 			goto out;
 		}
+<<<<<<< HEAD
 		/* PLOGI failed Don't print the vport to vport rjts */
+=======
+		/* Warn PLOGI status Don't print the vport to vport rjts */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ulp_status != IOSTAT_LS_RJT ||
 		    (((ulp_word4) >> 16 != LSRJT_INVALID_CMD) &&
 		     ((ulp_word4) >> 16 != LSRJT_UNABLE_TPC)) ||
 		    (phba)->pport->cfg_log_verbose & LOG_ELS)
+<<<<<<< HEAD
 			lpfc_printf_vlog(vport, KERN_ERR, LOG_TRACE_EVENT,
 					 "2753 PLOGI failure DID:%06X "
 					 "Status:x%x/x%x\n",
 					 ndlp->nlp_DID, ulp_status,
 					 ulp_word4);
+=======
+			lpfc_vlog_msg(vport, KERN_WARNING, LOG_ELS,
+				      "2753 PLOGI DID:%06X "
+				      "Status:x%x/x%x\n",
+				      ndlp->nlp_DID, ulp_status,
+				      ulp_word4);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* Do not call DSM for lpfc_els_abort'ed ELS cmds */
 		if (!lpfc_error_lost_link(vport, ulp_status, ulp_word4))
@@ -2317,7 +2407,10 @@ lpfc_cmpl_els_prli(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
 	struct lpfc_vport *vport = cmdiocb->vport;
 	struct lpfc_nodelist *ndlp;
 	char *mode;
+<<<<<<< HEAD
 	u32 loglevel;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 ulp_status;
 	u32 ulp_word4;
 	bool release_node = false;
@@ -2366,6 +2459,7 @@ lpfc_cmpl_els_prli(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
 		 * could be expected.
 		 */
 		if (test_bit(FC_FABRIC, &vport->fc_flag) ||
+<<<<<<< HEAD
 		    vport->cfg_enable_fc4_type != LPFC_ENABLE_BOTH) {
 			mode = KERN_ERR;
 			loglevel =  LOG_TRACE_EVENT;
@@ -2377,6 +2471,16 @@ lpfc_cmpl_els_prli(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
 		/* PRLI failed */
 		lpfc_printf_vlog(vport, mode, loglevel,
 				 "2754 PRLI failure DID:%06X Status:x%x/x%x, "
+=======
+		    vport->cfg_enable_fc4_type != LPFC_ENABLE_BOTH)
+			mode = KERN_WARNING;
+		else
+			mode = KERN_INFO;
+
+		/* Warn PRLI status */
+		lpfc_printf_vlog(vport, mode, LOG_ELS,
+				 "2754 PRLI DID:%06X Status:x%x/x%x, "
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				 "data: x%x x%x x%x\n",
 				 ndlp->nlp_DID, ulp_status,
 				 ulp_word4, ndlp->nlp_state,
@@ -2848,11 +2952,19 @@ lpfc_cmpl_els_adisc(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
 			}
 			goto out;
 		}
+<<<<<<< HEAD
 		/* ADISC failed */
 		lpfc_printf_vlog(vport, KERN_ERR, LOG_TRACE_EVENT,
 				 "2755 ADISC failure DID:%06X Status:x%x/x%x\n",
 				 ndlp->nlp_DID, ulp_status,
 				 ulp_word4);
+=======
+		/* Warn ADISC status */
+		lpfc_vlog_msg(vport, KERN_WARNING, LOG_ELS,
+			      "2755 ADISC DID:%06X Status:x%x/x%x\n",
+			      ndlp->nlp_DID, ulp_status,
+			      ulp_word4);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		lpfc_disc_state_machine(vport, ndlp, cmdiocb,
 					NLP_EVT_CMPL_ADISC);
 
@@ -3039,12 +3151,21 @@ lpfc_cmpl_els_logo(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
 	 * discovery.  The PLOGI will retry.
 	 */
 	if (ulp_status) {
+<<<<<<< HEAD
 		/* LOGO failed */
 		lpfc_printf_vlog(vport, KERN_ERR, LOG_TRACE_EVENT,
 				 "2756 LOGO failure, No Retry DID:%06X "
 				 "Status:x%x/x%x\n",
 				 ndlp->nlp_DID, ulp_status,
 				 ulp_word4);
+=======
+		/* Warn LOGO status */
+		lpfc_vlog_msg(vport, KERN_WARNING, LOG_ELS,
+			      "2756 LOGO, No Retry DID:%06X "
+			      "Status:x%x/x%x\n",
+			      ndlp->nlp_DID, ulp_status,
+			      ulp_word4);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (lpfc_error_lost_link(vport, ulp_status, ulp_word4))
 			skip_recovery = 1;
@@ -4831,11 +4952,18 @@ lpfc_els_retry(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
 			if ((phba->sli3_options & LPFC_SLI3_NPIV_ENABLED) &&
 			  (cmd == ELS_CMD_FDISC) &&
 			  (stat.un.b.lsRjtRsnCodeExp == LSEXP_OUT_OF_RESOURCE)){
+<<<<<<< HEAD
 				lpfc_printf_vlog(vport, KERN_ERR,
 						 LOG_TRACE_EVENT,
 						 "0125 FDISC Failed (x%x). "
 						 "Fabric out of resources\n",
 						 stat.un.lsRjtError);
+=======
+				lpfc_vlog_msg(vport, KERN_WARNING, LOG_ELS,
+					      "0125 FDISC (x%x). "
+					      "Fabric out of resources\n",
+					      stat.un.lsRjtError);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				lpfc_vport_set_state(vport,
 						     FC_VPORT_NO_FABRIC_RSCS);
 			}
@@ -4871,11 +4999,18 @@ lpfc_els_retry(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
 						LSEXP_NOTHING_MORE) {
 				vport->fc_sparam.cmn.bbRcvSizeMsb &= 0xf;
 				retry = 1;
+<<<<<<< HEAD
 				lpfc_printf_vlog(vport, KERN_ERR,
 						 LOG_TRACE_EVENT,
 						 "0820 FLOGI Failed (x%x). "
 						 "BBCredit Not Supported\n",
 						 stat.un.lsRjtError);
+=======
+				lpfc_vlog_msg(vport, KERN_WARNING, LOG_ELS,
+					      "0820 FLOGI (x%x). "
+					      "BBCredit Not Supported\n",
+					      stat.un.lsRjtError);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 			break;
 
@@ -4885,11 +5020,18 @@ lpfc_els_retry(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
 			  ((stat.un.b.lsRjtRsnCodeExp == LSEXP_INVALID_PNAME) ||
 			  (stat.un.b.lsRjtRsnCodeExp == LSEXP_INVALID_NPORT_ID))
 			  ) {
+<<<<<<< HEAD
 				lpfc_printf_vlog(vport, KERN_ERR,
 						 LOG_TRACE_EVENT,
 						 "0122 FDISC Failed (x%x). "
 						 "Fabric Detected Bad WWN\n",
 						 stat.un.lsRjtError);
+=======
+				lpfc_vlog_msg(vport, KERN_WARNING, LOG_ELS,
+					      "0122 FDISC (x%x). "
+					      "Fabric Detected Bad WWN\n",
+					      stat.un.lsRjtError);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				lpfc_vport_set_state(vport,
 						     FC_VPORT_FABRIC_REJ_WWN);
 			}
@@ -5240,9 +5382,16 @@ lpfc_cmpl_els_logo_acc(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
 	/* ACC to LOGO completes to NPort <nlp_DID> */
 	lpfc_printf_vlog(vport, KERN_INFO, LOG_ELS,
 			 "0109 ACC to LOGO completes to NPort x%x refcnt %d "
+<<<<<<< HEAD
 			 "Data: x%x x%x x%x\n",
 			 ndlp->nlp_DID, kref_read(&ndlp->kref), ndlp->nlp_flag,
 			 ndlp->nlp_state, ndlp->nlp_rpi);
+=======
+			 "last els x%x Data: x%x x%x x%x\n",
+			 ndlp->nlp_DID, kref_read(&ndlp->kref),
+			 ndlp->nlp_last_elscmd, ndlp->nlp_flag, ndlp->nlp_state,
+			 ndlp->nlp_rpi);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* This clause allows the LOGO ACC to complete and free resources
 	 * for the Fabric Domain Controller.  It does deliberately skip
@@ -5254,6 +5403,7 @@ lpfc_cmpl_els_logo_acc(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
 		goto out;
 
 	if (ndlp->nlp_state == NLP_STE_NPR_NODE) {
+<<<<<<< HEAD
 		/* If PLOGI is being retried, PLOGI completion will cleanup the
 		 * node. The NLP_NPR_2B_DISC flag needs to be retained to make
 		 * progress on nodes discovered from last RSCN.
@@ -5266,6 +5416,24 @@ lpfc_cmpl_els_logo_acc(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
 			lpfc_unreg_rpi(vport, ndlp);
 
 	}
+=======
+		if (ndlp->nlp_flag & NLP_RPI_REGISTERED)
+			lpfc_unreg_rpi(vport, ndlp);
+
+		/* If came from PRLO, then PRLO_ACC is done.
+		 * Start rediscovery now.
+		 */
+		if (ndlp->nlp_last_elscmd == ELS_CMD_PRLO) {
+			spin_lock_irq(&ndlp->lock);
+			ndlp->nlp_flag |= NLP_NPR_2B_DISC;
+			spin_unlock_irq(&ndlp->lock);
+			ndlp->nlp_prev_state = ndlp->nlp_state;
+			lpfc_nlp_set_state(vport, ndlp, NLP_STE_PLOGI_ISSUE);
+			lpfc_issue_els_plogi(vport, ndlp->nlp_DID, 0);
+		}
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  out:
 	/*
 	 * The driver received a LOGO from the rport and has ACK'd it.
@@ -5344,8 +5512,13 @@ lpfc_cmpl_els_rsp(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
 	u32 ulp_status, ulp_word4, tmo, did, iotag;
 
 	if (!vport) {
+<<<<<<< HEAD
 		lpfc_printf_log(phba, KERN_ERR, LOG_TRACE_EVENT,
 				"3177 ELS response failed\n");
+=======
+		lpfc_printf_log(phba, KERN_WARNING, LOG_ELS,
+				"3177 null vport in ELS rsp\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 	}
 	if (cmdiocb->context_un.mbox)
@@ -8454,9 +8627,15 @@ lpfc_els_rcv_flogi(struct lpfc_vport *vport, struct lpfc_iocbq *cmdiocb,
 
 	/* Defer ACC response until AFTER we issue a FLOGI */
 	if (!test_bit(HBA_FLOGI_ISSUED, &phba->hba_flag)) {
+<<<<<<< HEAD
 		phba->defer_flogi_acc_rx_id = bf_get(wqe_ctxt_tag,
 						     &wqe->xmit_els_rsp.wqe_com);
 		phba->defer_flogi_acc_ox_id = bf_get(wqe_rcvoxid,
+=======
+		phba->defer_flogi_acc.rx_id = bf_get(wqe_ctxt_tag,
+						     &wqe->xmit_els_rsp.wqe_com);
+		phba->defer_flogi_acc.ox_id = bf_get(wqe_rcvoxid,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						     &wqe->xmit_els_rsp.wqe_com);
 
 		vport->fc_myDID = did;
@@ -8464,11 +8643,25 @@ lpfc_els_rcv_flogi(struct lpfc_vport *vport, struct lpfc_iocbq *cmdiocb,
 		lpfc_printf_vlog(vport, KERN_INFO, LOG_ELS,
 				 "3344 Deferring FLOGI ACC: rx_id: x%x,"
 				 " ox_id: x%x, hba_flag x%lx\n",
+<<<<<<< HEAD
 				 phba->defer_flogi_acc_rx_id,
 				 phba->defer_flogi_acc_ox_id, phba->hba_flag);
 
 		phba->defer_flogi_acc_flag = true;
 
+=======
+				 phba->defer_flogi_acc.rx_id,
+				 phba->defer_flogi_acc.ox_id, phba->hba_flag);
+
+		phba->defer_flogi_acc.flag = true;
+
+		/* This nlp_get is paired with nlp_puts that reset the
+		 * defer_flogi_acc.flag back to false.  We need to retain
+		 * a kref on the ndlp until the deferred FLOGI ACC is
+		 * processed or cancelled.
+		 */
+		phba->defer_flogi_acc.ndlp = lpfc_nlp_get(ndlp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 
@@ -9641,11 +9834,20 @@ lpfc_els_flush_cmd(struct lpfc_vport *vport)
 		if (piocb->cmd_flag & LPFC_DRIVER_ABORTED && !mbx_tmo_err)
 			continue;
 
+<<<<<<< HEAD
 		/* On the ELS ring we can have ELS_REQUESTs or
 		 * GEN_REQUESTs waiting for a response.
 		 */
 		ulp_command = get_job_cmnd(phba, piocb);
 		if (ulp_command == CMD_ELS_REQUEST64_CR) {
+=======
+		/* On the ELS ring we can have ELS_REQUESTs, ELS_RSPs,
+		 * or GEN_REQUESTs waiting for a CQE response.
+		 */
+		ulp_command = get_job_cmnd(phba, piocb);
+		if (ulp_command == CMD_ELS_REQUEST64_WQE ||
+		    ulp_command == CMD_XMIT_ELS_RSP64_WQE) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			list_add_tail(&piocb->dlist, &abort_list);
 
 			/* If the link is down when flushing ELS commands
@@ -10504,7 +10706,11 @@ lpfc_els_unsol_buffer(struct lpfc_hba *phba, struct lpfc_sli_ring *pring,
 
 		lpfc_els_rcv_flogi(vport, elsiocb, ndlp);
 		/* retain node if our response is deferred */
+<<<<<<< HEAD
 		if (phba->defer_flogi_acc_flag)
+=======
+		if (phba->defer_flogi_acc.flag)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		if (newnode)
 			lpfc_disc_state_machine(vport, ndlp, NULL,
@@ -10742,7 +10948,11 @@ lpfc_els_unsol_buffer(struct lpfc_hba *phba, struct lpfc_sli_ring *pring,
 		rjt_exp = LSEXP_NOTHING_MORE;
 
 		/* Unknown ELS command <elsCmd> received from NPORT <did> */
+<<<<<<< HEAD
 		lpfc_printf_vlog(vport, KERN_ERR, LOG_TRACE_EVENT,
+=======
+		lpfc_printf_vlog(vport, KERN_ERR, LOG_ELS,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				 "0115 Unknown ELS command x%x "
 				 "received from NPORT x%x\n", cmd, did);
 		if (newnode)
@@ -11310,10 +11520,17 @@ lpfc_cmpl_els_fdisc(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
 		/* Check for retry */
 		if (lpfc_els_retry(phba, cmdiocb, rspiocb))
 			goto out;
+<<<<<<< HEAD
 		/* FDISC failed */
 		lpfc_printf_vlog(vport, KERN_ERR, LOG_TRACE_EVENT,
 				 "0126 FDISC failed. (x%x/x%x)\n",
 				 ulp_status, ulp_word4);
+=======
+		/* Warn FDISC status */
+		lpfc_vlog_msg(vport, KERN_WARNING, LOG_ELS,
+			      "0126 FDISC cmpl status: x%x/x%x)\n",
+			      ulp_status, ulp_word4);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto fdisc_failed;
 	}
 

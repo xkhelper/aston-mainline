@@ -35,7 +35,10 @@
 #define PFN_NASIDSHFT		(NASID_SHFT - PAGE_SHIFT)
 
 struct node_data *__node_data[MAX_NUMNODES];
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 EXPORT_SYMBOL(__node_data);
 
 static u64 gen_region_mask(void)
@@ -361,6 +364,10 @@ static void __init node_mem_init(nasid_t node)
 	 */
 	__node_data[node] = __va(slot_freepfn << PAGE_SHIFT);
 	memset(__node_data[node], 0, PAGE_SIZE);
+<<<<<<< HEAD
+=======
+	node_data[node] = &__node_data[node]->pglist;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	NODE_DATA(node)->node_start_pfn = start_pfn;
 	NODE_DATA(node)->node_spanned_pages = end_pfn - start_pfn;
@@ -423,6 +430,7 @@ void __init mem_init(void)
 	memblock_free_all();
 	setup_zero_pages();	/* This comes from node 0 */
 }
+<<<<<<< HEAD
 
 pg_data_t * __init arch_alloc_nodedata(int nid)
 {
@@ -433,3 +441,5 @@ void arch_refresh_nodedata(int nid, pg_data_t *pgdat)
 {
 	__node_data[nid] = (struct node_data *)pgdat;
 }
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

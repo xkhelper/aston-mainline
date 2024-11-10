@@ -24,6 +24,7 @@
 	.align	11
 
 SYM_CODE_START(__kvm_hyp_init)
+<<<<<<< HEAD
 	ventry	__invalid		// Synchronous EL2t
 	ventry	__invalid		// IRQ EL2t
 	ventry	__invalid		// FIQ EL2t
@@ -46,6 +47,27 @@ SYM_CODE_START(__kvm_hyp_init)
 
 __invalid:
 	b	.
+=======
+	ventry	.			// Synchronous EL2t
+	ventry	.			// IRQ EL2t
+	ventry	.			// FIQ EL2t
+	ventry	.			// Error EL2t
+
+	ventry	.			// Synchronous EL2h
+	ventry	.			// IRQ EL2h
+	ventry	.			// FIQ EL2h
+	ventry	.			// Error EL2h
+
+	ventry	__do_hyp_init		// Synchronous 64-bit EL1
+	ventry	.			// IRQ 64-bit EL1
+	ventry	.			// FIQ 64-bit EL1
+	ventry	.			// Error 64-bit EL1
+
+	ventry	.			// Synchronous 32-bit EL1
+	ventry	.			// IRQ 32-bit EL1
+	ventry	.			// FIQ 32-bit EL1
+	ventry	.			// Error 32-bit EL1
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Only uses x0..x3 so as to not clobber callee-saved SMCCC registers.
@@ -76,6 +98,16 @@ __do_hyp_init:
 	eret
 SYM_CODE_END(__kvm_hyp_init)
 
+<<<<<<< HEAD
+=======
+SYM_CODE_START_LOCAL(__kvm_init_el2_state)
+	/* Initialize EL2 CPU state to sane values. */
+	init_el2_state				// Clobbers x0..x2
+	finalise_el2_state
+	ret
+SYM_CODE_END(__kvm_init_el2_state)
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Initialize the hypervisor in EL2.
  *
@@ -102,9 +134,18 @@ SYM_CODE_START_LOCAL(___kvm_hyp_init)
 	// TPIDR_EL2 is used to preserve x0 across the macro maze...
 	isb
 	msr	tpidr_el2, x0
+<<<<<<< HEAD
 	init_el2_state
 	finalise_el2_state
 	mrs	x0, tpidr_el2
+=======
+	str	lr, [x0, #NVHE_INIT_TMP]
+
+	bl	__kvm_init_el2_state
+
+	mrs	x0, tpidr_el2
+	ldr	lr, [x0, #NVHE_INIT_TMP]
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 1:
 	ldr	x1, [x0, #NVHE_INIT_TPIDR_EL2]
@@ -130,7 +171,11 @@ alternative_else_nop_endif
 
 	/* Invalidate the stale TLBs from Bootloader */
 	tlbi	alle2
+<<<<<<< HEAD
 	tlbi	vmalls12e1
+=======
+	tlbi	alle1
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dsb	sy
 
 	mov_q	x0, INIT_SCTLR_EL2_MMU_ON
@@ -199,9 +244,14 @@ SYM_CODE_START_LOCAL(__kvm_hyp_init_cpu)
 
 2:	msr	SPsel, #1			// We want to use SP_EL{1,2}
 
+<<<<<<< HEAD
 	/* Initialize EL2 CPU state to sane values. */
 	init_el2_state				// Clobbers x0..x2
 	finalise_el2_state
+=======
+	bl	__kvm_init_el2_state
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__init_el2_nvhe_prepare_eret
 
 	/* Enable MMU, set vectors and stack. */

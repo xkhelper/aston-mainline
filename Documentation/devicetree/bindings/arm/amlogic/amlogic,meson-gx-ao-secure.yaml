@@ -25,10 +25,25 @@ select:
 
 properties:
   compatible:
+<<<<<<< HEAD
     items:
       - const: amlogic,meson-gx-ao-secure
       - const: syscon
 
+=======
+    oneOf:
+      - items:
+          - const: amlogic,meson-gx-ao-secure
+          - const: syscon
+      - items:
+          - enum:
+              - amlogic,a4-ao-secure
+              - amlogic,c3-ao-secure
+              - amlogic,s4-ao-secure
+              - amlogic,t7-ao-secure
+          - const: amlogic,meson-gx-ao-secure
+          - const: syscon
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   reg:
     maxItems: 1
 

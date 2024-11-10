@@ -13,7 +13,11 @@
 	Otherwise, io_handler will free io_req
 */
 
+<<<<<<< HEAD
 /* below is for the intf_option bit defition... */
+=======
+/* below is for the intf_option bit definition... */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct intf_priv;
 struct intf_hdl;

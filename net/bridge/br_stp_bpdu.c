@@ -17,7 +17,11 @@
 #include <net/llc.h>
 #include <net/llc_pdu.h>
 #include <net/stp.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "br_private.h"
 #include "br_private_stp.h"

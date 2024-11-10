@@ -133,7 +133,12 @@ enum inode_opt_id {
 	x(i_size_dirty,			5)	\
 	x(i_sectors_dirty,		6)	\
 	x(unlinked,			7)	\
+<<<<<<< HEAD
 	x(backptr_untrusted,		8)
+=======
+	x(backptr_untrusted,		8)	\
+	x(has_child_snapshot,		9)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* bits 20+ reserved for packed fields below: */
 
@@ -149,9 +154,15 @@ enum __bch_inode_flags {
 #undef x
 };
 
+<<<<<<< HEAD
 LE32_BITMASK(INODE_STR_HASH,	struct bch_inode, bi_flags, 20, 24);
 LE32_BITMASK(INODE_NR_FIELDS,	struct bch_inode, bi_flags, 24, 31);
 LE32_BITMASK(INODE_NEW_VARINT,	struct bch_inode, bi_flags, 31, 32);
+=======
+LE32_BITMASK(INODEv1_STR_HASH,	struct bch_inode, bi_flags, 20, 24);
+LE32_BITMASK(INODEv1_NR_FIELDS,	struct bch_inode, bi_flags, 24, 31);
+LE32_BITMASK(INODEv1_NEW_VARINT,struct bch_inode, bi_flags, 31, 32);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 LE64_BITMASK(INODEv2_STR_HASH,	struct bch_inode_v2, bi_flags, 20, 24);
 LE64_BITMASK(INODEv2_NR_FIELDS,	struct bch_inode_v2, bi_flags, 24, 31);

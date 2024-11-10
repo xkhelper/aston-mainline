@@ -162,6 +162,7 @@ void arch_stack_walk_user(stack_trace_consume_fn consume_entry, void *cookie,
 {
 	arch_stack_walk_user_common(consume_entry, cookie, NULL, regs, false);
 }
+<<<<<<< HEAD
 
 unsigned long return_address(unsigned int n)
 {
@@ -181,3 +182,5 @@ unsigned long return_address(unsigned int n)
 	return 0;
 }
 EXPORT_SYMBOL_GPL(return_address);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

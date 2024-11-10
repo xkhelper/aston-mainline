@@ -559,10 +559,18 @@ void early_setup_idt(void)
  */
 void __head startup_64_setup_gdt_idt(void)
 {
+<<<<<<< HEAD
 	void *handler = NULL;
 
 	struct desc_ptr startup_gdt_descr = {
 		.address = (unsigned long)&RIP_REL_REF(init_per_cpu_var(gdt_page.gdt)),
+=======
+	struct desc_struct *gdt = (void *)(__force unsigned long)init_per_cpu_var(gdt_page.gdt);
+	void *handler = NULL;
+
+	struct desc_ptr startup_gdt_descr = {
+		.address = (unsigned long)&RIP_REL_REF(*gdt),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.size    = GDT_SIZE - 1,
 	};
 

@@ -486,6 +486,12 @@ static int mctp_ioctl_droptag(struct mctp_sock *msk, bool tagv2,
 	tag = ctl.tag & MCTP_TAG_MASK;
 	rc = -EINVAL;
 
+<<<<<<< HEAD
+=======
+	if (ctl.peer_addr == MCTP_ADDR_NULL)
+		ctl.peer_addr = MCTP_ADDR_ANY;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_lock_irqsave(&net->mctp.keys_lock, flags);
 	hlist_for_each_entry_safe(key, tmp, &msk->keys, sklist) {
 		/* we do an irqsave here, even though we know the irq state,
@@ -753,10 +759,21 @@ static __init int mctp_init(void)
 	if (rc)
 		goto err_unreg_routes;
 
+<<<<<<< HEAD
 	mctp_device_init();
 
 	return 0;
 
+=======
+	rc = mctp_device_init();
+	if (rc)
+		goto err_unreg_neigh;
+
+	return 0;
+
+err_unreg_neigh:
+	mctp_neigh_exit();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_unreg_routes:
 	mctp_routes_exit();
 err_unreg_proto:

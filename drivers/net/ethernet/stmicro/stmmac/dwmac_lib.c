@@ -28,65 +28,111 @@ int dwmac_dma_reset(void __iomem *ioaddr)
 }
 
 /* CSR1 enables the transmit DMA to check for new descriptor */
+<<<<<<< HEAD
 void dwmac_enable_dma_transmission(void __iomem *ioaddr)
 {
 	writel(1, ioaddr + DMA_XMT_POLL_DEMAND);
+=======
+void dwmac_enable_dma_transmission(void __iomem *ioaddr, u32 chan)
+{
+	writel(1, ioaddr + DMA_CHAN_XMT_POLL_DEMAND(chan));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void dwmac_enable_dma_irq(struct stmmac_priv *priv, void __iomem *ioaddr,
 			  u32 chan, bool rx, bool tx)
 {
+<<<<<<< HEAD
 	u32 value = readl(ioaddr + DMA_INTR_ENA);
+=======
+	u32 value = readl(ioaddr + DMA_CHAN_INTR_ENA(chan));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (rx)
 		value |= DMA_INTR_DEFAULT_RX;
 	if (tx)
 		value |= DMA_INTR_DEFAULT_TX;
 
+<<<<<<< HEAD
 	writel(value, ioaddr + DMA_INTR_ENA);
+=======
+	writel(value, ioaddr + DMA_CHAN_INTR_ENA(chan));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void dwmac_disable_dma_irq(struct stmmac_priv *priv, void __iomem *ioaddr,
 			   u32 chan, bool rx, bool tx)
 {
+<<<<<<< HEAD
 	u32 value = readl(ioaddr + DMA_INTR_ENA);
+=======
+	u32 value = readl(ioaddr + DMA_CHAN_INTR_ENA(chan));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (rx)
 		value &= ~DMA_INTR_DEFAULT_RX;
 	if (tx)
 		value &= ~DMA_INTR_DEFAULT_TX;
 
+<<<<<<< HEAD
 	writel(value, ioaddr + DMA_INTR_ENA);
+=======
+	writel(value, ioaddr + DMA_CHAN_INTR_ENA(chan));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void dwmac_dma_start_tx(struct stmmac_priv *priv, void __iomem *ioaddr,
 			u32 chan)
 {
+<<<<<<< HEAD
 	u32 value = readl(ioaddr + DMA_CONTROL);
 	value |= DMA_CONTROL_ST;
 	writel(value, ioaddr + DMA_CONTROL);
+=======
+	u32 value = readl(ioaddr + DMA_CHAN_CONTROL(chan));
+	value |= DMA_CONTROL_ST;
+	writel(value, ioaddr + DMA_CHAN_CONTROL(chan));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void dwmac_dma_stop_tx(struct stmmac_priv *priv, void __iomem *ioaddr, u32 chan)
 {
+<<<<<<< HEAD
 	u32 value = readl(ioaddr + DMA_CONTROL);
 	value &= ~DMA_CONTROL_ST;
 	writel(value, ioaddr + DMA_CONTROL);
+=======
+	u32 value = readl(ioaddr + DMA_CHAN_CONTROL(chan));
+	value &= ~DMA_CONTROL_ST;
+	writel(value, ioaddr + DMA_CHAN_CONTROL(chan));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void dwmac_dma_start_rx(struct stmmac_priv *priv, void __iomem *ioaddr,
 			u32 chan)
 {
+<<<<<<< HEAD
 	u32 value = readl(ioaddr + DMA_CONTROL);
 	value |= DMA_CONTROL_SR;
 	writel(value, ioaddr + DMA_CONTROL);
+=======
+	u32 value = readl(ioaddr + DMA_CHAN_CONTROL(chan));
+	value |= DMA_CONTROL_SR;
+	writel(value, ioaddr + DMA_CHAN_CONTROL(chan));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void dwmac_dma_stop_rx(struct stmmac_priv *priv, void __iomem *ioaddr, u32 chan)
 {
+<<<<<<< HEAD
 	u32 value = readl(ioaddr + DMA_CONTROL);
 	value &= ~DMA_CONTROL_SR;
 	writel(value, ioaddr + DMA_CONTROL);
+=======
+	u32 value = readl(ioaddr + DMA_CHAN_CONTROL(chan));
+	value &= ~DMA_CONTROL_SR;
+	writel(value, ioaddr + DMA_CHAN_CONTROL(chan));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #ifdef DWMAC_DMA_DEBUG
@@ -165,7 +211,11 @@ int dwmac_dma_interrupt(struct stmmac_priv *priv, void __iomem *ioaddr,
 	struct stmmac_pcpu_stats *stats = this_cpu_ptr(priv->xstats.pcpu_stats);
 	int ret = 0;
 	/* read the status register (CSR5) */
+<<<<<<< HEAD
 	u32 intr_status = readl(ioaddr + DMA_STATUS);
+=======
+	u32 intr_status = readl(ioaddr + DMA_CHAN_STATUS(chan));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef DWMAC_DMA_DEBUG
 	/* Enable it to monitor DMA rx/tx status in case of critical problems */

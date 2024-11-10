@@ -117,6 +117,10 @@ static void free_long_term_buff(struct ibmvnic_adapter *adapter,
 				struct ibmvnic_long_term_buff *ltb);
 static void ibmvnic_disable_irqs(struct ibmvnic_adapter *adapter);
 static void flush_reset_queue(struct ibmvnic_adapter *adapter);
+<<<<<<< HEAD
+=======
+static void print_subcrq_error(struct device *dev, int rc, const char *func);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct ibmvnic_stat {
 	char name[ETH_GSTRING_LEN];
@@ -2140,15 +2144,23 @@ static int ibmvnic_close(struct net_device *netdev)
 }
 
 /**
+<<<<<<< HEAD
  * build_hdr_data - creates L2/L3/L4 header data buffer
  * @hdr_field: bitfield determining needed headers
  * @skb: socket buffer
  * @hdr_len: array of header lengths
  * @hdr_data: buffer to write the header to
+=======
+ * get_hdr_lens - fills list of L2/L3/L4 hdr lens
+ * @hdr_field: bitfield determining needed headers
+ * @skb: socket buffer
+ * @hdr_len: array of header lengths to be filled
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Reads hdr_field to determine which headers are needed by firmware.
  * Builds a buffer containing these headers.  Saves individual header
  * lengths and total buffer length to be used to build descriptors.
+<<<<<<< HEAD
  */
 static int build_hdr_data(u8 hdr_field, struct sk_buff *skb,
 			  int *hdr_len, u8 *hdr_data)
@@ -2163,16 +2175,45 @@ static int build_hdr_data(u8 hdr_field, struct sk_buff *skb,
 
 	if (skb->protocol == htons(ETH_P_IP)) {
 		hdr_len[1] = ip_hdr(skb)->ihl * 4;
+=======
+ *
+ * Return: total len of all headers
+ */
+static int get_hdr_lens(u8 hdr_field, struct sk_buff *skb,
+			int *hdr_len)
+{
+	int len = 0;
+
+
+	if ((hdr_field >> 6) & 1) {
+		hdr_len[0] = skb_mac_header_len(skb);
+		len += hdr_len[0];
+	}
+
+	if ((hdr_field >> 5) & 1) {
+		hdr_len[1] = skb_network_header_len(skb);
+		len += hdr_len[1];
+	}
+
+	if (!((hdr_field >> 4) & 1))
+		return len;
+
+	if (skb->protocol == htons(ETH_P_IP)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ip_hdr(skb)->protocol == IPPROTO_TCP)
 			hdr_len[2] = tcp_hdrlen(skb);
 		else if (ip_hdr(skb)->protocol == IPPROTO_UDP)
 			hdr_len[2] = sizeof(struct udphdr);
 	} else if (skb->protocol == htons(ETH_P_IPV6)) {
+<<<<<<< HEAD
 		hdr_len[1] = sizeof(struct ipv6hdr);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ipv6_hdr(skb)->nexthdr == IPPROTO_TCP)
 			hdr_len[2] = tcp_hdrlen(skb);
 		else if (ipv6_hdr(skb)->nexthdr == IPPROTO_UDP)
 			hdr_len[2] = sizeof(struct udphdr);
+<<<<<<< HEAD
 	} else if (skb->protocol == htons(ETH_P_ARP)) {
 		hdr_len[1] = arp_hdr_len(skb->dev);
 		hdr_len[2] = 0;
@@ -2197,6 +2238,11 @@ static int build_hdr_data(u8 hdr_field, struct sk_buff *skb,
 		len += hdr_len[2];
 	}
 	return len;
+=======
+	}
+
+	return len + hdr_len[2];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -2209,12 +2255,21 @@ static int build_hdr_data(u8 hdr_field, struct sk_buff *skb,
  *
  * Creates header and, if needed, header extension descriptors and
  * places them in a descriptor array, scrq_arr
+<<<<<<< HEAD
+=======
+ *
+ * Return: Number of header descs
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 static int create_hdr_descs(u8 hdr_field, u8 *hdr_data, int len, int *hdr_len,
 			    union sub_crq *scrq_arr)
 {
+<<<<<<< HEAD
 	union sub_crq hdr_desc;
+=======
+	union sub_crq *hdr_desc;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int tmp_len = len;
 	int num_descs = 0;
 	u8 *data, *cur;
@@ -2223,6 +2278,7 @@ static int create_hdr_descs(u8 hdr_field, u8 *hdr_data, int len, int *hdr_len,
 	while (tmp_len > 0) {
 		cur = hdr_data + len - tmp_len;
 
+<<<<<<< HEAD
 		memset(&hdr_desc, 0, sizeof(hdr_desc));
 		if (cur != hdr_data) {
 			data = hdr_desc.hdr_ext.data;
@@ -2245,6 +2301,28 @@ static int create_hdr_descs(u8 hdr_field, u8 *hdr_data, int len, int *hdr_len,
 		tmp_len -= tmp;
 		*scrq_arr = hdr_desc;
 		scrq_arr++;
+=======
+		hdr_desc = &scrq_arr[num_descs];
+		if (num_descs) {
+			data = hdr_desc->hdr_ext.data;
+			tmp = tmp_len > 29 ? 29 : tmp_len;
+			hdr_desc->hdr_ext.first = IBMVNIC_CRQ_CMD;
+			hdr_desc->hdr_ext.type = IBMVNIC_HDR_EXT_DESC;
+			hdr_desc->hdr_ext.len = tmp;
+		} else {
+			data = hdr_desc->hdr.data;
+			tmp = tmp_len > 24 ? 24 : tmp_len;
+			hdr_desc->hdr.first = IBMVNIC_CRQ_CMD;
+			hdr_desc->hdr.type = IBMVNIC_HDR_DESC;
+			hdr_desc->hdr.len = tmp;
+			hdr_desc->hdr.l2_len = (u8)hdr_len[0];
+			hdr_desc->hdr.l3_len = cpu_to_be16((u16)hdr_len[1]);
+			hdr_desc->hdr.l4_len = (u8)hdr_len[2];
+			hdr_desc->hdr.flag = hdr_field << 1;
+		}
+		memcpy(data, cur, tmp);
+		tmp_len -= tmp;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		num_descs++;
 	}
 
@@ -2267,6 +2345,7 @@ static void build_hdr_descs_arr(struct sk_buff *skb,
 				int *num_entries, u8 hdr_field)
 {
 	int hdr_len[3] = {0, 0, 0};
+<<<<<<< HEAD
 	u8 hdr_data[140] = {0};
 	int tot_len;
 
@@ -2274,6 +2353,13 @@ static void build_hdr_descs_arr(struct sk_buff *skb,
 				 hdr_data);
 	*num_entries += create_hdr_descs(hdr_field, hdr_data, tot_len, hdr_len,
 					 indir_arr + 1);
+=======
+	int tot_len;
+
+	tot_len = get_hdr_lens(hdr_field, skb, hdr_len);
+	*num_entries += create_hdr_descs(hdr_field, skb_mac_header(skb),
+					 tot_len, hdr_len, indir_arr + 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int ibmvnic_xmit_workarounds(struct sk_buff *skb,
@@ -2350,8 +2436,34 @@ static void ibmvnic_tx_scrq_clean_buffer(struct ibmvnic_adapter *adapter,
 	}
 }
 
+<<<<<<< HEAD
 static int ibmvnic_tx_scrq_flush(struct ibmvnic_adapter *adapter,
 				 struct ibmvnic_sub_crq_queue *tx_scrq)
+=======
+static int send_subcrq_direct(struct ibmvnic_adapter *adapter,
+			      u64 remote_handle, u64 *entry)
+{
+	unsigned int ua = adapter->vdev->unit_address;
+	struct device *dev = &adapter->vdev->dev;
+	int rc;
+
+	/* Make sure the hypervisor sees the complete request */
+	dma_wmb();
+	rc = plpar_hcall_norets(H_SEND_SUB_CRQ, ua,
+				cpu_to_be64(remote_handle),
+				cpu_to_be64(entry[0]), cpu_to_be64(entry[1]),
+				cpu_to_be64(entry[2]), cpu_to_be64(entry[3]));
+
+	if (rc)
+		print_subcrq_error(dev, rc, __func__);
+
+	return rc;
+}
+
+static int ibmvnic_tx_scrq_flush(struct ibmvnic_adapter *adapter,
+				 struct ibmvnic_sub_crq_queue *tx_scrq,
+				 bool indirect)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ibmvnic_ind_xmit_queue *ind_bufp;
 	u64 dma_addr;
@@ -2366,7 +2478,17 @@ static int ibmvnic_tx_scrq_flush(struct ibmvnic_adapter *adapter,
 
 	if (!entries)
 		return 0;
+<<<<<<< HEAD
 	rc = send_subcrq_indirect(adapter, handle, dma_addr, entries);
+=======
+
+	if (indirect)
+		rc = send_subcrq_indirect(adapter, handle, dma_addr, entries);
+	else
+		rc = send_subcrq_direct(adapter, handle,
+					(u64 *)ind_bufp->indir_arr);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc)
 		ibmvnic_tx_scrq_clean_buffer(adapter, tx_scrq);
 	else
@@ -2397,6 +2519,10 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
 	unsigned long lpar_rc;
 	union sub_crq tx_crq;
 	unsigned int offset;
+<<<<<<< HEAD
+=======
+	bool use_scrq_send_direct = false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int num_entries = 1;
 	unsigned char *dst;
 	int bufidx = 0;
@@ -2424,7 +2550,11 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
 		tx_dropped++;
 		tx_send_failed++;
 		ret = NETDEV_TX_OK;
+<<<<<<< HEAD
 		lpar_rc = ibmvnic_tx_scrq_flush(adapter, tx_scrq);
+=======
+		lpar_rc = ibmvnic_tx_scrq_flush(adapter, tx_scrq, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (lpar_rc != H_SUCCESS)
 			goto tx_err;
 		goto out;
@@ -2442,7 +2572,11 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
 		tx_send_failed++;
 		tx_dropped++;
 		ret = NETDEV_TX_OK;
+<<<<<<< HEAD
 		lpar_rc = ibmvnic_tx_scrq_flush(adapter, tx_scrq);
+=======
+		lpar_rc = ibmvnic_tx_scrq_flush(adapter, tx_scrq, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (lpar_rc != H_SUCCESS)
 			goto tx_err;
 		goto out;
@@ -2456,6 +2590,23 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
 	memset(dst, 0, tx_pool->buf_size);
 	data_dma_addr = ltb->addr + offset;
 
+<<<<<<< HEAD
+=======
+	/* if we are going to send_subcrq_direct this then we need to
+	 * update the checksum before copying the data into ltb. Essentially
+	 * these packets force disable CSO so that we can guarantee that
+	 * FW does not need header info and we can send direct. Also, vnic
+	 * server must be able to xmit standard packets without header data
+	 */
+	if (*hdrs == 0 && !skb_is_gso(skb) &&
+	    !ind_bufp->index && !netdev_xmit_more()) {
+		use_scrq_send_direct = true;
+		if (skb->ip_summed == CHECKSUM_PARTIAL &&
+		    skb_checksum_help(skb))
+			use_scrq_send_direct = false;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (skb_shinfo(skb)->nr_frags) {
 		int cur, i;
 
@@ -2475,9 +2626,12 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
 		skb_copy_from_linear_data(skb, dst, skb->len);
 	}
 
+<<<<<<< HEAD
 	/* post changes to long_term_buff *dst before VIOS accessing it */
 	dma_wmb();
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	tx_pool->consumer_index =
 	    (tx_pool->consumer_index + 1) % tx_pool->num_buffers;
 
@@ -2540,6 +2694,21 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
 		tx_crq.v1.flags1 |= IBMVNIC_TX_LSO;
 		tx_crq.v1.mss = cpu_to_be16(skb_shinfo(skb)->gso_size);
 		hdrs += 2;
+<<<<<<< HEAD
+=======
+	} else if (use_scrq_send_direct) {
+		/* See above comment, CSO disabled with direct xmit */
+		tx_crq.v1.flags1 &= ~(IBMVNIC_TX_CHKSUM_OFFLOAD);
+		ind_bufp->index = 1;
+		tx_buff->num_entries = 1;
+		netdev_tx_sent_queue(txq, skb->len);
+		ind_bufp->indir_arr[0] = tx_crq;
+		lpar_rc = ibmvnic_tx_scrq_flush(adapter, tx_scrq, false);
+		if (lpar_rc != H_SUCCESS)
+			goto tx_err;
+
+		goto early_exit;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if ((*hdrs >> 7) & 1)
@@ -2549,7 +2718,11 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
 	tx_buff->num_entries = num_entries;
 	/* flush buffer if current entry can not fit */
 	if (num_entries + ind_bufp->index > IBMVNIC_MAX_IND_DESCS) {
+<<<<<<< HEAD
 		lpar_rc = ibmvnic_tx_scrq_flush(adapter, tx_scrq);
+=======
+		lpar_rc = ibmvnic_tx_scrq_flush(adapter, tx_scrq, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (lpar_rc != H_SUCCESS)
 			goto tx_flush_err;
 	}
@@ -2557,15 +2730,27 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
 	indir_arr[0] = tx_crq;
 	memcpy(&ind_bufp->indir_arr[ind_bufp->index], &indir_arr[0],
 	       num_entries * sizeof(struct ibmvnic_generic_scrq));
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ind_bufp->index += num_entries;
 	if (__netdev_tx_sent_queue(txq, skb->len,
 				   netdev_xmit_more() &&
 				   ind_bufp->index < IBMVNIC_MAX_IND_DESCS)) {
+<<<<<<< HEAD
 		lpar_rc = ibmvnic_tx_scrq_flush(adapter, tx_scrq);
+=======
+		lpar_rc = ibmvnic_tx_scrq_flush(adapter, tx_scrq, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (lpar_rc != H_SUCCESS)
 			goto tx_err;
 	}
 
+<<<<<<< HEAD
+=======
+early_exit:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (atomic_add_return(num_entries, &tx_scrq->used)
 					>= adapter->req_tx_entries_per_subcrq) {
 		netdev_dbg(netdev, "Stopping queue %d\n", queue_num);
@@ -3527,9 +3712,14 @@ restart_poll:
 	}
 
 	if (adapter->state != VNIC_CLOSING &&
+<<<<<<< HEAD
 	    ((atomic_read(&adapter->rx_pool[scrq_num].available) <
 	      adapter->req_rx_add_entries_per_subcrq / 2) ||
 	      frames_processed < budget))
+=======
+	    (atomic_read(&adapter->rx_pool[scrq_num].available) <
+	      adapter->req_rx_add_entries_per_subcrq / 2))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		replenish_rx_pool(adapter, &adapter->rx_pool[scrq_num]);
 	if (frames_processed < budget) {
 		if (napi_complete_done(napi, frames_processed)) {
@@ -4169,20 +4359,31 @@ static int ibmvnic_complete_tx(struct ibmvnic_adapter *adapter,
 			       struct ibmvnic_sub_crq_queue *scrq)
 {
 	struct device *dev = &adapter->vdev->dev;
+<<<<<<< HEAD
+=======
+	int num_packets = 0, total_bytes = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ibmvnic_tx_pool *tx_pool;
 	struct ibmvnic_tx_buff *txbuff;
 	struct netdev_queue *txq;
 	union sub_crq *next;
+<<<<<<< HEAD
 	int index;
 	int i;
+=======
+	int index, i;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 restart_loop:
 	while (pending_scrq(adapter, scrq)) {
 		unsigned int pool = scrq->pool_index;
 		int num_entries = 0;
+<<<<<<< HEAD
 		int total_bytes = 0;
 		int num_packets = 0;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		next = ibmvnic_next_scrq(adapter, scrq);
 		for (i = 0; i < next->tx_comp.num_comps; i++) {
 			index = be32_to_cpu(next->tx_comp.correlators[i]);
@@ -4218,8 +4419,11 @@ restart_loop:
 		/* remove tx_comp scrq*/
 		next->tx_comp.first = 0;
 
+<<<<<<< HEAD
 		txq = netdev_get_tx_queue(adapter->netdev, scrq->pool_index);
 		netdev_tx_completed_queue(txq, num_packets, total_bytes);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (atomic_sub_return(num_entries, &scrq->used) <=
 		    (adapter->req_tx_entries_per_subcrq / 2) &&
@@ -4244,6 +4448,12 @@ restart_loop:
 		goto restart_loop;
 	}
 
+<<<<<<< HEAD
+=======
+	txq = netdev_get_tx_queue(adapter->netdev, scrq->pool_index);
+	netdev_tx_completed_queue(txq, num_packets, total_bytes);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 

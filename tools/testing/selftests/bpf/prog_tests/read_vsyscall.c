@@ -23,6 +23,10 @@ struct read_ret_desc {
 	{ .name = "probe_read_user_str", .ret = -EFAULT },
 	{ .name = "copy_from_user", .ret = -EFAULT },
 	{ .name = "copy_from_user_task", .ret = -EFAULT },
+<<<<<<< HEAD
+=======
+	{ .name = "copy_from_user_str", .ret = -EFAULT },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 void test_read_vsyscall(void)

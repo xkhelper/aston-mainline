@@ -353,8 +353,18 @@ err_reset_bridge:
 	bridge->encoder = NULL;
 	list_del(&bridge->chain_node);
 
+<<<<<<< HEAD
 	DRM_ERROR("failed to attach bridge %pOF to encoder %s: %d\n",
 		  bridge->of_node, encoder->name, ret);
+=======
+	if (ret != -EPROBE_DEFER)
+		DRM_ERROR("failed to attach bridge %pOF to encoder %s: %d\n",
+			  bridge->of_node, encoder->name, ret);
+	else
+		dev_err_probe(encoder->dev->dev, -EPROBE_DEFER,
+			      "failed to attach bridge %pOF to encoder %s\n",
+			      bridge->of_node, encoder->name);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }

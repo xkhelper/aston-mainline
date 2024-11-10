@@ -603,7 +603,11 @@ static struct platform_driver ehrpwm_pwm_driver = {
 		.pm = pm_ptr(&ehrpwm_pwm_pm_ops),
 	},
 	.probe = ehrpwm_pwm_probe,
+<<<<<<< HEAD
 	.remove_new = ehrpwm_pwm_remove,
+=======
+	.remove = ehrpwm_pwm_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(ehrpwm_pwm_driver);
 

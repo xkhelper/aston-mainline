@@ -100,13 +100,20 @@ static inline int do_encrypt_sg(struct crypto_sync_skcipher *tfm,
 				struct scatterlist *sg, size_t len)
 {
 	SYNC_SKCIPHER_REQUEST_ON_STACK(req, tfm);
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	skcipher_request_set_sync_tfm(req, tfm);
 	skcipher_request_set_callback(req, 0, NULL, NULL);
 	skcipher_request_set_crypt(req, sg, sg, len, nonce.d);
 
+<<<<<<< HEAD
 	ret = crypto_skcipher_encrypt(req);
+=======
+	int ret = crypto_skcipher_encrypt(req);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		pr_err("got error %i from crypto_skcipher_encrypt()", ret);
 
@@ -118,6 +125,7 @@ static inline int do_encrypt(struct crypto_sync_skcipher *tfm,
 			      void *buf, size_t len)
 {
 	if (!is_vmalloc_addr(buf)) {
+<<<<<<< HEAD
 		struct scatterlist sg;
 
 		sg_init_table(&sg, 1);
@@ -150,6 +158,49 @@ static inline int do_encrypt(struct crypto_sync_skcipher *tfm,
 
 		ret = do_encrypt_sg(tfm, nonce, sg, orig_len);
 		kfree(sg);
+=======
+		struct scatterlist sg = {};
+
+		sg_mark_end(&sg);
+		sg_set_page(&sg, virt_to_page(buf), len, offset_in_page(buf));
+		return do_encrypt_sg(tfm, nonce, &sg, len);
+	} else {
+		DARRAY_PREALLOCATED(struct scatterlist, 4) sgl;
+		size_t sgl_len = 0;
+		int ret;
+
+		darray_init(&sgl);
+
+		while (len) {
+			unsigned offset = offset_in_page(buf);
+			struct scatterlist sg = {
+				.page_link	= (unsigned long) vmalloc_to_page(buf),
+				.offset		= offset,
+				.length		= min(len, PAGE_SIZE - offset),
+			};
+
+			if (darray_push(&sgl, sg)) {
+				sg_mark_end(&darray_last(sgl));
+				ret = do_encrypt_sg(tfm, nonce, sgl.data, sgl_len);
+				if (ret)
+					goto err;
+
+				nonce = nonce_add(nonce, sgl_len);
+				sgl_len = 0;
+				sgl.nr = 0;
+				BUG_ON(darray_push(&sgl, sg));
+			}
+
+			buf += sg.length;
+			len -= sg.length;
+			sgl_len += sg.length;
+		}
+
+		sg_mark_end(&darray_last(sgl));
+		ret = do_encrypt_sg(tfm, nonce, sgl.data, sgl_len);
+err:
+		darray_exit(&sgl);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return ret;
 	}
 }
@@ -325,13 +376,19 @@ int __bch2_encrypt_bio(struct bch_fs *c, unsigned type,
 {
 	struct bio_vec bv;
 	struct bvec_iter iter;
+<<<<<<< HEAD
 	struct scatterlist sgl[16], *sg = sgl;
 	size_t bytes = 0;
+=======
+	DARRAY_PREALLOCATED(struct scatterlist, 4) sgl;
+	size_t sgl_len = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret = 0;
 
 	if (!bch2_csum_type_is_encryption(type))
 		return 0;
 
+<<<<<<< HEAD
 	sg_init_table(sgl, ARRAY_SIZE(sgl));
 
 	bio_for_each_segment(bv, bio, iter) {
@@ -358,6 +415,37 @@ int __bch2_encrypt_bio(struct bch_fs *c, unsigned type,
 		return do_encrypt_sg(c->chacha20, nonce, sgl, bytes);
 	}
 
+=======
+	darray_init(&sgl);
+
+	bio_for_each_segment(bv, bio, iter) {
+		struct scatterlist sg = {
+			.page_link	= (unsigned long) bv.bv_page,
+			.offset		= bv.bv_offset,
+			.length		= bv.bv_len,
+		};
+
+		if (darray_push(&sgl, sg)) {
+			sg_mark_end(&darray_last(sgl));
+			ret = do_encrypt_sg(c->chacha20, nonce, sgl.data, sgl_len);
+			if (ret)
+				goto err;
+
+			nonce = nonce_add(nonce, sgl_len);
+			sgl_len = 0;
+			sgl.nr = 0;
+
+			BUG_ON(darray_push(&sgl, sg));
+		}
+
+		sgl_len += sg.length;
+	}
+
+	sg_mark_end(&darray_last(sgl));
+	ret = do_encrypt_sg(c->chacha20, nonce, sgl.data, sgl_len);
+err:
+	darray_exit(&sgl);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 

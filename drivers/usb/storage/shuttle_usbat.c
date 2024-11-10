@@ -162,7 +162,11 @@ static int init_usbat_flash(struct us_data *us);
 { USB_DEVICE_VER(id_vendor, id_product, bcdDeviceMin, bcdDeviceMax), \
   .driver_info = (flags) }
 
+<<<<<<< HEAD
 static struct usb_device_id usbat_usb_ids[] = {
+=======
+static const struct usb_device_id usbat_usb_ids[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #	include "unusual_usbat.h"
 	{ }		/* Terminating entry */
 };
@@ -184,7 +188,11 @@ MODULE_DEVICE_TABLE(usb, usbat_usb_ids);
 	.initFunction = init_function,	\
 }
 
+<<<<<<< HEAD
 static struct us_unusual_dev usbat_unusual_dev_list[] = {
+=======
+static const struct us_unusual_dev usbat_unusual_dev_list[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #	include "unusual_usbat.h"
 	{ }		/* Terminating entry */
 };

@@ -476,7 +476,11 @@ static struct platform_driver c_can_plat_driver = {
 		.of_match_table = c_can_of_table,
 	},
 	.probe = c_can_plat_probe,
+<<<<<<< HEAD
 	.remove_new = c_can_plat_remove,
+=======
+	.remove = c_can_plat_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.suspend = c_can_suspend,
 	.resume = c_can_resume,
 	.id_table = c_can_id_table,

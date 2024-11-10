@@ -68,6 +68,11 @@
 #define FLEXCAN_QUIRK_SUPPORT_RX_MAILBOX_RTR BIT(15)
 /* Device supports RX via FIFO */
 #define FLEXCAN_QUIRK_SUPPORT_RX_FIFO BIT(16)
+<<<<<<< HEAD
+=======
+/* Setup stop mode with ATF SCMI protocol to support wakeup */
+#define FLEXCAN_QUIRK_SETUP_STOP_MODE_SCMI BIT(17)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct flexcan_devtype_data {
 	u32 quirks;		/* quirks needed for different IP cores */

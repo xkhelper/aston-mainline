@@ -5,7 +5,11 @@
 
 /dts-v1/;
 #include <dt-bindings/pwm/pwm.h>
+<<<<<<< HEAD
 #include "rk3399.dtsi"
+=======
+#include "rk3399-base.dtsi"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 / {
 	model = "Rockchip RK3399 Evaluation Board";

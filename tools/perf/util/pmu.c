@@ -30,10 +30,13 @@
 #include "util/evsel_config.h"
 #include <regex.h>
 
+<<<<<<< HEAD
 struct perf_pmu perf_pmu__fake = {
 	.name = "fake",
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define UNIT_MAX_LEN	31 /* max length for event unit name */
 
 enum event_source {
@@ -367,8 +370,13 @@ error:
 	return -1;
 }
 
+<<<<<<< HEAD
 static int
 perf_pmu__parse_per_pkg(struct perf_pmu *pmu, struct perf_pmu_alias *alias)
+=======
+static bool perf_pmu__parse_event_source_bool(const char *pmu_name, const char *event_name,
+					      const char *suffix)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	char path[PATH_MAX];
 	size_t len;
@@ -376,6 +384,7 @@ perf_pmu__parse_per_pkg(struct perf_pmu *pmu, struct perf_pmu_alias *alias)
 
 	len = perf_pmu__event_source_devices_scnprintf(path, sizeof(path));
 	if (!len)
+<<<<<<< HEAD
 		return 0;
 	scnprintf(path + len, sizeof(path) - len, "%s/events/%s.per-pkg", pmu->name, alias->name);
 
@@ -407,6 +416,38 @@ static int perf_pmu__parse_snapshot(struct perf_pmu *pmu, struct perf_pmu_alias 
 	alias->snapshot = true;
 	close(fd);
 	return 0;
+=======
+		return false;
+
+	scnprintf(path + len, sizeof(path) - len, "%s/events/%s.%s", pmu_name, event_name, suffix);
+
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+		return false;
+
+#ifndef NDEBUG
+	{
+		char buf[8];
+
+		len = read(fd, buf, sizeof(buf));
+		assert(len == 1 || len == 2);
+		assert(buf[0] == '1');
+	}
+#endif
+
+	close(fd);
+	return true;
+}
+
+static void perf_pmu__parse_per_pkg(struct perf_pmu *pmu, struct perf_pmu_alias *alias)
+{
+	alias->per_pkg = perf_pmu__parse_event_source_bool(pmu->name, alias->name, "per-pkg");
+}
+
+static void perf_pmu__parse_snapshot(struct perf_pmu *pmu, struct perf_pmu_alias *alias)
+{
+	alias->snapshot = perf_pmu__parse_event_source_bool(pmu->name, alias->name, "snapshot");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Delete an alias entry. */
@@ -1173,6 +1214,14 @@ struct perf_pmu *perf_pmu__create_placeholder_core_pmu(struct list_head *core_pm
 	return pmu;
 }
 
+<<<<<<< HEAD
+=======
+static bool perf_pmu__is_fake(const struct perf_pmu *pmu)
+{
+	return pmu->type == PERF_PMU_TYPE_FAKE;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void perf_pmu__warn_invalid_formats(struct perf_pmu *pmu)
 {
 	struct perf_pmu_format *format;
@@ -1183,7 +1232,11 @@ void perf_pmu__warn_invalid_formats(struct perf_pmu *pmu)
 	pmu->formats_checked = true;
 
 	/* fake pmu doesn't have format list */
+<<<<<<< HEAD
 	if (pmu == &perf_pmu__fake)
+=======
+	if (perf_pmu__is_fake(pmu))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	list_for_each_entry(format, &pmu->format, list) {
@@ -1199,8 +1252,17 @@ void perf_pmu__warn_invalid_formats(struct perf_pmu *pmu)
 
 bool evsel__is_aux_event(const struct evsel *evsel)
 {
+<<<<<<< HEAD
 	struct perf_pmu *pmu = evsel__find_pmu(evsel);
 
+=======
+	struct perf_pmu *pmu;
+
+	if (evsel->needs_auxtrace_mmap)
+		return true;
+
+	pmu = evsel__find_pmu(evsel);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return pmu && pmu->auxtrace;
 }
 
@@ -1507,6 +1569,13 @@ int perf_pmu__config(struct perf_pmu *pmu, struct perf_event_attr *attr,
 {
 	bool zero = !!pmu->perf_event_attr_init_default;
 
+<<<<<<< HEAD
+=======
+	/* Fake PMU doesn't have proper terms so nothing to configure in attr. */
+	if (perf_pmu__is_fake(pmu))
+		return 0;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return perf_pmu__config_terms(pmu, attr, head_terms, zero, err);
 }
 
@@ -1615,6 +1684,13 @@ int perf_pmu__check_alias(struct perf_pmu *pmu, struct parse_events_terms *head_
 	info->scale    = 0.0;
 	info->snapshot = false;
 
+<<<<<<< HEAD
+=======
+	/* Fake PMU doesn't rewrite terms. */
+	if (perf_pmu__is_fake(pmu))
+		goto out;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	list_for_each_entry_safe(term, h, &head_terms->terms, list) {
 		alias = pmu_find_alias(pmu, term);
 		if (!alias)
@@ -1637,7 +1713,11 @@ int perf_pmu__check_alias(struct perf_pmu *pmu, struct parse_events_terms *head_
 		list_del_init(&term->list);
 		parse_events_term__delete(term);
 	}
+<<<<<<< HEAD
 
+=======
+out:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * if no unit or scale found in aliases, then
 	 * set defaults as for evsel
@@ -1844,6 +1924,10 @@ int perf_pmu__for_each_event(struct perf_pmu *pmu, bool skip_duplicate_pmus,
 	struct perf_pmu_alias *event;
 	struct pmu_event_info info = {
 		.pmu = pmu,
+<<<<<<< HEAD
+=======
+		.event_type_desc = "Kernel PMU event",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 	int ret = 0;
 	struct strbuf sb;

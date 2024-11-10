@@ -100,6 +100,10 @@ nfserrno (int errno)
 		{ nfserr_io, -EUCLEAN },
 		{ nfserr_perm, -ENOKEY },
 		{ nfserr_no_grace, -ENOGRACE},
+<<<<<<< HEAD
+=======
+		{ nfserr_io, -EBADMSG },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 	int	i;
 
@@ -421,8 +425,14 @@ nfsd_get_write_access(struct svc_rqst *rqstp, struct svc_fh *fhp,
 	if (iap->ia_size < inode->i_size) {
 		__be32 err;
 
+<<<<<<< HEAD
 		err = nfsd_permission(rqstp, fhp->fh_export, fhp->fh_dentry,
 				NFSD_MAY_TRUNC | NFSD_MAY_OWNER_OVERRIDE);
+=======
+		err = nfsd_permission(&rqstp->rq_cred,
+				      fhp->fh_export, fhp->fh_dentry,
+				      NFSD_MAY_TRUNC | NFSD_MAY_OWNER_OVERRIDE);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err)
 			return err;
 	}
@@ -814,7 +824,12 @@ nfsd_access(struct svc_rqst *rqstp, struct svc_fh *fhp, u32 *access, u32 *suppor
 
 			sresult |= map->access;
 
+<<<<<<< HEAD
 			err2 = nfsd_permission(rqstp, export, dentry, map->how);
+=======
+			err2 = nfsd_permission(&rqstp->rq_cred, export,
+					       dentry, map->how);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			switch (err2) {
 			case nfs_ok:
 				result |= map->access;
@@ -900,11 +915,14 @@ __nfsd_open(struct svc_rqst *rqstp, struct svc_fh *fhp, umode_t type,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	if (may_flags & NFSD_MAY_64BIT_COOKIE)
 		file->f_mode |= FMODE_64BITHASH;
 	else
 		file->f_mode |= FMODE_32BITHASH;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	*filp = file;
 out:
 	return host_err;
@@ -1160,7 +1178,10 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
 	errseq_t		since;
 	__be32			nfserr;
 	int			host_err;
+<<<<<<< HEAD
 	int			use_wgather;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	loff_t			pos = offset;
 	unsigned long		exp_op_flags = 0;
 	unsigned int		pflags = current->flags;
@@ -1186,12 +1207,19 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
 	}
 
 	exp = fhp->fh_export;
+<<<<<<< HEAD
 	use_wgather = (rqstp->rq_vers == 2) && EX_WGATHER(exp);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!EX_ISSYNC(exp))
 		stable = NFS_UNSTABLE;
 
+<<<<<<< HEAD
 	if (stable && !use_wgather)
+=======
+	if (stable && !fhp->fh_use_wgather)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		flags |= RWF_SYNC;
 
 	iov_iter_kvec(&iter, ITER_SOURCE, vec, vlen, *cnt);
@@ -1210,7 +1238,11 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
 	if (host_err < 0)
 		goto out_nfserr;
 
+<<<<<<< HEAD
 	if (stable && use_wgather) {
+=======
+	if (stable && fhp->fh_use_wgather) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		host_err = wait_for_concurrent_writes(file);
 		if (host_err < 0)
 			commit_reset_write_verifier(nn, rqstp, host_err);
@@ -1475,7 +1507,12 @@ nfsd_create_locked(struct svc_rqst *rqstp, struct svc_fh *fhp,
 	dirp = d_inode(dentry);
 
 	dchild = dget(resfhp->fh_dentry);
+<<<<<<< HEAD
 	err = nfsd_permission(rqstp, fhp->fh_export, dentry, NFSD_MAY_CREATE);
+=======
+	err = nfsd_permission(&rqstp->rq_cred, fhp->fh_export, dentry,
+			      NFSD_MAY_CREATE);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err)
 		goto out;
 
@@ -1767,10 +1804,14 @@ nfsd_link(struct svc_rqst *rqstp, struct svc_fh *ffhp,
 		if (!err)
 			err = nfserrno(commit_metadata(tfhp));
 	} else {
+<<<<<<< HEAD
 		if (host_err == -EXDEV && rqstp->rq_vers == 2)
 			err = nfserr_acces;
 		else
 			err = nfserrno(host_err);
+=======
+		err = nfserrno(host_err);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	dput(dnew);
 out_drop_write:
@@ -1836,7 +1877,11 @@ nfsd_rename(struct svc_rqst *rqstp, struct svc_fh *ffhp, char *fname, int flen,
 	if (!flen || isdotent(fname, flen) || !tlen || isdotent(tname, tlen))
 		goto out;
 
+<<<<<<< HEAD
 	err = (rqstp->rq_vers == 2) ? nfserr_acces : nfserr_xdev;
+=======
+	err = nfserr_xdev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ffhp->fh_export->ex_path.mnt != tfhp->fh_export->ex_path.mnt)
 		goto out;
 	if (ffhp->fh_export->ex_path.dentry != tfhp->fh_export->ex_path.dentry)
@@ -1851,7 +1896,11 @@ retry:
 
 	trap = lock_rename(tdentry, fdentry);
 	if (IS_ERR(trap)) {
+<<<<<<< HEAD
 		err = (rqstp->rq_vers == 2) ? nfserr_acces : nfserr_xdev;
+=======
+		err = nfserr_xdev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out_want_write;
 	}
 	err = fh_fill_pre_attrs(ffhp);
@@ -2020,10 +2069,14 @@ out_nfserr:
 		/* name is mounted-on. There is no perfect
 		 * error status.
 		 */
+<<<<<<< HEAD
 		if (nfsd_v4client(rqstp))
 			err = nfserr_file_open;
 		else
 			err = nfserr_acces;
+=======
+		err = nfserr_file_open;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		err = nfserrno(host_err);
 	}
@@ -2178,14 +2231,25 @@ nfsd_readdir(struct svc_rqst *rqstp, struct svc_fh *fhp, loff_t *offsetp,
 	loff_t		offset = *offsetp;
 	int             may_flags = NFSD_MAY_READ;
 
+<<<<<<< HEAD
 	/* NFSv2 only supports 32 bit cookies */
 	if (rqstp->rq_vers > 2)
 		may_flags |= NFSD_MAY_64BIT_COOKIE;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	err = nfsd_open(rqstp, fhp, S_IFDIR, may_flags, &file);
 	if (err)
 		goto out;
 
+<<<<<<< HEAD
+=======
+	if (fhp->fh_64bit_cookies)
+		file->f_mode |= FMODE_64BITHASH;
+	else
+		file->f_mode |= FMODE_32BITHASH;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	offset = vfs_llseek(file, offset, SEEK_SET);
 	if (offset < 0) {
 		err = nfserrno((int)offset);
@@ -2255,9 +2319,15 @@ nfsd_statfs(struct svc_rqst *rqstp, struct svc_fh *fhp, struct kstatfs *stat, in
 	return err;
 }
 
+<<<<<<< HEAD
 static int exp_rdonly(struct svc_rqst *rqstp, struct svc_export *exp)
 {
 	return nfsexp_flags(rqstp, exp) & NFSEXP_READONLY;
+=======
+static int exp_rdonly(struct svc_cred *cred, struct svc_export *exp)
+{
+	return nfsexp_flags(cred, exp) & NFSEXP_READONLY;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #ifdef CONFIG_NFSD_V4
@@ -2501,8 +2571,13 @@ out_unlock:
  * Check for a user's access permissions to this inode.
  */
 __be32
+<<<<<<< HEAD
 nfsd_permission(struct svc_rqst *rqstp, struct svc_export *exp,
 					struct dentry *dentry, int acc)
+=======
+nfsd_permission(struct svc_cred *cred, struct svc_export *exp,
+		struct dentry *dentry, int acc)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct inode	*inode = d_inode(dentry);
 	int		err;
@@ -2533,7 +2608,11 @@ nfsd_permission(struct svc_rqst *rqstp, struct svc_export *exp,
 	 */
 	if (!(acc & NFSD_MAY_LOCAL_ACCESS))
 		if (acc & (NFSD_MAY_WRITE | NFSD_MAY_SATTR | NFSD_MAY_TRUNC)) {
+<<<<<<< HEAD
 			if (exp_rdonly(rqstp, exp) ||
+=======
+			if (exp_rdonly(cred, exp) ||
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    __mnt_is_readonly(exp->ex_path.mnt))
 				return nfserr_rofs;
 			if (/* (acc & NFSD_MAY_WRITE) && */ IS_IMMUTABLE(inode))

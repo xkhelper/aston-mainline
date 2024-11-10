@@ -507,6 +507,12 @@ static int hci_uart_tty_open(struct tty_struct *tty)
 	hu->alignment = 1;
 	hu->padding = 0;
 
+<<<<<<< HEAD
+=======
+	/* Use serial port speed as oper_speed */
+	hu->oper_speed = tty->termios.c_ospeed;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	INIT_WORK(&hu->init_ready, hci_uart_init_work);
 	INIT_WORK(&hu->write_work, hci_uart_write_work);
 
@@ -870,7 +876,13 @@ static int __init hci_uart_init(void)
 #ifdef CONFIG_BT_HCIUART_MRVL
 	mrvl_init();
 #endif
+<<<<<<< HEAD
 
+=======
+#ifdef CONFIG_BT_HCIUART_AML
+	aml_init();
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -906,7 +918,13 @@ static void __exit hci_uart_exit(void)
 #ifdef CONFIG_BT_HCIUART_MRVL
 	mrvl_deinit();
 #endif
+<<<<<<< HEAD
 
+=======
+#ifdef CONFIG_BT_HCIUART_AML
+	aml_deinit();
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	tty_unregister_ldisc(&hci_uart_ldisc);
 }
 

@@ -457,6 +457,7 @@ struct dentry *f2fs_get_parent(struct dentry *child)
 	return d_obtain_alias(f2fs_iget(child->d_sb, ino));
 }
 
+<<<<<<< HEAD
 static int __recover_dot_dentries(struct inode *dir, nid_t pino)
 {
 	struct f2fs_sb_info *sbi = F2FS_I_SB(dir);
@@ -513,6 +514,8 @@ out:
 	return err;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct dentry *f2fs_lookup(struct inode *dir, struct dentry *dentry,
 		unsigned int flags)
 {
@@ -522,7 +525,10 @@ static struct dentry *f2fs_lookup(struct inode *dir, struct dentry *dentry,
 	struct dentry *new;
 	nid_t ino = -1;
 	int err = 0;
+<<<<<<< HEAD
 	unsigned int root_ino = F2FS_ROOT_INO(F2FS_I_SB(dir));
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct f2fs_filename fname;
 
 	trace_f2fs_lookup_start(dir, dentry, flags);
@@ -558,6 +564,7 @@ static struct dentry *f2fs_lookup(struct inode *dir, struct dentry *dentry,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	if ((dir->i_ino == root_ino) && f2fs_has_inline_dots(dir)) {
 		err = __recover_dot_dentries(dir, root_ino);
 		if (err)
@@ -569,6 +576,8 @@ static struct dentry *f2fs_lookup(struct inode *dir, struct dentry *dentry,
 		if (err)
 			goto out_iput;
 	}
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ENCRYPTED(dir) &&
 	    (S_ISDIR(inode->i_mode) || S_ISLNK(inode->i_mode)) &&
 	    !fscrypt_has_permitted_context(dir, inode)) {

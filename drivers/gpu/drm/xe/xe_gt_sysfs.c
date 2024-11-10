@@ -51,5 +51,9 @@ int xe_gt_sysfs_init(struct xe_gt *gt)
 
 	gt->sysfs = &kg->base;
 
+<<<<<<< HEAD
 	return devm_add_action(xe->drm.dev, gt_sysfs_fini, gt);
+=======
+	return devm_add_action_or_reset(xe->drm.dev, gt_sysfs_fini, gt);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

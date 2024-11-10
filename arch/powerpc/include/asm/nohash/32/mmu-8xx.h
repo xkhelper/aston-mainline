@@ -170,8 +170,14 @@
 
 #define mmu_linear_psize	MMU_PAGE_8M
 
+<<<<<<< HEAD
 #define MODULES_VADDR	(PAGE_OFFSET - SZ_256M)
 #define MODULES_END	PAGE_OFFSET
+=======
+#define MODULES_END	PAGE_OFFSET
+#define MODULES_SIZE	(CONFIG_MODULES_SIZE * SZ_1M)
+#define MODULES_VADDR	(MODULES_END - MODULES_SIZE)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifndef __ASSEMBLY__
 

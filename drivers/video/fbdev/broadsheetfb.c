@@ -1151,7 +1151,11 @@ static void broadsheetfb_remove(struct platform_device *dev)
 
 static struct platform_driver broadsheetfb_driver = {
 	.probe	= broadsheetfb_probe,
+<<<<<<< HEAD
 	.remove_new = broadsheetfb_remove,
+=======
+	.remove	= broadsheetfb_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver	= {
 		.name	= "broadsheetfb",
 	},

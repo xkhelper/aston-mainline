@@ -16,6 +16,10 @@ properties:
       - arm,cmn-600
       - arm,cmn-650
       - arm,cmn-700
+<<<<<<< HEAD
+=======
+      - arm,cmn-s3
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       - arm,ci-700
 
   reg:

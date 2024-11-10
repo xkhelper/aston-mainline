@@ -99,7 +99,11 @@ struct mv_xor_device {
  * @common: common dmaengine channel object members
  * @slots_allocated: records the actual size of the descriptor slot pool
  * @irq_tasklet: bottom half where mv_xor_slot_cleanup runs
+<<<<<<< HEAD
  * @op_in_desc: new mode of driver, each op is writen to descriptor.
+=======
+ * @op_in_desc: new mode of driver, each op is written to descriptor.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct mv_xor_chan {
 	int			pending;

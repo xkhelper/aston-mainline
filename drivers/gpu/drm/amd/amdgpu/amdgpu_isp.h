@@ -49,6 +49,10 @@ struct amdgpu_isp {
 	const struct isp_funcs	*funcs;
 	struct mfd_cell *isp_cell;
 	struct resource *isp_res;
+<<<<<<< HEAD
+=======
+	struct resource *isp_i2c_res;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct isp_platform_data *isp_pdata;
 	unsigned int harvest_config;
 	const struct firmware	*fw;

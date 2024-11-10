@@ -15,10 +15,17 @@
 #include <signal.h>
 #include <time.h>
 
+<<<<<<< HEAD
 #define TWOMEG (2<<20)
 #define RUNTIME (20)
 
 #define ALIGN(x, a) (((x) + (a - 1)) & (~((a) - 1)))
+=======
+#define TWOMEG		(2<<20)
+#define RUNTIME		(20)
+#define MAX_RETRIES	100
+#define ALIGN(x, a)	(((x) + (a - 1)) & (~((a) - 1)))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 FIXTURE(migration)
 {
@@ -65,6 +72,10 @@ int migrate(uint64_t *ptr, int n1, int n2)
 	int ret, tmp;
 	int status = 0;
 	struct timespec ts1, ts2;
+<<<<<<< HEAD
+=======
+	int failures = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (clock_gettime(CLOCK_MONOTONIC, &ts1))
 		return -1;
@@ -79,13 +90,26 @@ int migrate(uint64_t *ptr, int n1, int n2)
 		ret = move_pages(0, 1, (void **) &ptr, &n2, &status,
 				MPOL_MF_MOVE_ALL);
 		if (ret) {
+<<<<<<< HEAD
 			if (ret > 0)
 				printf("Didn't migrate %d pages\n", ret);
+=======
+			if (ret > 0) {
+				/* Migration is best effort; try again */
+				if (++failures < MAX_RETRIES)
+					continue;
+				printf("Didn't migrate %d pages\n", ret);
+			}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			else
 				perror("Couldn't migrate pages");
 			return -2;
 		}
+<<<<<<< HEAD
 
+=======
+		failures = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		tmp = n2;
 		n2 = n1;
 		n1 = tmp;

@@ -177,6 +177,10 @@
 &cpsw3g {
 	pinctrl-names = "default";
 	pinctrl-0 = <&rgmii1_default_pins>;
+<<<<<<< HEAD
+=======
+	status = "okay";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &cpsw3g_mdio {
@@ -210,10 +214,14 @@
 &cpsw_port1 {
 	phy-mode = "rgmii-id";
 	phy-handle = <&ethernet_phy0>;
+<<<<<<< HEAD
 };
 
 &cpsw_port2 {
 	status = "disabled";
+=======
+	status = "okay";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &icssg1_mdio {

@@ -1876,12 +1876,21 @@ static const struct of_device_id fsl_diu_match[] = {
 MODULE_DEVICE_TABLE(of, fsl_diu_match);
 
 static struct platform_driver fsl_diu_driver = {
+<<<<<<< HEAD
 	.driver = {
 		.name = "fsl-diu-fb",
 		.of_match_table = fsl_diu_match,
 	},
 	.probe  	= fsl_diu_probe,
 	.remove_new 	= fsl_diu_remove,
+=======
+	.driver		= {
+		.name = "fsl-diu-fb",
+		.of_match_table = fsl_diu_match,
+	},
+	.probe		= fsl_diu_probe,
+	.remove		= fsl_diu_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.suspend	= fsl_diu_suspend,
 	.resume		= fsl_diu_resume,
 };

@@ -682,6 +682,7 @@ static const struct thermal_zone_device_ops tegra_of_thermal_ops = {
 	.set_trips = tegra_thermctl_set_trips,
 };
 
+<<<<<<< HEAD
 static int get_hot_temp(struct thermal_zone_device *tz, int *trip_id, int *temp)
 {
 	int i, ret;
@@ -700,6 +701,27 @@ static int get_hot_temp(struct thermal_zone_device *tz, int *trip_id, int *temp)
 	}
 
 	return -EINVAL;
+=======
+static int get_hot_trip_cb(struct thermal_trip *trip, void *arg)
+{
+	const struct thermal_trip **trip_ret = arg;
+
+	if (trip->type != THERMAL_TRIP_HOT)
+		return 0;
+
+	*trip_ret = trip;
+	/* Return nonzero to terminate the search. */
+	return 1;
+}
+
+static const struct thermal_trip *get_hot_trip(struct thermal_zone_device *tz)
+{
+	const struct thermal_trip *trip = NULL;
+
+	thermal_zone_for_each_trip(tz, get_hot_trip_cb, &trip);
+
+	return trip;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -731,8 +753,14 @@ static int tegra_soctherm_set_hwtrips(struct device *dev,
 				      struct thermal_zone_device *tz)
 {
 	struct tegra_soctherm *ts = dev_get_drvdata(dev);
+<<<<<<< HEAD
 	struct soctherm_throt_cfg *stc;
 	int i, trip, temperature, ret;
+=======
+	const struct thermal_trip *hot_trip;
+	struct soctherm_throt_cfg *stc;
+	int i, temperature, ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Get thermtrips. If missing, try to get critical trips. */
 	temperature = tsensor_group_thermtrip_get(ts, sg->id);
@@ -749,8 +777,13 @@ static int tegra_soctherm_set_hwtrips(struct device *dev,
 	dev_info(dev, "thermtrip: will shut down when %s reaches %d mC\n",
 		 sg->name, temperature);
 
+<<<<<<< HEAD
 	ret = get_hot_temp(tz, &trip, &temperature);
 	if (ret) {
+=======
+	hot_trip = get_hot_trip(tz);
+	if (!hot_trip) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_info(dev, "throttrip: %s: missing hot temperature\n",
 			 sg->name);
 		return 0;
@@ -763,7 +796,11 @@ static int tegra_soctherm_set_hwtrips(struct device *dev,
 			continue;
 
 		cdev = ts->throt_cfgs[i].cdev;
+<<<<<<< HEAD
 		if (get_thermal_instance(tz, cdev, trip))
+=======
+		if (thermal_trip_is_bound_to_cdev(tz, hot_trip, cdev))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			stc = find_throttle_cfg_by_name(ts, cdev->type);
 		else
 			continue;

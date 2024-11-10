@@ -243,7 +243,11 @@ static void wm8739_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id wm8739_id[] = {
+<<<<<<< HEAD
 	{ "wm8739", 0 },
+=======
+	{ "wm8739" },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, wm8739_id);

@@ -820,6 +820,7 @@ int efx_siena_ethtool_get_rxnfc(struct net_device *net_dev,
 		return 0;
 
 	case ETHTOOL_GRXFH: {
+<<<<<<< HEAD
 		struct efx_rss_context *ctx = &efx->rss_context;
 		__u64 data;
 
@@ -841,6 +842,18 @@ int efx_siena_ethtool_get_rxnfc(struct net_device *net_dev,
 		case UDP_V4_FLOW:
 		case UDP_V6_FLOW:
 			if (ctx->rx_hash_udp_4tuple)
+=======
+		__u64 data;
+
+		data = 0;
+		if (!efx_rss_active(&efx->rss_context)) /* No RSS */
+			goto out_setdata;
+
+		switch (info->flow_type) {
+		case UDP_V4_FLOW:
+		case UDP_V6_FLOW:
+			if (efx->rss_context.rx_hash_udp_4tuple)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				data = (RXH_L4_B_0_1 | RXH_L4_B_2_3 |
 					RXH_IP_SRC | RXH_IP_DST);
 			else
@@ -862,10 +875,15 @@ int efx_siena_ethtool_get_rxnfc(struct net_device *net_dev,
 		default:
 			break;
 		}
+<<<<<<< HEAD
 out_setdata_unlock:
 		info->data = data;
 out_unlock:
 		mutex_unlock(&efx->rss_lock);
+=======
+out_setdata:
+		info->data = data;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return rc;
 	}
 
@@ -1164,6 +1182,7 @@ u32 efx_siena_ethtool_get_rxfh_key_size(struct net_device *net_dev)
 	return efx->type->rx_hash_key_size;
 }
 
+<<<<<<< HEAD
 static int efx_siena_ethtool_get_rxfh_context(struct net_device *net_dev,
 					      struct ethtool_rxfh_param *rxfh)
 {
@@ -1196,15 +1215,20 @@ out_unlock:
 	return rc;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int efx_siena_ethtool_get_rxfh(struct net_device *net_dev,
 			       struct ethtool_rxfh_param *rxfh)
 {
 	struct efx_nic *efx = netdev_priv(net_dev);
 	int rc;
 
+<<<<<<< HEAD
 	if (rxfh->rss_context)
 		return efx_siena_ethtool_get_rxfh_context(net_dev, rxfh);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rc = efx->type->rx_pull_rss_config(efx);
 	if (rc)
 		return rc;
@@ -1219,6 +1243,7 @@ int efx_siena_ethtool_get_rxfh(struct net_device *net_dev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int efx_siena_ethtool_set_rxfh_context(struct net_device *net_dev,
 					      struct ethtool_rxfh_param *rxfh,
 					      struct netlink_ext_ack *extack)
@@ -1283,6 +1308,8 @@ out_unlock:
 	return rc;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int efx_siena_ethtool_set_rxfh(struct net_device *net_dev,
 			       struct ethtool_rxfh_param *rxfh,
 			       struct netlink_ext_ack *extack)
@@ -1296,9 +1323,12 @@ int efx_siena_ethtool_set_rxfh(struct net_device *net_dev,
 	    rxfh->hfunc != ETH_RSS_HASH_TOP)
 		return -EOPNOTSUPP;
 
+<<<<<<< HEAD
 	if (rxfh->rss_context)
 		efx_siena_ethtool_set_rxfh_context(net_dev, rxfh, extack);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!indir && !key)
 		return 0;
 

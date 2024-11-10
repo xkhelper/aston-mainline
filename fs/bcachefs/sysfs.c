@@ -219,7 +219,10 @@ read_attribute(copy_gc_wait);
 rw_attribute(rebalance_enabled);
 sysfs_pd_controller_attribute(rebalance);
 read_attribute(rebalance_status);
+<<<<<<< HEAD
 rw_attribute(promote_whole_extents);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 read_attribute(new_stripes);
 
@@ -234,7 +237,11 @@ write_attribute(perf_test);
 
 #define x(_name)						\
 	static struct attribute sysfs_time_stat_##_name =		\
+<<<<<<< HEAD
 		{ .name = #_name, .mode = 0444 };
+=======
+		{ .name = #_name, .mode = 0644 };
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	BCH_TIME_STATS()
 #undef x
 
@@ -245,6 +252,7 @@ static struct attribute sysfs_state_rw = {
 
 static size_t bch2_btree_cache_size(struct bch_fs *c)
 {
+<<<<<<< HEAD
 	size_t ret = 0;
 	struct btree *b;
 
@@ -253,6 +261,20 @@ static size_t bch2_btree_cache_size(struct bch_fs *c)
 		ret += btree_buf_bytes(b);
 
 	mutex_unlock(&c->btree_cache.lock);
+=======
+	struct btree_cache *bc = &c->btree_cache;
+	size_t ret = 0;
+	struct btree *b;
+
+	mutex_lock(&bc->lock);
+	list_for_each_entry(b, &bc->live[0].list, list)
+		ret += btree_buf_bytes(b);
+	list_for_each_entry(b, &bc->live[1].list, list)
+		ret += btree_buf_bytes(b);
+	list_for_each_entry(b, &bc->freeable, list)
+		ret += btree_buf_bytes(b);
+	mutex_unlock(&bc->lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -288,7 +310,11 @@ static int bch2_compression_stats_to_text(struct printbuf *out, struct bch_fs *c
 		prt_tab_rjust(out);
 
 		prt_human_readable_u64(out, nr_extents
+<<<<<<< HEAD
 				       ? div_u64(sectors_uncompressed << 9, nr_extents)
+=======
+				       ? div64_u64(sectors_uncompressed << 9, nr_extents)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       : 0);
 		prt_tab_rjust(out);
 		prt_newline(out);
@@ -347,8 +373,11 @@ SHOW(bch2_fs)
 	if (attr == &sysfs_rebalance_status)
 		bch2_rebalance_status_to_text(out, c);
 
+<<<<<<< HEAD
 	sysfs_print(promote_whole_extents,	c->promote_whole_extents);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Debugging: */
 
 	if (attr == &sysfs_journal_debug)
@@ -436,8 +465,11 @@ STORE(bch2_fs)
 
 	sysfs_pd_controller_store(rebalance,	&c->rebalance.pd);
 
+<<<<<<< HEAD
 	sysfs_strtoul(promote_whole_extents,	c->promote_whole_extents);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Debugging: */
 
 	if (!test_bit(BCH_FS_started, &c->flags))
@@ -449,11 +481,19 @@ STORE(bch2_fs)
 		return -EROFS;
 
 	if (attr == &sysfs_trigger_btree_cache_shrink) {
+<<<<<<< HEAD
+=======
+		struct btree_cache *bc = &c->btree_cache;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct shrink_control sc;
 
 		sc.gfp_mask = GFP_KERNEL;
 		sc.nr_to_scan = strtoul_or_return(buf);
+<<<<<<< HEAD
 		c->btree_cache.shrink->scan_objects(c->btree_cache.shrink, &sc);
+=======
+		bc->live[0].shrink->scan_objects(bc->live[0].shrink, &sc);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (attr == &sysfs_trigger_btree_key_cache_shrink) {
@@ -514,7 +554,11 @@ struct attribute *bch2_fs_files[] = {
 	&sysfs_btree_cache_size,
 	&sysfs_btree_write_stats,
 
+<<<<<<< HEAD
 	&sysfs_promote_whole_extents,
+=======
+	&sysfs_rebalance_status,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	&sysfs_compression_stats,
 
@@ -614,7 +658,10 @@ struct attribute *bch2_fs_internal_files[] = {
 	&sysfs_copy_gc_wait,
 
 	&sysfs_rebalance_enabled,
+<<<<<<< HEAD
 	&sysfs_rebalance_status,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sysfs_pd_controller_files(rebalance),
 
 	&sysfs_moving_ctxts,
@@ -674,7 +721,11 @@ STORE(bch2_fs_opts_dir)
 	if (ret < 0)
 		goto err;
 
+<<<<<<< HEAD
 	bch2_opt_set_sb(c, opt, v);
+=======
+	bch2_opt_set_sb(c, NULL, opt, v);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bch2_opt_set_by_id(&c->opts, id, v);
 
 	if (v &&
@@ -728,6 +779,16 @@ SHOW(bch2_fs_time_stats)
 
 STORE(bch2_fs_time_stats)
 {
+<<<<<<< HEAD
+=======
+	struct bch_fs *c = container_of(kobj, struct bch_fs, time_stats);
+
+#define x(name)								\
+	if (attr == &sysfs_time_stat_##name)				\
+		bch2_time_stats_reset(&c->times[BCH_TIME_##name]);
+	BCH_TIME_STATS()
+#undef x
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return size;
 }
 SYSFS_OPS(bch2_fs_time_stats);
@@ -821,11 +882,15 @@ STORE(bch2_dev)
 {
 	struct bch_dev *ca = container_of(kobj, struct bch_dev, kobj);
 	struct bch_fs *c = ca->fs;
+<<<<<<< HEAD
 	struct bch_member *mi;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (attr == &sysfs_discard) {
 		bool v = strtoul_or_return(buf);
 
+<<<<<<< HEAD
 		mutex_lock(&c->sb_lock);
 		mi = bch2_members_v2_get_mut(c->disk_sb.sb, ca->dev_idx);
 
@@ -834,11 +899,15 @@ STORE(bch2_dev)
 			bch2_write_super(c);
 		}
 		mutex_unlock(&c->sb_lock);
+=======
+		bch2_opt_set_sb(c, ca, bch2_opt_table + Opt_discard, v);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (attr == &sysfs_durability) {
 		u64 v = strtoul_or_return(buf);
 
+<<<<<<< HEAD
 		mutex_lock(&c->sb_lock);
 		mi = bch2_members_v2_get_mut(c->disk_sb.sb, ca->dev_idx);
 
@@ -847,6 +916,9 @@ STORE(bch2_dev)
 			bch2_write_super(c);
 		}
 		mutex_unlock(&c->sb_lock);
+=======
+		bch2_opt_set_sb(c, ca, bch2_opt_table + Opt_durability, v);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (attr == &sysfs_label) {

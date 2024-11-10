@@ -6,6 +6,11 @@
 #ifndef __INTEL_DPT_H__
 #define __INTEL_DPT_H__
 
+<<<<<<< HEAD
+=======
+#include <linux/types.h>
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct drm_i915_private;
 
 struct i915_address_space;
@@ -20,5 +25,9 @@ void intel_dpt_suspend(struct drm_i915_private *i915);
 void intel_dpt_resume(struct drm_i915_private *i915);
 struct i915_address_space *
 intel_dpt_create(struct intel_framebuffer *fb);
+<<<<<<< HEAD
+=======
+u64 intel_dpt_offset(struct i915_vma *dpt_vma);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* __INTEL_DPT_H__ */

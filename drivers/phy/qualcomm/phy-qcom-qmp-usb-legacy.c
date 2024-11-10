@@ -1248,6 +1248,10 @@ static int qmp_usb_legacy_probe(struct platform_device *pdev)
 		return -ENOMEM;
 
 	qmp->dev = dev;
+<<<<<<< HEAD
+=======
+	dev_set_drvdata(dev, qmp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	qmp->cfg = of_device_get_match_data(dev);
 	if (!qmp->cfg)

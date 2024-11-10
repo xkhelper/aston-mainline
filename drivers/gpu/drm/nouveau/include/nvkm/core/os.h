@@ -3,6 +3,7 @@
 #define __NVKM_OS_H__
 #include <nvif/os.h>
 
+<<<<<<< HEAD
 #ifdef __BIG_ENDIAN
 #define ioread16_native ioread16be
 #define iowrite16_native iowrite16be
@@ -22,6 +23,8 @@
 	iowrite32_native(upper_32_bits(_v), &_p[1]);			       \
 } while(0)
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct nvkm_blob {
 	void *data;
 	u32 size;

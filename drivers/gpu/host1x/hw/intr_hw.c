@@ -6,18 +6,24 @@
  * Copyright (c) 2010-2013, NVIDIA Corporation.
  */
 
+<<<<<<< HEAD
 #include <linux/interrupt.h>
 #include <linux/irq.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/io.h>
 
 #include "../intr.h"
 #include "../dev.h"
 
+<<<<<<< HEAD
 struct host1x_intr_irq_data {
 	struct host1x *host;
 	u32 offset;
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static irqreturn_t syncpt_thresh_isr(int irq, void *dev_id)
 {
 	struct host1x_intr_irq_data *irq_data = dev_id;
@@ -54,7 +60,12 @@ static void host1x_intr_disable_all_syncpt_intrs(struct host1x *host)
 	}
 }
 
+<<<<<<< HEAD
 static void intr_hw_init(struct host1x *host, u32 cpm)
+=======
+static int
+host1x_intr_init_host_sync(struct host1x *host, u32 cpm)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 #if HOST1X_HW < 6
 	/* disable the ip_busy_timeout. this prevents write drops */
@@ -85,6 +96,7 @@ static void intr_hw_init(struct host1x *host, u32 cpm)
 		host1x_sync_writel(host, irq_index, HOST1X_SYNC_SYNCPT_INTR_DEST(id));
 	}
 #endif
+<<<<<<< HEAD
 }
 
 static int
@@ -111,6 +123,8 @@ host1x_intr_init_host_sync(struct host1x *host, u32 cpm)
 	}
 
 	intr_hw_init(host, cpm);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -144,4 +158,8 @@ static const struct host1x_intr_ops host1x_intr_ops = {
 	.enable_syncpt_intr = host1x_intr_enable_syncpt_intr,
 	.disable_syncpt_intr = host1x_intr_disable_syncpt_intr,
 	.disable_all_syncpt_intrs = host1x_intr_disable_all_syncpt_intrs,
+<<<<<<< HEAD
+=======
+	.isr = syncpt_thresh_isr,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };

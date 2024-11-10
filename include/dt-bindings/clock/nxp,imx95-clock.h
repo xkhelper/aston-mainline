@@ -25,4 +25,10 @@
 #define IMX95_CLK_DISPMIX_ENG0_SEL		0
 #define IMX95_CLK_DISPMIX_ENG1_SEL		1
 
+<<<<<<< HEAD
+=======
+#define IMX95_CLK_NETCMIX_ENETC0_RMII		0
+#define IMX95_CLK_NETCMIX_ENETC1_RMII		1
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif	/* __DT_BINDINGS_CLOCK_IMX95_H */

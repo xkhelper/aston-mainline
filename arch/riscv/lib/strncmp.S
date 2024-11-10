@@ -136,3 +136,8 @@ strncmp_zbb:
 .option pop
 #endif
 SYM_FUNC_END(strncmp)
+<<<<<<< HEAD
+=======
+SYM_FUNC_ALIAS(__pi_strncmp, strncmp)
+EXPORT_SYMBOL(strncmp)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

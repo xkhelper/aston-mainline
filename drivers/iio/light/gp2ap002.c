@@ -420,7 +420,11 @@ static int gp2ap002_regmap_i2c_write(void *context, unsigned int reg,
 	return i2c_smbus_write_byte_data(i2c, reg, val);
 }
 
+<<<<<<< HEAD
 static struct regmap_bus gp2ap002_regmap_bus = {
+=======
+static const struct regmap_bus gp2ap002_regmap_bus = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.reg_read = gp2ap002_regmap_i2c_read,
 	.reg_write = gp2ap002_regmap_i2c_write,
 };

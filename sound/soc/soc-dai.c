@@ -479,6 +479,7 @@ bool snd_soc_dai_stream_valid(const struct snd_soc_dai *dai, int dir)
 	return stream->channels_min;
 }
 
+<<<<<<< HEAD
 /*
  * snd_soc_dai_link_set_capabilities() - set dai_link properties based on its DAIs
  */
@@ -517,6 +518,8 @@ void snd_soc_dai_link_set_capabilities(struct snd_soc_dai_link *dai_link)
 }
 EXPORT_SYMBOL_GPL(snd_soc_dai_link_set_capabilities);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void snd_soc_dai_action(struct snd_soc_dai *dai,
 			int stream, int action)
 {
@@ -685,6 +688,7 @@ int snd_soc_pcm_dai_trigger(struct snd_pcm_substream *substream,
 	return ret;
 }
 
+<<<<<<< HEAD
 int snd_soc_pcm_dai_bespoke_trigger(struct snd_pcm_substream *substream,
 				    int cmd)
 {
@@ -705,6 +709,8 @@ int snd_soc_pcm_dai_bespoke_trigger(struct snd_pcm_substream *substream,
 	return 0;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void snd_soc_pcm_dai_delay(struct snd_pcm_substream *substream,
 			   snd_pcm_sframes_t *cpu_delay,
 			   snd_pcm_sframes_t *codec_delay)

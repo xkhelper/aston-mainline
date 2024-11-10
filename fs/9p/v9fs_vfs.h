@@ -42,7 +42,11 @@ struct inode *v9fs_alloc_inode(struct super_block *sb);
 void v9fs_free_inode(struct inode *inode);
 void v9fs_set_netfs_context(struct inode *inode);
 int v9fs_init_inode(struct v9fs_session_info *v9ses,
+<<<<<<< HEAD
 		    struct inode *inode, struct p9_qid *qid, umode_t mode, dev_t rdev);
+=======
+		    struct inode *inode, umode_t mode, dev_t rdev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void v9fs_evict_inode(struct inode *inode);
 #if (BITS_PER_LONG == 32)
 #define QID2INO(q) ((ino_t) (((q)->path+2) ^ (((q)->path) >> 32)))

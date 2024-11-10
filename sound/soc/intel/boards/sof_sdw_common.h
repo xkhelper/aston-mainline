@@ -12,6 +12,7 @@
 #include <linux/bits.h>
 #include <linux/types.h>
 #include <sound/soc.h>
+<<<<<<< HEAD
 #include "sof_hdmi_common.h"
 
 #define MAX_NO_PROPS 2
@@ -26,6 +27,14 @@
 #define SDW_INTEL_BIDIR_PDI_BASE 2
 
 #define SDW_MAX_LINKS		4
+=======
+#include <sound/soc_sdw_utils.h>
+#include "sof_hdmi_common.h"
+
+#define MAX_HDMI_NUM 4
+#define SOC_SDW_MAX_CPU_DAIS 16
+#define SOC_SDW_INTEL_BIDIR_PDI_BASE 2
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* 8 combinations with 4 links + unused group 0 */
 #define SDW_MAX_GROUPS 9
@@ -44,6 +53,7 @@ enum {
 	SOF_I2S_SSP5 = BIT(5),
 };
 
+<<<<<<< HEAD
 #define SOF_JACK_JDSRC(quirk)		((quirk) & GENMASK(3, 0))
 /* Deprecated and no longer supported by the code */
 #define SOF_SDW_FOUR_SPK		BIT(4)
@@ -65,6 +75,16 @@ enum {
  *   - SOF_CODEC_SPKR | SOF_SIDECAR_AMPS - Not currently supported
  */
 #define SOF_SIDECAR_AMPS		BIT(16)
+=======
+/* Deprecated and no longer supported by the code */
+#define SOC_SDW_FOUR_SPK		BIT(4)
+#define SOF_SDW_TGL_HDMI		BIT(5)
+#define SOC_SDW_PCH_DMIC		BIT(6)
+#define SOF_SSP_PORT(x)		(((x) & GENMASK(5, 0)) << 7)
+#define SOF_SSP_GET_PORT(quirk)	(((quirk) >> 7) & GENMASK(5, 0))
+/* Deprecated and no longer supported by the code */
+#define SOC_SDW_NO_AGGREGATION		BIT(14)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* BT audio offload: reserve 3 bits for future */
 #define SOF_BT_OFFLOAD_SSP_SHIFT	15
@@ -73,6 +93,7 @@ enum {
 	(((quirk) << SOF_BT_OFFLOAD_SSP_SHIFT) & SOF_BT_OFFLOAD_SSP_MASK)
 #define SOF_SSP_BT_OFFLOAD_PRESENT	BIT(18)
 
+<<<<<<< HEAD
 #define SOF_SDW_DAI_TYPE_JACK		0
 #define SOF_SDW_DAI_TYPE_AMP		1
 #define SOF_SDW_DAI_TYPE_MIC		2
@@ -142,11 +163,20 @@ int sdw_hw_params(struct snd_pcm_substream *substream,
 int sdw_hw_free(struct snd_pcm_substream *substream);
 void sdw_shutdown(struct snd_pcm_substream *substream);
 
+=======
+struct intel_mc_ctx {
+	struct sof_hdmi_private hdmi;
+	/* To store SDW Pin index for each SoundWire link */
+	unsigned int sdw_pin_index[SDW_INTEL_MAX_LINKS];
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* generic HDMI support */
 int sof_sdw_hdmi_init(struct snd_soc_pcm_runtime *rtd);
 
 int sof_sdw_hdmi_card_late_probe(struct snd_soc_card *card);
 
+<<<<<<< HEAD
 /* DMIC support */
 int sof_sdw_dmic_init(struct snd_soc_pcm_runtime *rtd);
 
@@ -219,4 +249,6 @@ int rt_dmic_rtd_init(struct snd_soc_pcm_runtime *rtd, struct snd_soc_dai *dai);
 int rt_amp_spk_rtd_init(struct snd_soc_pcm_runtime *rtd, struct snd_soc_dai *dai);
 int rt_sdca_jack_rtd_init(struct snd_soc_pcm_runtime *rtd, struct snd_soc_dai *dai);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

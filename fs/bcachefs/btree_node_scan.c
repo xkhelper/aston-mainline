@@ -171,6 +171,12 @@ static void try_read_btree_node(struct find_btree_nodes *f, struct bch_dev *ca,
 	if (BTREE_NODE_LEVEL(bn) >= BTREE_MAX_DEPTH)
 		return;
 
+<<<<<<< HEAD
+=======
+	if (BTREE_NODE_ID(bn) >= BTREE_ID_NR_MAX)
+		return;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rcu_read_lock();
 	struct found_btree_node n = {
 		.btree_id	= BTREE_NODE_ID(bn),
@@ -183,7 +189,11 @@ static void try_read_btree_node(struct find_btree_nodes *f, struct bch_dev *ca,
 		.ptrs[0].type	= 1 << BCH_EXTENT_ENTRY_ptr,
 		.ptrs[0].offset	= offset,
 		.ptrs[0].dev	= ca->dev_idx,
+<<<<<<< HEAD
 		.ptrs[0].gen	= *bucket_gen(ca, sector_to_bucket(ca, offset)),
+=======
+		.ptrs[0].gen	= bucket_gen_get(ca, sector_to_bucket(ca, offset)),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 	rcu_read_unlock();
 
@@ -275,7 +285,11 @@ static int read_btree_nodes(struct find_btree_nodes *f)
 		w->ca		= ca;
 
 		t = kthread_run(read_btree_nodes_worker, w, "read_btree_nodes/%s", ca->name);
+<<<<<<< HEAD
 		ret = IS_ERR_OR_NULL(t);
+=======
+		ret = PTR_ERR_OR_ZERO(t);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret) {
 			percpu_ref_put(&ca->io_ref);
 			closure_put(&cl);

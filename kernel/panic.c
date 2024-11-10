@@ -374,6 +374,11 @@ void panic(const char *fmt, ...)
 
 	panic_other_cpus_shutdown(_crash_kexec_post_notifiers);
 
+<<<<<<< HEAD
+=======
+	printk_legacy_allow_panic_sync();
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Run any panic handlers, including those that might need to
 	 * add information to the kmsg dump output.
@@ -382,7 +387,11 @@ void panic(const char *fmt, ...)
 
 	panic_print_sys_info(false);
 
+<<<<<<< HEAD
 	kmsg_dump(KMSG_DUMP_PANIC);
+=======
+	kmsg_dump_desc(KMSG_DUMP_PANIC, buf);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * If you doubt kdump always works fine in any situation,
@@ -463,6 +472,10 @@ void panic(const char *fmt, ...)
 	 * Explicitly flush the kernel log buffer one last time.
 	 */
 	console_flush_on_panic(CONSOLE_FLUSH_PENDING);
+<<<<<<< HEAD
+=======
+	nbcon_atomic_flush_unsafe();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	local_irq_enable();
 	for (i = 0; ; i += PANIC_TIMER_STEP) {
@@ -682,6 +695,10 @@ bool oops_may_print(void)
  */
 void oops_enter(void)
 {
+<<<<<<< HEAD
+=======
+	nbcon_cpu_emergency_enter();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	tracing_off();
 	/* can't trust the integrity of the kernel anymore: */
 	debug_locks_off();
@@ -704,6 +721,10 @@ void oops_exit(void)
 {
 	do_oops_enter_exit();
 	print_oops_end_marker();
+<<<<<<< HEAD
+=======
+	nbcon_cpu_emergency_exit();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kmsg_dump(KMSG_DUMP_OOPS);
 }
 
@@ -715,6 +736,11 @@ struct warn_args {
 void __warn(const char *file, int line, void *caller, unsigned taint,
 	    struct pt_regs *regs, struct warn_args *args)
 {
+<<<<<<< HEAD
+=======
+	nbcon_cpu_emergency_enter();
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	disable_trace_on_warning();
 
 	if (file)
@@ -750,6 +776,11 @@ void __warn(const char *file, int line, void *caller, unsigned taint,
 
 	/* Just a warning, don't kill lockdep. */
 	add_taint(taint, LOCKDEP_STILL_OK);
+<<<<<<< HEAD
+=======
+
+	nbcon_cpu_emergency_exit();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #ifdef CONFIG_BUG

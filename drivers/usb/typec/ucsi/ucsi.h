@@ -11,7 +11,11 @@
 #include <linux/usb/typec.h>
 #include <linux/usb/pd.h>
 #include <linux/usb/role.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* -------------------------------------------------------------------------- */
 
@@ -29,6 +33,10 @@ struct dentry;
 #define UCSIv2_MESSAGE_OUT		272
 
 /* UCSI versions */
+<<<<<<< HEAD
+=======
+#define UCSI_VERSION_1_1	0x0110
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define UCSI_VERSION_1_2	0x0120
 #define UCSI_VERSION_2_0	0x0200
 #define UCSI_VERSION_2_1	0x0210
@@ -122,7 +130,13 @@ void ucsi_connector_change(struct ucsi *ucsi, u8 num);
 #define UCSI_DEFAULT_GET_CONNECTOR_NUMBER(_cmd_)	(((_cmd_) >> 16) & GENMASK(6, 0))
 
 /* CONNECTOR_RESET command bits */
+<<<<<<< HEAD
 #define UCSI_CONNECTOR_RESET_HARD		BIT(23) /* Deprecated in v1.1 */
+=======
+#define UCSI_CONNECTOR_RESET_HARD_VER_1_0	BIT(23) /* Deprecated in v1.1 */
+#define UCSI_CONNECTOR_RESET_DATA_VER_2_0	BIT(23) /* Redefined in v2.0 */
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* ACK_CC_CI bits */
 #define UCSI_ACK_CONNECTOR_CHANGE		BIT(16)
@@ -344,12 +358,18 @@ struct ucsi_connector_status {
 #define   UCSI_CONSTAT_PARTNER_TYPE_AUDIO	6
 	u32 request_data_obj;
 
+<<<<<<< HEAD
 	u8 pwr_status[3];
 #define UCSI_CONSTAT_BC_STATUS(_p_)		((_p_[0]) & GENMASK(1, 0))
+=======
+	u8 pwr_status;
+#define UCSI_CONSTAT_BC_STATUS(_p_)		((_p_) & GENMASK(1, 0))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define   UCSI_CONSTAT_BC_NOT_CHARGING		0
 #define   UCSI_CONSTAT_BC_NOMINAL_CHARGING	1
 #define   UCSI_CONSTAT_BC_SLOW_CHARGING		2
 #define   UCSI_CONSTAT_BC_TRICKLE_CHARGING	3
+<<<<<<< HEAD
 #define UCSI_CONSTAT_PROVIDER_CAP_LIMIT(_p_)	(((_p_[0]) & GENMASK(5, 2)) >> 2)
 #define   UCSI_CONSTAT_CAP_PWR_LOWERED		0
 #define   UCSI_CONSTAT_CAP_PWR_BUDGET_LIMIT	1
@@ -385,6 +405,8 @@ struct ucsi_pd_message_disc_id {
 	u32 cert_stat;
 	u32 product;
 	u32 vdo[3];
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 } __packed;
 
 /* -------------------------------------------------------------------------- */
@@ -435,6 +457,11 @@ struct ucsi {
 #define UCSI_DELAY_DEVICE_PDOS	BIT(1)	/* Reading PDOs fails until the parter is in PD mode */
 };
 
+<<<<<<< HEAD
+=======
+#define UCSI_MAX_DATA_LENGTH(u) (((u)->version < UCSI_VERSION_2_0) ? 0x10 : 0xff)
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define UCSI_MAX_SVID		5
 #define UCSI_MAX_ALTMODES	(UCSI_MAX_SVID * 6)
 

@@ -808,7 +808,10 @@ static void asc_serial_remove(struct platform_device *pdev)
 	uart_remove_one_port(&asc_uart_driver, port);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM_SLEEP
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int asc_serial_suspend(struct device *dev)
 {
 	struct uart_port *port = dev_get_drvdata(dev);
@@ -823,8 +826,11 @@ static int asc_serial_resume(struct device *dev)
 	return uart_resume_port(&asc_uart_driver, port);
 }
 
+<<<<<<< HEAD
 #endif /* CONFIG_PM_SLEEP */
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*----------------------------------------------------------------------*/
 
 #ifdef CONFIG_SERIAL_ST_ASC_CONSOLE
@@ -932,16 +938,25 @@ static struct uart_driver asc_uart_driver = {
 	.cons		= ASC_SERIAL_CONSOLE,
 };
 
+<<<<<<< HEAD
 static const struct dev_pm_ops asc_serial_pm_ops = {
 	SET_SYSTEM_SLEEP_PM_OPS(asc_serial_suspend, asc_serial_resume)
 };
+=======
+static DEFINE_SIMPLE_DEV_PM_OPS(asc_serial_pm_ops, asc_serial_suspend,
+						   asc_serial_resume);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct platform_driver asc_serial_driver = {
 	.probe		= asc_serial_probe,
 	.remove_new	= asc_serial_remove,
 	.driver	= {
 		.name	= DRIVER_NAME,
+<<<<<<< HEAD
 		.pm	= &asc_serial_pm_ops,
+=======
+		.pm	= pm_sleep_ptr(&asc_serial_pm_ops),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.of_match_table = of_match_ptr(asc_match),
 	},
 };

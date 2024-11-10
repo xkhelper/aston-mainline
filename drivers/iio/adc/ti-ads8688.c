@@ -384,9 +384,13 @@ static irqreturn_t ads8688_trigger_handler(int irq, void *p)
 	u16 buffer[ADS8688_MAX_CHANNELS + sizeof(s64)/sizeof(u16)] __aligned(8);
 	int i, j = 0;
 
+<<<<<<< HEAD
 	for (i = 0; i < indio_dev->masklength; i++) {
 		if (!test_bit(i, indio_dev->active_scan_mask))
 			continue;
+=======
+	iio_for_each_active_channel(indio_dev, i) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		buffer[j] = ads8688_read(indio_dev, i);
 		j++;
 	}
@@ -454,9 +458,15 @@ static int ads8688_probe(struct spi_device *spi)
 }
 
 static const struct spi_device_id ads8688_id[] = {
+<<<<<<< HEAD
 	{"ads8684", ID_ADS8684},
 	{"ads8688", ID_ADS8688},
 	{}
+=======
+	{ "ads8684", ID_ADS8684 },
+	{ "ads8688", ID_ADS8688 },
+	{ }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(spi, ads8688_id);
 

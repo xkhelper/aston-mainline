@@ -442,7 +442,11 @@ struct osnoise_top_params *osnoise_top_parse_args(int argc, char **argv)
 		case 'd':
 			params->duration = parse_seconds_duration(optarg);
 			if (!params->duration)
+<<<<<<< HEAD
 				osnoise_top_usage(params, "Invalid -D duration\n");
+=======
+				osnoise_top_usage(params, "Invalid -d duration\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		case 'e':
 			tevent = trace_event_alloc(optarg);

@@ -3185,8 +3185,12 @@ netxen_list_config_ip(struct netxen_adapter *adapter,
 	struct list_head *head;
 	bool ret = false;
 
+<<<<<<< HEAD
 	dev = ifa->ifa_dev ? ifa->ifa_dev->dev : NULL;
 
+=======
+	dev = ifa->ifa_dev->dev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (dev == NULL)
 		goto out;
 
@@ -3379,7 +3383,11 @@ netxen_inetaddr_event(struct notifier_block *this,
 	struct in_ifaddr *ifa = (struct in_ifaddr *)ptr;
 	unsigned long ip_event;
 
+<<<<<<< HEAD
 	dev = ifa->ifa_dev ? ifa->ifa_dev->dev : NULL;
+=======
+	dev = ifa->ifa_dev->dev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ip_event = (event == NETDEV_UP) ? NX_IP_UP : NX_IP_DOWN;
 recheck:
 	if (dev == NULL)

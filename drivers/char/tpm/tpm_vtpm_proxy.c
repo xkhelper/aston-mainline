@@ -243,7 +243,10 @@ static int vtpm_proxy_fops_release(struct inode *inode, struct file *filp)
 
 static const struct file_operations vtpm_proxy_fops = {
 	.owner = THIS_MODULE,
+<<<<<<< HEAD
 	.llseek = no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.read = vtpm_proxy_fops_read,
 	.write = vtpm_proxy_fops_write,
 	.poll = vtpm_proxy_fops_poll,

@@ -710,7 +710,11 @@ static int ffb_blank(int blank, struct fb_info *info)
 	return 0;
 }
 
+<<<<<<< HEAD
 static struct sbus_mmap_map ffb_mmap_map[] = {
+=======
+static const struct sbus_mmap_map ffb_mmap_map[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{
 		.voff	= FFB_SFB8R_VOFF,
 		.poff	= FFB_SFB8R_POFF,
@@ -1053,7 +1057,11 @@ static struct platform_driver ffb_driver = {
 		.of_match_table = ffb_match,
 	},
 	.probe		= ffb_probe,
+<<<<<<< HEAD
 	.remove_new	= ffb_remove,
+=======
+	.remove		= ffb_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int __init ffb_init(void)

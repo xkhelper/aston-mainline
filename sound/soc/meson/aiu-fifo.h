@@ -38,8 +38,11 @@ int aiu_fifo_prepare(struct snd_pcm_substream *substream,
 int aiu_fifo_hw_params(struct snd_pcm_substream *substream,
 		       struct snd_pcm_hw_params *params,
 		       struct snd_soc_dai *dai);
+<<<<<<< HEAD
 int aiu_fifo_hw_free(struct snd_pcm_substream *substream,
 		     struct snd_soc_dai *dai);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int aiu_fifo_startup(struct snd_pcm_substream *substream,
 		     struct snd_soc_dai *dai);
 void aiu_fifo_shutdown(struct snd_pcm_substream *substream,

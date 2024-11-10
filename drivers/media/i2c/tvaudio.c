@@ -2086,7 +2086,11 @@ static void tvaudio_remove(struct i2c_client *client)
    detect which device is present. So rather than listing all supported
    devices here, we pretend to support a single, fake device type. */
 static const struct i2c_device_id tvaudio_id[] = {
+<<<<<<< HEAD
 	{ "tvaudio", 0 },
+=======
+	{ "tvaudio" },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, tvaudio_id);

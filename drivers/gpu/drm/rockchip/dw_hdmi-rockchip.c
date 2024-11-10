@@ -61,11 +61,19 @@
  * @lcdsel_grf_reg: grf register offset of lcdc select
  * @lcdsel_big: reg value of selecting vop big for HDMI
  * @lcdsel_lit: reg value of selecting vop little for HDMI
+<<<<<<< HEAD
+=======
+ * @max_tmds_clock: maximum TMDS clock rate supported
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct rockchip_hdmi_chip_data {
 	int	lcdsel_grf_reg;
 	u32	lcdsel_big;
 	u32	lcdsel_lit;
+<<<<<<< HEAD
+=======
+	int	max_tmds_clock;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct rockchip_hdmi {
@@ -77,8 +85,11 @@ struct rockchip_hdmi {
 	struct clk *ref_clk;
 	struct clk *grf_clk;
 	struct dw_hdmi *hdmi;
+<<<<<<< HEAD
 	struct regulator *avdd_0v9;
 	struct regulator *avdd_1v8;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct phy *phy;
 };
 
@@ -209,6 +220,7 @@ static const struct dw_hdmi_phy_config rockchip_phy_config[] = {
 static int rockchip_hdmi_parse_dt(struct rockchip_hdmi *hdmi)
 {
 	struct device_node *np = hdmi->dev->of_node;
+<<<<<<< HEAD
 
 	hdmi->regmap = syscon_regmap_lookup_by_phandle(np, "rockchip,grf");
 	if (IS_ERR(hdmi->regmap)) {
@@ -246,6 +258,42 @@ static int rockchip_hdmi_parse_dt(struct rockchip_hdmi *hdmi)
 		return PTR_ERR(hdmi->avdd_1v8);
 
 	return 0;
+=======
+	int ret;
+
+	hdmi->regmap = syscon_regmap_lookup_by_phandle(np, "rockchip,grf");
+	if (IS_ERR(hdmi->regmap)) {
+		drm_err(hdmi, "Unable to get rockchip,grf\n");
+		return PTR_ERR(hdmi->regmap);
+	}
+
+	hdmi->ref_clk = devm_clk_get_optional_enabled(hdmi->dev, "ref");
+	if (!hdmi->ref_clk)
+		hdmi->ref_clk = devm_clk_get_optional_enabled(hdmi->dev, "vpll");
+
+	if (IS_ERR(hdmi->ref_clk)) {
+		ret = PTR_ERR(hdmi->ref_clk);
+		if (ret != -EPROBE_DEFER)
+			drm_err(hdmi, "failed to get reference clock\n");
+		return ret;
+	}
+
+	hdmi->grf_clk = devm_clk_get_optional(hdmi->dev, "grf");
+	if (IS_ERR(hdmi->grf_clk)) {
+		ret = PTR_ERR(hdmi->grf_clk);
+		if (ret != -EPROBE_DEFER)
+			drm_err(hdmi, "failed to get grf clock\n");
+		return ret;
+	}
+
+	ret = devm_regulator_get_enable(hdmi->dev, "avdd-0v9");
+	if (ret)
+		return ret;
+
+	ret = devm_regulator_get_enable(hdmi->dev, "avdd-1v8");
+
+	return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static enum drm_mode_status
@@ -259,6 +307,13 @@ dw_hdmi_rockchip_mode_valid(struct dw_hdmi *dw_hdmi, void *data,
 	bool exact_match = hdmi->plat_data->phy_force_vendor;
 	int i;
 
+<<<<<<< HEAD
+=======
+	if (hdmi->chip_data->max_tmds_clock &&
+	    mode->clock > hdmi->chip_data->max_tmds_clock)
+		return MODE_CLOCK_HIGH;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (hdmi->ref_clk) {
 		int rpclk = clk_round_rate(hdmi->ref_clk, pclk);
 
@@ -322,17 +377,28 @@ static void dw_hdmi_rockchip_encoder_enable(struct drm_encoder *encoder)
 
 	ret = clk_prepare_enable(hdmi->grf_clk);
 	if (ret < 0) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(hdmi->dev, "failed to enable grfclk %d\n", ret);
+=======
+		drm_err(hdmi, "failed to enable grfclk %d\n", ret);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 
 	ret = regmap_write(hdmi->regmap, hdmi->chip_data->lcdsel_grf_reg, val);
 	if (ret != 0)
+<<<<<<< HEAD
 		DRM_DEV_ERROR(hdmi->dev, "Could not write to GRF: %d\n", ret);
 
 	clk_disable_unprepare(hdmi->grf_clk);
 	DRM_DEV_DEBUG(hdmi->dev, "vop %s output to hdmi\n",
 		      ret ? "LIT" : "BIG");
+=======
+		drm_err(hdmi, "Could not write to GRF: %d\n", ret);
+
+	clk_disable_unprepare(hdmi->grf_clk);
+	drm_dbg(hdmi, "vop %s output to hdmi\n", ret ? "LIT" : "BIG");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int
@@ -362,6 +428,11 @@ static int dw_hdmi_rockchip_genphy_init(struct dw_hdmi *dw_hdmi, void *data,
 {
 	struct rockchip_hdmi *hdmi = (struct rockchip_hdmi *)data;
 
+<<<<<<< HEAD
+=======
+	dw_hdmi_set_high_tmds_clock_ratio(dw_hdmi, display);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return phy_power_on(hdmi->phy);
 }
 
@@ -434,6 +505,11 @@ static void dw_hdmi_rk3328_setup_hpd(struct dw_hdmi *dw_hdmi, void *data)
 		HIWORD_UPDATE(RK3328_HDMI_SDAIN_MSK | RK3328_HDMI_SCLIN_MSK,
 			      RK3328_HDMI_SDAIN_MSK | RK3328_HDMI_SCLIN_MSK |
 			      RK3328_HDMI_HPD_IOE));
+<<<<<<< HEAD
+=======
+
+	dw_hdmi_rk3328_read_hpd(dw_hdmi, data);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct dw_hdmi_phy_ops rk3228_hdmi_phy_ops = {
@@ -446,13 +522,20 @@ static const struct dw_hdmi_phy_ops rk3228_hdmi_phy_ops = {
 
 static struct rockchip_hdmi_chip_data rk3228_chip_data = {
 	.lcdsel_grf_reg = -1,
+<<<<<<< HEAD
+=======
+	.max_tmds_clock = 594000,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct dw_hdmi_plat_data rk3228_hdmi_drv_data = {
 	.mode_valid = dw_hdmi_rockchip_mode_valid,
+<<<<<<< HEAD
 	.mpll_cfg = rockchip_mpll_cfg,
 	.cur_ctr = rockchip_cur_ctr,
 	.phy_config = rockchip_phy_config,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.phy_data = &rk3228_chip_data,
 	.phy_ops = &rk3228_hdmi_phy_ops,
 	.phy_name = "inno_dw_hdmi_phy2",
@@ -463,6 +546,10 @@ static struct rockchip_hdmi_chip_data rk3288_chip_data = {
 	.lcdsel_grf_reg = RK3288_GRF_SOC_CON6,
 	.lcdsel_big = HIWORD_UPDATE(0, RK3288_HDMI_LCDC_SEL),
 	.lcdsel_lit = HIWORD_UPDATE(RK3288_HDMI_LCDC_SEL, RK3288_HDMI_LCDC_SEL),
+<<<<<<< HEAD
+=======
+	.max_tmds_clock = 340000,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct dw_hdmi_plat_data rk3288_hdmi_drv_data = {
@@ -483,13 +570,20 @@ static const struct dw_hdmi_phy_ops rk3328_hdmi_phy_ops = {
 
 static struct rockchip_hdmi_chip_data rk3328_chip_data = {
 	.lcdsel_grf_reg = -1,
+<<<<<<< HEAD
+=======
+	.max_tmds_clock = 594000,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct dw_hdmi_plat_data rk3328_hdmi_drv_data = {
 	.mode_valid = dw_hdmi_rockchip_mode_valid,
+<<<<<<< HEAD
 	.mpll_cfg = rockchip_mpll_cfg,
 	.cur_ctr = rockchip_cur_ctr,
 	.phy_config = rockchip_phy_config,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.phy_data = &rk3328_chip_data,
 	.phy_ops = &rk3328_hdmi_phy_ops,
 	.phy_name = "inno_dw_hdmi_phy2",
@@ -501,6 +595,10 @@ static struct rockchip_hdmi_chip_data rk3399_chip_data = {
 	.lcdsel_grf_reg = RK3399_GRF_SOC_CON20,
 	.lcdsel_big = HIWORD_UPDATE(0, RK3399_HDMI_LCDC_SEL),
 	.lcdsel_lit = HIWORD_UPDATE(RK3399_HDMI_LCDC_SEL, RK3399_HDMI_LCDC_SEL),
+<<<<<<< HEAD
+=======
+	.max_tmds_clock = 340000,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct dw_hdmi_plat_data rk3399_hdmi_drv_data = {
@@ -514,6 +612,10 @@ static const struct dw_hdmi_plat_data rk3399_hdmi_drv_data = {
 
 static struct rockchip_hdmi_chip_data rk3568_chip_data = {
 	.lcdsel_grf_reg = -1,
+<<<<<<< HEAD
+=======
+	.max_tmds_clock = 340000,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct dw_hdmi_plat_data rk3568_hdmi_drv_data = {
@@ -592,7 +694,11 @@ static int dw_hdmi_rockchip_bind(struct device *dev, struct device *master,
 	ret = rockchip_hdmi_parse_dt(hdmi);
 	if (ret) {
 		if (ret != -EPROBE_DEFER)
+<<<<<<< HEAD
 			DRM_DEV_ERROR(hdmi->dev, "Unable to parse OF data\n");
+=======
+			drm_err(hdmi, "Unable to parse OF data\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return ret;
 	}
 
@@ -600,6 +706,7 @@ static int dw_hdmi_rockchip_bind(struct device *dev, struct device *master,
 	if (IS_ERR(hdmi->phy)) {
 		ret = PTR_ERR(hdmi->phy);
 		if (ret != -EPROBE_DEFER)
+<<<<<<< HEAD
 			DRM_DEV_ERROR(hdmi->dev, "failed to get phy\n");
 		return ret;
 	}
@@ -623,6 +730,12 @@ static int dw_hdmi_rockchip_bind(struct device *dev, struct device *master,
 		goto err_clk;
 	}
 
+=======
+			drm_err(hdmi, "failed to get phy\n");
+		return ret;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (hdmi->chip_data == &rk3568_chip_data) {
 		regmap_write(hdmi->regmap, RK3568_GRF_VO_CON1,
 			     HIWORD_UPDATE(RK3568_HDMI_SDAIN_MSK |
@@ -651,12 +764,16 @@ static int dw_hdmi_rockchip_bind(struct device *dev, struct device *master,
 
 err_bind:
 	drm_encoder_cleanup(encoder);
+<<<<<<< HEAD
 	clk_disable_unprepare(hdmi->ref_clk);
 err_clk:
 	regulator_disable(hdmi->avdd_1v8);
 err_avdd_1v8:
 	regulator_disable(hdmi->avdd_0v9);
 err_avdd_0v9:
+=======
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -667,10 +784,13 @@ static void dw_hdmi_rockchip_unbind(struct device *dev, struct device *master,
 
 	dw_hdmi_unbind(hdmi->hdmi);
 	drm_encoder_cleanup(&hdmi->encoder.encoder);
+<<<<<<< HEAD
 	clk_disable_unprepare(hdmi->ref_clk);
 
 	regulator_disable(hdmi->avdd_1v8);
 	regulator_disable(hdmi->avdd_0v9);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct component_ops dw_hdmi_rockchip_ops = {

@@ -226,7 +226,11 @@ struct mtk_hsdma_soc {
  * @pc_refcnt:		     Track how many VCs are using the PC
  * @lock:		     Lock protect agaisting multiple VCs access PC
  * @soc:		     The pointer to area holding differences among
+<<<<<<< HEAD
  *			     vaious platform
+=======
+ *			     various platform
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct mtk_hsdma_device {
 	struct dma_device ddev;

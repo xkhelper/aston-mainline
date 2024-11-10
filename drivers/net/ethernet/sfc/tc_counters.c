@@ -249,7 +249,11 @@ struct efx_tc_counter_index *efx_tc_flower_get_counter_index(
 					       &ctr->linkage,
 					       efx_tc_counter_id_ht_params);
 			kfree(ctr);
+<<<<<<< HEAD
 			return (void *)cnt; /* it's an ERR_PTR */
+=======
+			return ERR_CAST(cnt);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		ctr->cnt = cnt;
 		refcount_set(&ctr->ref, 1);

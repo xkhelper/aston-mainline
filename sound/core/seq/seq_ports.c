@@ -362,6 +362,11 @@ int snd_seq_set_port_info(struct snd_seq_client_port * port,
 			port->direction |= SNDRV_SEQ_PORT_DIR_OUTPUT;
 	}
 
+<<<<<<< HEAD
+=======
+	port->is_midi1 = !!(info->flags & SNDRV_SEQ_PORT_FLG_IS_MIDI1);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -399,6 +404,12 @@ int snd_seq_get_port_info(struct snd_seq_client_port * port,
 		info->time_queue = port->time_queue;
 	}
 
+<<<<<<< HEAD
+=======
+	if (port->is_midi1)
+		info->flags |= SNDRV_SEQ_PORT_FLG_IS_MIDI1;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* UMP direction and group */
 	info->direction = port->direction;
 	info->ump_group = port->ump_group;

@@ -37,6 +37,10 @@ config PWRSEQ_SIMPLE
 config MMC_BLOCK
 	tristate "MMC block device driver"
 	depends on BLOCK
+<<<<<<< HEAD
+=======
+	depends on RPMB || !RPMB
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	imply IOSCHED_BFQ
 	default y
 	help

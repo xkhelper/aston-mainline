@@ -59,6 +59,7 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	pinctrl_i2c3: i2c3grp {
 		fsl,pins = <
 			MX6QDL_PAD_GPIO_5__I2C3_SCL 0x4001b899
@@ -73,6 +74,8 @@
 		>;
 	};
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pinctrl_pmic: pmicgrp {
 		fsl,pins = <
 			MX6QDL_PAD_NANDF_RB0__GPIO6_IO10 0x1b099 /* PMIC irq */

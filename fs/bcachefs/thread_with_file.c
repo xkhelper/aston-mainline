@@ -275,7 +275,10 @@ static long thread_with_stdio_ioctl(struct file *file, unsigned int cmd, unsigne
 }
 
 static const struct file_operations thread_with_stdio_fops = {
+<<<<<<< HEAD
 	.llseek		= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.read		= thread_with_stdio_read,
 	.write		= thread_with_stdio_write,
 	.poll		= thread_with_stdio_poll,
@@ -285,7 +288,10 @@ static const struct file_operations thread_with_stdio_fops = {
 };
 
 static const struct file_operations thread_with_stdout_fops = {
+<<<<<<< HEAD
 	.llseek		= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.read		= thread_with_stdio_read,
 	.poll		= thread_with_stdout_poll,
 	.flush		= thread_with_stdio_flush,
@@ -387,7 +393,11 @@ again:
 	seen = buf->buf.nr;
 	char *n = memchr(buf->buf.data, '\n', seen);
 
+<<<<<<< HEAD
 	if (!n && timeout != MAX_SCHEDULE_TIMEOUT && jiffies >= until) {
+=======
+	if (!n && timeout != MAX_SCHEDULE_TIMEOUT && time_after_eq(jiffies, until)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		spin_unlock(&buf->lock);
 		return -ETIME;
 	}

@@ -69,8 +69,11 @@ struct adis16460 {
 	struct adis adis;
 };
 
+<<<<<<< HEAD
 #ifdef CONFIG_DEBUG_FS
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int adis16460_show_serial_number(void *arg, u64 *val)
 {
 	struct adis16460 *adis16460 = arg;
@@ -125,17 +128,28 @@ static int adis16460_show_flash_count(void *arg, u64 *val)
 DEFINE_DEBUGFS_ATTRIBUTE(adis16460_flash_count_fops,
 		adis16460_show_flash_count, NULL, "%lld\n");
 
+<<<<<<< HEAD
 static int adis16460_debugfs_init(struct iio_dev *indio_dev)
+=======
+static void adis16460_debugfs_init(struct iio_dev *indio_dev)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct adis16460 *adis16460 = iio_priv(indio_dev);
 	struct dentry *d = iio_get_debugfs_dentry(indio_dev);
 
+<<<<<<< HEAD
+=======
+	if (!IS_ENABLED(CONFIG_DEBUG_FS))
+		return;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	debugfs_create_file_unsafe("serial_number", 0400,
 			d, adis16460, &adis16460_serial_number_fops);
 	debugfs_create_file_unsafe("product_id", 0400,
 			d, adis16460, &adis16460_product_id_fops);
 	debugfs_create_file_unsafe("flash_count", 0400,
 			d, adis16460, &adis16460_flash_count_fops);
+<<<<<<< HEAD
 
 	return 0;
 }
@@ -149,6 +163,10 @@ static int adis16460_debugfs_init(struct iio_dev *indio_dev)
 
 #endif
 
+=======
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int adis16460_set_freq(struct iio_dev *indio_dev, int val, int val2)
 {
 	struct adis16460 *st = iio_priv(indio_dev);

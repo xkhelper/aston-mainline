@@ -17,7 +17,11 @@
 #include <linux/workqueue.h>
 #include <linux/module.h>
 #include <net/mac80211.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "zd_def.h"
 #include "zd_mac.h"

@@ -2,6 +2,10 @@
 
 #include <net/sock.h>
 #include <linux/ethtool_netlink.h>
+<<<<<<< HEAD
+=======
+#include <linux/phy_link_topology.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/pm_runtime.h>
 #include "netlink.h"
 #include "module_fw.h"
@@ -31,6 +35,27 @@ const struct nla_policy ethnl_header_policy_stats[] = {
 							  ETHTOOL_FLAGS_STATS),
 };
 
+<<<<<<< HEAD
+=======
+const struct nla_policy ethnl_header_policy_phy[] = {
+	[ETHTOOL_A_HEADER_DEV_INDEX]	= { .type = NLA_U32 },
+	[ETHTOOL_A_HEADER_DEV_NAME]	= { .type = NLA_NUL_STRING,
+					    .len = ALTIFNAMSIZ - 1 },
+	[ETHTOOL_A_HEADER_FLAGS]	= NLA_POLICY_MASK(NLA_U32,
+							  ETHTOOL_FLAGS_BASIC),
+	[ETHTOOL_A_HEADER_PHY_INDEX]		= NLA_POLICY_MIN(NLA_U32, 1),
+};
+
+const struct nla_policy ethnl_header_policy_phy_stats[] = {
+	[ETHTOOL_A_HEADER_DEV_INDEX]	= { .type = NLA_U32 },
+	[ETHTOOL_A_HEADER_DEV_NAME]	= { .type = NLA_NUL_STRING,
+					    .len = ALTIFNAMSIZ - 1 },
+	[ETHTOOL_A_HEADER_FLAGS]	= NLA_POLICY_MASK(NLA_U32,
+							  ETHTOOL_FLAGS_STATS),
+	[ETHTOOL_A_HEADER_PHY_INDEX]		= NLA_POLICY_MIN(NLA_U32, 1),
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int ethnl_sock_priv_set(struct sk_buff *skb, struct net_device *dev, u32 portid,
 			enum ethnl_sock_type type)
 {
@@ -119,7 +144,11 @@ int ethnl_parse_header_dev_get(struct ethnl_req_info *req_info,
 			       const struct nlattr *header, struct net *net,
 			       struct netlink_ext_ack *extack, bool require_dev)
 {
+<<<<<<< HEAD
 	struct nlattr *tb[ARRAY_SIZE(ethnl_header_policy)];
+=======
+	struct nlattr *tb[ARRAY_SIZE(ethnl_header_policy_phy)];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct nlattr *devname_attr;
 	struct net_device *dev = NULL;
 	u32 flags = 0;
@@ -134,7 +163,11 @@ int ethnl_parse_header_dev_get(struct ethnl_req_info *req_info,
 	/* No validation here, command policy should have a nested policy set
 	 * for the header, therefore validation should have already been done.
 	 */
+<<<<<<< HEAD
 	ret = nla_parse_nested(tb, ARRAY_SIZE(ethnl_header_policy) - 1, header,
+=======
+	ret = nla_parse_nested(tb, ARRAY_SIZE(ethnl_header_policy_phy) - 1, header,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       NULL, extack);
 	if (ret < 0)
 		return ret;
@@ -175,11 +208,51 @@ int ethnl_parse_header_dev_get(struct ethnl_req_info *req_info,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
+=======
+	if (tb[ETHTOOL_A_HEADER_PHY_INDEX]) {
+		if (dev) {
+			req_info->phy_index = nla_get_u32(tb[ETHTOOL_A_HEADER_PHY_INDEX]);
+		} else {
+			NL_SET_ERR_MSG_ATTR(extack, header,
+					    "phy_index set without a netdev");
+			return -EINVAL;
+		}
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	req_info->dev = dev;
 	req_info->flags = flags;
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+struct phy_device *ethnl_req_get_phydev(const struct ethnl_req_info *req_info,
+					const struct nlattr *header,
+					struct netlink_ext_ack *extack)
+{
+	struct phy_device *phydev;
+
+	ASSERT_RTNL();
+
+	if (!req_info->dev)
+		return NULL;
+
+	if (!req_info->phy_index)
+		return req_info->dev->phydev;
+
+	phydev = phy_link_topo_get_phy(req_info->dev, req_info->phy_index);
+	if (!phydev) {
+		NL_SET_ERR_MSG_ATTR(extack, header,
+				    "no phy matching phyindex");
+		return ERR_PTR(-ENODEV);
+	}
+
+	return phydev;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * ethnl_fill_reply_header() - Put common header into a reply message
  * @skb:      skb with the message
@@ -1128,6 +1201,11 @@ static const struct genl_ops ethtool_genl_ops[] = {
 	{
 		.cmd	= ETHTOOL_MSG_RSS_GET,
 		.doit	= ethnl_default_doit,
+<<<<<<< HEAD
+=======
+		.start	= ethnl_rss_dump_start,
+		.dumpit	= ethnl_rss_dumpit,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.policy = ethnl_rss_get_policy,
 		.maxattr = ARRAY_SIZE(ethnl_rss_get_policy) - 1,
 	},
@@ -1179,6 +1257,18 @@ static const struct genl_ops ethtool_genl_ops[] = {
 		.policy	= ethnl_module_fw_flash_act_policy,
 		.maxattr = ARRAY_SIZE(ethnl_module_fw_flash_act_policy) - 1,
 	},
+<<<<<<< HEAD
+=======
+	{
+		.cmd	= ETHTOOL_MSG_PHY_GET,
+		.doit	= ethnl_phy_doit,
+		.start	= ethnl_phy_start,
+		.dumpit	= ethnl_phy_dumpit,
+		.done	= ethnl_phy_done,
+		.policy = ethnl_phy_get_policy,
+		.maxattr = ARRAY_SIZE(ethnl_phy_get_policy) - 1,
+	},
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct genl_multicast_group ethtool_nl_mcgrps[] = {

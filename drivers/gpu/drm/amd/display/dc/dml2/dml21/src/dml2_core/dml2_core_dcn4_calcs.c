@@ -8,6 +8,7 @@
 #include "dml2_debug.h"
 #include "lib_float_math.h"
 #include "dml_top_types.h"
+<<<<<<< HEAD
 #include "dml2_core_shared.h"
 
 #define DML_VM_PTE_ADL_PATCH_EN
@@ -25,10 +26,56 @@ static void dml2_print_dml_mode_support_info(const struct dml2_core_internal_mod
 		dml2_printf("DML: support: ImmediateFlipSupport = %d\n", support->ImmediateFlipSupport);
 	if (!fail_only || support->WritebackLatencySupport == 0)
 		dml2_printf("DML: support: WritebackLatencySupport = %d\n", support->WritebackLatencySupport);
+=======
+
+#define DML2_MAX_FMT_420_BUFFER_WIDTH 4096
+#define DML_MAX_NUM_OF_SLICES_PER_DSC 4
+
+const char *dml2_core_internal_bw_type_str(enum dml2_core_internal_bw_type bw_type)
+{
+	switch (bw_type) {
+	case (dml2_core_internal_bw_sdp):
+		return("dml2_core_internal_bw_sdp");
+	case (dml2_core_internal_bw_dram):
+		return("dml2_core_internal_bw_dram");
+	case (dml2_core_internal_bw_max):
+		return("dml2_core_internal_bw_max");
+	default:
+		return("dml2_core_internal_bw_unknown");
+	}
+}
+
+const char *dml2_core_internal_soc_state_type_str(enum dml2_core_internal_soc_state_type dml2_core_internal_soc_state_type)
+{
+	switch (dml2_core_internal_soc_state_type) {
+	case (dml2_core_internal_soc_state_sys_idle):
+		return("dml2_core_internal_soc_state_sys_idle");
+	case (dml2_core_internal_soc_state_sys_active):
+		return("dml2_core_internal_soc_state_sys_active");
+	case (dml2_core_internal_soc_state_svp_prefetch):
+		return("dml2_core_internal_soc_state_svp_prefetch");
+	case dml2_core_internal_soc_state_max:
+	default:
+		return("dml2_core_internal_soc_state_unknown");
+	}
+}
+
+static double dml2_core_div_rem(double dividend, unsigned int divisor, unsigned int *remainder)
+{
+	*remainder = ((dividend / divisor) - (int)(dividend / divisor) > 0);
+	return dividend / divisor;
+}
+
+static void dml2_print_mode_support_info(const struct dml2_core_internal_mode_support_info *support, bool fail_only)
+{
+	dml2_printf("DML: ===================================== \n");
+	dml2_printf("DML: DML_MODE_SUPPORT_INFO_ST\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!fail_only || support->ScaleRatioAndTapsSupport == 0)
 		dml2_printf("DML: support: ScaleRatioAndTapsSupport = %d\n", support->ScaleRatioAndTapsSupport);
 	if (!fail_only || support->SourceFormatPixelAndScanSupport == 0)
 		dml2_printf("DML: support: SourceFormatPixelAndScanSupport = %d\n", support->SourceFormatPixelAndScanSupport);
+<<<<<<< HEAD
 	if (!fail_only || support->P2IWith420 == 1)
 		dml2_printf("DML: support: P2IWith420 = %d\n", support->P2IWith420);
 	if (!fail_only || support->DSCOnlyIfNecessaryWithBPP == 1)
@@ -37,6 +84,10 @@ static void dml2_print_dml_mode_support_info(const struct dml2_core_internal_mod
 		dml2_printf("DML: support: DSC422NativeNotSupported = %d\n", support->DSC422NativeNotSupported);
 	if (!fail_only || support->DSCSlicesODMModeSupported == 0)
 		dml2_printf("DML: support: DSCSlicesODMModeSupported = %d\n", support->DSCSlicesODMModeSupported);
+=======
+	if (!fail_only || support->ViewportSizeSupport == 0)
+		dml2_printf("DML: support: ViewportSizeSupport = %d\n", support->ViewportSizeSupport);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!fail_only || support->LinkRateDoesNotMatchDPVersion == 1)
 		dml2_printf("DML: support: LinkRateDoesNotMatchDPVersion = %d\n", support->LinkRateDoesNotMatchDPVersion);
 	if (!fail_only || support->LinkRateForMultistreamNotIndicated == 1)
@@ -45,10 +96,16 @@ static void dml2_print_dml_mode_support_info(const struct dml2_core_internal_mod
 		dml2_printf("DML: support: BPPForMultistreamNotIndicated = %d\n", support->BPPForMultistreamNotIndicated);
 	if (!fail_only || support->MultistreamWithHDMIOreDP == 1)
 		dml2_printf("DML: support: MultistreamWithHDMIOreDP = %d\n", support->MultistreamWithHDMIOreDP);
+<<<<<<< HEAD
+=======
+	if (!fail_only || support->ExceededMultistreamSlots == 1)
+		dml2_printf("DML: support: ExceededMultistreamSlots = %d\n", support->ExceededMultistreamSlots);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!fail_only || support->MSOOrODMSplitWithNonDPLink == 1)
 		dml2_printf("DML: support: MSOOrODMSplitWithNonDPLink = %d\n", support->MSOOrODMSplitWithNonDPLink);
 	if (!fail_only || support->NotEnoughLanesForMSO == 1)
 		dml2_printf("DML: support: NotEnoughLanesForMSO = %d\n", support->NotEnoughLanesForMSO);
+<<<<<<< HEAD
 	if (!fail_only || support->NumberOfOTGSupport == 0)
 		dml2_printf("DML: support: NumberOfOTGSupport = %d\n", support->NumberOfOTGSupport);
 	if (!fail_only || support->NumberOfHDMIFRLSupport == 0)
@@ -75,10 +132,19 @@ static void dml2_print_dml_mode_support_info(const struct dml2_core_internal_mod
 		dml2_printf("DML: support: InvalidCombinationOfMALLUseForPState = %d\n", support->InvalidCombinationOfMALLUseForPState);
 	if (!fail_only || support->ExceededMultistreamSlots == 1)
 		dml2_printf("DML: support: ExceededMultistreamSlots = %d\n", support->ExceededMultistreamSlots);
+=======
+	if (!fail_only || support->P2IWith420 == 1)
+		dml2_printf("DML: support: P2IWith420 = %d\n", support->P2IWith420);
+	if (!fail_only || support->DSC422NativeNotSupported == 1)
+		dml2_printf("DML: support: DSC422NativeNotSupported = %d\n", support->DSC422NativeNotSupported);
+	if (!fail_only || support->DSCSlicesODMModeSupported == 0)
+		dml2_printf("DML: support: DSCSlicesODMModeSupported = %d\n", support->DSCSlicesODMModeSupported);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!fail_only || support->NotEnoughDSCUnits == 1)
 		dml2_printf("DML: support: NotEnoughDSCUnits = %d\n", support->NotEnoughDSCUnits);
 	if (!fail_only || support->NotEnoughDSCSlices == 1)
 		dml2_printf("DML: support: NotEnoughDSCSlices = %d\n", support->NotEnoughDSCSlices);
+<<<<<<< HEAD
 	if (!fail_only || support->PixelsPerLinePerDSCUnitSupport == 0)
 		dml2_printf("DML: support: PixelsPerLinePerDSCUnitSupport = %d\n", support->PixelsPerLinePerDSCUnitSupport);
 	if (!fail_only || support->DSCCLKRequiredMoreThanSupported == 1)
@@ -87,12 +153,27 @@ static void dml2_print_dml_mode_support_info(const struct dml2_core_internal_mod
 		dml2_printf("DML: support: DTBCLKRequiredMoreThanSupported = %d\n", support->DTBCLKRequiredMoreThanSupported);
 	if (!fail_only || support->LinkCapacitySupport == 0)
 		dml2_printf("DML: support: LinkCapacitySupport = %d\n", support->LinkCapacitySupport);
+=======
+	if (!fail_only || support->ImmediateFlipOrHostVMAndPStateWithMALLFullFrameOrPhantomPipe == 1)
+		dml2_printf("DML: support: ImmediateFlipOrHostVMAndPStateWithMALLFullFrameOrPhantomPipe = %d\n", support->ImmediateFlipOrHostVMAndPStateWithMALLFullFrameOrPhantomPipe);
+	if (!fail_only || support->InvalidCombinationOfMALLUseForPStateAndStaticScreen == 1)
+		dml2_printf("DML: support: InvalidCombinationOfMALLUseForPStateAndStaticScreen = %d\n", support->InvalidCombinationOfMALLUseForPStateAndStaticScreen);
+	if (!fail_only || support->DSCCLKRequiredMoreThanSupported == 1)
+		dml2_printf("DML: support: DSCCLKRequiredMoreThanSupported = %d\n", support->DSCCLKRequiredMoreThanSupported);
+	if (!fail_only || support->PixelsPerLinePerDSCUnitSupport == 0)
+		dml2_printf("DML: support: PixelsPerLinePerDSCUnitSupport = %d\n", support->PixelsPerLinePerDSCUnitSupport);
+	if (!fail_only || support->DTBCLKRequiredMoreThanSupported == 1)
+		dml2_printf("DML: support: DTBCLKRequiredMoreThanSupported = %d\n", support->DTBCLKRequiredMoreThanSupported);
+	if (!fail_only || support->InvalidCombinationOfMALLUseForPState == 1)
+		dml2_printf("DML: support: InvalidCombinationOfMALLUseForPState = %d\n", support->InvalidCombinationOfMALLUseForPState);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!fail_only || support->ROBSupport == 0)
 		dml2_printf("DML: support: ROBSupport = %d\n", support->ROBSupport);
 	if (!fail_only || support->OutstandingRequestsSupport == 0)
 		dml2_printf("DML: support: OutstandingRequestsSupport = %d\n", support->OutstandingRequestsSupport);
 	if (!fail_only || support->OutstandingRequestsUrgencyAvoidance == 0)
 		dml2_printf("DML: support: OutstandingRequestsUrgencyAvoidance = %d\n", support->OutstandingRequestsUrgencyAvoidance);
+<<<<<<< HEAD
 	if (!fail_only || support->PTEBufferSizeNotExceeded == 0)
 		dml2_printf("DML: support: PTEBufferSizeNotExceeded = %d\n", support->PTEBufferSizeNotExceeded);
 	if (!fail_only || support->AvgBandwidthSupport == 0)
@@ -105,14 +186,62 @@ static void dml2_print_dml_mode_support_info(const struct dml2_core_internal_mod
 		dml2_printf("DML: support: DynamicMetadataSupported = %d\n", support->DynamicMetadataSupported);
 	if (!fail_only || support->VRatioInPrefetchSupported == 0)
 		dml2_printf("DML: support: VRatioInPrefetchSupported = %d\n", support->VRatioInPrefetchSupported);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!fail_only || support->DISPCLK_DPPCLK_Support == 0)
 		dml2_printf("DML: support: DISPCLK_DPPCLK_Support = %d\n", support->DISPCLK_DPPCLK_Support);
 	if (!fail_only || support->TotalAvailablePipesSupport == 0)
 		dml2_printf("DML: support: TotalAvailablePipesSupport = %d\n", support->TotalAvailablePipesSupport);
+<<<<<<< HEAD
 	if (!fail_only || support->ModeSupport == 0)
 		dml2_printf("DML: support: ModeSupport = %d\n", support->ModeSupport);
 	if (!fail_only || support->ViewportSizeSupport == 0)
 		dml2_printf("DML: support: ViewportSizeSupport = %d\n", support->ViewportSizeSupport);
+=======
+	if (!fail_only || support->NumberOfOTGSupport == 0)
+		dml2_printf("DML: support: NumberOfOTGSupport = %d\n", support->NumberOfOTGSupport);
+	if (!fail_only || support->NumberOfHDMIFRLSupport == 0)
+		dml2_printf("DML: support: NumberOfHDMIFRLSupport = %d\n", support->NumberOfHDMIFRLSupport);
+	if (!fail_only || support->NumberOfDP2p0Support == 0)
+		dml2_printf("DML: support: NumberOfDP2p0Support = %d\n", support->NumberOfDP2p0Support);
+	if (!fail_only || support->EnoughWritebackUnits == 0)
+		dml2_printf("DML: support: EnoughWritebackUnits = %d\n", support->EnoughWritebackUnits);
+	if (!fail_only || support->WritebackScaleRatioAndTapsSupport == 0)
+		dml2_printf("DML: support: WritebackScaleRatioAndTapsSupport = %d\n", support->WritebackScaleRatioAndTapsSupport);
+	if (!fail_only || support->WritebackLatencySupport == 0)
+		dml2_printf("DML: support: WritebackLatencySupport = %d\n", support->WritebackLatencySupport);
+	if (!fail_only || support->CursorSupport == 0)
+		dml2_printf("DML: support: CursorSupport = %d\n", support->CursorSupport);
+	if (!fail_only || support->PitchSupport == 0)
+		dml2_printf("DML: support: PitchSupport = %d\n", support->PitchSupport);
+	if (!fail_only || support->ViewportExceedsSurface == 1)
+		dml2_printf("DML: support: ViewportExceedsSurface = %d\n", support->ViewportExceedsSurface);
+	if (!fail_only || support->PrefetchSupported == 0)
+		dml2_printf("DML: support: PrefetchSupported = %d\n", support->PrefetchSupported);
+	if (!fail_only || support->EnoughUrgentLatencyHidingSupport == 0)
+		dml2_printf("DML: support: EnoughUrgentLatencyHidingSupport = %d\n", support->EnoughUrgentLatencyHidingSupport);
+	if (!fail_only || support->AvgBandwidthSupport == 0)
+		dml2_printf("DML: support: AvgBandwidthSupport = %d\n", support->AvgBandwidthSupport);
+	if (!fail_only || support->DynamicMetadataSupported == 0)
+		dml2_printf("DML: support: DynamicMetadataSupported = %d\n", support->DynamicMetadataSupported);
+	if (!fail_only || support->VRatioInPrefetchSupported == 0)
+		dml2_printf("DML: support: VRatioInPrefetchSupported = %d\n", support->VRatioInPrefetchSupported);
+	if (!fail_only || support->PTEBufferSizeNotExceeded == 1)
+		dml2_printf("DML: support: PTEBufferSizeNotExceeded = %d\n", support->PTEBufferSizeNotExceeded);
+	if (!fail_only || support->DCCMetaBufferSizeNotExceeded == 1)
+		dml2_printf("DML: support: DCCMetaBufferSizeNotExceeded = %d\n", support->DCCMetaBufferSizeNotExceeded);
+	if (!fail_only || support->ExceededMALLSize == 1)
+		dml2_printf("DML: support: ExceededMALLSize = %d\n", support->ExceededMALLSize);
+	if (!fail_only || support->g6_temp_read_support == 0)
+		dml2_printf("DML: support: g6_temp_read_support = %d\n", support->g6_temp_read_support);
+	if (!fail_only || support->ImmediateFlipSupport == 0)
+		dml2_printf("DML: support: ImmediateFlipSupport = %d\n", support->ImmediateFlipSupport);
+	if (!fail_only || support->LinkCapacitySupport == 0)
+		dml2_printf("DML: support: LinkCapacitySupport = %d\n", support->LinkCapacitySupport);
+
+	if (!fail_only || support->ModeSupport == 0)
+		dml2_printf("DML: support: ModeSupport = %d\n", support->ModeSupport);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dml2_printf("DML: ===================================== \n");
 }
 
@@ -235,6 +364,10 @@ dml_get_per_pipe_var_func(vstartup_calculated, unsigned int, mode_lib->mp.VStart
 dml_get_per_pipe_var_func(vupdate_offset, unsigned int, mode_lib->mp.VUpdateOffsetPix);
 dml_get_per_pipe_var_func(vupdate_width, unsigned int, mode_lib->mp.VUpdateWidthPix);
 dml_get_per_pipe_var_func(vready_offset, unsigned int, mode_lib->mp.VReadyOffsetPix);
+<<<<<<< HEAD
+=======
+dml_get_per_pipe_var_func(pstate_keepout_dst_lines, unsigned int, mode_lib->mp.pstate_keepout_dst_lines);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 dml_get_per_pipe_var_func(det_stored_buffer_size_l_bytes, unsigned int, mode_lib->mp.DETBufferSizeY);
 dml_get_per_pipe_var_func(det_stored_buffer_size_c_bytes, unsigned int, mode_lib->mp.DETBufferSizeC);
 dml_get_per_pipe_var_func(det_buffer_size_kbytes, unsigned int, mode_lib->mp.DETBufferSizeInKByte);
@@ -480,7 +613,11 @@ static unsigned int dml_get_tile_block_size_bytes(enum dml2_swizzle_mode sw_mode
 	default:
 		DML2_ASSERT(0);
 		return 256;
+<<<<<<< HEAD
 	};
+=======
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static bool dml_is_vertical_rotation(enum dml2_rotation_angle Scan)
@@ -2051,7 +2188,15 @@ static void CalculateDCCConfiguration(
 	unsigned int full_swath_bytes_vert_wc_l;
 	unsigned int full_swath_bytes_vert_wc_c;
 
+<<<<<<< HEAD
 	yuv420 = dml_is_420(SourcePixelFormat);
+=======
+	if (dml_is_420(SourcePixelFormat))
+		yuv420 = 1;
+	else
+		yuv420 = 0;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	horz_div_l = 1;
 	horz_div_c = 1;
 	vert_div_l = 1;
@@ -2343,16 +2488,28 @@ static void calculate_mcache_row_bytes(
 		}
 
 		if (p->gpuvm_enable) {
+<<<<<<< HEAD
 			meta_per_mvmpg_per_channel = (float)vmpg_bytes / 256 / p->num_chans;
 
 			//but using the est_blk_per_vmpg between 2 and 4, to be not as pessimestic
 			if (p->surf_vert && vmpg_bytes > blk_bytes) {
 				meta_per_mvmpg_per_channel = (float)est_blk_per_vmpg * blk_bytes / 256 / p->num_chans;
+=======
+			meta_per_mvmpg_per_channel = (float)vmpg_bytes / (float)256 / p->num_chans;
+
+			//but using the est_blk_per_vmpg between 2 and 4, to be not as pessimestic
+			if (p->surf_vert && vmpg_bytes > blk_bytes) {
+				meta_per_mvmpg_per_channel = (float)est_blk_per_vmpg * blk_bytes / (float)256 / p->num_chans;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 
 			*p->dcc_dram_bw_nom_overhead_factor = 1 + math_max2(1.0 / 256.0, math_ceil2(meta_per_mvmpg_per_channel, p->mem_word_bytes) / (256 * meta_per_mvmpg_per_channel)); // dcc_dr_oh_nom
 		} else {
+<<<<<<< HEAD
 			meta_per_mvmpg_per_channel = (float) blk_bytes / 256 / p->num_chans;
+=======
+			meta_per_mvmpg_per_channel = (float) blk_bytes / (float)256 / p->num_chans;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			if (!p->surf_vert)
 				*p->dcc_dram_bw_nom_overhead_factor = 1 + 1.0 / 256.0;
@@ -2519,8 +2676,16 @@ static void calculate_mcache_setting(
 		l->luma_time_factor = (double)l->mvmpg_width_c / l->mvmpg_width_l * 2;
 
 	// The algorithm starts with computing a non-integer, avg_mcache_element_size_l/c:
+<<<<<<< HEAD
 	l->avg_mcache_element_size_l = l->meta_row_width_l / *p->num_mcaches_l;
 	if (l->is_dual_plane) {
+=======
+	if (*p->num_mcaches_l) {
+		l->avg_mcache_element_size_l = l->meta_row_width_l / *p->num_mcaches_l;
+	}
+
+	if (l->is_dual_plane && *p->num_mcaches_c) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		l->avg_mcache_element_size_c = l->meta_row_width_c / *p->num_mcaches_c;
 
 		if (!p->imall_enable || (*p->mall_comb_mcache_l == *p->mall_comb_mcache_c)) {
@@ -2649,9 +2814,15 @@ static double dml_get_return_bandwidth_available(
 	double ideal_fabric_bandwidth = fclk_mhz * (double)soc->fabric_datapath_to_dcn_data_return_bytes;
 	double ideal_dram_bandwidth = dram_bw_mbps; //dram_speed_mts * soc->clk_table.dram_config.channel_count * soc->clk_table.dram_config.channel_width_bytes;
 
+<<<<<<< HEAD
 	double derate_sdp_factor = 1;
 	double derate_fabric_factor = 1;
 	double derate_dram_factor = 1;
+=======
+	double derate_sdp_factor;
+	double derate_fabric_factor;
+	double derate_dram_factor;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	double derate_sdp_bandwidth;
 	double derate_fabric_bandwidth;
@@ -2851,6 +3022,7 @@ static void CalculateVMRowAndSwath(struct dml2_core_internal_scratch *scratch,
 	s->HostVMDynamicLevels = CalculateHostVMDynamicLevels(p->display_cfg->gpuvm_enable, p->display_cfg->hostvm_enable, p->HostVMMinPageSize, p->display_cfg->hostvm_max_non_cached_page_table_levels);
 
 	for (unsigned int k = 0; k < p->NumberOfActiveSurfaces; ++k) {
+<<<<<<< HEAD
 		if (p->display_cfg->hostvm_enable == true) {
 			p->vm_group_bytes[k] = 512;
 			p->dpte_group_bytes[k] = 512;
@@ -2861,6 +3033,11 @@ static void CalculateVMRowAndSwath(struct dml2_core_internal_scratch *scratch,
 			} else {
 				p->dpte_group_bytes[k] = 2048;
 			}
+=======
+		if (p->display_cfg->gpuvm_enable == true) {
+			p->vm_group_bytes[k] = 512;
+			p->dpte_group_bytes[k] = 512;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			p->vm_group_bytes[k] = 0;
 			p->dpte_group_bytes[k] = 0;
@@ -3185,7 +3362,11 @@ static double CalculateUrgentLatency(
 	double fabric_max_transport_latency_margin)
 {
 	double urgent_latency = 0;
+<<<<<<< HEAD
 	if (qos_type == dml2_qos_param_type_dcn4) {
+=======
+	if (qos_type == dml2_qos_param_type_dcn4x) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		urgent_latency = (df_qos_response_time_fclk_cycles + mall_overhead_fclk_cycles) / FabricClock
 			+ max_round_trip_to_furthest_cs_fclk_cycles / FabricClock * (1 + fabric_max_transport_latency_margin / 100.0)
 			+ urgent_ramp_uclk_cycles / uclk_freq_mhz * (1 + umc_urgent_ramp_latency_margin / 100.0);
@@ -3196,7 +3377,11 @@ static double CalculateUrgentLatency(
 		}
 	}
 #ifdef __DML_VBA_DEBUG__
+<<<<<<< HEAD
 	if (qos_type == dml2_qos_param_type_dcn4) {
+=======
+	if (qos_type == dml2_qos_param_type_dcn4x) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dml2_printf("DML::%s: qos_type = %d\n", __func__, qos_type);
 		dml2_printf("DML::%s: urgent_ramp_uclk_cycles = %d\n", __func__, urgent_ramp_uclk_cycles);
 		dml2_printf("DML::%s: uclk_freq_mhz = %f\n", __func__, uclk_freq_mhz);
@@ -3226,7 +3411,11 @@ static double CalculateTripToMemory(
 	double fabric_max_transport_latency_margin)
 {
 	double trip_to_memory_us;
+<<<<<<< HEAD
 	if (qos_type == dml2_qos_param_type_dcn4) {
+=======
+	if (qos_type == dml2_qos_param_type_dcn4x) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		trip_to_memory_us = mall_overhead_fclk_cycles / FabricClock
 			+ max_round_trip_to_furthest_cs_fclk_cycles / FabricClock * (1.0 + fabric_max_transport_latency_margin / 100.0)
 			+ trip_to_memory_uclk_cycles / uclk_freq_mhz * (1.0 + umc_max_latency_margin / 100.0);
@@ -3235,7 +3424,11 @@ static double CalculateTripToMemory(
 	}
 
 #ifdef __DML_VBA_DEBUG__
+<<<<<<< HEAD
 	if (qos_type == dml2_qos_param_type_dcn4) {
+=======
+	if (qos_type == dml2_qos_param_type_dcn4x) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dml2_printf("DML::%s: qos_type = %d\n", __func__, qos_type);
 		dml2_printf("DML::%s: max_round_trip_to_furthest_cs_fclk_cycles = %d\n", __func__, max_round_trip_to_furthest_cs_fclk_cycles);
 		dml2_printf("DML::%s: mall_overhead_fclk_cycles = %d\n", __func__, mall_overhead_fclk_cycles);
@@ -3265,7 +3458,11 @@ static double CalculateMetaTripToMemory(
 	double fabric_max_transport_latency_margin)
 {
 	double meta_trip_to_memory_us;
+<<<<<<< HEAD
 	if (qos_type == dml2_qos_param_type_dcn4) {
+=======
+	if (qos_type == dml2_qos_param_type_dcn4x) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		meta_trip_to_memory_us = meta_trip_to_memory_fclk_cycles / FabricClock * (1.0 + fabric_max_transport_latency_margin / 100.0)
 			+ meta_trip_to_memory_uclk_cycles / uclk_freq_mhz * (1.0 + umc_max_latency_margin / 100.0);
 	} else {
@@ -3273,7 +3470,11 @@ static double CalculateMetaTripToMemory(
 	}
 
 #ifdef __DML_VBA_DEBUG__
+<<<<<<< HEAD
 	if (qos_type == dml2_qos_param_type_dcn4) {
+=======
+	if (qos_type == dml2_qos_param_type_dcn4x) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dml2_printf("DML::%s: qos_type = %d\n", __func__, qos_type);
 		dml2_printf("DML::%s: meta_trip_to_memory_fclk_cycles = %d\n", __func__, meta_trip_to_memory_fclk_cycles);
 		dml2_printf("DML::%s: meta_trip_to_memory_uclk_cycles = %d\n", __func__, meta_trip_to_memory_uclk_cycles);
@@ -3781,8 +3982,13 @@ static void CalculateSwathAndDETConfiguration(struct dml2_core_internal_scratch 
 			p->SwathHeightC[k] = MaximumSwathHeightC[k] / 2;
 			RoundedUpSwathSizeBytesY[k] = p->full_swath_bytes_l[k] / 2;
 			RoundedUpSwathSizeBytesC[k] = p->full_swath_bytes_c[k] / 2;
+<<<<<<< HEAD
 			p->request_size_bytes_luma[k] = ((p->BytePerPixY[k] == 2) == dml_is_vertical_rotation(p->display_cfg->plane_descriptors[k].composition.rotation_angle)) ? 128 : 64;;
 			p->request_size_bytes_chroma[k] = ((p->BytePerPixC[k] == 2) == dml_is_vertical_rotation(p->display_cfg->plane_descriptors[k].composition.rotation_angle)) ? 128 : 64;;
+=======
+			p->request_size_bytes_luma[k] = ((p->BytePerPixY[k] == 2) == dml_is_vertical_rotation(p->display_cfg->plane_descriptors[k].composition.rotation_angle)) ? 128 : 64;
+			p->request_size_bytes_chroma[k] = ((p->BytePerPixC[k] == 2) == dml_is_vertical_rotation(p->display_cfg->plane_descriptors[k].composition.rotation_angle)) ? 128 : 64;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		if (p->SwathHeightC[k] == 0)
@@ -3841,7 +4047,11 @@ static void CalculateSwathAndDETConfiguration(struct dml2_core_internal_scratch 
 	*p->compbuf_reserved_space_64b = 2 * p->pixel_chunk_size_kbytes * 1024 / 64;
 	if (*p->UnboundedRequestEnabled) {
 		*p->compbuf_reserved_space_64b = (unsigned int)math_ceil2(math_max2(*p->compbuf_reserved_space_64b,
+<<<<<<< HEAD
 			(double)(p->rob_buffer_size_kbytes * 1024 / 64) - (double)(RoundedUpSwathSizeBytesY[SurfaceDoingUnboundedRequest] * TTUFIFODEPTH / 64)), 1.0);
+=======
+			(double)(p->rob_buffer_size_kbytes * 1024 / 64) - (double)(RoundedUpSwathSizeBytesY[SurfaceDoingUnboundedRequest] * TTUFIFODEPTH / (p->mrq_present ? MAXIMUMCOMPRESSION : 1) / 64)), 1.0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef __DML_VBA_DEBUG__
 		dml2_printf("DML::%s: RoundedUpSwathSizeBytesY[%d] = %u\n", __func__, SurfaceDoingUnboundedRequest, RoundedUpSwathSizeBytesY[SurfaceDoingUnboundedRequest]);
 		dml2_printf("DML::%s: rob_buffer_size_kbytes = %u\n", __func__, p->rob_buffer_size_kbytes);
@@ -3852,6 +4062,7 @@ static void CalculateSwathAndDETConfiguration(struct dml2_core_internal_scratch 
 #endif
 
 	*p->hw_debug5 = false;
+<<<<<<< HEAD
 	if (!p->mrq_present) {
 		for (unsigned int k = 0; k < p->NumberOfActiveSurfaces; ++k) {
 			if (!(*p->UnboundedRequestEnabled)
@@ -3867,6 +4078,22 @@ static void CalculateSwathAndDETConfiguration(struct dml2_core_internal_scratch 
 			dml2_printf("DML::%s: k=%u hw_debug5 = %u\n", __func__, k, *p->hw_debug5);
 #endif
 		}
+=======
+	for (unsigned int k = 0; k < p->NumberOfActiveSurfaces; ++k) {
+		if (!(p->mrq_present) && (!(*p->UnboundedRequestEnabled)) && (TotalActiveDPP == 1)
+			&& p->display_cfg->plane_descriptors[k].surface.dcc.enable
+			&& ((p->rob_buffer_size_kbytes * 1024 * (p->mrq_present ? MAXIMUMCOMPRESSION : 1)
+				+ *p->CompressedBufferSizeInkByte * MAXIMUMCOMPRESSION * 1024) > TTUFIFODEPTH * (RoundedUpSwathSizeBytesY[k] + RoundedUpSwathSizeBytesC[k])))
+			*p->hw_debug5 = true;
+#ifdef __DML_VBA_DEBUG__
+		dml2_printf("DML::%s: k=%u UnboundedRequestEnabled = %u\n", __func__, k, *p->UnboundedRequestEnabled);
+		dml2_printf("DML::%s: k=%u MAXIMUMCOMPRESSION = %lu\n", __func__, k, MAXIMUMCOMPRESSION);
+		dml2_printf("DML::%s: k=%u TTUFIFODEPTH = %lu\n", __func__, k, TTUFIFODEPTH);
+		dml2_printf("DML::%s: k=%u CompressedBufferSizeInkByte = %u\n", __func__, k, *p->CompressedBufferSizeInkByte);
+		dml2_printf("DML::%s: k=%u RoundedUpSwathSizeBytesC = %u\n", __func__, k, RoundedUpSwathSizeBytesC[k]);
+		dml2_printf("DML::%s: k=%u hw_debug5 = %u\n", __func__, k, *p->hw_debug5);
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -4559,6 +4786,7 @@ static void calculate_tdlut_setting(
 		return;
 	}
 
+<<<<<<< HEAD
 
 	if (!p->setup_for_tdlut) {
 		*p->tdlut_groups_per_2row_ub = 0;
@@ -4568,6 +4796,8 @@ static void calculate_tdlut_setting(
 		return;
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (p->tdlut_mpc_width_flag) {
 		tdlut_mpc_width = 33;
 		tdlut_bytes_per_group_simple = 39*256;
@@ -4616,7 +4846,11 @@ static void calculate_tdlut_setting(
 		*p->tdlut_bytes_per_group = tdlut_bytes_per_line * tdlut_mpc_width;
 		//the delivery cycles is DispClk cycles per line * number of lines * number of slices
 		tdlut_delivery_cycles = (unsigned int)math_ceil2(tdlut_mpc_width/2.0, 1) * tdlut_mpc_width * tdlut_mpc_width;
+<<<<<<< HEAD
 		tdlut_drain_rate = tdlut_bytes_per_line * p->dispclk_mhz / 9.0;
+=======
+		tdlut_drain_rate = tdlut_bytes_per_line * p->dispclk_mhz / math_ceil2(tdlut_mpc_width/2.0, 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		//tdlut_addressing_mode = tdlut_simple_linear, 3dlut width should be 4*1229=4916 elements
 		*p->tdlut_bytes_per_frame = (unsigned int)math_ceil2(tdlut_width * tdlut_bpe, 256);
@@ -4627,7 +4861,11 @@ static void calculate_tdlut_setting(
 
 	//the tdlut is fetched during the 2 row times of prefetch.
 	if (p->setup_for_tdlut) {
+<<<<<<< HEAD
 		*p->tdlut_groups_per_2row_ub = (unsigned int)math_ceil2(*p->tdlut_bytes_per_frame / *p->tdlut_bytes_per_group, 1);
+=======
+		*p->tdlut_groups_per_2row_ub = (unsigned int)math_ceil2((double) *p->tdlut_bytes_per_frame / *p->tdlut_bytes_per_group, 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		*p->tdlut_opt_time = (*p->tdlut_bytes_per_frame - p->cursor_buffer_size * 1024) / tdlut_drain_rate;
 		*p->tdlut_drain_time = p->cursor_buffer_size * 1024 / tdlut_drain_rate;
 	}
@@ -4640,7 +4878,11 @@ static void calculate_tdlut_setting(
 
 	dml2_printf("DML::%s: dispclk_mhz = %f\n", __func__, p->dispclk_mhz);
 	dml2_printf("DML::%s: tdlut_width = %u\n", __func__, tdlut_width);
+<<<<<<< HEAD
 	dml2_printf("DML::%s: tdlut_addressing_mode = %u\n", __func__, p->tdlut_addressing_mode);
+=======
+	dml2_printf("DML::%s: tdlut_addressing_mode = %s\n", __func__, (p->tdlut_addressing_mode == dml2_tdlut_sw_linear) ? "sw_linear" : "simple_linear");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dml2_printf("DML::%s: tdlut_pitch_bytes = %u\n", __func__, tdlut_pitch_bytes);
 	dml2_printf("DML::%s: tdlut_footprint_bytes = %u\n", __func__, tdlut_footprint_bytes);
 	dml2_printf("DML::%s: tdlut_bytes_per_frame = %u\n", __func__, *p->tdlut_bytes_per_frame);
@@ -4706,11 +4948,20 @@ static void CalculateTarb(
 static double CalculateTWait(
 	long reserved_vblank_time_ns,
 	double UrgentLatency,
+<<<<<<< HEAD
 	double Ttrip)
 {
 	double TWait;
 	double t_urg_trip = math_max2(UrgentLatency, Ttrip);
 	TWait = reserved_vblank_time_ns/1000.0 + t_urg_trip;
+=======
+	double Ttrip,
+	double g6_temp_read_blackout_us)
+{
+	double TWait;
+	double t_urg_trip = math_max2(UrgentLatency, Ttrip);
+	TWait = math_max2(reserved_vblank_time_ns/1000.0, g6_temp_read_blackout_us) + t_urg_trip;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef __DML_VBA_DEBUG__
 	dml2_printf("DML::%s: reserved_vblank_time_ns = %d\n", __func__, reserved_vblank_time_ns);
@@ -4858,6 +5109,7 @@ static double get_urgent_bandwidth_required(
 		}
 
 		if (!exclude_this_plane) {
+<<<<<<< HEAD
 			surface_required_bw[k] = math_max4(NumberOfDPP[k] * prefetch_vmrow_bw[k],
 					l->per_plane_flip_bw[k] + ReadBandwidthLuma[k] * l->adj_factor_p0 + ReadBandwidthChroma[k] * l->adj_factor_p1 + cursor_bw[k] * l->adj_factor_cur,
 					l->per_plane_flip_bw[k] + NumberOfDPP[k] * (PrefetchBandwidthLuma[k] * l->adj_factor_p0_pre + PrefetchBandwidthChroma[k] * l->adj_factor_p1_pre) + prefetch_cursor_bw[k] * l->adj_factor_cur_pre,
@@ -4865,6 +5117,25 @@ static double get_urgent_bandwidth_required(
 
 			/* export peak required bandwidth for the surface */
 			surface_peak_required_bw[k] = math_max2(surface_required_bw[k], surface_peak_required_bw[k]);
+=======
+			l->vm_row_bw = NumberOfDPP[k] * prefetch_vmrow_bw[k];
+			l->flip_and_active_bw = l->per_plane_flip_bw[k] + ReadBandwidthLuma[k] * l->adj_factor_p0 + ReadBandwidthChroma[k] * l->adj_factor_p1 + cursor_bw[k] * l->adj_factor_cur;
+			l->flip_and_prefetch_bw = l->per_plane_flip_bw[k] + NumberOfDPP[k] * (PrefetchBandwidthLuma[k] * l->adj_factor_p0_pre + PrefetchBandwidthChroma[k] * l->adj_factor_p1_pre) + prefetch_cursor_bw[k] * l->adj_factor_cur_pre;
+			l->active_and_excess_bw = (ReadBandwidthLuma[k] + excess_vactive_fill_bw_l[k]) * l->tmp_nom_adj_factor_p0 + (ReadBandwidthChroma[k] + excess_vactive_fill_bw_c[k]) * l->tmp_nom_adj_factor_p1 + dpte_row_bw[k] + meta_row_bw[k];
+			surface_required_bw[k] = math_max4(l->vm_row_bw, l->flip_and_active_bw, l->flip_and_prefetch_bw, l->active_and_excess_bw);
+
+			/* export peak required bandwidth for the surface */
+			surface_peak_required_bw[k] = math_max2(surface_required_bw[k], surface_peak_required_bw[k]);
+
+#ifdef __DML_VBA_DEBUG__
+			dml2_printf("DML::%s: k=%d, max1: vm_row_bw=%f\n", __func__, k, l->vm_row_bw);
+			dml2_printf("DML::%s: k=%d, max2: flip_and_active_bw=%f\n", __func__, k, l->flip_and_active_bw);
+			dml2_printf("DML::%s: k=%d, max3: flip_and_prefetch_bw=%f\n", __func__, k, l->flip_and_prefetch_bw);
+			dml2_printf("DML::%s: k=%d, max4: active_and_excess_bw=%f\n", __func__, k, l->active_and_excess_bw);
+			dml2_printf("DML::%s: k=%d, surface_required_bw=%f\n", __func__, k, surface_required_bw[k]);
+			dml2_printf("DML::%s: k=%d, surface_peak_required_bw=%f\n", __func__, k, surface_peak_required_bw[k]);
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			surface_required_bw[k] = 0.0;
 		}
@@ -4873,6 +5144,11 @@ static double get_urgent_bandwidth_required(
 
 #ifdef __DML_VBA_DEBUG__
 		dml2_printf("DML::%s: k=%d, NumberOfDPP=%d\n", __func__, k, NumberOfDPP[k]);
+<<<<<<< HEAD
+=======
+		dml2_printf("DML::%s: k=%d, use_qual_row_bw=%d\n", __func__, k, use_qual_row_bw);
+		dml2_printf("DML::%s: k=%d, immediate_flip=%d\n", __func__, k, display_cfg->plane_descriptors[k].immediate_flip);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dml2_printf("DML::%s: k=%d, mall_svp_prefetch_factor=%f\n", __func__, k, l->mall_svp_prefetch_factor);
 		dml2_printf("DML::%s: k=%d, adj_factor_p0=%f\n", __func__, k, l->adj_factor_p0);
 		dml2_printf("DML::%s: k=%d, adj_factor_p1=%f\n", __func__, k, l->adj_factor_p1);
@@ -4886,6 +5162,11 @@ static double get_urgent_bandwidth_required(
 		dml2_printf("DML::%s: k=%d, prefetch_vmrow_bw=%f\n", __func__, k, prefetch_vmrow_bw[k]);
 		dml2_printf("DML::%s: k=%d, ReadBandwidthLuma=%f\n", __func__, k, ReadBandwidthLuma[k]);
 		dml2_printf("DML::%s: k=%d, ReadBandwidthChroma=%f\n", __func__, k, ReadBandwidthChroma[k]);
+<<<<<<< HEAD
+=======
+		dml2_printf("DML::%s: k=%d, excess_vactive_fill_bw_l=%f\n", __func__, k, excess_vactive_fill_bw_l[k]);
+		dml2_printf("DML::%s: k=%d, excess_vactive_fill_bw_c=%f\n", __func__, k, excess_vactive_fill_bw_c[k]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dml2_printf("DML::%s: k=%d, cursor_bw=%f\n", __func__, k, cursor_bw[k]);
 
 		dml2_printf("DML::%s: k=%d, meta_row_bw=%f\n", __func__, k, meta_row_bw[k]);
@@ -4964,7 +5245,11 @@ static void CalculateExtraLatency(
 			max_request_size_bytes = request_size_bytes_chroma[k];
 	}
 
+<<<<<<< HEAD
 	if (qos_type == dml2_qos_param_type_dcn4) {
+=======
+	if (qos_type == dml2_qos_param_type_dcn4x) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		*ExtraLatency_sr = dchub_arb_to_ret_delay / DCFCLK;
 		*ExtraLatency = *ExtraLatency_sr;
 		if (max_oustanding_when_urgent_expected)
@@ -4980,11 +5265,20 @@ static void CalculateExtraLatency(
 
 #ifdef __DML_VBA_DEBUG__
 	dml2_printf("DML::%s: qos_type=%u\n", __func__, qos_type);
+<<<<<<< HEAD
+=======
+	dml2_printf("DML::%s: hostvm_mode=%u\n", __func__, hostvm_mode);
+	dml2_printf("DML::%s: Tex_trips=%u\n", __func__, Tex_trips);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dml2_printf("DML::%s: max_oustanding_when_urgent_expected=%u\n", __func__, max_oustanding_when_urgent_expected);
 	dml2_printf("DML::%s: FabricClock=%f\n", __func__, FabricClock);
 	dml2_printf("DML::%s: DCFCLK=%f\n", __func__, DCFCLK);
 	dml2_printf("DML::%s: ReturnBW=%f\n", __func__, ReturnBW);
 	dml2_printf("DML::%s: RoundTripPingLatencyCycles=%u\n", __func__, RoundTripPingLatencyCycles);
+<<<<<<< HEAD
+=======
+	dml2_printf("DML::%s: ReorderingBytes=%u\n", __func__, ReorderingBytes);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dml2_printf("DML::%s: Tarb=%f\n", __func__, Tarb);
 	dml2_printf("DML::%s: ExtraLatency=%f\n", __func__, *ExtraLatency);
 	dml2_printf("DML::%s: ExtraLatency_sr=%f\n", __func__, *ExtraLatency_sr);
@@ -5021,6 +5315,11 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 	s->trip_to_mem = 0.0;
 	*p->Tvm_trips = 0.0;
 	*p->Tr0_trips = 0.0;
+<<<<<<< HEAD
+=======
+	s->Tvm_no_trip_oto = 0.0;
+	s->Tr0_no_trip_oto = 0.0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	s->Tvm_trips_rounded = 0.0;
 	s->Tr0_trips_rounded = 0.0;
 	s->max_Tsw = 0.0;
@@ -5037,7 +5336,13 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 	s->bytes_pp = 0.0;
 	s->dep_bytes = 0.0;
 	s->min_Lsw_oto = 0.0;
+<<<<<<< HEAD
 	s->Tsw_est1 = 0.0;
+=======
+	s->min_Lsw_equ = 0.0;
+	s->Tsw_est1 = 0.0;
+	s->Tsw_est2 = 0.0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	s->Tsw_est3 = 0.0;
 	s->cursor_prefetch_bytes = 0;
 	*p->prefetch_cursor_bw = 0;
@@ -5059,7 +5364,10 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 	dml2_printf("DML::%s: GPUVMPageTableLevels = %u\n", __func__, p->display_cfg->gpuvm_max_page_table_levels);
 	dml2_printf("DML::%s: DCCEnable = %u\n", __func__, p->myPipe->DCCEnable);
 	dml2_printf("DML::%s: VStartup = %u\n", __func__, p->VStartup);
+<<<<<<< HEAD
 	dml2_printf("DML::%s: MaxVStartup = %u\n", __func__, p->MaxVStartup);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dml2_printf("DML::%s: HostVMEnable = %u\n", __func__, p->display_cfg->hostvm_enable);
 	dml2_printf("DML::%s: HostVMInefficiencyFactor = %f\n", __func__, p->HostVMInefficiencyFactor);
 	dml2_printf("DML::%s: TWait = %f\n", __func__, p->TWait);
@@ -5092,21 +5400,30 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 
 	s->LineTime = p->myPipe->HTotal / p->myPipe->PixelClock;
 	s->trip_to_mem = p->Ttrip;
+<<<<<<< HEAD
 #ifdef DML_TVM_UPDATE_EN
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	*p->Tvm_trips = p->ExtraLatencyPrefetch + math_max2(s->trip_to_mem * (p->display_cfg->gpuvm_max_page_table_levels * (s->HostVMDynamicLevelsTrips + 1)), p->Turg);
 	if (dcc_mrq_enable)
 		*p->Tvm_trips_flip = *p->Tvm_trips;
 	else
 		*p->Tvm_trips_flip = *p->Tvm_trips - s->trip_to_mem;
+<<<<<<< HEAD
 #else
 	*p->Tvm_trips = p->ExtraLatencyPrefetch + s->trip_to_mem * (p->display_cfg->gpuvm_max_page_table_levels * (s->HostVMDynamicLevelsTrips + 1));
 	*p->Tvm_trips_flip = *p->Tvm_trips - s->trip_to_mem;
 #endif
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	*p->Tr0_trips_flip = s->trip_to_mem * (s->HostVMDynamicLevelsTrips + 1);
 	*p->Tr0_trips = math_max2(*p->Tr0_trips_flip, p->tdlut_opt_time / 2);
 
+<<<<<<< HEAD
 #ifdef DML_TVM_UPDATE_EN
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (p->DynamicMetadataVMEnabled == true) {
 		*p->Tdmdl_vm = s->TWait_p + *p->Tvm_trips;
 		*p->Tdmdl = *p->Tdmdl_vm + p->Ttrip;
@@ -5114,6 +5431,7 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 		*p->Tdmdl_vm = 0;
 		*p->Tdmdl = s->TWait_p + p->ExtraLatencyPrefetch + p->Ttrip; // Tex
 	}
+<<<<<<< HEAD
 #else
 	if (p->DynamicMetadataVMEnabled == true) {
 		*p->Tdmdl_vm = s->TWait_p + *p->Tvm_trips;
@@ -5123,6 +5441,8 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 		*p->Tdmdl = p->TWait + p->ExtraLatencyPrefetch; // Tex
 	}
 #endif
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (p->DynamicMetadataEnable == true) {
 		if (p->VStartup * s->LineTime < *p->TSetup + *p->Tdmdl + s->Tdmbf + s->Tdmec + s->Tdmsks) {
@@ -5186,7 +5506,10 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 	dml2_printf("DML::%s: DSTYAfterScaler = %u (final)\n", __func__, *p->DSTYAfterScaler);
 #endif
 
+<<<<<<< HEAD
 	s->NoTimeToPrefetch = false;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef __DML_VBA_DEBUG__
 	dml2_printf("DML::%s: Tr0_trips = %f\n", __func__, *p->Tr0_trips);
 	dml2_printf("DML::%s: Tvm_trips = %f\n", __func__, *p->Tvm_trips);
@@ -5199,6 +5522,7 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 		s->Tvm_trips_rounded = math_ceil2(4.0 * *p->Tvm_trips / s->LineTime, 1.0) / 4.0 * s->LineTime;
 		*p->Tvm_trips_flip_rounded = math_ceil2(4.0 * *p->Tvm_trips_flip / s->LineTime, 1.0) / 4.0 * s->LineTime;
 	} else {
+<<<<<<< HEAD
 #ifdef DML_TVM_UPDATE_EN
 		if (p->DynamicMetadataEnable || dcc_mrq_enable || p->setup_for_tdlut)
 			s->Tvm_trips_rounded = math_max2(s->LineTime * math_ceil2(4.0*math_max3(p->ExtraLatencyPrefetch, p->Turg, s->trip_to_mem)/s->LineTime, 1)/4, s->LineTime/4.0);
@@ -5207,6 +5531,12 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 #else
 		s->Tvm_trips_rounded = s->LineTime / 4.0;
 #endif
+=======
+		if (p->DynamicMetadataEnable || dcc_mrq_enable || p->setup_for_tdlut)
+			s->Tvm_trips_rounded = math_max2(s->LineTime * math_ceil2(4.0*math_max3(p->ExtraLatencyPrefetch, p->Turg, s->trip_to_mem)/s->LineTime, 1)/4, s->LineTime/4.0);
+		else
+			s->Tvm_trips_rounded = s->LineTime / 4.0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		*p->Tvm_trips_flip_rounded = s->LineTime / 4.0;
 	}
 
@@ -5235,16 +5565,22 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 		*p->Tno_bw = 0;
 	}
 
+<<<<<<< HEAD
 #ifdef DML_TVM_UPDATE_EN
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (p->mrq_present || p->display_cfg->gpuvm_max_page_table_levels >= 3)
 		*p->Tno_bw_flip = *p->Tno_bw;
 	else
 		*p->Tno_bw_flip = 0; //because there is no 3DLUT for iFlip
+<<<<<<< HEAD
 #else
 	*p->Tno_bw_flip = 0;
 	if (p->display_cfg->gpuvm_enable == true)
 		*p->Tno_bw_flip = *p->Tno_bw;
 #endif
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (dml_is_420(p->myPipe->SourcePixelFormat)) {
 		s->bytes_pp = p->myPipe->BytePerPixelY + p->myPipe->BytePerPixelC / 4.0;
@@ -5258,22 +5594,35 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 	s->max_Tsw = (math_max2(p->PrefetchSourceLinesY, p->PrefetchSourceLinesC) * s->LineTime);
 
 	s->prefetch_sw_bytes = p->PrefetchSourceLinesY * p->swath_width_luma_ub * p->myPipe->BytePerPixelY + p->PrefetchSourceLinesC * p->swath_width_chroma_ub * p->myPipe->BytePerPixelC;
+<<<<<<< HEAD
 #ifdef DML_TDLUT_ROW_BYTES_FIX_EN
 	s->prefetch_bw_pr = s->prefetch_bw_pr * p->mall_prefetch_sdp_overhead_factor;
 	s->prefetch_sw_bytes = s->prefetch_sw_bytes * p->mall_prefetch_sdp_overhead_factor;
 #endif
+=======
+	s->prefetch_bw_pr = s->prefetch_bw_pr * p->mall_prefetch_sdp_overhead_factor;
+	s->prefetch_sw_bytes = s->prefetch_sw_bytes * p->mall_prefetch_sdp_overhead_factor;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	s->prefetch_bw_oto = math_max2(s->prefetch_bw_pr, s->prefetch_sw_bytes / s->max_Tsw);
 
 	s->min_Lsw_oto = math_max2(p->PrefetchSourceLinesY, p->PrefetchSourceLinesC) / __DML2_CALCS_MAX_VRATIO_PRE_OTO__;
 	s->min_Lsw_oto = math_max2(s->min_Lsw_oto, 2.0);
 	s->min_Lsw_oto = math_max2(s->min_Lsw_oto, p->tdlut_drain_time / s->LineTime);
 
+<<<<<<< HEAD
+=======
+	s->min_Lsw_equ = math_max2(p->PrefetchSourceLinesY, p->PrefetchSourceLinesC) / __DML2_CALCS_MAX_VRATIO_PRE_EQU__;
+	s->min_Lsw_equ = math_max2(s->min_Lsw_equ, 2.0);
+	s->min_Lsw_equ = math_max2(s->min_Lsw_equ, p->tdlut_drain_time / s->LineTime);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	vm_bytes = p->vm_bytes; // vm_bytes is dpde0_bytes_per_frame_ub_l + dpde0_bytes_per_frame_ub_c + 2*extra_dpde_bytes;
 	extra_tdpe_bytes = (unsigned int)math_max2(0, (p->display_cfg->gpuvm_max_page_table_levels - 1) * 128);
 
 	if (p->setup_for_tdlut)
 		vm_bytes = vm_bytes + p->tdlut_pte_bytes_per_frame + (p->display_cfg->gpuvm_enable ? extra_tdpe_bytes : 0);
 
+<<<<<<< HEAD
 #ifdef DML_TDLUT_ROW_BYTES_FIX_EN
 	tdlut_row_bytes = (unsigned long) math_ceil2(p->tdlut_bytes_per_frame/2.0, 1.0);
 #else
@@ -5291,12 +5640,28 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 			*p->Tvm_trips,
 			*p->Tno_bw + vm_bytes * p->HostVMInefficiencyFactor / s->prefetch_bw_oto,
 			s->LineTime / 4.0);
+=======
+	tdlut_row_bytes = (unsigned long) math_ceil2(p->tdlut_bytes_per_frame/2.0, 1.0);
+	s->prefetch_bw_oto = math_max3(s->prefetch_bw_oto,
+					p->vm_bytes * p->HostVMInefficiencyFactor / (31 * s->LineTime) - *p->Tno_bw,
+					(p->PixelPTEBytesPerRow * p->HostVMInefficiencyFactor + p->meta_row_bytes + tdlut_row_bytes) / (15 * s->LineTime));
+	s->Lsw_oto = math_ceil2(4.0 * math_max2(s->prefetch_sw_bytes / s->prefetch_bw_oto / s->LineTime, s->min_Lsw_oto), 1.0) / 4.0;
+
+	if (p->display_cfg->gpuvm_enable == true) {
+		s->Tvm_no_trip_oto = math_max2(
+			*p->Tno_bw + vm_bytes * p->HostVMInefficiencyFactor / s->prefetch_bw_oto,
+			s->LineTime / 4.0);
+		s->Tvm_oto = math_max2(
+			*p->Tvm_trips,
+			s->Tvm_no_trip_oto);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef __DML_VBA_DEBUG__
 		dml2_printf("DML::%s: Tvm_oto max0 = %f\n", __func__, *p->Tvm_trips);
 		dml2_printf("DML::%s: Tvm_oto max1 = %f\n", __func__, *p->Tno_bw + vm_bytes * p->HostVMInefficiencyFactor / s->prefetch_bw_oto);
 		dml2_printf("DML::%s: Tvm_oto max2 = %f\n", __func__, s->LineTime / 4.0);
 #endif
 	} else {
+<<<<<<< HEAD
 #ifdef DML_TVM_UPDATE_EN
 		s->Tvm_oto = s->Tvm_trips_rounded;
 #else
@@ -5309,13 +5674,33 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 			*p->Tr0_trips,
 			(p->PixelPTEBytesPerRow * p->HostVMInefficiencyFactor + p->meta_row_bytes + tdlut_row_bytes) / s->prefetch_bw_oto,
 			s->LineTime / 4.0);
+=======
+		s->Tvm_no_trip_oto = s->Tvm_trips_rounded;
+		s->Tvm_oto = s->Tvm_trips_rounded;
+	}
+
+	if ((p->display_cfg->gpuvm_enable == true || p->setup_for_tdlut || dcc_mrq_enable)) {
+		s->Tr0_no_trip_oto = math_max2(
+			(p->PixelPTEBytesPerRow * p->HostVMInefficiencyFactor + p->meta_row_bytes + tdlut_row_bytes) / s->prefetch_bw_oto,
+			s->LineTime / 4.0);
+		s->Tr0_oto = math_max2(
+			*p->Tr0_trips,
+			s->Tr0_no_trip_oto);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef __DML_VBA_DEBUG__
 		dml2_printf("DML::%s: Tr0_oto max0 = %f\n", __func__, *p->Tr0_trips);
 		dml2_printf("DML::%s: Tr0_oto max1 = %f\n", __func__, (p->PixelPTEBytesPerRow * p->HostVMInefficiencyFactor + p->meta_row_bytes + tdlut_row_bytes) / s->prefetch_bw_oto);
 		dml2_printf("DML::%s: Tr0_oto max2 = %f\n", __func__, s->LineTime / 4);
 #endif
+<<<<<<< HEAD
 	} else
 		s->Tr0_oto = (s->LineTime - s->Tvm_oto) / 4.0;
+=======
+	} else {
+		s->Tr0_no_trip_oto = (s->LineTime - s->Tvm_oto) / 4.0;
+		s->Tr0_oto = s->Tr0_no_trip_oto;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	s->Tvm_oto_lines = math_ceil2(4.0 * s->Tvm_oto / s->LineTime, 1) / 4.0;
 	s->Tr0_oto_lines = math_ceil2(4.0 * s->Tr0_oto / s->LineTime, 1) / 4.0;
@@ -5325,19 +5710,29 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 	Lo = (unsigned int)(*p->DSTYAfterScaler + (double)*p->DSTXAfterScaler / (double)p->myPipe->HTotal);
 
 	//Tpre_equ in line time
+<<<<<<< HEAD
 #ifdef DML_TVM_UPDATE_EN
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (p->DynamicMetadataVMEnabled && p->DynamicMetadataEnable)
 		s->dst_y_prefetch_equ = p->VStartup - (*p->TSetup + math_max2(p->TCalc, *p->Tvm_trips) + s->TWait_p) / s->LineTime - Lo;
 	else
 		s->dst_y_prefetch_equ = p->VStartup - (*p->TSetup + math_max2(p->TCalc, p->ExtraLatencyPrefetch) + s->TWait_p) / s->LineTime - Lo;
+<<<<<<< HEAD
 #else
 	s->dst_y_prefetch_equ = p->VStartup - (*p->TSetup + math_max2(s->TWait_p + p->TCalc, *p->Tdmdl - p->Ttrip)) / s->LineTime - Lo;
 #endif
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	s->dst_y_prefetch_equ = math_min2(s->dst_y_prefetch_equ, 63.75); // limit to the reg limit of U6.2 for DST_Y_PREFETCH
 
 #ifdef __DML_VBA_DEBUG__
 	dml2_printf("DML::%s: HTotal = %u\n", __func__, p->myPipe->HTotal);
 	dml2_printf("DML::%s: min_Lsw_oto = %f\n", __func__, s->min_Lsw_oto);
+<<<<<<< HEAD
+=======
+	dml2_printf("DML::%s: min_Lsw_equ = %f\n", __func__, s->min_Lsw_equ);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dml2_printf("DML::%s: Tno_bw = %f\n", __func__, *p->Tno_bw);
 	dml2_printf("DML::%s: Tno_bw_flip = %f\n", __func__, *p->Tno_bw_flip);
 	dml2_printf("DML::%s: ExtraLatencyPrefetch = %f\n", __func__, p->ExtraLatencyPrefetch);
@@ -5375,6 +5770,10 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 	s->dst_y_prefetch_equ = math_floor2(4.0 * (s->dst_y_prefetch_equ + 0.125), 1) / 4.0;
 	s->Tpre_rounded = s->dst_y_prefetch_equ * s->LineTime;
 
+<<<<<<< HEAD
+=======
+#ifdef __DML_VBA_DEBUG__
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dml2_printf("DML::%s: dst_y_prefetch_equ: %f (after round)\n", __func__, s->dst_y_prefetch_equ);
 	dml2_printf("DML::%s: LineTime: %f\n", __func__, s->LineTime);
 	dml2_printf("DML::%s: VStartup: %u\n", __func__, p->VStartup);
@@ -5395,6 +5794,7 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 	dml2_printf("DML::%s: Ttrip: %fus\n", __func__, p->Ttrip);
 	dml2_printf("DML::%s: DSTXAfterScaler: %u pixels - number of pixel clocks pipeline and buffer delay after scaler \n", __func__, *p->DSTXAfterScaler);
 	dml2_printf("DML::%s: DSTYAfterScaler: %u lines - number of lines of pipeline and buffer delay after scaler \n", __func__, *p->DSTYAfterScaler);
+<<<<<<< HEAD
 
 	s->dep_bytes = math_max2(vm_bytes * p->HostVMInefficiencyFactor, p->PixelPTEBytesPerRow * p->HostVMInefficiencyFactor + p->meta_row_bytes + tdlut_row_bytes);
 
@@ -5407,6 +5807,14 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 		s->prefetch_sw_bytes = 2 * s->dep_bytes;
 		dml2_printf("DML::%s: bump prefetch_sw_bytes to %f\n", __func__, s->prefetch_sw_bytes);
 	}
+=======
+	dml2_printf("DML::%s: vm_bytes: %f (hvm inefficiency scaled)\n", __func__, vm_bytes*p->HostVMInefficiencyFactor);
+	dml2_printf("DML::%s: row_bytes: %f (hvm inefficiency scaled, 1 row)\n", __func__, p->PixelPTEBytesPerRow*p->HostVMInefficiencyFactor+p->meta_row_bytes+tdlut_row_bytes);
+	dml2_printf("DML::%s: Tno_bw: %f\n", __func__, *p->Tno_bw);
+	dml2_printf("DML::%s: Tpre=%f Tpre_rounded: %f, delta=%f\n", __func__, Tpre, s->Tpre_rounded, (s->Tpre_rounded - Tpre));
+	dml2_printf("DML::%s: Tvm_trips=%f Tvm_trips_rounded: %f, delta=%f\n", __func__, *p->Tvm_trips, s->Tvm_trips_rounded, (s->Tvm_trips_rounded - *p->Tvm_trips));
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	*p->dst_y_per_vm_vblank = 0;
 	*p->dst_y_per_row_vblank = 0;
@@ -5419,7 +5827,13 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 	// Tvm_trips_rounded is Tvm_trips ceiling to 1/4 line time
 	// Tr0_trips_rounded is Tr0_trips ceiling to 1/4 line time
 	// So that means prefetch bw calculated can be higher since the total time availabe for prefetch is less
+<<<<<<< HEAD
 	if (s->dst_y_prefetch_equ > 1) {
+=======
+	bool min_Lsw_equ_ok = s->Tpre_rounded >= s->Tvm_trips_rounded + 2.0*s->Tr0_trips_rounded + s->min_Lsw_equ*s->LineTime;
+
+	if (s->dst_y_prefetch_equ > 1 && min_Lsw_equ_ok) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		s->prefetch_bw1 = 0.;
 		s->prefetch_bw2 = 0.;
 		s->prefetch_bw3 = 0.;
@@ -5436,6 +5850,7 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 			s->prefetch_bw1 = 0;
 
 		dml2_printf("DML::%s: prefetch_bw1: %f\n", __func__, s->prefetch_bw1);
+<<<<<<< HEAD
 		if ((p->VStartup == p->MaxVStartup) && (s->Tsw_est1 / s->LineTime < s->min_Lsw_oto) && (s->Tpre_rounded - s->min_Lsw_oto * s->LineTime - 0.75 * s->LineTime - *p->Tno_bw > 0)) {
 			s->prefetch_bw1 = (vm_bytes * p->HostVMInefficiencyFactor + 2 * (p->PixelPTEBytesPerRow * p->HostVMInefficiencyFactor + p->meta_row_bytes + tdlut_row_bytes)) /
 				(s->Tpre_rounded - s->min_Lsw_oto * s->LineTime - 0.75 * s->LineTime - *p->Tno_bw);
@@ -5447,17 +5862,46 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 			dml2_printf("DML::%s: LineTime = %f\n", __func__, s->LineTime);
 			dml2_printf("DML::%s: Tno_bw = %f\n", __func__, *p->Tno_bw);
 			dml2_printf("DML::%s: Time to fetch vm and 2 rows = %f\n", __func__, (s->Tpre_rounded - s->min_Lsw_oto * s->LineTime - 0.75 * s->LineTime - *p->Tno_bw));
+=======
+		if ((s->Tsw_est1 < s->min_Lsw_equ * s->LineTime) && (s->Tpre_rounded - s->min_Lsw_equ * s->LineTime - 0.75 * s->LineTime - *p->Tno_bw > 0)) {
+			s->prefetch_bw1 = (vm_bytes * p->HostVMInefficiencyFactor + 2 * (p->PixelPTEBytesPerRow * p->HostVMInefficiencyFactor + p->meta_row_bytes + tdlut_row_bytes)) /
+				(s->Tpre_rounded - s->min_Lsw_equ * s->LineTime - 0.75 * s->LineTime - *p->Tno_bw);
+#ifdef __DML_VBA_DEBUG__
+			dml2_printf("DML::%s: vm and 2 rows bytes = %f\n", __func__, (vm_bytes * p->HostVMInefficiencyFactor + 2 * (p->PixelPTEBytesPerRow * p->HostVMInefficiencyFactor + p->meta_row_bytes + tdlut_row_bytes)));
+			dml2_printf("DML::%s: Tpre_rounded = %f\n", __func__, s->Tpre_rounded);
+			dml2_printf("DML::%s: minus term = %f\n", __func__, s->min_Lsw_equ * s->LineTime + 0.75 * s->LineTime + *p->Tno_bw);
+			dml2_printf("DML::%s: min_Lsw_equ = %f\n", __func__, s->min_Lsw_equ);
+			dml2_printf("DML::%s: LineTime = %f\n", __func__, s->LineTime);
+			dml2_printf("DML::%s: Tno_bw = %f\n", __func__, *p->Tno_bw);
+			dml2_printf("DML::%s: Time to fetch vm and 2 rows = %f\n", __func__, (s->Tpre_rounded - s->min_Lsw_equ * s->LineTime - 0.75 * s->LineTime - *p->Tno_bw));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			dml2_printf("DML::%s: prefetch_bw1: %f (updated)\n", __func__, s->prefetch_bw1);
 #endif
 		}
 
 		// prefetch_bw2: VM + SW
+<<<<<<< HEAD
 		if (s->Tpre_rounded - *p->Tno_bw - 2 * s->Tr0_trips_rounded > 0)
 			s->prefetch_bw2 = (vm_bytes * p->HostVMInefficiencyFactor + s->prefetch_sw_bytes) /
 			(s->Tpre_rounded - *p->Tno_bw - 2 * s->Tr0_trips_rounded);
 		else
 			s->prefetch_bw2 = 0;
 
+=======
+		if (s->Tpre_rounded - *p->Tno_bw - 2.0 * s->Tr0_trips_rounded > 0) {
+			s->prefetch_bw2 = (vm_bytes * p->HostVMInefficiencyFactor + s->prefetch_sw_bytes) /
+			(s->Tpre_rounded - *p->Tno_bw - 2.0 * s->Tr0_trips_rounded);
+			s->Tsw_est2 = s->prefetch_sw_bytes / s->prefetch_bw2;
+		} else
+			s->prefetch_bw2 = 0;
+
+		dml2_printf("DML::%s: prefetch_bw2: %f\n", __func__, s->prefetch_bw2);
+		if ((s->Tsw_est2 < s->min_Lsw_equ * s->LineTime) && ((s->Tpre_rounded - *p->Tno_bw - 2.0 * s->Tr0_trips_rounded - s->min_Lsw_equ * s->LineTime - 0.25 * s->LineTime) > 0)) {
+			s->prefetch_bw2 = vm_bytes * p->HostVMInefficiencyFactor / (s->Tpre_rounded - *p->Tno_bw - 2.0 * s->Tr0_trips_rounded - s->min_Lsw_equ * s->LineTime - 0.25 * s->LineTime);
+			dml2_printf("DML::%s: prefetch_bw2: %f (updated)\n", __func__, s->prefetch_bw2);
+		}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		// prefetch_bw3: 2*R0 + SW
 		if (s->Tpre_rounded - s->Tvm_trips_rounded > 0) {
 			s->prefetch_bw3 = (2 * (p->PixelPTEBytesPerRow * p->HostVMInefficiencyFactor + p->meta_row_bytes + tdlut_row_bytes) + s->prefetch_sw_bytes) /
@@ -5467,8 +5911,13 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 			s->prefetch_bw3 = 0;
 
 		dml2_printf("DML::%s: prefetch_bw3: %f\n", __func__, s->prefetch_bw3);
+<<<<<<< HEAD
 		if (p->VStartup == p->MaxVStartup && (s->Tsw_est3 / s->LineTime < s->min_Lsw_oto) && ((s->Tpre_rounded - s->min_Lsw_oto * s->LineTime - 0.5 * s->LineTime - s->Tvm_trips_rounded) > 0)) {
 			s->prefetch_bw3 = (2 * (p->PixelPTEBytesPerRow * p->HostVMInefficiencyFactor + p->meta_row_bytes + tdlut_row_bytes)) / (s->Tpre_rounded - s->min_Lsw_oto * s->LineTime - 0.5 * s->LineTime - s->Tvm_trips_rounded);
+=======
+		if ((s->Tsw_est3 < s->min_Lsw_equ * s->LineTime) && ((s->Tpre_rounded - s->min_Lsw_equ * s->LineTime - 0.5 * s->LineTime - s->Tvm_trips_rounded) > 0)) {
+			s->prefetch_bw3 = (2 * (p->PixelPTEBytesPerRow * p->HostVMInefficiencyFactor + p->meta_row_bytes + tdlut_row_bytes)) / (s->Tpre_rounded - s->min_Lsw_equ * s->LineTime - 0.5 * s->LineTime - s->Tvm_trips_rounded);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			dml2_printf("DML::%s: prefetch_bw3: %f (updated)\n", __func__, s->prefetch_bw3);
 		}
 
@@ -5484,6 +5933,10 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 		dml2_printf("DML::%s: Tvm_trips=%f Tvm_trips_rounded: %f, delta=%f\n", __func__, *p->Tvm_trips, s->Tvm_trips_rounded, (s->Tvm_trips_rounded - *p->Tvm_trips));
 		dml2_printf("DML::%s: Tr0_trips=%f Tr0_trips_rounded: %f, delta=%f\n", __func__, *p->Tr0_trips, s->Tr0_trips_rounded, (s->Tr0_trips_rounded - *p->Tr0_trips));
 		dml2_printf("DML::%s: Tsw_est1: %f\n", __func__, s->Tsw_est1);
+<<<<<<< HEAD
+=======
+		dml2_printf("DML::%s: Tsw_est2: %f\n", __func__, s->Tsw_est2);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dml2_printf("DML::%s: Tsw_est3: %f\n", __func__, s->Tsw_est3);
 		dml2_printf("DML::%s: prefetch_bw1: %f (final)\n", __func__, s->prefetch_bw1);
 		dml2_printf("DML::%s: prefetch_bw2: %f (final)\n", __func__, s->prefetch_bw2);
@@ -5504,9 +5957,24 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 			// here is to make sure equ bw wont be more agressive than the latency-based requirement.
 			// check vm time >= vm_trips
 			// check r0 time >= r0_trips
+<<<<<<< HEAD
 			if (s->prefetch_bw1 > 0) {
 				if (*p->Tno_bw + vm_bytes * p->HostVMInefficiencyFactor / s->prefetch_bw1 >= s->Tvm_trips_rounded &&
 					(p->PixelPTEBytesPerRow * p->HostVMInefficiencyFactor + p->meta_row_bytes + tdlut_row_bytes) / s->prefetch_bw1 >= s->Tr0_trips_rounded) {
+=======
+
+			double total_row_bytes = (p->PixelPTEBytesPerRow * p->HostVMInefficiencyFactor + p->meta_row_bytes + tdlut_row_bytes);
+
+			dml2_printf("DML::%s: Tvm_trips_rounded = %f\n", __func__, s->Tvm_trips_rounded);
+			dml2_printf("DML::%s: Tr0_trips_rounded = %f\n", __func__, s->Tr0_trips_rounded);
+
+			if (s->prefetch_bw1 > 0) {
+				double vm_transfer_time = *p->Tno_bw + vm_bytes * p->HostVMInefficiencyFactor / s->prefetch_bw1;
+				double row_transfer_time = total_row_bytes / s->prefetch_bw1;
+				dml2_printf("DML::%s: Case1: vm_transfer_time  = %f\n", __func__, vm_transfer_time);
+				dml2_printf("DML::%s: Case1: row_transfer_time = %f\n", __func__, row_transfer_time);
+				if (vm_transfer_time >= s->Tvm_trips_rounded && row_transfer_time >= s->Tr0_trips_rounded) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					Case1OK = true;
 				}
 			}
@@ -5516,8 +5984,16 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 			// check vm time >= vm_trips
 			// check r0 time < r0_trips
 			if (s->prefetch_bw2 > 0) {
+<<<<<<< HEAD
 				if (*p->Tno_bw + vm_bytes * p->HostVMInefficiencyFactor / s->prefetch_bw2 >= s->Tvm_trips_rounded &&
 					(p->PixelPTEBytesPerRow * p->HostVMInefficiencyFactor + p->meta_row_bytes + tdlut_row_bytes) / s->prefetch_bw2 < s->Tr0_trips_rounded) {
+=======
+				double vm_transfer_time = *p->Tno_bw + vm_bytes * p->HostVMInefficiencyFactor / s->prefetch_bw2;
+				double row_transfer_time = total_row_bytes / s->prefetch_bw2;
+				dml2_printf("DML::%s: Case2: vm_transfer_time  = %f\n", __func__, vm_transfer_time);
+				dml2_printf("DML::%s: Case2: row_transfer_time = %f\n", __func__, row_transfer_time);
+				if (vm_transfer_time >= s->Tvm_trips_rounded && row_transfer_time < s->Tr0_trips_rounded) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					Case2OK = true;
 				}
 			}
@@ -5526,8 +6002,16 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 			// check vm time < vm_trips
 			// check r0 time >= r0_trips
 			if (s->prefetch_bw3 > 0) {
+<<<<<<< HEAD
 				if (*p->Tno_bw + vm_bytes * p->HostVMInefficiencyFactor / s->prefetch_bw3 < s->Tvm_trips_rounded &&
 					(p->PixelPTEBytesPerRow * p->HostVMInefficiencyFactor + p->meta_row_bytes + tdlut_row_bytes) / s->prefetch_bw3 >= s->Tr0_trips_rounded) {
+=======
+				double vm_transfer_time = *p->Tno_bw + vm_bytes * p->HostVMInefficiencyFactor / s->prefetch_bw3;
+				double row_transfer_time = total_row_bytes / s->prefetch_bw3;
+				dml2_printf("DML::%s: Case3: vm_transfer_time  = %f\n", __func__, vm_transfer_time);
+				dml2_printf("DML::%s: Case3: row_transfer_time = %f\n", __func__, row_transfer_time);
+				if (vm_transfer_time < s->Tvm_trips_rounded && row_transfer_time >= s->Tr0_trips_rounded) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					Case3OK = true;
 				}
 			}
@@ -5542,11 +6026,17 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 				s->prefetch_bw_equ = s->prefetch_bw4;
 			}
 
+<<<<<<< HEAD
 #ifdef DML_REG_LIMIT_CLAMP_EN
 			s->prefetch_bw_equ = math_max3(s->prefetch_bw_equ,
 							p->vm_bytes * p->HostVMInefficiencyFactor / (31 * s->LineTime) - *p->Tno_bw,
 							(p->PixelPTEBytesPerRow * p->HostVMInefficiencyFactor + p->meta_row_bytes + tdlut_row_bytes) / (15 * s->LineTime));
 #endif
+=======
+			s->prefetch_bw_equ = math_max3(s->prefetch_bw_equ,
+							p->vm_bytes * p->HostVMInefficiencyFactor / (31 * s->LineTime) - *p->Tno_bw,
+							(p->PixelPTEBytesPerRow * p->HostVMInefficiencyFactor + p->meta_row_bytes + tdlut_row_bytes) / (15 * s->LineTime));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef __DML_VBA_DEBUG__
 			dml2_printf("DML::%s: Case1OK: %u\n", __func__, Case1OK);
 			dml2_printf("DML::%s: Case2OK: %u\n", __func__, Case2OK);
@@ -5578,6 +6068,12 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 		dml2_printf("DML::%s: Tvm_equ = %f\n", __func__, s->Tvm_equ);
 		dml2_printf("DML::%s: Tr0_equ = %f\n", __func__, s->Tr0_equ);
 #endif
+<<<<<<< HEAD
+=======
+		// Lsw = dst_y_prefetch - (dst_y_per_vm_vblank + 2*dst_y_per_row_vblank)
+		s->Lsw_equ = s->dst_y_prefetch_equ - math_ceil2(4.0 * (s->Tvm_equ + 2 * s->Tr0_equ) / s->LineTime, 1.0) / 4.0;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		// Use the more stressful prefetch schedule
 		if (s->dst_y_prefetch_oto < s->dst_y_prefetch_equ) {
 			*p->dst_y_prefetch = s->dst_y_prefetch_oto;
@@ -5586,15 +6082,24 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 
 			*p->dst_y_per_vm_vblank = math_ceil2(4.0 * s->TimeForFetchingVM / s->LineTime, 1.0) / 4.0;
 			*p->dst_y_per_row_vblank = math_ceil2(4.0 * s->TimeForFetchingRowInVBlank / s->LineTime, 1.0) / 4.0;
+<<<<<<< HEAD
 #ifdef __DML_VBA_DEBUG__
 			dml2_printf("DML::%s: Using oto scheduling for prefetch\n", __func__);
 #endif
 
+=======
+			s->dst_y_per_vm_no_trip_vblank = math_ceil2(4.0 * s->Tvm_no_trip_oto / s->LineTime, 1.0) / 4.0;
+			s->dst_y_per_row_no_trip_vblank = math_ceil2(4.0 * s->Tr0_no_trip_oto / s->LineTime, 1.0) / 4.0;
+#ifdef __DML_VBA_DEBUG__
+			dml2_printf("DML::%s: Using oto scheduling for prefetch\n", __func__);
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			*p->dst_y_prefetch = s->dst_y_prefetch_equ;
 			s->TimeForFetchingVM = s->Tvm_equ;
 			s->TimeForFetchingRowInVBlank = s->Tr0_equ;
 
+<<<<<<< HEAD
 			if (p->VStartup == p->MaxVStartup) {
 				*p->dst_y_per_vm_vblank = math_floor2(4.0 * s->TimeForFetchingVM / s->LineTime, 1.0) / 4.0;
 				*p->dst_y_per_row_vblank = math_floor2(4.0 * s->TimeForFetchingRowInVBlank / s->LineTime, 1.0) / 4.0;
@@ -5602,13 +6107,25 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 				*p->dst_y_per_vm_vblank = math_ceil2(4.0 * s->TimeForFetchingVM / s->LineTime, 1.0) / 4.0;
 				*p->dst_y_per_row_vblank = math_ceil2(4.0 * s->TimeForFetchingRowInVBlank / s->LineTime, 1.0) / 4.0;
 			}
+=======
+			*p->dst_y_per_vm_vblank = math_ceil2(4.0 * s->TimeForFetchingVM / s->LineTime, 1.0) / 4.0;
+			*p->dst_y_per_row_vblank = math_ceil2(4.0 * s->TimeForFetchingRowInVBlank / s->LineTime, 1.0) / 4.0;
+			s->dst_y_per_vm_no_trip_vblank = *p->dst_y_per_vm_vblank;
+			s->dst_y_per_row_no_trip_vblank = *p->dst_y_per_row_vblank;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef __DML_VBA_DEBUG__
 			dml2_printf("DML::%s: Using equ bw scheduling for prefetch\n", __func__);
 #endif
 		}
 
+<<<<<<< HEAD
 		// Lsw = dst_y_prefetch - (dst_y_per_vm_vblank + 2*dst_y_per_row_vblank)
 		s->LinesToRequestPrefetchPixelData = *p->dst_y_prefetch - *p->dst_y_per_vm_vblank - 2 * *p->dst_y_per_row_vblank; // Lsw
+=======
+		/* take worst case Lsw to calculate bandwidth requirement regardless of schedule */
+		s->LinesToRequestPrefetchPixelData = math_min2(s->Lsw_equ, s->Lsw_oto); // Lsw
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		s->cursor_prefetch_bytes = (unsigned int)math_max2(p->cursor_bytes_per_chunk, 4 * p->cursor_bytes_per_line);
 		*p->prefetch_cursor_bw = p->num_cursors * s->cursor_prefetch_bytes / (s->LinesToRequestPrefetchPixelData * s->LineTime);
@@ -5645,7 +6162,11 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 						(double)p->MaxNumSwathY * p->SwathHeightY / (s->LinesToRequestPrefetchPixelData - (p->VInitPreFillY - 3.0) / 2.0));
 				} else {
 					s->NoTimeToPrefetch = true;
+<<<<<<< HEAD
 					dml2_printf("DML::%s: MyErr set. LinesToRequestPrefetchPixelData=%f VinitPreFillY=%u\n", __func__, s->LinesToRequestPrefetchPixelData, p->VInitPreFillY);
+=======
+					dml2_printf("DML::%s: No time to prefetch!. LinesToRequestPrefetchPixelData=%f VinitPreFillY=%u\n", __func__, s->LinesToRequestPrefetchPixelData, p->VInitPreFillY);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					*p->VRatioPrefetchY = 0;
 				}
 #ifdef __DML_VBA_DEBUG__
@@ -5668,7 +6189,11 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 					*p->VRatioPrefetchC = math_max2(*p->VRatioPrefetchC, (double)p->MaxNumSwathC * p->SwathHeightC / (s->LinesToRequestPrefetchPixelData - (p->VInitPreFillC - 3.0) / 2.0));
 				} else {
 					s->NoTimeToPrefetch = true;
+<<<<<<< HEAD
 					dml2_printf("DML::%s: MyErr set. LinesToRequestPrefetchPixelData=%f VInitPreFillC=%u\n", __func__, s->LinesToRequestPrefetchPixelData, p->VInitPreFillC);
+=======
+					dml2_printf("DML::%s: No time to prefetch!. LinesToRequestPrefetchPixelData=%f VInitPreFillC=%u\n", __func__, s->LinesToRequestPrefetchPixelData, p->VInitPreFillC);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					*p->VRatioPrefetchC = 0;
 				}
 #ifdef __DML_VBA_DEBUG__
@@ -5690,14 +6215,22 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 #endif
 		} else {
 			s->NoTimeToPrefetch = true;
+<<<<<<< HEAD
 			dml2_printf("DML::%s: MyErr set, LinesToRequestPrefetchPixelData: %f, should be >= %d\n", __func__, s->LinesToRequestPrefetchPixelData, min_lsw_required);
 			dml2_printf("DML::%s: MyErr set, prefetch_bw_equ: %f, should be > 0\n", __func__, s->prefetch_bw_equ);
+=======
+			dml2_printf("DML::%s: No time to prefetch!, LinesToRequestPrefetchPixelData: %f, should be >= %d\n", __func__, s->LinesToRequestPrefetchPixelData, min_lsw_required);
+			dml2_printf("DML::%s: No time to prefetch!, prefetch_bw_equ: %f, should be > 0\n", __func__, s->prefetch_bw_equ);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			*p->VRatioPrefetchY = 0;
 			*p->VRatioPrefetchC = 0;
 			*p->RequiredPrefetchPixelDataBWLuma = 0;
 			*p->RequiredPrefetchPixelDataBWChroma = 0;
 		}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dml2_printf("DML: Tpre: %fus - sum of time to request 2 x data pte, swaths\n", (double)s->LinesToRequestPrefetchPixelData * s->LineTime + 2.0 * s->TimeForFetchingRowInVBlank + s->TimeForFetchingVM);
 		dml2_printf("DML: Tvm: %fus - time to fetch vm\n", s->TimeForFetchingVM);
 		dml2_printf("DML: Tr0: %fus - time to fetch first row of data pagetables\n", s->TimeForFetchingRowInVBlank);
@@ -5708,7 +6241,13 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 		dml2_printf("DML: row_bytes = dpte_row_bytes (per_pipe) = PixelPTEBytesPerRow = : %u\n", p->PixelPTEBytesPerRow);
 
 	} else {
+<<<<<<< HEAD
 		dml2_printf("DML::%s: MyErr set, dst_y_prefetch_equ = %f (should be > 1)\n", __func__, s->dst_y_prefetch_equ);
+=======
+		dml2_printf("DML::%s: No time to prefetch! dst_y_prefetch_equ = %f (should be > 1)\n", __func__, s->dst_y_prefetch_equ);
+		dml2_printf("DML::%s: No time to prefetch! min_Lsw_equ_ok = %d, Tpre_rounded (%f) should be >= Tvm_trips_rounded (%f)  + 2.0*Tr0_trips_rounded (%f) + min_Tsw_equ (%f)\n",
+				__func__, min_Lsw_equ_ok, s->Tpre_rounded, s->Tvm_trips_rounded, 2.0*s->Tr0_trips_rounded, s->min_Lsw_equ*s->LineTime);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		s->NoTimeToPrefetch = true;
 		s->TimeForFetchingVM = 0;
 		s->TimeForFetchingRowInVBlank = 0;
@@ -5727,26 +6266,43 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 
 		if (vm_bytes == 0) {
 			prefetch_vm_bw = 0;
+<<<<<<< HEAD
 		} else if (*p->dst_y_per_vm_vblank > 0) {
+=======
+		} else if (s->dst_y_per_vm_no_trip_vblank > 0) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef __DML_VBA_DEBUG__
 			dml2_printf("DML::%s: HostVMInefficiencyFactor = %f\n", __func__, p->HostVMInefficiencyFactor);
 			dml2_printf("DML::%s: dst_y_per_vm_vblank = %f\n", __func__, *p->dst_y_per_vm_vblank);
 			dml2_printf("DML::%s: LineTime = %f\n", __func__, s->LineTime);
 #endif
+<<<<<<< HEAD
 			prefetch_vm_bw = vm_bytes * p->HostVMInefficiencyFactor / (*p->dst_y_per_vm_vblank * s->LineTime);
+=======
+			prefetch_vm_bw = vm_bytes * p->HostVMInefficiencyFactor / (s->dst_y_per_vm_no_trip_vblank * s->LineTime);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef __DML_VBA_DEBUG__
 			dml2_printf("DML::%s: prefetch_vm_bw = %f\n", __func__, prefetch_vm_bw);
 #endif
 		} else {
 			prefetch_vm_bw = 0;
 			s->NoTimeToPrefetch = true;
+<<<<<<< HEAD
 			dml2_printf("DML::%s: MyErr set. dst_y_per_vm_vblank=%f (should be > 0)\n", __func__, *p->dst_y_per_vm_vblank);
+=======
+			dml2_printf("DML::%s: No time to prefetch!. dst_y_per_vm_vblank=%f (should be > 0)\n", __func__, *p->dst_y_per_vm_vblank);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		if (p->PixelPTEBytesPerRow == 0 && tdlut_row_bytes == 0) {
 			prefetch_row_bw = 0;
+<<<<<<< HEAD
 		} else if (*p->dst_y_per_row_vblank > 0) {
 			prefetch_row_bw = (p->PixelPTEBytesPerRow * p->HostVMInefficiencyFactor + tdlut_row_bytes) / (*p->dst_y_per_row_vblank * s->LineTime);
+=======
+		} else if (s->dst_y_per_row_no_trip_vblank > 0) {
+			prefetch_row_bw = (p->PixelPTEBytesPerRow * p->HostVMInefficiencyFactor + tdlut_row_bytes) / (s->dst_y_per_row_no_trip_vblank * s->LineTime);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef __DML_VBA_DEBUG__
 			dml2_printf("DML::%s: PixelPTEBytesPerRow = %u\n", __func__, p->PixelPTEBytesPerRow);
@@ -5756,7 +6312,11 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 		} else {
 			prefetch_row_bw = 0;
 			s->NoTimeToPrefetch = true;
+<<<<<<< HEAD
 			dml2_printf("DML::%s: MyErr set. dst_y_per_row_vblank=%f (should be > 0)\n", __func__, *p->dst_y_per_row_vblank);
+=======
+			dml2_printf("DML::%s: No time to prefetch!. dst_y_per_row_vblank=%f (should be > 0)\n", __func__, *p->dst_y_per_row_vblank);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		*p->prefetch_vmrow_bw = math_max2(prefetch_vm_bw, prefetch_row_bw);
@@ -5773,11 +6333,23 @@ static bool CalculatePrefetchSchedule(struct dml2_core_internal_scratch *scratch
 		*p->VRatioPrefetchC = 0;
 		*p->RequiredPrefetchPixelDataBWLuma = 0;
 		*p->RequiredPrefetchPixelDataBWChroma = 0;
+<<<<<<< HEAD
+=======
+		*p->prefetch_vmrow_bw = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	dml2_printf("DML::%s: dst_y_per_vm_vblank = %f (final)\n", __func__, *p->dst_y_per_vm_vblank);
 	dml2_printf("DML::%s: dst_y_per_row_vblank = %f (final)\n", __func__, *p->dst_y_per_row_vblank);
+<<<<<<< HEAD
 	dml2_printf("DML::%s: NoTimeToPrefetch=%d\n", __func__, s->NoTimeToPrefetch);
+=======
+	dml2_printf("DML::%s: prefetch_vmrow_bw = %f (final)\n", __func__, *p->prefetch_vmrow_bw);
+	dml2_printf("DML::%s: RequiredPrefetchPixelDataBWLuma = %f (final)\n", __func__, *p->RequiredPrefetchPixelDataBWLuma);
+	dml2_printf("DML::%s: RequiredPrefetchPixelDataBWChroma = %f (final)\n", __func__, *p->RequiredPrefetchPixelDataBWChroma);
+	dml2_printf("DML::%s: NoTimeToPrefetch=%d\n", __func__, s->NoTimeToPrefetch);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return s->NoTimeToPrefetch;
 }
 
@@ -6169,6 +6741,10 @@ static void CalculateFlipSchedule(
 	unsigned int dpte_row_height_chroma,
 	bool use_one_row_for_frame_flip,
 	unsigned int max_flip_time_us,
+<<<<<<< HEAD
+=======
+	unsigned int max_flip_time_lines,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int per_pipe_flip_bytes,
 	unsigned int meta_row_bytes,
 	unsigned int meta_row_height,
@@ -6183,12 +6759,20 @@ static void CalculateFlipSchedule(
 {
 	struct dml2_core_shared_CalculateFlipSchedule_locals *l = &s->CalculateFlipSchedule_locals;
 
+<<<<<<< HEAD
 	l->dual_plane = dml2_core_shared_is_420(SourcePixelFormat) || SourcePixelFormat == dml2_rgbe_alpha;
+=======
+	l->dual_plane = dml_is_420(SourcePixelFormat) || SourcePixelFormat == dml2_rgbe_alpha;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	l->dpte_row_bytes = DPTEBytesPerRow;
 
 #ifdef __DML_VBA_DEBUG__
 	dml2_printf("DML::%s: GPUVMEnable = %u\n", __func__, GPUVMEnable);
 	dml2_printf("DML::%s: ip.max_flip_time_us = %d\n", __func__, max_flip_time_us);
+<<<<<<< HEAD
+=======
+	dml2_printf("DML::%s: ip.max_flip_time_lines = %d\n", __func__, max_flip_time_lines);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dml2_printf("DML::%s: BandwidthAvailableForImmediateFlip = %f\n", __func__, BandwidthAvailableForImmediateFlip);
 	dml2_printf("DML::%s: TotImmediateFlipBytes = %u\n", __func__, TotImmediateFlipBytes);
 	dml2_printf("DML::%s: use_lb_flip_bw = %u\n", __func__, use_lb_flip_bw);
@@ -6239,7 +6823,12 @@ static void CalculateFlipSchedule(
 
 		if (use_lb_flip_bw) {
 			// For mode check, calculation the flip bw requirement with worst case flip time
+<<<<<<< HEAD
 			l->max_flip_time = math_min2(l->min_row_time, math_max2(Tvm_trips_flip_rounded + 2 * Tr0_trips_flip_rounded, (double)max_flip_time_us));
+=======
+			l->max_flip_time = math_min2(math_min2(l->min_row_time, (double)max_flip_time_lines * LineTime / VRatio),
+				math_max2(Tvm_trips_flip_rounded + 2 * Tr0_trips_flip_rounded, (double)max_flip_time_us));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			//The lower bound on flip bandwidth
 			// Note: The get_urgent_bandwidth_required already consider dpte_row_bw and meta_row_bw in bandwidth calculation, so leave final_flip_bw = 0 if iflip not required
@@ -6257,7 +6846,11 @@ static void CalculateFlipSchedule(
 #ifdef __DML_VBA_DEBUG__
 				dml2_printf("DML::%s: max_flip_time = %f\n", __func__, l->max_flip_time);
 				dml2_printf("DML::%s: total vm bytes (hvm ineff scaled) = %f\n", __func__, l->hvm_scaled_vm_bytes);
+<<<<<<< HEAD
 				dml2_printf("DML::%s: total row bytes (hvm ineff scaled) = %f\n", __func__, l->hvm_scaled_row_bytes);
+=======
+				dml2_printf("DML::%s: total row bytes (%d row, hvm ineff scaled) = %f\n", __func__, l->num_rows, l->hvm_scaled_row_bytes);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				dml2_printf("DML::%s: total vm+row bytes (hvm ineff scaled) = %f\n", __func__, l->hvm_scaled_vm_row_bytes);
 				dml2_printf("DML::%s: lb_flip_bw for vm and row = %f\n", __func__, l->hvm_scaled_vm_row_bytes / (l->max_flip_time - Tno_bw_flip));
 				dml2_printf("DML::%s: lb_flip_bw for vm = %f\n", __func__, l->hvm_scaled_vm_bytes / (l->max_flip_time - Tno_bw_flip - 2 * Tr0_trips_flip_rounded));
@@ -6268,6 +6861,10 @@ static void CalculateFlipSchedule(
 					dml2_printf("DML::%s: mode_support est Tr0_flip = %f (bw-based)\n", __func__, l->hvm_scaled_row_bytes / l->lb_flip_bw / l->num_rows);
 					dml2_printf("DML::%s: mode_support est dst_y_per_vm_flip = %f (bw-based)\n", __func__, Tno_bw_flip + l->hvm_scaled_vm_bytes / l->lb_flip_bw / LineTime);
 					dml2_printf("DML::%s: mode_support est dst_y_per_row_flip = %f (bw-based)\n", __func__, l->hvm_scaled_row_bytes / l->lb_flip_bw / LineTime / l->num_rows);
+<<<<<<< HEAD
+=======
+					dml2_printf("DML::%s: Tvm_trips_flip_rounded + 2*Tr0_trips_flip_rounded = %f\n", __func__, (Tvm_trips_flip_rounded + 2 * Tr0_trips_flip_rounded));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				}
 #endif
 				l->lb_flip_bw = math_max3(l->lb_flip_bw,
@@ -6284,7 +6881,11 @@ static void CalculateFlipSchedule(
 
 			*dst_y_per_vm_flip = 1; // not used
 			*dst_y_per_row_flip = 1; // not used
+<<<<<<< HEAD
 			*ImmediateFlipSupportedForPipe = true;
+=======
+			*ImmediateFlipSupportedForPipe = l->min_row_time >= (Tvm_trips_flip_rounded + 2 * Tr0_trips_flip_rounded);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			if (iflip_enable) {
 				l->ImmediateFlipBW = (double)per_pipe_flip_bytes * BandwidthAvailableForImmediateFlip / (double)TotImmediateFlipBytes; // flip_bw(i)
@@ -6350,6 +6951,10 @@ static void CalculateFlipSchedule(
 		dml2_printf("DML::%s: dst_y_per_row_flip = %f (should be < 16)\n", __func__, *dst_y_per_row_flip);
 		dml2_printf("DML::%s: Tvm_flip = %f (final)\n", __func__, l->Tvm_flip);
 		dml2_printf("DML::%s: Tr0_flip = %f (final)\n", __func__, l->Tr0_flip);
+<<<<<<< HEAD
+=======
+		dml2_printf("DML::%s: Tvm_flip + 2*Tr0_flip = %f (should be <= min_row_time=%f)\n", __func__, l->Tvm_flip + 2 * l->Tr0_flip, l->min_row_time);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	dml2_printf("DML::%s: final_flip_bw = %f\n", __func__, *final_flip_bw);
 	dml2_printf("DML::%s: ImmediateFlipSupportedForPipe = %u\n", __func__, *ImmediateFlipSupportedForPipe);
@@ -6380,6 +6985,15 @@ static void CalculateWatermarksMALLUseAndDRAMSpeedChangeSupport(
 	p->Watermark->StutterEnterPlusExitWatermark = p->mmSOCParameters.SREnterPlusExitTime + p->mmSOCParameters.ExtraLatency_sr + 10 / p->DCFClkDeepSleep;
 	p->Watermark->Z8StutterExitWatermark = p->mmSOCParameters.SRExitZ8Time + p->mmSOCParameters.ExtraLatency_sr + 10 / p->DCFClkDeepSleep;
 	p->Watermark->Z8StutterEnterPlusExitWatermark = p->mmSOCParameters.SREnterPlusExitZ8Time + p->mmSOCParameters.ExtraLatency_sr + 10 / p->DCFClkDeepSleep;
+<<<<<<< HEAD
+=======
+	if (p->mmSOCParameters.qos_type == dml2_qos_param_type_dcn4x) {
+		p->Watermark->StutterExitWatermark += p->mmSOCParameters.max_urgent_latency_us + p->mmSOCParameters.df_response_time_us;
+		p->Watermark->StutterEnterPlusExitWatermark += p->mmSOCParameters.max_urgent_latency_us + p->mmSOCParameters.df_response_time_us;
+		p->Watermark->Z8StutterExitWatermark += p->mmSOCParameters.max_urgent_latency_us + p->mmSOCParameters.df_response_time_us;
+		p->Watermark->Z8StutterEnterPlusExitWatermark += p->mmSOCParameters.max_urgent_latency_us + p->mmSOCParameters.df_response_time_us;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	p->Watermark->g6_temp_read_watermark_us = p->mmSOCParameters.g6_temp_read_blackout_us + p->Watermark->UrgentWatermark;
 
 #ifdef __DML_VBA_DEBUG__
@@ -6541,7 +7155,12 @@ static void CalculateWatermarksMALLUseAndDRAMSpeedChangeSupport(
 
 		p->DRAMClockChangeSupport[k] = dml2_dram_clock_change_unsupported;
 		if (uclk_pstate_change_strategy == dml2_uclk_pstate_change_strategy_auto) {
+<<<<<<< HEAD
 			if (s->ActiveDRAMClockChangeLatencyMargin[k] > 0 && reserved_vblank_time_us >= p->mmSOCParameters.DRAMClockChangeLatency)
+=======
+			if (p->display_cfg->overrides.all_streams_blanked ||
+					(s->ActiveDRAMClockChangeLatencyMargin[k] > 0 && reserved_vblank_time_us >= p->mmSOCParameters.DRAMClockChangeLatency))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				p->DRAMClockChangeSupport[k] = dml2_dram_clock_change_vblank_and_vactive;
 			else if (s->ActiveDRAMClockChangeLatencyMargin[k] > 0)
 				p->DRAMClockChangeSupport[k] = dml2_dram_clock_change_vactive;
@@ -6585,13 +7204,21 @@ static void CalculateWatermarksMALLUseAndDRAMSpeedChangeSupport(
 			s->src_y_ahead_c = (unsigned int)(math_floor2(p->DETBufferSizeC[k] / p->BytePerPixelDETC[k] / p->SwathWidthC[k], p->SwathHeightC[k]) + s->LBLatencyHidingSourceLinesC[k]);
 			s->sub_vp_lines_c = s->src_y_pstate_c + s->src_y_ahead_c + p->meta_row_height_c[k];
 
+<<<<<<< HEAD
 			if (dml2_core_shared_is_420(p->display_cfg->plane_descriptors[k].pixel_format))
+=======
+			if (dml_is_420(p->display_cfg->plane_descriptors[k].pixel_format))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				p->SubViewportLinesNeededInMALL[k] = (unsigned int)(math_max2(s->sub_vp_lines_l, 2 * s->sub_vp_lines_c));
 			else
 				p->SubViewportLinesNeededInMALL[k] = (unsigned int)(math_max2(s->sub_vp_lines_l, s->sub_vp_lines_c));
 
 #ifdef __DML_VBA_DEBUG__
+<<<<<<< HEAD
 			dml2_printf("DML::%s: k=%u, meta_row_height_c = %u\n", __func__, p->meta_row_height_c[k]);
+=======
+			dml2_printf("DML::%s: k=%u, meta_row_height_c = %u\n", __func__, k, p->meta_row_height_c[k]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			dml2_printf("DML::%s: k=%u, src_y_pstate_c = %u\n", __func__, k, s->src_y_pstate_c);
 			dml2_printf("DML::%s: k=%u, src_y_ahead_c = %u\n", __func__, k, s->src_y_ahead_c);
 			dml2_printf("DML::%s: k=%u, sub_vp_lines_c = %u\n", __func__, k, s->sub_vp_lines_c);
@@ -6856,7 +7483,12 @@ struct dml2_core_internal_g6_temp_read_blackouts_table {
 	} entries[DML_MAX_CLK_TABLE_SIZE];
 };
 
+<<<<<<< HEAD
 struct dml2_core_internal_g6_temp_read_blackouts_table core_dcn4_g6_temp_read_blackout_table = {
+=======
+static const struct dml2_core_internal_g6_temp_read_blackouts_table
+	core_dcn4_g6_temp_read_blackout_table = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.entries = {
 		{
 			.uclk_khz = 96000,
@@ -6921,6 +7553,46 @@ static double get_g6_temp_read_blackout_us(
 	return (double)blackout_us;
 }
 
+<<<<<<< HEAD
+=======
+static double get_max_urgent_latency_us(
+	struct dml2_dcn4x_soc_qos_params *dcn4x,
+	double uclk_freq_mhz,
+	double FabricClock,
+	unsigned int min_clk_index)
+{
+	double latency;
+	latency = dcn4x->per_uclk_dpm_params[min_clk_index].maximum_latency_when_urgent_uclk_cycles / uclk_freq_mhz
+		* (1 + dcn4x->umc_max_latency_margin / 100.0)
+		+ dcn4x->mall_overhead_fclk_cycles / FabricClock
+		+ dcn4x->max_round_trip_to_furthest_cs_fclk_cycles / FabricClock
+		* (1 + dcn4x->fabric_max_transport_latency_margin / 100.0);
+	return latency;
+}
+
+static void calculate_pstate_keepout_dst_lines(
+		const struct dml2_display_cfg *display_cfg,
+		const struct dml2_core_internal_watermarks *watermarks,
+		unsigned int pstate_keepout_dst_lines[])
+{
+	const struct dml2_stream_parameters *stream_descriptor;
+	unsigned int i;
+
+	for (i = 0; i < display_cfg->num_planes; i++) {
+		if (!dml_is_phantom_pipe(&display_cfg->plane_descriptors[i])) {
+			stream_descriptor = &display_cfg->stream_descriptors[display_cfg->plane_descriptors[i].stream_index];
+
+			pstate_keepout_dst_lines[i] =
+					(unsigned int)math_ceil(watermarks->DRAMClockChangeWatermark / ((double)stream_descriptor->timing.h_total * 1000.0 / (double)stream_descriptor->timing.pixel_clock_khz));
+
+			if (pstate_keepout_dst_lines[i] > stream_descriptor->timing.v_total - 1) {
+				pstate_keepout_dst_lines[i] = stream_descriptor->timing.v_total - 1;
+			}
+		}
+	}
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out_params)
 {
 	struct dml2_core_internal_display_mode_lib *mode_lib = in_out_params->mode_lib;
@@ -6963,7 +7635,11 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 	mode_lib->ms.uclk_freq_mhz = dram_bw_kbps_to_uclk_mhz(min_clk_table->dram_bw_table.entries[in_out_params->min_clk_index].pre_derate_dram_bw_kbps, &mode_lib->soc.clk_table.dram_config);
 	mode_lib->ms.dram_bw_mbps = ((double)min_clk_table->dram_bw_table.entries[in_out_params->min_clk_index].pre_derate_dram_bw_kbps / 1000);
 	mode_lib->ms.max_dram_bw_mbps = ((double)min_clk_table->dram_bw_table.entries[min_clk_table->dram_bw_table.num_entries - 1].pre_derate_dram_bw_kbps / 1000);
+<<<<<<< HEAD
 	mode_lib->ms.qos_param_index = get_qos_param_index((unsigned int) (mode_lib->ms.uclk_freq_mhz * 1000.0), mode_lib->soc.qos_parameters.qos_params.dcn4.per_uclk_dpm_params);
+=======
+	mode_lib->ms.qos_param_index = get_qos_param_index((unsigned int) (mode_lib->ms.uclk_freq_mhz * 1000.0), mode_lib->soc.qos_parameters.qos_params.dcn4x.per_uclk_dpm_params);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mode_lib->ms.active_min_uclk_dpm_index = get_active_min_uclk_dpm_index((unsigned int) (mode_lib->ms.uclk_freq_mhz * 1000.0), &mode_lib->soc.clk_table);
 
 #if defined(__DML_VBA_DEBUG__)
@@ -6981,7 +7657,10 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 	dml2_printf("DML::%s: max_dscclk_freq_mhz = %f\n", __func__, mode_lib->ms.max_dscclk_freq_mhz);
 	dml2_printf("DML::%s: max_dppclk_freq_mhz = %f\n", __func__, mode_lib->ms.max_dppclk_freq_mhz);
 	dml2_printf("DML::%s: MaxFabricClock = %f\n", __func__, mode_lib->ms.MaxFabricClock);
+<<<<<<< HEAD
 	dml2_printf("DML::%s: max_dscclk_freq_mhz = %f\n", __func__, mode_lib->ms.max_dscclk_freq_mhz);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dml2_printf("DML::%s: ip.compressed_buffer_segment_size_in_kbytes = %u\n", __func__, mode_lib->ip.compressed_buffer_segment_size_in_kbytes);
 	dml2_printf("DML::%s: ip.dcn_mrq_present = %u\n", __func__, mode_lib->ip.dcn_mrq_present);
 
@@ -7126,7 +7805,11 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 	mode_lib->ms.support.WritebackLatencySupport = true;
 	for (k = 0; k <= mode_lib->ms.num_active_planes - 1; k++) {
 		if (display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].writeback.enable == true &&
+<<<<<<< HEAD
 			(mode_lib->ms.WriteBandwidth[k] > mode_lib->ip.writeback_interface_buffer_size_kbytes * 1024.0 / mode_lib->soc.qos_parameters.writeback.base_latency_us)) {
+=======
+			(mode_lib->ms.WriteBandwidth[k] > mode_lib->ip.writeback_interface_buffer_size_kbytes * 1024 / ((double)mode_lib->soc.qos_parameters.writeback.base_latency_us))) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			mode_lib->ms.support.WritebackLatencySupport = false;
 		}
 	}
@@ -7202,17 +7885,29 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 #if defined(DV_BUILD)
 		// Assume a memory config setting of 3 in 420 mode or get a new ip parameter that reflects the programming.
 		if (mode_lib->ms.BytePerPixelC[k] != 0.0 && display_cfg->plane_descriptors[k].pixel_format != dml2_rgbe_alpha) {
+<<<<<<< HEAD
 			lb_buffer_size_bits_luma = 34620 * 57;;
+=======
+			lb_buffer_size_bits_luma = 34620 * 57;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			lb_buffer_size_bits_chroma = 13560 * 57;
 		}
 #endif
 */
+<<<<<<< HEAD
 		mode_lib->ms.MaximumSwathWidthInLineBufferLuma = lb_buffer_size_bits_luma * math_max2(display_cfg->plane_descriptors[k].composition.scaler_info.plane0.h_ratio, 1.0) / 57 /*FIXME_STAGE2 was: LBBitPerPixel*/ /
+=======
+		mode_lib->ms.MaximumSwathWidthInLineBufferLuma = lb_buffer_size_bits_luma * math_max2(display_cfg->plane_descriptors[k].composition.scaler_info.plane0.h_ratio, 1.0) / 57 /
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			(display_cfg->plane_descriptors[k].composition.scaler_info.plane0.v_taps + math_max2(math_ceil2(display_cfg->plane_descriptors[k].composition.scaler_info.plane0.v_ratio, 1.0) - 2, 0.0));
 		if (mode_lib->ms.BytePerPixelC[k] == 0.0) {
 			mode_lib->ms.MaximumSwathWidthInLineBufferChroma = 0;
 		} else {
+<<<<<<< HEAD
 			mode_lib->ms.MaximumSwathWidthInLineBufferChroma = lb_buffer_size_bits_chroma * math_max2(display_cfg->plane_descriptors[k].composition.scaler_info.plane1.h_ratio, 1.0) / 57 /*FIXME_STAGE2 was: LBBitPerPixel*/ /
+=======
+			mode_lib->ms.MaximumSwathWidthInLineBufferChroma = lb_buffer_size_bits_chroma * math_max2(display_cfg->plane_descriptors[k].composition.scaler_info.plane1.h_ratio, 1.0) / 57 /
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				(display_cfg->plane_descriptors[k].composition.scaler_info.plane1.v_taps + math_max2(math_ceil2(display_cfg->plane_descriptors[k].composition.scaler_info.plane1.v_ratio, 1.0) - 2, 0.0));
 		}
 
@@ -7231,10 +7926,16 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 	/* Cursor Support Check */
 	mode_lib->ms.support.CursorSupport = true;
 	for (k = 0; k < mode_lib->ms.num_active_planes; k++) {
+<<<<<<< HEAD
 		if (display_cfg->plane_descriptors[k].cursor.cursor_width > 0.0) {
 			if (display_cfg->plane_descriptors[k].cursor.cursor_bpp == 64 && mode_lib->ip.cursor_64bpp_support == false) {
 				mode_lib->ms.support.CursorSupport = false;
 			}
+=======
+		if (display_cfg->plane_descriptors[k].cursor.num_cursors > 0) {
+			if (display_cfg->plane_descriptors[k].cursor.cursor_bpp == 64 && mode_lib->ip.cursor_64bpp_support == false)
+				mode_lib->ms.support.CursorSupport = false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -7295,7 +7996,12 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 	mode_lib->ms.support.ViewportExceedsSurface = false;
 	if (!display_cfg->overrides.hw.surface_viewport_size_check_disable) {
 		for (k = 0; k < mode_lib->ms.num_active_planes; k++) {
+<<<<<<< HEAD
 			if (display_cfg->plane_descriptors[k].composition.viewport.plane0.width > display_cfg->plane_descriptors[k].surface.plane0.width || display_cfg->plane_descriptors[k].composition.viewport.plane0.height > display_cfg->plane_descriptors[k].surface.plane0.height) {
+=======
+			if (display_cfg->plane_descriptors[k].composition.viewport.plane0.width > display_cfg->plane_descriptors[k].surface.plane0.width ||
+				display_cfg->plane_descriptors[k].composition.viewport.plane0.height > display_cfg->plane_descriptors[k].surface.plane0.height) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				mode_lib->ms.support.ViewportExceedsSurface = true;
 #if defined(__DML_VBA_DEBUG__)
 				dml2_printf("DML::%s: k=%u ViewportWidth = %d\n", __func__, k, display_cfg->plane_descriptors[k].composition.viewport.plane0.width);
@@ -7304,11 +8010,19 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 				dml2_printf("DML::%s: k=%u SurfaceHeightY = %d\n", __func__, k, display_cfg->plane_descriptors[k].surface.plane0.height);
 				dml2_printf("DML::%s: k=%u ViewportExceedsSurface = %d\n", __func__, k, mode_lib->ms.support.ViewportExceedsSurface);
 #endif
+<<<<<<< HEAD
 				if (dml_is_420(display_cfg->plane_descriptors[k].pixel_format) || display_cfg->plane_descriptors[k].pixel_format == dml2_rgbe_alpha) {
 					if (display_cfg->plane_descriptors[k].composition.viewport.plane1.width > display_cfg->plane_descriptors[k].surface.plane1.width ||
 						display_cfg->plane_descriptors[k].composition.viewport.plane1.height > display_cfg->plane_descriptors[k].surface.plane1.height) {
 						mode_lib->ms.support.ViewportExceedsSurface = true;
 					}
+=======
+			}
+			if (dml_is_420(display_cfg->plane_descriptors[k].pixel_format) || display_cfg->plane_descriptors[k].pixel_format == dml2_rgbe_alpha) {
+				if (display_cfg->plane_descriptors[k].composition.viewport.plane1.width > display_cfg->plane_descriptors[k].surface.plane1.width ||
+					display_cfg->plane_descriptors[k].composition.viewport.plane1.height > display_cfg->plane_descriptors[k].surface.plane1.height) {
+					mode_lib->ms.support.ViewportExceedsSurface = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				}
 			}
 		}
@@ -7466,6 +8180,13 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 			&mode_lib->ms.OutputRate[k],
 			&mode_lib->ms.RequiredSlots[k]);
 
+<<<<<<< HEAD
+=======
+		if (s->OutputBpp[k] == 0.0) {
+			s->OutputBpp[k] = mode_lib->ms.OutputBpp[k];
+		}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (mode_lib->ms.RequiresDSC[k] == false) {
 			mode_lib->ms.ODMMode[k] = s->ODMModeNoDSC;
 			mode_lib->ms.RequiredDISPCLKPerSurface[k] = s->RequiredDISPCLKPerSurfaceNoDSC;
@@ -7580,7 +8301,11 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 					display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].writeback.scaling_info.h_taps,
 					display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].writeback.scaling_info.v_taps,
 					display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].writeback.scaling_info.input_width,
+<<<<<<< HEAD
 					display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].writeback.scaling_info.output_height,
+=======
+					display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].writeback.scaling_info.output_width,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.h_total,
 					mode_lib->ip.writeback_line_buffer_buffer_size));
 		}
@@ -7665,8 +8390,11 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 			if (display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].output.output_format == dml2_420 && display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.interlaced == 1 && mode_lib->ip.ptoi_supported == true)
 				mode_lib->ms.support.P2IWith420 = true;
 
+<<<<<<< HEAD
 			if (display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.dsc.enable == dml2_dsc_enable_if_necessary && s->OutputBpp[k] != 0)
 				mode_lib->ms.support.DSCOnlyIfNecessaryWithBPP = true;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if ((display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.dsc.enable == dml2_dsc_enable || display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.dsc.enable == dml2_dsc_enable_if_necessary) && display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].output.output_format == dml2_n422 && !mode_lib->ip.dsc422_native_support)
 				mode_lib->ms.support.DSC422NativeNotSupported = true;
 
@@ -7819,7 +8547,11 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 		mode_lib->ms.DSCDelay[k] = DSCDelayRequirement(mode_lib->ms.RequiresDSC[k],
 			mode_lib->ms.ODMMode[k],
 			mode_lib->ip.maximum_dsc_bits_per_component,
+<<<<<<< HEAD
 			mode_lib->ms.OutputBpp[k],
+=======
+			s->OutputBpp[k],
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.h_active,
 			display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.h_total,
 			mode_lib->ms.support.NumberOfDSCSlices[k],
@@ -8059,6 +8791,7 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 			mode_lib->ms.excess_vactive_fill_bw_c);
 
 	mode_lib->ms.UrgLatency = CalculateUrgentLatency(
+<<<<<<< HEAD
 		mode_lib->soc.qos_parameters.qos_params.dcn3.urgent_latency_us.base_latency_us,
 		mode_lib->soc.qos_parameters.qos_params.dcn3.urgent_latency_us.base_latency_pixel_vm_us,
 		mode_lib->soc.qos_parameters.qos_params.dcn3.urgent_latency_us.base_latency_vm_us,
@@ -8074,23 +8807,49 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 		mode_lib->soc.qos_parameters.qos_params.dcn4.mall_overhead_fclk_cycles,
 		mode_lib->soc.qos_parameters.qos_params.dcn4.umc_urgent_ramp_latency_margin,
 		mode_lib->soc.qos_parameters.qos_params.dcn4.fabric_max_transport_latency_margin);
+=======
+		mode_lib->soc.qos_parameters.qos_params.dcn32x.urgent_latency_us.base_latency_us,
+		mode_lib->soc.qos_parameters.qos_params.dcn32x.urgent_latency_us.base_latency_pixel_vm_us,
+		mode_lib->soc.qos_parameters.qos_params.dcn32x.urgent_latency_us.base_latency_vm_us,
+		mode_lib->soc.do_urgent_latency_adjustment,
+		mode_lib->soc.qos_parameters.qos_params.dcn32x.urgent_latency_us.scaling_factor_fclk_us,
+		mode_lib->soc.qos_parameters.qos_params.dcn32x.urgent_latency_us.scaling_factor_mhz,
+		mode_lib->ms.FabricClock,
+		mode_lib->ms.uclk_freq_mhz,
+		mode_lib->soc.qos_parameters.qos_type,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.per_uclk_dpm_params[mode_lib->ms.qos_param_index].urgent_ramp_uclk_cycles,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.df_qos_response_time_fclk_cycles,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.max_round_trip_to_furthest_cs_fclk_cycles,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.mall_overhead_fclk_cycles,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.umc_urgent_ramp_latency_margin,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.fabric_max_transport_latency_margin);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mode_lib->ms.TripToMemory = CalculateTripToMemory(
 		mode_lib->ms.UrgLatency,
 		mode_lib->ms.FabricClock,
 		mode_lib->ms.uclk_freq_mhz,
 		mode_lib->soc.qos_parameters.qos_type,
+<<<<<<< HEAD
 		mode_lib->soc.qos_parameters.qos_params.dcn4.per_uclk_dpm_params[mode_lib->ms.qos_param_index].trip_to_memory_uclk_cycles,
 		mode_lib->soc.qos_parameters.qos_params.dcn4.max_round_trip_to_furthest_cs_fclk_cycles,
 		mode_lib->soc.qos_parameters.qos_params.dcn4.mall_overhead_fclk_cycles,
 		mode_lib->soc.qos_parameters.qos_params.dcn4.umc_max_latency_margin,
 		mode_lib->soc.qos_parameters.qos_params.dcn4.fabric_max_transport_latency_margin);
+=======
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.per_uclk_dpm_params[mode_lib->ms.qos_param_index].trip_to_memory_uclk_cycles,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.max_round_trip_to_furthest_cs_fclk_cycles,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.mall_overhead_fclk_cycles,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.umc_max_latency_margin,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.fabric_max_transport_latency_margin);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mode_lib->ms.TripToMemory = math_max2(mode_lib->ms.UrgLatency, mode_lib->ms.TripToMemory);
 
 	for (k = 0; k < mode_lib->ms.num_active_planes; ++k) {
 		double line_time_us = (double)display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.h_total / ((double)display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.pixel_clock_khz / 1000);
 		bool cursor_not_enough_urgent_latency_hiding = 0;
+<<<<<<< HEAD
 		calculate_cursor_req_attributes(
 			display_cfg->plane_descriptors[k].cursor.cursor_width,
 			display_cfg->plane_descriptors[k].cursor.cursor_bpp,
@@ -8112,6 +8871,33 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 			// output
 			&mode_lib->ms.UrgentBurstFactorCursor[k],
 			&cursor_not_enough_urgent_latency_hiding);
+=======
+
+		if (display_cfg->plane_descriptors[k].cursor.num_cursors > 0) {
+			calculate_cursor_req_attributes(
+				display_cfg->plane_descriptors[k].cursor.cursor_width,
+				display_cfg->plane_descriptors[k].cursor.cursor_bpp,
+
+				// output
+				&s->cursor_lines_per_chunk[k],
+				&s->cursor_bytes_per_line[k],
+				&s->cursor_bytes_per_chunk[k],
+				&s->cursor_bytes[k]);
+
+			calculate_cursor_urgent_burst_factor(
+				mode_lib->ip.cursor_buffer_size,
+				display_cfg->plane_descriptors[k].cursor.cursor_width,
+				s->cursor_bytes_per_chunk[k],
+				s->cursor_lines_per_chunk[k],
+				line_time_us,
+				mode_lib->ms.UrgLatency,
+
+				// output
+				&mode_lib->ms.UrgentBurstFactorCursor[k],
+				&cursor_not_enough_urgent_latency_hiding);
+		}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mode_lib->ms.UrgentBurstFactorCursorPre[k] = mode_lib->ms.UrgentBurstFactorCursor[k];
 
 #ifdef __DML_VBA_DEBUG__
@@ -8254,6 +9040,7 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 	mode_lib->ms.support.OutstandingRequestsUrgencyAvoidance = true;
 
 	mode_lib->ms.support.avg_urgent_latency_us
+<<<<<<< HEAD
 		= (mode_lib->soc.qos_parameters.qos_params.dcn4.per_uclk_dpm_params[mode_lib->ms.qos_param_index].average_latency_when_urgent_uclk_cycles / mode_lib->ms.uclk_freq_mhz
 			* (1 + mode_lib->soc.qos_parameters.qos_params.dcn4.umc_average_latency_margin / 100.0)
 			+ mode_lib->soc.qos_parameters.qos_params.dcn4.average_transport_distance_fclk_cycles / mode_lib->ms.FabricClock)
@@ -8268,6 +9055,22 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 	for (k = 0; k < mode_lib->ms.num_active_planes; k++) {
 
 		if (mode_lib->soc.qos_parameters.qos_type == dml2_qos_param_type_dcn4) {
+=======
+		= (mode_lib->soc.qos_parameters.qos_params.dcn4x.per_uclk_dpm_params[mode_lib->ms.qos_param_index].average_latency_when_urgent_uclk_cycles / mode_lib->ms.uclk_freq_mhz
+			* (1 + mode_lib->soc.qos_parameters.qos_params.dcn4x.umc_average_latency_margin / 100.0)
+			+ mode_lib->soc.qos_parameters.qos_params.dcn4x.average_transport_distance_fclk_cycles / mode_lib->ms.FabricClock)
+		* (1 + mode_lib->soc.qos_parameters.qos_params.dcn4x.fabric_average_transport_latency_margin / 100.0);
+
+	mode_lib->ms.support.avg_non_urgent_latency_us
+		= (mode_lib->soc.qos_parameters.qos_params.dcn4x.per_uclk_dpm_params[mode_lib->ms.qos_param_index].average_latency_when_non_urgent_uclk_cycles / mode_lib->ms.uclk_freq_mhz
+			* (1 + mode_lib->soc.qos_parameters.qos_params.dcn4x.umc_average_latency_margin / 100.0)
+			+ mode_lib->soc.qos_parameters.qos_params.dcn4x.average_transport_distance_fclk_cycles / mode_lib->ms.FabricClock)
+		* (1 + mode_lib->soc.qos_parameters.qos_params.dcn4x.fabric_average_transport_latency_margin / 100.0);
+
+	for (k = 0; k < mode_lib->ms.num_active_planes; k++) {
+
+		if (mode_lib->soc.qos_parameters.qos_type == dml2_qos_param_type_dcn4x) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			outstanding_latency_us = (mode_lib->soc.max_outstanding_reqs * mode_lib->ms.support.request_size_bytes_luma[k]
 				/ (mode_lib->ms.DCFCLK * mode_lib->soc.return_bus_width_bytes));
 
@@ -8287,7 +9090,11 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 #endif
 		}
 
+<<<<<<< HEAD
 		if (mode_lib->soc.qos_parameters.qos_type == dml2_qos_param_type_dcn4 && mode_lib->ms.BytePerPixelC[k] > 0) {
+=======
+		if (mode_lib->soc.qos_parameters.qos_type == dml2_qos_param_type_dcn4x && mode_lib->ms.BytePerPixelC[k] > 0) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			outstanding_latency_us = (mode_lib->soc.max_outstanding_reqs * mode_lib->ms.support.request_size_bytes_chroma[k]
 				/ (mode_lib->ms.DCFCLK * mode_lib->soc.return_bus_width_bytes));
 
@@ -8460,7 +9267,10 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 	{
 		mode_lib->ms.TimeCalc = 24 / mode_lib->ms.dcfclk_deepsleep;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		calculate_hostvm_inefficiency_factor(
 				&s->HostVMInefficiencyFactor,
 				&s->HostVMInefficiencyFactorPrefetch,
@@ -8501,10 +9311,22 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 
 		min_return_bw_for_latency = mode_lib->ms.support.urg_bandwidth_available_min_latency[dml2_core_internal_soc_state_sys_active];
 
+<<<<<<< HEAD
 		CalculateExtraLatency(
 			display_cfg,
 			mode_lib->ip.rob_buffer_size_kbytes,
 			0, //mode_lib->soc.round_trip_ping_latency_dcfclk_cycles,
+=======
+		if (mode_lib->soc.qos_parameters.qos_type == dml2_qos_param_type_dcn3)
+			s->ReorderingBytes = (unsigned int)(mode_lib->soc.clk_table.dram_config.channel_count * math_max3(mode_lib->soc.qos_parameters.qos_params.dcn32x.urgent_out_of_order_return_per_channel_pixel_only_bytes,
+											mode_lib->soc.qos_parameters.qos_params.dcn32x.urgent_out_of_order_return_per_channel_pixel_and_vm_bytes,
+											mode_lib->soc.qos_parameters.qos_params.dcn32x.urgent_out_of_order_return_per_channel_vm_only_bytes));
+
+		CalculateExtraLatency(
+			display_cfg,
+			mode_lib->ip.rob_buffer_size_kbytes,
+			mode_lib->soc.qos_parameters.qos_params.dcn32x.loaded_round_trip_latency_fclk_cycles,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			s->ReorderingBytes,
 			mode_lib->ms.DCFCLK,
 			mode_lib->ms.FabricClock,
@@ -8540,7 +9362,13 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 				mode_lib->ms.TWait[k] = CalculateTWait(
 					display_cfg->plane_descriptors[k].overrides.reserved_vblank_time_ns,
 					mode_lib->ms.UrgLatency,
+<<<<<<< HEAD
 					mode_lib->ms.TripToMemory);
+=======
+					mode_lib->ms.TripToMemory,
+					!dml_is_phantom_pipe(&display_cfg->plane_descriptors[k]) && display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.drr_config.enabled ?
+					get_g6_temp_read_blackout_us(&mode_lib->soc, (unsigned int)(mode_lib->ms.uclk_freq_mhz * 1000), in_out_params->min_clk_index) : 0.0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 				myPipe->Dppclk = mode_lib->ms.RequiredDPPCLK[k];
 				myPipe->Dispclk = mode_lib->ms.RequiredDISPCLK;
@@ -8587,7 +9415,10 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 				CalculatePrefetchSchedule_params->OutputFormat = display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].output.output_format;
 				CalculatePrefetchSchedule_params->MaxInterDCNTileRepeaters = mode_lib->ip.max_inter_dcn_tile_repeaters;
 				CalculatePrefetchSchedule_params->VStartup = s->MaximumVStartup[k];
+<<<<<<< HEAD
 				CalculatePrefetchSchedule_params->MaxVStartup = s->MaximumVStartup[k];
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				CalculatePrefetchSchedule_params->HostVMMinPageSize = mode_lib->soc.hostvm_min_page_size_kbytes;
 				CalculatePrefetchSchedule_params->DynamicMetadataEnable = display_cfg->plane_descriptors[k].dynamic_meta_data.enable;
 				CalculatePrefetchSchedule_params->DynamicMetadataVMEnabled = mode_lib->ip.dynamic_metadata_vm_enabled;
@@ -8669,8 +9500,13 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 					dml2_printf("DML::%s: k=%d, dst_y_prefetch=%f (should not be < 2)\n", __func__, k, mode_lib->ms.dst_y_prefetch[k]);
 					dml2_printf("DML::%s: k=%d, LinesForVM=%f (should not be >= 32)\n", __func__, k, mode_lib->ms.LinesForVM[k]);
 					dml2_printf("DML::%s: k=%d, LinesForDPTERow=%f (should not be >= 16)\n", __func__, k, mode_lib->ms.LinesForDPTERow[k]);
+<<<<<<< HEAD
 					dml2_printf("DML::%s: k=%d, NoTimeForPrefetch=%d\n", __func__, k, mode_lib->ms.NoTimeForPrefetch[k]);
 					dml2_printf("DML::%s: k=%d, DSTYAfterScaler=%d (should be <= 8)\n", __func__, k, s->DSTYAfterScaler[k]);
+=======
+					dml2_printf("DML::%s: k=%d, DSTYAfterScaler=%d (should be <= 8)\n", __func__, k, s->DSTYAfterScaler[k]);
+					dml2_printf("DML::%s: k=%d, NoTimeForPrefetch=%d\n", __func__, k, mode_lib->ms.NoTimeForPrefetch[k]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				}
 			}
 
@@ -8683,13 +9519,22 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 
 			mode_lib->ms.support.VRatioInPrefetchSupported = true;
 			for (k = 0; k <= mode_lib->ms.num_active_planes - 1; k++) {
+<<<<<<< HEAD
 				if (mode_lib->ms.VRatioPreY[k] > __DML2_CALCS_MAX_VRATIO_PRE_ENHANCE_PREFETCH_ACC__ ||
 					mode_lib->ms.VRatioPreC[k] > __DML2_CALCS_MAX_VRATIO_PRE_ENHANCE_PREFETCH_ACC__) {
 					mode_lib->ms.support.VRatioInPrefetchSupported = false;
+=======
+				if (mode_lib->ms.VRatioPreY[k] > __DML2_CALCS_MAX_VRATIO_PRE__ ||
+					mode_lib->ms.VRatioPreC[k] > __DML2_CALCS_MAX_VRATIO_PRE__) {
+					mode_lib->ms.support.VRatioInPrefetchSupported = false;
+					dml2_printf("DML::%s: k=%d VRatioPreY = %f (should be <= %f)\n", __func__, k, mode_lib->ms.VRatioPreY[k], __DML2_CALCS_MAX_VRATIO_PRE__);
+					dml2_printf("DML::%s: k=%d VRatioPreC = %f (should be <= %f)\n", __func__, k, mode_lib->ms.VRatioPreC[k], __DML2_CALCS_MAX_VRATIO_PRE__);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					dml2_printf("DML::%s: VRatioInPrefetchSupported = %u\n", __func__, mode_lib->ms.support.VRatioInPrefetchSupported);
 				}
 			}
 
+<<<<<<< HEAD
 			s->AnyLinesForVMOrRowTooLarge = false;
 			for (k = 0; k < mode_lib->ms.num_active_planes; ++k) {
 				if (mode_lib->ms.LinesForDPTERow[k] >= 16 || mode_lib->ms.LinesForVM[k] >= 32) {
@@ -8697,6 +9542,8 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 				}
 			}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			// Only do urg vs prefetch bandwidth check, flip schedule check, power saving feature support check IF the Prefetch Schedule Check is ok
 			if (mode_lib->ms.support.PrefetchSupported) {
 				for (k = 0; k <= mode_lib->ms.num_active_planes - 1; k++) {
@@ -8845,6 +9692,10 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 							mode_lib->ms.dpte_row_height_chroma[k],
 							mode_lib->ms.use_one_row_for_frame_flip[k],
 							mode_lib->ip.max_flip_time_us,
+<<<<<<< HEAD
+=======
+							mode_lib->ip.max_flip_time_lines,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 							s->per_pipe_flip_bytes[k],
 							mode_lib->ms.meta_row_bytes[k],
 							s->meta_row_height_luma[k],
@@ -8932,6 +9783,12 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 		s->mSOCParameters.USRRetrainingLatency = 0;
 		s->mSOCParameters.SMNLatency = 0;
 		s->mSOCParameters.g6_temp_read_blackout_us = get_g6_temp_read_blackout_us(&mode_lib->soc, (unsigned int)(mode_lib->ms.uclk_freq_mhz * 1000), in_out_params->min_clk_index);
+<<<<<<< HEAD
+=======
+		s->mSOCParameters.max_urgent_latency_us = get_max_urgent_latency_us(&mode_lib->soc.qos_parameters.qos_params.dcn4x, mode_lib->ms.uclk_freq_mhz, mode_lib->ms.FabricClock, in_out_params->min_clk_index);
+		s->mSOCParameters.df_response_time_us = mode_lib->soc.qos_parameters.qos_params.dcn4x.df_qos_response_time_fclk_cycles / mode_lib->ms.FabricClock;
+		s->mSOCParameters.qos_type = mode_lib->soc.qos_parameters.qos_type;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		CalculateWatermarks_params->display_cfg = display_cfg;
 		CalculateWatermarks_params->USRRetrainingRequired = false;
@@ -8951,7 +9808,10 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 		CalculateWatermarks_params->DETBufferSizeC = mode_lib->ms.DETBufferSizeC;
 		CalculateWatermarks_params->SwathHeightY = mode_lib->ms.SwathHeightY;
 		CalculateWatermarks_params->SwathHeightC = mode_lib->ms.SwathHeightC;
+<<<<<<< HEAD
 		//CalculateWatermarks_params->LBBitPerPixel = 57; // FIXME_STAGE2, need a new ip param?
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		CalculateWatermarks_params->SwathWidthY = mode_lib->ms.SwathWidthY;
 		CalculateWatermarks_params->SwathWidthC = mode_lib->ms.SwathWidthC;
 		CalculateWatermarks_params->DPPPerSurface = mode_lib->ms.NoOfDPP;
@@ -8979,6 +9839,7 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 		CalculateWatermarks_params->VActiveLatencyHidingUs = mode_lib->ms.VActiveLatencyHidingUs;
 
 		CalculateWatermarksMALLUseAndDRAMSpeedChangeSupport(&mode_lib->scratch, CalculateWatermarks_params);
+<<<<<<< HEAD
 	}
 
 	// End of Prefetch Check
@@ -8996,12 +9857,30 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 	if (mode_lib->soc.qos_parameters.qos_type == dml2_qos_param_type_dcn4) {
 		if (((mode_lib->ip.rob_buffer_size_kbytes - mode_lib->ip.pixel_chunk_size_kbytes) * 1024
 			/ mode_lib->ms.support.non_urg_bandwidth_required_flip[dml2_core_internal_soc_state_sys_active][dml2_core_internal_bw_sdp]) >= mode_lib->ms.support.max_urgent_latency_us) {
+=======
+
+		calculate_pstate_keepout_dst_lines(display_cfg, &mode_lib->ms.support.watermarks, s->dummy_integer_array[0]);
+	}
+	dml2_printf("DML::%s: Done prefetch calculation\n", __func__);
+	// End of Prefetch Check
+
+	mode_lib->ms.support.max_urgent_latency_us = s->mSOCParameters.max_urgent_latency_us;
+
+	//Re-ordering Buffer Support Check
+	if (mode_lib->soc.qos_parameters.qos_type == dml2_qos_param_type_dcn4x) {
+		if (((mode_lib->ip.rob_buffer_size_kbytes - mode_lib->ip.pixel_chunk_size_kbytes) * 1024
+			/ mode_lib->ms.support.non_urg_bandwidth_required_flip[dml2_core_internal_soc_state_sys_active][dml2_core_internal_bw_sdp]) >= s->mSOCParameters.max_urgent_latency_us) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			mode_lib->ms.support.ROBSupport = true;
 		} else {
 			mode_lib->ms.support.ROBSupport = false;
 		}
 	} else {
+<<<<<<< HEAD
 		if (mode_lib->ip.rob_buffer_size_kbytes * 1024 >= mode_lib->soc.qos_parameters.qos_params.dcn3.loaded_round_trip_latency_fclk_cycles * mode_lib->soc.fabric_datapath_to_dcn_data_return_bytes) {
+=======
+		if (mode_lib->ip.rob_buffer_size_kbytes * 1024 >= mode_lib->soc.qos_parameters.qos_params.dcn32x.loaded_round_trip_latency_fclk_cycles * mode_lib->soc.fabric_datapath_to_dcn_data_return_bytes) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			mode_lib->ms.support.ROBSupport = true;
 		} else {
 			mode_lib->ms.support.ROBSupport = false;
@@ -9024,15 +9903,22 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 			mode_lib->ms.dram_change_vactive_det_fill_delay_us);
 
 #ifdef __DML_VBA_DEBUG__
+<<<<<<< HEAD
 	dml2_printf("DML::%s: max_urgent_latency_us = %f\n", __func__, mode_lib->ms.support.max_urgent_latency_us);
+=======
+	dml2_printf("DML::%s: max_urgent_latency_us = %f\n", __func__, s->mSOCParameters.max_urgent_latency_us);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dml2_printf("DML::%s: ROBSupport = %u\n", __func__, mode_lib->ms.support.ROBSupport);
 #endif
 
 	/*Mode Support, Voltage State and SOC Configuration*/
 	{
+<<<<<<< HEAD
 		// s->dram_clock_change_support = 1;
 		// s->f_clock_change_support = 1;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (mode_lib->ms.support.ScaleRatioAndTapsSupport
 			&& mode_lib->ms.support.SourceFormatPixelAndScanSupport
 			&& mode_lib->ms.support.ViewportSizeSupport
@@ -9043,9 +9929,13 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 			&& !mode_lib->ms.support.ExceededMultistreamSlots
 			&& !mode_lib->ms.support.MSOOrODMSplitWithNonDPLink
 			&& !mode_lib->ms.support.NotEnoughLanesForMSO
+<<<<<<< HEAD
 			//&& mode_lib->ms.support.LinkCapacitySupport == true // FIXME_STAGE2
 			&& !mode_lib->ms.support.P2IWith420
 			&& !mode_lib->ms.support.DSCOnlyIfNecessaryWithBPP
+=======
+			&& !mode_lib->ms.support.P2IWith420
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			&& !mode_lib->ms.support.DSC422NativeNotSupported
 			&& mode_lib->ms.support.DSCSlicesODMModeSupported
 			&& !mode_lib->ms.support.NotEnoughDSCUnits
@@ -9113,7 +10003,11 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
 
 #if defined(__DML_VBA_DEBUG__)
 	if (!mode_lib->ms.support.ModeSupport)
+<<<<<<< HEAD
 		dml2_print_dml_mode_support_info(&mode_lib->ms.support, true);
+=======
+		dml2_print_mode_support_info(&mode_lib->ms.support, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dml2_printf("DML::%s: --- DONE --- \n", __func__);
 #endif
@@ -9132,6 +10026,13 @@ unsigned int dml2_core_calcs_mode_support_ex(struct dml2_core_calcs_mode_support
 		*in_out_params->out_evaluation_info = in_out_params->mode_lib->ms.support;
 
 	dml2_printf("DML::%s: is_mode_support = %u (min_clk_index=%d)\n", __func__, result, in_out_params->min_clk_index);
+<<<<<<< HEAD
+=======
+
+	for (unsigned int k = 0; k < in_out_params->in_display_cfg->num_planes; k++)
+	    dml2_printf("DML::%s: plane_%d: reserved_vblank_time_ns = %u\n", __func__, k, in_out_params->in_display_cfg->plane_descriptors[k].overrides.reserved_vblank_time_ns);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dml2_printf("DML::%s: ------------- DONE ----------\n", __func__);
 
 	return result;
@@ -9373,11 +10274,17 @@ static void CalculateMetaAndPTETimes(struct dml2_core_shared_CalculateMetaAndPTE
 			} else {
 				dpte_groups_per_row_luma_ub = (unsigned int)(math_ceil2((double)p->dpte_row_width_luma_ub[k] / (double)dpte_group_width_luma, 1.0));
 			}
+<<<<<<< HEAD
 #ifdef DML_VM_PTE_ADL_PATCH_EN
 			if (dpte_groups_per_row_luma_ub <= 2) {
 				dpte_groups_per_row_luma_ub = dpte_groups_per_row_luma_ub + 1;
 			}
 #endif
+=======
+			if (dpte_groups_per_row_luma_ub <= 2) {
+				dpte_groups_per_row_luma_ub = dpte_groups_per_row_luma_ub + 1;
+			}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			dml2_printf("DML::%s: k=%u, use_one_row_for_frame = %u\n", __func__, k, p->use_one_row_for_frame[k]);
 			dml2_printf("DML::%s: k=%u, dpte_group_bytes = %u\n", __func__, k, p->dpte_group_bytes[k]);
 			dml2_printf("DML::%s: k=%u, PTERequestSizeY = %u\n", __func__, k, p->PTERequestSizeY[k]);
@@ -9406,11 +10313,17 @@ static void CalculateMetaAndPTETimes(struct dml2_core_shared_CalculateMetaAndPTE
 				} else {
 					dpte_groups_per_row_chroma_ub = (unsigned int)(math_ceil2((double)p->dpte_row_width_chroma_ub[k] / (double)dpte_group_width_chroma, 1.0));
 				}
+<<<<<<< HEAD
 #ifdef DML_VM_PTE_ADL_PATCH_EN
 				if (dpte_groups_per_row_chroma_ub <= 2) {
 					dpte_groups_per_row_chroma_ub = dpte_groups_per_row_chroma_ub + 1;
 				}
 #endif
+=======
+				if (dpte_groups_per_row_chroma_ub <= 2) {
+					dpte_groups_per_row_chroma_ub = dpte_groups_per_row_chroma_ub + 1;
+				}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				dml2_printf("DML::%s: k=%u, dpte_row_width_chroma_ub = %u\n", __func__, k, p->dpte_row_width_chroma_ub[k]);
 				dml2_printf("DML::%s: k=%u, dpte_group_width_chroma = %u\n", __func__, k, dpte_group_width_chroma);
 				dml2_printf("DML::%s: k=%u, dpte_groups_per_row_chroma_ub = %u\n", __func__, k, dpte_groups_per_row_chroma_ub);
@@ -9535,6 +10448,7 @@ static void CalculateVMGroupAndRequestTimes(
 
 			line_time = display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.h_total / pixel_clock_mhz;
 
+<<<<<<< HEAD
 #ifdef DML_VM_PTE_ADL_PATCH_EN
 			if (num_group_per_lower_vm_stage_flip <= 2) {
 				num_group_per_lower_vm_stage_flip = num_group_per_lower_vm_stage_flip + 1;
@@ -9546,6 +10460,18 @@ static void CalculateVMGroupAndRequestTimes(
 #endif
 			TimePerVMGroupVBlank[k] = dst_y_per_vm_vblank[k] * line_time / num_group_per_lower_vm_stage_pref;
 			TimePerVMGroupFlip[k] = dst_y_per_vm_flip[k] * line_time / num_group_per_lower_vm_stage_flip;
+=======
+			if (num_group_per_lower_vm_stage_pref > 0)
+				TimePerVMGroupVBlank[k] = dst_y_per_vm_vblank[k] * line_time / num_group_per_lower_vm_stage_pref;
+			else
+				TimePerVMGroupVBlank[k] = 0;
+
+			if (num_group_per_lower_vm_stage_flip > 0)
+				TimePerVMGroupFlip[k] = dst_y_per_vm_flip[k] * line_time / num_group_per_lower_vm_stage_flip;
+			else
+				TimePerVMGroupFlip[k] = 0;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (num_req_per_lower_vm_stage_pref > 0)
 				TimePerVMRequestVBlank[k] = dst_y_per_vm_vblank[k] * line_time / num_req_per_lower_vm_stage_pref;
 			else
@@ -9599,10 +10525,13 @@ static void CalculateStutterEfficiency(struct dml2_core_internal_scratch *scratc
 	bool FoundCriticalSurface = false;
 	double LastZ8StutterPeriod = 0;
 
+<<<<<<< HEAD
 	unsigned int SwathSizeCriticalSurface;
 	unsigned int LastChunkOfSwathSize;
 	unsigned int MissingPartOfLastSwathOfDETSize;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	memset(l, 0, sizeof(struct dml2_core_calcs_CalculateStutterEfficiency_locals));
 
 	for (unsigned int k = 0; k < p->NumberOfActiveSurfaces; ++k) {
@@ -9777,7 +10706,11 @@ static void CalculateStutterEfficiency(struct dml2_core_internal_scratch *scratc
 	l->StutterBurstTime = l->PartOfUncompressedPixelBurstThatFitsInROBAndCompressedBuffer
 		/ (p->ReturnBW * (p->hw_debug5 ? 1 : l->AverageDCCCompressionRate)) +
 		(*p->StutterPeriod * p->TotalDataReadBandwidth - l->PartOfUncompressedPixelBurstThatFitsInROBAndCompressedBuffer)
+<<<<<<< HEAD
 		/ math_max2(p->DCFCLK * 64, p->ReturnBW * (p->hw_debug5 ? 1 : l->AverageDCCCompressionRate)) +
+=======
+		/ math_min2(p->DCFCLK * 64, p->ReturnBW * (p->hw_debug5 ? 1 : l->AverageDCCCompressionRate)) +
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		*p->StutterPeriod * l->TotalRowReadBandwidth / p->ReturnBW;
 #ifdef __DML_VBA_DEBUG__
 	dml2_printf("DML::%s: Part 1 = %f\n", __func__, l->PartOfUncompressedPixelBurstThatFitsInROBAndCompressedBuffer / p->ReturnBW / (p->hw_debug5 ? 1 : l->AverageDCCCompressionRate));
@@ -9871,6 +10804,7 @@ static void CalculateStutterEfficiency(struct dml2_core_internal_scratch *scratc
 	dml2_printf("DML::%s: Z8NumberOfStutterBurstsPerFrame = %u\n", __func__, *p->Z8NumberOfStutterBurstsPerFrame);
 #endif
 
+<<<<<<< HEAD
 	SwathSizeCriticalSurface = (unsigned int)(l->BytePerPixelYCriticalSurface * l->SwathHeightYCriticalSurface * math_ceil2(l->SwathWidthYCriticalSurface, l->BlockWidth256BytesYCriticalSurface));
 	LastChunkOfSwathSize = SwathSizeCriticalSurface % (p->PixelChunkSizeInKByte * 1024);
 	MissingPartOfLastSwathOfDETSize = (unsigned int)(math_ceil2(l->DETBufferSizeYCriticalSurface, SwathSizeCriticalSurface) - l->DETBufferSizeYCriticalSurface);
@@ -9884,6 +10818,13 @@ static void CalculateStutterEfficiency(struct dml2_core_internal_scratch *scratc
 	dml2_printf("DML::%s: PixelChunkSizeInKByte = %u\n", __func__, p->PixelChunkSizeInKByte);
 	dml2_printf("DML::%s: LastChunkOfSwathSize = %u\n", __func__, LastChunkOfSwathSize);
 	dml2_printf("DML::%s: MissingPartOfLastSwathOfDETSize = %u\n", __func__, MissingPartOfLastSwathOfDETSize);
+=======
+	*p->DCHUBBUB_ARB_CSTATE_MAX_CAP_MODE = !(!p->UnboundedRequestEnabled && (p->NumberOfActiveSurfaces == 1) && l->SinglePlaneCriticalSurface && l->SinglePipeCriticalSurface);
+
+#ifdef __DML_VBA_DEBUG__
+	dml2_printf("DML::%s: DETBufferSizeYCriticalSurface = %u\n", __func__, l->DETBufferSizeYCriticalSurface);
+	dml2_printf("DML::%s: PixelChunkSizeInKByte = %u\n", __func__, p->PixelChunkSizeInKByte);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dml2_printf("DML::%s: DCHUBBUB_ARB_CSTATE_MAX_CAP_MODE = %u\n", __func__, *p->DCHUBBUB_ARB_CSTATE_MAX_CAP_MODE);
 #endif
 }
@@ -9928,6 +10869,7 @@ static bool dml_core_mode_programming(struct dml2_core_calcs_mode_programming_ex
 	mode_lib->mp.num_active_pipes = dml_get_num_active_pipes(display_cfg->num_planes, cfg_support_info);
 	dml_calc_pipe_plane_mapping(cfg_support_info, mode_lib->mp.pipe_plane);
 
+<<<<<<< HEAD
 	mode_lib->mp.Dcfclk = programming->min_clocks.dcn4.active.dcfclk_khz / 1000.0;
 	mode_lib->mp.FabricClock = programming->min_clocks.dcn4.active.fclk_khz / 1000.0;
 	mode_lib->mp.dram_bw_mbps = uclk_khz_to_dram_bw_mbps(programming->min_clocks.dcn4.active.uclk_khz, &mode_lib->soc.clk_table.dram_config);
@@ -9936,6 +10878,16 @@ static bool dml_core_mode_programming(struct dml2_core_calcs_mode_programming_ex
 	s->SOCCLK = (double)programming->min_clocks.dcn4.socclk_khz / 1000;
 	mode_lib->mp.qos_param_index = get_qos_param_index(programming->min_clocks.dcn4.active.uclk_khz, mode_lib->soc.qos_parameters.qos_params.dcn4.per_uclk_dpm_params);
 	mode_lib->mp.active_min_uclk_dpm_index = get_active_min_uclk_dpm_index(programming->min_clocks.dcn4.active.uclk_khz, &mode_lib->soc.clk_table);
+=======
+	mode_lib->mp.Dcfclk = programming->min_clocks.dcn4x.active.dcfclk_khz / 1000.0;
+	mode_lib->mp.FabricClock = programming->min_clocks.dcn4x.active.fclk_khz / 1000.0;
+	mode_lib->mp.dram_bw_mbps = uclk_khz_to_dram_bw_mbps(programming->min_clocks.dcn4x.active.uclk_khz, &mode_lib->soc.clk_table.dram_config);
+	mode_lib->mp.uclk_freq_mhz = programming->min_clocks.dcn4x.active.uclk_khz / 1000.0;
+	mode_lib->mp.GlobalDPPCLK = programming->min_clocks.dcn4x.dpprefclk_khz / 1000.0;
+	s->SOCCLK = (double)programming->min_clocks.dcn4x.socclk_khz / 1000;
+	mode_lib->mp.qos_param_index = get_qos_param_index(programming->min_clocks.dcn4x.active.uclk_khz, mode_lib->soc.qos_parameters.qos_params.dcn4x.per_uclk_dpm_params);
+	mode_lib->mp.active_min_uclk_dpm_index = get_active_min_uclk_dpm_index(programming->min_clocks.dcn4x.active.uclk_khz, &mode_lib->soc.clk_table);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (k = 0; k < s->num_active_planes; ++k) {
 		unsigned int stream_index = display_cfg->plane_descriptors[k].stream_index;
@@ -9970,18 +10922,31 @@ static bool dml_core_mode_programming(struct dml2_core_calcs_mode_programming_ex
 
 	for (k = 0; k < s->num_active_planes; ++k) {
 		mode_lib->mp.NoOfDPP[k] = cfg_support_info->plane_support_info[k].dpps_used;
+<<<<<<< HEAD
 		mode_lib->mp.Dppclk[k] = programming->plane_programming[k].min_clocks.dcn4.dppclk_khz / 1000.0;
+=======
+		mode_lib->mp.Dppclk[k] = programming->plane_programming[k].min_clocks.dcn4x.dppclk_khz / 1000.0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dml2_assert(mode_lib->mp.Dppclk[k] > 0);
 	}
 
 	for (k = 0; k < s->num_active_planes; ++k) {
 		unsigned int stream_index = display_cfg->plane_descriptors[k].stream_index;
+<<<<<<< HEAD
 		mode_lib->mp.DSCCLK[k] = programming->stream_programming[stream_index].min_clocks.dcn4.dscclk_khz / 1000.0;
 		dml2_printf("DML::%s: k=%d stream_index=%d, mode_lib->mp.DSCCLK = %f\n", __func__, k, stream_index, mode_lib->mp.DSCCLK[k]);
 	}
 
 	mode_lib->mp.Dispclk = programming->min_clocks.dcn4.dispclk_khz / 1000.0;
 	mode_lib->mp.DCFCLKDeepSleep = programming->min_clocks.dcn4.deepsleep_dcfclk_khz / 1000.0;
+=======
+		mode_lib->mp.DSCCLK[k] = programming->stream_programming[stream_index].min_clocks.dcn4x.dscclk_khz / 1000.0;
+		dml2_printf("DML::%s: k=%d stream_index=%d, mode_lib->mp.DSCCLK = %f\n", __func__, k, stream_index, mode_lib->mp.DSCCLK[k]);
+	}
+
+	mode_lib->mp.Dispclk = programming->min_clocks.dcn4x.dispclk_khz / 1000.0;
+	mode_lib->mp.DCFCLKDeepSleep = programming->min_clocks.dcn4x.deepsleep_dcfclk_khz / 1000.0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dml2_assert(mode_lib->mp.Dcfclk > 0);
 	dml2_assert(mode_lib->mp.FabricClock > 0);
@@ -10462,11 +11427,24 @@ static bool dml_core_mode_programming(struct dml2_core_calcs_mode_programming_ex
 		calculate_tdlut_setting(&mode_lib->scratch, calculate_tdlut_setting_params);
 	}
 
+<<<<<<< HEAD
 	CalculateExtraLatency(
 		display_cfg,
 		mode_lib->ip.rob_buffer_size_kbytes,
 		0, //mode_lib->soc.round_trip_ping_latency_dcfclk_cycles,
 		s->ReorderBytes,
+=======
+	if (mode_lib->soc.qos_parameters.qos_type == dml2_qos_param_type_dcn3)
+		s->ReorderingBytes = (unsigned int)(mode_lib->soc.clk_table.dram_config.channel_count * math_max3(mode_lib->soc.qos_parameters.qos_params.dcn32x.urgent_out_of_order_return_per_channel_pixel_only_bytes,
+										mode_lib->soc.qos_parameters.qos_params.dcn32x.urgent_out_of_order_return_per_channel_pixel_and_vm_bytes,
+										mode_lib->soc.qos_parameters.qos_params.dcn32x.urgent_out_of_order_return_per_channel_vm_only_bytes));
+
+	CalculateExtraLatency(
+		display_cfg,
+		mode_lib->ip.rob_buffer_size_kbytes,
+		mode_lib->soc.qos_parameters.qos_params.dcn32x.loaded_round_trip_latency_fclk_cycles,
+		s->ReorderingBytes,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mode_lib->mp.Dcfclk,
 		mode_lib->mp.FabricClock,
 		mode_lib->ip.pixel_chunk_size_kbytes,
@@ -10551,6 +11529,7 @@ static bool dml_core_mode_programming(struct dml2_core_calcs_mode_programming_ex
 			mode_lib->mp.excess_vactive_fill_bw_c);
 
 	mode_lib->mp.UrgentLatency = CalculateUrgentLatency(
+<<<<<<< HEAD
 		mode_lib->soc.qos_parameters.qos_params.dcn3.urgent_latency_us.base_latency_us,
 		mode_lib->soc.qos_parameters.qos_params.dcn3.urgent_latency_us.base_latency_pixel_vm_us,
 		mode_lib->soc.qos_parameters.qos_params.dcn3.urgent_latency_us.base_latency_vm_us,
@@ -10566,17 +11545,42 @@ static bool dml_core_mode_programming(struct dml2_core_calcs_mode_programming_ex
 		mode_lib->soc.qos_parameters.qos_params.dcn4.mall_overhead_fclk_cycles,
 		mode_lib->soc.qos_parameters.qos_params.dcn4.umc_urgent_ramp_latency_margin,
 		mode_lib->soc.qos_parameters.qos_params.dcn4.fabric_max_transport_latency_margin);
+=======
+		mode_lib->soc.qos_parameters.qos_params.dcn32x.urgent_latency_us.base_latency_us,
+		mode_lib->soc.qos_parameters.qos_params.dcn32x.urgent_latency_us.base_latency_pixel_vm_us,
+		mode_lib->soc.qos_parameters.qos_params.dcn32x.urgent_latency_us.base_latency_vm_us,
+		mode_lib->soc.do_urgent_latency_adjustment,
+		mode_lib->soc.qos_parameters.qos_params.dcn32x.urgent_latency_us.scaling_factor_fclk_us,
+		mode_lib->soc.qos_parameters.qos_params.dcn32x.urgent_latency_us.scaling_factor_mhz,
+		mode_lib->mp.FabricClock,
+		mode_lib->mp.uclk_freq_mhz,
+		mode_lib->soc.qos_parameters.qos_type,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.per_uclk_dpm_params[mode_lib->mp.qos_param_index].urgent_ramp_uclk_cycles,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.df_qos_response_time_fclk_cycles,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.max_round_trip_to_furthest_cs_fclk_cycles,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.mall_overhead_fclk_cycles,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.umc_urgent_ramp_latency_margin,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.fabric_max_transport_latency_margin);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mode_lib->mp.TripToMemory = CalculateTripToMemory(
 		mode_lib->mp.UrgentLatency,
 		mode_lib->mp.FabricClock,
 		mode_lib->mp.uclk_freq_mhz,
 		mode_lib->soc.qos_parameters.qos_type,
+<<<<<<< HEAD
 		mode_lib->soc.qos_parameters.qos_params.dcn4.per_uclk_dpm_params[mode_lib->mp.qos_param_index].trip_to_memory_uclk_cycles,
 		mode_lib->soc.qos_parameters.qos_params.dcn4.max_round_trip_to_furthest_cs_fclk_cycles,
 		mode_lib->soc.qos_parameters.qos_params.dcn4.mall_overhead_fclk_cycles,
 		mode_lib->soc.qos_parameters.qos_params.dcn4.umc_max_latency_margin,
 		mode_lib->soc.qos_parameters.qos_params.dcn4.fabric_max_transport_latency_margin);
+=======
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.per_uclk_dpm_params[mode_lib->mp.qos_param_index].trip_to_memory_uclk_cycles,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.max_round_trip_to_furthest_cs_fclk_cycles,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.mall_overhead_fclk_cycles,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.umc_max_latency_margin,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.fabric_max_transport_latency_margin);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mode_lib->mp.TripToMemory = math_max2(mode_lib->mp.UrgentLatency, mode_lib->mp.TripToMemory);
 
@@ -10585,6 +11589,7 @@ static bool dml_core_mode_programming(struct dml2_core_calcs_mode_programming_ex
 		mode_lib->mp.FabricClock,
 		mode_lib->mp.uclk_freq_mhz,
 		mode_lib->soc.qos_parameters.qos_type,
+<<<<<<< HEAD
 		mode_lib->soc.qos_parameters.qos_params.dcn4.per_uclk_dpm_params[mode_lib->mp.qos_param_index].meta_trip_to_memory_uclk_cycles,
 		mode_lib->soc.qos_parameters.qos_params.dcn4.meta_trip_adder_fclk_cycles,
 		mode_lib->soc.qos_parameters.qos_params.dcn4.umc_max_latency_margin,
@@ -10617,6 +11622,42 @@ static bool dml_core_mode_programming(struct dml2_core_calcs_mode_programming_ex
 			// output
 			&mode_lib->mp.UrgentBurstFactorCursor[k],
 			&cursor_not_enough_urgent_latency_hiding);
+=======
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.per_uclk_dpm_params[mode_lib->mp.qos_param_index].meta_trip_to_memory_uclk_cycles,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.meta_trip_adder_fclk_cycles,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.umc_max_latency_margin,
+		mode_lib->soc.qos_parameters.qos_params.dcn4x.fabric_max_transport_latency_margin);
+
+	for (k = 0; k < s->num_active_planes; ++k) {
+		bool cursor_not_enough_urgent_latency_hiding = 0;
+		double line_time_us = 0.0;
+
+		line_time_us = display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.h_total /
+			((double)display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.pixel_clock_khz / 1000);
+		if (display_cfg->plane_descriptors[k].cursor.num_cursors > 0) {
+			calculate_cursor_req_attributes(
+				display_cfg->plane_descriptors[k].cursor.cursor_width,
+				display_cfg->plane_descriptors[k].cursor.cursor_bpp,
+
+				// output
+				&s->cursor_lines_per_chunk[k],
+				&s->cursor_bytes_per_line[k],
+				&s->cursor_bytes_per_chunk[k],
+				&s->cursor_bytes[k]);
+
+			calculate_cursor_urgent_burst_factor(
+				mode_lib->ip.cursor_buffer_size,
+				display_cfg->plane_descriptors[k].cursor.cursor_width,
+				s->cursor_bytes_per_chunk[k],
+				s->cursor_lines_per_chunk[k],
+				line_time_us,
+				mode_lib->mp.UrgentLatency,
+
+				// output
+				&mode_lib->mp.UrgentBurstFactorCursor[k],
+				&cursor_not_enough_urgent_latency_hiding);
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mode_lib->mp.UrgentBurstFactorCursorPre[k] = mode_lib->mp.UrgentBurstFactorCursor[k];
 
 		CalculateUrgentBurstFactor(
@@ -10676,7 +11717,13 @@ static bool dml_core_mode_programming(struct dml2_core_calcs_mode_programming_ex
 			mode_lib->mp.TWait[k] = CalculateTWait(
 				display_cfg->plane_descriptors[k].overrides.reserved_vblank_time_ns,
 				mode_lib->mp.UrgentLatency,
+<<<<<<< HEAD
 				mode_lib->mp.TripToMemory);
+=======
+				mode_lib->mp.TripToMemory,
+				!dml_is_phantom_pipe(&display_cfg->plane_descriptors[k]) && display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.drr_config.enabled ?
+				get_g6_temp_read_blackout_us(&mode_lib->soc, (unsigned int)(mode_lib->mp.uclk_freq_mhz * 1000), in_out_params->min_clk_index) : 0.0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			myPipe->Dppclk = mode_lib->mp.Dppclk[k];
 			myPipe->Dispclk = mode_lib->mp.Dispclk;
@@ -10722,7 +11769,10 @@ static bool dml_core_mode_programming(struct dml2_core_calcs_mode_programming_ex
 			CalculatePrefetchSchedule_params->OutputFormat = display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].output.output_format;
 			CalculatePrefetchSchedule_params->MaxInterDCNTileRepeaters = mode_lib->ip.max_inter_dcn_tile_repeaters;
 			CalculatePrefetchSchedule_params->VStartup = s->MaxVStartupLines[k];
+<<<<<<< HEAD
 			CalculatePrefetchSchedule_params->MaxVStartup = s->MaxVStartupLines[k];
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			CalculatePrefetchSchedule_params->HostVMMinPageSize = mode_lib->soc.hostvm_min_page_size_kbytes;
 			CalculatePrefetchSchedule_params->DynamicMetadataEnable = display_cfg->plane_descriptors[k].dynamic_meta_data.enable;
 			CalculatePrefetchSchedule_params->DynamicMetadataVMEnabled = mode_lib->ip.dynamic_metadata_vm_enabled;
@@ -10808,9 +11858,19 @@ static bool dml_core_mode_programming(struct dml2_core_calcs_mode_programming_ex
 			if (mode_lib->mp.dst_y_prefetch[k] < 2)
 				s->DestinationLineTimesForPrefetchLessThan2 = true;
 
+<<<<<<< HEAD
 			if (mode_lib->mp.VRatioPrefetchY[k] > __DML2_CALCS_MAX_VRATIO_PRE_ENHANCE_PREFETCH_ACC__ ||
 				mode_lib->mp.VRatioPrefetchC[k] > __DML2_CALCS_MAX_VRATIO_PRE_ENHANCE_PREFETCH_ACC__)
 				s->VRatioPrefetchMoreThanMax = true;
+=======
+			if (mode_lib->mp.VRatioPrefetchY[k] > __DML2_CALCS_MAX_VRATIO_PRE__ ||
+				mode_lib->mp.VRatioPrefetchC[k] > __DML2_CALCS_MAX_VRATIO_PRE__) {
+				s->VRatioPrefetchMoreThanMax = true;
+				dml2_printf("DML::%s: k=%d, VRatioPrefetchY=%f (should not be < %f)\n", __func__, k, mode_lib->mp.VRatioPrefetchY[k], __DML2_CALCS_MAX_VRATIO_PRE__);
+				dml2_printf("DML::%s: k=%d, VRatioPrefetchC=%f (should not be < %f)\n", __func__, k, mode_lib->mp.VRatioPrefetchC[k], __DML2_CALCS_MAX_VRATIO_PRE__);
+				dml2_printf("DML::%s: VRatioPrefetchMoreThanMax = %u\n", __func__, s->VRatioPrefetchMoreThanMax);
+			}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			if (mode_lib->mp.NotEnoughUrgentLatencyHiding[k]) {
 				dml2_printf("DML::%s: k=%u, NotEnoughUrgentLatencyHiding = %u\n", __func__, k, mode_lib->mp.NotEnoughUrgentLatencyHiding[k]);
@@ -10994,6 +12054,10 @@ static bool dml_core_mode_programming(struct dml2_core_calcs_mode_programming_ex
 					mode_lib->mp.dpte_row_height_chroma[k],
 					mode_lib->mp.use_one_row_for_frame_flip[k],
 					mode_lib->ip.max_flip_time_us,
+<<<<<<< HEAD
+=======
+					mode_lib->ip.max_flip_time_lines,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					s->per_pipe_flip_bytes[k],
 					mode_lib->mp.meta_row_bytes[k],
 					mode_lib->mp.meta_row_height[k],
@@ -11143,6 +12207,12 @@ static bool dml_core_mode_programming(struct dml2_core_calcs_mode_programming_ex
 		s->mmSOCParameters.USRRetrainingLatency = 0;
 		s->mmSOCParameters.SMNLatency = 0;
 		s->mmSOCParameters.g6_temp_read_blackout_us = get_g6_temp_read_blackout_us(&mode_lib->soc, (unsigned int)(mode_lib->mp.uclk_freq_mhz * 1000), in_out_params->min_clk_index);
+<<<<<<< HEAD
+=======
+		s->mmSOCParameters.max_urgent_latency_us = get_max_urgent_latency_us(&mode_lib->soc.qos_parameters.qos_params.dcn4x, mode_lib->ms.uclk_freq_mhz, mode_lib->ms.FabricClock, in_out_params->min_clk_index);
+		s->mmSOCParameters.df_response_time_us = mode_lib->soc.qos_parameters.qos_params.dcn4x.df_qos_response_time_fclk_cycles / mode_lib->ms.FabricClock;
+		s->mmSOCParameters.qos_type = mode_lib->soc.qos_parameters.qos_type;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		CalculateWatermarks_params->display_cfg = display_cfg;
 		CalculateWatermarks_params->USRRetrainingRequired = false;
@@ -11162,7 +12232,10 @@ static bool dml_core_mode_programming(struct dml2_core_calcs_mode_programming_ex
 		CalculateWatermarks_params->DETBufferSizeC = mode_lib->mp.DETBufferSizeC;
 		CalculateWatermarks_params->SwathHeightY = mode_lib->mp.SwathHeightY;
 		CalculateWatermarks_params->SwathHeightC = mode_lib->mp.SwathHeightC;
+<<<<<<< HEAD
 		//CalculateWatermarks_params->LBBitPerPixel = 57; //FIXME_STAGE2
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		CalculateWatermarks_params->SwathWidthY = mode_lib->mp.SwathWidthY;
 		CalculateWatermarks_params->SwathWidthC = mode_lib->mp.SwathWidthC;
 		CalculateWatermarks_params->BytePerPixelDETY = mode_lib->mp.BytePerPixelInDETY;
@@ -11203,6 +12276,11 @@ static bool dml_core_mode_programming(struct dml2_core_calcs_mode_programming_ex
 			}
 		}
 
+<<<<<<< HEAD
+=======
+		calculate_pstate_keepout_dst_lines(display_cfg, &mode_lib->mp.Watermark, mode_lib->mp.pstate_keepout_dst_lines);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dml2_printf("DML::%s: DEBUG stream_index = %0d\n", __func__, display_cfg->plane_descriptors[0].stream_index);
 		dml2_printf("DML::%s: DEBUG PixelClock = %d kHz\n", __func__, (display_cfg->stream_descriptors[display_cfg->plane_descriptors[0].stream_index].timing.pixel_clock_khz));
 
@@ -11491,9 +12569,15 @@ static bool dml_core_mode_programming(struct dml2_core_calcs_mode_programming_ex
 
 bool dml2_core_calcs_mode_programming_ex(struct dml2_core_calcs_mode_programming_ex *in_out_params)
 {
+<<<<<<< HEAD
 	bool result = dml_core_mode_programming(in_out_params);
 
 	dml2_printf("DML::%s: ------------- START ----------\n", __func__);
+=======
+	dml2_printf("DML::%s: ------------- START ----------\n", __func__);
+	bool result = dml_core_mode_programming(in_out_params);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dml2_printf("DML::%s: result = %0d\n", __func__, result);
 	dml2_printf("DML::%s: ------------- DONE ----------\n", __func__);
 	return result;
@@ -12186,10 +13270,18 @@ void dml2_core_calcs_get_pipe_regs(const struct dml2_display_cfg *display_cfg,
 
 void dml2_core_calcs_get_global_sync_programming(const struct dml2_core_internal_display_mode_lib *mode_lib, union dml2_global_sync_programming *out, int pipe_index)
 {
+<<<<<<< HEAD
 	out->dcn4.vready_offset_pixels = dml_get_vready_offset(mode_lib, pipe_index);
 	out->dcn4.vstartup_lines = dml_get_vstartup_calculated(mode_lib, pipe_index);
 	out->dcn4.vupdate_offset_pixels = dml_get_vupdate_offset(mode_lib, pipe_index);
 	out->dcn4.vupdate_vupdate_width_pixels = dml_get_vupdate_width(mode_lib, pipe_index);
+=======
+	out->dcn4x.vready_offset_pixels = dml_get_vready_offset(mode_lib, pipe_index);
+	out->dcn4x.vstartup_lines = dml_get_vstartup_calculated(mode_lib, pipe_index);
+	out->dcn4x.vupdate_offset_pixels = dml_get_vupdate_offset(mode_lib, pipe_index);
+	out->dcn4x.vupdate_vupdate_width_pixels = dml_get_vupdate_width(mode_lib, pipe_index);
+	out->dcn4x.pstate_keepout_start_lines = dml_get_pstate_keepout_dst_lines(mode_lib, pipe_index);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void dml2_core_calcs_get_stream_programming(const struct dml2_core_internal_display_mode_lib *mode_lib, struct dml2_per_stream_programming *out, int pipe_index)
@@ -12197,6 +13289,28 @@ void dml2_core_calcs_get_stream_programming(const struct dml2_core_internal_disp
 	dml2_core_calcs_get_global_sync_programming(mode_lib, &out->global_sync, pipe_index);
 }
 
+<<<<<<< HEAD
+=======
+void dml2_core_calcs_get_global_fams2_programming(const struct dml2_core_internal_display_mode_lib *mode_lib,
+		const struct display_configuation_with_meta *display_cfg,
+		struct dmub_cmd_fams2_global_config *fams2_global_config)
+{
+	fams2_global_config->features.bits.enable = display_cfg->stage3.fams2_required;
+
+	if (fams2_global_config->features.bits.enable) {
+		fams2_global_config->features.bits.enable_stall_recovery = true;
+		fams2_global_config->features.bits.allow_delay_check_mode = FAMS2_ALLOW_DELAY_CHECK_FROM_START;
+
+		fams2_global_config->max_allow_delay_us = mode_lib->ip_caps.fams2.max_allow_delay_us;
+		fams2_global_config->lock_wait_time_us = mode_lib->ip_caps.fams2.lock_timeout_us;
+		fams2_global_config->recovery_timeout_us = mode_lib->ip_caps.fams2.recovery_timeout_us;
+		fams2_global_config->hwfq_flip_programming_delay_us = mode_lib->ip_caps.fams2.flip_programming_delay_us;
+
+		fams2_global_config->num_streams = display_cfg->display_config.num_streams;
+	}
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void dml2_core_calcs_get_stream_fams2_programming(const struct dml2_core_internal_display_mode_lib *mode_lib,
 		const struct display_configuation_with_meta *display_cfg,
 		struct dmub_fams2_stream_static_state *fams2_programming,
@@ -12209,6 +13323,14 @@ void dml2_core_calcs_get_stream_fams2_programming(const struct dml2_core_interna
 
 	unsigned int i;
 
+<<<<<<< HEAD
+=======
+	if (display_cfg->display_config.overrides.all_streams_blanked) {
+		/* stream is blanked, so do nothing */
+		return;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* from display configuration */
 	fams2_programming->htotal = (uint16_t)stream_descriptor->timing.h_total;
 	fams2_programming->vtotal = (uint16_t)stream_descriptor->timing.v_total;
@@ -12368,6 +13490,10 @@ void dml2_core_calcs_get_stream_support_info(const struct dml2_display_cfg *disp
 {
 	double phantom_processing_delay_pix;
 	unsigned int phantom_processing_delay_lines;
+<<<<<<< HEAD
+=======
+	unsigned int phantom_min_v_active_lines;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int phantom_v_active_lines;
 	unsigned int phantom_v_startup_lines;
 	unsigned int phantom_v_blank_lines;
@@ -12377,14 +13503,24 @@ void dml2_core_calcs_get_stream_support_info(const struct dml2_display_cfg *disp
 	phantom_processing_delay_pix = (double)((mode_lib->ip.subvp_fw_processing_delay_us + mode_lib->ip.subvp_pstate_allow_width_us) *
 		((double)display_cfg->stream_descriptors[display_cfg->plane_descriptors[plane_index].stream_index].timing.pixel_clock_khz / 1000));
 	phantom_processing_delay_lines = (unsigned int)(phantom_processing_delay_pix / (double)display_cfg->stream_descriptors[display_cfg->plane_descriptors[plane_index].stream_index].timing.h_total);
+<<<<<<< HEAD
 	dml2_core_shared_div_rem(phantom_processing_delay_pix,
+=======
+	dml2_core_div_rem(phantom_processing_delay_pix,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				display_cfg->stream_descriptors[display_cfg->plane_descriptors[plane_index].stream_index].timing.h_total,
 				&rem);
 	if (rem)
 		phantom_processing_delay_lines++;
 
 	phantom_v_startup_lines = dml_get_plane_max_vstartup_lines(mode_lib, plane_index);
+<<<<<<< HEAD
 	phantom_v_active_lines = phantom_processing_delay_lines + dml_get_plane_subviewport_lines_needed_in_mall(mode_lib, plane_index) + mode_lib->ip.subvp_swath_height_margin_lines;
+=======
+	phantom_min_v_active_lines = (unsigned int)math_ceil((double)dml_get_plane_subviewport_lines_needed_in_mall(mode_lib, plane_index) /
+			display_cfg->plane_descriptors[plane_index].composition.scaler_info.plane0.v_ratio);
+	phantom_v_active_lines = phantom_processing_delay_lines + phantom_min_v_active_lines + mode_lib->ip.subvp_swath_height_margin_lines;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	// phantom_vblank = max(vbp(vstartup) + vactive + vfp(always 1) + vsync(can be 1), main_vblank)
 	phantom_v_blank_lines = phantom_v_startup_lines + 1 + 1;
@@ -12396,8 +13532,13 @@ void dml2_core_calcs_get_stream_support_info(const struct dml2_display_cfg *disp
 	// phantom_vtotal = vactive + vblank
 	out->phantom_v_total = phantom_v_active_lines + phantom_v_blank_lines;
 
+<<<<<<< HEAD
 	out->phantom_min_v_active = dml_get_plane_subviewport_lines_needed_in_mall(mode_lib, plane_index);
 	out->phantom_v_startup = dml_get_plane_max_vstartup_lines(mode_lib, plane_index);
+=======
+	out->phantom_min_v_active = phantom_min_v_active_lines;
+	out->phantom_v_startup = phantom_v_startup_lines;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	out->vblank_reserved_time_us = display_cfg->plane_descriptors[plane_index].overrides.reserved_vblank_time_ns / 1000;
 #if defined(__DML_VBA_DEBUG__)
@@ -12418,7 +13559,11 @@ void dml2_core_calcs_get_informative(const struct dml2_core_internal_display_mod
 	out->informative.mode_support_info.ScaleRatioAndTapsSupport = mode_lib->ms.support.ScaleRatioAndTapsSupport;
 	out->informative.mode_support_info.SourceFormatPixelAndScanSupport = mode_lib->ms.support.SourceFormatPixelAndScanSupport;
 	out->informative.mode_support_info.P2IWith420 = mode_lib->ms.support.P2IWith420;
+<<<<<<< HEAD
 	out->informative.mode_support_info.DSCOnlyIfNecessaryWithBPP = mode_lib->ms.support.DSCOnlyIfNecessaryWithBPP;
+=======
+	out->informative.mode_support_info.DSCOnlyIfNecessaryWithBPP = false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	out->informative.mode_support_info.DSC422NativeNotSupported = mode_lib->ms.support.DSC422NativeNotSupported;
 	out->informative.mode_support_info.LinkRateDoesNotMatchDPVersion = mode_lib->ms.support.LinkRateDoesNotMatchDPVersion;
 	out->informative.mode_support_info.LinkRateForMultistreamNotIndicated = mode_lib->ms.support.LinkRateForMultistreamNotIndicated;
@@ -12611,7 +13756,11 @@ void dml2_core_calcs_get_informative(const struct dml2_core_internal_display_mod
 
 	out->informative.misc.cstate_max_cap_mode = dml_get_cstate_max_cap_mode(mode_lib);
 
+<<<<<<< HEAD
 	out->min_clocks.dcn4.dpprefclk_khz = (int unsigned)dml_get_global_dppclk_khz(mode_lib);
+=======
+	out->min_clocks.dcn4x.dpprefclk_khz = (int unsigned)dml_get_global_dppclk_khz(mode_lib);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	out->informative.qos.max_active_fclk_change_latency_supported = dml_get_fclk_change_latency(mode_lib);
 
@@ -12724,6 +13873,7 @@ void dml2_core_calcs_get_informative(const struct dml2_core_internal_display_mod
 		}
 	}
 
+<<<<<<< HEAD
 	out->informative.qos.max_non_urgent_latency_us = mode_lib->soc.qos_parameters.qos_params.dcn4.per_uclk_dpm_params[mode_lib->mp.qos_param_index].maximum_latency_when_non_urgent_uclk_cycles
 		/ mode_lib->mp.uclk_freq_mhz * (1 + mode_lib->soc.qos_parameters.qos_params.dcn4.umc_max_latency_margin / 100.0)
 		+ mode_lib->soc.qos_parameters.qos_params.dcn4.mall_overhead_fclk_cycles / mode_lib->mp.FabricClock
@@ -12731,6 +13881,15 @@ void dml2_core_calcs_get_informative(const struct dml2_core_internal_display_mod
 		* (1 + mode_lib->soc.qos_parameters.qos_params.dcn4.fabric_max_transport_latency_margin / 100.0);
 
 	if (mode_lib->soc.qos_parameters.qos_type == dml2_qos_param_type_dcn4) {
+=======
+	out->informative.qos.max_non_urgent_latency_us = mode_lib->soc.qos_parameters.qos_params.dcn4x.per_uclk_dpm_params[mode_lib->mp.qos_param_index].maximum_latency_when_non_urgent_uclk_cycles
+		/ mode_lib->mp.uclk_freq_mhz * (1 + mode_lib->soc.qos_parameters.qos_params.dcn4x.umc_max_latency_margin / 100.0)
+		+ mode_lib->soc.qos_parameters.qos_params.dcn4x.mall_overhead_fclk_cycles / mode_lib->mp.FabricClock
+		+ mode_lib->soc.qos_parameters.qos_params.dcn4x.max_round_trip_to_furthest_cs_fclk_cycles / mode_lib->mp.FabricClock
+		* (1 + mode_lib->soc.qos_parameters.qos_params.dcn4x.fabric_max_transport_latency_margin / 100.0);
+
+	if (mode_lib->soc.qos_parameters.qos_type == dml2_qos_param_type_dcn4x) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (((mode_lib->ip.rob_buffer_size_kbytes - mode_lib->ip.pixel_chunk_size_kbytes) * 1024
 			/ mode_lib->mp.non_urg_bandwidth_required[dml2_core_internal_soc_state_sys_active][dml2_core_internal_bw_sdp]) >= out->informative.qos.max_non_urgent_latency_us) {
 			out->informative.misc.ROBUrgencyAvoidance = true;

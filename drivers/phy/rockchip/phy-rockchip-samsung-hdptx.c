@@ -8,6 +8,10 @@
  */
 #include <linux/bitfield.h>
 #include <linux/clk.h>
+<<<<<<< HEAD
+=======
+#include <linux/clk-provider.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/delay.h>
 #include <linux/mfd/syscon.h>
 #include <linux/module.h>
@@ -15,6 +19,10 @@
 #include <linux/of_platform.h>
 #include <linux/phy/phy.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
+=======
+#include <linux/pm_runtime.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/rational.h>
 #include <linux/regmap.h>
 #include <linux/reset.h>
@@ -190,6 +198,11 @@
 #define LN3_TX_SER_RATE_SEL_HBR2	BIT(3)
 #define LN3_TX_SER_RATE_SEL_HBR3	BIT(2)
 
+<<<<<<< HEAD
+=======
+#define HDMI20_MAX_RATE			600000000
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct lcpll_config {
 	u32 bit_rate;
 	u8 lcvco_mode_en;
@@ -272,6 +285,15 @@ struct rk_hdptx_phy {
 	struct clk_bulk_data *clks;
 	int nr_clks;
 	struct reset_control_bulk_data rsts[RST_MAX];
+<<<<<<< HEAD
+=======
+
+	/* clk provider */
+	struct clk_hw hw;
+	unsigned long rate;
+
+	atomic_t usage_count;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct ropll_config ropll_tmds_cfg[] = {
@@ -759,6 +781,11 @@ static int rk_hdptx_ropll_tmds_cmn_config(struct rk_hdptx_phy *hdptx,
 	struct ropll_config rc = {0};
 	int i;
 
+<<<<<<< HEAD
+=======
+	hdptx->rate = rate * 100;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < ARRAY_SIZE(ropll_tmds_cfg); i++)
 		if (rate == ropll_tmds_cfg[i].bit_rate) {
 			cfg = &ropll_tmds_cfg[i];
@@ -822,6 +849,7 @@ static int rk_hdptx_ropll_tmds_cmn_config(struct rk_hdptx_phy *hdptx,
 static int rk_hdptx_ropll_tmds_mode_config(struct rk_hdptx_phy *hdptx,
 					   unsigned int rate)
 {
+<<<<<<< HEAD
 	u32 val;
 	int ret;
 
@@ -835,6 +863,8 @@ static int rk_hdptx_ropll_tmds_mode_config(struct rk_hdptx_phy *hdptx,
 			return ret;
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rk_hdptx_multi_reg_write(hdptx, rk_hdtpx_common_sb_init_seq);
 
 	regmap_write(hdptx->regmap, LNTOP_REG(0200), 0x06);
@@ -856,10 +886,75 @@ static int rk_hdptx_ropll_tmds_mode_config(struct rk_hdptx_phy *hdptx,
 	return rk_hdptx_post_enable_lane(hdptx);
 }
 
+<<<<<<< HEAD
 static int rk_hdptx_phy_power_on(struct phy *phy)
 {
 	struct rk_hdptx_phy *hdptx = phy_get_drvdata(phy);
 	int ret, bus_width = phy_get_bus_width(hdptx->phy);
+=======
+static int rk_hdptx_phy_consumer_get(struct rk_hdptx_phy *hdptx,
+				     unsigned int rate)
+{
+	u32 status;
+	int ret;
+
+	if (atomic_inc_return(&hdptx->usage_count) > 1)
+		return 0;
+
+	ret = regmap_read(hdptx->grf, GRF_HDPTX_STATUS, &status);
+	if (ret)
+		goto dec_usage;
+
+	if (status & HDPTX_O_PLL_LOCK_DONE)
+		dev_warn(hdptx->dev, "PLL locked by unknown consumer!\n");
+
+	if (rate) {
+		ret = rk_hdptx_ropll_tmds_cmn_config(hdptx, rate);
+		if (ret)
+			goto dec_usage;
+	}
+
+	return 0;
+
+dec_usage:
+	atomic_dec(&hdptx->usage_count);
+	return ret;
+}
+
+static int rk_hdptx_phy_consumer_put(struct rk_hdptx_phy *hdptx, bool force)
+{
+	u32 status;
+	int ret;
+
+	ret = atomic_dec_return(&hdptx->usage_count);
+	if (ret > 0)
+		return 0;
+
+	if (ret < 0) {
+		dev_warn(hdptx->dev, "Usage count underflow!\n");
+		ret = -EINVAL;
+	} else {
+		ret = regmap_read(hdptx->grf, GRF_HDPTX_STATUS, &status);
+		if (!ret) {
+			if (status & HDPTX_O_PLL_LOCK_DONE)
+				rk_hdptx_phy_disable(hdptx);
+			return 0;
+		} else if (force) {
+			return 0;
+		}
+	}
+
+	atomic_inc(&hdptx->usage_count);
+	return ret;
+}
+
+static int rk_hdptx_phy_power_on(struct phy *phy)
+{
+	struct rk_hdptx_phy *hdptx = phy_get_drvdata(phy);
+	int bus_width = phy_get_bus_width(hdptx->phy);
+	int ret;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * FIXME: Temporary workaround to pass pixel_clk_rate
 	 * from the HDMI bridge driver until phy_configure_opts_hdmi
@@ -870,6 +965,7 @@ static int rk_hdptx_phy_power_on(struct phy *phy)
 	dev_dbg(hdptx->dev, "%s bus_width=%x rate=%u\n",
 		__func__, bus_width, rate);
 
+<<<<<<< HEAD
 	ret = pm_runtime_resume_and_get(hdptx->dev);
 	if (ret) {
 		dev_err(hdptx->dev, "Failed to resume phy: %d\n", ret);
@@ -879,6 +975,15 @@ static int rk_hdptx_phy_power_on(struct phy *phy)
 	ret = rk_hdptx_ropll_tmds_mode_config(hdptx, rate);
 	if (ret)
 		pm_runtime_put(hdptx->dev);
+=======
+	ret = rk_hdptx_phy_consumer_get(hdptx, rate);
+	if (ret)
+		return ret;
+
+	ret = rk_hdptx_ropll_tmds_mode_config(hdptx, rate);
+	if (ret)
+		rk_hdptx_phy_consumer_put(hdptx, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }
@@ -886,6 +991,7 @@ static int rk_hdptx_phy_power_on(struct phy *phy)
 static int rk_hdptx_phy_power_off(struct phy *phy)
 {
 	struct rk_hdptx_phy *hdptx = phy_get_drvdata(phy);
+<<<<<<< HEAD
 	u32 val;
 	int ret;
 
@@ -896,6 +1002,10 @@ static int rk_hdptx_phy_power_off(struct phy *phy)
 	pm_runtime_put(hdptx->dev);
 
 	return ret;
+=======
+
+	return rk_hdptx_phy_consumer_put(hdptx, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct phy_ops rk_hdptx_phy_ops = {
@@ -904,6 +1014,102 @@ static const struct phy_ops rk_hdptx_phy_ops = {
 	.owner	   = THIS_MODULE,
 };
 
+<<<<<<< HEAD
+=======
+static struct rk_hdptx_phy *to_rk_hdptx_phy(struct clk_hw *hw)
+{
+	return container_of(hw, struct rk_hdptx_phy, hw);
+}
+
+static int rk_hdptx_phy_clk_prepare(struct clk_hw *hw)
+{
+	struct rk_hdptx_phy *hdptx = to_rk_hdptx_phy(hw);
+
+	return rk_hdptx_phy_consumer_get(hdptx, hdptx->rate / 100);
+}
+
+static void rk_hdptx_phy_clk_unprepare(struct clk_hw *hw)
+{
+	struct rk_hdptx_phy *hdptx = to_rk_hdptx_phy(hw);
+
+	rk_hdptx_phy_consumer_put(hdptx, true);
+}
+
+static unsigned long rk_hdptx_phy_clk_recalc_rate(struct clk_hw *hw,
+						  unsigned long parent_rate)
+{
+	struct rk_hdptx_phy *hdptx = to_rk_hdptx_phy(hw);
+
+	return hdptx->rate;
+}
+
+static long rk_hdptx_phy_clk_round_rate(struct clk_hw *hw, unsigned long rate,
+					unsigned long *parent_rate)
+{
+	u32 bit_rate = rate / 100;
+	int i;
+
+	if (rate > HDMI20_MAX_RATE)
+		return rate;
+
+	for (i = 0; i < ARRAY_SIZE(ropll_tmds_cfg); i++)
+		if (bit_rate == ropll_tmds_cfg[i].bit_rate)
+			break;
+
+	if (i == ARRAY_SIZE(ropll_tmds_cfg) &&
+	    !rk_hdptx_phy_clk_pll_calc(bit_rate, NULL))
+		return -EINVAL;
+
+	return rate;
+}
+
+static int rk_hdptx_phy_clk_set_rate(struct clk_hw *hw, unsigned long rate,
+				     unsigned long parent_rate)
+{
+	struct rk_hdptx_phy *hdptx = to_rk_hdptx_phy(hw);
+
+	return rk_hdptx_ropll_tmds_cmn_config(hdptx, rate / 100);
+}
+
+static const struct clk_ops hdptx_phy_clk_ops = {
+	.prepare = rk_hdptx_phy_clk_prepare,
+	.unprepare = rk_hdptx_phy_clk_unprepare,
+	.recalc_rate = rk_hdptx_phy_clk_recalc_rate,
+	.round_rate = rk_hdptx_phy_clk_round_rate,
+	.set_rate = rk_hdptx_phy_clk_set_rate,
+};
+
+static int rk_hdptx_phy_clk_register(struct rk_hdptx_phy *hdptx)
+{
+	struct device *dev = hdptx->dev;
+	const char *name, *pname;
+	struct clk *refclk;
+	int ret, id;
+
+	refclk = devm_clk_get(dev, "ref");
+	if (IS_ERR(refclk))
+		return dev_err_probe(dev, PTR_ERR(refclk),
+				     "Failed to get ref clock\n");
+
+	id = of_alias_get_id(dev->of_node, "hdptxphy");
+	name = id > 0 ? "clk_hdmiphy_pixel1" : "clk_hdmiphy_pixel0";
+	pname = __clk_get_name(refclk);
+
+	hdptx->hw.init = CLK_HW_INIT(name, pname, &hdptx_phy_clk_ops,
+				     CLK_GET_RATE_NOCACHE);
+
+	ret = devm_clk_hw_register(dev, &hdptx->hw);
+	if (ret)
+		return dev_err_probe(dev, ret, "Failed to register clock\n");
+
+	ret = devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, &hdptx->hw);
+	if (ret)
+		return dev_err_probe(dev, ret,
+				     "Failed to register clk provider\n");
+	return 0;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int rk_hdptx_phy_runtime_suspend(struct device *dev)
 {
 	struct rk_hdptx_phy *hdptx = dev_get_drvdata(dev);
@@ -976,6 +1182,13 @@ static int rk_hdptx_phy_probe(struct platform_device *pdev)
 		return dev_err_probe(dev, PTR_ERR(hdptx->grf),
 				     "Could not get GRF syscon\n");
 
+<<<<<<< HEAD
+=======
+	ret = devm_pm_runtime_enable(dev);
+	if (ret)
+		return dev_err_probe(dev, ret, "Failed to enable runtime PM\n");
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	hdptx->phy = devm_phy_create(dev, NULL, &rk_hdptx_phy_ops);
 	if (IS_ERR(hdptx->phy))
 		return dev_err_probe(dev, PTR_ERR(hdptx->phy),
@@ -985,10 +1198,13 @@ static int rk_hdptx_phy_probe(struct platform_device *pdev)
 	phy_set_drvdata(hdptx->phy, hdptx);
 	phy_set_bus_width(hdptx->phy, 8);
 
+<<<<<<< HEAD
 	ret = devm_pm_runtime_enable(dev);
 	if (ret)
 		return dev_err_probe(dev, ret, "Failed to enable runtime PM\n");
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	phy_provider = devm_of_phy_provider_register(dev, of_phy_simple_xlate);
 	if (IS_ERR(phy_provider))
 		return dev_err_probe(dev, PTR_ERR(phy_provider),
@@ -998,7 +1214,11 @@ static int rk_hdptx_phy_probe(struct platform_device *pdev)
 	reset_control_deassert(hdptx->rsts[RST_CMN].rstc);
 	reset_control_deassert(hdptx->rsts[RST_INIT].rstc);
 
+<<<<<<< HEAD
 	return 0;
+=======
+	return rk_hdptx_phy_clk_register(hdptx);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct dev_pm_ops rk_hdptx_phy_pm_ops = {

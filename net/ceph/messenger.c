@@ -1254,7 +1254,11 @@ static int ceph_dns_resolve_name(const char *name, size_t namelen,
 	colon_p = memchr(name, ':', namelen);
 
 	if (delim_p && colon_p)
+<<<<<<< HEAD
 		end = delim_p < colon_p ? delim_p : colon_p;
+=======
+		end = min(delim_p, colon_p);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else if (!delim_p && colon_p)
 		end = colon_p;
 	else {

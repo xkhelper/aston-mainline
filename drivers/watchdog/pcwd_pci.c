@@ -643,7 +643,10 @@ static int pcipcwd_notify_sys(struct notifier_block *this, unsigned long code,
 
 static const struct file_operations pcipcwd_fops = {
 	.owner =	THIS_MODULE,
+<<<<<<< HEAD
 	.llseek =	no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.write =	pcipcwd_write,
 	.unlocked_ioctl = pcipcwd_ioctl,
 	.compat_ioctl = compat_ptr_ioctl,
@@ -659,7 +662,10 @@ static struct miscdevice pcipcwd_miscdev = {
 
 static const struct file_operations pcipcwd_temp_fops = {
 	.owner =	THIS_MODULE,
+<<<<<<< HEAD
 	.llseek =	no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.read =		pcipcwd_temp_read,
 	.open =		pcipcwd_temp_open,
 	.release =	pcipcwd_temp_release,

@@ -73,7 +73,10 @@ extern void mips_pcibios_init(void);
 #define mips_pcibios_init() do { } while (0)
 #endif
 
+<<<<<<< HEAD
 extern void mips_scroll_message(void);
 extern void mips_display_message(const char *str);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif	/* __ASM_MIPS_BOARDS_GENERIC_H */

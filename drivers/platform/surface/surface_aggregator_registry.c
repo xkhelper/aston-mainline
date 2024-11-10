@@ -12,6 +12,10 @@
 #include <linux/acpi.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
+<<<<<<< HEAD
+=======
+#include <linux/of.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/platform_device.h>
 #include <linux/property.h>
 #include <linux/types.h>
@@ -291,6 +295,21 @@ static const struct software_node *ssam_node_group_sl6[] = {
 	NULL,
 };
 
+<<<<<<< HEAD
+=======
+/* Devices for Surface Laptop 7. */
+static const struct software_node *ssam_node_group_sl7[] = {
+	&ssam_node_root,
+	&ssam_node_bat_ac,
+	&ssam_node_bat_main,
+	&ssam_node_tmp_perf_profile_with_fan,
+	&ssam_node_fan_speed,
+	&ssam_node_hid_sam_keyboard,
+	/* TODO: evaluate thermal sensors devices when we get a driver for that */
+	NULL,
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Devices for Surface Laptop Studio 1. */
 static const struct software_node *ssam_node_group_sls1[] = {
 	&ssam_node_root,
@@ -380,7 +399,11 @@ static const struct software_node *ssam_node_group_sp9[] = {
 
 /* -- SSAM platform/meta-hub driver. ---------------------------------------- */
 
+<<<<<<< HEAD
 static const struct acpi_device_id ssam_platform_hub_match[] = {
+=======
+static const struct acpi_device_id ssam_platform_hub_acpi_match[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Surface Pro 4, 5, and 6 (OMBR < 0x10) */
 	{ "MSHW0081", (unsigned long)ssam_node_group_gen5 },
 
@@ -446,18 +469,51 @@ static const struct acpi_device_id ssam_platform_hub_match[] = {
 
 	{ },
 };
+<<<<<<< HEAD
 MODULE_DEVICE_TABLE(acpi, ssam_platform_hub_match);
+=======
+MODULE_DEVICE_TABLE(acpi, ssam_platform_hub_acpi_match);
+
+static const struct of_device_id ssam_platform_hub_of_match[] __maybe_unused = {
+	/* Surface Laptop 7 */
+	{ .compatible = "microsoft,romulus13", (void *)ssam_node_group_sl7 },
+	{ .compatible = "microsoft,romulus15", (void *)ssam_node_group_sl7 },
+	{ },
+};
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int ssam_platform_hub_probe(struct platform_device *pdev)
 {
 	const struct software_node **nodes;
+<<<<<<< HEAD
+=======
+	const struct of_device_id *match;
+	struct device_node *fdt_root;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ssam_controller *ctrl;
 	struct fwnode_handle *root;
 	int status;
 
 	nodes = (const struct software_node **)acpi_device_get_match_data(&pdev->dev);
+<<<<<<< HEAD
 	if (!nodes)
 		return -ENODEV;
+=======
+	if (!nodes) {
+		fdt_root = of_find_node_by_path("/");
+		if (!fdt_root)
+			return -ENODEV;
+
+		match = of_match_node(ssam_platform_hub_of_match, fdt_root);
+		of_node_put(fdt_root);
+		if (!match)
+			return -ENODEV;
+
+		nodes = (const struct software_node **)match->data;
+		if (!nodes)
+			return -ENODEV;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * As we're adding the SSAM client devices as children under this device
@@ -506,12 +562,20 @@ static struct platform_driver ssam_platform_hub_driver = {
 	.remove_new = ssam_platform_hub_remove,
 	.driver = {
 		.name = "surface_aggregator_platform_hub",
+<<<<<<< HEAD
 		.acpi_match_table = ssam_platform_hub_match,
+=======
+		.acpi_match_table = ssam_platform_hub_acpi_match,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
 	},
 };
 module_platform_driver(ssam_platform_hub_driver);
 
+<<<<<<< HEAD
+=======
+MODULE_ALIAS("platform:surface_aggregator_platform_hub");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_AUTHOR("Maximilian Luz <luzmaximilian@gmail.com>");
 MODULE_DESCRIPTION("Device-registry for Surface System Aggregator Module");
 MODULE_LICENSE("GPL");

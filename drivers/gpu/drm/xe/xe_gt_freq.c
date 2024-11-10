@@ -237,11 +237,19 @@ int xe_gt_freq_init(struct xe_gt *gt)
 	if (!gt->freq)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	err = devm_add_action(xe->drm.dev, freq_fini, gt->freq);
 	if (err)
 		return err;
 
 	err = sysfs_create_files(gt->freq, freq_attrs);
+=======
+	err = sysfs_create_files(gt->freq, freq_attrs);
+	if (err)
+		return err;
+
+	err = devm_add_action_or_reset(xe->drm.dev, freq_fini, gt->freq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err)
 		return err;
 

@@ -1,10 +1,18 @@
+<<<<<<< HEAD
+=======
+/* SPDX-License-Identifier: 0BSD */
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Private includes and definitions
  *
  * Author: Lasse Collin <lasse.collin@tukaani.org>
+<<<<<<< HEAD
  *
  * This file has been put into the public domain.
  * You can do whatever you want with this file.
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 #ifndef XZ_PRIVATE_H
@@ -13,7 +21,11 @@
 #ifdef __KERNEL__
 #	include <linux/xz.h>
 #	include <linux/kernel.h>
+<<<<<<< HEAD
 #	include <asm/unaligned.h>
+=======
+#	include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* XZ_PREBOOT may be defined only via decompress_unxz.c. */
 #	ifndef XZ_PREBOOT
 #		include <linux/slab.h>
@@ -37,6 +49,15 @@
 #		ifdef CONFIG_XZ_DEC_SPARC
 #			define XZ_DEC_SPARC
 #		endif
+<<<<<<< HEAD
+=======
+#		ifdef CONFIG_XZ_DEC_ARM64
+#			define XZ_DEC_ARM64
+#		endif
+#		ifdef CONFIG_XZ_DEC_RISCV
+#			define XZ_DEC_RISCV
+#		endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #		ifdef CONFIG_XZ_DEC_MICROLZMA
 #			define XZ_DEC_MICROLZMA
 #		endif
@@ -98,23 +119,37 @@
  */
 #ifndef XZ_DEC_BCJ
 #	if defined(XZ_DEC_X86) || defined(XZ_DEC_POWERPC) \
+<<<<<<< HEAD
 			|| defined(XZ_DEC_IA64) || defined(XZ_DEC_ARM) \
 			|| defined(XZ_DEC_ARM) || defined(XZ_DEC_ARMTHUMB) \
 			|| defined(XZ_DEC_SPARC)
+=======
+			|| defined(XZ_DEC_IA64) \
+			|| defined(XZ_DEC_ARM) || defined(XZ_DEC_ARMTHUMB) \
+			|| defined(XZ_DEC_SPARC) || defined(XZ_DEC_ARM64) \
+			|| defined(XZ_DEC_RISCV)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #		define XZ_DEC_BCJ
 #	endif
 #endif
 
+<<<<<<< HEAD
 #ifndef CRC32_POLY_LE
 #define CRC32_POLY_LE 0xedb88320
 #endif
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Allocate memory for LZMA2 decoder. xz_dec_lzma2_reset() must be used
  * before calling xz_dec_lzma2_run().
  */
+<<<<<<< HEAD
 XZ_EXTERN struct xz_dec_lzma2 *xz_dec_lzma2_create(enum xz_mode mode,
 						   uint32_t dict_max);
+=======
+struct xz_dec_lzma2 *xz_dec_lzma2_create(enum xz_mode mode, uint32_t dict_max);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Decode the LZMA2 properties (one byte) and reset the decoder. Return
@@ -122,6 +157,7 @@ XZ_EXTERN struct xz_dec_lzma2 *xz_dec_lzma2_create(enum xz_mode mode,
  * big enough, and XZ_OPTIONS_ERROR if props indicates something that this
  * decoder doesn't support.
  */
+<<<<<<< HEAD
 XZ_EXTERN enum xz_ret xz_dec_lzma2_reset(struct xz_dec_lzma2 *s,
 					 uint8_t props);
 
@@ -131,13 +167,26 @@ XZ_EXTERN enum xz_ret xz_dec_lzma2_run(struct xz_dec_lzma2 *s,
 
 /* Free the memory allocated for the LZMA2 decoder. */
 XZ_EXTERN void xz_dec_lzma2_end(struct xz_dec_lzma2 *s);
+=======
+enum xz_ret xz_dec_lzma2_reset(struct xz_dec_lzma2 *s, uint8_t props);
+
+/* Decode raw LZMA2 stream from b->in to b->out. */
+enum xz_ret xz_dec_lzma2_run(struct xz_dec_lzma2 *s, struct xz_buf *b);
+
+/* Free the memory allocated for the LZMA2 decoder. */
+void xz_dec_lzma2_end(struct xz_dec_lzma2 *s);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef XZ_DEC_BCJ
 /*
  * Allocate memory for BCJ decoders. xz_dec_bcj_reset() must be used before
  * calling xz_dec_bcj_run().
  */
+<<<<<<< HEAD
 XZ_EXTERN struct xz_dec_bcj *xz_dec_bcj_create(bool single_call);
+=======
+struct xz_dec_bcj *xz_dec_bcj_create(bool single_call);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Decode the Filter ID of a BCJ filter. This implementation doesn't
@@ -145,16 +194,25 @@ XZ_EXTERN struct xz_dec_bcj *xz_dec_bcj_create(bool single_call);
  * is needed. Returns XZ_OK if the given Filter ID is supported.
  * Otherwise XZ_OPTIONS_ERROR is returned.
  */
+<<<<<<< HEAD
 XZ_EXTERN enum xz_ret xz_dec_bcj_reset(struct xz_dec_bcj *s, uint8_t id);
+=======
+enum xz_ret xz_dec_bcj_reset(struct xz_dec_bcj *s, uint8_t id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Decode raw BCJ + LZMA2 stream. This must be used only if there actually is
  * a BCJ filter in the chain. If the chain has only LZMA2, xz_dec_lzma2_run()
  * must be called directly.
  */
+<<<<<<< HEAD
 XZ_EXTERN enum xz_ret xz_dec_bcj_run(struct xz_dec_bcj *s,
 				     struct xz_dec_lzma2 *lzma2,
 				     struct xz_buf *b);
+=======
+enum xz_ret xz_dec_bcj_run(struct xz_dec_bcj *s, struct xz_dec_lzma2 *lzma2,
+			   struct xz_buf *b);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Free the memory allocated for the BCJ filters. */
 #define xz_dec_bcj_end(s) kfree(s)

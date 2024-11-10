@@ -313,7 +313,11 @@ static struct platform_driver au1xi2s_driver = {
 		.pm	= AU1XI2SC_PMOPS,
 	},
 	.probe		= au1xi2s_drvprobe,
+<<<<<<< HEAD
 	.remove_new	= au1xi2s_drvremove,
+=======
+	.remove		= au1xi2s_drvremove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(au1xi2s_driver);

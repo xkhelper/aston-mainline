@@ -3964,7 +3964,11 @@ static void cx25840_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id cx25840_id[] = {
+<<<<<<< HEAD
 	{ "cx25840", 0 },
+=======
+	{ "cx25840" },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, cx25840_id);

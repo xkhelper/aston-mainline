@@ -734,6 +734,7 @@ static void huawei_wmi_process_key(struct input_dev *idev, int code)
 	sparse_keymap_report_entry(idev, key, 1, true);
 }
 
+<<<<<<< HEAD
 static void huawei_wmi_input_notify(u32 value, void *context)
 {
 	struct input_dev *idev = (struct input_dev *)context;
@@ -748,12 +749,21 @@ static void huawei_wmi_input_notify(u32 value, void *context)
 	}
 
 	obj = (union acpi_object *)response.pointer;
+=======
+static void huawei_wmi_input_notify(union acpi_object *obj, void *context)
+{
+	struct input_dev *idev = (struct input_dev *)context;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (obj && obj->type == ACPI_TYPE_INTEGER)
 		huawei_wmi_process_key(idev, obj->integer.value);
 	else
 		dev_err(&idev->dev, "Bad response type\n");
+<<<<<<< HEAD
 
 	kfree(response.pointer);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int huawei_wmi_input_setup(struct device *dev, const char *guid)

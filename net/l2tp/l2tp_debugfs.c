@@ -34,8 +34,13 @@ static struct dentry *rootdir;
 struct l2tp_dfs_seq_data {
 	struct net	*net;
 	netns_tracker	ns_tracker;
+<<<<<<< HEAD
 	int tunnel_idx;			/* current tunnel */
 	int session_idx;		/* index of session within current tunnel */
+=======
+	unsigned long tkey;		/* lookup key of current tunnel */
+	unsigned long skey;		/* lookup key of current session */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct l2tp_tunnel *tunnel;
 	struct l2tp_session *session;	/* NULL means get next tunnel */
 };
@@ -44,16 +49,24 @@ static void l2tp_dfs_next_tunnel(struct l2tp_dfs_seq_data *pd)
 {
 	/* Drop reference taken during previous invocation */
 	if (pd->tunnel)
+<<<<<<< HEAD
 		l2tp_tunnel_dec_refcount(pd->tunnel);
 
 	pd->tunnel = l2tp_tunnel_get_nth(pd->net, pd->tunnel_idx);
 	pd->tunnel_idx++;
+=======
+		l2tp_tunnel_put(pd->tunnel);
+
+	pd->tunnel = l2tp_tunnel_get_next(pd->net, &pd->tkey);
+	pd->tkey++;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void l2tp_dfs_next_session(struct l2tp_dfs_seq_data *pd)
 {
 	/* Drop reference taken during previous invocation */
 	if (pd->session)
+<<<<<<< HEAD
 		l2tp_session_dec_refcount(pd->session);
 
 	pd->session = l2tp_session_get_nth(pd->tunnel, pd->session_idx);
@@ -61,6 +74,17 @@ static void l2tp_dfs_next_session(struct l2tp_dfs_seq_data *pd)
 
 	if (!pd->session) {
 		pd->session_idx = 0;
+=======
+		l2tp_session_put(pd->session);
+
+	pd->session = l2tp_session_get_next(pd->net, pd->tunnel->sock,
+					    pd->tunnel->version,
+					    pd->tunnel->tunnel_id, &pd->skey);
+	pd->skey++;
+
+	if (!pd->session) {
+		pd->skey = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		l2tp_dfs_next_tunnel(pd);
 	}
 }
@@ -109,11 +133,19 @@ static void l2tp_dfs_seq_stop(struct seq_file *p, void *v)
 	 * or l2tp_dfs_next_tunnel().
 	 */
 	if (pd->session) {
+<<<<<<< HEAD
 		l2tp_session_dec_refcount(pd->session);
 		pd->session = NULL;
 	}
 	if (pd->tunnel) {
 		l2tp_tunnel_dec_refcount(pd->tunnel);
+=======
+		l2tp_session_put(pd->session);
+		pd->session = NULL;
+	}
+	if (pd->tunnel) {
+		l2tp_tunnel_put(pd->tunnel);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pd->tunnel = NULL;
 	}
 }

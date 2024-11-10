@@ -28,7 +28,11 @@ const struct error_info vdo_status_list[] = {
 	{ "VDO_LOCK_ERROR", "A lock is held incorrectly" },
 	{ "VDO_READ_ONLY", "The device is in read-only mode" },
 	{ "VDO_SHUTTING_DOWN", "The device is shutting down" },
+<<<<<<< HEAD
 	{ "VDO_CORRUPT_JOURNAL", "Recovery journal entries corrupted" },
+=======
+	{ "VDO_CORRUPT_JOURNAL", "Recovery journal corrupted" },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ "VDO_TOO_MANY_SLABS", "Exceeds maximum number of slabs supported" },
 	{ "VDO_INVALID_FRAGMENT", "Compressed block fragment is invalid" },
 	{ "VDO_RETRY_AFTER_REBUILD", "Retry operation after rebuilding finishes" },

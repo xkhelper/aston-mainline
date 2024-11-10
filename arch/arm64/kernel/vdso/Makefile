@@ -9,7 +9,11 @@
 # Include the generic Makefile to check the built vdso.
 include $(srctree)/lib/vdso/Makefile
 
+<<<<<<< HEAD
 obj-vdso := vgettimeofday.o note.o sigreturn.o
+=======
+obj-vdso := vgettimeofday.o note.o sigreturn.o vgetrandom.o vgetrandom-chacha.o
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 # Build rules
 targets := $(obj-vdso) vdso.so vdso.so.dbg
@@ -34,6 +38,7 @@ ccflags-y := -fno-common -fno-builtin -fno-stack-protector -ffixed-x18
 ccflags-y += -DDISABLE_BRANCH_PROFILING -DBUILD_VDSO
 
 # -Wmissing-prototypes and -Wmissing-declarations are removed from
+<<<<<<< HEAD
 # the CFLAGS of vgettimeofday.c to make possible to build the
 # kernel with CONFIG_WERROR enabled.
 CFLAGS_REMOVE_vgettimeofday.o = $(CC_FLAGS_FTRACE) -Os $(CC_FLAGS_SCS) \
@@ -42,11 +47,33 @@ CFLAGS_REMOVE_vgettimeofday.o = $(CC_FLAGS_FTRACE) -Os $(CC_FLAGS_SCS) \
 				-Wmissing-prototypes -Wmissing-declarations
 
 CFLAGS_vgettimeofday.o = -O2 -mcmodel=tiny -fasynchronous-unwind-tables
+=======
+# the CFLAGS to make possible to build the kernel with CONFIG_WERROR enabled.
+CC_FLAGS_REMOVE_VDSO := $(CC_FLAGS_FTRACE) -Os $(CC_FLAGS_SCS) \
+			$(RANDSTRUCT_CFLAGS) $(GCC_PLUGINS_CFLAGS) \
+			$(CC_FLAGS_LTO) $(CC_FLAGS_CFI) \
+			-Wmissing-prototypes -Wmissing-declarations
+
+CC_FLAGS_ADD_VDSO := -O2 -mcmodel=tiny -fasynchronous-unwind-tables
+
+CFLAGS_REMOVE_vgettimeofday.o = $(CC_FLAGS_REMOVE_VDSO)
+CFLAGS_REMOVE_vgetrandom.o = $(CC_FLAGS_REMOVE_VDSO)
+
+CFLAGS_vgettimeofday.o = $(CC_FLAGS_ADD_VDSO)
+CFLAGS_vgetrandom.o = $(CC_FLAGS_ADD_VDSO)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 ifneq ($(c-gettimeofday-y),)
   CFLAGS_vgettimeofday.o += -include $(c-gettimeofday-y)
 endif
 
+<<<<<<< HEAD
+=======
+ifneq ($(c-getrandom-y),)
+  CFLAGS_vgetrandom.o += -include $(c-getrandom-y)
+endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 targets += vdso.lds
 CPPFLAGS_vdso.lds += -P -C -U$(ARCH)
 

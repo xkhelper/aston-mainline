@@ -670,7 +670,10 @@ static const struct file_operations ssam_controller_fops = {
 	.fasync         = ssam_cdev_fasync,
 	.unlocked_ioctl = ssam_cdev_device_ioctl,
 	.compat_ioctl   = ssam_cdev_device_ioctl,
+<<<<<<< HEAD
 	.llseek         = no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 

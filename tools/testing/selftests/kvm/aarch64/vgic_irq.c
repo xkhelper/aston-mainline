@@ -269,6 +269,7 @@ static void guest_inject(struct test_args *args,
 	KVM_INJECT_MULTI(cmd, first_intid, num);
 
 	while (irq_handled < num) {
+<<<<<<< HEAD
 		asm volatile("wfi\n"
 			     "msr daifclr, #2\n"
 			     /* handle IRQ */
@@ -276,6 +277,14 @@ static void guest_inject(struct test_args *args,
 			     : : : "memory");
 	}
 	asm volatile("msr daifclr, #2" : : : "memory");
+=======
+		wfi();
+		local_irq_enable();
+		isb(); /* handle IRQ */
+		local_irq_disable();
+	}
+	local_irq_enable();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	GUEST_ASSERT_EQ(irq_handled, num);
 	for (i = first_intid; i < num + first_intid; i++)

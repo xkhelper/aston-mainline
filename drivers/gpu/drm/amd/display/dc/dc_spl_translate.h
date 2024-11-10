@@ -6,6 +6,10 @@
 #define __DC_SPL_TRANSLATE_H__
 #include "dc.h"
 #include "resource.h"
+<<<<<<< HEAD
+=======
+#include "dm_helpers.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Map SPL input parameters to pipe context
  * @pipe_ctx: pipe context

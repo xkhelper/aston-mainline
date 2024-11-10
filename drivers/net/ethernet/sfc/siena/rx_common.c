@@ -558,6 +558,7 @@ efx_siena_rx_packet_gro(struct efx_channel *channel,
 	napi_gro_frags(napi);
 }
 
+<<<<<<< HEAD
 /* RSS contexts.  We're using linked lists and crappy O(n) algorithms, because
  * (a) this is an infrequent control-plane operation and (b) n is small (max 64)
  */
@@ -614,6 +615,8 @@ void efx_siena_free_rss_context_entry(struct efx_rss_context *ctx)
 	kfree(ctx);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void efx_siena_set_default_rx_indir_table(struct efx_nic *efx,
 					  struct efx_rss_context *ctx)
 {

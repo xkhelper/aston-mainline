@@ -108,8 +108,11 @@ void intel_device_info_print(const struct intel_device_info *info,
 
 	drm_printf(p, "graphics stepping: %s\n", intel_step_name(runtime->step.graphics_step));
 	drm_printf(p, "media stepping: %s\n", intel_step_name(runtime->step.media_step));
+<<<<<<< HEAD
 	drm_printf(p, "display stepping: %s\n", intel_step_name(runtime->step.display_step));
 	drm_printf(p, "base die stepping: %s\n", intel_step_name(runtime->step.basedie_step));
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	drm_printf(p, "gt: %d\n", info->gt);
 	drm_printf(p, "memory-regions: 0x%x\n", info->memory_regions);
@@ -124,7 +127,10 @@ void intel_device_info_print(const struct intel_device_info *info,
 #undef PRINT_FLAG
 
 	drm_printf(p, "has_pooled_eu: %s\n", str_yes_no(runtime->has_pooled_eu));
+<<<<<<< HEAD
 	drm_printf(p, "rawclk rate: %u kHz\n", runtime->rawclk_freq);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #define ID(id) (id)
@@ -377,10 +383,13 @@ void intel_device_info_runtime_init(struct drm_i915_private *dev_priv)
 			 "Disabling ppGTT for VT-d support\n");
 		runtime->ppgtt_type = INTEL_PPGTT_NONE;
 	}
+<<<<<<< HEAD
 
 	runtime->rawclk_freq = intel_read_rawclk(dev_priv);
 	drm_dbg(&dev_priv->drm, "rawclk rate: %d kHz\n", runtime->rawclk_freq);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*

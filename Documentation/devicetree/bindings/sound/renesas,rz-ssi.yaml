@@ -87,6 +87,13 @@ properties:
   '#sound-dai-cells':
     const: 0
 
+<<<<<<< HEAD
+=======
+  port:
+    $ref: audio-graph-port.yaml#/definitions/port-base
+    description: Connection to controller providing I2S signals
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 required:
   - compatible
   - reg

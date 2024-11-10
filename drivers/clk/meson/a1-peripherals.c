@@ -2183,7 +2183,11 @@ static struct clk_regmap *const a1_periphs_regmaps[] = {
 	&dmc_sel2,
 };
 
+<<<<<<< HEAD
 static struct regmap_config a1_periphs_regmap_cfg = {
+=======
+static const struct regmap_config a1_periphs_regmap_cfg = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.reg_bits   = 32,
 	.val_bits   = 32,
 	.reg_stride = 4,
@@ -2246,3 +2250,7 @@ MODULE_DESCRIPTION("Amlogic A1 Peripherals Clock Controller driver");
 MODULE_AUTHOR("Jian Hu <jian.hu@amlogic.com>");
 MODULE_AUTHOR("Dmitry Rokosov <ddrokosov@sberdevices.ru>");
 MODULE_LICENSE("GPL");
+<<<<<<< HEAD
+=======
+MODULE_IMPORT_NS(CLK_MESON);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

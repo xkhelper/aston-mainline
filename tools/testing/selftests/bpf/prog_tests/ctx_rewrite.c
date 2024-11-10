@@ -10,7 +10,12 @@
 #include "bpf/btf.h"
 #include "bpf_util.h"
 #include "linux/filter.h"
+<<<<<<< HEAD
 #include "disasm.h"
+=======
+#include "linux/kernel.h"
+#include "disasm_helpers.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define MAX_PROG_TEXT_SZ (32 * 1024)
 
@@ -628,6 +633,7 @@ err:
 	return false;
 }
 
+<<<<<<< HEAD
 static void print_insn(void *private_data, const char *fmt, ...)
 {
 	va_list args;
@@ -685,6 +691,8 @@ static void remove_insn_prefix(char *str, int size)
 	str[write_pos] = 0;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct prog_info {
 	char *prog_kind;
 	enum bpf_prog_type prog_type;
@@ -699,9 +707,16 @@ static void match_program(struct btf *btf,
 			  char *reg_map[][2],
 			  bool skip_first_insn)
 {
+<<<<<<< HEAD
 	struct bpf_insn *buf = NULL;
 	int err = 0, prog_fd = 0;
 	FILE *prog_out = NULL;
+=======
+	struct bpf_insn *buf = NULL, *insn, *insn_end;
+	int err = 0, prog_fd = 0;
+	FILE *prog_out = NULL;
+	char insn_buf[64];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char *text = NULL;
 	__u32 cnt = 0;
 
@@ -739,12 +754,22 @@ static void match_program(struct btf *btf,
 		PRINT_FAIL("Can't open memory stream\n");
 		goto out;
 	}
+<<<<<<< HEAD
 	if (skip_first_insn)
 		print_xlated(prog_out, buf + 1, cnt - 1);
 	else
 		print_xlated(prog_out, buf, cnt);
 	fclose(prog_out);
 	remove_insn_prefix(text, MAX_PROG_TEXT_SZ);
+=======
+	insn_end = buf + cnt;
+	insn = buf + (skip_first_insn ? 1 : 0);
+	while (insn < insn_end) {
+		insn = disasm_insn(insn, insn_buf, sizeof(insn_buf));
+		fprintf(prog_out, "%s\n", insn_buf);
+	}
+	fclose(prog_out);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ASSERT_TRUE(match_pattern(btf, pattern, text, reg_map),
 		    pinfo->prog_kind);

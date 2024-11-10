@@ -10,19 +10,31 @@ struct {
 	__uint(value_size, sizeof(int));
 } tx_port SEC(".maps");
 
+<<<<<<< HEAD
 SEC("redirect_map_0")
+=======
+SEC("xdp")
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int xdp_redirect_map_0(struct xdp_md *xdp)
 {
 	return bpf_redirect_map(&tx_port, 0, 0);
 }
 
+<<<<<<< HEAD
 SEC("redirect_map_1")
+=======
+SEC("xdp")
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int xdp_redirect_map_1(struct xdp_md *xdp)
 {
 	return bpf_redirect_map(&tx_port, 1, 0);
 }
 
+<<<<<<< HEAD
 SEC("redirect_map_2")
+=======
+SEC("xdp")
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int xdp_redirect_map_2(struct xdp_md *xdp)
 {
 	return bpf_redirect_map(&tx_port, 2, 0);

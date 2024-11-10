@@ -7,7 +7,11 @@
 #ifndef _CRYPTO_UTILS_H
 #define _CRYPTO_UTILS_H
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/compiler_attributes.h>
 #include <linux/types.h>
 

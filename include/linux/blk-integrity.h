@@ -25,9 +25,16 @@ static inline bool queue_limits_stack_integrity_bdev(struct queue_limits *t,
 }
 
 #ifdef CONFIG_BLK_DEV_INTEGRITY
+<<<<<<< HEAD
 int blk_rq_map_integrity_sg(struct request_queue *, struct bio *,
 				   struct scatterlist *);
 int blk_rq_count_integrity_sg(struct request_queue *, struct bio *);
+=======
+int blk_rq_map_integrity_sg(struct request *, struct scatterlist *);
+int blk_rq_count_integrity_sg(struct request_queue *, struct bio *);
+int blk_rq_integrity_map_user(struct request *rq, void __user *ubuf,
+			      ssize_t bytes, u32 seed);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline bool
 blk_integrity_queue_supports_integrity(struct request_queue *q)
@@ -96,12 +103,26 @@ static inline int blk_rq_count_integrity_sg(struct request_queue *q,
 {
 	return 0;
 }
+<<<<<<< HEAD
 static inline int blk_rq_map_integrity_sg(struct request_queue *q,
 					  struct bio *b,
+=======
+static inline int blk_rq_map_integrity_sg(struct request *q,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					  struct scatterlist *s)
 {
 	return 0;
 }
+<<<<<<< HEAD
+=======
+static inline int blk_rq_integrity_map_user(struct request *rq,
+					    void __user *ubuf,
+					    ssize_t bytes,
+					    u32 seed)
+{
+	return -EINVAL;
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline struct blk_integrity *bdev_get_integrity(struct block_device *b)
 {
 	return NULL;

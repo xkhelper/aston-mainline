@@ -438,6 +438,49 @@ static void __init test_multi_instruction_patching(void)
 	vfree(buf);
 }
 
+<<<<<<< HEAD
+=======
+static void __init test_data_patching(void)
+{
+	void *buf;
+	u32 *addr32;
+
+	buf = vzalloc(PAGE_SIZE);
+	check(buf);
+	if (!buf)
+		return;
+
+	addr32 = buf + 128;
+
+	addr32[1] = 0xA0A1A2A3;
+	addr32[2] = 0xB0B1B2B3;
+
+	check(!patch_uint(&addr32[1], 0xC0C1C2C3));
+
+	check(addr32[0] == 0);
+	check(addr32[1] == 0xC0C1C2C3);
+	check(addr32[2] == 0xB0B1B2B3);
+	check(addr32[3] == 0);
+
+	/* Unaligned patch_ulong() should fail */
+	if (IS_ENABLED(CONFIG_PPC64))
+		check(patch_ulong(&addr32[1], 0xD0D1D2D3) == -EINVAL);
+
+	check(!patch_ulong(&addr32[2], 0xD0D1D2D3));
+
+	check(addr32[0] == 0);
+	check(addr32[1] == 0xC0C1C2C3);
+	check(*(unsigned long *)(&addr32[2]) == 0xD0D1D2D3);
+
+	if (!IS_ENABLED(CONFIG_PPC64))
+		check(addr32[3] == 0);
+
+	check(addr32[4] == 0);
+
+	vfree(buf);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int __init test_code_patching(void)
 {
 	pr_info("Running code patching self-tests ...\n");
@@ -448,6 +491,10 @@ static int __init test_code_patching(void)
 	test_translate_branch();
 	test_prefixed_patching();
 	test_multi_instruction_patching();
+<<<<<<< HEAD
+=======
+	test_data_patching();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

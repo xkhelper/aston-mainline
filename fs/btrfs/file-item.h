@@ -74,7 +74,11 @@ int btrfs_lookup_csums_bitmap(struct btrfs_root *root, struct btrfs_path *path,
 			      unsigned long *csum_bitmap);
 void btrfs_extent_item_to_extent_map(struct btrfs_inode *inode,
 				     const struct btrfs_path *path,
+<<<<<<< HEAD
 				     struct btrfs_file_extent_item *fi,
+=======
+				     const struct btrfs_file_extent_item *fi,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				     struct extent_map *em);
 int btrfs_inode_clear_file_extent_range(struct btrfs_inode *inode, u64 start,
 					u64 len);

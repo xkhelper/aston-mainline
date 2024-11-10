@@ -4810,6 +4810,11 @@ ZSTD_CDict* ZSTD_createCDict_advanced2(
                         dictLoadMethod, cctxParams.cParams,
                         cctxParams.useRowMatchFinder, cctxParams.enableDedicatedDictSearch,
                         customMem);
+<<<<<<< HEAD
+=======
+    if (!cdict)
+        return NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
     if (ZSTD_isError( ZSTD_initCDict_internal(cdict,
                                     dict, dictSize,

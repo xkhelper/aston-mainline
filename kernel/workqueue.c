@@ -364,7 +364,12 @@ struct workqueue_struct {
 #ifdef CONFIG_LOCKDEP
 	char			*lock_name;
 	struct lock_class_key	key;
+<<<<<<< HEAD
 	struct lockdep_map	lockdep_map;
+=======
+	struct lockdep_map	__lockdep_map;
+	struct lockdep_map	*lockdep_map;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	char			name[WQ_NAME_LEN]; /* I: workqueue name */
 
@@ -476,6 +481,7 @@ static bool wq_debug_force_rr_cpu = false;
 module_param_named(debug_force_rr_cpu, wq_debug_force_rr_cpu, bool, 0644);
 
 /* to raise softirq for the BH worker pools on other CPUs */
+<<<<<<< HEAD
 static DEFINE_PER_CPU_SHARED_ALIGNED(struct irq_work [NR_STD_WORKER_POOLS],
 				     bh_pool_irq_works);
 
@@ -486,6 +492,15 @@ static DEFINE_PER_CPU_SHARED_ALIGNED(struct worker_pool [NR_STD_WORKER_POOLS],
 /* the per-cpu worker pools */
 static DEFINE_PER_CPU_SHARED_ALIGNED(struct worker_pool [NR_STD_WORKER_POOLS],
 				     cpu_worker_pools);
+=======
+static DEFINE_PER_CPU_SHARED_ALIGNED(struct irq_work [NR_STD_WORKER_POOLS], bh_pool_irq_works);
+
+/* the BH worker pools */
+static DEFINE_PER_CPU_SHARED_ALIGNED(struct worker_pool [NR_STD_WORKER_POOLS], bh_worker_pools);
+
+/* the per-cpu worker pools */
+static DEFINE_PER_CPU_SHARED_ALIGNED(struct worker_pool [NR_STD_WORKER_POOLS], cpu_worker_pools);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static DEFINE_IDR(worker_pool_idr);	/* PR: idr of all pools */
 
@@ -3203,7 +3218,11 @@ __acquires(&pool->lock)
 	lockdep_start_depth = lockdep_depth(current);
 	/* see drain_dead_softirq_workfn() */
 	if (!bh_draining)
+<<<<<<< HEAD
 		lock_map_acquire(&pwq->wq->lockdep_map);
+=======
+		lock_map_acquire(pwq->wq->lockdep_map);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	lock_map_acquire(&lockdep_map);
 	/*
 	 * Strictly speaking we should mark the invariant state without holding
@@ -3237,7 +3256,11 @@ __acquires(&pool->lock)
 	pwq->stats[PWQ_STAT_COMPLETED]++;
 	lock_map_release(&lockdep_map);
 	if (!bh_draining)
+<<<<<<< HEAD
 		lock_map_release(&pwq->wq->lockdep_map);
+=======
+		lock_map_release(pwq->wq->lockdep_map);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (unlikely((worker->task && in_atomic()) ||
 		     lockdep_depth(current) != lockdep_start_depth ||
@@ -3873,11 +3896,22 @@ static bool flush_workqueue_prep_pwqs(struct workqueue_struct *wq,
 static void touch_wq_lockdep_map(struct workqueue_struct *wq)
 {
 #ifdef CONFIG_LOCKDEP
+<<<<<<< HEAD
 	if (wq->flags & WQ_BH)
 		local_bh_disable();
 
 	lock_map_acquire(&wq->lockdep_map);
 	lock_map_release(&wq->lockdep_map);
+=======
+	if (unlikely(!wq->lockdep_map))
+		return;
+
+	if (wq->flags & WQ_BH)
+		local_bh_disable();
+
+	lock_map_acquire(wq->lockdep_map);
+	lock_map_release(wq->lockdep_map);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (wq->flags & WQ_BH)
 		local_bh_enable();
@@ -3911,7 +3945,11 @@ void __flush_workqueue(struct workqueue_struct *wq)
 	struct wq_flusher this_flusher = {
 		.list = LIST_HEAD_INIT(this_flusher.list),
 		.flush_color = -1,
+<<<<<<< HEAD
 		.done = COMPLETION_INITIALIZER_ONSTACK_MAP(this_flusher.done, wq->lockdep_map),
+=======
+		.done = COMPLETION_INITIALIZER_ONSTACK_MAP(this_flusher.done, (*wq->lockdep_map)),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 	int next_color;
 
@@ -4776,16 +4814,33 @@ static void wq_init_lockdep(struct workqueue_struct *wq)
 		lock_name = wq->name;
 
 	wq->lock_name = lock_name;
+<<<<<<< HEAD
 	lockdep_init_map(&wq->lockdep_map, lock_name, &wq->key, 0);
+=======
+	wq->lockdep_map = &wq->__lockdep_map;
+	lockdep_init_map(wq->lockdep_map, lock_name, &wq->key, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void wq_unregister_lockdep(struct workqueue_struct *wq)
 {
+<<<<<<< HEAD
+=======
+	if (wq->lockdep_map != &wq->__lockdep_map)
+		return;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	lockdep_unregister_key(&wq->key);
 }
 
 static void wq_free_lockdep(struct workqueue_struct *wq)
 {
+<<<<<<< HEAD
+=======
+	if (wq->lockdep_map != &wq->__lockdep_map)
+		return;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (wq->lock_name != wq->name)
 		kfree(wq->lock_name);
 }
@@ -5619,12 +5674,19 @@ static void wq_adjust_max_active(struct workqueue_struct *wq)
 	} while (activated);
 }
 
+<<<<<<< HEAD
 __printf(1, 4)
 struct workqueue_struct *alloc_workqueue(const char *fmt,
 					 unsigned int flags,
 					 int max_active, ...)
 {
 	va_list args;
+=======
+static struct workqueue_struct *__alloc_workqueue(const char *fmt,
+						  unsigned int flags,
+						  int max_active, va_list args)
+{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct workqueue_struct *wq;
 	size_t wq_size;
 	int name_len;
@@ -5656,9 +5718,13 @@ struct workqueue_struct *alloc_workqueue(const char *fmt,
 			goto err_free_wq;
 	}
 
+<<<<<<< HEAD
 	va_start(args, max_active);
 	name_len = vsnprintf(wq->name, sizeof(wq->name), fmt, args);
 	va_end(args);
+=======
+	name_len = vsnprintf(wq->name, sizeof(wq->name), fmt, args);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (name_len >= WQ_NAME_LEN)
 		pr_warn_once("workqueue: name exceeds WQ_NAME_LEN. Truncating to: %s\n",
@@ -5688,12 +5754,19 @@ struct workqueue_struct *alloc_workqueue(const char *fmt,
 	INIT_LIST_HEAD(&wq->flusher_overflow);
 	INIT_LIST_HEAD(&wq->maydays);
 
+<<<<<<< HEAD
 	wq_init_lockdep(wq);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	INIT_LIST_HEAD(&wq->list);
 
 	if (flags & WQ_UNBOUND) {
 		if (alloc_node_nr_active(wq->node_nr_active) < 0)
+<<<<<<< HEAD
 			goto err_unreg_lockdep;
+=======
+			goto err_free_wq;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/*
@@ -5732,9 +5805,12 @@ err_unlock_free_node_nr_active:
 		kthread_flush_worker(pwq_release_worker);
 		free_node_nr_active(wq->node_nr_active);
 	}
+<<<<<<< HEAD
 err_unreg_lockdep:
 	wq_unregister_lockdep(wq);
 	wq_free_lockdep(wq);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_free_wq:
 	free_workqueue_attrs(wq->unbound_attrs);
 	kfree(wq);
@@ -5745,8 +5821,54 @@ err_destroy:
 	destroy_workqueue(wq);
 	return NULL;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(alloc_workqueue);
 
+=======
+
+__printf(1, 4)
+struct workqueue_struct *alloc_workqueue(const char *fmt,
+					 unsigned int flags,
+					 int max_active, ...)
+{
+	struct workqueue_struct *wq;
+	va_list args;
+
+	va_start(args, max_active);
+	wq = __alloc_workqueue(fmt, flags, max_active, args);
+	va_end(args);
+	if (!wq)
+		return NULL;
+
+	wq_init_lockdep(wq);
+
+	return wq;
+}
+EXPORT_SYMBOL_GPL(alloc_workqueue);
+
+#ifdef CONFIG_LOCKDEP
+__printf(1, 5)
+struct workqueue_struct *
+alloc_workqueue_lockdep_map(const char *fmt, unsigned int flags,
+			    int max_active, struct lockdep_map *lockdep_map, ...)
+{
+	struct workqueue_struct *wq;
+	va_list args;
+
+	va_start(args, lockdep_map);
+	wq = __alloc_workqueue(fmt, flags, max_active, args);
+	va_end(args);
+	if (!wq)
+		return NULL;
+
+	wq->lockdep_map = lockdep_map;
+
+	return wq;
+}
+EXPORT_SYMBOL_GPL(alloc_workqueue_lockdep_map);
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool pwq_busy(struct pool_workqueue *pwq)
 {
 	int i;
@@ -7406,6 +7528,12 @@ static struct timer_list wq_watchdog_timer;
 static unsigned long wq_watchdog_touched = INITIAL_JIFFIES;
 static DEFINE_PER_CPU(unsigned long, wq_watchdog_touched_cpu) = INITIAL_JIFFIES;
 
+<<<<<<< HEAD
+=======
+static unsigned int wq_panic_on_stall;
+module_param_named(panic_on_stall, wq_panic_on_stall, uint, 0644);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Show workers that might prevent the processing of pending work items.
  * The only candidates are CPU-bound workers in the running state.
@@ -7457,6 +7585,19 @@ static void show_cpu_pools_hogs(void)
 	rcu_read_unlock();
 }
 
+<<<<<<< HEAD
+=======
+static void panic_on_wq_watchdog(void)
+{
+	static unsigned int wq_stall;
+
+	if (wq_panic_on_stall) {
+		wq_stall++;
+		BUG_ON(wq_stall >= wq_panic_on_stall);
+	}
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void wq_watchdog_reset_touched(void)
 {
 	int cpu;
@@ -7529,6 +7670,12 @@ static void wq_watchdog_timer_fn(struct timer_list *unused)
 	if (cpu_pool_stall)
 		show_cpu_pools_hogs();
 
+<<<<<<< HEAD
+=======
+	if (lockup_detected)
+		panic_on_wq_watchdog();
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	wq_watchdog_reset_touched();
 	mod_timer(&wq_watchdog_timer, jiffies + thresh);
 }

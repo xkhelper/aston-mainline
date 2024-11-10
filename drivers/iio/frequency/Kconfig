@@ -53,6 +53,10 @@ config ADF4371
 config ADF4377
 	tristate "Analog Devices ADF4377 Microwave Wideband Synthesizer"
 	depends on SPI && COMMON_CLK
+<<<<<<< HEAD
+=======
+	select REGMAP_SPI
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  Say yes here to build support for Analog Devices ADF4377 Microwave
 	  Wideband Synthesizer.
@@ -91,6 +95,7 @@ config ADMV1014
 	  module will be called admv1014.
 
 config ADMV4420
+<<<<<<< HEAD
        tristate "Analog Devices ADMV4420 K Band Downconverter"
        depends on SPI
        help
@@ -110,6 +115,28 @@ config ADRF6780
 
           To compile this driver as a module, choose M here: the
           module will be called adrf6780.
+=======
+	tristate "Analog Devices ADMV4420 K Band Downconverter"
+	depends on SPI
+	select REGMAP_SPI
+	help
+	  Say yes here to build support for Analog Devices K Band
+	  Downconverter with integrated Fractional-N PLL and VCO.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called admv4420.
+
+config ADRF6780
+	tristate "Analog Devices ADRF6780 Microwave Upconverter"
+	depends on SPI
+	depends on COMMON_CLK
+	help
+	  Say yes here to build support for Analog Devices ADRF6780
+	  5.9 GHz to 23.6 GHz, Wideband, Microwave Upconverter.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called adrf6780.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 endmenu
 endmenu

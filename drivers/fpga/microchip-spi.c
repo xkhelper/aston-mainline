@@ -3,7 +3,11 @@
  * Microchip Polarfire FPGA programming over slave SPI interface.
  */
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/delay.h>
 #include <linux/fpga/fpga-mgr.h>
 #include <linux/iopoll.h>

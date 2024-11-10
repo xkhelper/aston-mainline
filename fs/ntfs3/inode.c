@@ -536,11 +536,23 @@ struct inode *ntfs_iget5(struct super_block *sb, const struct MFT_REF *ref,
 	if (inode->i_state & I_NEW)
 		inode = ntfs_read_mft(inode, name, ref);
 	else if (ref->seq != ntfs_i(inode)->mi.mrec->seq) {
+<<<<<<< HEAD
 		/* Inode overlaps? */
 		_ntfs_bad_inode(inode);
 	}
 
 	if (IS_ERR(inode) && name)
+=======
+		/*
+		 * Sequence number is not expected.
+		 * Looks like inode was reused but caller uses the old reference
+		 */
+		iput(inode);
+		inode = ERR_PTR(-ESTALE);
+	}
+
+	if (IS_ERR(inode))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ntfs_set_state(sb->s_fs_info, NTFS_DIRTY_ERROR);
 
 	return inode;
@@ -605,7 +617,12 @@ static noinline int ntfs_get_block_vbo(struct inode *inode, u64 vbo,
 
 	bytes = ((u64)len << cluster_bits) - off;
 
+<<<<<<< HEAD
 	if (lcn == SPARSE_LCN) {
+=======
+	if (lcn >= sbi->used.bitmap.nbits) {
+		/* This case includes resident/compressed/sparse. */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!create) {
 			if (bh->b_size > bytes)
 				bh->b_size = bytes;
@@ -901,7 +918,11 @@ static int ntfs_get_block_write_begin(struct inode *inode, sector_t vbn,
 }
 
 int ntfs_write_begin(struct file *file, struct address_space *mapping,
+<<<<<<< HEAD
 		     loff_t pos, u32 len, struct page **pagep, void **fsdata)
+=======
+		     loff_t pos, u32 len, struct folio **foliop, void **fsdata)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int err;
 	struct inode *inode = mapping->host;
@@ -910,7 +931,10 @@ int ntfs_write_begin(struct file *file, struct address_space *mapping,
 	if (unlikely(ntfs3_forced_shutdown(inode->i_sb)))
 		return -EIO;
 
+<<<<<<< HEAD
 	*pagep = NULL;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (is_resident(ni)) {
 		struct folio *folio = __filemap_get_folio(
 			mapping, pos >> PAGE_SHIFT, FGP_WRITEBEGIN,
@@ -926,7 +950,11 @@ int ntfs_write_begin(struct file *file, struct address_space *mapping,
 		ni_unlock(ni);
 
 		if (!err) {
+<<<<<<< HEAD
 			*pagep = &folio->page;
+=======
+			*foliop = folio;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto out;
 		}
 		folio_unlock(folio);
@@ -936,7 +964,11 @@ int ntfs_write_begin(struct file *file, struct address_space *mapping,
 			goto out;
 	}
 
+<<<<<<< HEAD
 	err = block_write_begin(mapping, pos, len, pagep,
+=======
+	err = block_write_begin(mapping, pos, len, foliop,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				ntfs_get_block_write_begin);
 
 out:
@@ -947,9 +979,14 @@ out:
  * ntfs_write_end - Address_space_operations::write_end.
  */
 int ntfs_write_end(struct file *file, struct address_space *mapping, loff_t pos,
+<<<<<<< HEAD
 		   u32 len, u32 copied, struct page *page, void *fsdata)
 {
 	struct folio *folio = page_folio(page);
+=======
+		   u32 len, u32 copied, struct folio *folio, void *fsdata)
+{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct inode *inode = mapping->host;
 	struct ntfs_inode *ni = ntfs_i(inode);
 	u64 valid = ni->i_valid;
@@ -979,7 +1016,11 @@ int ntfs_write_end(struct file *file, struct address_space *mapping, loff_t pos,
 		folio_unlock(folio);
 		folio_put(folio);
 	} else {
+<<<<<<< HEAD
 		err = generic_write_end(file, mapping, pos, len, copied, page,
+=======
+		err = generic_write_end(file, mapping, pos, len, copied, folio,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					fsdata);
 	}
 
@@ -1008,6 +1049,7 @@ int ntfs_write_end(struct file *file, struct address_space *mapping, loff_t pos,
 	return err;
 }
 
+<<<<<<< HEAD
 int reset_log_file(struct inode *inode)
 {
 	int err;
@@ -1047,6 +1089,8 @@ out:
 	return err;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int ntfs3_write_inode(struct inode *inode, struct writeback_control *wbc)
 {
 	return _ni_write_inode(inode, wbc->sync_mode == WB_SYNC_ALL);
@@ -1713,7 +1757,14 @@ out6:
 	attr = ni_find_attr(ni, NULL, NULL, ATTR_EA, NULL, 0, NULL, NULL);
 	if (attr && attr->non_res) {
 		/* Delete ATTR_EA, if non-resident. */
+<<<<<<< HEAD
 		attr_set_size(ni, ATTR_EA, NULL, 0, NULL, 0, NULL, false, NULL);
+=======
+		struct runs_tree run;
+		run_init(&run);
+		attr_set_size(ni, ATTR_EA, NULL, 0, &run, 0, NULL, false, NULL);
+		run_close(&run);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (rp_inserted)
@@ -2117,7 +2168,11 @@ static const char *ntfs_get_link(struct dentry *de, struct inode *inode,
 // clang-format off
 const struct inode_operations ntfs_link_inode_operations = {
 	.get_link	= ntfs_get_link,
+<<<<<<< HEAD
 	.setattr	= ntfs3_setattr,
+=======
+	.setattr	= ntfs_setattr,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.listxattr	= ntfs_listxattr,
 };
 

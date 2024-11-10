@@ -9,6 +9,7 @@ struct request_queue;
 struct bio;
 
 #ifdef CONFIG_BLK_CGROUP_IOPRIO
+<<<<<<< HEAD
 int blk_ioprio_init(struct gendisk *disk);
 void blk_ioprio_exit(struct gendisk *disk);
 void blkcg_set_ioprio(struct bio *bio);
@@ -20,6 +21,10 @@ static inline int blk_ioprio_init(struct gendisk *disk)
 static inline void blk_ioprio_exit(struct gendisk *disk)
 {
 }
+=======
+void blkcg_set_ioprio(struct bio *bio);
+#else
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void blkcg_set_ioprio(struct bio *bio)
 {
 }

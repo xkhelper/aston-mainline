@@ -87,6 +87,10 @@ struct icc_provider *icc_clk_register(struct device *dev,
 	onecell = devm_kzalloc(dev, struct_size(onecell, nodes, 2 * num_clocks), GFP_KERNEL);
 	if (!onecell)
 		return ERR_PTR(-ENOMEM);
+<<<<<<< HEAD
+=======
+	onecell->num_nodes = 2 * num_clocks;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	qp = devm_kzalloc(dev, struct_size(qp, clocks, num_clocks), GFP_KERNEL);
 	if (!qp)
@@ -133,8 +137,11 @@ struct icc_provider *icc_clk_register(struct device *dev,
 		onecell->nodes[j++] = node;
 	}
 
+<<<<<<< HEAD
 	onecell->num_nodes = j;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = icc_provider_register(provider);
 	if (ret)
 		goto err;

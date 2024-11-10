@@ -907,7 +907,11 @@ static void aspeed_pwm_tacho_remove(void *data)
 static int aspeed_pwm_tacho_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
+<<<<<<< HEAD
 	struct device_node *np, *child;
+=======
+	struct device_node *np;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct aspeed_pwm_tacho_data *priv;
 	void __iomem *regs;
 	struct device *hwmon;
@@ -951,12 +955,19 @@ static int aspeed_pwm_tacho_probe(struct platform_device *pdev)
 
 	aspeed_create_type(priv);
 
+<<<<<<< HEAD
 	for_each_child_of_node(np, child) {
 		ret = aspeed_create_fan(dev, child, priv);
 		if (ret) {
 			of_node_put(child);
 			return ret;
 		}
+=======
+	for_each_child_of_node_scoped(np, child) {
+		ret = aspeed_create_fan(dev, child, priv);
+		if (ret)
+			return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	priv->groups[0] = &pwm_dev_group;

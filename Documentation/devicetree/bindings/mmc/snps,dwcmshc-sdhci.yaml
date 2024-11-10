@@ -10,6 +10,7 @@ maintainers:
   - Ulf Hansson <ulf.hansson@linaro.org>
   - Jisheng Zhang <Jisheng.Zhang@synaptics.com>
 
+<<<<<<< HEAD
 allOf:
   - $ref: mmc-controller.yaml#
 
@@ -22,6 +23,22 @@ properties:
       - sophgo,cv1800b-dwcmshc
       - sophgo,sg2002-dwcmshc
       - thead,th1520-dwcmshc
+=======
+properties:
+  compatible:
+    oneOf:
+      - items:
+          - const: rockchip,rk3576-dwcmshc
+          - const: rockchip,rk3588-dwcmshc
+      - enum:
+          - rockchip,rk3568-dwcmshc
+          - rockchip,rk3588-dwcmshc
+          - snps,dwcmshc-sdhci
+          - sophgo,cv1800b-dwcmshc
+          - sophgo,sg2002-dwcmshc
+          - sophgo,sg2042-dwcmshc
+          - thead,th1520-dwcmshc
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   reg:
     maxItems: 1
@@ -31,6 +48,7 @@ properties:
 
   clocks:
     minItems: 1
+<<<<<<< HEAD
     items:
       - description: core clock
       - description: bus clock for optional
@@ -47,6 +65,16 @@ properties:
       - const: axi
       - const: block
       - const: timer
+=======
+    maxItems: 5
+
+  clock-names:
+    minItems: 1
+    maxItems: 5
+
+  power-domains:
+    maxItems: 1
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   resets:
     maxItems: 5
@@ -63,7 +91,10 @@ properties:
     description: Specify the number of delay for tx sampling.
     $ref: /schemas/types.yaml#/definitions/uint8
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 required:
   - compatible
   - reg
@@ -71,6 +102,63 @@ required:
   - clocks
   - clock-names
 
+<<<<<<< HEAD
+=======
+allOf:
+  - $ref: mmc-controller.yaml#
+
+  - if:
+      properties:
+        compatible:
+          contains:
+            const: sophgo,sg2042-dwcmshc
+
+    then:
+      properties:
+        clocks:
+          items:
+            - description: core clock
+            - description: bus clock
+            - description: timer clock
+        clock-names:
+          items:
+            - const: core
+            - const: bus
+            - const: timer
+    else:
+      properties:
+        clocks:
+          minItems: 1
+          items:
+            - description: core clock
+            - description: bus clock for optional
+            - description: axi clock for rockchip specified
+            - description: block clock for rockchip specified
+            - description: timer clock for rockchip specified
+        clock-names:
+          minItems: 1
+          items:
+            - const: core
+            - const: bus
+            - const: axi
+            - const: block
+            - const: timer
+
+  - if:
+      properties:
+        compatible:
+          contains:
+            const: rockchip,rk3576-dwcmshc
+
+    then:
+      required:
+        - power-domains
+
+    else:
+      properties:
+        power-domains: false
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 unevaluatedProperties: false
 
 examples:

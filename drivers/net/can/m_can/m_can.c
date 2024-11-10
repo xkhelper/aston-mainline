@@ -1434,7 +1434,12 @@ static int m_can_chip_config(struct net_device *dev)
 
 	/* Disable unused interrupts */
 	interrupts &= ~(IR_ARA | IR_ELO | IR_DRX | IR_TEFF | IR_TFE | IR_TCF |
+<<<<<<< HEAD
 			IR_HPM | IR_RF1F | IR_RF1W | IR_RF1N | IR_RF0F);
+=======
+			IR_HPM | IR_RF1F | IR_RF1W | IR_RF1N | IR_RF0F |
+			IR_TSW);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = m_can_config_enable(cdev);
 	if (err)
@@ -1763,12 +1768,18 @@ static int m_can_close(struct net_device *dev)
 
 	netif_stop_queue(dev);
 
+<<<<<<< HEAD
 	if (!cdev->is_peripheral)
 		napi_disable(&cdev->napi);
 
 	m_can_stop(dev);
 	m_can_clk_stop(cdev);
 	free_irq(dev->irq, dev);
+=======
+	m_can_stop(dev);
+	if (dev->irq)
+		free_irq(dev->irq, dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	m_can_clean(dev);
 
@@ -1776,10 +1787,19 @@ static int m_can_close(struct net_device *dev)
 		destroy_workqueue(cdev->tx_wq);
 		cdev->tx_wq = NULL;
 		can_rx_offload_disable(&cdev->offload);
+<<<<<<< HEAD
+=======
+	} else {
+		napi_disable(&cdev->napi);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	close_candev(dev);
 
+<<<<<<< HEAD
+=======
+	m_can_clk_stop(cdev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	phy_power_off(cdev->transceiver);
 
 	return 0;
@@ -2030,6 +2050,11 @@ static int m_can_open(struct net_device *dev)
 
 	if (cdev->is_peripheral)
 		can_rx_offload_enable(&cdev->offload);
+<<<<<<< HEAD
+=======
+	else
+		napi_enable(&cdev->napi);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* register interrupt handler */
 	if (cdev->is_peripheral) {
@@ -2063,9 +2088,12 @@ static int m_can_open(struct net_device *dev)
 	if (err)
 		goto exit_start_fail;
 
+<<<<<<< HEAD
 	if (!cdev->is_peripheral)
 		napi_enable(&cdev->napi);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	netif_start_queue(dev);
 
 	return 0;
@@ -2079,6 +2107,11 @@ exit_irq_fail:
 out_wq_fail:
 	if (cdev->is_peripheral)
 		can_rx_offload_disable(&cdev->offload);
+<<<<<<< HEAD
+=======
+	else
+		napi_disable(&cdev->napi);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	close_candev(dev);
 exit_disable_clks:
 	m_can_clk_stop(cdev);

@@ -29,7 +29,11 @@
 #include <linux/kthread.h>
 #include <linux/file.h>
 #include <linux/etherdevice.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <net/bluetooth/bluetooth.h>
 #include <net/bluetooth/l2cap.h>
@@ -745,8 +749,12 @@ static int __init bnep_init(void)
 	if (flt[0])
 		BT_INFO("BNEP filters: %s", flt);
 
+<<<<<<< HEAD
 	bnep_sock_init();
 	return 0;
+=======
+	return bnep_sock_init();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void __exit bnep_exit(void)

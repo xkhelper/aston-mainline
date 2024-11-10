@@ -13,7 +13,11 @@
 #include <linux/i3c/device.h>
 #include <linux/i3c/master.h>
 #include <linux/if_arp.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <net/mctp.h>
 #include <net/mctpdevice.h>
 

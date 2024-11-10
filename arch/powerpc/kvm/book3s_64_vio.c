@@ -118,12 +118,20 @@ long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
 	struct fd f;
 
 	f = fdget(tablefd);
+<<<<<<< HEAD
 	if (!f.file)
+=======
+	if (!fd_file(f))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBADF;
 
 	rcu_read_lock();
 	list_for_each_entry_rcu(stt, &kvm->arch.spapr_tce_tables, list) {
+<<<<<<< HEAD
 		if (stt == f.file->private_data) {
+=======
+		if (stt == fd_file(f)->private_data) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			found = true;
 			break;
 		}

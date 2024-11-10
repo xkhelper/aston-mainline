@@ -232,8 +232,13 @@ static int cxl_region_invalidate_memregion(struct cxl_region *cxlr)
 				"Bypassing cpu_cache_invalidate_memregion() for testing!\n");
 			return 0;
 		} else {
+<<<<<<< HEAD
 			dev_err(&cxlr->dev,
 				"Failed to synchronize CPU cache state\n");
+=======
+			dev_WARN(&cxlr->dev,
+				 "Failed to synchronize CPU cache state\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -ENXIO;
 		}
 	}
@@ -242,6 +247,7 @@ static int cxl_region_invalidate_memregion(struct cxl_region *cxlr)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int cxl_region_decode_reset(struct cxl_region *cxlr, int count)
 {
 	struct cxl_region_params *p = &cxlr->params;
@@ -255,6 +261,19 @@ static int cxl_region_decode_reset(struct cxl_region *cxlr, int count)
 	rc = cxl_region_invalidate_memregion(cxlr);
 	if (rc)
 		return rc;
+=======
+static void cxl_region_decode_reset(struct cxl_region *cxlr, int count)
+{
+	struct cxl_region_params *p = &cxlr->params;
+	int i;
+
+	/*
+	 * Before region teardown attempt to flush, evict any data cached for
+	 * this region, or scream loudly about missing arch / platform support
+	 * for CXL teardown.
+	 */
+	cxl_region_invalidate_memregion(cxlr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = count - 1; i >= 0; i--) {
 		struct cxl_endpoint_decoder *cxled = p->targets[i];
@@ -277,23 +296,34 @@ static int cxl_region_decode_reset(struct cxl_region *cxlr, int count)
 			cxl_rr = cxl_rr_load(iter, cxlr);
 			cxld = cxl_rr->decoder;
 			if (cxld->reset)
+<<<<<<< HEAD
 				rc = cxld->reset(cxld);
 			if (rc)
 				return rc;
+=======
+				cxld->reset(cxld);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			set_bit(CXL_REGION_F_NEEDS_RESET, &cxlr->flags);
 		}
 
 endpoint_reset:
+<<<<<<< HEAD
 		rc = cxled->cxld.reset(&cxled->cxld);
 		if (rc)
 			return rc;
+=======
+		cxled->cxld.reset(&cxled->cxld);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		set_bit(CXL_REGION_F_NEEDS_RESET, &cxlr->flags);
 	}
 
 	/* all decoders associated with this region have been torn down */
 	clear_bit(CXL_REGION_F_NEEDS_RESET, &cxlr->flags);
+<<<<<<< HEAD
 
 	return 0;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int commit_decoder(struct cxl_decoder *cxld)
@@ -409,6 +439,7 @@ static ssize_t commit_store(struct device *dev, struct device_attribute *attr,
 		 * still pending.
 		 */
 		if (p->state == CXL_CONFIG_RESET_PENDING) {
+<<<<<<< HEAD
 			rc = cxl_region_decode_reset(cxlr, p->interleave_ways);
 			/*
 			 * Revert to committed since there may still be active
@@ -419,6 +450,10 @@ static ssize_t commit_store(struct device *dev, struct device_attribute *attr,
 				p->state = CXL_CONFIG_COMMIT;
 			else
 				p->state = CXL_CONFIG_ACTIVE;
+=======
+			cxl_region_decode_reset(cxlr, p->interleave_ways);
+			p->state = CXL_CONFIG_ACTIVE;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -794,16 +829,39 @@ out:
 	return rc;
 }
 
+<<<<<<< HEAD
 static int match_free_decoder(struct device *dev, void *data)
 {
 	struct cxl_decoder *cxld;
 	int *id = data;
+=======
+static int check_commit_order(struct device *dev, const void *data)
+{
+	struct cxl_decoder *cxld = to_cxl_decoder(dev);
+
+	/*
+	 * if port->commit_end is not the only free decoder, then out of
+	 * order shutdown has occurred, block further allocations until
+	 * that is resolved
+	 */
+	if (((cxld->flags & CXL_DECODER_F_ENABLE) == 0))
+		return -EBUSY;
+	return 0;
+}
+
+static int match_free_decoder(struct device *dev, void *data)
+{
+	struct cxl_port *port = to_cxl_port(dev->parent);
+	struct cxl_decoder *cxld;
+	int rc;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!is_switch_decoder(dev))
 		return 0;
 
 	cxld = to_cxl_decoder(dev);
 
+<<<<<<< HEAD
 	/* enforce ordered allocation */
 	if (cxld->id != *id)
 		return 0;
@@ -814,6 +872,27 @@ static int match_free_decoder(struct device *dev, void *data)
 	(*id)++;
 
 	return 0;
+=======
+	if (cxld->id != port->commit_end + 1)
+		return 0;
+
+	if (cxld->region) {
+		dev_dbg(dev->parent,
+			"next decoder to commit (%s) is already reserved (%s)\n",
+			dev_name(dev), dev_name(&cxld->region->dev));
+		return 0;
+	}
+
+	rc = device_for_each_child_reverse_from(dev->parent, dev, NULL,
+						check_commit_order);
+	if (rc) {
+		dev_dbg(dev->parent,
+			"unable to allocate %s due to out of order shutdown\n",
+			dev_name(dev));
+		return 0;
+	}
+	return 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int match_auto_decoder(struct device *dev, void *data)
@@ -840,7 +919,10 @@ cxl_region_find_decoder(struct cxl_port *port,
 			struct cxl_region *cxlr)
 {
 	struct device *dev;
+<<<<<<< HEAD
 	int id = 0;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (port == cxled_to_port(cxled))
 		return &cxled->cxld;
@@ -849,7 +931,11 @@ cxl_region_find_decoder(struct cxl_port *port,
 		dev = device_find_child(&port->dev, &cxlr->params,
 					match_auto_decoder);
 	else
+<<<<<<< HEAD
 		dev = device_find_child(&port->dev, &id, match_free_decoder);
+=======
+		dev = device_find_child(&port->dev, NULL, match_free_decoder);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!dev)
 		return NULL;
 	/*
@@ -1983,6 +2069,10 @@ static int cxl_region_attach(struct cxl_region *cxlr,
 		 * then the region is already committed.
 		 */
 		p->state = CXL_CONFIG_COMMIT;
+<<<<<<< HEAD
+=======
+		cxl_region_shared_upstream_bandwidth_update(cxlr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		return 0;
 	}
@@ -2004,6 +2094,10 @@ static int cxl_region_attach(struct cxl_region *cxlr,
 		if (rc)
 			return rc;
 		p->state = CXL_CONFIG_ACTIVE;
+<<<<<<< HEAD
+=======
+		cxl_region_shared_upstream_bandwidth_update(cxlr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	cxled->cxld.interleave_ways = p->interleave_ways;
@@ -2052,6 +2146,7 @@ static int cxl_region_detach(struct cxl_endpoint_decoder *cxled)
 	get_device(&cxlr->dev);
 
 	if (p->state > CXL_CONFIG_ACTIVE) {
+<<<<<<< HEAD
 		/*
 		 * TODO: tear down all impacted regions if a device is
 		 * removed out of order
@@ -2059,6 +2154,9 @@ static int cxl_region_detach(struct cxl_endpoint_decoder *cxled)
 		rc = cxl_region_decode_reset(cxlr, p->interleave_ways);
 		if (rc)
 			goto out;
+=======
+		cxl_region_decode_reset(cxlr, p->interleave_ways);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		p->state = CXL_CONFIG_ACTIVE;
 	}
 
@@ -2313,8 +2411,11 @@ static void unregister_region(void *_cxlr)
 	struct cxl_region_params *p = &cxlr->params;
 	int i;
 
+<<<<<<< HEAD
 	unregister_memory_notifier(&cxlr->memory_notifier);
 	unregister_mt_adistance_algorithm(&cxlr->adist_notifier);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	device_del(&cxlr->dev);
 
 	/*
@@ -2391,6 +2492,7 @@ static bool cxl_region_update_coordinates(struct cxl_region *cxlr, int nid)
 	return true;
 }
 
+<<<<<<< HEAD
 static int cxl_region_nid(struct cxl_region *cxlr)
 {
 	struct cxl_region_params *p = &cxlr->params;
@@ -2403,6 +2505,8 @@ static int cxl_region_nid(struct cxl_region *cxlr)
 	return phys_to_target_node(res->start);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int cxl_region_perf_attrs_callback(struct notifier_block *nb,
 					  unsigned long action, void *arg)
 {
@@ -2415,7 +2519,15 @@ static int cxl_region_perf_attrs_callback(struct notifier_block *nb,
 	if (nid == NUMA_NO_NODE || action != MEM_ONLINE)
 		return NOTIFY_DONE;
 
+<<<<<<< HEAD
 	region_nid = cxl_region_nid(cxlr);
+=======
+	/*
+	 * No need to hold cxl_region_rwsem; region parameters are stable
+	 * within the cxl_region driver.
+	 */
+	region_nid = phys_to_target_node(cxlr->params.res->start);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (nid != region_nid)
 		return NOTIFY_DONE;
 
@@ -2434,7 +2546,15 @@ static int cxl_region_calculate_adistance(struct notifier_block *nb,
 	int *adist = data;
 	int region_nid;
 
+<<<<<<< HEAD
 	region_nid = cxl_region_nid(cxlr);
+=======
+	/*
+	 * No need to hold cxl_region_rwsem; region parameters are stable
+	 * within the cxl_region driver.
+	 */
+	region_nid = phys_to_target_node(cxlr->params.res->start);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (nid != region_nid)
 		return NOTIFY_OK;
 
@@ -2484,6 +2604,7 @@ static struct cxl_region *devm_cxl_add_region(struct cxl_root_decoder *cxlrd,
 	if (rc)
 		goto err;
 
+<<<<<<< HEAD
 	cxlr->memory_notifier.notifier_call = cxl_region_perf_attrs_callback;
 	cxlr->memory_notifier.priority = CXL_CALLBACK_PRI;
 	register_memory_notifier(&cxlr->memory_notifier);
@@ -2492,6 +2613,8 @@ static struct cxl_region *devm_cxl_add_region(struct cxl_root_decoder *cxlrd,
 	cxlr->adist_notifier.priority = 100;
 	register_mt_adistance_algorithm(&cxlr->adist_notifier);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rc = devm_add_action_or_reset(port->uport_dev, unregister_region, cxlr);
 	if (rc)
 		return ERR_PTR(rc);
@@ -3094,11 +3217,19 @@ static void cxlr_release_nvdimm(void *_cxlr)
 	struct cxl_region *cxlr = _cxlr;
 	struct cxl_nvdimm_bridge *cxl_nvb = cxlr->cxl_nvb;
 
+<<<<<<< HEAD
 	device_lock(&cxl_nvb->dev);
 	if (cxlr->cxlr_pmem)
 		devm_release_action(&cxl_nvb->dev, cxlr_pmem_unregister,
 				    cxlr->cxlr_pmem);
 	device_unlock(&cxl_nvb->dev);
+=======
+	scoped_guard(device, &cxl_nvb->dev) {
+		if (cxlr->cxlr_pmem)
+			devm_release_action(&cxl_nvb->dev, cxlr_pmem_unregister,
+					    cxlr->cxlr_pmem);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cxlr->cxl_nvb = NULL;
 	put_device(&cxl_nvb->dev);
 }
@@ -3134,6 +3265,7 @@ static int devm_cxl_add_pmem_region(struct cxl_region *cxlr)
 	dev_dbg(&cxlr->dev, "%s: register %s\n", dev_name(dev->parent),
 		dev_name(dev));
 
+<<<<<<< HEAD
 	device_lock(&cxl_nvb->dev);
 	if (cxl_nvb->dev.driver)
 		rc = devm_add_action_or_reset(&cxl_nvb->dev,
@@ -3141,6 +3273,16 @@ static int devm_cxl_add_pmem_region(struct cxl_region *cxlr)
 	else
 		rc = -ENXIO;
 	device_unlock(&cxl_nvb->dev);
+=======
+	scoped_guard(device, &cxl_nvb->dev) {
+		if (cxl_nvb->dev.driver)
+			rc = devm_add_action_or_reset(&cxl_nvb->dev,
+						      cxlr_pmem_unregister,
+						      cxlr_pmem);
+		else
+			rc = -ENXIO;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (rc)
 		goto err_bridge;
@@ -3386,6 +3528,17 @@ static int is_system_ram(struct resource *res, void *arg)
 	return 1;
 }
 
+<<<<<<< HEAD
+=======
+static void shutdown_notifiers(void *_cxlr)
+{
+	struct cxl_region *cxlr = _cxlr;
+
+	unregister_memory_notifier(&cxlr->memory_notifier);
+	unregister_mt_adistance_algorithm(&cxlr->adist_notifier);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int cxl_region_probe(struct device *dev)
 {
 	struct cxl_region *cxlr = to_cxl_region(dev);
@@ -3421,6 +3574,21 @@ out:
 	if (rc)
 		return rc;
 
+<<<<<<< HEAD
+=======
+	cxlr->memory_notifier.notifier_call = cxl_region_perf_attrs_callback;
+	cxlr->memory_notifier.priority = CXL_CALLBACK_PRI;
+	register_memory_notifier(&cxlr->memory_notifier);
+
+	cxlr->adist_notifier.notifier_call = cxl_region_calculate_adistance;
+	cxlr->adist_notifier.priority = 100;
+	register_mt_adistance_algorithm(&cxlr->adist_notifier);
+
+	rc = devm_add_action_or_reset(&cxlr->dev, shutdown_notifiers, cxlr);
+	if (rc)
+		return rc;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (cxlr->mode) {
 	case CXL_DECODER_PMEM:
 		return devm_cxl_add_pmem_region(cxlr);

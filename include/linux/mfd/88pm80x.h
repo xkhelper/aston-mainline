@@ -294,7 +294,11 @@ struct pm80x_chip {
 	struct i2c_client *client;
 	struct i2c_client *companion;
 	struct regmap *regmap;
+<<<<<<< HEAD
 	struct regmap_irq_chip *regmap_irq_chip;
+=======
+	const struct regmap_irq_chip *regmap_irq_chip;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct regmap_irq_chip_data *irq_data;
 	int type;
 	int irq;

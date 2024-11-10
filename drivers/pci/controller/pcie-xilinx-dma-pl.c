@@ -71,10 +71,30 @@
 
 /* Phy Status/Control Register definitions */
 #define XILINX_PCIE_DMA_REG_PSCR_LNKUP	BIT(11)
+<<<<<<< HEAD
+=======
+#define QDMA_BRIDGE_BASE_OFF		0xcd8
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Number of MSI IRQs */
 #define XILINX_NUM_MSI_IRQS	64
 
+<<<<<<< HEAD
+=======
+enum xilinx_pl_dma_version {
+	XDMA,
+	QDMA,
+};
+
+/**
+ * struct xilinx_pl_dma_variant - PL DMA PCIe variant information
+ * @version: DMA version
+ */
+struct xilinx_pl_dma_variant {
+	enum xilinx_pl_dma_version version;
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct xilinx_msi {
 	struct irq_domain	*msi_domain;
 	unsigned long		*bitmap;
@@ -88,6 +108,10 @@ struct xilinx_msi {
  * struct pl_dma_pcie - PCIe port information
  * @dev: Device pointer
  * @reg_base: IO Mapped Register Base
+<<<<<<< HEAD
+=======
+ * @cfg_base: IO Mapped Configuration Base
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @irq: Interrupt number
  * @cfg: Holds mappings of config space window
  * @phys_reg_base: Physical address of reg base
@@ -97,10 +121,18 @@ struct xilinx_msi {
  * @msi: MSI information
  * @intx_irq: INTx error interrupt number
  * @lock: Lock protecting shared register access
+<<<<<<< HEAD
+=======
+ * @variant: PL DMA PCIe version check pointer
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct pl_dma_pcie {
 	struct device			*dev;
 	void __iomem			*reg_base;
+<<<<<<< HEAD
+=======
+	void __iomem			*cfg_base;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int				irq;
 	struct pci_config_window	*cfg;
 	phys_addr_t			phys_reg_base;
@@ -110,16 +142,33 @@ struct pl_dma_pcie {
 	struct xilinx_msi		msi;
 	int				intx_irq;
 	raw_spinlock_t			lock;
+<<<<<<< HEAD
+=======
+	const struct xilinx_pl_dma_variant   *variant;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static inline u32 pcie_read(struct pl_dma_pcie *port, u32 reg)
 {
+<<<<<<< HEAD
+=======
+	if (port->variant->version == QDMA)
+		return readl(port->reg_base + reg + QDMA_BRIDGE_BASE_OFF);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return readl(port->reg_base + reg);
 }
 
 static inline void pcie_write(struct pl_dma_pcie *port, u32 val, u32 reg)
 {
+<<<<<<< HEAD
 	writel(val, port->reg_base + reg);
+=======
+	if (port->variant->version == QDMA)
+		writel(val, port->reg_base + reg + QDMA_BRIDGE_BASE_OFF);
+	else
+		writel(val, port->reg_base + reg);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline bool xilinx_pl_dma_pcie_link_up(struct pl_dma_pcie *port)
@@ -173,6 +222,12 @@ static void __iomem *xilinx_pl_dma_pcie_map_bus(struct pci_bus *bus,
 	if (!xilinx_pl_dma_pcie_valid_device(bus, devfn))
 		return NULL;
 
+<<<<<<< HEAD
+=======
+	if (port->variant->version == QDMA)
+		return port->cfg_base + PCIE_ECAM_OFFSET(bus->number, devfn, where);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return port->reg_base + PCIE_ECAM_OFFSET(bus->number, devfn, where);
 }
 
@@ -355,8 +410,13 @@ static struct irq_chip xilinx_msi_irq_chip = {
 };
 
 static struct msi_domain_info xilinx_msi_domain_info = {
+<<<<<<< HEAD
 	.flags = (MSI_FLAG_USE_DEF_DOM_OPS | MSI_FLAG_USE_DEF_CHIP_OPS |
 		MSI_FLAG_MULTI_PCI_MSI),
+=======
+	.flags = MSI_FLAG_USE_DEF_DOM_OPS | MSI_FLAG_USE_DEF_CHIP_OPS |
+		 MSI_FLAG_NO_AFFINITY | MSI_FLAG_MULTI_PCI_MSI,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.chip = &xilinx_msi_irq_chip,
 };
 
@@ -370,6 +430,7 @@ static void xilinx_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
 	msg->data = data->hwirq;
 }
 
+<<<<<<< HEAD
 static int xilinx_msi_set_affinity(struct irq_data *irq_data,
 				   const struct cpumask *mask, bool force)
 {
@@ -380,6 +441,11 @@ static struct irq_chip xilinx_irq_chip = {
 	.name = "pl_dma:MSI",
 	.irq_compose_msi_msg = xilinx_compose_msi_msg,
 	.irq_set_affinity = xilinx_msi_set_affinity,
+=======
+static struct irq_chip xilinx_irq_chip = {
+	.name = "pl_dma:MSI",
+	.irq_compose_msi_msg = xilinx_compose_msi_msg,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int xilinx_irq_domain_alloc(struct irq_domain *domain, unsigned int virq,
@@ -731,6 +797,18 @@ static int xilinx_pl_dma_pcie_parse_dt(struct pl_dma_pcie *port,
 
 	port->reg_base = port->cfg->win;
 
+<<<<<<< HEAD
+=======
+	if (port->variant->version == QDMA) {
+		port->cfg_base = port->cfg->win;
+		res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "breg");
+		port->reg_base = devm_ioremap_resource(dev, res);
+		if (IS_ERR(port->reg_base))
+			return PTR_ERR(port->reg_base);
+		port->phys_reg_base = res->start;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	err = xilinx_request_msi_irq(port);
 	if (err) {
 		pci_ecam_free(port->cfg);
@@ -760,6 +838,11 @@ static int xilinx_pl_dma_pcie_probe(struct platform_device *pdev)
 	if (!bus)
 		return -ENODEV;
 
+<<<<<<< HEAD
+=======
+	port->variant = of_device_get_match_data(dev);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	err = xilinx_pl_dma_pcie_parse_dt(port, bus->res);
 	if (err) {
 		dev_err(dev, "Parsing DT failed\n");
@@ -791,9 +874,28 @@ err_irq_domain:
 	return err;
 }
 
+<<<<<<< HEAD
 static const struct of_device_id xilinx_pl_dma_pcie_of_match[] = {
 	{
 		.compatible = "xlnx,xdma-host-3.00",
+=======
+static const struct xilinx_pl_dma_variant xdma_host = {
+	.version = XDMA,
+};
+
+static const struct xilinx_pl_dma_variant qdma_host = {
+	.version = QDMA,
+};
+
+static const struct of_device_id xilinx_pl_dma_pcie_of_match[] = {
+	{
+		.compatible = "xlnx,xdma-host-3.00",
+		.data = &xdma_host,
+	},
+	{
+		.compatible = "xlnx,qdma-host-3.00",
+		.data = &qdma_host,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{}
 };

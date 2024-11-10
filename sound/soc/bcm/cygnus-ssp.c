@@ -1390,7 +1390,11 @@ MODULE_DEVICE_TABLE(of, cygnus_ssp_of_match);
 
 static struct platform_driver cygnus_ssp_driver = {
 	.probe		= cygnus_ssp_probe,
+<<<<<<< HEAD
 	.remove_new	= cygnus_ssp_remove,
+=======
+	.remove		= cygnus_ssp_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver		= {
 		.name	= "cygnus-ssp",
 		.of_match_table = cygnus_ssp_of_match,

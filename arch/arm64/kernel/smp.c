@@ -68,7 +68,11 @@ enum ipi_msg_type {
 	IPI_RESCHEDULE,
 	IPI_CALL_FUNC,
 	IPI_CPU_STOP,
+<<<<<<< HEAD
 	IPI_CPU_CRASH_STOP,
+=======
+	IPI_CPU_STOP_NMI,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	IPI_TIMER,
 	IPI_IRQ_WORK,
 	NR_IPI,
@@ -85,6 +89,11 @@ static int ipi_irq_base __ro_after_init;
 static int nr_ipi __ro_after_init = NR_IPI;
 static struct irq_desc *ipi_desc[MAX_IPI] __ro_after_init;
 
+<<<<<<< HEAD
+=======
+static bool crash_stop;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void ipi_setup(int cpu);
 
 #ifdef CONFIG_HOTPLUG_CPU
@@ -823,7 +832,11 @@ static const char *ipi_types[MAX_IPI] __tracepoint_string = {
 	[IPI_RESCHEDULE]	= "Rescheduling interrupts",
 	[IPI_CALL_FUNC]		= "Function call interrupts",
 	[IPI_CPU_STOP]		= "CPU stop interrupts",
+<<<<<<< HEAD
 	[IPI_CPU_CRASH_STOP]	= "CPU stop (for crash dump) interrupts",
+=======
+	[IPI_CPU_STOP_NMI]	= "CPU stop NMIs",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	[IPI_TIMER]		= "Timer broadcast interrupts",
 	[IPI_IRQ_WORK]		= "IRQ work interrupts",
 	[IPI_CPU_BACKTRACE]	= "CPU backtrace interrupts",
@@ -867,9 +880,15 @@ void arch_irq_work_raise(void)
 }
 #endif
 
+<<<<<<< HEAD
 static void __noreturn local_cpu_stop(void)
 {
 	set_cpu_online(smp_processor_id(), false);
+=======
+static void __noreturn local_cpu_stop(unsigned int cpu)
+{
+	set_cpu_online(cpu, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	local_daif_mask();
 	sdei_mask_local_cpu();
@@ -883,6 +902,7 @@ static void __noreturn local_cpu_stop(void)
  */
 void __noreturn panic_smp_self_stop(void)
 {
+<<<<<<< HEAD
 	local_cpu_stop();
 }
 
@@ -898,6 +918,28 @@ static void __noreturn ipi_cpu_crash_stop(unsigned int cpu, struct pt_regs *regs
 	atomic_dec(&waiting_for_crash_ipi);
 
 	local_irq_disable();
+=======
+	local_cpu_stop(smp_processor_id());
+}
+
+static void __noreturn ipi_cpu_crash_stop(unsigned int cpu, struct pt_regs *regs)
+{
+#ifdef CONFIG_KEXEC_CORE
+	/*
+	 * Use local_daif_mask() instead of local_irq_disable() to make sure
+	 * that pseudo-NMIs are disabled. The "crash stop" code starts with
+	 * an IRQ and falls back to NMI (which might be pseudo). If the IRQ
+	 * finally goes through right as we're timing out then the NMI could
+	 * interrupt us. It's better to prevent the NMI and let the IRQ
+	 * finish since the pt_regs will be better.
+	 */
+	local_daif_mask();
+
+	crash_save_cpu(regs, cpu);
+
+	set_cpu_online(cpu, false);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sdei_mask_local_cpu();
 
 	if (IS_ENABLED(CONFIG_HOTPLUG_CPU))
@@ -962,6 +1004,7 @@ static void do_handle_IPI(int ipinr)
 		break;
 
 	case IPI_CPU_STOP:
+<<<<<<< HEAD
 		local_cpu_stop();
 		break;
 
@@ -970,6 +1013,14 @@ static void do_handle_IPI(int ipinr)
 			ipi_cpu_crash_stop(cpu, get_irq_regs());
 
 			unreachable();
+=======
+	case IPI_CPU_STOP_NMI:
+		if (IS_ENABLED(CONFIG_KEXEC_CORE) && crash_stop) {
+			ipi_cpu_crash_stop(cpu, get_irq_regs());
+			unreachable();
+		} else {
+			local_cpu_stop(cpu);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		break;
 
@@ -1024,8 +1075,12 @@ static bool ipi_should_be_nmi(enum ipi_msg_type ipi)
 		return false;
 
 	switch (ipi) {
+<<<<<<< HEAD
 	case IPI_CPU_STOP:
 	case IPI_CPU_CRASH_STOP:
+=======
+	case IPI_CPU_STOP_NMI:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case IPI_CPU_BACKTRACE:
 	case IPI_KGDB_ROUNDUP:
 		return true;
@@ -1138,6 +1193,7 @@ static inline unsigned int num_other_online_cpus(void)
 
 void smp_send_stop(void)
 {
+<<<<<<< HEAD
 	unsigned long timeout;
 
 	if (num_other_online_cpus()) {
@@ -1167,10 +1223,14 @@ void smp_send_stop(void)
 void crash_smp_send_stop(void)
 {
 	static int cpus_stopped;
+=======
+	static unsigned long stop_in_progress;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cpumask_t mask;
 	unsigned long timeout;
 
 	/*
+<<<<<<< HEAD
 	 * This function can be called twice in panic path, but obviously
 	 * we execute this only once.
 	 */
@@ -1180,12 +1240,15 @@ void crash_smp_send_stop(void)
 	cpus_stopped = 1;
 
 	/*
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * If this cpu is the only one alive at this point in time, online or
 	 * not, there are no stop messages to be sent around, so just back out.
 	 */
 	if (num_other_online_cpus() == 0)
 		goto skip_ipi;
 
+<<<<<<< HEAD
 	cpumask_copy(&mask, cpu_online_mask);
 	cpumask_clear_cpu(smp_processor_id(), &mask);
 
@@ -1205,12 +1268,104 @@ void crash_smp_send_stop(void)
 
 skip_ipi:
 	sdei_mask_local_cpu();
+=======
+	/* Only proceed if this is the first CPU to reach this code */
+	if (test_and_set_bit(0, &stop_in_progress))
+		return;
+
+	/*
+	 * Send an IPI to all currently online CPUs except the CPU running
+	 * this code.
+	 *
+	 * NOTE: we don't do anything here to prevent other CPUs from coming
+	 * online after we snapshot `cpu_online_mask`. Ideally, the calling code
+	 * should do something to prevent other CPUs from coming up. This code
+	 * can be called in the panic path and thus it doesn't seem wise to
+	 * grab the CPU hotplug mutex ourselves. Worst case:
+	 * - If a CPU comes online as we're running, we'll likely notice it
+	 *   during the 1 second wait below and then we'll catch it when we try
+	 *   with an NMI (assuming NMIs are enabled) since we re-snapshot the
+	 *   mask before sending an NMI.
+	 * - If we leave the function and see that CPUs are still online we'll
+	 *   at least print a warning. Especially without NMIs this function
+	 *   isn't foolproof anyway so calling code will just have to accept
+	 *   the fact that there could be cases where a CPU can't be stopped.
+	 */
+	cpumask_copy(&mask, cpu_online_mask);
+	cpumask_clear_cpu(smp_processor_id(), &mask);
+
+	if (system_state <= SYSTEM_RUNNING)
+		pr_crit("SMP: stopping secondary CPUs\n");
+
+	/*
+	 * Start with a normal IPI and wait up to one second for other CPUs to
+	 * stop. We do this first because it gives other processors a chance
+	 * to exit critical sections / drop locks and makes the rest of the
+	 * stop process (especially console flush) more robust.
+	 */
+	smp_cross_call(&mask, IPI_CPU_STOP);
+	timeout = USEC_PER_SEC;
+	while (num_other_online_cpus() && timeout--)
+		udelay(1);
+
+	/*
+	 * If CPUs are still online, try an NMI. There's no excuse for this to
+	 * be slow, so we only give them an extra 10 ms to respond.
+	 */
+	if (num_other_online_cpus() && ipi_should_be_nmi(IPI_CPU_STOP_NMI)) {
+		smp_rmb();
+		cpumask_copy(&mask, cpu_online_mask);
+		cpumask_clear_cpu(smp_processor_id(), &mask);
+
+		pr_info("SMP: retry stop with NMI for CPUs %*pbl\n",
+			cpumask_pr_args(&mask));
+
+		smp_cross_call(&mask, IPI_CPU_STOP_NMI);
+		timeout = USEC_PER_MSEC * 10;
+		while (num_other_online_cpus() && timeout--)
+			udelay(1);
+	}
+
+	if (num_other_online_cpus()) {
+		smp_rmb();
+		cpumask_copy(&mask, cpu_online_mask);
+		cpumask_clear_cpu(smp_processor_id(), &mask);
+
+		pr_warn("SMP: failed to stop secondary CPUs %*pbl\n",
+			cpumask_pr_args(&mask));
+	}
+
+skip_ipi:
+	sdei_mask_local_cpu();
+}
+
+#ifdef CONFIG_KEXEC_CORE
+void crash_smp_send_stop(void)
+{
+	/*
+	 * This function can be called twice in panic path, but obviously
+	 * we execute this only once.
+	 *
+	 * We use this same boolean to tell whether the IPI we send was a
+	 * stop or a "crash stop".
+	 */
+	if (crash_stop)
+		return;
+	crash_stop = 1;
+
+	smp_send_stop();
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sdei_handler_abort();
 }
 
 bool smp_crash_stop_failed(void)
 {
+<<<<<<< HEAD
 	return (atomic_read(&waiting_for_crash_ipi) > 0);
+=======
+	return num_other_online_cpus() != 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 #endif
 

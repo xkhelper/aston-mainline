@@ -151,7 +151,11 @@ struct nfs_cache_array {
 	unsigned char folio_full : 1,
 		      folio_is_eof : 1,
 		      cookies_are_ordered : 1;
+<<<<<<< HEAD
 	struct nfs_cache_array_entry array[];
+=======
+	struct nfs_cache_array_entry array[] __counted_by(size);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct nfs_readdir_descriptor {
@@ -328,7 +332,12 @@ static int nfs_readdir_folio_array_append(struct folio *folio,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	cache_entry = &array->array[array->size];
+=======
+	array->size++;
+	cache_entry = &array->array[array->size - 1];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cache_entry->cookie = array->last_cookie;
 	cache_entry->ino = entry->ino;
 	cache_entry->d_type = entry->d_type;
@@ -337,7 +346,10 @@ static int nfs_readdir_folio_array_append(struct folio *folio,
 	array->last_cookie = entry->cookie;
 	if (array->last_cookie <= cache_entry->cookie)
 		array->cookies_are_ordered = 0;
+<<<<<<< HEAD
 	array->size++;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (entry->eof != 0)
 		nfs_readdir_array_set_eof(array);
 out:

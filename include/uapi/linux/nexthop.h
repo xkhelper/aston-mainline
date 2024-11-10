@@ -16,10 +16,22 @@ struct nhmsg {
 struct nexthop_grp {
 	__u32	id;	  /* nexthop id - must exist */
 	__u8	weight;   /* weight of this nexthop */
+<<<<<<< HEAD
 	__u8	resvd1;
 	__u16	resvd2;
 };
 
+=======
+	__u8	weight_high;	/* high order bits of weight */
+	__u16	resvd2;
+};
+
+static inline __u16 nexthop_grp_weight(const struct nexthop_grp *entry)
+{
+	return ((entry->weight_high << 8) | entry->weight) + 1;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum {
 	NEXTHOP_GRP_TYPE_MPATH,  /* hash-threshold nexthop group
 				  * default type if not specified
@@ -33,6 +45,12 @@ enum {
 #define NHA_OP_FLAG_DUMP_STATS		BIT(0)
 #define NHA_OP_FLAG_DUMP_HW_STATS	BIT(1)
 
+<<<<<<< HEAD
+=======
+/* Response OP_FLAGS. */
+#define NHA_OP_FLAG_RESP_GRP_RESVD_0	BIT(31)	/* Dump clears resvd fields. */
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum {
 	NHA_UNSPEC,
 	NHA_ID,		/* u32; id for nexthop. id == 0 means auto-assign */

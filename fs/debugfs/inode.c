@@ -89,12 +89,20 @@ enum {
 	Opt_uid,
 	Opt_gid,
 	Opt_mode,
+<<<<<<< HEAD
+=======
+	Opt_source,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct fs_parameter_spec debugfs_param_specs[] = {
 	fsparam_gid	("gid",		Opt_gid),
 	fsparam_u32oct	("mode",	Opt_mode),
 	fsparam_uid	("uid",		Opt_uid),
+<<<<<<< HEAD
+=======
+	fsparam_string	("source",	Opt_source),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 
@@ -126,6 +134,15 @@ static int debugfs_parse_param(struct fs_context *fc, struct fs_parameter *param
 	case Opt_mode:
 		opts->mode = result.uint_32 & S_IALLUGO;
 		break;
+<<<<<<< HEAD
+=======
+	case Opt_source:
+		if (fc->source)
+			return invalfc(fc, "Multiple sources specified");
+		fc->source = param->string;
+		param->string = NULL;
+		break;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * We might like to report bad mount options here;
 	 * but traditionally debugfs has ignored all mount options

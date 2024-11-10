@@ -617,9 +617,19 @@ static struct genl_family tcp_metrics_nl_family;
 
 static const struct nla_policy tcp_metrics_nl_policy[TCP_METRICS_ATTR_MAX + 1] = {
 	[TCP_METRICS_ATTR_ADDR_IPV4]	= { .type = NLA_U32, },
+<<<<<<< HEAD
 	[TCP_METRICS_ATTR_ADDR_IPV6]	= { .type = NLA_BINARY,
 					    .len = sizeof(struct in6_addr), },
 	[TCP_METRICS_ATTR_SADDR_IPV4]	= { .type = NLA_U32, },
+=======
+	[TCP_METRICS_ATTR_ADDR_IPV6]	=
+		NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
+
+	[TCP_METRICS_ATTR_SADDR_IPV4]	= { .type = NLA_U32, },
+	[TCP_METRICS_ATTR_SADDR_IPV6]	=
+		NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Following attributes are not received for GET/DEL,
 	 * we keep them for reference
 	 */
@@ -811,8 +821,11 @@ static int __parse_nl_addr(struct genl_info *info, struct inetpeer_addr *addr,
 	if (a) {
 		struct in6_addr in6;
 
+<<<<<<< HEAD
 		if (nla_len(a) != sizeof(struct in6_addr))
 			return -EINVAL;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		in6 = nla_get_in6_addr(a);
 		inetpeer_set_addr_v6(addr, &in6);
 		if (hash)

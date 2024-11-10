@@ -1006,7 +1006,11 @@ static const struct of_device_id pm8xxx_xoadc_id_table[] = {
 		.compatible = "qcom,pm8921-adc",
 		.data = &pm8921_variant,
 	},
+<<<<<<< HEAD
 	{ },
+=======
+	{ }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(of, pm8xxx_xoadc_id_table);
 

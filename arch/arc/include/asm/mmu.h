@@ -14,6 +14,10 @@ typedef struct {
 	unsigned long asid[NR_CPUS];	/* 8 bit MMU PID + Generation cycle */
 } mm_context_t;
 
+<<<<<<< HEAD
+=======
+struct pt_regs;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void do_tlb_overlap_fault(unsigned long, unsigned long, struct pt_regs *);
 
 #endif

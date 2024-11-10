@@ -24,11 +24,18 @@
 #include <linux/tty.h>
 #include <linux/personality.h>
 #include <linux/binfmts.h>
+<<<<<<< HEAD
+=======
+#include <asm/vdso-symbols.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/access-regs.h>
 #include <asm/ucontext.h>
 #include <linux/uaccess.h>
 #include <asm/lowcore.h>
+<<<<<<< HEAD
 #include <asm/vdso.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/fpu.h>
 #include "compat_linux.h"
 #include "compat_ptrace.h"

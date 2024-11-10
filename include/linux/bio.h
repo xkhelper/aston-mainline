@@ -324,8 +324,13 @@ static inline void bio_next_folio(struct folio_iter *fi, struct bio *bio)
 void bio_trim(struct bio *bio, sector_t offset, sector_t size);
 extern struct bio *bio_split(struct bio *bio, int sectors,
 			     gfp_t gfp, struct bio_set *bs);
+<<<<<<< HEAD
 struct bio *bio_split_rw(struct bio *bio, const struct queue_limits *lim,
 		unsigned *segs, struct bio_set *bs, unsigned max_bytes);
+=======
+int bio_split_rw_at(struct bio *bio, const struct queue_limits *lim,
+		unsigned *segs, unsigned max_bytes);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * bio_next_split - get next @sectors from a bio, splitting if necessary

@@ -26,7 +26,10 @@ static int nouveau_platform_probe(struct platform_device *pdev)
 	const struct nvkm_device_tegra_func *func;
 	struct nvkm_device *device = NULL;
 	struct drm_device *drm;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	func = of_device_get_match_data(&pdev->dev);
 
@@ -34,19 +37,28 @@ static int nouveau_platform_probe(struct platform_device *pdev)
 	if (IS_ERR(drm))
 		return PTR_ERR(drm);
 
+<<<<<<< HEAD
 	ret = drm_dev_register(drm, 0);
 	if (ret < 0) {
 		drm_dev_put(drm);
 		return ret;
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
 static void nouveau_platform_remove(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct drm_device *dev = platform_get_drvdata(pdev);
 	nouveau_drm_device_remove(dev);
+=======
+	struct nouveau_drm *drm = platform_get_drvdata(pdev);
+
+	nouveau_drm_device_remove(drm);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #if IS_ENABLED(CONFIG_OF)

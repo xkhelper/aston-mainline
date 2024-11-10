@@ -514,6 +514,16 @@ xfail_on_slow()
 	fi
 }
 
+<<<<<<< HEAD
+=======
+omit_on_slow()
+{
+	if [[ $KSFT_MACHINE_SLOW != yes ]]; then
+		"$@"
+	fi
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 xfail_on_veth()
 {
 	local dev=$1; shift

@@ -56,7 +56,11 @@ int adf_service_register(struct service_hndl *service);
 int adf_service_unregister(struct service_hndl *service);
 
 int adf_dev_up(struct adf_accel_dev *accel_dev, bool init_config);
+<<<<<<< HEAD
 int adf_dev_down(struct adf_accel_dev *accel_dev, bool cache_config);
+=======
+int adf_dev_down(struct adf_accel_dev *accel_dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int adf_dev_restart(struct adf_accel_dev *accel_dev);
 
 void adf_devmgr_update_class_index(struct adf_hw_device_data *hw_data);

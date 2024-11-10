@@ -186,7 +186,11 @@ static int fsl_xcvr_activate_ctl(struct snd_soc_dai *dai, const char *name,
 
 	lockdep_assert_held(&card->snd_card->controls_rwsem);
 
+<<<<<<< HEAD
 	kctl = snd_soc_card_get_kcontrol_locked(card, name);
+=======
+	kctl = snd_soc_card_get_kcontrol(card, name);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (kctl == NULL)
 		return -ENOENT;
 
@@ -1540,7 +1544,11 @@ static struct platform_driver fsl_xcvr_driver = {
 		.pm = pm_ptr(&fsl_xcvr_pm_ops),
 		.of_match_table = fsl_xcvr_dt_ids,
 	},
+<<<<<<< HEAD
 	.remove_new = fsl_xcvr_remove,
+=======
+	.remove = fsl_xcvr_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(fsl_xcvr_driver);
 

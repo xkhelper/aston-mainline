@@ -23,8 +23,15 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
 
 	.hardware_unsetup = vmx_hardware_unsetup,
 
+<<<<<<< HEAD
 	.hardware_enable = vmx_hardware_enable,
 	.hardware_disable = vmx_hardware_disable,
+=======
+	.enable_virtualization_cpu = vmx_enable_virtualization_cpu,
+	.disable_virtualization_cpu = vmx_disable_virtualization_cpu,
+	.emergency_disable_virtualization_cpu = vmx_emergency_disable_virtualization_cpu,
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.has_emulated_msr = vmx_has_emulated_msr,
 
 	.vm_size = sizeof(struct kvm_vmx),
@@ -41,7 +48,11 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
 	.vcpu_put = vmx_vcpu_put,
 
 	.update_exception_bitmap = vmx_update_exception_bitmap,
+<<<<<<< HEAD
 	.get_msr_feature = vmx_get_msr_feature,
+=======
+	.get_feature_msr = vmx_get_feature_msr,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.get_msr = vmx_get_msr,
 	.set_msr = vmx_set_msr,
 	.get_segment_base = vmx_get_segment_base,
@@ -89,6 +100,11 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
 	.enable_nmi_window = vmx_enable_nmi_window,
 	.enable_irq_window = vmx_enable_irq_window,
 	.update_cr8_intercept = vmx_update_cr8_intercept,
+<<<<<<< HEAD
+=======
+
+	.x2apic_icr_is_split = false,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.set_virtual_apic_mode = vmx_set_virtual_apic_mode,
 	.set_apic_access_page_addr = vmx_set_apic_access_page_addr,
 	.refresh_apicv_exec_ctrl = vmx_refresh_apicv_exec_ctrl,

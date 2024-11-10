@@ -892,6 +892,12 @@ struct ieee80211_chanctx {
 	/* temporary data for search algorithm etc. */
 	struct ieee80211_chan_req req;
 
+<<<<<<< HEAD
+=======
+	bool radar_detected;
+
+	/* MUST be last - ends in a flexible-array member. */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ieee80211_chanctx_conf conf;
 };
 
@@ -1051,7 +1057,11 @@ struct ieee80211_link_data {
 	} csa;
 
 	struct wiphy_work color_change_finalize_work;
+<<<<<<< HEAD
 	struct delayed_work color_collision_detect_work;
+=======
+	struct wiphy_delayed_work color_collision_detect_work;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 color_bitmap;
 
 	/* context reservation -- protected with wiphy mutex */
@@ -1067,6 +1077,10 @@ struct ieee80211_link_data {
 	int ap_power_level; /* in dBm */
 
 	bool radar_required;
+<<<<<<< HEAD
+=======
+	struct wiphy_delayed_work dfs_cac_timer_work;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	union {
 		struct ieee80211_link_data_managed mgd;
@@ -1165,8 +1179,11 @@ struct ieee80211_sub_if_data {
 	struct ieee80211_link_data deflink;
 	struct ieee80211_link_data __rcu *link[IEEE80211_MLD_MAX_NUM_LINKS];
 
+<<<<<<< HEAD
 	struct wiphy_delayed_work dfs_cac_timer_work;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* for ieee80211_set_active_links_async() */
 	struct wiphy_work activate_links_work;
 	u16 desired_active_links;
@@ -2004,7 +2021,12 @@ int ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
 /* color change handling */
 void ieee80211_color_change_finalize_work(struct wiphy *wiphy,
 					  struct wiphy_work *work);
+<<<<<<< HEAD
 void ieee80211_color_collision_detection_work(struct work_struct *work);
+=======
+void ieee80211_color_collision_detection_work(struct wiphy *wiphy,
+					      struct wiphy_work *work);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* interface handling */
 #define MAC80211_SUPPORTED_FEATURES_TX	(NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM | \
@@ -2072,8 +2094,11 @@ void __ieee80211_subif_start_xmit(struct sk_buff *skb,
 				  u32 info_flags,
 				  u32 ctrl_flags,
 				  u64 *cookie);
+<<<<<<< HEAD
 void ieee80211_purge_tx_queue(struct ieee80211_hw *hw,
 			      struct sk_buff_head *skbs);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct sk_buff *
 ieee80211_build_data_template(struct ieee80211_sub_if_data *sdata,
 			      struct sk_buff *skb, u32 info_flags);
@@ -2136,6 +2161,32 @@ void ieee80211_process_addba_request(struct ieee80211_local *local,
 				     struct ieee80211_mgmt *mgmt,
 				     size_t len);
 
+<<<<<<< HEAD
+=======
+static inline struct ieee80211_mgmt *
+ieee80211_mgmt_ba(struct sk_buff *skb, const u8 *da,
+		  struct ieee80211_sub_if_data *sdata)
+{
+	struct ieee80211_mgmt *mgmt = skb_put_zero(skb, 24);
+
+	ether_addr_copy(mgmt->da, da);
+	ether_addr_copy(mgmt->sa, sdata->vif.addr);
+
+	if (sdata->vif.type == NL80211_IFTYPE_AP ||
+	    sdata->vif.type == NL80211_IFTYPE_AP_VLAN ||
+	    sdata->vif.type == NL80211_IFTYPE_MESH_POINT)
+		ether_addr_copy(mgmt->bssid, sdata->vif.addr);
+	else if (sdata->vif.type == NL80211_IFTYPE_STATION)
+		ether_addr_copy(mgmt->bssid, sdata->vif.cfg.ap_addr);
+	else if (sdata->vif.type == NL80211_IFTYPE_ADHOC)
+		ether_addr_copy(mgmt->bssid, sdata->u.ibss.bssid);
+
+	mgmt->frame_control = cpu_to_le16(IEEE80211_FTYPE_MGMT |
+					  IEEE80211_STYPE_ACTION);
+	return mgmt;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int __ieee80211_stop_tx_ba_session(struct sta_info *sta, u16 tid,
 				   enum ieee80211_agg_stop_reason reason);
 void ieee80211_start_tx_ba_cb(struct sta_info *sta, int tid,
@@ -2629,7 +2680,12 @@ void ieee80211_recalc_chanctx_min_def(struct ieee80211_local *local,
 bool ieee80211_is_radar_required(struct ieee80211_local *local);
 
 void ieee80211_dfs_cac_timer_work(struct wiphy *wiphy, struct wiphy_work *work);
+<<<<<<< HEAD
 void ieee80211_dfs_cac_cancel(struct ieee80211_local *local);
+=======
+void ieee80211_dfs_cac_cancel(struct ieee80211_local *local,
+			      struct ieee80211_chanctx *chanctx);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void ieee80211_dfs_radar_detected_work(struct wiphy *wiphy,
 				       struct wiphy_work *work);
 int ieee80211_send_action_csa(struct ieee80211_sub_if_data *sdata,

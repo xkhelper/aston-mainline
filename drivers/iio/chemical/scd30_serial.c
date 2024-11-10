@@ -15,7 +15,11 @@
 #include <linux/serdev.h>
 #include <linux/string.h>
 #include <linux/types.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "scd30.h"
 

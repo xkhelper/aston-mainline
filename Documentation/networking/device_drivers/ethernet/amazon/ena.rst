@@ -230,6 +230,14 @@ per-queue stats) from the device.
 
 In addition the driver logs the stats to syslog upon device reset.
 
+<<<<<<< HEAD
+=======
+On supported instance types, the statistics will also include the
+ENA Express data (fields prefixed with `ena_srd`). For a complete
+documentation of ENA Express data refer to
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ena-express.html#ena-express-monitor
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MTU
 ===
 

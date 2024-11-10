@@ -46,16 +46,26 @@ static void status_print(const char *name, const char *macro,
 	printf("  # %s\n", macro);
 }
 
+<<<<<<< HEAD
 #define STATUS(__d, __m)				\
 do {							\
 	if (IS_BUILTIN(__d))				\
 		status_print(#__m, #__d, "on");		\
 	else						\
 		status_print(#__m, #__d, "OFF");	\
+=======
+#define STATUS(feature)                                   \
+do {                                                      \
+	if (feature.is_builtin)                               \
+		status_print(feature.name, feature.macro, "on");  \
+	else                                                  \
+		status_print(feature.name, feature.macro, "OFF"); \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 } while (0)
 
 static void library_status(void)
 {
+<<<<<<< HEAD
 	STATUS(HAVE_DWARF_SUPPORT, dwarf);
 	STATUS(HAVE_DWARF_GETLOCATIONS_SUPPORT, dwarf_getlocations);
 #ifndef HAVE_SYSCALL_TABLE_SUPPORT
@@ -85,6 +95,10 @@ static void library_status(void)
 	STATUS(HAVE_BPF_SKEL, bpf_skeletons);
 	STATUS(HAVE_DWARF_UNWIND_SUPPORT, dwarf-unwind-support);
 	STATUS(HAVE_CSTRACE_SUPPORT, libopencsd);
+=======
+	for (int i = 0; supported_features[i].name; ++i)
+		STATUS(supported_features[i]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int cmd_version(int argc, const char **argv)

@@ -28,7 +28,10 @@
 #include <linux/err.h>
 #include <linux/proc_fs.h>
 #include <linux/backlight.h>
+<<<<<<< HEAD
 #include <linux/fb.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/leds.h>
 #include <linux/platform_device.h>
 #include <linux/uaccess.h>
@@ -818,7 +821,11 @@ static int asus_backlight_init(struct asus_laptop *asus)
 
 	asus->backlight_device = bd;
 	bd->props.brightness = asus_read_brightness(bd);
+<<<<<<< HEAD
 	bd->props.power = FB_BLANK_UNBLANK;
+=======
+	bd->props.power = BACKLIGHT_POWER_ON;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	backlight_update_status(bd);
 	return 0;
 }

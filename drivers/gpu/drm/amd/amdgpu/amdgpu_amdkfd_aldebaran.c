@@ -191,4 +191,9 @@ const struct kfd2kgd_calls aldebaran_kfd2kgd = {
 	.get_iq_wait_times = kgd_gfx_v9_get_iq_wait_times,
 	.build_grace_period_packet_info = kgd_gfx_v9_build_grace_period_packet_info,
 	.program_trap_handler_settings = kgd_gfx_v9_program_trap_handler_settings,
+<<<<<<< HEAD
+=======
+	.hqd_get_pq_addr = kgd_gfx_v9_hqd_get_pq_addr,
+	.hqd_reset = kgd_gfx_v9_hqd_reset,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };

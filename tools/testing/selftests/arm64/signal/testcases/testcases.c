@@ -6,6 +6,7 @@
 
 #include "testcases.h"
 
+<<<<<<< HEAD
 struct _aarch64_ctx *get_header(struct _aarch64_ctx *head, uint32_t magic,
 				size_t resv_sz, size_t *offset)
 {
@@ -29,6 +30,8 @@ struct _aarch64_ctx *get_header(struct _aarch64_ctx *head, uint32_t magic,
 	return found;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool validate_extra_context(struct extra_context *extra, char **err,
 			    void **extra_data, size_t *extra_size)
 {
@@ -184,6 +187,13 @@ bool validate_reserved(ucontext_t *uc, size_t resv_sz, char **err)
 			if (head->size != sizeof(struct esr_context))
 				*err = "Bad size for esr_context";
 			break;
+<<<<<<< HEAD
+=======
+		case POE_MAGIC:
+			if (head->size != sizeof(struct poe_context))
+				*err = "Bad size for poe_context";
+			break;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		case TPIDR2_MAGIC:
 			if (head->size != sizeof(struct tpidr2_context))
 				*err = "Bad size for tpidr2_context";

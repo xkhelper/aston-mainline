@@ -61,6 +61,27 @@ static inline int is_x32_frame(struct ksignal *ksig)
 }
 
 /*
+<<<<<<< HEAD
+=======
+ * Enable all pkeys temporarily, so as to ensure that both the current
+ * execution stack as well as the alternate signal stack are writeable.
+ * The application can use any of the available pkeys to protect the
+ * alternate signal stack, and we don't know which one it is, so enable
+ * all. The PKRU register will be reset to init_pkru later in the flow,
+ * in fpu__clear_user_states(), and it is the application's responsibility
+ * to enable the appropriate pkey as the first step in the signal handler
+ * so that the handler does not segfault.
+ */
+static inline u32 sig_prepare_pkru(void)
+{
+	u32 orig_pkru = read_pkru();
+
+	write_pkru(0);
+	return orig_pkru;
+}
+
+/*
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Set up a signal frame.
  */
 
@@ -84,6 +105,10 @@ get_sigframe(struct ksignal *ksig, struct pt_regs *regs, size_t frame_size,
 	unsigned long math_size = 0;
 	unsigned long sp = regs->sp;
 	unsigned long buf_fx = 0;
+<<<<<<< HEAD
+=======
+	u32 pkru;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* redzone */
 	if (!ia32_frame)
@@ -138,9 +163,23 @@ get_sigframe(struct ksignal *ksig, struct pt_regs *regs, size_t frame_size,
 		return (void __user *)-1L;
 	}
 
+<<<<<<< HEAD
 	/* save i387 and extended state */
 	if (!copy_fpstate_to_sigframe(*fpstate, (void __user *)buf_fx, math_size))
 		return (void __user *)-1L;
+=======
+	/* Update PKRU to enable access to the alternate signal stack. */
+	pkru = sig_prepare_pkru();
+	/* save i387 and extended state */
+	if (!copy_fpstate_to_sigframe(*fpstate, (void __user *)buf_fx, math_size, pkru)) {
+		/*
+		 * Restore PKRU to the original, user-defined value; disable
+		 * extra pkeys enabled for the alternate signal stack, if any.
+		 */
+		write_pkru(pkru);
+		return (void __user *)-1L;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return (void __user *)sp;
 }

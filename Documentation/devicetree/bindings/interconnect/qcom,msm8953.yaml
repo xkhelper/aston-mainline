@@ -13,8 +13,12 @@ description: |
   The Qualcomm MSM8953 interconnect providers support adjusting the
   bandwidth requirements between the various NoC fabrics.
 
+<<<<<<< HEAD
   See also:
   - dt-bindings/interconnect/qcom,msm8953.h
+=======
+  See also: include/dt-bindings/interconnect/qcom,msm8953.h
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 properties:
   compatible:

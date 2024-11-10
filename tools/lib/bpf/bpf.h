@@ -100,7 +100,11 @@ struct bpf_prog_load_opts {
 	__u32 log_level;
 	__u32 log_size;
 	char *log_buf;
+<<<<<<< HEAD
 	/* output: actual total log contents size (including termintaing zero).
+=======
+	/* output: actual total log contents size (including terminating zero).
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * It could be both larger than original log_size (if log was
 	 * truncated), or smaller (if log buffer wasn't filled completely).
 	 * If kernel doesn't support this feature, log_size is left unchanged.
@@ -129,7 +133,11 @@ struct bpf_btf_load_opts {
 	char *log_buf;
 	__u32 log_level;
 	__u32 log_size;
+<<<<<<< HEAD
 	/* output: actual total log contents size (including termintaing zero).
+=======
+	/* output: actual total log contents size (including terminating zero).
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * It could be both larger than original log_size (if log was
 	 * truncated), or smaller (if log buffer wasn't filled completely).
 	 * If kernel doesn't support this feature, log_size is left unchanged.

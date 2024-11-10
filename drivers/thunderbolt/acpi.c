@@ -32,6 +32,7 @@ static acpi_status tb_acpi_add_link(acpi_handle handle, u32 level, void *data,
 		goto out_put;
 
 	/*
+<<<<<<< HEAD
 	 * Try to find physical device walking upwards to the hierarcy.
 	 * We need to do this because the xHCI driver might not yet be
 	 * bound so the USB3 SuperSpeed ports are not yet created.
@@ -66,6 +67,22 @@ static acpi_status tb_acpi_add_link(acpi_handle handle, u32 level, void *data,
 	    (pci_is_pcie(pdev) &&
 		(pci_pcie_type(pdev) == PCI_EXP_TYPE_ROOT_PORT ||
 		 pci_pcie_type(pdev) == PCI_EXP_TYPE_DOWNSTREAM))) {
+=======
+	 * Ignore USB3 ports here as USB core will set up device links between
+	 * tunneled USB3 devices and NHI host during USB device creation.
+	 * USB3 ports might not even have a physical device yet if xHCI driver
+	 * isn't bound yet.
+	 */
+	dev = acpi_get_first_physical_node(adev);
+	if (!dev || !dev_is_pci(dev))
+		goto out_put;
+
+	/* Check that this matches a PCIe root/downstream port. */
+	pdev = to_pci_dev(dev);
+	if (pci_is_pcie(pdev) &&
+	    (pci_pcie_type(pdev) == PCI_EXP_TYPE_ROOT_PORT ||
+	     pci_pcie_type(pdev) == PCI_EXP_TYPE_DOWNSTREAM)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		const struct device_link *link;
 
 		/*

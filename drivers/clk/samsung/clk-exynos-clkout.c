@@ -241,7 +241,11 @@ static struct platform_driver exynos_clkout_driver = {
 		.pm = &exynos_clkout_pm_ops,
 	},
 	.probe = exynos_clkout_probe,
+<<<<<<< HEAD
 	.remove_new = exynos_clkout_remove,
+=======
+	.remove = exynos_clkout_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(exynos_clkout_driver);
 

@@ -309,6 +309,7 @@ static int orangefs_read_folio(struct file *file, struct folio *folio)
 
 static int orangefs_write_begin(struct file *file,
 		struct address_space *mapping, loff_t pos, unsigned len,
+<<<<<<< HEAD
 		struct page **pagep, void **fsdata)
 {
 	struct orangefs_write_range *wr;
@@ -325,6 +326,20 @@ static int orangefs_write_begin(struct file *file,
 
 	*pagep = page;
 	folio = page_folio(page);
+=======
+		struct folio **foliop, void **fsdata)
+{
+	struct orangefs_write_range *wr;
+	struct folio *folio;
+	int ret;
+
+	folio = __filemap_get_folio(mapping, pos / PAGE_SIZE, FGP_WRITEBEGIN,
+			mapping_gfp_mask(mapping));
+	if (IS_ERR(folio))
+		return PTR_ERR(folio);
+
+	*foliop = folio;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (folio_test_dirty(folio) && !folio_test_private(folio)) {
 		/*
@@ -365,9 +380,16 @@ okay:
 }
 
 static int orangefs_write_end(struct file *file, struct address_space *mapping,
+<<<<<<< HEAD
     loff_t pos, unsigned len, unsigned copied, struct page *page, void *fsdata)
 {
 	struct inode *inode = page->mapping->host;
+=======
+		loff_t pos, unsigned len, unsigned copied, struct folio *folio,
+		void *fsdata)
+{
+	struct inode *inode = folio->mapping->host;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	loff_t last_pos = pos + copied;
 
 	/*
@@ -377,6 +399,7 @@ static int orangefs_write_end(struct file *file, struct address_space *mapping,
 	if (last_pos > inode->i_size)
 		i_size_write(inode, last_pos);
 
+<<<<<<< HEAD
 	/* zero the stale part of the page if we did a short copy */
 	if (!PageUptodate(page)) {
 		unsigned from = pos & (PAGE_SIZE - 1);
@@ -394,6 +417,25 @@ static int orangefs_write_end(struct file *file, struct address_space *mapping,
 	set_page_dirty(page);
 	unlock_page(page);
 	put_page(page);
+=======
+	/* zero the stale part of the folio if we did a short copy */
+	if (!folio_test_uptodate(folio)) {
+		unsigned from = pos & (PAGE_SIZE - 1);
+		if (copied < len) {
+			folio_zero_range(folio, from + copied, len - copied);
+		}
+		/* Set fully written pages uptodate. */
+		if (pos == folio_pos(folio) &&
+		    (len == PAGE_SIZE || pos + len == inode->i_size)) {
+			folio_zero_segment(folio, from + copied, PAGE_SIZE);
+			folio_mark_uptodate(folio);
+		}
+	}
+
+	folio_mark_dirty(folio);
+	folio_unlock(folio);
+	folio_put(folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mark_inode_dirty_sync(file_inode(file));
 	return copied;

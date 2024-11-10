@@ -19,6 +19,10 @@ enum {
 	ENUM_BIT(EXTENT_DIRTY),
 	ENUM_BIT(EXTENT_UPTODATE),
 	ENUM_BIT(EXTENT_LOCKED),
+<<<<<<< HEAD
+=======
+	ENUM_BIT(EXTENT_DIO_LOCKED),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ENUM_BIT(EXTENT_NEW),
 	ENUM_BIT(EXTENT_DELALLOC),
 	ENUM_BIT(EXTENT_DEFRAG),
@@ -67,6 +71,11 @@ enum {
 				 EXTENT_ADD_INODE_BYTES | \
 				 EXTENT_CLEAR_ALL_BITS)
 
+<<<<<<< HEAD
+=======
+#define EXTENT_LOCK_BITS	(EXTENT_LOCKED | EXTENT_DIO_LOCKED)
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Redefined bits above which are used only in the device allocation tree,
  * shouldn't be using EXTENT_LOCKED / EXTENT_BOUNDARY / EXTENT_CLEAR_META_RESV
@@ -134,12 +143,31 @@ const struct btrfs_fs_info *extent_io_tree_to_fs_info(const struct extent_io_tre
 void extent_io_tree_init(struct btrfs_fs_info *fs_info,
 			 struct extent_io_tree *tree, unsigned int owner);
 void extent_io_tree_release(struct extent_io_tree *tree);
+<<<<<<< HEAD
 
 int lock_extent(struct extent_io_tree *tree, u64 start, u64 end,
 		struct extent_state **cached);
 
 int try_lock_extent(struct extent_io_tree *tree, u64 start, u64 end,
 		    struct extent_state **cached);
+=======
+int __lock_extent(struct extent_io_tree *tree, u64 start, u64 end, u32 bits,
+		  struct extent_state **cached);
+bool __try_lock_extent(struct extent_io_tree *tree, u64 start, u64 end, u32 bits,
+		       struct extent_state **cached);
+
+static inline int lock_extent(struct extent_io_tree *tree, u64 start, u64 end,
+			      struct extent_state **cached)
+{
+	return __lock_extent(tree, start, end, EXTENT_LOCKED, cached);
+}
+
+static inline bool try_lock_extent(struct extent_io_tree *tree, u64 start,
+				   u64 end, struct extent_state **cached)
+{
+	return __try_lock_extent(tree, start, end, EXTENT_LOCKED, cached);
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int __init extent_state_init_cachep(void);
 void __cold extent_state_free_cachep(void);
@@ -212,5 +240,25 @@ int find_contiguous_extent_bit(struct extent_io_tree *tree, u64 start,
 bool btrfs_find_delalloc_range(struct extent_io_tree *tree, u64 *start,
 			       u64 *end, u64 max_bytes,
 			       struct extent_state **cached_state);
+<<<<<<< HEAD
+=======
+static inline int lock_dio_extent(struct extent_io_tree *tree, u64 start,
+				  u64 end, struct extent_state **cached)
+{
+	return __lock_extent(tree, start, end, EXTENT_DIO_LOCKED, cached);
+}
+
+static inline bool try_lock_dio_extent(struct extent_io_tree *tree, u64 start,
+				       u64 end, struct extent_state **cached)
+{
+	return __try_lock_extent(tree, start, end, EXTENT_DIO_LOCKED, cached);
+}
+
+static inline int unlock_dio_extent(struct extent_io_tree *tree, u64 start,
+				    u64 end, struct extent_state **cached)
+{
+	return __clear_extent_bit(tree, start, end, EXTENT_DIO_LOCKED, cached, NULL);
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* BTRFS_EXTENT_IO_TREE_H */

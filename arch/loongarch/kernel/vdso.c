@@ -34,9 +34,15 @@ static union {
 	struct loongarch_vdso_data vdata;
 } loongarch_vdso_data __page_aligned_data;
 
+<<<<<<< HEAD
 static struct page *vdso_pages[] = { NULL };
 struct vdso_data *vdso_data = generic_vdso_data.data;
 struct vdso_pcpu_data *vdso_pdata = loongarch_vdso_data.vdata.pdata;
+=======
+struct vdso_data *vdso_data = generic_vdso_data.data;
+struct vdso_pcpu_data *vdso_pdata = loongarch_vdso_data.vdata.pdata;
+struct vdso_rng_data *vdso_rng_data = &loongarch_vdso_data.vdata.rng_data;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int vdso_mremap(const struct vm_special_mapping *sm, struct vm_area_struct *new_vma)
 {
@@ -84,10 +90,15 @@ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
 
 struct loongarch_vdso_info vdso_info = {
 	.vdso = vdso_start,
+<<<<<<< HEAD
 	.size = PAGE_SIZE,
 	.code_mapping = {
 		.name = "[vdso]",
 		.pages = vdso_pages,
+=======
+	.code_mapping = {
+		.name = "[vdso]",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.mremap = vdso_mremap,
 	},
 	.data_mapping = {
@@ -102,11 +113,21 @@ static int __init init_vdso(void)
 	unsigned long i, cpu, pfn;
 
 	BUG_ON(!PAGE_ALIGNED(vdso_info.vdso));
+<<<<<<< HEAD
 	BUG_ON(!PAGE_ALIGNED(vdso_info.size));
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for_each_possible_cpu(cpu)
 		vdso_pdata[cpu].node = cpu_to_node(cpu);
 
+<<<<<<< HEAD
+=======
+	vdso_info.size = PAGE_ALIGN(vdso_end - vdso_start);
+	vdso_info.code_mapping.pages =
+		kcalloc(vdso_info.size / PAGE_SIZE, sizeof(struct page *), GFP_KERNEL);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pfn = __phys_to_pfn(__pa_symbol(vdso_info.vdso));
 	for (i = 0; i < vdso_info.size / PAGE_SIZE; i++)
 		vdso_info.code_mapping.pages[i] = pfn_to_page(pfn + i);

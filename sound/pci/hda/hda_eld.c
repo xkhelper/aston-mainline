@@ -12,7 +12,11 @@
 #include <linux/init.h>
 #include <linux/slab.h>
 #include <sound/core.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <sound/hda_chmap.h>
 #include <sound/hda_codec.h>
 #include "hda_local.h"

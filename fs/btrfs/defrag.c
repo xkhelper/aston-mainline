@@ -45,8 +45,13 @@ struct inode_defrag {
 	u32 extent_thresh;
 };
 
+<<<<<<< HEAD
 static int __compare_inode_defrag(struct inode_defrag *defrag1,
 				  struct inode_defrag *defrag2)
+=======
+static int compare_inode_defrag(const struct inode_defrag *defrag1,
+				const struct inode_defrag *defrag2)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (defrag1->root > defrag2->root)
 		return 1;
@@ -61,16 +66,26 @@ static int __compare_inode_defrag(struct inode_defrag *defrag1,
 }
 
 /*
+<<<<<<< HEAD
  * Pop a record for an inode into the defrag tree.  The lock must be held
+=======
+ * Insert a record for an inode into the defrag tree.  The lock must be held
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * already.
  *
  * If you're inserting a record for an older transid than an existing record,
  * the transid already in the tree is lowered.
+<<<<<<< HEAD
  *
  * If an existing record is found the defrag item you pass in is freed.
  */
 static int __btrfs_add_inode_defrag(struct btrfs_inode *inode,
 				    struct inode_defrag *defrag)
+=======
+ */
+static int btrfs_insert_inode_defrag(struct btrfs_inode *inode,
+				     struct inode_defrag *defrag)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct btrfs_fs_info *fs_info = inode->root->fs_info;
 	struct inode_defrag *entry;
@@ -83,7 +98,11 @@ static int __btrfs_add_inode_defrag(struct btrfs_inode *inode,
 		parent = *p;
 		entry = rb_entry(parent, struct inode_defrag, rb_node);
 
+<<<<<<< HEAD
 		ret = __compare_inode_defrag(defrag, entry);
+=======
+		ret = compare_inode_defrag(defrag, entry);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret < 0)
 			p = &parent->rb_left;
 		else if (ret > 0)
@@ -107,7 +126,11 @@ static int __btrfs_add_inode_defrag(struct btrfs_inode *inode,
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline int __need_auto_defrag(struct btrfs_fs_info *fs_info)
+=======
+static inline int need_auto_defrag(struct btrfs_fs_info *fs_info)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (!btrfs_test_opt(fs_info, AUTO_DEFRAG))
 		return 0;
@@ -119,14 +142,22 @@ static inline int __need_auto_defrag(struct btrfs_fs_info *fs_info)
 }
 
 /*
+<<<<<<< HEAD
  * Insert a defrag record for this inode if auto defrag is enabled.
  */
 int btrfs_add_inode_defrag(struct btrfs_trans_handle *trans,
 			   struct btrfs_inode *inode, u32 extent_thresh)
+=======
+ * Insert a defrag record for this inode if auto defrag is enabled. No errors
+ * returned as they're not considered fatal.
+ */
+void btrfs_add_inode_defrag(struct btrfs_inode *inode, u32 extent_thresh)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct btrfs_root *root = inode->root;
 	struct btrfs_fs_info *fs_info = root->fs_info;
 	struct inode_defrag *defrag;
+<<<<<<< HEAD
 	u64 transid;
 	int ret;
 
@@ -147,6 +178,22 @@ int btrfs_add_inode_defrag(struct btrfs_trans_handle *trans,
 
 	defrag->ino = btrfs_ino(inode);
 	defrag->transid = transid;
+=======
+	int ret;
+
+	if (!need_auto_defrag(fs_info))
+		return;
+
+	if (test_bit(BTRFS_INODE_IN_DEFRAG, &inode->runtime_flags))
+		return;
+
+	defrag = kmem_cache_zalloc(btrfs_inode_defrag_cachep, GFP_NOFS);
+	if (!defrag)
+		return;
+
+	defrag->ino = btrfs_ino(inode);
+	defrag->transid = btrfs_get_root_last_trans(root);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	defrag->root = btrfs_root_id(root);
 	defrag->extent_thresh = extent_thresh;
 
@@ -157,14 +204,21 @@ int btrfs_add_inode_defrag(struct btrfs_trans_handle *trans,
 		 * and then re-read this inode, this new inode doesn't have
 		 * IN_DEFRAG flag. At the case, we may find the existed defrag.
 		 */
+<<<<<<< HEAD
 		ret = __btrfs_add_inode_defrag(inode, defrag);
+=======
+		ret = btrfs_insert_inode_defrag(inode, defrag);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret)
 			kmem_cache_free(btrfs_inode_defrag_cachep, defrag);
 	} else {
 		kmem_cache_free(btrfs_inode_defrag_cachep, defrag);
 	}
 	spin_unlock(&fs_info->defrag_inodes_lock);
+<<<<<<< HEAD
 	return 0;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -189,7 +243,11 @@ static struct inode_defrag *btrfs_pick_defrag_inode(
 		parent = p;
 		entry = rb_entry(parent, struct inode_defrag, rb_node);
 
+<<<<<<< HEAD
 		ret = __compare_inode_defrag(&tmp, entry);
+=======
+		ret = compare_inode_defrag(&tmp, entry);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret < 0)
 			p = parent->rb_left;
 		else if (ret > 0)
@@ -198,7 +256,11 @@ static struct inode_defrag *btrfs_pick_defrag_inode(
 			goto out;
 	}
 
+<<<<<<< HEAD
 	if (parent && __compare_inode_defrag(&tmp, entry) > 0) {
+=======
+	if (parent && compare_inode_defrag(&tmp, entry) > 0) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		parent = rb_next(parent);
 		if (parent)
 			entry = rb_entry(parent, struct inode_defrag, rb_node);
@@ -214,6 +276,7 @@ out:
 
 void btrfs_cleanup_defrag_inodes(struct btrfs_fs_info *fs_info)
 {
+<<<<<<< HEAD
 	struct inode_defrag *defrag;
 	struct rb_node *node;
 
@@ -228,13 +291,31 @@ void btrfs_cleanup_defrag_inodes(struct btrfs_fs_info *fs_info)
 
 		node = rb_first(&fs_info->defrag_inodes);
 	}
+=======
+	struct inode_defrag *defrag, *next;
+
+	spin_lock(&fs_info->defrag_inodes_lock);
+
+	rbtree_postorder_for_each_entry_safe(defrag, next,
+					     &fs_info->defrag_inodes, rb_node)
+		kmem_cache_free(btrfs_inode_defrag_cachep, defrag);
+
+	fs_info->defrag_inodes = RB_ROOT;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_unlock(&fs_info->defrag_inodes_lock);
 }
 
 #define BTRFS_DEFRAG_BATCH	1024
 
+<<<<<<< HEAD
 static int __btrfs_run_defrag_inode(struct btrfs_fs_info *fs_info,
 				    struct inode_defrag *defrag)
+=======
+static int btrfs_run_defrag_inode(struct btrfs_fs_info *fs_info,
+				  struct inode_defrag *defrag,
+				  struct file_ra_state *ra)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct btrfs_root *inode_root;
 	struct inode *inode;
@@ -245,7 +326,11 @@ static int __btrfs_run_defrag_inode(struct btrfs_fs_info *fs_info,
 again:
 	if (test_bit(BTRFS_FS_STATE_REMOUNTING, &fs_info->fs_state))
 		goto cleanup;
+<<<<<<< HEAD
 	if (!__need_auto_defrag(fs_info))
+=======
+	if (!need_auto_defrag(fs_info))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto cleanup;
 
 	/* Get the inode */
@@ -273,9 +358,16 @@ again:
 	range.len = (u64)-1;
 	range.start = cur;
 	range.extent_thresh = defrag->extent_thresh;
+<<<<<<< HEAD
 
 	sb_start_write(fs_info->sb);
 	ret = btrfs_defrag_file(inode, NULL, &range, defrag->transid,
+=======
+	file_ra_state_init(ra, inode->i_mapping);
+
+	sb_start_write(fs_info->sb);
+	ret = btrfs_defrag_file(inode, ra, &range, defrag->transid,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       BTRFS_DEFRAG_BATCH);
 	sb_end_write(fs_info->sb);
 	iput(inode);
@@ -302,11 +394,20 @@ int btrfs_run_defrag_inodes(struct btrfs_fs_info *fs_info)
 
 	atomic_inc(&fs_info->defrag_running);
 	while (1) {
+<<<<<<< HEAD
+=======
+		struct file_ra_state ra = { 0 };
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Pause the auto defragger. */
 		if (test_bit(BTRFS_FS_STATE_REMOUNTING, &fs_info->fs_state))
 			break;
 
+<<<<<<< HEAD
 		if (!__need_auto_defrag(fs_info))
+=======
+		if (!need_auto_defrag(fs_info))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 
 		/* find an inode to defrag */
@@ -324,7 +425,11 @@ int btrfs_run_defrag_inodes(struct btrfs_fs_info *fs_info)
 		first_ino = defrag->ino + 1;
 		root_objectid = defrag->root;
 
+<<<<<<< HEAD
 		__btrfs_run_defrag_inode(fs_info, defrag);
+=======
+		btrfs_run_defrag_inode(fs_info, defrag, &ra);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	atomic_dec(&fs_info->defrag_running);
 
@@ -772,12 +877,21 @@ static struct extent_map *defrag_lookup_extent(struct inode *inode, u64 start,
 	 * We can get a merged extent, in that case, we need to re-search
 	 * tree to get the original em for defrag.
 	 *
+<<<<<<< HEAD
 	 * If @newer_than is 0 or em::generation < newer_than, we can trust
 	 * this em, as either we don't care about the generation, or the
 	 * merged extent map will be rejected anyway.
 	 */
 	if (em && (em->flags & EXTENT_FLAG_MERGED) &&
 	    newer_than && em->generation >= newer_than) {
+=======
+	 * This is because even if we have adjacent extents that are contiguous
+	 * and compatible (same type and flags), we still want to defrag them
+	 * so that we use less metadata (extent items in the extent tree and
+	 * file extent items in the inode's subvolume tree).
+	 */
+	if (em && (em->flags & EXTENT_FLAG_MERGED)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		free_extent_map(em);
 		em = NULL;
 	}
@@ -1317,8 +1431,12 @@ static int defrag_one_cluster(struct btrfs_inode *inode,
 		if (entry->start + range_len <= *last_scanned_ret)
 			continue;
 
+<<<<<<< HEAD
 		if (ra)
 			page_cache_sync_readahead(inode->vfs_inode.i_mapping,
+=======
+		page_cache_sync_readahead(inode->vfs_inode.i_mapping,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				ra, NULL, entry->start >> PAGE_SHIFT,
 				((entry->start + range_len - 1) >> PAGE_SHIFT) -
 				(entry->start >> PAGE_SHIFT) + 1);
@@ -1350,7 +1468,11 @@ out:
  * Entry point to file defragmentation.
  *
  * @inode:	   inode to be defragged
+<<<<<<< HEAD
  * @ra:		   readahead state (can be NUL)
+=======
+ * @ra:		   readahead state
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @range:	   defrag options including range and flags
  * @newer_than:	   minimum transid to defrag
  * @max_to_defrag: max number of sectors to be defragged, if 0, the whole inode
@@ -1372,12 +1494,20 @@ int btrfs_defrag_file(struct inode *inode, struct file_ra_state *ra,
 	u64 cur;
 	u64 last_byte;
 	bool do_compress = (range->flags & BTRFS_DEFRAG_RANGE_COMPRESS);
+<<<<<<< HEAD
 	bool ra_allocated = false;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int compress_type = BTRFS_COMPRESS_ZLIB;
 	int ret = 0;
 	u32 extent_thresh = range->extent_thresh;
 	pgoff_t start_index;
 
+<<<<<<< HEAD
+=======
+	ASSERT(ra);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (isize == 0)
 		return 0;
 
@@ -1407,6 +1537,7 @@ int btrfs_defrag_file(struct inode *inode, struct file_ra_state *ra,
 	last_byte = round_up(last_byte, fs_info->sectorsize) - 1;
 
 	/*
+<<<<<<< HEAD
 	 * If we were not given a ra, allocate a readahead context. As
 	 * readahead is just an optimization, defrag will work without it so
 	 * we don't error out.
@@ -1419,6 +1550,8 @@ int btrfs_defrag_file(struct inode *inode, struct file_ra_state *ra,
 	}
 
 	/*
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * Make writeback start from the beginning of the range, so that the
 	 * defrag range can be written sequentially.
 	 */
@@ -1472,8 +1605,11 @@ int btrfs_defrag_file(struct inode *inode, struct file_ra_state *ra,
 		cond_resched();
 	}
 
+<<<<<<< HEAD
 	if (ra_allocated)
 		kfree(ra);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Update range.start for autodefrag, this will indicate where to start
 	 * in next run.

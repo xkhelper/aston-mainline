@@ -320,7 +320,10 @@ static void imx_audmux_remove(struct platform_device *pdev)
 		audmux_debugfs_remove();
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM_SLEEP
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int imx_audmux_suspend(struct device *dev)
 {
 	int i;
@@ -348,18 +351,31 @@ static int imx_audmux_resume(struct device *dev)
 
 	return 0;
 }
+<<<<<<< HEAD
 #endif /* CONFIG_PM_SLEEP */
 
 static const struct dev_pm_ops imx_audmux_pm = {
 	SET_SYSTEM_SLEEP_PM_OPS(imx_audmux_suspend, imx_audmux_resume)
+=======
+
+static const struct dev_pm_ops imx_audmux_pm = {
+	SYSTEM_SLEEP_PM_OPS(imx_audmux_suspend, imx_audmux_resume)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct platform_driver imx_audmux_driver = {
 	.probe		= imx_audmux_probe,
+<<<<<<< HEAD
 	.remove_new	= imx_audmux_remove,
 	.driver	= {
 		.name	= DRIVER_NAME,
 		.pm = &imx_audmux_pm,
+=======
+	.remove		= imx_audmux_remove,
+	.driver	= {
+		.name	= DRIVER_NAME,
+		.pm = pm_sleep_ptr(&imx_audmux_pm),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.of_match_table = imx_audmux_dt_ids,
 	}
 };

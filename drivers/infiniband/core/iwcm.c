@@ -1182,7 +1182,11 @@ static int __init iw_cm_init(void)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	iwcm_wq = alloc_ordered_workqueue("iw_cm_wq", 0);
+=======
+	iwcm_wq = alloc_ordered_workqueue("iw_cm_wq", WQ_MEM_RECLAIM);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!iwcm_wq)
 		goto err_alloc;
 

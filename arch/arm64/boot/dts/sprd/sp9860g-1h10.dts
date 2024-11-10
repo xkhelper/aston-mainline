@@ -1,9 +1,16 @@
+<<<<<<< HEAD
+=======
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Spreadtrum SP9860g board
  *
  * Copyright (C) 2017, Spreadtrum Communications Inc.
+<<<<<<< HEAD
  *
  * SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 /dts-v1/;

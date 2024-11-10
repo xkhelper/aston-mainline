@@ -1500,7 +1500,11 @@ done:
 	 *
 	 * Accept the memory of the allocated buffer.
 	 */
+<<<<<<< HEAD
 	accept_memory(found, found + size);
+=======
+	accept_memory(found, size);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return found;
 }
@@ -1731,6 +1735,26 @@ phys_addr_t __init_memblock memblock_reserved_size(void)
 	return memblock.reserved.total_size;
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * memblock_estimated_nr_free_pages - return estimated number of free pages
+ * from memblock point of view
+ *
+ * During bootup, subsystems might need a rough estimate of the number of free
+ * pages in the whole system, before precise numbers are available from the
+ * buddy. Especially with CONFIG_DEFERRED_STRUCT_PAGE_INIT, the numbers
+ * obtained from the buddy might be very imprecise during bootup.
+ *
+ * Return:
+ * An estimated number of free pages from memblock point of view.
+ */
+unsigned long __init memblock_estimated_nr_free_pages(void)
+{
+	return PHYS_PFN(memblock_phys_mem_size() - memblock_reserved_size());
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* lowest address */
 phys_addr_t __init_memblock memblock_start_of_DRAM(void)
 {

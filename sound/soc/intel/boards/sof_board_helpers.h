@@ -57,6 +57,10 @@ enum {
 	SOF_LINK_AMP,
 	SOF_LINK_BT_OFFLOAD,
 	SOF_LINK_HDMI_IN,
+<<<<<<< HEAD
+=======
+	SOF_LINK_HDA,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define SOF_LINK_ORDER_MASK	(0xF)
@@ -121,6 +125,10 @@ struct sof_rt5682_private {
  * @ssp_bt: ssp port number of BT offload BE link
  * @ssp_mask_hdmi_in: ssp port mask of HDMI-IN BE link
  * @bt_offload_present: true to create BT offload BE link
+<<<<<<< HEAD
+=======
+ * @hda_codec_present: true to create HDA codec BE links
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @codec_link: pointer to headset codec dai link
  * @amp_link: pointer to speaker amplifier dai link
  * @link_order_overwrite: custom DAI link order
@@ -144,6 +152,10 @@ struct sof_card_private {
 	unsigned long ssp_mask_hdmi_in;
 
 	bool bt_offload_present;
+<<<<<<< HEAD
+=======
+	bool hda_codec_present;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	struct snd_soc_dai_link *codec_link;
 	struct snd_soc_dai_link *amp_link;

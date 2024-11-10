@@ -1577,6 +1577,10 @@ EXPORT_SYMBOL_GPL(dsa_unregister_switch);
 void dsa_switch_shutdown(struct dsa_switch *ds)
 {
 	struct net_device *conduit, *user_dev;
+<<<<<<< HEAD
+=======
+	LIST_HEAD(close_list);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct dsa_port *dp;
 
 	mutex_lock(&dsa2_mutex);
@@ -1586,10 +1590,22 @@ void dsa_switch_shutdown(struct dsa_switch *ds)
 
 	rtnl_lock();
 
+<<<<<<< HEAD
+=======
+	dsa_switch_for_each_cpu_port(dp, ds)
+		list_add(&dp->conduit->close_list, &close_list);
+
+	dev_close_many(&close_list, true);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dsa_switch_for_each_user_port(dp, ds) {
 		conduit = dsa_port_to_conduit(dp);
 		user_dev = dp->user;
 
+<<<<<<< HEAD
+=======
+		netif_device_detach(user_dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		netdev_upper_dev_unlink(conduit, user_dev);
 	}
 

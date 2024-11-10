@@ -550,7 +550,12 @@ void btf_record_free(struct btf_record *rec)
 		case BPF_KPTR_PERCPU:
 			if (rec->fields[i].kptr.module)
 				module_put(rec->fields[i].kptr.module);
+<<<<<<< HEAD
 			btf_put(rec->fields[i].kptr.btf);
+=======
+			if (btf_is_kernel(rec->fields[i].kptr.btf))
+				btf_put(rec->fields[i].kptr.btf);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		case BPF_LIST_HEAD:
 		case BPF_LIST_NODE:
@@ -596,7 +601,12 @@ struct btf_record *btf_record_dup(const struct btf_record *rec)
 		case BPF_KPTR_UNREF:
 		case BPF_KPTR_REF:
 		case BPF_KPTR_PERCPU:
+<<<<<<< HEAD
 			btf_get(fields[i].kptr.btf);
+=======
+			if (btf_is_kernel(fields[i].kptr.btf))
+				btf_get(fields[i].kptr.btf);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (fields[i].kptr.module && !try_module_get(fields[i].kptr.module)) {
 				ret = -ENXIO;
 				goto free;
@@ -733,6 +743,7 @@ void bpf_obj_free_fields(const struct btf_record *rec, void *obj)
 	}
 }
 
+<<<<<<< HEAD
 /* called from workqueue */
 static void bpf_map_free_deferred(struct work_struct *work)
 {
@@ -742,6 +753,13 @@ static void bpf_map_free_deferred(struct work_struct *work)
 
 	security_bpf_map_free(map);
 	bpf_map_release_memcg(map);
+=======
+static void bpf_map_free(struct bpf_map *map)
+{
+	struct btf_record *rec = map->record;
+	struct btf *btf = map->btf;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* implementation dependent freeing */
 	map->ops->map_free(map);
 	/* Delay freeing of btf_record for maps, as map_free
@@ -760,6 +778,19 @@ static void bpf_map_free_deferred(struct work_struct *work)
 	btf_put(btf);
 }
 
+<<<<<<< HEAD
+=======
+/* called from workqueue */
+static void bpf_map_free_deferred(struct work_struct *work)
+{
+	struct bpf_map *map = container_of(work, struct bpf_map, work);
+
+	security_bpf_map_free(map);
+	bpf_map_release_memcg(map);
+	bpf_map_free(map);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void bpf_map_put_uref(struct bpf_map *map)
 {
 	if (atomic64_dec_and_test(&map->usercnt)) {
@@ -829,7 +860,11 @@ static int bpf_map_release(struct inode *inode, struct file *filp)
 
 static fmode_t map_get_sys_perms(struct bpf_map *map, struct fd f)
 {
+<<<<<<< HEAD
 	fmode_t mode = f.file->f_mode;
+=======
+	fmode_t mode = fd_file(f)->f_mode;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Our file permissions may have been overridden by global
 	 * map permissions facing syscall side.
@@ -1411,13 +1446,18 @@ static int map_create(union bpf_attr *attr)
 free_map_sec:
 	security_bpf_map_free(map);
 free_map:
+<<<<<<< HEAD
 	btf_put(map->btf);
 	map->ops->map_free(map);
+=======
+	bpf_map_free(map);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 put_token:
 	bpf_token_put(token);
 	return err;
 }
 
+<<<<<<< HEAD
 /* if error is returned, fd is released.
  * On success caller should complete fd access with matching fdput()
  */
@@ -1433,6 +1473,8 @@ struct bpf_map *__bpf_map_get(struct fd f)
 	return f.file->private_data;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void bpf_map_inc(struct bpf_map *map)
 {
 	atomic64_inc(&map->refcnt);
@@ -1448,6 +1490,7 @@ EXPORT_SYMBOL_GPL(bpf_map_inc_with_uref);
 
 struct bpf_map *bpf_map_get(u32 ufd)
 {
+<<<<<<< HEAD
 	struct fd f = fdget(ufd);
 	struct bpf_map *map;
 
@@ -1457,6 +1500,13 @@ struct bpf_map *bpf_map_get(u32 ufd)
 
 	bpf_map_inc(map);
 	fdput(f);
+=======
+	CLASS(fd, f)(ufd);
+	struct bpf_map *map = __bpf_map_get(f);
+
+	if (!IS_ERR(map))
+		bpf_map_inc(map);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return map;
 }
@@ -1464,6 +1514,7 @@ EXPORT_SYMBOL(bpf_map_get);
 
 struct bpf_map *bpf_map_get_with_uref(u32 ufd)
 {
+<<<<<<< HEAD
 	struct fd f = fdget(ufd);
 	struct bpf_map *map;
 
@@ -1473,6 +1524,13 @@ struct bpf_map *bpf_map_get_with_uref(u32 ufd)
 
 	bpf_map_inc_with_uref(map);
 	fdput(f);
+=======
+	CLASS(fd, f)(ufd);
+	struct bpf_map *map = __bpf_map_get(f);
+
+	if (!IS_ERR(map))
+		bpf_map_inc_with_uref(map);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return map;
 }
@@ -1537,11 +1595,17 @@ static int map_lookup_elem(union bpf_attr *attr)
 {
 	void __user *ukey = u64_to_user_ptr(attr->key);
 	void __user *uvalue = u64_to_user_ptr(attr->value);
+<<<<<<< HEAD
 	int ufd = attr->map_fd;
 	struct bpf_map *map;
 	void *key, *value;
 	u32 value_size;
 	struct fd f;
+=======
+	struct bpf_map *map;
+	void *key, *value;
+	u32 value_size;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 
 	if (CHECK_ATTR(BPF_MAP_LOOKUP_ELEM))
@@ -1550,6 +1614,7 @@ static int map_lookup_elem(union bpf_attr *attr)
 	if (attr->flags & ~BPF_F_LOCK)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	f = fdget(ufd);
 	map = __bpf_map_get(f);
 	if (IS_ERR(map))
@@ -1570,6 +1635,22 @@ static int map_lookup_elem(union bpf_attr *attr)
 		err = PTR_ERR(key);
 		goto err_put;
 	}
+=======
+	CLASS(fd, f)(attr->map_fd);
+	map = __bpf_map_get(f);
+	if (IS_ERR(map))
+		return PTR_ERR(map);
+	if (!(map_get_sys_perms(map, f) & FMODE_CAN_READ))
+		return -EPERM;
+
+	if ((attr->flags & BPF_F_LOCK) &&
+	    !btf_record_has_field(map->record, BPF_SPIN_LOCK))
+		return -EINVAL;
+
+	key = __bpf_copy_key(ukey, map->key_size);
+	if (IS_ERR(key))
+		return PTR_ERR(key);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	value_size = bpf_map_value_size(map);
 
@@ -1600,8 +1681,11 @@ free_value:
 	kvfree(value);
 free_key:
 	kvfree(key);
+<<<<<<< HEAD
 err_put:
 	fdput(f);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
@@ -1612,17 +1696,27 @@ static int map_update_elem(union bpf_attr *attr, bpfptr_t uattr)
 {
 	bpfptr_t ukey = make_bpfptr(attr->key, uattr.is_kernel);
 	bpfptr_t uvalue = make_bpfptr(attr->value, uattr.is_kernel);
+<<<<<<< HEAD
 	int ufd = attr->map_fd;
 	struct bpf_map *map;
 	void *key, *value;
 	u32 value_size;
 	struct fd f;
+=======
+	struct bpf_map *map;
+	void *key, *value;
+	u32 value_size;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 
 	if (CHECK_ATTR(BPF_MAP_UPDATE_ELEM))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	f = fdget(ufd);
+=======
+	CLASS(fd, f)(attr->map_fd);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	map = __bpf_map_get(f);
 	if (IS_ERR(map))
 		return PTR_ERR(map);
@@ -1651,7 +1745,11 @@ static int map_update_elem(union bpf_attr *attr, bpfptr_t uattr)
 		goto free_key;
 	}
 
+<<<<<<< HEAD
 	err = bpf_map_update_value(map, f.file, key, value, attr->flags);
+=======
+	err = bpf_map_update_value(map, fd_file(f), key, value, attr->flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!err)
 		maybe_wait_bpf_programs(map);
 
@@ -1660,7 +1758,10 @@ free_key:
 	kvfree(key);
 err_put:
 	bpf_map_write_active_dec(map);
+<<<<<<< HEAD
 	fdput(f);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
@@ -1669,16 +1770,24 @@ err_put:
 static int map_delete_elem(union bpf_attr *attr, bpfptr_t uattr)
 {
 	bpfptr_t ukey = make_bpfptr(attr->key, uattr.is_kernel);
+<<<<<<< HEAD
 	int ufd = attr->map_fd;
 	struct bpf_map *map;
 	struct fd f;
+=======
+	struct bpf_map *map;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void *key;
 	int err;
 
 	if (CHECK_ATTR(BPF_MAP_DELETE_ELEM))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	f = fdget(ufd);
+=======
+	CLASS(fd, f)(attr->map_fd);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	map = __bpf_map_get(f);
 	if (IS_ERR(map))
 		return PTR_ERR(map);
@@ -1715,7 +1824,10 @@ out:
 	kvfree(key);
 err_put:
 	bpf_map_write_active_dec(map);
+<<<<<<< HEAD
 	fdput(f);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
@@ -1726,15 +1838,21 @@ static int map_get_next_key(union bpf_attr *attr)
 {
 	void __user *ukey = u64_to_user_ptr(attr->key);
 	void __user *unext_key = u64_to_user_ptr(attr->next_key);
+<<<<<<< HEAD
 	int ufd = attr->map_fd;
 	struct bpf_map *map;
 	void *key, *next_key;
 	struct fd f;
+=======
+	struct bpf_map *map;
+	void *key, *next_key;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 
 	if (CHECK_ATTR(BPF_MAP_GET_NEXT_KEY))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	f = fdget(ufd);
 	map = __bpf_map_get(f);
 	if (IS_ERR(map))
@@ -1750,6 +1868,19 @@ static int map_get_next_key(union bpf_attr *attr)
 			err = PTR_ERR(key);
 			goto err_put;
 		}
+=======
+	CLASS(fd, f)(attr->map_fd);
+	map = __bpf_map_get(f);
+	if (IS_ERR(map))
+		return PTR_ERR(map);
+	if (!(map_get_sys_perms(map, f) & FMODE_CAN_READ))
+		return -EPERM;
+
+	if (ukey) {
+		key = __bpf_copy_key(ukey, map->key_size);
+		if (IS_ERR(key))
+			return PTR_ERR(key);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		key = NULL;
 	}
@@ -1781,8 +1912,11 @@ free_next_key:
 	kvfree(next_key);
 free_key:
 	kvfree(key);
+<<<<<<< HEAD
 err_put:
 	fdput(f);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
@@ -2011,11 +2145,17 @@ static int map_lookup_and_delete_elem(union bpf_attr *attr)
 {
 	void __user *ukey = u64_to_user_ptr(attr->key);
 	void __user *uvalue = u64_to_user_ptr(attr->value);
+<<<<<<< HEAD
 	int ufd = attr->map_fd;
 	struct bpf_map *map;
 	void *key, *value;
 	u32 value_size;
 	struct fd f;
+=======
+	struct bpf_map *map;
+	void *key, *value;
+	u32 value_size;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 
 	if (CHECK_ATTR(BPF_MAP_LOOKUP_AND_DELETE_ELEM))
@@ -2024,7 +2164,11 @@ static int map_lookup_and_delete_elem(union bpf_attr *attr)
 	if (attr->flags & ~BPF_F_LOCK)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	f = fdget(ufd);
+=======
+	CLASS(fd, f)(attr->map_fd);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	map = __bpf_map_get(f);
 	if (IS_ERR(map))
 		return PTR_ERR(map);
@@ -2094,7 +2238,10 @@ free_key:
 	kvfree(key);
 err_put:
 	bpf_map_write_active_dec(map);
+<<<<<<< HEAD
 	fdput(f);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
@@ -2102,18 +2249,28 @@ err_put:
 
 static int map_freeze(const union bpf_attr *attr)
 {
+<<<<<<< HEAD
 	int err = 0, ufd = attr->map_fd;
 	struct bpf_map *map;
 	struct fd f;
+=======
+	int err = 0;
+	struct bpf_map *map;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (CHECK_ATTR(BPF_MAP_FREEZE))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	f = fdget(ufd);
+=======
+	CLASS(fd, f)(attr->map_fd);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	map = __bpf_map_get(f);
 	if (IS_ERR(map))
 		return PTR_ERR(map);
 
+<<<<<<< HEAD
 	if (map->map_type == BPF_MAP_TYPE_STRUCT_OPS || !IS_ERR_OR_NULL(map->record)) {
 		fdput(f);
 		return -ENOTSUPP;
@@ -2123,6 +2280,13 @@ static int map_freeze(const union bpf_attr *attr)
 		fdput(f);
 		return -EPERM;
 	}
+=======
+	if (map->map_type == BPF_MAP_TYPE_STRUCT_OPS || !IS_ERR_OR_NULL(map->record))
+		return -ENOTSUPP;
+
+	if (!(map_get_sys_perms(map, f) & FMODE_CAN_WRITE))
+		return -EPERM;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_lock(&map->freeze_mutex);
 	if (bpf_map_write_active(map)) {
@@ -2137,7 +2301,10 @@ static int map_freeze(const union bpf_attr *attr)
 	WRITE_ONCE(map->frozen, true);
 err_put:
 	mutex_unlock(&map->freeze_mutex);
+<<<<<<< HEAD
 	fdput(f);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
@@ -2407,6 +2574,7 @@ int bpf_prog_new_fd(struct bpf_prog *prog)
 				O_RDWR | O_CLOEXEC);
 }
 
+<<<<<<< HEAD
 static struct bpf_prog *____bpf_prog_get(struct fd f)
 {
 	if (!f.file)
@@ -2419,6 +2587,8 @@ static struct bpf_prog *____bpf_prog_get(struct fd f)
 	return f.file->private_data;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void bpf_prog_add(struct bpf_prog *prog, int i)
 {
 	atomic64_add(i, &prog->aux->refcnt);
@@ -2474,6 +2644,7 @@ bool bpf_prog_get_ok(struct bpf_prog *prog,
 static struct bpf_prog *__bpf_prog_get(u32 ufd, enum bpf_prog_type *attach_type,
 				       bool attach_drv)
 {
+<<<<<<< HEAD
 	struct fd f = fdget(ufd);
 	struct bpf_prog *prog;
 
@@ -2488,6 +2659,21 @@ static struct bpf_prog *__bpf_prog_get(u32 ufd, enum bpf_prog_type *attach_type,
 	bpf_prog_inc(prog);
 out:
 	fdput(f);
+=======
+	CLASS(fd, f)(ufd);
+	struct bpf_prog *prog;
+
+	if (fd_empty(f))
+		return ERR_PTR(-EBADF);
+	if (fd_file(f)->f_op != &bpf_prog_fops)
+		return ERR_PTR(-EINVAL);
+
+	prog = fd_file(f)->private_data;
+	if (!bpf_prog_get_ok(prog, attach_type, attach_drv))
+		return ERR_PTR(-EINVAL);
+
+	bpf_prog_inc(prog);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return prog;
 }
 
@@ -3131,6 +3317,7 @@ static void bpf_link_show_fdinfo(struct seq_file *m, struct file *filp)
 {
 	const struct bpf_link *link = filp->private_data;
 	const struct bpf_prog *prog = link->prog;
+<<<<<<< HEAD
 	char prog_tag[sizeof(prog->tag) * 2 + 1] = { };
 
 	seq_printf(m,
@@ -3138,6 +3325,19 @@ static void bpf_link_show_fdinfo(struct seq_file *m, struct file *filp)
 		   "link_id:\t%u\n",
 		   bpf_link_type_strs[link->type],
 		   link->id);
+=======
+	enum bpf_link_type type = link->type;
+	char prog_tag[sizeof(prog->tag) * 2 + 1] = { };
+
+	if (type < ARRAY_SIZE(bpf_link_type_strs) && bpf_link_type_strs[type]) {
+		seq_printf(m, "link_type:\t%s\n", bpf_link_type_strs[type]);
+	} else {
+		WARN_ONCE(1, "missing BPF_LINK_TYPE(...) for link type %u\n", type);
+		seq_printf(m, "link_type:\t<%u>\n", type);
+	}
+	seq_printf(m, "link_id:\t%u\n", link->id);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (prog) {
 		bin2hex(prog_tag, prog->tag, sizeof(prog->tag));
 		seq_printf(m,
@@ -3256,6 +3456,7 @@ int bpf_link_new_fd(struct bpf_link *link)
 
 struct bpf_link *bpf_link_get_from_fd(u32 ufd)
 {
+<<<<<<< HEAD
 	struct fd f = fdget(ufd);
 	struct bpf_link *link;
 
@@ -3270,6 +3471,18 @@ struct bpf_link *bpf_link_get_from_fd(u32 ufd)
 	bpf_link_inc(link);
 	fdput(f);
 
+=======
+	CLASS(fd, f)(ufd);
+	struct bpf_link *link;
+
+	if (fd_empty(f))
+		return ERR_PTR(-EBADF);
+	if (fd_file(f)->f_op != &bpf_link_fops && fd_file(f)->f_op != &bpf_link_fops_poll)
+		return ERR_PTR(-EINVAL);
+
+	link = fd_file(f)->private_data;
+	bpf_link_inc(link);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return link;
 }
 EXPORT_SYMBOL(bpf_link_get_from_fd);
@@ -3631,15 +3844,27 @@ static void bpf_perf_link_dealloc(struct bpf_link *link)
 }
 
 static int bpf_perf_link_fill_common(const struct perf_event *event,
+<<<<<<< HEAD
 				     char __user *uname, u32 ulen,
+=======
+				     char __user *uname, u32 *ulenp,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				     u64 *probe_offset, u64 *probe_addr,
 				     u32 *fd_type, unsigned long *missed)
 {
 	const char *buf;
+<<<<<<< HEAD
 	u32 prog_id;
 	size_t len;
 	int err;
 
+=======
+	u32 prog_id, ulen;
+	size_t len;
+	int err;
+
+	ulen = *ulenp;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ulen ^ !uname)
 		return -EINVAL;
 
@@ -3647,10 +3872,24 @@ static int bpf_perf_link_fill_common(const struct perf_event *event,
 				      probe_offset, probe_addr, missed);
 	if (err)
 		return err;
+<<<<<<< HEAD
 	if (!uname)
 		return 0;
 	if (buf) {
 		len = strlen(buf);
+=======
+
+	if (buf) {
+		len = strlen(buf);
+		*ulenp = len + 1;
+	} else {
+		*ulenp = 1;
+	}
+	if (!uname)
+		return 0;
+
+	if (buf) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = bpf_copy_to_user(uname, buf, ulen, len);
 		if (err)
 			return err;
@@ -3675,7 +3914,11 @@ static int bpf_perf_link_fill_kprobe(const struct perf_event *event,
 
 	uname = u64_to_user_ptr(info->perf_event.kprobe.func_name);
 	ulen = info->perf_event.kprobe.name_len;
+<<<<<<< HEAD
 	err = bpf_perf_link_fill_common(event, uname, ulen, &offset, &addr,
+=======
+	err = bpf_perf_link_fill_common(event, uname, &ulen, &offset, &addr,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					&type, &missed);
 	if (err)
 		return err;
@@ -3683,7 +3926,11 @@ static int bpf_perf_link_fill_kprobe(const struct perf_event *event,
 		info->perf_event.type = BPF_PERF_EVENT_KRETPROBE;
 	else
 		info->perf_event.type = BPF_PERF_EVENT_KPROBE;
+<<<<<<< HEAD
 
+=======
+	info->perf_event.kprobe.name_len = ulen;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	info->perf_event.kprobe.offset = offset;
 	info->perf_event.kprobe.missed = missed;
 	if (!kallsyms_show_value(current_cred()))
@@ -3705,7 +3952,11 @@ static int bpf_perf_link_fill_uprobe(const struct perf_event *event,
 
 	uname = u64_to_user_ptr(info->perf_event.uprobe.file_name);
 	ulen = info->perf_event.uprobe.name_len;
+<<<<<<< HEAD
 	err = bpf_perf_link_fill_common(event, uname, ulen, &offset, &addr,
+=======
+	err = bpf_perf_link_fill_common(event, uname, &ulen, &offset, &addr,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					&type, NULL);
 	if (err)
 		return err;
@@ -3714,6 +3965,10 @@ static int bpf_perf_link_fill_uprobe(const struct perf_event *event,
 		info->perf_event.type = BPF_PERF_EVENT_URETPROBE;
 	else
 		info->perf_event.type = BPF_PERF_EVENT_UPROBE;
+<<<<<<< HEAD
+=======
+	info->perf_event.uprobe.name_len = ulen;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	info->perf_event.uprobe.offset = offset;
 	info->perf_event.uprobe.cookie = event->bpf_cookie;
 	return 0;
@@ -3739,12 +3994,27 @@ static int bpf_perf_link_fill_tracepoint(const struct perf_event *event,
 {
 	char __user *uname;
 	u32 ulen;
+<<<<<<< HEAD
 
 	uname = u64_to_user_ptr(info->perf_event.tracepoint.tp_name);
 	ulen = info->perf_event.tracepoint.name_len;
 	info->perf_event.type = BPF_PERF_EVENT_TRACEPOINT;
 	info->perf_event.tracepoint.cookie = event->bpf_cookie;
 	return bpf_perf_link_fill_common(event, uname, ulen, NULL, NULL, NULL, NULL);
+=======
+	int err;
+
+	uname = u64_to_user_ptr(info->perf_event.tracepoint.tp_name);
+	ulen = info->perf_event.tracepoint.name_len;
+	err = bpf_perf_link_fill_common(event, uname, &ulen, NULL, NULL, NULL, NULL);
+	if (err)
+		return err;
+
+	info->perf_event.type = BPF_PERF_EVENT_TRACEPOINT;
+	info->perf_event.tracepoint.name_len = ulen;
+	info->perf_event.tracepoint.cookie = event->bpf_cookie;
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int bpf_perf_link_fill_perf_event(const struct perf_event *event,
@@ -4974,6 +5244,7 @@ static int bpf_link_get_info_by_fd(struct file *file,
 static int bpf_obj_get_info_by_fd(const union bpf_attr *attr,
 				  union bpf_attr __user *uattr)
 {
+<<<<<<< HEAD
 	int ufd = attr->info.bpf_fd;
 	struct fd f;
 	int err;
@@ -5001,6 +5272,27 @@ static int bpf_obj_get_info_by_fd(const union bpf_attr *attr,
 
 	fdput(f);
 	return err;
+=======
+	if (CHECK_ATTR(BPF_OBJ_GET_INFO_BY_FD))
+		return -EINVAL;
+
+	CLASS(fd, f)(attr->info.bpf_fd);
+	if (fd_empty(f))
+		return -EBADFD;
+
+	if (fd_file(f)->f_op == &bpf_prog_fops)
+		return bpf_prog_get_info_by_fd(fd_file(f), fd_file(f)->private_data, attr,
+					      uattr);
+	else if (fd_file(f)->f_op == &bpf_map_fops)
+		return bpf_map_get_info_by_fd(fd_file(f), fd_file(f)->private_data, attr,
+					     uattr);
+	else if (fd_file(f)->f_op == &btf_fops)
+		return bpf_btf_get_info_by_fd(fd_file(f), fd_file(f)->private_data, attr, uattr);
+	else if (fd_file(f)->f_op == &bpf_link_fops || fd_file(f)->f_op == &bpf_link_fops_poll)
+		return bpf_link_get_info_by_fd(fd_file(f), fd_file(f)->private_data,
+					      attr, uattr);
+	return -EINVAL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #define BPF_BTF_LOAD_LAST_FIELD btf_token_fd
@@ -5188,14 +5480,23 @@ static int bpf_map_do_batch(const union bpf_attr *attr,
 			 cmd == BPF_MAP_LOOKUP_AND_DELETE_BATCH;
 	bool has_write = cmd != BPF_MAP_LOOKUP_BATCH;
 	struct bpf_map *map;
+<<<<<<< HEAD
 	int err, ufd;
 	struct fd f;
+=======
+	int err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (CHECK_ATTR(BPF_MAP_BATCH))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	ufd = attr->batch.map_fd;
 	f = fdget(ufd);
+=======
+	CLASS(fd, f)(attr->batch.map_fd);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	map = __bpf_map_get(f);
 	if (IS_ERR(map))
 		return PTR_ERR(map);
@@ -5215,7 +5516,11 @@ static int bpf_map_do_batch(const union bpf_attr *attr,
 	else if (cmd == BPF_MAP_LOOKUP_AND_DELETE_BATCH)
 		BPF_DO_BATCH(map->ops->map_lookup_and_delete_batch, map, attr, uattr);
 	else if (cmd == BPF_MAP_UPDATE_BATCH)
+<<<<<<< HEAD
 		BPF_DO_BATCH(map->ops->map_update_batch, map, f.file, attr, uattr);
+=======
+		BPF_DO_BATCH(map->ops->map_update_batch, map, fd_file(f), attr, uattr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else
 		BPF_DO_BATCH(map->ops->map_delete_batch, map, attr, uattr);
 err_put:
@@ -5223,7 +5528,10 @@ err_put:
 		maybe_wait_bpf_programs(map);
 		bpf_map_write_active_dec(map);
 	}
+<<<<<<< HEAD
 	fdput(f);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
@@ -5668,7 +5976,11 @@ static int token_create(union bpf_attr *attr)
 	return bpf_token_create(attr);
 }
 
+<<<<<<< HEAD
 static int __sys_bpf(int cmd, bpfptr_t uattr, unsigned int size)
+=======
+static int __sys_bpf(enum bpf_cmd cmd, bpfptr_t uattr, unsigned int size)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	union bpf_attr attr;
 	int err;
@@ -5932,6 +6244,10 @@ static const struct bpf_func_proto bpf_sys_close_proto = {
 
 BPF_CALL_4(bpf_kallsyms_lookup_name, const char *, name, int, name_sz, int, flags, u64 *, res)
 {
+<<<<<<< HEAD
+=======
+	*res = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (flags)
 		return -EINVAL;
 
@@ -5952,7 +6268,12 @@ static const struct bpf_func_proto bpf_kallsyms_lookup_name_proto = {
 	.arg1_type	= ARG_PTR_TO_MEM,
 	.arg2_type	= ARG_CONST_SIZE_OR_ZERO,
 	.arg3_type	= ARG_ANYTHING,
+<<<<<<< HEAD
 	.arg4_type	= ARG_PTR_TO_LONG,
+=======
+	.arg4_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
+	.arg4_size	= sizeof(u64),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct bpf_func_proto *

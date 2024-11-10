@@ -12,6 +12,7 @@
 #include <sys/prctl.h>
 
 #include "test_signals_utils.h"
+<<<<<<< HEAD
 #include "testcases.h"
 
 struct fake_sigframe sf;
@@ -46,6 +47,24 @@ static bool sve_get_vls(struct tdescr *td)
 	}
 
 	return true;
+=======
+#include "sve_helpers.h"
+#include "testcases.h"
+
+struct fake_sigframe sf;
+
+static bool sve_get_vls(struct tdescr *td)
+{
+	int res = sve_fill_vls(VLS_USE_SVE, 2);
+
+	if (!res)
+		return true;
+
+	if (res == KSFT_SKIP)
+		td->result = KSFT_SKIP;
+
+	return false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int fake_sigreturn_sve_change_vl(struct tdescr *td,

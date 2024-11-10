@@ -2,12 +2,27 @@
 #ifndef __ASM_VDSO_VSYSCALL_H
 #define __ASM_VDSO_VSYSCALL_H
 
+<<<<<<< HEAD
+=======
+#define __VDSO_RND_DATA_OFFSET	768
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifndef __ASSEMBLY__
 
 #include <linux/hrtimer.h>
 #include <linux/timekeeper_internal.h>
 #include <vdso/datapage.h>
 #include <asm/vdso.h>
+<<<<<<< HEAD
+=======
+
+enum vvar_pages {
+	VVAR_DATA_PAGE_OFFSET,
+	VVAR_TIMENS_PAGE_OFFSET,
+	VVAR_NR_PAGES
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Update the vDSO data page to keep in sync with kernel timekeeping.
  */
@@ -18,6 +33,15 @@ static __always_inline struct vdso_data *__s390_get_k_vdso_data(void)
 }
 #define __arch_get_k_vdso_data __s390_get_k_vdso_data
 
+<<<<<<< HEAD
+=======
+static __always_inline struct vdso_rng_data *__s390_get_k_vdso_rnd_data(void)
+{
+	return (void *)vdso_data + __VDSO_RND_DATA_OFFSET;
+}
+#define __arch_get_k_vdso_rng_data __s390_get_k_vdso_rnd_data
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* The asm-generic header needs to be included after the definitions above */
 #include <asm-generic/vdso/vsyscall.h>
 

@@ -142,7 +142,10 @@ struct mipi_dsi_host *of_find_mipi_dsi_host_by_node(struct device_node *node);
 #define MIPI_DSI_HS_PKT_END_ALIGNED	BIT(12)
 
 enum mipi_dsi_pixel_format {
+<<<<<<< HEAD
 	MIPI_DSI_FMT_RGB101010,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	MIPI_DSI_FMT_RGB888,
 	MIPI_DSI_FMT_RGB666,
 	MIPI_DSI_FMT_RGB666_PACKED,
@@ -197,7 +200,10 @@ struct mipi_dsi_device {
 	unsigned long hs_rate;
 	unsigned long lp_rate;
 	struct drm_dsc_config *dsc;
+<<<<<<< HEAD
 	unsigned int dsc_slice_per_pkt;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**
@@ -236,9 +242,12 @@ struct mipi_dsi_multi_context {
 static inline int mipi_dsi_pixel_format_to_bpp(enum mipi_dsi_pixel_format fmt)
 {
 	switch (fmt) {
+<<<<<<< HEAD
 	case MIPI_DSI_FMT_RGB101010:
 		return 30;
 		
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case MIPI_DSI_FMT_RGB888:
 	case MIPI_DSI_FMT_RGB666:
 		return 24;
@@ -370,6 +379,21 @@ void mipi_dsi_dcs_set_display_off_multi(struct mipi_dsi_multi_context *ctx);
 void mipi_dsi_dcs_set_display_on_multi(struct mipi_dsi_multi_context *ctx);
 void mipi_dsi_dcs_set_tear_on_multi(struct mipi_dsi_multi_context *ctx,
 				    enum mipi_dsi_dcs_tear_mode mode);
+<<<<<<< HEAD
+=======
+void mipi_dsi_turn_on_peripheral_multi(struct mipi_dsi_multi_context *ctx);
+void mipi_dsi_dcs_soft_reset_multi(struct mipi_dsi_multi_context *ctx);
+void mipi_dsi_dcs_set_display_brightness_multi(struct mipi_dsi_multi_context *ctx,
+					       u16 brightness);
+void mipi_dsi_dcs_set_pixel_format_multi(struct mipi_dsi_multi_context *ctx,
+					 u8 format);
+void mipi_dsi_dcs_set_column_address_multi(struct mipi_dsi_multi_context *ctx,
+					   u16 start, u16 end);
+void mipi_dsi_dcs_set_page_address_multi(struct mipi_dsi_multi_context *ctx,
+					 u16 start, u16 end);
+void mipi_dsi_dcs_set_tear_scanline_multi(struct mipi_dsi_multi_context *ctx,
+					  u16 scanline);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * mipi_dsi_generic_write_seq - transmit data using a generic write packet

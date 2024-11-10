@@ -24,6 +24,7 @@ static int loongson_card_hw_params(struct snd_pcm_substream *substream,
 				   struct snd_pcm_hw_params *params)
 {
 	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
+<<<<<<< HEAD
 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
 	struct snd_soc_dai *codec_dai = snd_soc_rtd_to_codec(rtd, 0);
 	struct loongson_card_data *ls_card = snd_soc_card_get_drvdata(rtd->card);
@@ -45,6 +46,29 @@ static int loongson_card_hw_params(struct snd_pcm_substream *substream,
 			return ret;
 		}
 	}
+=======
+	struct loongson_card_data *ls_card = snd_soc_card_get_drvdata(rtd->card);
+	struct snd_soc_dai *codec_dai = snd_soc_rtd_to_codec(rtd, 0);
+	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
+	int ret, mclk;
+
+	if (!ls_card->mclk_fs)
+		return 0;
+
+	mclk = ls_card->mclk_fs * params_rate(params);
+	ret = snd_soc_dai_set_sysclk(cpu_dai, 0, mclk, SND_SOC_CLOCK_OUT);
+	if (ret < 0) {
+		dev_err(codec_dai->dev, "cpu_dai clock not set\n");
+		return ret;
+	}
+
+	ret = snd_soc_dai_set_sysclk(codec_dai, 0, mclk, SND_SOC_CLOCK_IN);
+	if (ret < 0) {
+		dev_err(codec_dai->dev, "codec_dai clock not set\n");
+		return ret;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -68,6 +92,7 @@ static struct snd_soc_dai_link loongson_dai_links[] = {
 	},
 };
 
+<<<<<<< HEAD
 static int loongson_card_parse_acpi(struct loongson_card_data *data)
 {
 	struct snd_soc_card *card = &data->snd_card;
@@ -108,6 +133,55 @@ static int loongson_card_parse_acpi(struct loongson_card_data *data)
 				    &codec_dai_name);
 	for (i = 0; i < card->num_links; i++)
 		loongson_dai_links[i].codecs->dai_name = codec_dai_name;
+=======
+static struct acpi_device *loongson_card_acpi_find_device(struct snd_soc_card *card,
+							  const char *name)
+{
+	struct fwnode_handle *fwnode = card->dev->fwnode;
+	struct fwnode_reference_args args;
+	int status;
+
+	memset(&args, 0, sizeof(args));
+	status = acpi_node_get_property_reference(fwnode, name, 0, &args);
+	if (status || !is_acpi_device_node(args.fwnode)) {
+		dev_err(card->dev, "No matching phy in ACPI table\n");
+		return NULL;
+	}
+
+	return to_acpi_device_node(args.fwnode);
+}
+
+static int loongson_card_parse_acpi(struct loongson_card_data *data)
+{
+	struct snd_soc_card *card = &data->snd_card;
+	const char *codec_dai_name;
+	struct acpi_device *adev;
+	struct device *phy_dev;
+	int i;
+
+	/* fixup platform name based on reference node */
+	adev = loongson_card_acpi_find_device(card, "cpu");
+	if (!adev)
+		return -ENOENT;
+
+	phy_dev = acpi_get_first_physical_node(adev);
+	if (!phy_dev)
+		return -EPROBE_DEFER;
+
+	/* fixup codec name based on reference node */
+	adev = loongson_card_acpi_find_device(card, "codec");
+	if (!adev)
+		return -ENOENT;
+	snprintf(codec_name, sizeof(codec_name), "i2c-%s", acpi_dev_name(adev));
+
+	device_property_read_string(card->dev, "codec-dai-name", &codec_dai_name);
+
+	for (i = 0; i < card->num_links; i++) {
+		loongson_dai_links[i].platforms->name = dev_name(phy_dev);
+		loongson_dai_links[i].codecs->name = codec_name;
+		loongson_dai_links[i].codecs->dai_name = codec_dai_name;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -127,8 +201,13 @@ static int loongson_card_parse_of(struct loongson_card_data *data)
 	codec = of_get_child_by_name(dev->of_node, "codec");
 	if (!codec) {
 		dev_err(dev, "audio-codec property missing or invalid\n");
+<<<<<<< HEAD
 		ret = -EINVAL;
 		goto err;
+=======
+		of_node_put(cpu);
+		return -EINVAL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	for (i = 0; i < card->num_links; i++) {
@@ -137,6 +216,10 @@ static int loongson_card_parse_of(struct loongson_card_data *data)
 			dev_err(dev, "getting cpu dlc error (%d)\n", ret);
 			goto err;
 		}
+<<<<<<< HEAD
+=======
+		loongson_dai_links[i].platforms->of_node = loongson_dai_links[i].cpus->of_node;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		ret = snd_soc_of_get_dlc(codec, NULL, loongson_dai_links[i].codecs, 0);
 		if (ret < 0) {
@@ -159,21 +242,34 @@ err:
 static int loongson_asoc_card_probe(struct platform_device *pdev)
 {
 	struct loongson_card_data *ls_priv;
+<<<<<<< HEAD
 	struct snd_soc_card *card;
 	int ret;
 
 	ls_priv = devm_kzalloc(&pdev->dev, sizeof(*ls_priv), GFP_KERNEL);
+=======
+	struct device *dev = &pdev->dev;
+	struct snd_soc_card *card;
+	int ret;
+
+	ls_priv = devm_kzalloc(dev, sizeof(*ls_priv), GFP_KERNEL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ls_priv)
 		return -ENOMEM;
 
 	card = &ls_priv->snd_card;
 
+<<<<<<< HEAD
 	card->dev = &pdev->dev;
+=======
+	card->dev = dev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	card->owner = THIS_MODULE;
 	card->dai_link = loongson_dai_links;
 	card->num_links = ARRAY_SIZE(loongson_dai_links);
 	snd_soc_card_set_drvdata(card, ls_priv);
 
+<<<<<<< HEAD
 	ret = device_property_read_string(&pdev->dev, "model", &card->name);
 	if (ret) {
 		dev_err(&pdev->dev, "Error parsing card name: %d\n", ret);
@@ -195,6 +291,22 @@ static int loongson_asoc_card_probe(struct platform_device *pdev)
 	ret = devm_snd_soc_register_card(&pdev->dev, card);
 
 	return ret;
+=======
+	ret = device_property_read_string(dev, "model", &card->name);
+	if (ret)
+		return dev_err_probe(dev, ret, "Error parsing card name\n");
+
+	ret = device_property_read_u32(dev, "mclk-fs", &ls_priv->mclk_fs);
+	if (ret)
+		return dev_err_probe(dev, ret, "Error parsing mclk-fs\n");
+
+	ret = has_acpi_companion(dev) ? loongson_card_parse_acpi(ls_priv)
+				      : loongson_card_parse_of(ls_priv);
+	if (ret)
+		return dev_err_probe(dev, ret, "Error parsing acpi/of properties\n");
+
+	return devm_snd_soc_register_card(dev, card);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct of_device_id loongson_asoc_dt_ids[] = {

@@ -12,7 +12,10 @@
 #include "xe_bo.h"
 #include "xe_device.h"
 #include "xe_ggtt.h"
+<<<<<<< HEAD
 #include "xe_gt.h"
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "xe_pm.h"
 
 static void
@@ -204,21 +207,43 @@ static int __xe_pin_fb_vma_ggtt(const struct intel_framebuffer *fb,
 	if (xe_bo_is_vram(bo) && ggtt->flags & XE_GGTT_FLAGS_64K)
 		align = max_t(u32, align, SZ_64K);
 
+<<<<<<< HEAD
 	if (bo->ggtt_node.size && view->type == I915_GTT_VIEW_NORMAL) {
+=======
+	if (bo->ggtt_node && view->type == I915_GTT_VIEW_NORMAL) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		vma->node = bo->ggtt_node;
 	} else if (view->type == I915_GTT_VIEW_NORMAL) {
 		u32 x, size = bo->ttm.base.size;
 
+<<<<<<< HEAD
 		ret = xe_ggtt_insert_special_node_locked(ggtt, &vma->node, size,
 							 align, 0);
 		if (ret)
 			goto out_unlock;
+=======
+		vma->node = xe_ggtt_node_init(ggtt);
+		if (IS_ERR(vma->node)) {
+			ret = PTR_ERR(vma->node);
+			goto out_unlock;
+		}
+
+		ret = xe_ggtt_node_insert_locked(vma->node, size, align, 0);
+		if (ret) {
+			xe_ggtt_node_fini(vma->node);
+			goto out_unlock;
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		for (x = 0; x < size; x += XE_PAGE_SIZE) {
 			u64 pte = ggtt->pt_ops->pte_encode_bo(bo, x,
 							      xe->pat.idx[XE_CACHE_NONE]);
 
+<<<<<<< HEAD
 			ggtt->pt_ops->ggtt_set_pte(ggtt, vma->node.start + x, pte);
+=======
+			ggtt->pt_ops->ggtt_set_pte(ggtt, vma->node->base.start + x, pte);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	} else {
 		u32 i, ggtt_ofs;
@@ -227,12 +252,28 @@ static int __xe_pin_fb_vma_ggtt(const struct intel_framebuffer *fb,
 		/* display seems to use tiles instead of bytes here, so convert it back.. */
 		u32 size = intel_rotation_info_size(rot_info) * XE_PAGE_SIZE;
 
+<<<<<<< HEAD
 		ret = xe_ggtt_insert_special_node_locked(ggtt, &vma->node, size,
 							 align, 0);
 		if (ret)
 			goto out_unlock;
 
 		ggtt_ofs = vma->node.start;
+=======
+		vma->node = xe_ggtt_node_init(ggtt);
+		if (IS_ERR(vma->node)) {
+			ret = PTR_ERR(vma->node);
+			goto out_unlock;
+		}
+
+		ret = xe_ggtt_node_insert_locked(vma->node, size, align, 0);
+		if (ret) {
+			xe_ggtt_node_fini(vma->node);
+			goto out_unlock;
+		}
+
+		ggtt_ofs = vma->node->base.start;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		for (i = 0; i < ARRAY_SIZE(rot_info->plane); i++)
 			write_ggtt_rotated(bo, ggtt, &ggtt_ofs,
@@ -320,6 +361,7 @@ err:
 
 static void __xe_unpin_fb_vma(struct i915_vma *vma)
 {
+<<<<<<< HEAD
 	struct xe_device *xe = to_xe_device(vma->bo->ttm.base.dev);
 	struct xe_ggtt *ggtt = xe_device_get_root_tile(xe)->mem.ggtt;
 
@@ -328,6 +370,13 @@ static void __xe_unpin_fb_vma(struct i915_vma *vma)
 	else if (!drm_mm_node_allocated(&vma->bo->ggtt_node) ||
 		 vma->bo->ggtt_node.start != vma->node.start)
 		xe_ggtt_remove_node(ggtt, &vma->node, false);
+=======
+	if (vma->dpt)
+		xe_bo_unpin_map_no_vm(vma->dpt);
+	else if (!xe_ggtt_node_allocated(vma->bo->ggtt_node) ||
+		 vma->bo->ggtt_node->base.start != vma->node->base.start)
+		xe_ggtt_node_remove(vma->node, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ttm_bo_reserve(&vma->bo->ttm, false, false, NULL);
 	ttm_bo_unpin(&vma->bo->ttm);
@@ -377,8 +426,13 @@ void intel_plane_unpin_fb(struct intel_plane_state *old_plane_state)
 }
 
 /*
+<<<<<<< HEAD
  * For Xe introduce dummy intel_dpt_create which just return NULL and
  * intel_dpt_destroy which does nothing.
+=======
+ * For Xe introduce dummy intel_dpt_create which just return NULL,
+ * intel_dpt_destroy which does nothing, and fake intel_dpt_ofsset returning 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct i915_address_space *intel_dpt_create(struct intel_framebuffer *fb)
 {
@@ -389,3 +443,11 @@ void intel_dpt_destroy(struct i915_address_space *vm)
 {
 	return;
 }
+<<<<<<< HEAD
+=======
+
+u64 intel_dpt_offset(struct i915_vma *dpt_vma)
+{
+	return 0;
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

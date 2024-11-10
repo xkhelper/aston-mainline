@@ -245,6 +245,7 @@ struct transform_funcs {
 	void (*set_cursor_attributes)(
 			struct transform *xfm_base,
 			const struct dc_cursor_attributes *attr);
+<<<<<<< HEAD
 
 	bool (*transform_program_blnd_lut)(
 			struct transform *xfm,
@@ -255,6 +256,8 @@ struct transform_funcs {
 	bool (*transform_program_3dlut)(
 			struct transform *xfm,
 			struct tetrahedral_params *params);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 const uint16_t *get_filter_2tap_16p(void);

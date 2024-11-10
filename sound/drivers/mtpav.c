@@ -285,10 +285,13 @@ static void snd_mtpav_output_port_write(struct mtpav *mtp_card,
 
 		snd_mtpav_send_byte(mtp_card, 0xf5);
 		snd_mtpav_send_byte(mtp_card, portp->hwport);
+<<<<<<< HEAD
 		/*
 		snd_printk(KERN_DEBUG "new outport: 0x%x\n",
 			   (unsigned int) portp->hwport);
 		*/
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!(outbyte & 0x80) && portp->running_status)
 			snd_mtpav_send_byte(mtp_card, portp->running_status);
 	}
@@ -522,8 +525,11 @@ static void snd_mtpav_read_bytes(struct mtpav *mcrd)
 
 	u8 sbyt = snd_mtpav_getreg(mcrd, SREG);
 
+<<<<<<< HEAD
 	/* printk(KERN_DEBUG "snd_mtpav_read_bytes() sbyt: 0x%x\n", sbyt); */
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!(sbyt & SIGS_BYTE))
 		return;
 
@@ -569,13 +575,21 @@ static int snd_mtpav_get_ISA(struct mtpav *mcard)
 	mcard->res_port = devm_request_region(mcard->card->dev, port, 3,
 					      "MotuMTPAV MIDI");
 	if (!mcard->res_port) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "MTVAP port 0x%lx is busy\n", port);
+=======
+		dev_err(mcard->card->dev, "MTVAP port 0x%lx is busy\n", port);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 	}
 	mcard->port = port;
 	if (devm_request_irq(mcard->card->dev, irq, snd_mtpav_irqh, 0,
 			     "MOTU MTPAV", mcard)) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "MTVAP IRQ %d busy\n", irq);
+=======
+		dev_err(mcard->card->dev, "MTVAP IRQ %d busy\n", irq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 	}
 	mcard->irq = irq;
@@ -717,7 +731,13 @@ static int snd_mtpav_probe(struct platform_device *dev)
 	card->private_free = snd_mtpav_free;
 
 	platform_set_drvdata(dev, card);
+<<<<<<< HEAD
 	printk(KERN_INFO "Motu MidiTimePiece on parallel port irq: %d ioport: 0x%lx\n", irq, port);
+=======
+	dev_info(card->dev,
+		 "Motu MidiTimePiece on parallel port irq: %d ioport: 0x%lx\n",
+		 irq, port);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 

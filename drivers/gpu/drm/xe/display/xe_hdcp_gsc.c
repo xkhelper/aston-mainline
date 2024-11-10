@@ -16,7 +16,10 @@
 #include "xe_force_wake.h"
 #include "xe_gsc_proxy.h"
 #include "xe_gsc_submit.h"
+<<<<<<< HEAD
 #include "xe_gt.h"
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "xe_map.h"
 #include "xe_pm.h"
 #include "xe_uc_fw.h"
@@ -40,10 +43,21 @@ bool intel_hdcp_gsc_check_status(struct xe_device *xe)
 {
 	struct xe_tile *tile = xe_device_get_root_tile(xe);
 	struct xe_gt *gt = tile->media_gt;
+<<<<<<< HEAD
 	bool ret = true;
 
 	if (!xe_uc_fw_is_enabled(&gt->uc.gsc.fw))
 		return false;
+=======
+	struct xe_gsc *gsc = &gt->uc.gsc;
+	bool ret = true;
+
+	if (!gsc && !xe_uc_fw_is_enabled(&gsc->fw)) {
+		drm_dbg_kms(&xe->drm,
+			    "GSC Components not ready for HDCP2.x\n");
+		return false;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	xe_pm_runtime_get(xe);
 	if (xe_force_wake_get(gt_to_fw(gt), XE_FW_GSC)) {
@@ -53,7 +67,11 @@ bool intel_hdcp_gsc_check_status(struct xe_device *xe)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	if (!xe_gsc_proxy_init_done(&gt->uc.gsc))
+=======
+	if (!xe_gsc_proxy_init_done(gsc))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = false;
 
 	xe_force_wake_put(gt_to_fw(gt), XE_FW_GSC);

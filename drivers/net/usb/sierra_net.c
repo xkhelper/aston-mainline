@@ -30,7 +30,11 @@ static const char driver_name[] = "sierra_net";
 #include <linux/usb/cdc.h>
 #include <net/ip.h>
 #include <net/udp.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/usb/usbnet.h>
 
 #define SWI_USB_REQUEST_GET_FW_ATTR	0x06

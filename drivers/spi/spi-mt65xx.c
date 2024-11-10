@@ -743,13 +743,18 @@ static int mtk_spi_setup(struct spi_device *spi)
 	return 0;
 }
 
+<<<<<<< HEAD
 static irqreturn_t mtk_spi_interrupt(int irq, void *dev_id)
+=======
+static irqreturn_t mtk_spi_interrupt_thread(int irq, void *dev_id)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 cmd, reg_val, cnt, remainder, len;
 	struct spi_controller *host = dev_id;
 	struct mtk_spi *mdata = spi_controller_get_devdata(host);
 	struct spi_transfer *xfer = mdata->cur_transfer;
 
+<<<<<<< HEAD
 	reg_val = readl(mdata->base + SPI_STATUS0_REG);
 	if (reg_val & MTK_SPI_PAUSE_INT_STATUS)
 		mdata->state = MTK_SPI_PAUSED;
@@ -762,6 +767,8 @@ static irqreturn_t mtk_spi_interrupt(int irq, void *dev_id)
 		return IRQ_HANDLED;
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!host->can_dma(host, NULL, xfer)) {
 		if (xfer->rx_buf) {
 			cnt = mdata->xfer_len / 4;
@@ -845,6 +852,30 @@ static irqreturn_t mtk_spi_interrupt(int irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
+=======
+static irqreturn_t mtk_spi_interrupt(int irq, void *dev_id)
+{
+	struct spi_controller *host = dev_id;
+	struct mtk_spi *mdata = spi_controller_get_devdata(host);
+	u32 reg_val;
+
+	reg_val = readl(mdata->base + SPI_STATUS0_REG);
+	if (reg_val & MTK_SPI_PAUSE_INT_STATUS)
+		mdata->state = MTK_SPI_PAUSED;
+	else
+		mdata->state = MTK_SPI_IDLE;
+
+	/* SPI-MEM ops */
+	if (mdata->use_spimem) {
+		complete(&mdata->spimem_done);
+		return IRQ_HANDLED;
+	}
+
+	return IRQ_WAKE_THREAD;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int mtk_spi_mem_adjust_op_size(struct spi_mem *mem,
 				      struct spi_mem_op *op)
 {
@@ -1255,8 +1286,14 @@ static int mtk_spi_probe(struct platform_device *pdev)
 		dev_notice(dev, "SPI dma_set_mask(%d) failed, ret:%d\n",
 			   addr_bits, ret);
 
+<<<<<<< HEAD
 	ret = devm_request_irq(dev, irq, mtk_spi_interrupt,
 			       IRQF_TRIGGER_NONE, dev_name(dev), host);
+=======
+	ret = devm_request_threaded_irq(dev, irq, mtk_spi_interrupt,
+					mtk_spi_interrupt_thread,
+					IRQF_TRIGGER_NONE, dev_name(dev), host);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return dev_err_probe(dev, ret, "failed to register irq\n");
 

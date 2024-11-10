@@ -87,6 +87,10 @@ static int mt7663s_probe(struct sdio_func *func,
 		.sta_add = mt7615_mac_sta_add,
 		.sta_remove = mt7615_mac_sta_remove,
 		.update_survey = mt7615_update_channel,
+<<<<<<< HEAD
+=======
+		.set_channel = mt7615_set_channel,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 	static const struct mt76_bus_ops mt7663s_ops = {
 		.rr = mt76s_rr,

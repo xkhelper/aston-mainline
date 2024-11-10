@@ -1400,7 +1400,11 @@ static struct platform_driver mtk_btcvsd_snd_driver = {
 		.of_match_table = mtk_btcvsd_snd_dt_match,
 	},
 	.probe = mtk_btcvsd_snd_probe,
+<<<<<<< HEAD
 	.remove_new = mtk_btcvsd_snd_remove,
+=======
+	.remove = mtk_btcvsd_snd_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(mtk_btcvsd_snd_driver);

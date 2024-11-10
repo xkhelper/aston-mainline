@@ -752,7 +752,11 @@ static int vf610_adc_buffer_postenable(struct iio_dev *indio_dev)
 	writel(val, info->regs + VF610_REG_ADC_GC);
 
 	channel = find_first_bit(indio_dev->active_scan_mask,
+<<<<<<< HEAD
 						indio_dev->masklength);
+=======
+				 iio_get_masklength(indio_dev));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	val = VF610_ADC_ADCHC(channel);
 	val |= VF610_ADC_AIEN;

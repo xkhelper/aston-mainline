@@ -70,11 +70,19 @@ void cpu_node_probe(void)
 	gda_t *gdap = GDA;
 
 	nodes_clear(node_online_map);
+<<<<<<< HEAD
+=======
+	nodes_clear(node_possible_map);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < MAX_NUMNODES; i++) {
 		nasid_t nasid = gdap->g_nasidtable[i];
 		if (nasid == INVALID_NASID)
 			break;
 		node_set_online(nasid);
+<<<<<<< HEAD
+=======
+		node_set(nasid, node_possible_map);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		highest = node_scan_cpus(nasid, highest);
 	}
 

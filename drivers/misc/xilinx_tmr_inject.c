@@ -12,6 +12,10 @@
 #include <asm/xilinx_mb_manager.h>
 #include <linux/module.h>
 #include <linux/of.h>
+<<<<<<< HEAD
+=======
+#include <linux/debugfs.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/platform_device.h>
 #include <linux/fault-inject.h>
 

@@ -29,7 +29,11 @@ static void kill_off_processes(void)
 		t = find_lock_task_mm(p);
 		if (!t)
 			continue;
+<<<<<<< HEAD
 		pid = t->mm->context.id.u.pid;
+=======
+		pid = t->mm->context.id.pid;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		task_unlock(t);
 		os_kill_ptraced_process(pid, 1);
 	}

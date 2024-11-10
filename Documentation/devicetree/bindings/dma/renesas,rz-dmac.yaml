@@ -19,6 +19,10 @@ properties:
           - renesas,r9a07g043-dmac # RZ/G2UL and RZ/Five
           - renesas,r9a07g044-dmac # RZ/G2{L,LC}
           - renesas,r9a07g054-dmac # RZ/V2L
+<<<<<<< HEAD
+=======
+          - renesas,r9a08g045-dmac # RZ/G3S
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       - const: renesas,rz-dmac
 
   reg:

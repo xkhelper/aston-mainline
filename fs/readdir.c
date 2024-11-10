@@ -225,10 +225,17 @@ SYSCALL_DEFINE3(old_readdir, unsigned int, fd,
 		.dirent = dirent
 	};
 
+<<<<<<< HEAD
 	if (!f.file)
 		return -EBADF;
 
 	error = iterate_dir(f.file, &buf.ctx);
+=======
+	if (!fd_file(f))
+		return -EBADF;
+
+	error = iterate_dir(fd_file(f), &buf.ctx);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (buf.result)
 		error = buf.result;
 
@@ -318,10 +325,17 @@ SYSCALL_DEFINE3(getdents, unsigned int, fd,
 	int error;
 
 	f = fdget_pos(fd);
+<<<<<<< HEAD
 	if (!f.file)
 		return -EBADF;
 
 	error = iterate_dir(f.file, &buf.ctx);
+=======
+	if (!fd_file(f))
+		return -EBADF;
+
+	error = iterate_dir(fd_file(f), &buf.ctx);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (error >= 0)
 		error = buf.error;
 	if (buf.prev_reclen) {
@@ -401,10 +415,17 @@ SYSCALL_DEFINE3(getdents64, unsigned int, fd,
 	int error;
 
 	f = fdget_pos(fd);
+<<<<<<< HEAD
 	if (!f.file)
 		return -EBADF;
 
 	error = iterate_dir(f.file, &buf.ctx);
+=======
+	if (!fd_file(f))
+		return -EBADF;
+
+	error = iterate_dir(fd_file(f), &buf.ctx);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (error >= 0)
 		error = buf.error;
 	if (buf.prev_reclen) {
@@ -483,10 +504,17 @@ COMPAT_SYSCALL_DEFINE3(old_readdir, unsigned int, fd,
 		.dirent = dirent
 	};
 
+<<<<<<< HEAD
 	if (!f.file)
 		return -EBADF;
 
 	error = iterate_dir(f.file, &buf.ctx);
+=======
+	if (!fd_file(f))
+		return -EBADF;
+
+	error = iterate_dir(fd_file(f), &buf.ctx);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (buf.result)
 		error = buf.result;
 
@@ -569,10 +597,17 @@ COMPAT_SYSCALL_DEFINE3(getdents, unsigned int, fd,
 	int error;
 
 	f = fdget_pos(fd);
+<<<<<<< HEAD
 	if (!f.file)
 		return -EBADF;
 
 	error = iterate_dir(f.file, &buf.ctx);
+=======
+	if (!fd_file(f))
+		return -EBADF;
+
+	error = iterate_dir(fd_file(f), &buf.ctx);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (error >= 0)
 		error = buf.error;
 	if (buf.prev_reclen) {

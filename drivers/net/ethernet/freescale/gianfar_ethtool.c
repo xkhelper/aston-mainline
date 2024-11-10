@@ -1455,12 +1455,17 @@ static int gfar_get_ts_info(struct net_device *dev,
 	struct device_node *ptp_node;
 	struct ptp_qoriq *ptp = NULL;
 
+<<<<<<< HEAD
 	info->phc_index = -1;
 
 	if (!(priv->device_flags & FSL_GIANFAR_DEV_HAS_TIMER)) {
 		info->so_timestamping = SOF_TIMESTAMPING_RX_SOFTWARE |
 					SOF_TIMESTAMPING_TX_SOFTWARE |
 					SOF_TIMESTAMPING_SOFTWARE;
+=======
+	if (!(priv->device_flags & FSL_GIANFAR_DEV_HAS_TIMER)) {
+		info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 
@@ -1478,9 +1483,13 @@ static int gfar_get_ts_info(struct net_device *dev,
 	info->so_timestamping = SOF_TIMESTAMPING_TX_HARDWARE |
 				SOF_TIMESTAMPING_RX_HARDWARE |
 				SOF_TIMESTAMPING_RAW_HARDWARE |
+<<<<<<< HEAD
 				SOF_TIMESTAMPING_RX_SOFTWARE |
 				SOF_TIMESTAMPING_TX_SOFTWARE |
 				SOF_TIMESTAMPING_SOFTWARE;
+=======
+				SOF_TIMESTAMPING_TX_SOFTWARE;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	info->tx_types = (1 << HWTSTAMP_TX_OFF) |
 			 (1 << HWTSTAMP_TX_ON);
 	info->rx_filters = (1 << HWTSTAMP_FILTER_NONE) |

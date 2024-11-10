@@ -32,7 +32,11 @@
 #define IBMVFC_DEBUG			0
 #define IBMVFC_MAX_TARGETS		1024
 #define IBMVFC_MAX_LUN			0xffffffff
+<<<<<<< HEAD
 #define IBMVFC_MAX_SECTORS		0xffffu
+=======
+#define IBMVFC_MAX_SECTORS		2048
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define IBMVFC_MAX_DISC_THREADS	4
 #define IBMVFC_TGT_MEMPOOL_SZ		64
 #define IBMVFC_MAX_CMDS_PER_LUN	64

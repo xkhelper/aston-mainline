@@ -704,7 +704,11 @@ xfs_create(
 	 * entry pointing to them, but a directory also the "." entry
 	 * pointing to itself.
 	 */
+<<<<<<< HEAD
 	error = xfs_dialloc(&tp, dp->i_ino, args->mode, &ino);
+=======
+	error = xfs_dialloc(&tp, args, &ino);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!error)
 		error = xfs_icreate(tp, ino, args, &du.ip);
 	if (error)
@@ -812,7 +816,11 @@ xfs_create_tmpfile(
 	if (error)
 		goto out_release_dquots;
 
+<<<<<<< HEAD
 	error = xfs_dialloc(&tp, dp->i_ino, args->mode, &ino);
+=======
+	error = xfs_dialloc(&tp, args, &ino);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!error)
 		error = xfs_icreate(tp, ino, args, &ip);
 	if (error)
@@ -1079,6 +1087,7 @@ out:
 	return error;
 }
 
+<<<<<<< HEAD
 int
 xfs_release(
 	xfs_inode_t	*ip)
@@ -1161,6 +1170,8 @@ out_unlock:
 	return error;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Mark all the buffers attached to this directory stale.  In theory we should
  * never be freeing a directory with any blocks at all, but this covers the
@@ -1491,7 +1502,11 @@ xfs_inactive(
 
 	if (S_ISREG(VFS_I(ip)->i_mode) &&
 	    (ip->i_disk_size != 0 || XFS_ISIZE(ip) != 0 ||
+<<<<<<< HEAD
 	     ip->i_df.if_nextents > 0 || ip->i_delayed_blks > 0))
+=======
+	     xfs_inode_has_filedata(ip)))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		truncate = 1;
 
 	if (xfs_iflags_test(ip, XFS_IQUOTAUNCHECKED)) {

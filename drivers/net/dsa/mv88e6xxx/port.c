@@ -1713,6 +1713,10 @@ int mv88e6393x_port_set_policy(struct mv88e6xxx_chip *chip, int port,
 	ptr = shift / 8;
 	shift %= 8;
 	mask >>= ptr * 8;
+<<<<<<< HEAD
+=======
+	ptr <<= 8;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = mv88e6393x_port_policy_read(chip, port, ptr, &reg);
 	if (err)

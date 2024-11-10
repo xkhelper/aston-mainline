@@ -16,6 +16,10 @@ maintainers:
 
 allOf:
   - $ref: touchscreen.yaml#
+<<<<<<< HEAD
+=======
+  - $ref: ../input.yaml#
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 properties:
   $nodename:
@@ -79,6 +83,18 @@ properties:
     $ref: /schemas/types.yaml#/definitions/uint32
     enum: [1, 2]
 
+<<<<<<< HEAD
+=======
+  linux,keycodes:
+    description:
+      This property specifies an array of keycodes assigned to the
+      touch-keys that can be present in some touchscreen configurations.
+      If the touch-keys are enabled, controller firmware will assign some
+      touch sense lines to those keys.
+    minItems: 1
+    maxItems: 8
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   touchscreen-size-x: true
   touchscreen-size-y: true
   touchscreen-fuzz-x: true

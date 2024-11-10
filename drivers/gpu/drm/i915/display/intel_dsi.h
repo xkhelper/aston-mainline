@@ -66,7 +66,11 @@ struct intel_dsi {
 	/* number of DSI lanes */
 	unsigned int lane_count;
 
+<<<<<<< HEAD
 	/* i2c bus associated with the slave device */
+=======
+	/* i2c bus associated with the target device */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int i2c_bus_num;
 
 	/*

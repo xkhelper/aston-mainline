@@ -200,7 +200,11 @@ extern const struct svc_procedure nlmsvc_procedures[24];
 extern const struct svc_procedure nlmsvc_procedures4[24];
 #endif
 extern int			nlmsvc_grace_period;
+<<<<<<< HEAD
 extern unsigned long		nlmsvc_timeout;
+=======
+extern unsigned long		nlm_timeout;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern bool			nsm_use_hostnames;
 extern u32			nsm_local_state;
 

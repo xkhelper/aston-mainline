@@ -40,6 +40,7 @@ struct gcry_mpi {
 typedef struct gcry_mpi *MPI;
 
 #define mpi_get_nlimbs(a)     ((a)->nlimbs)
+<<<<<<< HEAD
 #define mpi_has_sign(a)       ((a)->sign)
 
 /*-- mpiutil.c --*/
@@ -93,12 +94,26 @@ MPI mpi_read_raw_data(const void *xbuffer, size_t nbytes);
 MPI mpi_read_from_buffer(const void *buffer, unsigned *ret_nread);
 int mpi_fromstr(MPI val, const char *str);
 MPI mpi_scanval(const char *string);
+=======
+
+/*-- mpiutil.c --*/
+MPI mpi_alloc(unsigned nlimbs);
+void mpi_free(MPI a);
+int mpi_resize(MPI a, unsigned nlimbs);
+
+MPI mpi_copy(MPI a);
+
+/*-- mpicoder.c --*/
+MPI mpi_read_raw_data(const void *xbuffer, size_t nbytes);
+MPI mpi_read_from_buffer(const void *buffer, unsigned *ret_nread);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MPI mpi_read_raw_from_sgl(struct scatterlist *sgl, unsigned int len);
 void *mpi_get_buffer(MPI a, unsigned *nbytes, int *sign);
 int mpi_read_buffer(MPI a, uint8_t *buf, unsigned buf_len, unsigned *nbytes,
 		    int *sign);
 int mpi_write_to_sgl(MPI a, struct scatterlist *sg, unsigned nbytes,
 		     int *sign);
+<<<<<<< HEAD
 int mpi_print(enum gcry_mpi_format format, unsigned char *buffer,
 			size_t buflen, size_t *nwritten, MPI a);
 
@@ -113,6 +128,11 @@ mpi_barrett_t mpi_barrett_init(MPI m, int copy);
 void mpi_barrett_free(mpi_barrett_t ctx);
 void mpi_mod_barrett(MPI r, MPI x, mpi_barrett_t ctx);
 void mpi_mul_barrett(MPI w, MPI u, MPI v, mpi_barrett_t ctx);
+=======
+
+/*-- mpi-mod.c --*/
+int mpi_mod(MPI rem, MPI dividend, MPI divisor);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*-- mpi-pow.c --*/
 int mpi_powm(MPI res, MPI base, MPI exp, MPI mod);
@@ -120,7 +140,10 @@ int mpi_powm(MPI res, MPI base, MPI exp, MPI mod);
 /*-- mpi-cmp.c --*/
 int mpi_cmp_ui(MPI u, ulong v);
 int mpi_cmp(MPI u, MPI v);
+<<<<<<< HEAD
 int mpi_cmpabs(MPI u, MPI v);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*-- mpi-sub-ui.c --*/
 int mpi_sub_ui(MPI w, MPI u, unsigned long vval);
@@ -129,6 +152,7 @@ int mpi_sub_ui(MPI w, MPI u, unsigned long vval);
 void mpi_normalize(MPI a);
 unsigned mpi_get_nbits(MPI a);
 int mpi_test_bit(MPI a, unsigned int n);
+<<<<<<< HEAD
 void mpi_set_bit(MPI a, unsigned int n);
 void mpi_set_highbit(MPI a, unsigned int n);
 void mpi_clear_highbit(MPI a, unsigned int n);
@@ -261,6 +285,24 @@ void mpi_ec_mul_point(MPI_POINT result,
 			MPI scalar, MPI_POINT point,
 			struct mpi_ec_ctx *ctx);
 int mpi_ec_curve_point(MPI_POINT point, struct mpi_ec_ctx *ctx);
+=======
+int mpi_set_bit(MPI a, unsigned int n);
+int mpi_rshift(MPI x, MPI a, unsigned int n);
+
+/*-- mpi-add.c --*/
+int mpi_add(MPI w, MPI u, MPI v);
+int mpi_sub(MPI w, MPI u, MPI v);
+int mpi_addm(MPI w, MPI u, MPI v, MPI m);
+int mpi_subm(MPI w, MPI u, MPI v, MPI m);
+
+/*-- mpi-mul.c --*/
+int mpi_mul(MPI w, MPI u, MPI v);
+int mpi_mulm(MPI w, MPI u, MPI v, MPI m);
+
+/*-- mpi-div.c --*/
+int mpi_tdiv_r(MPI rem, MPI num, MPI den);
+int mpi_fdiv_r(MPI rem, MPI dividend, MPI divisor);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* inline functions */
 

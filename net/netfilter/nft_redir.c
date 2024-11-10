@@ -27,8 +27,12 @@ static const struct nla_policy nft_redir_policy[NFTA_REDIR_MAX + 1] = {
 };
 
 static int nft_redir_validate(const struct nft_ctx *ctx,
+<<<<<<< HEAD
 			      const struct nft_expr *expr,
 			      const struct nft_data **data)
+=======
+			      const struct nft_expr *expr)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int err;
 
@@ -51,13 +55,21 @@ static int nft_redir_init(const struct nft_ctx *ctx,
 
 	plen = sizeof_field(struct nf_nat_range, min_proto.all);
 	if (tb[NFTA_REDIR_REG_PROTO_MIN]) {
+<<<<<<< HEAD
 		err = nft_parse_register_load(tb[NFTA_REDIR_REG_PROTO_MIN],
+=======
+		err = nft_parse_register_load(ctx, tb[NFTA_REDIR_REG_PROTO_MIN],
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					      &priv->sreg_proto_min, plen);
 		if (err < 0)
 			return err;
 
 		if (tb[NFTA_REDIR_REG_PROTO_MAX]) {
+<<<<<<< HEAD
 			err = nft_parse_register_load(tb[NFTA_REDIR_REG_PROTO_MAX],
+=======
+			err = nft_parse_register_load(ctx, tb[NFTA_REDIR_REG_PROTO_MAX],
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						      &priv->sreg_proto_max,
 						      plen);
 			if (err < 0)

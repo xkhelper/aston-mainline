@@ -163,7 +163,10 @@ static const struct file_operations smb_fops = {
 	.open		= smb_open,
 	.read		= smb_read,
 	.release	= smb_release,
+<<<<<<< HEAD
 	.llseek		= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static ssize_t buf_size_show(struct device *dev, struct device_attribute *attr,

@@ -32,10 +32,15 @@ static inline const struct cpumask *cpumask_of_node(int node)
 
 void __init arch_numa_init(void);
 int __init numa_add_memblk(int nodeid, u64 start, u64 end);
+<<<<<<< HEAD
 void __init numa_set_distance(int from, int to, int distance);
 void __init numa_free_distance(void);
 void __init early_map_cpu_to_node(unsigned int cpu, int nid);
 int __init early_cpu_to_node(int cpu);
+=======
+void __init early_map_cpu_to_node(unsigned int cpu, int nid);
+int early_cpu_to_node(int cpu);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void numa_store_cpu_info(unsigned int cpu);
 void numa_add_cpu(unsigned int cpu);
 void numa_remove_cpu(unsigned int cpu);
@@ -51,4 +56,11 @@ static inline int early_cpu_to_node(int cpu) { return 0; }
 
 #endif	/* CONFIG_NUMA */
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_NUMA_EMU
+void debug_cpumask_set_cpu(unsigned int cpu, int node, bool enable);
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif	/* __ASM_GENERIC_NUMA_H */

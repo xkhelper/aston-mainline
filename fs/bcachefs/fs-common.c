@@ -42,7 +42,12 @@ int bch2_create_trans(struct btree_trans *trans,
 	if (ret)
 		goto err;
 
+<<<<<<< HEAD
 	ret = bch2_inode_peek(trans, &dir_iter, dir_u, dir, BTREE_ITER_intent);
+=======
+	ret = bch2_inode_peek(trans, &dir_iter, dir_u, dir,
+			      BTREE_ITER_intent|BTREE_ITER_with_updates);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		goto err;
 
@@ -163,7 +168,11 @@ int bch2_create_trans(struct btree_trans *trans,
 					 name,
 					 dir_target,
 					 &dir_offset,
+<<<<<<< HEAD
 					 STR_HASH_must_create);
+=======
+					 STR_HASH_must_create|BTREE_ITER_with_updates);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret)
 			goto err;
 

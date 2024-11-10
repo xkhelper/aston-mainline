@@ -120,4 +120,11 @@ drm_kunit_helper_create_crtc(struct kunit *test,
 			     const struct drm_crtc_funcs *funcs,
 			     const struct drm_crtc_helper_funcs *helper_funcs);
 
+<<<<<<< HEAD
+=======
+struct drm_display_mode *
+drm_kunit_display_mode_from_cea_vic(struct kunit *test, struct drm_device *dev,
+				    u8 video_code);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif // DRM_KUNIT_HELPERS_H_

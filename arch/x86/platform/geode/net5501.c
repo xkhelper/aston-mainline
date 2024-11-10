@@ -16,6 +16,7 @@
 #include <linux/init.h>
 #include <linux/io.h>
 #include <linux/string.h>
+<<<<<<< HEAD
 #include <linux/leds.h>
 #include <linux/platform_device.h>
 #include <linux/input.h>
@@ -83,13 +84,33 @@ static struct platform_device net5501_leds_dev = {
 static struct platform_device *net5501_devs[] __initdata = {
 	&net5501_buttons_dev,
 	&net5501_leds_dev,
+=======
+#include <linux/input.h>
+#include <linux/gpio/machine.h>
+#include <linux/gpio/property.h>
+
+#include <asm/geode.h>
+
+#include "geode-common.h"
+
+#define BIOS_REGION_BASE		0xffff0000
+#define BIOS_REGION_SIZE		0x00010000
+
+static const struct geode_led net5501_leds[] __initconst = {
+	{ 6, true },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void __init register_net5501(void)
 {
+<<<<<<< HEAD
 	/* Setup LED control through leds-gpio driver */
 	gpiod_add_lookup_table(&net5501_leds_gpio_table);
 	platform_add_devices(net5501_devs, ARRAY_SIZE(net5501_devs));
+=======
+	geode_create_restart_key(24);
+	geode_create_leds("net5501", net5501_leds, ARRAY_SIZE(net5501_leds));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 struct net5501_board {

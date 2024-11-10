@@ -125,7 +125,11 @@ static int tcp_out_of_resources(struct sock *sk, bool do_reset)
 			do_reset = true;
 		if (do_reset)
 			tcp_send_active_reset(sk, GFP_ATOMIC,
+<<<<<<< HEAD
 					      SK_RST_REASON_NOT_SPECIFIED);
+=======
+					      SK_RST_REASON_TCP_ABORT_ON_MEMORY);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		tcp_done(sk);
 		__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPABORTONMEMORY);
 		return 1;
@@ -282,6 +286,10 @@ static int tcp_write_timeout(struct sock *sk)
 		expired = retransmits_timed_out(sk, retry_until,
 						READ_ONCE(icsk->icsk_user_timeout));
 	tcp_fastopen_active_detect_blackhole(sk, expired);
+<<<<<<< HEAD
+=======
+	mptcp_active_detect_blackhole(sk, expired);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (BPF_SOCK_OPS_TEST_FLAG(tp, BPF_SOCK_OPS_RTO_CB_FLAG))
 		tcp_call_bpf_3arg(sk, BPF_SOCK_OPS_RTO_CB,
@@ -779,7 +787,11 @@ static void tcp_keepalive_timer (struct timer_list *t)
 				goto out;
 			}
 		}
+<<<<<<< HEAD
 		tcp_send_active_reset(sk, GFP_ATOMIC, SK_RST_REASON_NOT_SPECIFIED);
+=======
+		tcp_send_active_reset(sk, GFP_ATOMIC, SK_RST_REASON_TCP_STATE);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto death;
 	}
 
@@ -807,7 +819,11 @@ static void tcp_keepalive_timer (struct timer_list *t)
 		    (user_timeout == 0 &&
 		    icsk->icsk_probes_out >= keepalive_probes(tp))) {
 			tcp_send_active_reset(sk, GFP_ATOMIC,
+<<<<<<< HEAD
 					      SK_RST_REASON_NOT_SPECIFIED);
+=======
+					      SK_RST_REASON_TCP_KEEPALIVE_TIMEOUT);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			tcp_write_err(sk);
 			goto out;
 		}

@@ -452,7 +452,11 @@ static struct gdsc mvs0_gdsc = {
 	.pd = {
 		.name = "mvs0_gdsc",
 	},
+<<<<<<< HEAD
 	.flags = HW_CTRL | RETAIN_FF_ENABLE,
+=======
+	.flags = HW_CTRL_TRIGGER | RETAIN_FF_ENABLE,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.pwrsts = PWRSTS_OFF_ON,
 };
 
@@ -461,7 +465,11 @@ static struct gdsc mvs1_gdsc = {
 	.pd = {
 		.name = "mvs1_gdsc",
 	},
+<<<<<<< HEAD
 	.flags = HW_CTRL | RETAIN_FF_ENABLE,
+=======
+	.flags = HW_CTRL_TRIGGER | RETAIN_FF_ENABLE,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.pwrsts = PWRSTS_OFF_ON,
 };
 

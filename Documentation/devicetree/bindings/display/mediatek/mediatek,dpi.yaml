@@ -62,6 +62,22 @@ properties:
       - const: default
       - const: sleep
 
+<<<<<<< HEAD
+=======
+  power-domains:
+    description: |
+      The MediaTek DPI module is typically associated with one of the
+      following multimedia power domains:
+        POWER_DOMAIN_DISPLAY
+        POWER_DOMAIN_VDOSYS
+        POWER_DOMAIN_MM
+      The specific power domain used varies depending on the SoC design.
+
+      It is recommended to explicitly add the appropriate power domain
+      property to the DPI node in the device tree.
+    maxItems: 1
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   port:
     $ref: /schemas/graph.yaml#/properties/port
     description:

@@ -8,6 +8,11 @@ int cpuidle_state_disable(unsigned int cpu, unsigned int idlestate,
 				   unsigned int disable);
 unsigned long cpuidle_state_latency(unsigned int cpu,
 						unsigned int idlestate);
+<<<<<<< HEAD
+=======
+unsigned long cpuidle_state_residency(unsigned int cpu,
+						unsigned int idlestate);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 unsigned long cpuidle_state_usage(unsigned int cpu,
 					unsigned int idlestate);
 unsigned long long cpuidle_state_time(unsigned int cpu,

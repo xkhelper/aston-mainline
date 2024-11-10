@@ -98,7 +98,11 @@ static int cxl_endpoint_port_probe(struct cxl_port *port)
 	struct cxl_port *root;
 	int rc;
 
+<<<<<<< HEAD
 	rc = cxl_dvsec_rr_decode(cxlds->dev, cxlds->cxl_dvsec, &info);
+=======
+	rc = cxl_dvsec_rr_decode(cxlds->dev, port, &info);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc < 0)
 		return rc;
 
@@ -208,7 +212,26 @@ static struct cxl_driver cxl_port_driver = {
 	},
 };
 
+<<<<<<< HEAD
 module_cxl_driver(cxl_port_driver);
+=======
+static int __init cxl_port_init(void)
+{
+	return cxl_driver_register(&cxl_port_driver);
+}
+/*
+ * Be ready to immediately enable ports emitted by the platform CXL root
+ * (e.g. cxl_acpi) when CONFIG_CXL_PORT=y.
+ */
+subsys_initcall(cxl_port_init);
+
+static void __exit cxl_port_exit(void)
+{
+	cxl_driver_unregister(&cxl_port_driver);
+}
+module_exit(cxl_port_exit);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_DESCRIPTION("CXL: Port enumeration and services");
 MODULE_LICENSE("GPL v2");
 MODULE_IMPORT_NS(CXL);

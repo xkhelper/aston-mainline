@@ -6,6 +6,7 @@
 
 #ifndef __ASSEMBLY__
 
+<<<<<<< HEAD
 #include <generated/vdso64-offsets.h>
 #ifdef CONFIG_COMPAT
 #include <generated/vdso32-offsets.h>
@@ -18,6 +19,8 @@
 #define VDSO32_SYMBOL(tsk, name) (-1UL)
 #endif
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern struct vdso_data *vdso_data;
 
 int vdso_getcpu_init(void);

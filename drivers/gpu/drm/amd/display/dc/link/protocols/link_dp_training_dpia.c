@@ -43,9 +43,12 @@
 #define DC_LOGGER \
 	link->ctx->logger
 
+<<<<<<< HEAD
 /* The approximate time (us) it takes to transmit 9 USB4 DP clock sync packets. */
 #define DPIA_CLK_SYNC_DELAY 16000
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Extend interval between training status checks for manual testing. */
 #define DPIA_DEBUG_EXTENDED_AUX_RD_INTERVAL_US 60000000
 
@@ -566,6 +569,7 @@ static enum link_training_result dpia_training_cr_phase(
 	return result;
 }
 
+<<<<<<< HEAD
 /* Return status read interval during equalization phase. */
 static uint32_t dpia_get_eq_aux_rd_interval(
 		const struct dc_link *link,
@@ -588,6 +592,8 @@ static uint32_t dpia_get_eq_aux_rd_interval(
 	return wait_time_microsec;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Execute equalization phase of link training for specified hop in display
  * path in non-transparent mode:
  * - driver issues both DPCD and SET_CONFIG transactions.
@@ -936,6 +942,25 @@ static enum link_training_result dpia_training_end(
 	return result;
 }
 
+<<<<<<< HEAD
+=======
+/* Return status read interval during equalization phase. */
+uint32_t dpia_get_eq_aux_rd_interval(
+		const struct dc_link *link,
+		const struct link_training_settings *lt_settings,
+		uint32_t hop)
+{
+	/* Check debug option for extending aux read interval. */
+	if (link->dc->debug.dpia_debug.bits.extend_aux_rd_interval)
+		return DPIA_DEBUG_EXTENDED_AUX_RD_INTERVAL_US;
+	else if (hop == DPRX)
+		return lt_settings->eq_pattern_time;
+	else
+		return dp_translate_training_aux_read_interval(
+					link->dpcd_caps.lttpr_caps.aux_rd_interval[hop - 1]);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* When aborting training of specified hop in display path, clean up by:
  * - Attempting to clear DPCD TRAINING_PATTERN_SET, LINK_BW_SET and LANE_COUNT_SET.
  * - Sending SET_CONFIG(SET_LINK) with lane count and link rate set to 0.
@@ -943,7 +968,11 @@ static enum link_training_result dpia_training_end(
  * @param link DPIA link being trained.
  * @param hop Hop in display path. DPRX = 0.
  */
+<<<<<<< HEAD
 static void dpia_training_abort(
+=======
+void dpia_training_abort(
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct dc_link *link,
 		struct link_training_settings *lt_settings,
 		uint32_t hop)
@@ -968,7 +997,30 @@ static void dpia_training_abort(
 	core_link_write_dpcd(link, dpcd_tps_offset, &data, 1);
 	core_link_write_dpcd(link, DP_LINK_BW_SET, &data, 1);
 	core_link_write_dpcd(link, DP_LANE_COUNT_SET, &data, 1);
+<<<<<<< HEAD
 	core_link_send_set_config(link, DPIA_SET_CFG_SET_LINK, data);
+=======
+
+	if (!link->dc->config.consolidated_dpia_dp_lt)
+		core_link_send_set_config(link, DPIA_SET_CFG_SET_LINK, data);
+}
+
+void dpia_set_tps_notification(
+		struct dc_link *link,
+		const struct link_training_settings *lt_settings,
+		uint8_t pattern,
+		uint32_t hop)
+{
+	uint8_t repeater_cnt = 0; /* Number of hops/repeaters in display path. */
+
+	if (lt_settings->lttpr_mode != LTTPR_MODE_NON_TRANSPARENT || pattern == DPCD_TRAINING_PATTERN_VIDEOIDLE)
+		return;
+
+	repeater_cnt = dp_parse_lttpr_repeater_count(link->dpcd_caps.lttpr_caps.phy_repeater_cnt);
+
+	if (hop != repeater_cnt)
+		dc_process_dmub_dpia_set_tps_notification(link->ctx->dc, link->link_index, pattern);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 enum link_training_result dpia_perform_link_training(

@@ -2621,7 +2621,10 @@ typedef struct fc_port {
 	struct kref sess_kref;
 	struct qla_tgt *tgt;
 	unsigned long expires;
+<<<<<<< HEAD
 	struct list_head del_list_entry;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct work_struct free_work;
 	struct work_struct reg_work;
 	uint64_t jiffies_at_registration;

@@ -11,12 +11,22 @@
 struct xe_step_info {
 	u8 graphics;
 	u8 media;
+<<<<<<< HEAD
 	u8 display;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 basedie;
 };
 
 #define STEP_ENUM_VAL(name)  STEP_##name,
 
+<<<<<<< HEAD
+=======
+/*
+ * Always define four minor steppings 0-3 for each stepping to match GMD ID
+ * spacing of values. See xe_step_gmdid_get().
+ */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define STEP_NAME_LIST(func)		\
 	func(A0)			\
 	func(A1)			\
@@ -34,7 +44,34 @@ struct xe_step_info {
 	func(D1)			\
 	func(D2)			\
 	func(D3)			\
+<<<<<<< HEAD
 	func(E0)
+=======
+	func(E0)			\
+	func(E1)			\
+	func(E2)			\
+	func(E3)			\
+	func(F0)			\
+	func(F1)			\
+	func(F2)			\
+	func(F3)			\
+	func(G0)			\
+	func(G1)			\
+	func(G2)			\
+	func(G3)			\
+	func(H0)			\
+	func(H1)			\
+	func(H2)			\
+	func(H3)			\
+	func(I0)			\
+	func(I1)			\
+	func(I2)			\
+	func(I3)			\
+	func(J0)			\
+	func(J1)			\
+	func(J2)			\
+	func(J3)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Symbolic steppings that do not match the hardware. These are valid both as gt

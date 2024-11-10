@@ -160,8 +160,12 @@ nla_put_failure:
 	return -1;
 }
 
+<<<<<<< HEAD
 static int nft_rt_validate(const struct nft_ctx *ctx, const struct nft_expr *expr,
 			   const struct nft_data **data)
+=======
+static int nft_rt_validate(const struct nft_ctx *ctx, const struct nft_expr *expr)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	const struct nft_rt *priv = nft_expr_priv(expr);
 	unsigned int hooks;

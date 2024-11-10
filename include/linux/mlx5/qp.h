@@ -149,6 +149,10 @@ enum {
 	MLX5_WQE_CTRL_CQ_UPDATE		= 2 << 2,
 	MLX5_WQE_CTRL_CQ_UPDATE_AND_EQE	= 3 << 2,
 	MLX5_WQE_CTRL_SOLICITED		= 1 << 1,
+<<<<<<< HEAD
+=======
+	MLX5_WQE_CTRL_INITIATOR_SMALL_FENCE = 1 << 5,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum {

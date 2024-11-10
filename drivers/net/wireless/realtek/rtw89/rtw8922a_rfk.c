@@ -256,7 +256,11 @@ static void rtw8922a_chlk_reload(struct rtw89_dev *rtwdev)
 {
 	struct rtw89_rfk_mcc_info *rfk_mcc = &rtwdev->rfk_mcc;
 	struct rtw89_rfk_chan_desc desc[__RTW89_RFK_CHS_NR_V1] = {};
+<<<<<<< HEAD
 	enum rtw89_sub_entity_idx sub_entity_idx;
+=======
+	enum rtw89_chanctx_idx chanctx_idx;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct rtw89_chan *chan;
 	enum rtw89_entity_mode mode;
 	u8 s0_tbl, s1_tbl;
@@ -265,6 +269,7 @@ static void rtw8922a_chlk_reload(struct rtw89_dev *rtwdev)
 	mode = rtw89_get_entity_mode(rtwdev);
 	switch (mode) {
 	case RTW89_ENTITY_MODE_MCC_PREPARE:
+<<<<<<< HEAD
 		sub_entity_idx = RTW89_SUB_ENTITY_1;
 		break;
 	default:
@@ -273,6 +278,16 @@ static void rtw8922a_chlk_reload(struct rtw89_dev *rtwdev)
 	}
 
 	chan = rtw89_chan_get(rtwdev, sub_entity_idx);
+=======
+		chanctx_idx = RTW89_CHANCTX_1;
+		break;
+	default:
+		chanctx_idx = RTW89_CHANCTX_0;
+		break;
+	}
+
+	chan = rtw89_chan_get(rtwdev, chanctx_idx);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (tbl_sel = 0; tbl_sel < ARRAY_SIZE(desc); tbl_sel++) {
 		struct rtw89_rfk_chan_desc *p = &desc[tbl_sel];

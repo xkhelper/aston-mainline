@@ -21,7 +21,11 @@
 int tegra_output_connector_get_modes(struct drm_connector *connector)
 {
 	struct tegra_output *output = connector_to_output(connector);
+<<<<<<< HEAD
 	struct edid *edid = NULL;
+=======
+	const struct drm_edid *drm_edid = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err = 0;
 
 	/*
@@ -34,6 +38,7 @@ int tegra_output_connector_get_modes(struct drm_connector *connector)
 			return err;
 	}
 
+<<<<<<< HEAD
 	if (output->edid)
 		edid = kmemdup(output->edid, sizeof(*edid), GFP_KERNEL);
 	else if (output->ddc)
@@ -46,6 +51,19 @@ int tegra_output_connector_get_modes(struct drm_connector *connector)
 		err = drm_add_edid_modes(connector, edid);
 		kfree(edid);
 	}
+=======
+	if (output->drm_edid)
+		drm_edid = drm_edid_dup(output->drm_edid);
+	else if (output->ddc)
+		drm_edid = drm_edid_read_ddc(connector, output->ddc);
+
+	drm_edid_connector_update(connector, drm_edid);
+	cec_notifier_set_phys_addr(output->cec,
+				   connector->display_info.source_physical_address);
+
+	err = drm_edid_connector_add_modes(connector);
+	drm_edid_free(drm_edid);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return err;
 }
@@ -98,6 +116,10 @@ static irqreturn_t hpd_irq(int irq, void *data)
 int tegra_output_probe(struct tegra_output *output)
 {
 	struct device_node *ddc, *panel;
+<<<<<<< HEAD
+=======
+	const void *edid;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long flags;
 	int err, size;
 
@@ -124,8 +146,11 @@ int tegra_output_probe(struct tegra_output *output)
 			return PTR_ERR(output->panel);
 	}
 
+<<<<<<< HEAD
 	output->edid = of_get_property(output->of_node, "nvidia,edid", &size);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ddc = of_parse_phandle(output->of_node, "nvidia,ddc-i2c-bus", 0);
 	if (ddc) {
 		output->ddc = of_get_i2c_adapter_by_node(ddc);
@@ -137,6 +162,12 @@ int tegra_output_probe(struct tegra_output *output)
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	edid = of_get_property(output->of_node, "nvidia,edid", &size);
+	output->drm_edid = drm_edid_alloc(edid, size);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	output->hpd_gpio = devm_fwnode_gpiod_get(output->dev,
 					of_fwnode_handle(output->of_node),
 					"nvidia,hpd",
@@ -187,6 +218,11 @@ put_i2c:
 	if (output->ddc)
 		i2c_put_adapter(output->ddc);
 
+<<<<<<< HEAD
+=======
+	drm_edid_free(output->drm_edid);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
@@ -197,6 +233,11 @@ void tegra_output_remove(struct tegra_output *output)
 
 	if (output->ddc)
 		i2c_put_adapter(output->ddc);
+<<<<<<< HEAD
+=======
+
+	drm_edid_free(output->drm_edid);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int tegra_output_init(struct drm_device *drm, struct tegra_output *output)

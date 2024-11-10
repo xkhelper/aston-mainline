@@ -238,6 +238,24 @@ static inline void drm_rect_fp_to_int(struct drm_rect *dst,
 		      drm_rect_height(src) >> 16);
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * drm_rect_overlap - Check if two rectangles overlap
+ * @a: first rectangle
+ * @b: second rectangle
+ *
+ * RETURNS:
+ * %true if the rectangles overlap, %false otherwise.
+ */
+static inline bool drm_rect_overlap(const struct drm_rect *a,
+				    const struct drm_rect *b)
+{
+	return (a->x2 > b->x1 && b->x2 > a->x1 &&
+		a->y2 > b->y1 && b->y2 > a->y1);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool drm_rect_intersect(struct drm_rect *r, const struct drm_rect *clip);
 bool drm_rect_clip_scaled(struct drm_rect *src, struct drm_rect *dst,
 			  const struct drm_rect *clip);

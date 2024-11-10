@@ -14,6 +14,10 @@ struct amvdec_format;
 enum vdec_revision {
 	VDEC_REVISION_GXBB,
 	VDEC_REVISION_GXL,
+<<<<<<< HEAD
+=======
+	VDEC_REVISION_GXLX,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	VDEC_REVISION_GXM,
 	VDEC_REVISION_G12A,
 	VDEC_REVISION_SM1,
@@ -28,6 +32,10 @@ struct vdec_platform {
 extern const struct vdec_platform vdec_platform_gxbb;
 extern const struct vdec_platform vdec_platform_gxm;
 extern const struct vdec_platform vdec_platform_gxl;
+<<<<<<< HEAD
+=======
+extern const struct vdec_platform vdec_platform_gxlx;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern const struct vdec_platform vdec_platform_g12a;
 extern const struct vdec_platform vdec_platform_sm1;
 

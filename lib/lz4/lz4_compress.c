@@ -37,7 +37,11 @@
 #include "lz4defs.h"
 #include <linux/module.h>
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const int LZ4_minLength = (MFLIMIT + 1);
 static const int LZ4_64Klimit = ((64 * KB) + (MFLIMIT - 1));

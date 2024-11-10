@@ -121,7 +121,11 @@ static inline unsigned long stack_guard_placement(vm_flags_t vm_flags)
 }
 
 unsigned long
+<<<<<<< HEAD
 arch_get_unmapped_area_vmflags(struct file *filp, unsigned long addr, unsigned long len,
+=======
+arch_get_unmapped_area(struct file *filp, unsigned long addr, unsigned long len,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		       unsigned long pgoff, unsigned long flags, vm_flags_t vm_flags)
 {
 	struct mm_struct *mm = current->mm;
@@ -158,7 +162,11 @@ arch_get_unmapped_area_vmflags(struct file *filp, unsigned long addr, unsigned l
 }
 
 unsigned long
+<<<<<<< HEAD
 arch_get_unmapped_area_topdown_vmflags(struct file *filp, unsigned long addr0,
+=======
+arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr0,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			  unsigned long len, unsigned long pgoff,
 			  unsigned long flags, vm_flags_t vm_flags)
 {
@@ -228,6 +236,7 @@ bottomup:
 	 * can happen with large stack limits and large mmap()
 	 * allocations.
 	 */
+<<<<<<< HEAD
 	return arch_get_unmapped_area(filp, addr0, len, pgoff, flags);
 }
 
@@ -244,4 +253,7 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr,
 			  const unsigned long flags)
 {
 	return arch_get_unmapped_area_topdown_vmflags(filp, addr, len, pgoff, flags, 0);
+=======
+	return arch_get_unmapped_area(filp, addr0, len, pgoff, flags, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

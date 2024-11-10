@@ -13,6 +13,12 @@
 
 struct bch_inode_info {
 	struct inode		v;
+<<<<<<< HEAD
+=======
+	struct rhash_head	hash;
+	subvol_inum		ei_inum;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct list_head	ei_vfs_inode_list;
 	unsigned long		ei_flags;
 
@@ -24,8 +30,11 @@ struct bch_inode_info {
 	struct mutex		ei_quota_lock;
 	struct bch_qid		ei_qid;
 
+<<<<<<< HEAD
 	u32			ei_subvol;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * When we've been doing nocow writes we'll need to issue flushes to the
 	 * underlying block devices
@@ -50,6 +59,7 @@ struct bch_inode_info {
 
 static inline subvol_inum inode_inum(struct bch_inode_info *inode)
 {
+<<<<<<< HEAD
 	return (subvol_inum) {
 		.subvol	= inode->ei_subvol,
 		.inum	= inode->ei_inode.bi_inum,
@@ -58,6 +68,11 @@ static inline subvol_inum inode_inum(struct bch_inode_info *inode)
 
 struct bch_inode_info *__bch2_inode_hash_find(struct bch_fs *, subvol_inum);
 
+=======
+	return inode->ei_inum;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Set if we've gotten a btree error for this inode, and thus the vfs inode and
  * btree inode may be inconsistent:
@@ -69,6 +84,10 @@ struct bch_inode_info *__bch2_inode_hash_find(struct bch_fs *, subvol_inum);
  * those:
  */
 #define EI_INODE_SNAPSHOT		1
+<<<<<<< HEAD
+=======
+#define EI_INODE_HASHED			2
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define to_bch_ei(_inode)					\
 	container_of_or_null(_inode, struct bch_inode_info, v)
@@ -149,6 +168,11 @@ struct bch_inode_info *
 __bch2_create(struct mnt_idmap *, struct bch_inode_info *,
 	      struct dentry *, umode_t, dev_t, subvol_inum, unsigned);
 
+<<<<<<< HEAD
+=======
+int bch2_inode_or_descendents_is_open(struct btree_trans *trans, struct bpos p);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int bch2_fs_quota_transfer(struct bch_fs *,
 			   struct bch_inode_info *,
 			   struct bch_qid,
@@ -189,6 +213,12 @@ int __bch2_unlink(struct inode *, struct dentry *, bool);
 
 void bch2_evict_subvolume_inodes(struct bch_fs *, snapshot_id_list *);
 
+<<<<<<< HEAD
+=======
+void bch2_fs_vfs_exit(struct bch_fs *);
+int bch2_fs_vfs_init(struct bch_fs *);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void bch2_vfs_exit(void);
 int bch2_vfs_init(void);
 
@@ -196,6 +226,7 @@ int bch2_vfs_init(void);
 
 #define bch2_inode_update_after_write(_trans, _inode, _inode_u, _fields)	({ do {} while (0); })
 
+<<<<<<< HEAD
 static inline struct bch_inode_info *__bch2_inode_hash_find(struct bch_fs *c, subvol_inum inum)
 {
 	return NULL;
@@ -203,6 +234,16 @@ static inline struct bch_inode_info *__bch2_inode_hash_find(struct bch_fs *c, su
 
 static inline void bch2_evict_subvolume_inodes(struct bch_fs *c,
 					       snapshot_id_list *s) {}
+=======
+static inline int bch2_inode_or_descendents_is_open(struct btree_trans *trans, struct bpos p) { return 0; }
+
+static inline void bch2_evict_subvolume_inodes(struct bch_fs *c,
+					       snapshot_id_list *s) {}
+
+static inline void bch2_fs_vfs_exit(struct bch_fs *c) {}
+static inline int bch2_fs_vfs_init(struct bch_fs *c) { return 0; }
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void bch2_vfs_exit(void) {}
 static inline int bch2_vfs_init(void) { return 0; }
 

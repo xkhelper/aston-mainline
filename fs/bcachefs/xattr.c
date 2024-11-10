@@ -250,10 +250,24 @@ static int __bch2_xattr_emit(const char *prefix,
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static inline const char *bch2_xattr_prefix(unsigned type, struct dentry *dentry)
+{
+	const struct xattr_handler *handler = bch2_xattr_type_to_handler(type);
+
+	if (!xattr_handler_can_list(handler, dentry))
+		return NULL;
+
+	return xattr_prefix(handler);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int bch2_xattr_emit(struct dentry *dentry,
 			    const struct bch_xattr *xattr,
 			    struct xattr_buf *buf)
 {
+<<<<<<< HEAD
 	const struct xattr_handler *handler =
 		bch2_xattr_type_to_handler(xattr->x_type);
 
@@ -261,6 +275,15 @@ static int bch2_xattr_emit(struct dentry *dentry,
 		? __bch2_xattr_emit(handler->prefix ?: handler->name,
 				    xattr->x_name, xattr->x_name_len, buf)
 		: 0;
+=======
+	const char *prefix;
+
+	prefix = bch2_xattr_prefix(xattr->x_type, dentry);
+	if (!prefix)
+		return 0;
+
+	return __bch2_xattr_emit(prefix, xattr->x_name, xattr->x_name_len, buf);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int bch2_xattr_list_bcachefs(struct bch_fs *c,
@@ -295,6 +318,7 @@ ssize_t bch2_xattr_list(struct dentry *dentry, char *buffer, size_t buffer_size)
 {
 	struct bch_fs *c = dentry->d_sb->s_fs_info;
 	struct bch_inode_info *inode = to_bch_ei(dentry->d_inode);
+<<<<<<< HEAD
 	struct btree_trans *trans = bch2_trans_get(c);
 	struct btree_iter iter;
 	struct bkey_s_c k;
@@ -343,6 +367,25 @@ err:
 	return buf.used;
 out:
 	return bch2_err_class(ret);
+=======
+	struct xattr_buf buf = { .buf = buffer, .len = buffer_size };
+	u64 offset = 0, inum = inode->ei_inode.bi_inum;
+
+	int ret = bch2_trans_run(c,
+		for_each_btree_key_in_subvolume_upto(trans, iter, BTREE_ID_xattrs,
+				   POS(inum, offset),
+				   POS(inum, U64_MAX),
+				   inode->ei_inum.subvol, 0, k, ({
+			if (k.k->type != KEY_TYPE_xattr)
+				continue;
+
+			bch2_xattr_emit(dentry, bkey_s_c_to_xattr(k).v, &buf);
+		}))) ?:
+		bch2_xattr_list_bcachefs(c, &inode->ei_inode, &buf, false) ?:
+		bch2_xattr_list_bcachefs(c, &inode->ei_inode, &buf, true);
+
+	return ret ? bch2_err_class(ret) : buf.used;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int bch2_xattr_get_handler(const struct xattr_handler *handler,
@@ -351,7 +394,11 @@ static int bch2_xattr_get_handler(const struct xattr_handler *handler,
 {
 	struct bch_inode_info *inode = to_bch_ei(vinode);
 	struct bch_fs *c = inode->v.i_sb->s_fs_info;
+<<<<<<< HEAD
 	int ret = bch2_trans_do(c, NULL, NULL, 0,
+=======
+	int ret = bch2_trans_do(c,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		bch2_xattr_get_trans(trans, inode, name, buffer, size, handler->flags));
 
 	if (ret < 0 && bch2_err_matches(ret, ENOENT))
@@ -632,10 +679,13 @@ static const struct xattr_handler bch_xattr_bcachefs_effective_handler = {
 
 const struct xattr_handler *bch2_xattr_handlers[] = {
 	&bch_xattr_user_handler,
+<<<<<<< HEAD
 #ifdef CONFIG_BCACHEFS_POSIX_ACL
 	&nop_posix_acl_access,
 	&nop_posix_acl_default,
 #endif
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	&bch_xattr_trusted_handler,
 	&bch_xattr_security_handler,
 #ifndef NO_BCACHEFS_FS

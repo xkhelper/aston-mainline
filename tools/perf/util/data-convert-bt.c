@@ -792,7 +792,11 @@ static bool is_flush_needed(struct ctf_stream *cs)
 	return cs->count >= STREAM_FLUSH_COUNT;
 }
 
+<<<<<<< HEAD
 static int process_sample_event(struct perf_tool *tool,
+=======
+static int process_sample_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				union perf_event *_event,
 				struct perf_sample *sample,
 				struct evsel *evsel,
@@ -871,7 +875,11 @@ do {							\
 } while(0)
 
 #define __FUNC_PROCESS_NON_SAMPLE(_name, body) 	\
+<<<<<<< HEAD
 static int process_##_name##_event(struct perf_tool *tool,	\
+=======
+static int process_##_name##_event(const struct perf_tool *tool,	\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   union perf_event *_event,	\
 				   struct perf_sample *sample,	\
 				   struct machine *machine)	\
@@ -1607,6 +1615,7 @@ int bt_convert__perf2ctf(const char *input, const char *path,
 		.mode      = PERF_DATA_MODE_READ,
 		.force     = opts->force,
 	};
+<<<<<<< HEAD
 	struct convert c = {
 		.tool = {
 			.sample          = process_sample_event,
@@ -1626,6 +1635,25 @@ int bt_convert__perf2ctf(const char *input, const char *path,
 	struct ctf_writer *cw = &c.writer;
 	int err;
 
+=======
+	struct convert c = {};
+	struct ctf_writer *cw = &c.writer;
+	int err;
+
+	perf_tool__init(&c.tool, /*ordered_events=*/true);
+	c.tool.sample          = process_sample_event;
+	c.tool.mmap            = perf_event__process_mmap;
+	c.tool.mmap2           = perf_event__process_mmap2;
+	c.tool.comm            = perf_event__process_comm;
+	c.tool.exit            = perf_event__process_exit;
+	c.tool.fork            = perf_event__process_fork;
+	c.tool.lost            = perf_event__process_lost;
+	c.tool.tracing_data    = perf_event__process_tracing_data;
+	c.tool.build_id        = perf_event__process_build_id;
+	c.tool.namespaces      = perf_event__process_namespaces;
+	c.tool.ordering_requires_timestamps = true;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (opts->all) {
 		c.tool.comm = process_comm_event;
 		c.tool.exit = process_exit_event;

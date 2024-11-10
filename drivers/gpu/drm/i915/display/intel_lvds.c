@@ -838,6 +838,10 @@ static void intel_lvds_add_properties(struct drm_connector *connector)
  */
 void intel_lvds_init(struct drm_i915_private *i915)
 {
+<<<<<<< HEAD
+=======
+	struct intel_display *display = &i915->display;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_lvds_encoder *lvds_encoder;
 	struct intel_connector *connector;
 	const struct drm_edid *drm_edid;
@@ -872,7 +876,11 @@ void intel_lvds_init(struct drm_i915_private *i915)
 	}
 
 	ddc_pin = GMBUS_PIN_PANEL;
+<<<<<<< HEAD
 	if (!intel_bios_is_lvds_present(i915, &ddc_pin)) {
+=======
+	if (!intel_bios_is_lvds_present(display, &ddc_pin)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if ((lvds & LVDS_PORT_EN) == 0) {
 			drm_dbg_kms(&i915->drm,
 				    "LVDS is not present in VBT\n");
@@ -966,7 +974,11 @@ void intel_lvds_init(struct drm_i915_private *i915)
 	} else {
 		drm_edid = ERR_PTR(-ENOENT);
 	}
+<<<<<<< HEAD
 	intel_bios_init_panel_late(i915, &connector->panel, NULL,
+=======
+	intel_bios_init_panel_late(display, &connector->panel, NULL,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   IS_ERR(drm_edid) ? NULL : drm_edid);
 
 	/* Try EDID first */

@@ -1,5 +1,6 @@
 [
     {
+<<<<<<< HEAD
         "BriefDescription": "MMIO reads. Derived from unc_cha_tor_inserts.ia_miss",
         "Counter": "0,1,2,3",
         "EventCode": "0x35",
@@ -57,6 +58,8 @@
         "Unit": "CHA"
     },
     {
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
         "BriefDescription": "CMS Agent0 AD Credits Acquired : For Transgress 0",
         "Counter": "0,1,2,3",
         "EventCode": "0x80",

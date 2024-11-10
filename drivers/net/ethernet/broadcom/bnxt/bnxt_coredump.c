@@ -372,6 +372,7 @@ err:
 	return rc;
 }
 
+<<<<<<< HEAD
 int bnxt_get_coredump(struct bnxt *bp, u16 dump_type, void *buf, u32 *dump_len)
 {
 	if (dump_type == BNXT_DUMP_CRASH) {
@@ -380,12 +381,87 @@ int bnxt_get_coredump(struct bnxt *bp, u16 dump_type, void *buf, u32 *dump_len)
 #else
 		return -EOPNOTSUPP;
 #endif
+=======
+static u32 bnxt_copy_crash_data(struct bnxt_ring_mem_info *rmem, void *buf,
+				u32 dump_len)
+{
+	u32 data_copied = 0;
+	u32 data_len;
+	int i;
+
+	for (i = 0; i < rmem->nr_pages; i++) {
+		data_len = rmem->page_size;
+		if (data_copied + data_len > dump_len)
+			data_len = dump_len - data_copied;
+		memcpy(buf + data_copied, rmem->pg_arr[i], data_len);
+		data_copied += data_len;
+		if (data_copied >= dump_len)
+			break;
+	}
+	return data_copied;
+}
+
+static int bnxt_copy_crash_dump(struct bnxt *bp, void *buf, u32 dump_len)
+{
+	struct bnxt_ring_mem_info *rmem;
+	u32 offset = 0;
+
+	if (!bp->fw_crash_mem)
+		return -ENOENT;
+
+	rmem = &bp->fw_crash_mem->ring_mem;
+
+	if (rmem->depth > 1) {
+		int i;
+
+		for (i = 0; i < rmem->nr_pages; i++) {
+			struct bnxt_ctx_pg_info *pg_tbl;
+
+			pg_tbl = bp->fw_crash_mem->ctx_pg_tbl[i];
+			offset += bnxt_copy_crash_data(&pg_tbl->ring_mem,
+						       buf + offset,
+						       dump_len - offset);
+			if (offset >= dump_len)
+				break;
+		}
+	} else {
+		bnxt_copy_crash_data(rmem, buf, dump_len);
+	}
+
+	return 0;
+}
+
+static bool bnxt_crash_dump_avail(struct bnxt *bp)
+{
+	u32 sig = 0;
+
+	/* First 4 bytes(signature) of crash dump is always non-zero */
+	bnxt_copy_crash_dump(bp, &sig, sizeof(sig));
+	return !!sig;
+}
+
+int bnxt_get_coredump(struct bnxt *bp, u16 dump_type, void *buf, u32 *dump_len)
+{
+	if (dump_type == BNXT_DUMP_CRASH) {
+		if (bp->fw_dbg_cap & DBG_QCAPS_RESP_FLAGS_CRASHDUMP_HOST_DDR)
+			return bnxt_copy_crash_dump(bp, buf, *dump_len);
+#ifdef CONFIG_TEE_BNXT_FW
+		else if (bp->fw_dbg_cap & DBG_QCAPS_RESP_FLAGS_CRASHDUMP_SOC_DDR)
+			return tee_bnxt_copy_coredump(buf, 0, *dump_len);
+#endif
+		else
+			return -EOPNOTSUPP;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		return __bnxt_get_coredump(bp, buf, dump_len);
 	}
 }
 
+<<<<<<< HEAD
 static int bnxt_hwrm_get_dump_len(struct bnxt *bp, u16 dump_type, u32 *dump_len)
+=======
+int bnxt_hwrm_get_dump_len(struct bnxt *bp, u16 dump_type, u32 *dump_len)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct hwrm_dbg_qcfg_output *resp;
 	struct hwrm_dbg_qcfg_input *req;
@@ -395,7 +471,12 @@ static int bnxt_hwrm_get_dump_len(struct bnxt *bp, u16 dump_type, u32 *dump_len)
 		return -EOPNOTSUPP;
 
 	if (dump_type == BNXT_DUMP_CRASH &&
+<<<<<<< HEAD
 	    !(bp->fw_dbg_cap & DBG_QCAPS_RESP_FLAGS_CRASHDUMP_SOC_DDR))
+=======
+	    !(bp->fw_dbg_cap & DBG_QCAPS_RESP_FLAGS_CRASHDUMP_SOC_DDR ||
+	     (bp->fw_dbg_cap & DBG_QCAPS_RESP_FLAGS_CRASHDUMP_HOST_DDR)))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EOPNOTSUPP;
 
 	rc = hwrm_req_init(bp, req, HWRM_DBG_QCFG);
@@ -403,8 +484,17 @@ static int bnxt_hwrm_get_dump_len(struct bnxt *bp, u16 dump_type, u32 *dump_len)
 		return rc;
 
 	req->fid = cpu_to_le16(0xffff);
+<<<<<<< HEAD
 	if (dump_type == BNXT_DUMP_CRASH)
 		req->flags = cpu_to_le16(DBG_QCFG_REQ_FLAGS_CRASHDUMP_SIZE_FOR_DEST_DEST_SOC_DDR);
+=======
+	if (dump_type == BNXT_DUMP_CRASH) {
+		if (bp->fw_dbg_cap & DBG_QCAPS_RESP_FLAGS_CRASHDUMP_SOC_DDR)
+			req->flags = cpu_to_le16(BNXT_DBG_FL_CR_DUMP_SIZE_SOC);
+		else
+			req->flags = cpu_to_le16(BNXT_DBG_FL_CR_DUMP_SIZE_HOST);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	resp = hwrm_req_hold(bp, req);
 	rc = hwrm_req_send(bp, req);
@@ -412,7 +502,14 @@ static int bnxt_hwrm_get_dump_len(struct bnxt *bp, u16 dump_type, u32 *dump_len)
 		goto get_dump_len_exit;
 
 	if (dump_type == BNXT_DUMP_CRASH) {
+<<<<<<< HEAD
 		*dump_len = le32_to_cpu(resp->crashdump_size);
+=======
+		if (bp->fw_dbg_cap & DBG_QCAPS_RESP_FLAGS_CRASHDUMP_SOC_DDR)
+			*dump_len = BNXT_CRASH_DUMP_LEN;
+		else
+			*dump_len = le32_to_cpu(resp->crashdump_size);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		/* Driver adds coredump header and "HWRM_VER_GET response"
 		 * segment additionally to coredump.
@@ -434,10 +531,24 @@ u32 bnxt_get_coredump_length(struct bnxt *bp, u16 dump_type)
 {
 	u32 len = 0;
 
+<<<<<<< HEAD
 	if (bnxt_hwrm_get_dump_len(bp, dump_type, &len)) {
 		if (dump_type == BNXT_DUMP_CRASH)
 			len = BNXT_CRASH_DUMP_LEN;
 		else
+=======
+	if (dump_type == BNXT_DUMP_CRASH &&
+	    bp->fw_dbg_cap & DBG_QCAPS_RESP_FLAGS_CRASHDUMP_HOST_DDR &&
+	    bp->fw_crash_mem) {
+		if (!bnxt_crash_dump_avail(bp))
+			return 0;
+
+		return bp->fw_crash_len;
+	}
+
+	if (bnxt_hwrm_get_dump_len(bp, dump_type, &len)) {
+		if (dump_type != BNXT_DUMP_CRASH)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			__bnxt_get_coredump(bp, NULL, &len);
 	}
 	return len;

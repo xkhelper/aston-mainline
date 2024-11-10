@@ -39,7 +39,11 @@ wndwc37e_csc_clr(struct nv50_wndw *wndw)
 static int
 wndwc37e_csc_set(struct nv50_wndw *wndw, struct nv50_wndw_atom *asyw)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = wndw->wndw.push;
+=======
+	struct nvif_push *push = &wndw->wndw.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if ((ret = PUSH_WAIT(push, 13)))
@@ -52,7 +56,11 @@ wndwc37e_csc_set(struct nv50_wndw *wndw, struct nv50_wndw_atom *asyw)
 static int
 wndwc37e_ilut_clr(struct nv50_wndw *wndw)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = wndw->wndw.push;
+=======
+	struct nvif_push *push = &wndw->wndw.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if ((ret = PUSH_WAIT(push, 2)))
@@ -65,7 +73,11 @@ wndwc37e_ilut_clr(struct nv50_wndw *wndw)
 static int
 wndwc37e_ilut_set(struct nv50_wndw *wndw, struct nv50_wndw_atom *asyw)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = wndw->wndw.push;
+=======
+	struct nvif_push *push = &wndw->wndw.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if ((ret = PUSH_WAIT(push, 4)))
@@ -94,7 +106,11 @@ wndwc37e_ilut(struct nv50_wndw *wndw, struct nv50_wndw_atom *asyw, int size)
 int
 wndwc37e_blend_set(struct nv50_wndw *wndw, struct nv50_wndw_atom *asyw)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = wndw->wndw.push;
+=======
+	struct nvif_push *push = &wndw->wndw.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if ((ret = PUSH_WAIT(push, 8)))
@@ -139,7 +155,11 @@ wndwc37e_blend_set(struct nv50_wndw *wndw, struct nv50_wndw_atom *asyw)
 int
 wndwc37e_image_clr(struct nv50_wndw *wndw)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = wndw->wndw.push;
+=======
+	struct nvif_push *push = &wndw->wndw.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if ((ret = PUSH_WAIT(push, 4)))
@@ -156,7 +176,11 @@ wndwc37e_image_clr(struct nv50_wndw *wndw)
 static int
 wndwc37e_image_set(struct nv50_wndw *wndw, struct nv50_wndw_atom *asyw)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = wndw->wndw.push;
+=======
+	struct nvif_push *push = &wndw->wndw.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if ((ret = PUSH_WAIT(push, 17)))
@@ -209,7 +233,11 @@ wndwc37e_image_set(struct nv50_wndw *wndw, struct nv50_wndw_atom *asyw)
 int
 wndwc37e_ntfy_clr(struct nv50_wndw *wndw)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = wndw->wndw.push;
+=======
+	struct nvif_push *push = &wndw->wndw.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if ((ret = PUSH_WAIT(push, 2)))
@@ -222,7 +250,11 @@ wndwc37e_ntfy_clr(struct nv50_wndw *wndw)
 int
 wndwc37e_ntfy_set(struct nv50_wndw *wndw, struct nv50_wndw_atom *asyw)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = wndw->wndw.push;
+=======
+	struct nvif_push *push = &wndw->wndw.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if ((ret = PUSH_WAIT(push, 3)))
@@ -239,7 +271,11 @@ wndwc37e_ntfy_set(struct nv50_wndw *wndw, struct nv50_wndw_atom *asyw)
 int
 wndwc37e_sema_clr(struct nv50_wndw *wndw)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = wndw->wndw.push;
+=======
+	struct nvif_push *push = &wndw->wndw.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if ((ret = PUSH_WAIT(push, 2)))
@@ -252,7 +288,11 @@ wndwc37e_sema_clr(struct nv50_wndw *wndw)
 int
 wndwc37e_sema_set(struct nv50_wndw *wndw, struct nv50_wndw_atom *asyw)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = wndw->wndw.push;
+=======
+	struct nvif_push *push = &wndw->wndw.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if ((ret = PUSH_WAIT(push, 5)))
@@ -268,7 +308,11 @@ wndwc37e_sema_set(struct nv50_wndw *wndw, struct nv50_wndw_atom *asyw)
 int
 wndwc37e_update(struct nv50_wndw *wndw, u32 *interlock)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = wndw->wndw.push;
+=======
+	struct nvif_push *push = &wndw->wndw.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if ((ret = PUSH_WAIT(push, 5)))
@@ -363,7 +407,11 @@ wndwc37e_new_(const struct nv50_wndw_func *func, struct nouveau_drm *drm,
 	if (*pwndw = wndw, ret)
 		return ret;
 
+<<<<<<< HEAD
 	ret = nv50_dmac_create(&drm->client.device, &disp->disp->object,
+=======
+	ret = nv50_dmac_create(drm,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       &oclass, 0, &args, sizeof(args),
 			       disp->sync->offset, &wndw->wndw);
 	if (ret) {

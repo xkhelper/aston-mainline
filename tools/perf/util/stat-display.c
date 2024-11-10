@@ -1237,7 +1237,12 @@ static void print_metric_headers(struct perf_stat_config *config,
 
 	/* Print metrics headers only */
 	evlist__for_each_entry(evlist, counter) {
+<<<<<<< HEAD
 		if (config->aggr_mode != AGGR_NONE && counter->metric_leader != counter)
+=======
+		if (!config->iostat_run &&
+		    config->aggr_mode != AGGR_NONE && counter->metric_leader != counter)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 
 		os.evsel = counter;

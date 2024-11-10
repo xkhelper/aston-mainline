@@ -32,6 +32,16 @@ int bench_trigger_uprobe(void *ctx)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+SEC("?uprobe.multi")
+int bench_trigger_uprobe_multi(void *ctx)
+{
+	inc_counter();
+	return 0;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const volatile int batch_iters = 0;
 
 SEC("?raw_tp")

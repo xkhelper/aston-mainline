@@ -35,12 +35,23 @@ properties:
     minItems: 2
     maxItems: 3
 
+<<<<<<< HEAD
   clock-names: true
+=======
+  clock-names:
+    minItems: 2
+    maxItems: 3
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   resets:
     maxItems: 2
 
+<<<<<<< HEAD
   reset-names: true
+=======
+  reset-names:
+    maxItems: 2
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   vbus-supply:
     description: A phandle to the regulator for USB VBUS, only for USB host

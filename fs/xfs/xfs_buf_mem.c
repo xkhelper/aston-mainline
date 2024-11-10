@@ -149,7 +149,11 @@ xmbuf_map_page(
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	error = shmem_get_folio(inode, pos >> PAGE_SHIFT, &folio, SGP_CACHE);
+=======
+	error = shmem_get_folio(inode, pos >> PAGE_SHIFT, 0, &folio, SGP_CACHE);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (error)
 		return error;
 

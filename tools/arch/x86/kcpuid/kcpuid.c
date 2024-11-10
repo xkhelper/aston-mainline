@@ -7,7 +7,12 @@
 #include <string.h>
 #include <getopt.h>
 
+<<<<<<< HEAD
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+=======
+#define ARRAY_SIZE(x)	(sizeof(x) / sizeof((x)[0]))
+#define min(a, b)	(((a) < (b)) ? (a) : (b))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 typedef unsigned int u32;
 typedef unsigned long long u64;
@@ -76,7 +81,10 @@ struct cpuid_range {
  */
 struct cpuid_range *leafs_basic, *leafs_ext;
 
+<<<<<<< HEAD
 static int num_leafs;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool is_amd;
 static bool show_details;
 static bool show_raw;
@@ -98,6 +106,7 @@ static inline void cpuid(u32 *eax, u32 *ebx, u32 *ecx, u32 *edx)
 
 static inline bool has_subleafs(u32 f)
 {
+<<<<<<< HEAD
 	if (f == 0x7 || f == 0xd)
 		return true;
 
@@ -119,6 +128,19 @@ static inline bool has_subleafs(u32 f)
 	default:
 		return false;
 	}
+=======
+	u32 with_subleaves[] = {
+		0x4,  0x7,  0xb,  0xd,  0xf,  0x10, 0x12,
+		0x14, 0x17, 0x18, 0x1b, 0x1d, 0x1f, 0x23,
+		0x8000001d, 0x80000020, 0x80000026,
+	};
+
+	for (unsigned i = 0; i < ARRAY_SIZE(with_subleaves); i++)
+		if (f == with_subleaves[i])
+			return true;
+
+	return false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void leaf_print_raw(struct subleaf *leaf)
@@ -204,6 +226,7 @@ static void raw_dump_range(struct cpuid_range *range)
 	}
 }
 
+<<<<<<< HEAD
 #define MAX_SUBLEAF_NUM		32
 struct cpuid_range *setup_cpuid_range(u32 input_eax)
 {
@@ -213,6 +236,14 @@ struct cpuid_range *setup_cpuid_range(u32 input_eax)
 	u32 eax, ebx, ecx, edx;
 	u32 f = input_eax;
 	int max_subleaf;
+=======
+#define MAX_SUBLEAF_NUM		64
+struct cpuid_range *setup_cpuid_range(u32 input_eax)
+{
+	u32 max_func, idx_func, subleaf, max_subleaf;
+	u32 eax, ebx, ecx, edx, f = input_eax;
+	struct cpuid_range *range;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool allzero;
 
 	eax = input_eax;
@@ -246,7 +277,10 @@ struct cpuid_range *setup_cpuid_range(u32 input_eax)
 		allzero = cpuid_store(range, f, subleaf, eax, ebx, ecx, edx);
 		if (allzero)
 			continue;
+<<<<<<< HEAD
 		num_leafs++;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (!has_subleafs(f))
 			continue;
@@ -257,11 +291,26 @@ struct cpuid_range *setup_cpuid_range(u32 input_eax)
 		 * Some can provide the exact number of subleafs,
 		 * others have to be tried (0xf)
 		 */
+<<<<<<< HEAD
 		if (f == 0x7 || f == 0x14 || f == 0x17 || f == 0x18)
 			max_subleaf = (eax & 0xff) + 1;
 
 		if (f == 0xb)
 			max_subleaf = 2;
+=======
+		if (f == 0x7 || f == 0x14 || f == 0x17 || f == 0x18 || f == 0x1d)
+			max_subleaf = min((eax & 0xff) + 1, max_subleaf);
+		if (f == 0xb)
+			max_subleaf = 2;
+		if (f == 0x1f)
+			max_subleaf = 6;
+		if (f == 0x23)
+			max_subleaf = 4;
+		if (f == 0x80000020)
+			max_subleaf = 4;
+		if (f == 0x80000026)
+			max_subleaf = 5;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		for (subleaf = 1; subleaf < max_subleaf; subleaf++) {
 			eax = f;
@@ -272,7 +321,10 @@ struct cpuid_range *setup_cpuid_range(u32 input_eax)
 						eax, ebx, ecx, edx);
 			if (allzero)
 				continue;
+<<<<<<< HEAD
 			num_leafs++;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 	}
@@ -313,6 +365,11 @@ static int parse_line(char *line)
 	struct bits_desc *bdesc;
 	int reg_index;
 	char *start, *end;
+<<<<<<< HEAD
+=======
+	u32 subleaf_start, subleaf_end;
+	unsigned bit_start, bit_end;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Skip comments and NULL line */
 	if (line[0] == '#' || line[0] == '\n')
@@ -351,6 +408,7 @@ static int parse_line(char *line)
 		return 0;
 
 	/* subleaf */
+<<<<<<< HEAD
 	sub = strtoul(tokens[1], NULL, 0);
 	if ((int)sub > func->nr)
 		return -1;
@@ -358,6 +416,27 @@ static int parse_line(char *line)
 	leaf = &func->leafs[sub];
 	buf = tokens[2];
 
+=======
+	buf = tokens[1];
+	end = strtok(buf, ":");
+	start = strtok(NULL, ":");
+	subleaf_end = strtoul(end, NULL, 0);
+
+	/* A subleaf range is given? */
+	if (start) {
+		subleaf_start = strtoul(start, NULL, 0);
+		subleaf_end = min(subleaf_end, (u32)(func->nr - 1));
+		if (subleaf_start > subleaf_end)
+			return 0;
+	} else {
+		subleaf_start = subleaf_end;
+		if (subleaf_start > (u32)(func->nr - 1))
+			return 0;
+	}
+
+	/* register */
+	buf = tokens[2];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (strcasestr(buf, "EAX"))
 		reg_index = R_EAX;
 	else if (strcasestr(buf, "EBX"))
@@ -369,6 +448,7 @@ static int parse_line(char *line)
 	else
 		goto err_exit;
 
+<<<<<<< HEAD
 	reg = &leaf->info[reg_index];
 	bdesc = &reg->descs[reg->nr++];
 
@@ -386,6 +466,25 @@ static int parse_line(char *line)
 
 	strcpy(bdesc->simp, tokens[4]);
 	strcpy(bdesc->detail, tokens[5]);
+=======
+	/* bit flag or bits field */
+	buf = tokens[3];
+	end = strtok(buf, ":");
+	start = strtok(NULL, ":");
+	bit_end = strtoul(end, NULL, 0);
+	bit_start = (start) ? strtoul(start, NULL, 0) : bit_end;
+
+	for (sub = subleaf_start; sub <= subleaf_end; sub++) {
+		leaf = &func->leafs[sub];
+		reg = &leaf->info[reg_index];
+		bdesc = &reg->descs[reg->nr++];
+
+		bdesc->end = bit_end;
+		bdesc->start = bit_start;
+		strcpy(bdesc->simp, strtok(tokens[4], " \t"));
+		strcpy(bdesc->detail, tokens[5]);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 
 err_exit:
@@ -452,8 +551,14 @@ static void decode_bits(u32 value, struct reg_desc *rdesc, enum cpuid_reg reg)
 		if (start == end) {
 			/* single bit flag */
 			if (value & (1 << start))
+<<<<<<< HEAD
 				printf("\t%-20s %s%s\n",
 					bdesc->simp,
+=======
+				printf("\t%-20s %s%s%s\n",
+					bdesc->simp,
+				        show_flags_only ? "" : "\t\t\t",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					show_details ? "-" : "",
 					show_details ? bdesc->detail : ""
 					);

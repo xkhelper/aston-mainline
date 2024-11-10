@@ -494,6 +494,7 @@ EXPORT_SYMBOL(snd_pcm_format_set_silence);
 int snd_pcm_hw_limit_rates(struct snd_pcm_hardware *hw)
 {
 	int i;
+<<<<<<< HEAD
 	for (i = 0; i < (int)snd_pcm_known_rates.count; i++) {
 		if (hw->rates & (1 << i)) {
 			hw->rate_min = snd_pcm_known_rates.list[i];
@@ -506,6 +507,22 @@ int snd_pcm_hw_limit_rates(struct snd_pcm_hardware *hw)
 			break;
 		}
 	}
+=======
+	unsigned int rmin, rmax;
+
+	rmin = UINT_MAX;
+	rmax = 0;
+	for (i = 0; i < (int)snd_pcm_known_rates.count; i++) {
+		if (hw->rates & (1 << i)) {
+			rmin = min(rmin, snd_pcm_known_rates.list[i]);
+			rmax = max(rmax, snd_pcm_known_rates.list[i]);
+		}
+	}
+	if (rmin > rmax)
+		return -EINVAL;
+	hw->rate_min = rmin;
+	hw->rate_max = rmax;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 EXPORT_SYMBOL(snd_pcm_hw_limit_rates);

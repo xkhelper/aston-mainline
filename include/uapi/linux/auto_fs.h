@@ -23,7 +23,11 @@
 #define AUTOFS_MIN_PROTO_VERSION	3
 #define AUTOFS_MAX_PROTO_VERSION	5
 
+<<<<<<< HEAD
 #define AUTOFS_PROTO_SUBVERSION		5
+=======
+#define AUTOFS_PROTO_SUBVERSION		6
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * The wait_queue_token (autofs_wqt_t) is part of a structure which is passed

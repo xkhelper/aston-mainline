@@ -555,6 +555,15 @@ static inline bool kasan_arch_is_ready(void)	{ return true; }
 void kasan_kunit_test_suite_start(void);
 void kasan_kunit_test_suite_end(void);
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_RUST
+char kasan_test_rust_uaf(void);
+#else
+static inline char kasan_test_rust_uaf(void) { return '\0'; }
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else /* CONFIG_KASAN_KUNIT_TEST */
 
 static inline void kasan_kunit_test_suite_start(void) { }

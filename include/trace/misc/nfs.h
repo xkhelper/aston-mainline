@@ -51,6 +51,10 @@ TRACE_DEFINE_ENUM(NFSERR_JUKEBOX);
 		{ NFSERR_IO,			"IO" }, \
 		{ NFSERR_NXIO,			"NXIO" }, \
 		{ ECHILD,			"CHILD" }, \
+<<<<<<< HEAD
+=======
+		{ ETIMEDOUT,			"TIMEDOUT" }, \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		{ NFSERR_EAGAIN,		"AGAIN" }, \
 		{ NFSERR_ACCES,			"ACCES" }, \
 		{ NFSERR_EXIST,			"EXIST" }, \

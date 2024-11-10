@@ -26,7 +26,10 @@
 #define ACP5X_FUTURE_REG_ACLK_0 0x1864
 
 static const struct sof_amd_acp_desc vangogh_chip_info = {
+<<<<<<< HEAD
 	.rev		= 5,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name		= "vangogh",
 	.host_bridge_id = HOST_BRIDGE_VGH,
 	.pgfsm_base	= ACP5X_PGFSM_BASE,

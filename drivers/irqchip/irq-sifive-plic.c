@@ -4,6 +4,10 @@
  * Copyright (C) 2018 Christoph Hellwig
  */
 #define pr_fmt(fmt) "riscv-plic: " fmt
+<<<<<<< HEAD
+=======
+#include <linux/acpi.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/cpu.h>
 #include <linux/interrupt.h>
 #include <linux/io.h>
@@ -71,6 +75,11 @@ struct plic_priv {
 	unsigned long plic_quirks;
 	unsigned int nr_irqs;
 	unsigned long *prio_save;
+<<<<<<< HEAD
+=======
+	u32 gsi_base;
+	int acpi_plic_id;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct plic_handler {
@@ -123,6 +132,7 @@ static inline void plic_irq_toggle(const struct cpumask *mask,
 	}
 }
 
+<<<<<<< HEAD
 static void plic_irq_enable(struct irq_data *d)
 {
 	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 1);
@@ -133,6 +143,8 @@ static void plic_irq_disable(struct irq_data *d)
 	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 0);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void plic_irq_unmask(struct irq_data *d)
 {
 	struct plic_priv *priv = irq_data_get_irq_chip_data(d);
@@ -147,6 +159,20 @@ static void plic_irq_mask(struct irq_data *d)
 	writel(0, priv->regs + PRIORITY_BASE + d->hwirq * PRIORITY_PER_ID);
 }
 
+<<<<<<< HEAD
+=======
+static void plic_irq_enable(struct irq_data *d)
+{
+	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 1);
+	plic_irq_unmask(d);
+}
+
+static void plic_irq_disable(struct irq_data *d)
+{
+	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 0);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void plic_irq_eoi(struct irq_data *d)
 {
 	struct plic_handler *handler = this_cpu_ptr(&plic_handlers);
@@ -325,6 +351,13 @@ static int plic_irq_domain_translate(struct irq_domain *d,
 {
 	struct plic_priv *priv = d->host_data;
 
+<<<<<<< HEAD
+=======
+	/* For DT, gsi_base is always zero. */
+	if (fwspec->param[0] >= priv->gsi_base)
+		fwspec->param[0] = fwspec->param[0] - priv->gsi_base;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (test_bit(PLIC_QUIRK_EDGE_INTERRUPT, &priv->plic_quirks))
 		return irq_domain_translate_twocell(d, fwspec, hwirq, type);
 
@@ -426,6 +459,7 @@ static const struct of_device_id plic_match[] = {
 	{}
 };
 
+<<<<<<< HEAD
 static int plic_parse_nr_irqs_and_contexts(struct fwnode_handle *fwnode,
 					   u32 *nr_irqs, u32 *nr_contexts)
 {
@@ -437,6 +471,38 @@ static int plic_parse_nr_irqs_and_contexts(struct fwnode_handle *fwnode,
 	 */
 	if (!is_of_node(fwnode))
 		return -EINVAL;
+=======
+#ifdef CONFIG_ACPI
+
+static const struct acpi_device_id plic_acpi_match[] = {
+	{ "RSCV0001", 0 },
+	{}
+};
+MODULE_DEVICE_TABLE(acpi, plic_acpi_match);
+
+#endif
+static int plic_parse_nr_irqs_and_contexts(struct fwnode_handle *fwnode,
+					   u32 *nr_irqs, u32 *nr_contexts,
+					   u32 *gsi_base, u32 *id)
+{
+	int rc;
+
+	if (!is_of_node(fwnode)) {
+		rc = riscv_acpi_get_gsi_info(fwnode, gsi_base, id, nr_irqs, NULL);
+		if (rc) {
+			pr_err("%pfwP: failed to find GSI mapping\n", fwnode);
+			return rc;
+		}
+
+		*nr_contexts = acpi_rintc_get_plic_nr_contexts(*id);
+		if (WARN_ON(!*nr_contexts)) {
+			pr_err("%pfwP: no PLIC context available\n", fwnode);
+			return -EINVAL;
+		}
+
+		return 0;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rc = of_property_read_u32(to_of_node(fwnode), "riscv,ndev", nr_irqs);
 	if (rc) {
@@ -450,22 +516,44 @@ static int plic_parse_nr_irqs_and_contexts(struct fwnode_handle *fwnode,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
+=======
+	*gsi_base = 0;
+	*id = 0;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
 static int plic_parse_context_parent(struct fwnode_handle *fwnode, u32 context,
+<<<<<<< HEAD
 				     u32 *parent_hwirq, int *parent_cpu)
+=======
+				     u32 *parent_hwirq, int *parent_cpu, u32 id)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct of_phandle_args parent;
 	unsigned long hartid;
 	int rc;
 
+<<<<<<< HEAD
 	/*
 	 * Currently, only OF fwnode is supported so extend this
 	 * function for ACPI support.
 	 */
 	if (!is_of_node(fwnode))
 		return -EINVAL;
+=======
+	if (!is_of_node(fwnode)) {
+		hartid = acpi_rintc_ext_parent_to_hartid(id, context);
+		if (hartid == INVALID_HARTID)
+			return -EINVAL;
+
+		*parent_cpu = riscv_hartid_to_cpuid(hartid);
+		*parent_hwirq = RV_IRQ_EXT;
+		return 0;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rc = of_irq_parse_one(to_of_node(fwnode), context, &parent);
 	if (rc)
@@ -489,6 +577,11 @@ static int plic_probe(struct fwnode_handle *fwnode)
 	struct plic_priv *priv;
 	irq_hw_number_t hwirq;
 	void __iomem *regs;
+<<<<<<< HEAD
+=======
+	int id, context_id;
+	u32 gsi_base;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (is_of_node(fwnode)) {
 		const struct of_device_id *id;
@@ -501,10 +594,19 @@ static int plic_probe(struct fwnode_handle *fwnode)
 		if (!regs)
 			return -ENOMEM;
 	} else {
+<<<<<<< HEAD
 		return -ENODEV;
 	}
 
 	error = plic_parse_nr_irqs_and_contexts(fwnode, &nr_irqs, &nr_contexts);
+=======
+		regs = devm_platform_ioremap_resource(to_platform_device(fwnode->dev), 0);
+		if (IS_ERR(regs))
+			return PTR_ERR(regs);
+	}
+
+	error = plic_parse_nr_irqs_and_contexts(fwnode, &nr_irqs, &nr_contexts, &gsi_base, &id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (error)
 		goto fail_free_regs;
 
@@ -518,6 +620,11 @@ static int plic_probe(struct fwnode_handle *fwnode)
 	priv->plic_quirks = plic_quirks;
 	priv->nr_irqs = nr_irqs;
 	priv->regs = regs;
+<<<<<<< HEAD
+=======
+	priv->gsi_base = gsi_base;
+	priv->acpi_plic_id = id;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	priv->prio_save = bitmap_zalloc(nr_irqs, GFP_KERNEL);
 	if (!priv->prio_save) {
@@ -526,12 +633,30 @@ static int plic_probe(struct fwnode_handle *fwnode)
 	}
 
 	for (i = 0; i < nr_contexts; i++) {
+<<<<<<< HEAD
 		error = plic_parse_context_parent(fwnode, i, &parent_hwirq, &cpu);
+=======
+		error = plic_parse_context_parent(fwnode, i, &parent_hwirq, &cpu,
+						  priv->acpi_plic_id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (error) {
 			pr_warn("%pfwP: hwirq for context%d not found\n", fwnode, i);
 			continue;
 		}
 
+<<<<<<< HEAD
+=======
+		if (is_of_node(fwnode)) {
+			context_id = i;
+		} else {
+			context_id = acpi_rintc_get_plic_context(priv->acpi_plic_id, i);
+			if (context_id == INVALID_CONTEXT) {
+				pr_warn("%pfwP: invalid context id for context%d\n", fwnode, i);
+				continue;
+			}
+		}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * Skip contexts other than external interrupts for our
 		 * privilege level.
@@ -569,16 +694,30 @@ static int plic_probe(struct fwnode_handle *fwnode)
 		cpumask_set_cpu(cpu, &priv->lmask);
 		handler->present = true;
 		handler->hart_base = priv->regs + CONTEXT_BASE +
+<<<<<<< HEAD
 			i * CONTEXT_SIZE;
 		raw_spin_lock_init(&handler->enable_lock);
 		handler->enable_base = priv->regs + CONTEXT_ENABLE_BASE +
 			i * CONTEXT_ENABLE_SIZE;
+=======
+			context_id * CONTEXT_SIZE;
+		raw_spin_lock_init(&handler->enable_lock);
+		handler->enable_base = priv->regs + CONTEXT_ENABLE_BASE +
+			context_id * CONTEXT_ENABLE_SIZE;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		handler->priv = priv;
 
 		handler->enable_save = kcalloc(DIV_ROUND_UP(nr_irqs, 32),
 					       sizeof(*handler->enable_save), GFP_KERNEL);
+<<<<<<< HEAD
 		if (!handler->enable_save)
 			goto fail_cleanup_contexts;
+=======
+		if (!handler->enable_save) {
+			error = -ENOMEM;
+			goto fail_cleanup_contexts;
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 done:
 		for (hwirq = 1; hwirq <= nr_irqs; hwirq++) {
 			plic_toggle(handler, hwirq, 0);
@@ -588,10 +727,19 @@ done:
 		nr_handlers++;
 	}
 
+<<<<<<< HEAD
 	priv->irqdomain = irq_domain_add_linear(to_of_node(fwnode), nr_irqs + 1,
 						&plic_irqdomain_ops, priv);
 	if (WARN_ON(!priv->irqdomain))
 		goto fail_cleanup_contexts;
+=======
+	priv->irqdomain = irq_domain_create_linear(fwnode, nr_irqs + 1,
+						   &plic_irqdomain_ops, priv);
+	if (WARN_ON(!priv->irqdomain)) {
+		error = -ENOMEM;
+		goto fail_cleanup_contexts;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * We can have multiple PLIC instances so setup global state
@@ -626,13 +774,25 @@ done:
 		}
 	}
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_ACPI
+	if (!acpi_disabled)
+		acpi_dev_clear_dependencies(ACPI_COMPANION(fwnode->dev));
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pr_info("%pfwP: mapped %d interrupts with %d handlers for %d contexts.\n",
 		fwnode, nr_irqs, nr_handlers, nr_contexts);
 	return 0;
 
 fail_cleanup_contexts:
 	for (i = 0; i < nr_contexts; i++) {
+<<<<<<< HEAD
 		if (plic_parse_context_parent(fwnode, i, &parent_hwirq, &cpu))
+=======
+		if (plic_parse_context_parent(fwnode, i, &parent_hwirq, &cpu, priv->acpi_plic_id))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 		if (parent_hwirq != RV_IRQ_EXT || cpu < 0)
 			continue;
@@ -663,6 +823,10 @@ static struct platform_driver plic_driver = {
 		.name		= "riscv-plic",
 		.of_match_table	= plic_match,
 		.suppress_bind_attrs = true,
+<<<<<<< HEAD
+=======
+		.acpi_match_table = ACPI_PTR(plic_acpi_match),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	.probe = plic_platform_probe,
 };

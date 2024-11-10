@@ -2555,16 +2555,22 @@ static int i40e_get_ts_info(struct net_device *dev,
 		return ethtool_op_get_ts_info(dev, info);
 
 	info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE |
+<<<<<<< HEAD
 				SOF_TIMESTAMPING_RX_SOFTWARE |
 				SOF_TIMESTAMPING_SOFTWARE |
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				SOF_TIMESTAMPING_TX_HARDWARE |
 				SOF_TIMESTAMPING_RX_HARDWARE |
 				SOF_TIMESTAMPING_RAW_HARDWARE;
 
 	if (pf->ptp_clock)
 		info->phc_index = ptp_clock_index(pf->ptp_clock);
+<<<<<<< HEAD
 	else
 		info->phc_index = -1;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	info->tx_types = BIT(HWTSTAMP_TX_OFF) | BIT(HWTSTAMP_TX_ON);
 
@@ -5641,6 +5647,29 @@ static int i40e_get_module_eeprom(struct net_device *netdev,
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static void i40e_eee_capability_to_kedata_supported(__le16 eee_capability_,
+						    unsigned long *supported)
+{
+	const int eee_capability = le16_to_cpu(eee_capability_);
+	static const int lut[] = {
+		ETHTOOL_LINK_MODE_100baseT_Full_BIT,
+		ETHTOOL_LINK_MODE_1000baseT_Full_BIT,
+		ETHTOOL_LINK_MODE_10000baseT_Full_BIT,
+		ETHTOOL_LINK_MODE_1000baseKX_Full_BIT,
+		ETHTOOL_LINK_MODE_10000baseKX4_Full_BIT,
+		ETHTOOL_LINK_MODE_10000baseKR_Full_BIT,
+		ETHTOOL_LINK_MODE_40000baseKR4_Full_BIT,
+	};
+
+	linkmode_zero(supported);
+	for (unsigned int i = ARRAY_SIZE(lut); i--; )
+		if (eee_capability & BIT(i + 1))
+			linkmode_set_bit(lut[i], supported);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int i40e_get_eee(struct net_device *netdev, struct ethtool_keee *edata)
 {
 	struct i40e_netdev_priv *np = netdev_priv(netdev);
@@ -5648,7 +5677,11 @@ static int i40e_get_eee(struct net_device *netdev, struct ethtool_keee *edata)
 	struct i40e_vsi *vsi = np->vsi;
 	struct i40e_pf *pf = vsi->back;
 	struct i40e_hw *hw = &pf->hw;
+<<<<<<< HEAD
 	int status = 0;
+=======
+	int status;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Get initial PHY capabilities */
 	status = i40e_aq_get_phy_capabilities(hw, false, true, &phy_cfg, NULL);
@@ -5661,11 +5694,24 @@ static int i40e_get_eee(struct net_device *netdev, struct ethtool_keee *edata)
 	if (phy_cfg.eee_capability == 0)
 		return -EOPNOTSUPP;
 
+<<<<<<< HEAD
+=======
+	i40e_eee_capability_to_kedata_supported(phy_cfg.eee_capability,
+						edata->supported);
+	linkmode_copy(edata->lp_advertised, edata->supported);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Get current configuration */
 	status = i40e_aq_get_phy_capabilities(hw, false, false, &phy_cfg, NULL);
 	if (status)
 		return -EAGAIN;
 
+<<<<<<< HEAD
+=======
+	linkmode_zero(edata->advertised);
+	if (phy_cfg.eee_capability)
+		linkmode_copy(edata->advertised, edata->supported);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	edata->eee_enabled = !!phy_cfg.eee_capability;
 	edata->tx_lpi_enabled = pf->stats.tx_lpi_status;
 
@@ -5681,10 +5727,18 @@ static int i40e_is_eee_param_supported(struct net_device *netdev,
 	struct i40e_vsi *vsi = np->vsi;
 	struct i40e_pf *pf = vsi->back;
 	struct i40e_ethtool_not_used {
+<<<<<<< HEAD
 		u32 value;
 		const char *name;
 	} param[] = {
 		{edata->tx_lpi_timer, "tx-timer"},
+=======
+		bool value;
+		const char *name;
+	} param[] = {
+		{!!(edata->advertised[0] & ~edata->supported[0]), "advertise"},
+		{!!edata->tx_lpi_timer, "tx-timer"},
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		{edata->tx_lpi_enabled != pf->stats.tx_lpi_status, "tx-lpi"}
 	};
 	int i;
@@ -5710,7 +5764,11 @@ static int i40e_set_eee(struct net_device *netdev, struct ethtool_keee *edata)
 	struct i40e_pf *pf = vsi->back;
 	struct i40e_hw *hw = &pf->hw;
 	__le16 eee_capability;
+<<<<<<< HEAD
 	int status = 0;
+=======
+	int status;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Deny parameters we don't support */
 	if (i40e_is_eee_param_supported(netdev, edata))

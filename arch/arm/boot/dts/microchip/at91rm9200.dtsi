@@ -225,7 +225,11 @@
 			pinctrl@fffff400 {
 				#address-cells = <1>;
 				#size-cells = <1>;
+<<<<<<< HEAD
 				compatible = "atmel,at91rm9200-pinctrl", "simple-bus";
+=======
+				compatible = "atmel,at91rm9200-pinctrl", "simple-mfd";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				ranges = <0xfffff400 0xfffff400 0x800>;
 
 				atmel,mux-mask = <

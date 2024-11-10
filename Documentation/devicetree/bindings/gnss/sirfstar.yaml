@@ -21,6 +21,10 @@ description:
 
 allOf:
   - $ref: gnss-common.yaml#
+<<<<<<< HEAD
+=======
+  - $ref: /schemas/serial/serial-peripheral-props.yaml#
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 properties:
   compatible:

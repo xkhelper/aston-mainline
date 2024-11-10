@@ -223,6 +223,11 @@ int mmu_mark_initmem_nx(void)
 
 	update_bats();
 
+<<<<<<< HEAD
+=======
+	BUILD_BUG_ON(ALIGN_DOWN(MODULES_VADDR, SZ_256M) < TASK_SIZE);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = TASK_SIZE >> 28; i < 16; i++) {
 		/* Do not set NX on VM space for modules */
 		if (is_module_segment(i << 28))

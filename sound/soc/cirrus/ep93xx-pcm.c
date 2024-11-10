@@ -18,8 +18,11 @@
 #include <sound/soc.h>
 #include <sound/dmaengine_pcm.h>
 
+<<<<<<< HEAD
 #include <linux/platform_data/dma-ep93xx.h>
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "ep93xx-pcm.h"
 
 static const struct snd_pcm_hardware ep93xx_pcm_hardware = {
@@ -35,6 +38,7 @@ static const struct snd_pcm_hardware ep93xx_pcm_hardware = {
 	.fifo_size		= 32,
 };
 
+<<<<<<< HEAD
 static bool ep93xx_pcm_dma_filter(struct dma_chan *chan, void *filter_param)
 {
 	struct ep93xx_dma_data *data = filter_param;
@@ -50,15 +54,23 @@ static bool ep93xx_pcm_dma_filter(struct dma_chan *chan, void *filter_param)
 static const struct snd_dmaengine_pcm_config ep93xx_dmaengine_pcm_config = {
 	.pcm_hardware = &ep93xx_pcm_hardware,
 	.compat_filter_fn = ep93xx_pcm_dma_filter,
+=======
+static const struct snd_dmaengine_pcm_config ep93xx_dmaengine_pcm_config = {
+	.pcm_hardware = &ep93xx_pcm_hardware,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.prealloc_buffer_size = 131072,
 };
 
 int devm_ep93xx_pcm_platform_register(struct device *dev)
 {
 	return devm_snd_dmaengine_pcm_register(dev,
+<<<<<<< HEAD
 		&ep93xx_dmaengine_pcm_config,
 		SND_DMAENGINE_PCM_FLAG_NO_DT |
 		SND_DMAENGINE_PCM_FLAG_COMPAT);
+=======
+		&ep93xx_dmaengine_pcm_config, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(devm_ep93xx_pcm_platform_register);
 

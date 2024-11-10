@@ -212,8 +212,13 @@ __visible noinstr void func(struct pt_regs *regs,			\
 	irqentry_state_t state = irqentry_enter(regs);			\
 	u32 vector = (u32)(u8)error_code;				\
 									\
+<<<<<<< HEAD
 	instrumentation_begin();					\
 	kvm_set_cpu_l1tf_flush_l1d();					\
+=======
+	kvm_set_cpu_l1tf_flush_l1d();                                   \
+	instrumentation_begin();					\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	run_irq_on_irqstack_cond(__##func, regs, vector);		\
 	instrumentation_end();						\
 	irqentry_exit(regs, state);					\
@@ -250,7 +255,10 @@ static void __##func(struct pt_regs *regs);				\
 									\
 static __always_inline void instr_##func(struct pt_regs *regs)		\
 {									\
+<<<<<<< HEAD
 	kvm_set_cpu_l1tf_flush_l1d();					\
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	run_sysvec_on_irqstack_cond(__##func, regs);			\
 }									\
 									\
@@ -258,6 +266,10 @@ __visible noinstr void func(struct pt_regs *regs)			\
 {									\
 	irqentry_state_t state = irqentry_enter(regs);			\
 									\
+<<<<<<< HEAD
+=======
+	kvm_set_cpu_l1tf_flush_l1d();                                   \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	instrumentation_begin();					\
 	instr_##func (regs);						\
 	instrumentation_end();						\
@@ -288,7 +300,10 @@ static __always_inline void __##func(struct pt_regs *regs);		\
 static __always_inline void instr_##func(struct pt_regs *regs)		\
 {									\
 	__irq_enter_raw();						\
+<<<<<<< HEAD
 	kvm_set_cpu_l1tf_flush_l1d();					\
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__##func (regs);						\
 	__irq_exit_raw();						\
 }									\
@@ -297,6 +312,10 @@ __visible noinstr void func(struct pt_regs *regs)			\
 {									\
 	irqentry_state_t state = irqentry_enter(regs);			\
 									\
+<<<<<<< HEAD
+=======
+	kvm_set_cpu_l1tf_flush_l1d();                                   \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	instrumentation_begin();					\
 	instr_##func (regs);						\
 	instrumentation_end();						\

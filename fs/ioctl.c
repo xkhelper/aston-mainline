@@ -235,9 +235,15 @@ static long ioctl_file_clone(struct file *dst_file, unsigned long srcfd,
 	loff_t cloned;
 	int ret;
 
+<<<<<<< HEAD
 	if (!src_file.file)
 		return -EBADF;
 	cloned = vfs_clone_file_range(src_file.file, off, dst_file, destoff,
+=======
+	if (!fd_file(src_file))
+		return -EBADF;
+	cloned = vfs_clone_file_range(fd_file(src_file), off, dst_file, destoff,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      olen, 0);
 	if (cloned < 0)
 		ret = cloned;
@@ -895,6 +901,7 @@ SYSCALL_DEFINE3(ioctl, unsigned int, fd, unsigned int, cmd, unsigned long, arg)
 	struct fd f = fdget(fd);
 	int error;
 
+<<<<<<< HEAD
 	if (!f.file)
 		return -EBADF;
 
@@ -905,6 +912,18 @@ SYSCALL_DEFINE3(ioctl, unsigned int, fd, unsigned int, cmd, unsigned long, arg)
 	error = do_vfs_ioctl(f.file, fd, cmd, arg);
 	if (error == -ENOIOCTLCMD)
 		error = vfs_ioctl(f.file, cmd, arg);
+=======
+	if (!fd_file(f))
+		return -EBADF;
+
+	error = security_file_ioctl(fd_file(f), cmd, arg);
+	if (error)
+		goto out;
+
+	error = do_vfs_ioctl(fd_file(f), fd, cmd, arg);
+	if (error == -ENOIOCTLCMD)
+		error = vfs_ioctl(fd_file(f), cmd, arg);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 out:
 	fdput(f);
@@ -953,23 +972,35 @@ COMPAT_SYSCALL_DEFINE3(ioctl, unsigned int, fd, unsigned int, cmd,
 	struct fd f = fdget(fd);
 	int error;
 
+<<<<<<< HEAD
 	if (!f.file)
 		return -EBADF;
 
 	error = security_file_ioctl_compat(f.file, cmd, arg);
+=======
+	if (!fd_file(f))
+		return -EBADF;
+
+	error = security_file_ioctl_compat(fd_file(f), cmd, arg);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (error)
 		goto out;
 
 	switch (cmd) {
 	/* FICLONE takes an int argument, so don't use compat_ptr() */
 	case FICLONE:
+<<<<<<< HEAD
 		error = ioctl_file_clone(f.file, arg, 0, 0, 0);
+=======
+		error = ioctl_file_clone(fd_file(f), arg, 0, 0, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 
 #if defined(CONFIG_X86_64)
 	/* these get messy on amd64 due to alignment differences */
 	case FS_IOC_RESVSP_32:
 	case FS_IOC_RESVSP64_32:
+<<<<<<< HEAD
 		error = compat_ioctl_preallocate(f.file, 0, compat_ptr(arg));
 		break;
 	case FS_IOC_UNRESVSP_32:
@@ -979,6 +1010,17 @@ COMPAT_SYSCALL_DEFINE3(ioctl, unsigned int, fd, unsigned int, cmd,
 		break;
 	case FS_IOC_ZERO_RANGE_32:
 		error = compat_ioctl_preallocate(f.file, FALLOC_FL_ZERO_RANGE,
+=======
+		error = compat_ioctl_preallocate(fd_file(f), 0, compat_ptr(arg));
+		break;
+	case FS_IOC_UNRESVSP_32:
+	case FS_IOC_UNRESVSP64_32:
+		error = compat_ioctl_preallocate(fd_file(f), FALLOC_FL_PUNCH_HOLE,
+				compat_ptr(arg));
+		break;
+	case FS_IOC_ZERO_RANGE_32:
+		error = compat_ioctl_preallocate(fd_file(f), FALLOC_FL_ZERO_RANGE,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				compat_ptr(arg));
 		break;
 #endif
@@ -998,13 +1040,22 @@ COMPAT_SYSCALL_DEFINE3(ioctl, unsigned int, fd, unsigned int, cmd,
 	 * argument.
 	 */
 	default:
+<<<<<<< HEAD
 		error = do_vfs_ioctl(f.file, fd, cmd,
+=======
+		error = do_vfs_ioctl(fd_file(f), fd, cmd,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				     (unsigned long)compat_ptr(arg));
 		if (error != -ENOIOCTLCMD)
 			break;
 
+<<<<<<< HEAD
 		if (f.file->f_op->compat_ioctl)
 			error = f.file->f_op->compat_ioctl(f.file, cmd, arg);
+=======
+		if (fd_file(f)->f_op->compat_ioctl)
+			error = fd_file(f)->f_op->compat_ioctl(fd_file(f), cmd, arg);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (error == -ENOIOCTLCMD)
 			error = -ENOTTY;
 		break;

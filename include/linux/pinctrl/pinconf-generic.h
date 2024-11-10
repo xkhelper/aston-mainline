@@ -81,6 +81,11 @@ struct pinctrl_map;
  * @PIN_CONFIG_INPUT_SCHMITT_ENABLE: control schmitt-trigger mode on the pin.
  *      If the argument != 0, schmitt-trigger mode is enabled. If it's 0,
  *      schmitt-trigger mode is disabled.
+<<<<<<< HEAD
+=======
+ * @PIN_CONFIG_INPUT_SCHMITT_UV: this will configure an input pin to run in
+ *	schmitt-trigger mode. The argument is in uV.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @PIN_CONFIG_MODE_LOW_POWER: this will configure the pin for low power
  *	operation, if several modes of operation are supported these can be
  *	passed in the argument on a custom form, else just use argument 1
@@ -132,6 +137,10 @@ enum pin_config_param {
 	PIN_CONFIG_INPUT_ENABLE,
 	PIN_CONFIG_INPUT_SCHMITT,
 	PIN_CONFIG_INPUT_SCHMITT_ENABLE,
+<<<<<<< HEAD
+=======
+	PIN_CONFIG_INPUT_SCHMITT_UV,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	PIN_CONFIG_MODE_LOW_POWER,
 	PIN_CONFIG_MODE_PWM,
 	PIN_CONFIG_OUTPUT,

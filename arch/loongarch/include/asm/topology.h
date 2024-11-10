@@ -8,6 +8,10 @@
 #include <linux/smp.h>
 
 #ifdef CONFIG_NUMA
+<<<<<<< HEAD
+=======
+#include <asm/numa.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 extern cpumask_t cpus_on_node[];
 

@@ -225,6 +225,10 @@ source "drivers/net/can/m_can/Kconfig"
 source "drivers/net/can/mscan/Kconfig"
 source "drivers/net/can/peak_canfd/Kconfig"
 source "drivers/net/can/rcar/Kconfig"
+<<<<<<< HEAD
+=======
+source "drivers/net/can/rockchip/Kconfig"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 source "drivers/net/can/sja1000/Kconfig"
 source "drivers/net/can/softing/Kconfig"
 source "drivers/net/can/spi/Kconfig"

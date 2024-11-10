@@ -22,6 +22,10 @@ struct regmap_test_param {
 	enum regmap_endian val_endian;
 
 	unsigned int from_reg;
+<<<<<<< HEAD
+=======
+	bool fast_io;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void get_changed_bytes(void *orig, void *new, size_t size)
@@ -80,41 +84,78 @@ static const char *regmap_endian_name(enum regmap_endian endian)
 
 static void param_to_desc(const struct regmap_test_param *param, char *desc)
 {
+<<<<<<< HEAD
 	snprintf(desc, KUNIT_PARAM_DESC_SIZE, "%s-%s @%#x",
 		 regcache_type_name(param->cache),
 		 regmap_endian_name(param->val_endian),
+=======
+	snprintf(desc, KUNIT_PARAM_DESC_SIZE, "%s-%s%s @%#x",
+		 regcache_type_name(param->cache),
+		 regmap_endian_name(param->val_endian),
+		 param->fast_io ? " fast I/O" : "",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 param->from_reg);
 }
 
 static const struct regmap_test_param regcache_types_list[] = {
 	{ .cache = REGCACHE_NONE },
+<<<<<<< HEAD
 	{ .cache = REGCACHE_FLAT },
 	{ .cache = REGCACHE_RBTREE },
 	{ .cache = REGCACHE_MAPLE },
+=======
+	{ .cache = REGCACHE_NONE, .fast_io = true },
+	{ .cache = REGCACHE_FLAT },
+	{ .cache = REGCACHE_FLAT, .fast_io = true },
+	{ .cache = REGCACHE_RBTREE },
+	{ .cache = REGCACHE_RBTREE, .fast_io = true },
+	{ .cache = REGCACHE_MAPLE },
+	{ .cache = REGCACHE_MAPLE, .fast_io = true },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 KUNIT_ARRAY_PARAM(regcache_types, regcache_types_list, param_to_desc);
 
 static const struct regmap_test_param real_cache_types_only_list[] = {
 	{ .cache = REGCACHE_FLAT },
+<<<<<<< HEAD
 	{ .cache = REGCACHE_RBTREE },
 	{ .cache = REGCACHE_MAPLE },
+=======
+	{ .cache = REGCACHE_FLAT, .fast_io = true },
+	{ .cache = REGCACHE_RBTREE },
+	{ .cache = REGCACHE_RBTREE, .fast_io = true },
+	{ .cache = REGCACHE_MAPLE },
+	{ .cache = REGCACHE_MAPLE, .fast_io = true },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 KUNIT_ARRAY_PARAM(real_cache_types_only, real_cache_types_only_list, param_to_desc);
 
 static const struct regmap_test_param real_cache_types_list[] = {
 	{ .cache = REGCACHE_FLAT,   .from_reg = 0 },
+<<<<<<< HEAD
+=======
+	{ .cache = REGCACHE_FLAT,   .from_reg = 0, .fast_io = true },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .cache = REGCACHE_FLAT,   .from_reg = 0x2001 },
 	{ .cache = REGCACHE_FLAT,   .from_reg = 0x2002 },
 	{ .cache = REGCACHE_FLAT,   .from_reg = 0x2003 },
 	{ .cache = REGCACHE_FLAT,   .from_reg = 0x2004 },
 	{ .cache = REGCACHE_RBTREE, .from_reg = 0 },
+<<<<<<< HEAD
+=======
+	{ .cache = REGCACHE_RBTREE, .from_reg = 0, .fast_io = true },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .cache = REGCACHE_RBTREE, .from_reg = 0x2001 },
 	{ .cache = REGCACHE_RBTREE, .from_reg = 0x2002 },
 	{ .cache = REGCACHE_RBTREE, .from_reg = 0x2003 },
 	{ .cache = REGCACHE_RBTREE, .from_reg = 0x2004 },
 	{ .cache = REGCACHE_MAPLE,  .from_reg = 0 },
+<<<<<<< HEAD
+=======
+	{ .cache = REGCACHE_RBTREE, .from_reg = 0, .fast_io = true },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .cache = REGCACHE_MAPLE,  .from_reg = 0x2001 },
 	{ .cache = REGCACHE_MAPLE,  .from_reg = 0x2002 },
 	{ .cache = REGCACHE_MAPLE,  .from_reg = 0x2003 },
@@ -125,11 +166,19 @@ KUNIT_ARRAY_PARAM(real_cache_types, real_cache_types_list, param_to_desc);
 
 static const struct regmap_test_param sparse_cache_types_list[] = {
 	{ .cache = REGCACHE_RBTREE, .from_reg = 0 },
+<<<<<<< HEAD
+=======
+	{ .cache = REGCACHE_RBTREE, .from_reg = 0, .fast_io = true },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .cache = REGCACHE_RBTREE, .from_reg = 0x2001 },
 	{ .cache = REGCACHE_RBTREE, .from_reg = 0x2002 },
 	{ .cache = REGCACHE_RBTREE, .from_reg = 0x2003 },
 	{ .cache = REGCACHE_RBTREE, .from_reg = 0x2004 },
 	{ .cache = REGCACHE_MAPLE,  .from_reg = 0 },
+<<<<<<< HEAD
+=======
+	{ .cache = REGCACHE_MAPLE,  .from_reg = 0, .fast_io = true },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .cache = REGCACHE_MAPLE,  .from_reg = 0x2001 },
 	{ .cache = REGCACHE_MAPLE,  .from_reg = 0x2002 },
 	{ .cache = REGCACHE_MAPLE,  .from_reg = 0x2003 },
@@ -151,8 +200,12 @@ static struct regmap *gen_regmap(struct kunit *test,
 	struct reg_default *defaults;
 
 	config->cache_type = param->cache;
+<<<<<<< HEAD
 	config->disable_locking = config->cache_type == REGCACHE_RBTREE ||
 					config->cache_type == REGCACHE_MAPLE;
+=======
+	config->fast_io = param->fast_io;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (config->max_register == 0) {
 		config->max_register = param->from_reg;

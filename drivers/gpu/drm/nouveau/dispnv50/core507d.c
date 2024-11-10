@@ -33,7 +33,11 @@
 int
 core507d_update(struct nv50_core *core, u32 *interlock, bool ntfy)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = core->chan.push;
+=======
+	struct nvif_push *push = &core->chan.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if ((ret = PUSH_WAIT(push, (ntfy ? 2 : 0) + 3)))
@@ -80,7 +84,11 @@ core507d_ntfy_init(struct nouveau_bo *bo, u32 offset)
 int
 core507d_read_caps(struct nv50_disp *disp)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = disp->core->chan.push;
+=======
+	struct nvif_push *push = &disp->core->chan.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	ret = PUSH_WAIT(push, 6);
@@ -130,7 +138,11 @@ core507d_caps_init(struct nouveau_drm *drm, struct nv50_disp *disp)
 int
 core507d_init(struct nv50_core *core)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = core->chan.push;
+=======
+	struct nvif_push *push = &core->chan.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if ((ret = PUSH_WAIT(push, 2)))
@@ -166,7 +178,11 @@ core507d_new_(const struct nv50_core_func *func, struct nouveau_drm *drm,
 		return -ENOMEM;
 	core->func = func;
 
+<<<<<<< HEAD
 	ret = nv50_dmac_create(&drm->client.device, &disp->disp->object,
+=======
+	ret = nv50_dmac_create(drm,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       &oclass, 0, &args, sizeof(args),
 			       disp->sync->offset, &core->chan);
 	if (ret) {

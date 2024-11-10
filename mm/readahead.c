@@ -206,9 +206,16 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
 		unsigned long nr_to_read, unsigned long lookahead_size)
 {
 	struct address_space *mapping = ractl->mapping;
+<<<<<<< HEAD
 	unsigned long index = readahead_index(ractl);
 	gfp_t gfp_mask = readahead_gfp_mask(mapping);
 	unsigned long i;
+=======
+	unsigned long ra_folio_index, index = readahead_index(ractl);
+	gfp_t gfp_mask = readahead_gfp_mask(mapping);
+	unsigned long mark, i = 0;
+	unsigned int min_nrpages = mapping_min_folio_nrpages(mapping);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Partway through the readahead operation, we will have added
@@ -223,10 +230,31 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
 	unsigned int nofs = memalloc_nofs_save();
 
 	filemap_invalidate_lock_shared(mapping);
+<<<<<<< HEAD
 	/*
 	 * Preallocate as many pages as we will need.
 	 */
 	for (i = 0; i < nr_to_read; i++) {
+=======
+	index = mapping_align_index(mapping, index);
+
+	/*
+	 * As iterator `i` is aligned to min_nrpages, round_up the
+	 * difference between nr_to_read and lookahead_size to mark the
+	 * index that only has lookahead or "async_region" to set the
+	 * readahead flag.
+	 */
+	ra_folio_index = round_up(readahead_index(ractl) + nr_to_read - lookahead_size,
+				  min_nrpages);
+	mark = ra_folio_index - index;
+	nr_to_read += readahead_index(ractl) - index;
+	ractl->_index = index;
+
+	/*
+	 * Preallocate as many pages as we will need.
+	 */
+	while (i < nr_to_read) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct folio *folio = xa_load(&mapping->i_pages, index + i);
 		int ret;
 
@@ -240,12 +268,22 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
 			 * not worth getting one just for that.
 			 */
 			read_pages(ractl);
+<<<<<<< HEAD
 			ractl->_index++;
 			i = ractl->_index + ractl->_nr_pages - index - 1;
 			continue;
 		}
 
 		folio = filemap_alloc_folio(gfp_mask, 0);
+=======
+			ractl->_index += min_nrpages;
+			i = ractl->_index + ractl->_nr_pages - index;
+			continue;
+		}
+
+		folio = filemap_alloc_folio(gfp_mask,
+					    mapping_min_folio_order(mapping));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!folio)
 			break;
 
@@ -255,6 +293,7 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
 			if (ret == -ENOMEM)
 				break;
 			read_pages(ractl);
+<<<<<<< HEAD
 			ractl->_index++;
 			i = ractl->_index + ractl->_nr_pages - index - 1;
 			continue;
@@ -263,6 +302,17 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
 			folio_set_readahead(folio);
 		ractl->_workingset |= folio_test_workingset(folio);
 		ractl->_nr_pages++;
+=======
+			ractl->_index += min_nrpages;
+			i = ractl->_index + ractl->_nr_pages - index;
+			continue;
+		}
+		if (i == mark)
+			folio_set_readahead(folio);
+		ractl->_workingset |= folio_test_workingset(folio);
+		ractl->_nr_pages += min_nrpages;
+		i += min_nrpages;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/*
@@ -438,26 +488,60 @@ void page_cache_ra_order(struct readahead_control *ractl,
 	struct address_space *mapping = ractl->mapping;
 	pgoff_t start = readahead_index(ractl);
 	pgoff_t index = start;
+<<<<<<< HEAD
+=======
+	unsigned int min_order = mapping_min_folio_order(mapping);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pgoff_t limit = (i_size_read(mapping->host) - 1) >> PAGE_SHIFT;
 	pgoff_t mark = index + ra->size - ra->async_size;
 	unsigned int nofs;
 	int err = 0;
 	gfp_t gfp = readahead_gfp_mask(mapping);
+<<<<<<< HEAD
 
 	if (!mapping_large_folio_support(mapping) || ra->size < 4)
+=======
+	unsigned int min_ra_size = max(4, mapping_min_folio_nrpages(mapping));
+
+	/*
+	 * Fallback when size < min_nrpages as each folio should be
+	 * at least min_nrpages anyway.
+	 */
+	if (!mapping_large_folio_support(mapping) || ra->size < min_ra_size)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto fallback;
 
 	limit = min(limit, index + ra->size - 1);
 
+<<<<<<< HEAD
 	if (new_order < MAX_PAGECACHE_ORDER)
 		new_order += 2;
 
 	new_order = min_t(unsigned int, MAX_PAGECACHE_ORDER, new_order);
 	new_order = min_t(unsigned int, new_order, ilog2(ra->size));
+=======
+	if (new_order < mapping_max_folio_order(mapping))
+		new_order += 2;
+
+	new_order = min(mapping_max_folio_order(mapping), new_order);
+	new_order = min_t(unsigned int, new_order, ilog2(ra->size));
+	new_order = max(new_order, min_order);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* See comment in page_cache_ra_unbounded() */
 	nofs = memalloc_nofs_save();
 	filemap_invalidate_lock_shared(mapping);
+<<<<<<< HEAD
+=======
+	/*
+	 * If the new_order is greater than min_order and index is
+	 * already aligned to new_order, then this will be noop as index
+	 * aligned to new_order should also be aligned to min_order.
+	 */
+	ractl->_index = mapping_align_index(mapping, index);
+	index = readahead_index(ractl);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	while (index <= limit) {
 		unsigned int order = new_order;
 
@@ -465,7 +549,11 @@ void page_cache_ra_order(struct readahead_control *ractl,
 		if (index & ((1UL << order) - 1))
 			order = __ffs(index);
 		/* Don't allocate pages past EOF */
+<<<<<<< HEAD
 		while (index + (1UL << order) - 1 > limit)
+=======
+		while (order > min_order && index + (1UL << order) - 1 > limit)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			order--;
 		err = ra_alloc_folio(ractl, index, mark, order, gfp);
 		if (err)
@@ -646,7 +734,11 @@ ssize_t ksys_readahead(int fd, loff_t offset, size_t count)
 
 	ret = -EBADF;
 	f = fdget(fd);
+<<<<<<< HEAD
 	if (!f.file || !(f.file->f_mode & FMODE_READ))
+=======
+	if (!fd_file(f) || !(fd_file(f)->f_mode & FMODE_READ))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 
 	/*
@@ -655,12 +747,21 @@ ssize_t ksys_readahead(int fd, loff_t offset, size_t count)
 	 * on this file, then we must return -EINVAL.
 	 */
 	ret = -EINVAL;
+<<<<<<< HEAD
 	if (!f.file->f_mapping || !f.file->f_mapping->a_ops ||
 	    (!S_ISREG(file_inode(f.file)->i_mode) &&
 	    !S_ISBLK(file_inode(f.file)->i_mode)))
 		goto out;
 
 	ret = vfs_fadvise(f.file, offset, count, POSIX_FADV_WILLNEED);
+=======
+	if (!fd_file(f)->f_mapping || !fd_file(f)->f_mapping->a_ops ||
+	    (!S_ISREG(file_inode(fd_file(f))->i_mode) &&
+	    !S_ISBLK(file_inode(fd_file(f))->i_mode)))
+		goto out;
+
+	ret = vfs_fadvise(fd_file(f), offset, count, POSIX_FADV_WILLNEED);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out:
 	fdput(f);
 	return ret;
@@ -703,8 +804,20 @@ void readahead_expand(struct readahead_control *ractl,
 	struct file_ra_state *ra = ractl->ra;
 	pgoff_t new_index, new_nr_pages;
 	gfp_t gfp_mask = readahead_gfp_mask(mapping);
+<<<<<<< HEAD
 
 	new_index = new_start / PAGE_SIZE;
+=======
+	unsigned long min_nrpages = mapping_min_folio_nrpages(mapping);
+	unsigned int min_order = mapping_min_folio_order(mapping);
+
+	new_index = new_start / PAGE_SIZE;
+	/*
+	 * Readahead code should have aligned the ractl->_index to
+	 * min_nrpages before calling readahead aops.
+	 */
+	VM_BUG_ON(!IS_ALIGNED(ractl->_index, min_nrpages));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Expand the leading edge downwards */
 	while (ractl->_index > new_index) {
@@ -714,9 +827,17 @@ void readahead_expand(struct readahead_control *ractl,
 		if (folio && !xa_is_value(folio))
 			return; /* Folio apparently present */
 
+<<<<<<< HEAD
 		folio = filemap_alloc_folio(gfp_mask, 0);
 		if (!folio)
 			return;
+=======
+		folio = filemap_alloc_folio(gfp_mask, min_order);
+		if (!folio)
+			return;
+
+		index = mapping_align_index(mapping, index);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (filemap_add_folio(mapping, folio, index, gfp_mask) < 0) {
 			folio_put(folio);
 			return;
@@ -726,7 +847,11 @@ void readahead_expand(struct readahead_control *ractl,
 			ractl->_workingset = true;
 			psi_memstall_enter(&ractl->_pflags);
 		}
+<<<<<<< HEAD
 		ractl->_nr_pages++;
+=======
+		ractl->_nr_pages += min_nrpages;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ractl->_index = folio->index;
 	}
 
@@ -741,9 +866,17 @@ void readahead_expand(struct readahead_control *ractl,
 		if (folio && !xa_is_value(folio))
 			return; /* Folio apparently present */
 
+<<<<<<< HEAD
 		folio = filemap_alloc_folio(gfp_mask, 0);
 		if (!folio)
 			return;
+=======
+		folio = filemap_alloc_folio(gfp_mask, min_order);
+		if (!folio)
+			return;
+
+		index = mapping_align_index(mapping, index);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (filemap_add_folio(mapping, folio, index, gfp_mask) < 0) {
 			folio_put(folio);
 			return;
@@ -753,10 +886,17 @@ void readahead_expand(struct readahead_control *ractl,
 			ractl->_workingset = true;
 			psi_memstall_enter(&ractl->_pflags);
 		}
+<<<<<<< HEAD
 		ractl->_nr_pages++;
 		if (ra) {
 			ra->size++;
 			ra->async_size++;
+=======
+		ractl->_nr_pages += min_nrpages;
+		if (ra) {
+			ra->size += min_nrpages;
+			ra->async_size += min_nrpages;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 }

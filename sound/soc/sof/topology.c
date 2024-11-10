@@ -1349,7 +1349,11 @@ static int sof_parse_pin_binding(struct snd_sof_widget *swidget,
 
 	/* copy pin binding array to swidget only if it is defined in topology */
 	if (pin_binding[0]) {
+<<<<<<< HEAD
 		pb = kmemdup(pin_binding, num_pins * sizeof(char *), GFP_KERNEL);
+=======
+		pb = kmemdup_array(pin_binding, num_pins, sizeof(char *), GFP_KERNEL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!pb) {
 			ret = -ENOMEM;
 			goto err;
@@ -1889,9 +1893,15 @@ static int sof_link_load(struct snd_soc_component *scomp, int index, struct snd_
 		return -ENOMEM;
 
 	slink->num_hw_configs = le32_to_cpu(cfg->num_hw_configs);
+<<<<<<< HEAD
 	slink->hw_configs = kmemdup(cfg->hw_config,
 				    sizeof(*slink->hw_configs) * slink->num_hw_configs,
 				    GFP_KERNEL);
+=======
+	slink->hw_configs = kmemdup_array(cfg->hw_config,
+					  slink->num_hw_configs, sizeof(*slink->hw_configs),
+					  GFP_KERNEL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!slink->hw_configs) {
 		kfree(slink);
 		return -ENOMEM;

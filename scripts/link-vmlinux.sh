@@ -107,6 +107,7 @@ vmlinux_link()
 # ${1} - vmlinux image
 gen_btf()
 {
+<<<<<<< HEAD
 	local pahole_ver
 	local btf_data=${1}.btf.o
 
@@ -121,6 +122,10 @@ gen_btf()
 		return 1
 	fi
 
+=======
+	local btf_data=${1}.btf.o
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	info BTF "${btf_data}"
 	LLVM_OBJCOPY="${OBJCOPY}" ${PAHOLE} -J ${PAHOLE_FLAGS} ${1}
 
@@ -215,7 +220,11 @@ kallsymso=
 strip_debug=
 
 if is_enabled CONFIG_KALLSYMS; then
+<<<<<<< HEAD
 	truncate -s0 .tmp_vmlinux.kallsyms0.syms
+=======
+	true > .tmp_vmlinux.kallsyms0.syms
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kallsyms .tmp_vmlinux.kallsyms0.syms .tmp_vmlinux0.kallsyms
 fi
 
@@ -284,7 +293,11 @@ strip_debug=
 vmlinux_link vmlinux
 
 # fill in BTF IDs
+<<<<<<< HEAD
 if is_enabled CONFIG_DEBUG_INFO_BTF && is_enabled CONFIG_BPF; then
+=======
+if is_enabled CONFIG_DEBUG_INFO_BTF; then
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	info BTFIDS vmlinux
 	${RESOLVE_BTFIDS} vmlinux
 fi

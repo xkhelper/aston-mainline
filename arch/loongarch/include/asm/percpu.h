@@ -68,6 +68,7 @@ PERCPU_OP(and, and, &)
 PERCPU_OP(or, or, |)
 #undef PERCPU_OP
 
+<<<<<<< HEAD
 static __always_inline unsigned long __percpu_read(void __percpu *ptr, int size)
 {
 	unsigned long ret;
@@ -137,6 +138,8 @@ static __always_inline void __percpu_write(void __percpu *ptr, unsigned long val
 	}
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static __always_inline unsigned long __percpu_xchg(void *ptr, unsigned long val, int size)
 {
 	switch (size) {
@@ -157,6 +160,36 @@ static __always_inline unsigned long __percpu_xchg(void *ptr, unsigned long val,
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+#define __pcpu_op_1(op)		op ".b "
+#define __pcpu_op_2(op)		op ".h "
+#define __pcpu_op_4(op)		op ".w "
+#define __pcpu_op_8(op)		op ".d "
+
+#define _percpu_read(size, _pcp)					\
+({									\
+	typeof(_pcp) __pcp_ret;						\
+									\
+	__asm__ __volatile__(						\
+		__pcpu_op_##size("ldx") "%[ret], $r21, %[ptr]	\n"	\
+		: [ret] "=&r"(__pcp_ret)				\
+		: [ptr] "r"(&(_pcp))					\
+		: "memory");						\
+									\
+	__pcp_ret;							\
+})
+
+#define _percpu_write(size, _pcp, _val)					\
+do {									\
+	__asm__ __volatile__(						\
+		__pcpu_op_##size("stx") "%[val], $r21, %[ptr]	\n"	\
+		:							\
+		: [val] "r"(_val), [ptr] "r"(&(_pcp))			\
+		: "memory");						\
+} while (0)
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* this_cpu_cmpxchg */
 #define _protect_cmpxchg_local(pcp, o, n)			\
 ({								\
@@ -167,6 +200,7 @@ static __always_inline unsigned long __percpu_xchg(void *ptr, unsigned long val,
 	__ret;							\
 })
 
+<<<<<<< HEAD
 #define _percpu_read(pcp)						\
 ({									\
 	typeof(pcp) __retval;						\
@@ -179,6 +213,8 @@ do {									\
 	__percpu_write(&(pcp), (unsigned long)(val), sizeof(pcp));	\
 } while (0)								\
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define _pcp_protect(operation, pcp, val)			\
 ({								\
 	typeof(pcp) __retval;					\
@@ -215,6 +251,7 @@ do {									\
 #define this_cpu_or_4(pcp, val) _percpu_or(pcp, val)
 #define this_cpu_or_8(pcp, val) _percpu_or(pcp, val)
 
+<<<<<<< HEAD
 #define this_cpu_read_1(pcp) _percpu_read(pcp)
 #define this_cpu_read_2(pcp) _percpu_read(pcp)
 #define this_cpu_read_4(pcp) _percpu_read(pcp)
@@ -224,6 +261,17 @@ do {									\
 #define this_cpu_write_2(pcp, val) _percpu_write(pcp, val)
 #define this_cpu_write_4(pcp, val) _percpu_write(pcp, val)
 #define this_cpu_write_8(pcp, val) _percpu_write(pcp, val)
+=======
+#define this_cpu_read_1(pcp) _percpu_read(1, pcp)
+#define this_cpu_read_2(pcp) _percpu_read(2, pcp)
+#define this_cpu_read_4(pcp) _percpu_read(4, pcp)
+#define this_cpu_read_8(pcp) _percpu_read(8, pcp)
+
+#define this_cpu_write_1(pcp, val) _percpu_write(1, pcp, val)
+#define this_cpu_write_2(pcp, val) _percpu_write(2, pcp, val)
+#define this_cpu_write_4(pcp, val) _percpu_write(4, pcp, val)
+#define this_cpu_write_8(pcp, val) _percpu_write(8, pcp, val)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define this_cpu_xchg_1(pcp, val) _percpu_xchg(pcp, val)
 #define this_cpu_xchg_2(pcp, val) _percpu_xchg(pcp, val)

@@ -24,6 +24,7 @@
 #include <nvif/driver.h>
 #include <nvif/client.h>
 
+<<<<<<< HEAD
 static const struct nvif_driver *
 nvif_driver[] = {
 #ifdef __KERNEL__
@@ -36,10 +37,13 @@ nvif_driver[] = {
 	NULL
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int
 nvif_driver_init(const char *drv, const char *cfg, const char *dbg,
 		 const char *name, u64 device, struct nvif_client *client)
 {
+<<<<<<< HEAD
 	int ret = -EINVAL, i;
 
 	for (i = 0; (client->driver = nvif_driver[i]); i++) {
@@ -55,4 +59,15 @@ nvif_driver_init(const char *drv, const char *cfg, const char *dbg,
 	if (ret == 0)
 		ret = nvif_client_ctor(client, name, device, client);
 	return ret;
+=======
+	int ret;
+
+	client->driver = &nvif_driver_nvkm;
+
+	ret = client->driver->init(name, device, cfg, dbg, &client->object.priv);
+	if (ret)
+		return ret;
+
+	return nvif_client_ctor(client, name, client);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

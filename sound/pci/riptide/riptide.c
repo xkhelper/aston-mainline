@@ -380,6 +380,10 @@ struct riptideport {
 };
 
 struct cmdif {
+<<<<<<< HEAD
+=======
+	struct device *dev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct riptideport *hwport;
 	spinlock_t lock;
 	unsigned int cmdcnt;	/* cmd statistics */
@@ -727,7 +731,11 @@ static int loadfirmware(struct cmdif *cif, const unsigned char *img,
 			}
 		}
 	}
+<<<<<<< HEAD
 	snd_printdd("load firmware return %d\n", err);
+=======
+	dev_dbg(cif->dev, "load firmware return %d\n", err);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
@@ -740,7 +748,11 @@ alloclbuspath(struct cmdif *cif, unsigned char source,
 
 		sink = *path & (~SPLIT_PATH);
 		if (sink != E2SINK_MAX) {
+<<<<<<< HEAD
 			snd_printdd("alloc path 0x%x->0x%x\n", source, sink);
+=======
+			dev_dbg(cif->dev, "alloc path 0x%x->0x%x\n", source, sink);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			SEND_PSEL(cif, source, sink);
 			source = lbusin2out[sink][0];
 			type = lbusin2out[sink][1];
@@ -778,7 +790,11 @@ freelbuspath(struct cmdif *cif, unsigned char source, const unsigned char *path)
 
 		sink = *path & (~SPLIT_PATH);
 		if (sink != E2SINK_MAX) {
+<<<<<<< HEAD
 			snd_printdd("free path 0x%x->0x%x\n", source, sink);
+=======
+			dev_dbg(cif->dev, "free path 0x%x->0x%x\n", source, sink);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			SEND_PCLR(cif, source, sink);
 			source = lbusin2out[sink][0];
 		}
@@ -811,8 +827,13 @@ static int writearm(struct cmdif *cif, u32 addr, u32 data, u32 mask)
 		} else
 			rptr.retlongs[0] &= ~mask;
 	}
+<<<<<<< HEAD
 	snd_printdd("send arm 0x%x 0x%x 0x%x return %d\n", addr, data, mask,
 		    flag);
+=======
+	dev_dbg(cif->dev, "send arm 0x%x 0x%x 0x%x return %d\n", addr, data, mask,
+		flag);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return flag;
 }
 
@@ -832,14 +853,23 @@ static int sendcmd(struct cmdif *cif, u32 flags, u32 cmd, u32 parm,
 	hwport = cif->hwport;
 	if (cif->errcnt > MAX_ERROR_COUNT) {
 		if (cif->is_reset) {
+<<<<<<< HEAD
 			snd_printk(KERN_ERR
 				   "Riptide: Too many failed cmds, reinitializing\n");
+=======
+			dev_err(cif->dev,
+				"Riptide: Too many failed cmds, reinitializing\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (riptide_reset(cif, NULL) == 0) {
 				cif->errcnt = 0;
 				return -EIO;
 			}
 		}
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "Riptide: Initialization failed.\n");
+=======
+		dev_err(cif->dev, "Riptide: Initialization failed.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 	if (ret) {
@@ -899,21 +929,37 @@ static int sendcmd(struct cmdif *cif, u32 flags, u32 cmd, u32 parm,
 	if (time < cif->cmdtimemin)
 		cif->cmdtimemin = time;
 	if ((cif->cmdcnt) % 1000 == 0)
+<<<<<<< HEAD
 		snd_printdd
 		    ("send cmd %d time: %d mintime: %d maxtime %d err: %d\n",
 		     cif->cmdcnt, cif->cmdtime, cif->cmdtimemin,
 		     cif->cmdtimemax, cif->errcnt);
+=======
+		dev_dbg(cif->dev,
+			"send cmd %d time: %d mintime: %d maxtime %d err: %d\n",
+			cif->cmdcnt, cif->cmdtime, cif->cmdtimemin,
+			cif->cmdtimemax, cif->errcnt);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 
       errout:
 	cif->errcnt++;
 	spin_unlock_irqrestore(&cif->lock, irqflags);
+<<<<<<< HEAD
 	snd_printdd
 	    ("send cmd %d hw: 0x%x flag: 0x%x cmd: 0x%x parm: 0x%x ret: 0x%x 0x%x CMDE: %d DATF: %d failed %d\n",
 	     cif->cmdcnt, (int)((void *)&(cmdport->stat) - (void *)hwport),
 	     flags, cmd, parm, ret ? ret->retlongs[0] : 0,
 	     ret ? ret->retlongs[1] : 0, IS_CMDE(cmdport), IS_DATF(cmdport),
 	     err);
+=======
+	dev_dbg(cif->dev,
+		"send cmd %d hw: 0x%x flag: 0x%x cmd: 0x%x parm: 0x%x ret: 0x%x 0x%x CMDE: %d DATF: %d failed %d\n",
+		cif->cmdcnt, (int)((void *)&(cmdport->stat) - (void *)hwport),
+		flags, cmd, parm, ret ? ret->retlongs[0] : 0,
+		ret ? ret->retlongs[1] : 0, IS_CMDE(cmdport), IS_DATF(cmdport),
+		err);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
@@ -923,14 +969,22 @@ setmixer(struct cmdif *cif, short num, unsigned short rval, unsigned short lval)
 	union cmdret rptr = CMDRET_ZERO;
 	int i = 0;
 
+<<<<<<< HEAD
 	snd_printdd("sent mixer %d: 0x%x 0x%x\n", num, rval, lval);
+=======
+	dev_dbg(cif->dev, "sent mixer %d: 0x%x 0x%x\n", num, rval, lval);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	do {
 		SEND_SDGV(cif, num, num, rval, lval);
 		SEND_RDGV(cif, num, num, &rptr);
 		if (rptr.retwords[0] == lval && rptr.retwords[1] == rval)
 			return 0;
 	} while (i++ < MAX_WRITE_RETRY);
+<<<<<<< HEAD
 	snd_printdd("sent mixer failed\n");
+=======
+	dev_dbg(cif->dev, "sent mixer failed\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return -EIO;
 }
 
@@ -961,7 +1015,11 @@ getsourcesink(struct cmdif *cif, unsigned char source, unsigned char sink,
 		return -EIO;
 	*a = rptr.retbytes[0];
 	*b = rptr.retbytes[1];
+<<<<<<< HEAD
 	snd_printdd("getsourcesink 0x%x 0x%x\n", *a, *b);
+=======
+	dev_dbg(cif->dev, "%s 0x%x 0x%x\n", __func__, *a, *b);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -988,11 +1046,19 @@ getsamplerate(struct cmdif *cif, unsigned char *intdec, unsigned int *rate)
 	}
 	if (p[0]) {
 		if (p[1] != p[0])
+<<<<<<< HEAD
 			snd_printdd("rates differ %d %d\n", p[0], p[1]);
 		*rate = (unsigned int)p[0];
 	} else
 		*rate = (unsigned int)p[1];
 	snd_printdd("getsampleformat %d %d %d\n", intdec[0], intdec[1], *rate);
+=======
+			dev_dbg(cif->dev, "rates differ %d %d\n", p[0], p[1]);
+		*rate = (unsigned int)p[0];
+	} else
+		*rate = (unsigned int)p[1];
+	dev_dbg(cif->dev, "getsampleformat %d %d %d\n", intdec[0], intdec[1], *rate);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -1003,9 +1069,15 @@ setsampleformat(struct cmdif *cif,
 {
 	unsigned char w, ch, sig, order;
 
+<<<<<<< HEAD
 	snd_printdd
 	    ("setsampleformat mixer: %d id: %d channels: %d format: %d\n",
 	     mixer, id, channels, format);
+=======
+	dev_dbg(cif->dev,
+		"%s mixer: %d id: %d channels: %d format: %d\n",
+		__func__, mixer, id, channels, format);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ch = channels == 1;
 	w = snd_pcm_format_width(format) == 8;
 	sig = snd_pcm_format_unsigned(format) != 0;
@@ -1013,7 +1085,11 @@ setsampleformat(struct cmdif *cif,
 
 	if (SEND_SETF(cif, mixer, w, ch, order, sig, id) &&
 	    SEND_SETF(cif, mixer, w, ch, order, sig, id)) {
+<<<<<<< HEAD
 		snd_printdd("setsampleformat failed\n");
+=======
+		dev_dbg(cif->dev, "%s failed\n", __func__);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EIO;
 	}
 	return 0;
@@ -1026,8 +1102,13 @@ setsamplerate(struct cmdif *cif, unsigned char *intdec, unsigned int rate)
 	union cmdret rptr = CMDRET_ZERO;
 	int i;
 
+<<<<<<< HEAD
 	snd_printdd("setsamplerate intdec: %d,%d rate: %d\n", intdec[0],
 		    intdec[1], rate);
+=======
+	dev_dbg(cif->dev, "%s intdec: %d,%d rate: %d\n", __func__,
+		intdec[0], intdec[1], rate);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	D = 48000;
 	M = ((rate == 48000) ? 47999 : rate) * 65536;
 	N = M % D;
@@ -1042,8 +1123,13 @@ setsamplerate(struct cmdif *cif, unsigned char *intdec, unsigned int rate)
 				 rptr.retwords[3] != N &&
 				 i++ < MAX_WRITE_RETRY);
 			if (i > MAX_WRITE_RETRY) {
+<<<<<<< HEAD
 				snd_printdd("sent samplerate %d: %d failed\n",
 					    *intdec, rate);
+=======
+				dev_dbg(cif->dev, "sent samplerate %d: %d failed\n",
+					*intdec, rate);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				return -EIO;
 			}
 		}
@@ -1062,7 +1148,11 @@ getmixer(struct cmdif *cif, short num, unsigned short *rval,
 		return -EIO;
 	*rval = rptr.retwords[0];
 	*lval = rptr.retwords[1];
+<<<<<<< HEAD
 	snd_printdd("got mixer %d: 0x%x 0x%x\n", num, *rval, *lval);
+=======
+	dev_dbg(cif->dev, "got mixer %d: 0x%x 0x%x\n", num, *rval, *lval);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -1105,8 +1195,13 @@ static irqreturn_t riptide_handleirq(int irq, void *dev_id)
 				if ((flag & EOS_STATUS)
 				    && (data->state == ST_PLAY)) {
 					data->state = ST_STOP;
+<<<<<<< HEAD
 					snd_printk(KERN_ERR
 						   "Riptide: DMA stopped unexpectedly\n");
+=======
+					dev_err(cif->dev,
+						"Riptide: DMA stopped unexpectedly\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				}
 				c->dwStat_Ctl =
 				    cpu_to_le32(flag &
@@ -1119,11 +1214,19 @@ static irqreturn_t riptide_handleirq(int irq, void *dev_id)
 				period_bytes =
 				    frames_to_bytes(runtime,
 						    runtime->period_size);
+<<<<<<< HEAD
 				snd_printdd
 				    ("interrupt 0x%x after 0x%lx of 0x%lx frames in period\n",
 				     READ_AUDIO_STATUS(cif->hwport),
 				     bytes_to_frames(runtime, pos),
 				     runtime->period_size);
+=======
+				dev_dbg(cif->dev,
+					"interrupt 0x%x after 0x%lx of 0x%lx frames in period\n",
+					READ_AUDIO_STATUS(cif->hwport),
+					bytes_to_frames(runtime, pos),
+					runtime->period_size);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				j = 0;
 				if (pos >= period_bytes) {
 					j++;
@@ -1184,6 +1287,7 @@ static int try_to_load_firmware(struct cmdif *cif, struct snd_riptide *chip)
 			break;
 	}
 	if (!timeout) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR
 			   "Riptide: device not ready, audio status: 0x%x "
 			   "ready: %d gerr: %d\n",
@@ -1201,6 +1305,25 @@ static int try_to_load_firmware(struct cmdif *cif, struct snd_riptide *chip)
 	snd_printdd("Firmware version: ASIC: %d CODEC %d AUXDSP %d PROG %d\n",
 		    firmware.firmware.ASIC, firmware.firmware.CODEC,
 		    firmware.firmware.AUXDSP, firmware.firmware.PROG);
+=======
+		dev_err(cif->dev,
+			"Riptide: device not ready, audio status: 0x%x ready: %d gerr: %d\n",
+			READ_AUDIO_STATUS(cif->hwport),
+			IS_READY(cif->hwport), IS_GERR(cif->hwport));
+		return -EIO;
+	} else {
+		dev_dbg(cif->dev,
+			"Riptide: audio status: 0x%x ready: %d gerr: %d\n",
+			READ_AUDIO_STATUS(cif->hwport),
+			IS_READY(cif->hwport), IS_GERR(cif->hwport));
+	}
+
+	SEND_GETV(cif, &firmware.ret);
+	dev_dbg(cif->dev,
+		"Firmware version: ASIC: %d CODEC %d AUXDSP %d PROG %d\n",
+		firmware.firmware.ASIC, firmware.firmware.CODEC,
+		firmware.firmware.AUXDSP, firmware.firmware.PROG);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!chip)
 		return 1;
@@ -1211,20 +1334,34 @@ static int try_to_load_firmware(struct cmdif *cif, struct snd_riptide *chip)
 
 	}
 
+<<<<<<< HEAD
 	snd_printdd("Writing Firmware\n");
+=======
+	dev_dbg(cif->dev, "Writing Firmware\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!chip->fw_entry) {
 		err = request_firmware(&chip->fw_entry, "riptide.hex",
 				       &chip->pci->dev);
 		if (err) {
+<<<<<<< HEAD
 			snd_printk(KERN_ERR
 				   "Riptide: Firmware not available %d\n", err);
+=======
+			dev_err(cif->dev,
+				"Riptide: Firmware not available %d\n", err);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EIO;
 		}
 	}
 	err = loadfirmware(cif, chip->fw_entry->data, chip->fw_entry->size);
 	if (err) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR
 			   "Riptide: Could not load firmware %d\n", err);
+=======
+		dev_err(cif->dev,
+			"Riptide: Could not load firmware %d\n", err);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return err;
 	}
 
@@ -1257,7 +1394,11 @@ static int riptide_reset(struct cmdif *cif, struct snd_riptide *chip)
 
 	SEND_SACR(cif, 0, AC97_RESET);
 	SEND_RACR(cif, AC97_RESET, &rptr);
+<<<<<<< HEAD
 	snd_printdd("AC97: 0x%x 0x%x\n", rptr.retlongs[0], rptr.retlongs[1]);
+=======
+	dev_dbg(cif->dev, "AC97: 0x%x 0x%x\n", rptr.retlongs[0], rptr.retlongs[1]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	SEND_PLST(cif, 0);
 	SEND_SLST(cif, 0);
@@ -1350,11 +1491,19 @@ static snd_pcm_uframes_t snd_riptide_pointer(struct snd_pcm_substream
 
 	SEND_GPOS(cif, 0, data->id, &rptr);
 	if (data->size && runtime->period_size) {
+<<<<<<< HEAD
 		snd_printdd
 		    ("pointer stream %d position 0x%x(0x%x in buffer) bytes 0x%lx(0x%lx in period) frames\n",
 		     data->id, rptr.retlongs[1], rptr.retlongs[1] % data->size,
 		     bytes_to_frames(runtime, rptr.retlongs[1]),
 		     bytes_to_frames(runtime,
+=======
+		dev_dbg(cif->dev,
+			"pointer stream %d position 0x%x(0x%x in buffer) bytes 0x%lx(0x%lx in period) frames\n",
+			data->id, rptr.retlongs[1], rptr.retlongs[1] % data->size,
+			bytes_to_frames(runtime, rptr.retlongs[1]),
+			bytes_to_frames(runtime,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				     rptr.retlongs[1]) % runtime->period_size);
 		if (rptr.retlongs[1] > data->pointer)
 			ret =
@@ -1365,8 +1514,14 @@ static snd_pcm_uframes_t snd_riptide_pointer(struct snd_pcm_substream
 			    bytes_to_frames(runtime,
 					    data->pointer % data->size);
 	} else {
+<<<<<<< HEAD
 		snd_printdd("stream not started or strange parms (%d %ld)\n",
 			    data->size, runtime->period_size);
+=======
+		dev_dbg(cif->dev,
+			"stream not started or strange parms (%d %ld)\n",
+			data->size, runtime->period_size);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = bytes_to_frames(runtime, 0);
 	}
 	return ret;
@@ -1410,7 +1565,11 @@ static int snd_riptide_trigger(struct snd_pcm_substream *substream, int cmd)
 			udelay(1);
 		} while (i != rptr.retlongs[1] && j++ < MAX_WRITE_RETRY);
 		if (j > MAX_WRITE_RETRY)
+<<<<<<< HEAD
 			snd_printk(KERN_ERR "Riptide: Could not stop stream!");
+=======
+			dev_err(cif->dev, "Riptide: Could not stop stream!");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
 		if (!(data->state & ST_PAUSE)) {
@@ -1448,8 +1607,13 @@ static int snd_riptide_prepare(struct snd_pcm_substream *substream)
 	if (snd_BUG_ON(!cif || !data))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	snd_printdd("prepare id %d ch: %d f:0x%x r:%d\n", data->id,
 		    runtime->channels, runtime->format, runtime->rate);
+=======
+	dev_dbg(cif->dev, "prepare id %d ch: %d f:0x%x r:%d\n", data->id,
+		runtime->channels, runtime->format, runtime->rate);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	spin_lock_irq(&chip->lock);
 	channels = runtime->channels;
@@ -1469,8 +1633,12 @@ static int snd_riptide_prepare(struct snd_pcm_substream *substream)
 			lbuspath = data->paths.stereo;
 		break;
 	}
+<<<<<<< HEAD
 	snd_printdd("use sgdlist at 0x%p\n",
 		    data->sgdlist.area);
+=======
+	dev_dbg(cif->dev, "use sgdlist at 0x%p\n", data->sgdlist.area);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (data->sgdlist.area) {
 		unsigned int i, j, size, pages, f, pt, period;
 		struct sgd *c, *p = NULL;
@@ -1483,9 +1651,15 @@ static int snd_riptide_prepare(struct snd_pcm_substream *substream)
 		pages = DIV_ROUND_UP(size, f);
 		data->size = size;
 		data->pages = pages;
+<<<<<<< HEAD
 		snd_printdd
 		    ("create sgd size: 0x%x pages %d of size 0x%x for period 0x%x\n",
 		     size, pages, f, period);
+=======
+		dev_dbg(cif->dev,
+			"create sgd size: 0x%x pages %d of size 0x%x for period 0x%x\n",
+			size, pages, f, period);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pt = 0;
 		j = 0;
 		for (i = 0; i < pages; i++) {
@@ -1543,17 +1717,29 @@ snd_riptide_hw_params(struct snd_pcm_substream *substream,
 	struct snd_dma_buffer *sgdlist = &data->sgdlist;
 	int err;
 
+<<<<<<< HEAD
 	snd_printdd("hw params id %d (sgdlist: 0x%p 0x%lx %d)\n", data->id,
 		    sgdlist->area, (unsigned long)sgdlist->addr,
 		    (int)sgdlist->bytes);
+=======
+	dev_dbg(chip->card->dev, "hw params id %d (sgdlist: 0x%p 0x%lx %d)\n",
+		data->id, sgdlist->area, (unsigned long)sgdlist->addr,
+		(int)sgdlist->bytes);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (sgdlist->area)
 		snd_dma_free_pages(sgdlist);
 	err = snd_dma_alloc_pages(SNDRV_DMA_TYPE_DEV, &chip->pci->dev,
 				  sizeof(struct sgd) * (DESC_MAX_MASK + 1),
 				  sgdlist);
 	if (err < 0) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "Riptide: failed to alloc %d dma bytes\n",
 			   (int)sizeof(struct sgd) * (DESC_MAX_MASK + 1));
+=======
+		dev_err(chip->card->dev,
+			"Riptide: failed to alloc %d dma bytes\n",
+			(int)sizeof(struct sgd) * (DESC_MAX_MASK + 1));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return err;
 	}
 	data->sgdbuf = (struct sgd *)sgdlist->area;
@@ -1729,13 +1915,21 @@ snd_riptide_codec_write(struct snd_ac97 *ac97, unsigned short reg,
 	if (snd_BUG_ON(!cif))
 		return;
 
+<<<<<<< HEAD
 	snd_printdd("Write AC97 reg 0x%x 0x%x\n", reg, val);
+=======
+	dev_dbg(cif->dev, "Write AC97 reg 0x%x 0x%x\n", reg, val);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	do {
 		SEND_SACR(cif, val, reg);
 		SEND_RACR(cif, reg, &rptr);
 	} while (rptr.retwords[1] != val && i++ < MAX_WRITE_RETRY);
 	if (i > MAX_WRITE_RETRY)
+<<<<<<< HEAD
 		snd_printdd("Write AC97 reg failed\n");
+=======
+		dev_dbg(cif->dev, "Write AC97 reg failed\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static unsigned short snd_riptide_codec_read(struct snd_ac97 *ac97,
@@ -1750,7 +1944,11 @@ static unsigned short snd_riptide_codec_read(struct snd_ac97 *ac97,
 
 	if (SEND_RACR(cif, reg, &rptr) != 0)
 		SEND_RACR(cif, reg, &rptr);
+<<<<<<< HEAD
 	snd_printdd("Read AC97 reg 0x%x got 0x%x\n", reg, rptr.retwords[1]);
+=======
+	dev_dbg(cif->dev, "Read AC97 reg 0x%x got 0x%x\n", reg, rptr.retwords[1]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rptr.retwords[1];
 }
 
@@ -1768,6 +1966,10 @@ static int snd_riptide_initialize(struct snd_riptide *chip)
 		cif = kzalloc(sizeof(struct cmdif), GFP_KERNEL);
 		if (!cif)
 			return -ENOMEM;
+<<<<<<< HEAD
+=======
+		cif->dev = chip->card->dev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		cif->hwport = (struct riptideport *)chip->port;
 		spin_lock_init(&cif->lock);
 		chip->cif = cif;
@@ -1781,11 +1983,19 @@ static int snd_riptide_initialize(struct snd_riptide *chip)
 	case 0x4310:
 	case 0x4320:
 	case 0x4330:
+<<<<<<< HEAD
 		snd_printdd("Modem enable?\n");
 		SEND_SETDPLL(cif);
 		break;
 	}
 	snd_printdd("Enabling MPU IRQs\n");
+=======
+		dev_dbg(cif->dev, "Modem enable?\n");
+		SEND_SETDPLL(cif);
+		break;
+	}
+	dev_dbg(cif->dev, "Enabling MPU IRQs\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (chip->rmidi)
 		SET_EMPUIRQ(cif->hwport);
 	return err;
@@ -1838,8 +2048,13 @@ snd_riptide_create(struct snd_card *card, struct pci_dev *pci)
 				      snd_riptide_interrupt,
 				      riptide_handleirq, IRQF_SHARED,
 				      KBUILD_MODNAME, chip)) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "Riptide: unable to grab IRQ %d\n",
 			   pci->irq);
+=======
+		dev_err(&pci->dev, "Riptide: unable to grab IRQ %d\n",
+			pci->irq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 	}
 	chip->irq = pci->irq;
@@ -1987,9 +2202,15 @@ snd_riptide_joystick_probe(struct pci_dev *pci, const struct pci_device_id *id)
 		goto inc_dev;
 	}
 	if (!request_region(joystick_port[dev], 8, "Riptide gameport")) {
+<<<<<<< HEAD
 		snd_printk(KERN_WARNING
 			   "Riptide: cannot grab gameport 0x%x\n",
 			   joystick_port[dev]);
+=======
+		dev_err(&pci->dev,
+			"Riptide: cannot grab gameport 0x%x\n",
+			joystick_port[dev]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		gameport_free_port(gameport);
 		ret = -EBUSY;
 		goto inc_dev;
@@ -2064,9 +2285,15 @@ __snd_card_riptide_probe(struct pci_dev *pci, const struct pci_device_id *pci_id
 					  val, MPU401_INFO_IRQ_HOOK, -1,
 					  &chip->rmidi);
 		if (err < 0)
+<<<<<<< HEAD
 			snd_printk(KERN_WARNING
 				   "Riptide: Can't Allocate MPU at 0x%x\n",
 				   val);
+=======
+			dev_warn(&pci->dev,
+				 "Riptide: Can't Allocate MPU at 0x%x\n",
+				 val);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		else
 			chip->mpuaddr = val;
 	}
@@ -2076,15 +2303,26 @@ __snd_card_riptide_probe(struct pci_dev *pci, const struct pci_device_id *pci_id
 		err = snd_opl3_create(card, val, val + 2,
 				      OPL3_HW_RIPTIDE, 0, &chip->opl3);
 		if (err < 0)
+<<<<<<< HEAD
 			snd_printk(KERN_WARNING
 				   "Riptide: Can't Allocate OPL3 at 0x%x\n",
 				   val);
+=======
+			dev_warn(&pci->dev,
+				 "Riptide: Can't Allocate OPL3 at 0x%x\n",
+				 val);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		else {
 			chip->opladdr = val;
 			err = snd_opl3_hwdep_new(chip->opl3, 0, 1, NULL);
 			if (err < 0)
+<<<<<<< HEAD
 				snd_printk(KERN_WARNING
 					   "Riptide: Can't Allocate OPL3-HWDEP\n");
+=======
+				dev_warn(&pci->dev,
+					 "Riptide: Can't Allocate OPL3-HWDEP\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 #ifdef SUPPORT_JOYSTICK

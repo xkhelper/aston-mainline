@@ -60,7 +60,11 @@ struct cs_etm_trace_params {
 
 struct cs_etm_decoder_params {
 	int operation;
+<<<<<<< HEAD
 	void (*packet_printer)(const char *msg);
+=======
+	void (*packet_printer)(const char *msg, void *data);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cs_etm_mem_cb_type mem_acc_cb;
 	bool formatted;
 	bool fsyncs;

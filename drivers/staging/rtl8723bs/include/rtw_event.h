@@ -28,7 +28,11 @@ struct surveydone_event {
 };
 
 /*
+<<<<<<< HEAD
 Used to report the link result of joinning the given bss
+=======
+Used to report the link result of joining the given bss
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 
 join_res:

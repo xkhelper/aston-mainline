@@ -29,6 +29,11 @@
 
 /* Static vars */
 static LIST_HEAD(sbridge_edac_list);
+<<<<<<< HEAD
+=======
+static char sb_msg[256];
+static char sb_msg_full[512];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Alter this version for the module when modifications are made
@@ -3079,7 +3084,10 @@ static void sbridge_mce_output_error(struct mem_ctl_info *mci,
 	struct mem_ctl_info *new_mci;
 	struct sbridge_pvt *pvt = mci->pvt_info;
 	enum hw_event_mc_err_type tp_event;
+<<<<<<< HEAD
 	char *optype, msg[256], msg_full[512];
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool ripv = GET_BITFIELD(m->mcgstatus, 0, 0);
 	bool overflow = GET_BITFIELD(m->status, 62, 62);
 	bool uncorrected_error = GET_BITFIELD(m->status, 61, 61);
@@ -3095,10 +3103,17 @@ static void sbridge_mce_output_error(struct mem_ctl_info *mci,
 	 * aligned address reported by patrol scrubber.
 	 */
 	u32 lsb = GET_BITFIELD(m->misc, 0, 5);
+<<<<<<< HEAD
 	long channel_mask, first_channel;
 	u8  rank = 0xff, socket, ha;
 	int rc, dimm;
 	char *area_type = "DRAM";
+=======
+	char *optype, *area_type = "DRAM";
+	long channel_mask, first_channel;
+	u8  rank = 0xff, socket, ha;
+	int rc, dimm;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (pvt->info.type != SANDY_BRIDGE)
 		recoverable = true;
@@ -3168,6 +3183,7 @@ static void sbridge_mce_output_error(struct mem_ctl_info *mci,
 			channel = knl_channel_remap(m->bank == 16, channel);
 			channel_mask = 1 << channel;
 
+<<<<<<< HEAD
 			snprintf(msg, sizeof(msg),
 				"%s%s err_code:%04x:%04x channel:%d (DIMM_%c)",
 				overflow ? " OVERFLOW" : "",
@@ -3178,22 +3194,45 @@ static void sbridge_mce_output_error(struct mem_ctl_info *mci,
 				m->addr >> PAGE_SHIFT, m->addr & ~PAGE_MASK, 0,
 				channel, 0, -1,
 				optype, msg);
+=======
+			snprintf(sb_msg, sizeof(sb_msg),
+				 "%s%s err_code:%04x:%04x channel:%d (DIMM_%c)",
+				 overflow ? " OVERFLOW" : "",
+				 (uncorrected_error && recoverable)
+				 ? " recoverable" : " ",
+				 mscod, errcode, channel, A + channel);
+			edac_mc_handle_error(tp_event, mci, core_err_cnt,
+				m->addr >> PAGE_SHIFT, m->addr & ~PAGE_MASK, 0,
+				channel, 0, -1,
+				optype, sb_msg);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		return;
 	} else if (lsb < 12) {
 		rc = get_memory_error_data(mci, m->addr, &socket, &ha,
 					   &channel_mask, &rank,
+<<<<<<< HEAD
 					   &area_type, msg);
 	} else {
 		rc = get_memory_error_data_from_mce(mci, m, &socket, &ha,
 						    &channel_mask, msg);
+=======
+					   &area_type, sb_msg);
+	} else {
+		rc = get_memory_error_data_from_mce(mci, m, &socket, &ha,
+						    &channel_mask, sb_msg);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (rc < 0)
 		goto err_parsing;
 	new_mci = get_mci_for_node_id(socket, ha);
 	if (!new_mci) {
+<<<<<<< HEAD
 		strcpy(msg, "Error: socket got corrupted!");
+=======
+		strscpy(sb_msg, "Error: socket got corrupted!");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto err_parsing;
 	}
 	mci = new_mci;
@@ -3218,7 +3257,11 @@ static void sbridge_mce_output_error(struct mem_ctl_info *mci,
 	 */
 	if (!pvt->is_lockstep && !pvt->is_cur_addr_mirrored && !pvt->is_close_pg)
 		channel = first_channel;
+<<<<<<< HEAD
 	snprintf(msg_full, sizeof(msg_full),
+=======
+	snprintf(sb_msg_full, sizeof(sb_msg_full),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 "%s%s area:%s err_code:%04x:%04x socket:%d ha:%d channel_mask:%ld rank:%d %s",
 		 overflow ? " OVERFLOW" : "",
 		 (uncorrected_error && recoverable) ? " recoverable" : "",
@@ -3226,9 +3269,15 @@ static void sbridge_mce_output_error(struct mem_ctl_info *mci,
 		 mscod, errcode,
 		 socket, ha,
 		 channel_mask,
+<<<<<<< HEAD
 		 rank, msg);
 
 	edac_dbg(0, "%s\n", msg_full);
+=======
+		 rank, sb_msg);
+
+	edac_dbg(0, "%s\n", sb_msg_full);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* FIXME: need support for channel mask */
 
@@ -3239,12 +3288,20 @@ static void sbridge_mce_output_error(struct mem_ctl_info *mci,
 	edac_mc_handle_error(tp_event, mci, core_err_cnt,
 			     m->addr >> PAGE_SHIFT, m->addr & ~PAGE_MASK, 0,
 			     channel, dimm, -1,
+<<<<<<< HEAD
 			     optype, msg_full);
+=======
+			     optype, sb_msg_full);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return;
 err_parsing:
 	edac_mc_handle_error(tp_event, mci, core_err_cnt, 0, 0, 0,
 			     -1, -1, -1,
+<<<<<<< HEAD
 			     msg, "");
+=======
+			     sb_msg, "");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 }
 

@@ -375,6 +375,11 @@ static __be32 decode_rc_list(struct xdr_stream *xdr,
 
 	rc_list->rcl_nrefcalls = ntohl(*p++);
 	if (rc_list->rcl_nrefcalls) {
+<<<<<<< HEAD
+=======
+		if (unlikely(rc_list->rcl_nrefcalls > xdr->buf->len))
+			goto out;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		p = xdr_inline_decode(xdr,
 			     rc_list->rcl_nrefcalls * 2 * sizeof(uint32_t));
 		if (unlikely(p == NULL))

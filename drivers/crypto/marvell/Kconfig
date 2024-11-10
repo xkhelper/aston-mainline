@@ -28,6 +28,10 @@ config CRYPTO_DEV_OCTEONTX_CPT
 	select CRYPTO_SKCIPHER
 	select CRYPTO_HASH
 	select CRYPTO_AEAD
+<<<<<<< HEAD
+=======
+	select CRYPTO_AUTHENC
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select CRYPTO_DEV_MARVELL
 	help
 		This driver allows you to utilize the Marvell Cryptographic
@@ -47,6 +51,10 @@ config CRYPTO_DEV_OCTEONTX2_CPT
 	select CRYPTO_SKCIPHER
 	select CRYPTO_HASH
 	select CRYPTO_AEAD
+<<<<<<< HEAD
+=======
+	select CRYPTO_AUTHENC
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select NET_DEVLINK
 	help
 		This driver allows you to utilize the Marvell Cryptographic

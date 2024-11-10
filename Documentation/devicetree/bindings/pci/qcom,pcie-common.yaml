@@ -21,11 +21,19 @@ properties:
 
   interrupts:
     minItems: 1
+<<<<<<< HEAD
     maxItems: 8
 
   interrupt-names:
     minItems: 1
     maxItems: 8
+=======
+    maxItems: 9
+
+  interrupt-names:
+    minItems: 1
+    maxItems: 9
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   iommu-map:
     minItems: 1
@@ -78,6 +86,12 @@ properties:
     description: GPIO controlled connection to WAKE# signal
     maxItems: 1
 
+<<<<<<< HEAD
+=======
+  vddpe-3v3-supply:
+    description: PCIe endpoint power supply
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 required:
   - reg
   - reg-names

@@ -8,7 +8,11 @@ Introduction
 ============
 
 Many Dell notebooks made after ~2020 support a WMI-based interface for
+<<<<<<< HEAD
 retrieving various system data like battery temperature, ePPID, diagostic data
+=======
+retrieving various system data like battery temperature, ePPID, diagnostic data
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 and fan/thermal sensor data.
 
 This interface is likely used by the `Dell Data Vault` software on Windows,
@@ -277,7 +281,11 @@ Reverse-Engineering the DDV WMI interface
 4. Try to deduce the meaning of a certain WMI method by comparing the control
    flow with other ACPI methods (_BIX or _BIF for battery related methods
    for example).
+<<<<<<< HEAD
 5. Use the built-in UEFI diagostics to view sensor types/values for fan/thermal
+=======
+5. Use the built-in UEFI diagnostics to view sensor types/values for fan/thermal
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
    related methods (sometimes overwriting static ACPI data fields can be used
    to test different sensor type values, since on some machines this data is
    not reinitialized upon a warm reset).

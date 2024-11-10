@@ -172,7 +172,15 @@ struct cgroup_subsys_state {
 	/* reference count - access via css_[try]get() and css_put() */
 	struct percpu_ref refcnt;
 
+<<<<<<< HEAD
 	/* siblings list anchored at the parent's ->children */
+=======
+	/*
+	 * siblings list anchored at the parent's ->children
+	 *
+	 * linkage is protected by cgroup_mutex or RCU
+	 */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct list_head sibling;
 	struct list_head children;
 
@@ -210,6 +218,17 @@ struct cgroup_subsys_state {
 	 * fields of the containing structure.
 	 */
 	struct cgroup_subsys_state *parent;
+<<<<<<< HEAD
+=======
+
+	/*
+	 * Keep track of total numbers of visible descendant CSSes.
+	 * The total number of dying CSSes is tracked in
+	 * css->cgroup->nr_dying_subsys[ssid].
+	 * Protected by cgroup_mutex.
+	 */
+	int nr_descendants;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
@@ -470,6 +489,15 @@ struct cgroup {
 	/* Private pointers for each registered subsystem */
 	struct cgroup_subsys_state __rcu *subsys[CGROUP_SUBSYS_COUNT];
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Keep track of total number of dying CSSes at and below this cgroup.
+	 * Protected by cgroup_mutex.
+	 */
+	int nr_dying_subsys[CGROUP_SUBSYS_COUNT];
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cgroup_root *root;
 
 	/*
@@ -775,6 +803,14 @@ struct cgroup_subsys {
 
 extern struct percpu_rw_semaphore cgroup_threadgroup_rwsem;
 
+<<<<<<< HEAD
+=======
+struct cgroup_of_peak {
+	unsigned long		value;
+	struct list_head	list;
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * cgroup_threadgroup_change_begin - threadgroup exclusion for cgroups
  * @tsk: target task

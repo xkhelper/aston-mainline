@@ -216,7 +216,11 @@ static int __init mark_nonram_nosave(void)
  * everything else. GFP_DMA32 page allocations automatically fall back to
  * ZONE_DMA.
  *
+<<<<<<< HEAD
  * By using 31-bit unconditionally, we can exploit zone_dma_bits to inform the
+=======
+ * By using 31-bit unconditionally, we can exploit zone_dma_limit to inform the
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * generic DMA mapping code.  32-bit only devices (if not handled by an IOMMU
  * anyway) will take a first dip into ZONE_NORMAL and get otherwise served by
  * ZONE_DMA.
@@ -230,6 +234,10 @@ void __init paging_init(void)
 {
 	unsigned long long total_ram = memblock_phys_mem_size();
 	phys_addr_t top_of_ram = memblock_end_of_DRAM();
+<<<<<<< HEAD
+=======
+	int zone_dma_bits;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_HIGHMEM
 	unsigned long v = __fix_to_virt(FIX_KMAP_END);
@@ -256,6 +264,11 @@ void __init paging_init(void)
 	else
 		zone_dma_bits = 31;
 
+<<<<<<< HEAD
+=======
+	zone_dma_limit = DMA_BIT_MASK(zone_dma_bits);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_ZONE_DMA
 	max_zone_pfns[ZONE_DMA]	= min(max_low_pfn,
 				      1UL << (zone_dma_bits - PAGE_SHIFT));
@@ -410,6 +423,21 @@ EXPORT_SYMBOL_GPL(walk_system_ram_range);
 #ifdef CONFIG_EXECMEM
 static struct execmem_info execmem_info __ro_after_init;
 
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_PPC_8xx) || defined(CONFIG_PPC_BOOK3S_603)
+static void prealloc_execmem_pgtable(void)
+{
+	unsigned long va;
+
+	for (va = ALIGN_DOWN(MODULES_VADDR, PGDIR_SIZE); va < MODULES_END; va += PGDIR_SIZE)
+		pte_alloc_kernel(pmd_off_k(va), va);
+}
+#else
+static void prealloc_execmem_pgtable(void) { }
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct execmem_info __init *execmem_arch_setup(void)
 {
 	pgprot_t kprobes_prot = strict_module_rwx_enabled() ? PAGE_KERNEL_ROX : PAGE_KERNEL_EXEC;
@@ -441,6 +469,11 @@ struct execmem_info __init *execmem_arch_setup(void)
 	end = VMALLOC_END;
 #endif
 
+<<<<<<< HEAD
+=======
+	prealloc_execmem_pgtable();
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	execmem_info = (struct execmem_info){
 		.ranges = {
 			[EXECMEM_DEFAULT] = {

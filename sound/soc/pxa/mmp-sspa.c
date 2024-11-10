@@ -574,7 +574,11 @@ static struct platform_driver asoc_mmp_sspa_driver = {
 		.of_match_table = of_match_ptr(mmp_sspa_of_match),
 	},
 	.probe = asoc_mmp_sspa_probe,
+<<<<<<< HEAD
 	.remove_new = asoc_mmp_sspa_remove,
+=======
+	.remove = asoc_mmp_sspa_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(asoc_mmp_sspa_driver);

@@ -176,8 +176,11 @@ static int setup_filters(struct perf_kwork *kwork)
 			bpf_map_update_elem(fd, &cpu.cpu, &val, BPF_ANY);
 		}
 		perf_cpu_map__put(map);
+<<<<<<< HEAD
 
 		skel->bss->has_cpu_filter = 1;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (kwork->profile_name != NULL) {
@@ -197,8 +200,11 @@ static int setup_filters(struct perf_kwork *kwork)
 
 		key = 0;
 		bpf_map_update_elem(fd, &key, kwork->profile_name, BPF_ANY);
+<<<<<<< HEAD
 
 		skel->bss->has_name_filter = 1;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
@@ -239,6 +245,14 @@ int perf_kwork__trace_prepare_bpf(struct perf_kwork *kwork)
 			class_bpf->load_prepare(kwork);
 	}
 
+<<<<<<< HEAD
+=======
+	if (kwork->cpu_list != NULL)
+		skel->rodata->has_cpu_filter = 1;
+	if (kwork->profile_name != NULL)
+		skel->rodata->has_name_filter = 1;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (kwork_trace_bpf__load(skel)) {
 		pr_debug("Failed to load kwork trace skeleton\n");
 		goto out;

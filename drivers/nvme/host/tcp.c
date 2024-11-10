@@ -165,6 +165,10 @@ struct nvme_tcp_queue {
 
 	bool			hdr_digest;
 	bool			data_digest;
+<<<<<<< HEAD
+=======
+	bool			tls_enabled;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ahash_request	*rcv_hash;
 	struct ahash_request	*snd_hash;
 	__le32			exp_ddgst;
@@ -213,7 +217,25 @@ static inline int nvme_tcp_queue_id(struct nvme_tcp_queue *queue)
 	return queue - queue->ctrl->queues;
 }
 
+<<<<<<< HEAD
 static inline bool nvme_tcp_tls(struct nvme_ctrl *ctrl)
+=======
+/*
+ * Check if the queue is TLS encrypted
+ */
+static inline bool nvme_tcp_queue_tls(struct nvme_tcp_queue *queue)
+{
+	if (!IS_ENABLED(CONFIG_NVME_TCP_TLS))
+		return 0;
+
+	return queue->tls_enabled;
+}
+
+/*
+ * Check if TLS is configured for the controller.
+ */
+static inline bool nvme_tcp_tls_configured(struct nvme_ctrl *ctrl)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (!IS_ENABLED(CONFIG_NVME_TCP_TLS))
 		return 0;
@@ -368,7 +390,11 @@ static inline bool nvme_tcp_queue_has_pending(struct nvme_tcp_queue *queue)
 
 static inline bool nvme_tcp_queue_more(struct nvme_tcp_queue *queue)
 {
+<<<<<<< HEAD
 	return !nvme_tcp_tls(&queue->ctrl->ctrl) &&
+=======
+	return !nvme_tcp_queue_tls(queue) &&
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		nvme_tcp_queue_has_pending(queue);
 }
 
@@ -1051,7 +1077,11 @@ static int nvme_tcp_try_send_data(struct nvme_tcp_request *req)
 		else
 			msg.msg_flags |= MSG_MORE;
 
+<<<<<<< HEAD
 		if (!sendpage_ok(page))
+=======
+		if (!sendpages_ok(page, len, offset))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			msg.msg_flags &= ~MSG_SPLICE_PAGES;
 
 		bvec_set_page(&bvec, page, len, offset);
@@ -1427,7 +1457,11 @@ static int nvme_tcp_init_connection(struct nvme_tcp_queue *queue)
 	memset(&msg, 0, sizeof(msg));
 	iov.iov_base = icresp;
 	iov.iov_len = sizeof(*icresp);
+<<<<<<< HEAD
 	if (nvme_tcp_tls(&queue->ctrl->ctrl)) {
+=======
+	if (nvme_tcp_queue_tls(queue)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		msg.msg_control = cbuf;
 		msg.msg_controllen = sizeof(cbuf);
 	}
@@ -1439,7 +1473,11 @@ static int nvme_tcp_init_connection(struct nvme_tcp_queue *queue)
 		goto free_icresp;
 	}
 	ret = -ENOTCONN;
+<<<<<<< HEAD
 	if (nvme_tcp_tls(&queue->ctrl->ctrl)) {
+=======
+	if (nvme_tcp_queue_tls(queue)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ctype = tls_get_record_type(queue->sock->sk,
 					    (struct cmsghdr *)cbuf);
 		if (ctype != TLS_RECORD_TYPE_DATA) {
@@ -1581,13 +1619,24 @@ static void nvme_tcp_tls_done(void *data, int status, key_serial_t pskid)
 		goto out_complete;
 	}
 
+<<<<<<< HEAD
 	tls_key = key_lookup(pskid);
+=======
+	tls_key = nvme_tls_key_lookup(pskid);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(tls_key)) {
 		dev_warn(ctrl->ctrl.device, "queue %d: Invalid key %x\n",
 			 qid, pskid);
 		queue->tls_err = -ENOKEY;
 	} else {
+<<<<<<< HEAD
 		ctrl->ctrl.tls_key = tls_key;
+=======
+		queue->tls_enabled = true;
+		if (qid == 0)
+			ctrl->ctrl.tls_pskid = key_serial(tls_key);
+		key_put(tls_key);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		queue->tls_err = 0;
 	}
 
@@ -1768,7 +1817,11 @@ static int nvme_tcp_alloc_queue(struct nvme_ctrl *nctrl, int qid,
 	}
 
 	/* If PSKs are configured try to start TLS */
+<<<<<<< HEAD
 	if (IS_ENABLED(CONFIG_NVME_TCP_TLS) && pskid) {
+=======
+	if (nvme_tcp_tls_configured(nctrl) && pskid) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = nvme_tcp_start_tls(nctrl, queue, pskid);
 		if (ret)
 			goto err_init_connect;
@@ -1829,6 +1882,11 @@ static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
 	mutex_lock(&queue->queue_lock);
 	if (test_and_clear_bit(NVME_TCP_Q_LIVE, &queue->flags))
 		__nvme_tcp_stop_queue(queue);
+<<<<<<< HEAD
+=======
+	/* Stopping the queue will disable TLS */
+	queue->tls_enabled = false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_unlock(&queue->queue_lock);
 }
 
@@ -1925,6 +1983,7 @@ static int nvme_tcp_alloc_admin_queue(struct nvme_ctrl *ctrl)
 	int ret;
 	key_serial_t pskid = 0;
 
+<<<<<<< HEAD
 	if (nvme_tcp_tls(ctrl)) {
 		if (ctrl->opts->tls_key)
 			pskid = key_serial(ctrl->opts->tls_key);
@@ -1935,6 +1994,19 @@ static int nvme_tcp_alloc_admin_queue(struct nvme_ctrl *ctrl)
 		if (!pskid) {
 			dev_err(ctrl->device, "no valid PSK found\n");
 			return -ENOKEY;
+=======
+	if (nvme_tcp_tls_configured(ctrl)) {
+		if (ctrl->opts->tls_key)
+			pskid = key_serial(ctrl->opts->tls_key);
+		else {
+			pskid = nvme_tls_psk_default(ctrl->opts->keyring,
+						      ctrl->opts->host->nqn,
+						      ctrl->opts->subsysnqn);
+			if (!pskid) {
+				dev_err(ctrl->device, "no valid PSK found\n");
+				return -ENOKEY;
+			}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -1957,6 +2029,7 @@ static int __nvme_tcp_alloc_io_queues(struct nvme_ctrl *ctrl)
 {
 	int i, ret;
 
+<<<<<<< HEAD
 	if (nvme_tcp_tls(ctrl) && !ctrl->tls_key) {
 		dev_err(ctrl->device, "no PSK negotiated\n");
 		return -ENOKEY;
@@ -1964,6 +2037,16 @@ static int __nvme_tcp_alloc_io_queues(struct nvme_ctrl *ctrl)
 	for (i = 1; i < ctrl->queue_count; i++) {
 		ret = nvme_tcp_alloc_queue(ctrl, i,
 				key_serial(ctrl->tls_key));
+=======
+	if (nvme_tcp_tls_configured(ctrl) && !ctrl->tls_pskid) {
+		dev_err(ctrl->device, "no PSK negotiated\n");
+		return -ENOKEY;
+	}
+
+	for (i = 1; i < ctrl->queue_count; i++) {
+		ret = nvme_tcp_alloc_queue(ctrl, i,
+				ctrl->tls_pskid);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret)
 			goto out_free_queues;
 	}
@@ -2144,6 +2227,14 @@ static void nvme_tcp_teardown_admin_queue(struct nvme_ctrl *ctrl,
 	if (remove)
 		nvme_unquiesce_admin_queue(ctrl);
 	nvme_tcp_destroy_admin_queue(ctrl, remove);
+<<<<<<< HEAD
+=======
+	if (ctrl->tls_pskid) {
+		dev_dbg(ctrl->device, "Wipe negotiated TLS_PSK %08x\n",
+			ctrl->tls_pskid);
+		ctrl->tls_pskid = 0;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void nvme_tcp_teardown_io_queues(struct nvme_ctrl *ctrl,
@@ -2617,10 +2708,18 @@ static int nvme_tcp_get_address(struct nvme_ctrl *ctrl, char *buf, int size)
 
 	len = nvmf_get_address(ctrl, buf, size);
 
+<<<<<<< HEAD
 	mutex_lock(&queue->queue_lock);
 
 	if (!test_bit(NVME_TCP_Q_LIVE, &queue->flags))
 		goto done;
+=======
+	if (!test_bit(NVME_TCP_Q_LIVE, &queue->flags))
+		return len;
+
+	mutex_lock(&queue->queue_lock);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = kernel_getsockname(queue->sock, (struct sockaddr *)&src_addr);
 	if (ret > 0) {
 		if (len > 0)
@@ -2628,7 +2727,11 @@ static int nvme_tcp_get_address(struct nvme_ctrl *ctrl, char *buf, int size)
 		len += scnprintf(buf + len, size - len, "%ssrc_addr=%pISc\n",
 				(len) ? "," : "", &src_addr);
 	}
+<<<<<<< HEAD
 done:
+=======
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_unlock(&queue->queue_lock);
 
 	return len;

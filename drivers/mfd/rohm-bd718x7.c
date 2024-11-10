@@ -60,7 +60,11 @@ static const struct regmap_irq bd718xx_irqs[] = {
 	REGMAP_IRQ_REG(BD718XX_INT_STBY_REQ, 0, BD718XX_INT_STBY_REQ_MASK),
 };
 
+<<<<<<< HEAD
 static struct regmap_irq_chip bd718xx_irq_chip = {
+=======
+static const struct regmap_irq_chip bd718xx_irq_chip = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name = "bd718xx-irq",
 	.irqs = bd718xx_irqs,
 	.num_irqs = ARRAY_SIZE(bd718xx_irqs),

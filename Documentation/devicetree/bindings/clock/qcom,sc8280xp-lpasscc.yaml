@@ -18,9 +18,22 @@ description: |
 
 properties:
   compatible:
+<<<<<<< HEAD
     enum:
       - qcom,sc8280xp-lpassaudiocc
       - qcom,sc8280xp-lpasscc
+=======
+    oneOf:
+      - enum:
+          - qcom,sc8280xp-lpassaudiocc
+          - qcom,sc8280xp-lpasscc
+      - items:
+          - const: qcom,x1e80100-lpassaudiocc
+          - const: qcom,sc8280xp-lpassaudiocc
+      - items:
+          - const: qcom,x1e80100-lpasscc
+          - const: qcom,sc8280xp-lpasscc
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   reg:
     maxItems: 1

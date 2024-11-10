@@ -365,7 +365,11 @@ static void nbio_v2_3_enable_aspm(struct amdgpu_device *adev,
 
 		data &= ~PCIE_LC_CNTL__LC_PMI_TO_L1_DIS_MASK;
 	} else {
+<<<<<<< HEAD
 		/* Disbale ASPM L1 */
+=======
+		/* Disable ASPM L1 */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		data &= ~PCIE_LC_CNTL__LC_L1_INACTIVITY_MASK;
 		/* Disable ASPM TxL0s */
 		data &= ~PCIE_LC_CNTL__LC_L0S_INACTIVITY_MASK;

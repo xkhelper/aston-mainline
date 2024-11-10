@@ -493,7 +493,10 @@
 };
 
 &usb_host0_xhci {
+<<<<<<< HEAD
 	dr_mode = "peripheral";
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	status = "okay";
 };
 

@@ -7,6 +7,24 @@
 
 #define ENA_ADMIN_RSS_KEY_PARTS              10
 
+<<<<<<< HEAD
+=======
+#define ENA_ADMIN_CUSTOMER_METRICS_SUPPORT_MASK 0x3F
+#define ENA_ADMIN_CUSTOMER_METRICS_MIN_SUPPORT_MASK 0x1F
+
+ /* customer metrics - in correlation with
+  * ENA_ADMIN_CUSTOMER_METRICS_SUPPORT_MASK
+  */
+enum ena_admin_customer_metrics_id {
+	ENA_ADMIN_BW_IN_ALLOWANCE_EXCEEDED         = 0,
+	ENA_ADMIN_BW_OUT_ALLOWANCE_EXCEEDED        = 1,
+	ENA_ADMIN_PPS_ALLOWANCE_EXCEEDED           = 2,
+	ENA_ADMIN_CONNTRACK_ALLOWANCE_EXCEEDED     = 3,
+	ENA_ADMIN_LINKLOCAL_ALLOWANCE_EXCEEDED     = 4,
+	ENA_ADMIN_CONNTRACK_ALLOWANCE_AVAILABLE    = 5,
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum ena_admin_aq_opcode {
 	ENA_ADMIN_CREATE_SQ                         = 1,
 	ENA_ADMIN_DESTROY_SQ                        = 2,
@@ -51,6 +69,12 @@ enum ena_admin_aq_feature_id {
 /* device capabilities */
 enum ena_admin_aq_caps_id {
 	ENA_ADMIN_ENI_STATS                         = 0,
+<<<<<<< HEAD
+=======
+	/* ENA SRD customer metrics */
+	ENA_ADMIN_ENA_SRD_INFO                      = 1,
+	ENA_ADMIN_CUSTOMER_METRICS                  = 2,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum ena_admin_placement_policy_type {
@@ -99,6 +123,12 @@ enum ena_admin_get_stats_type {
 	ENA_ADMIN_GET_STATS_TYPE_EXTENDED           = 1,
 	/* extra HW stats for specific network interface */
 	ENA_ADMIN_GET_STATS_TYPE_ENI                = 2,
+<<<<<<< HEAD
+=======
+	/* extra HW stats for ENA SRD */
+	ENA_ADMIN_GET_STATS_TYPE_ENA_SRD            = 3,
+	ENA_ADMIN_GET_STATS_TYPE_CUSTOMER_METRICS   = 4,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum ena_admin_get_stats_scope {
@@ -106,6 +136,19 @@ enum ena_admin_get_stats_scope {
 	ENA_ADMIN_ETH_TRAFFIC                       = 1,
 };
 
+<<<<<<< HEAD
+=======
+/* ENA SRD configuration for ENI */
+enum ena_admin_ena_srd_flags {
+	/* Feature enabled */
+	ENA_ADMIN_ENA_SRD_ENABLED                   = BIT(0),
+	/* UDP support enabled */
+	ENA_ADMIN_ENA_SRD_UDP_ENABLED               = BIT(1),
+	/* Bypass Rx UDP ordering */
+	ENA_ADMIN_ENA_SRD_UDP_ORDERING_BYPASS_ENABLED = BIT(2),
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct ena_admin_aq_common_desc {
 	/* 11:0 : command_id
 	 * 15:12 : reserved12
@@ -363,6 +406,12 @@ struct ena_admin_aq_get_stats_cmd {
 	 * stats of other device
 	 */
 	u16 device_id;
+<<<<<<< HEAD
+=======
+
+	/* a bitmap representing the requested metric values */
+	u64 requested_metrics;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* Basic Statistics Command. */
@@ -419,6 +468,43 @@ struct ena_admin_eni_stats {
 	u64 linklocal_allowance_exceeded;
 };
 
+<<<<<<< HEAD
+=======
+struct ena_admin_ena_srd_stats {
+	/* Number of packets transmitted over ENA SRD */
+	u64 ena_srd_tx_pkts;
+
+	/* Number of packets transmitted or could have been
+	 * transmitted over ENA SRD
+	 */
+	u64 ena_srd_eligible_tx_pkts;
+
+	/* Number of packets received over ENA SRD */
+	u64 ena_srd_rx_pkts;
+
+	/* Percentage of the ENA SRD resources that is in use */
+	u64 ena_srd_resource_utilization;
+};
+
+/* ENA SRD Statistics Command */
+struct ena_admin_ena_srd_info {
+	/* ENA SRD configuration bitmap. See ena_admin_ena_srd_flags for
+	 * details
+	 */
+	u64 flags;
+
+	struct ena_admin_ena_srd_stats ena_srd_stats;
+};
+
+/* Customer Metrics Command. */
+struct ena_admin_customer_metrics {
+	/* A bitmap representing the reported customer metrics according to
+	 * the order they are reported
+	 */
+	u64 reported_metrics;
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct ena_admin_acq_get_stats_resp {
 	struct ena_admin_acq_common_desc acq_common_desc;
 
@@ -428,6 +514,13 @@ struct ena_admin_acq_get_stats_resp {
 		struct ena_admin_basic_stats basic_stats;
 
 		struct ena_admin_eni_stats eni_stats;
+<<<<<<< HEAD
+=======
+
+		struct ena_admin_ena_srd_info ena_srd_info;
+
+		struct ena_admin_customer_metrics customer_metrics;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} u;
 };
 

@@ -31,7 +31,12 @@ properties:
       - items:
           - enum:
               - amlogic,gxbb-vdec # GXBB (S905)
+<<<<<<< HEAD
               - amlogic,gxl-vdec # GXL (S905X, S905D)
+=======
+              - amlogic,gxl-vdec # GXL (S905D, S905W, S905X, S905Y)
+              - amlogic,gxlx-vdec # GXLX (S905L)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - amlogic,gxm-vdec # GXM (S912)
           - const: amlogic,gx-vdec
       - enum:

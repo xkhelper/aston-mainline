@@ -22,6 +22,10 @@ struct hda_intel {
 	/* extra flags */
 	unsigned int irq_pending_warned:1;
 	unsigned int probe_continued:1;
+<<<<<<< HEAD
+=======
+	unsigned int runtime_pm_disabled:1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* vga_switcheroo setup */
 	unsigned int use_vga_switcheroo:1;

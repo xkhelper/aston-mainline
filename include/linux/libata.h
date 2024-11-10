@@ -55,6 +55,49 @@
 /* defines only for the constants which don't work well as enums */
 #define ATA_TAG_POISON		0xfafbfcfdU
 
+<<<<<<< HEAD
+=======
+/*
+ * Quirk flags bits.
+ * ata_device->quirks is an unsigned int, so __ATA_QUIRK_MAX must not exceed 32.
+ */
+enum ata_quirks {
+	__ATA_QUIRK_DIAGNOSTIC,		/* Failed boot diag */
+	__ATA_QUIRK_NODMA,		/* DMA problems */
+	__ATA_QUIRK_NONCQ,		/* Don't use NCQ */
+	__ATA_QUIRK_MAX_SEC_128,	/* Limit max sects to 128 */
+	__ATA_QUIRK_BROKEN_HPA,		/* Broken HPA */
+	__ATA_QUIRK_DISABLE,		/* Disable it */
+	__ATA_QUIRK_HPA_SIZE,		/* Native size off by one */
+	__ATA_QUIRK_IVB,		/* cbl det validity bit bugs */
+	__ATA_QUIRK_STUCK_ERR,		/* Stuck ERR on next PACKET */
+	__ATA_QUIRK_BRIDGE_OK,		/* No bridge limits */
+	__ATA_QUIRK_ATAPI_MOD16_DMA,	/* Use ATAPI DMA for commands that */
+					/* are not a multiple of 16 bytes */
+	__ATA_QUIRK_FIRMWARE_WARN,	/* Firmware update warning */
+	__ATA_QUIRK_1_5_GBPS,		/* Force 1.5 Gbps */
+	__ATA_QUIRK_NOSETXFER,		/* Skip SETXFER, SATA only */
+	__ATA_QUIRK_BROKEN_FPDMA_AA,	/* Skip AA */
+	__ATA_QUIRK_DUMP_ID,		/* Dump IDENTIFY data */
+	__ATA_QUIRK_MAX_SEC_LBA48,	/* Set max sects to 65535 */
+	__ATA_QUIRK_ATAPI_DMADIR,	/* Device requires dmadir */
+	__ATA_QUIRK_NO_NCQ_TRIM,	/* Do not use queued TRIM */
+	__ATA_QUIRK_NOLPM,		/* Do not use LPM */
+	__ATA_QUIRK_WD_BROKEN_LPM,	/* Some WDs have broken LPM */
+	__ATA_QUIRK_ZERO_AFTER_TRIM,	/* Guarantees zero after trim */
+	__ATA_QUIRK_NO_DMA_LOG,		/* Do not use DMA for log read */
+	__ATA_QUIRK_NOTRIM,		/* Do not use TRIM */
+	__ATA_QUIRK_MAX_SEC_1024,	/* Limit max sects to 1024 */
+	__ATA_QUIRK_MAX_TRIM_128M,	/* Limit max trim size to 128M */
+	__ATA_QUIRK_NO_NCQ_ON_ATI,	/* Disable NCQ on ATI chipset */
+	__ATA_QUIRK_NO_ID_DEV_LOG,	/* Identify device log missing */
+	__ATA_QUIRK_NO_LOG_DIR,		/* Do not read log directory */
+	__ATA_QUIRK_NO_FUA,		/* Do not use FUA */
+
+	__ATA_QUIRK_MAX,
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum {
 	/* various global constants */
 	LIBATA_MAX_PRD		= ATA_MAX_PRD / 2,
@@ -338,6 +381,10 @@ enum {
 	ATA_EHI_PRINTINFO	= (1 << 18), /* print configuration info */
 	ATA_EHI_SETMODE		= (1 << 19), /* configure transfer mode */
 	ATA_EHI_POST_SETMODE	= (1 << 20), /* revalidating after setmode */
+<<<<<<< HEAD
+=======
+	ATA_EHI_DID_PRINT_QUIRKS = (1 << 21), /* already printed quirks info */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ATA_EHI_DID_RESET	= ATA_EHI_DID_SOFTRESET | ATA_EHI_DID_HARDRESET,
 
@@ -362,6 +409,7 @@ enum {
 	 */
 	ATA_EH_CMD_TIMEOUT_TABLE_SIZE = 8,
 
+<<<<<<< HEAD
 	/* Horkage types. May be set by libata or controller on drives
 	   (some horkage may be drive/controller pair dependent */
 
@@ -399,6 +447,44 @@ enum {
 
 	 /* DMA mask for user DMA control: User visible values; DO NOT
 	    renumber */
+=======
+	/*
+	 * Quirk flags: may be set by libata or controller drivers on drives.
+	 * Some quirks may be drive/controller pair dependent.
+	 */
+	ATA_QUIRK_DIAGNOSTIC		= (1U << __ATA_QUIRK_DIAGNOSTIC),
+	ATA_QUIRK_NODMA			= (1U << __ATA_QUIRK_NODMA),
+	ATA_QUIRK_NONCQ			= (1U << __ATA_QUIRK_NONCQ),
+	ATA_QUIRK_MAX_SEC_128		= (1U << __ATA_QUIRK_MAX_SEC_128),
+	ATA_QUIRK_BROKEN_HPA		= (1U << __ATA_QUIRK_BROKEN_HPA),
+	ATA_QUIRK_DISABLE		= (1U << __ATA_QUIRK_DISABLE),
+	ATA_QUIRK_HPA_SIZE		= (1U << __ATA_QUIRK_HPA_SIZE),
+	ATA_QUIRK_IVB			= (1U << __ATA_QUIRK_IVB),
+	ATA_QUIRK_STUCK_ERR		= (1U << __ATA_QUIRK_STUCK_ERR),
+	ATA_QUIRK_BRIDGE_OK		= (1U << __ATA_QUIRK_BRIDGE_OK),
+	ATA_QUIRK_ATAPI_MOD16_DMA	= (1U << __ATA_QUIRK_ATAPI_MOD16_DMA),
+	ATA_QUIRK_FIRMWARE_WARN		= (1U << __ATA_QUIRK_FIRMWARE_WARN),
+	ATA_QUIRK_1_5_GBPS		= (1U << __ATA_QUIRK_1_5_GBPS),
+	ATA_QUIRK_NOSETXFER		= (1U << __ATA_QUIRK_NOSETXFER),
+	ATA_QUIRK_BROKEN_FPDMA_AA	= (1U << __ATA_QUIRK_BROKEN_FPDMA_AA),
+	ATA_QUIRK_DUMP_ID		= (1U << __ATA_QUIRK_DUMP_ID),
+	ATA_QUIRK_MAX_SEC_LBA48		= (1U << __ATA_QUIRK_MAX_SEC_LBA48),
+	ATA_QUIRK_ATAPI_DMADIR		= (1U << __ATA_QUIRK_ATAPI_DMADIR),
+	ATA_QUIRK_NO_NCQ_TRIM		= (1U << __ATA_QUIRK_NO_NCQ_TRIM),
+	ATA_QUIRK_NOLPM			= (1U << __ATA_QUIRK_NOLPM),
+	ATA_QUIRK_WD_BROKEN_LPM		= (1U << __ATA_QUIRK_WD_BROKEN_LPM),
+	ATA_QUIRK_ZERO_AFTER_TRIM	= (1U << __ATA_QUIRK_ZERO_AFTER_TRIM),
+	ATA_QUIRK_NO_DMA_LOG		= (1U << __ATA_QUIRK_NO_DMA_LOG),
+	ATA_QUIRK_NOTRIM		= (1U << __ATA_QUIRK_NOTRIM),
+	ATA_QUIRK_MAX_SEC_1024		= (1U << __ATA_QUIRK_MAX_SEC_1024),
+	ATA_QUIRK_MAX_TRIM_128M		= (1U << __ATA_QUIRK_MAX_TRIM_128M),
+	ATA_QUIRK_NO_NCQ_ON_ATI		= (1U << __ATA_QUIRK_NO_NCQ_ON_ATI),
+	ATA_QUIRK_NO_ID_DEV_LOG		= (1U << __ATA_QUIRK_NO_ID_DEV_LOG),
+	ATA_QUIRK_NO_LOG_DIR		= (1U << __ATA_QUIRK_NO_LOG_DIR),
+	ATA_QUIRK_NO_FUA		= (1U << __ATA_QUIRK_NO_FUA),
+
+	/* User visible DMA mask for DMA control. DO NOT renumber. */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ATA_DMA_MASK_ATA	= (1 << 0),	/* DMA on ATA Disk */
 	ATA_DMA_MASK_ATAPI	= (1 << 1),	/* DMA on ATAPI */
 	ATA_DMA_MASK_CFA	= (1 << 2),	/* DMA on CF Card */
@@ -660,10 +746,32 @@ struct ata_cpr_log {
 	struct ata_cpr		cpr[] __counted_by(nr_cpr);
 };
 
+<<<<<<< HEAD
 struct ata_device {
 	struct ata_link		*link;
 	unsigned int		devno;		/* 0 or 1 */
 	unsigned int		horkage;	/* List of broken features */
+=======
+struct ata_cdl {
+	/*
+	 * Buffer to cache the CDL log page 18h (command duration descriptors)
+	 * for SCSI-ATA translation.
+	 */
+	u8			desc_log_buf[ATA_LOG_CDL_SIZE];
+
+	/*
+	 * Buffer to handle reading the sense data for successful NCQ Commands
+	 * log page for commands using a CDL with one of the limits policy set
+	 * to 0xD (successful completion with sense data available bit set).
+	 */
+	u8			ncq_sense_log_buf[ATA_LOG_SENSE_NCQ_SIZE];
+};
+
+struct ata_device {
+	struct ata_link		*link;
+	unsigned int		devno;		/* 0 or 1 */
+	unsigned int		quirks;		/* List of broken features */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long		flags;		/* ATA_DFLAG_xxx */
 	struct scsi_device	*sdev;		/* attached SCSI device */
 	void			*private_data;
@@ -722,13 +830,24 @@ struct ata_device {
 	/* Concurrent positioning ranges */
 	struct ata_cpr_log	*cpr_log;
 
+<<<<<<< HEAD
 	/* Command Duration Limits log support */
 	u8			cdl[ATA_LOG_CDL_SIZE];
+=======
+	/* Command Duration Limits support */
+	struct ata_cdl		*cdl;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* error history */
 	int			spdn_cnt;
 	/* ering is CLEAR_END, read comment above CLEAR_END */
 	struct ata_ering	ering;
+<<<<<<< HEAD
+=======
+
+	/* For EH */
+	u8			sector_buf[ATA_SECT_SIZE] ____cacheline_aligned;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* Fields between ATA_DEVICE_CLEAR_BEGIN and ATA_DEVICE_CLEAR_END are
@@ -874,9 +993,12 @@ struct ata_port {
 #ifdef CONFIG_ATA_ACPI
 	struct ata_acpi_gtm	__acpi_init_gtm; /* use ata_acpi_init_gtm() */
 #endif
+<<<<<<< HEAD
 	/* owned by EH */
 	u8			*ncq_sense_buf;
 	u8			sector_buf[ATA_SECT_SIZE] ____cacheline_aligned;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* The following initializer overrides a method to NULL whether one of
@@ -1064,8 +1186,11 @@ static inline bool ata_port_is_frozen(const struct ata_port *ap)
 extern int ata_std_prereset(struct ata_link *link, unsigned long deadline);
 extern int ata_wait_after_reset(struct ata_link *link, unsigned long deadline,
 				int (*check_ready)(struct ata_link *link));
+<<<<<<< HEAD
 extern int sata_std_hardreset(struct ata_link *link, unsigned int *class,
 			      unsigned long deadline);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void ata_std_postreset(struct ata_link *link, unsigned int *classes);
 
 extern struct ata_host *ata_host_alloc(struct device *dev, int n_ports);
@@ -1129,7 +1254,10 @@ extern int ata_xfer_mode2shift(u8 xfer_mode);
 extern const char *ata_mode_string(unsigned int xfer_mask);
 extern unsigned int ata_id_xfermask(const u16 *id);
 extern int ata_std_qc_defer(struct ata_queued_cmd *qc);
+<<<<<<< HEAD
 extern enum ata_completion_errors ata_noop_qc_prep(struct ata_queued_cmd *qc);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void ata_sg_init(struct ata_queued_cmd *qc, struct scatterlist *sg,
 		 unsigned int n_elem);
 extern unsigned int ata_dev_classify(const struct ata_taskfile *tf);
@@ -1190,12 +1318,20 @@ extern int sata_scr_read(struct ata_link *link, int reg, u32 *val);
 extern int sata_scr_write(struct ata_link *link, int reg, u32 val);
 extern int sata_scr_write_flush(struct ata_link *link, int reg, u32 val);
 extern int sata_set_spd(struct ata_link *link);
+<<<<<<< HEAD
+=======
+int sata_std_hardreset(struct ata_link *link, unsigned int *class,
+		       unsigned long deadline);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern int sata_link_hardreset(struct ata_link *link,
 			const unsigned int *timing, unsigned long deadline,
 			bool *online, int (*check_ready)(struct ata_link *));
 extern int sata_link_resume(struct ata_link *link, const unsigned int *params,
 			    unsigned long deadline);
+<<<<<<< HEAD
 extern int ata_eh_read_sense_success_ncq_log(struct ata_link *link);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void ata_eh_analyze_ncq_error(struct ata_link *link);
 #else
 static inline const unsigned int *
@@ -1217,6 +1353,14 @@ static inline int sata_scr_write_flush(struct ata_link *link, int reg, u32 val)
 	return -EOPNOTSUPP;
 }
 static inline int sata_set_spd(struct ata_link *link) { return -EOPNOTSUPP; }
+<<<<<<< HEAD
+=======
+static inline int sata_std_hardreset(struct ata_link *link, unsigned int *class,
+				     unsigned long deadline)
+{
+	return -EOPNOTSUPP;
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int sata_link_hardreset(struct ata_link *link,
 				      const unsigned int *timing,
 				      unsigned long deadline,
@@ -1233,10 +1377,13 @@ static inline int sata_link_resume(struct ata_link *link,
 {
 	return -EOPNOTSUPP;
 }
+<<<<<<< HEAD
 static inline int ata_eh_read_sense_success_ncq_log(struct ata_link *link)
 {
 	return -EOPNOTSUPP;
 }
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void ata_eh_analyze_ncq_error(struct ata_link *link) { }
 #endif
 extern int sata_link_debounce(struct ata_link *link,
@@ -1967,7 +2114,10 @@ extern unsigned int ata_sff_data_xfer(struct ata_queued_cmd *qc,
 extern unsigned int ata_sff_data_xfer32(struct ata_queued_cmd *qc,
 			unsigned char *buf, unsigned int buflen, int rw);
 extern void ata_sff_irq_on(struct ata_port *ap);
+<<<<<<< HEAD
 extern void ata_sff_irq_clear(struct ata_port *ap);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern int ata_sff_hsm_move(struct ata_port *ap, struct ata_queued_cmd *qc,
 			    u8 status, int in_wq);
 extern void ata_sff_queue_work(struct work_struct *work);

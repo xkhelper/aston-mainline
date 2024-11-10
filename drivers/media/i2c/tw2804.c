@@ -414,7 +414,11 @@ static void tw2804_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id tw2804_id[] = {
+<<<<<<< HEAD
 	{ "tw2804", 0 },
+=======
+	{ "tw2804" },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, tw2804_id);

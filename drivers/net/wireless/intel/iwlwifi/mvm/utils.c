@@ -297,6 +297,13 @@ void iwl_mvm_update_smps(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 	if (vif->type != NL80211_IFTYPE_STATION)
 		return;
 
+<<<<<<< HEAD
+=======
+	/* SMPS is handled by firmware */
+	if (iwl_mvm_has_rlc_offload(mvm))
+		return;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mvmvif = iwl_mvm_vif_from_mac80211(vif);
 
 	if (WARN_ON_ONCE(!mvmvif->link[link_id]))
@@ -743,6 +750,7 @@ bool iwl_mvm_is_vif_assoc(struct iwl_mvm *mvm)
 }
 
 unsigned int iwl_mvm_get_wd_timeout(struct iwl_mvm *mvm,
+<<<<<<< HEAD
 				    struct ieee80211_vif *vif,
 				    bool tdls, bool cmd_q)
 {
@@ -795,6 +803,22 @@ unsigned int iwl_mvm_get_wd_timeout(struct iwl_mvm *mvm,
 		WARN_ON(1);
 		return mvm->trans->trans_cfg->base_params->wd_timeout;
 	}
+=======
+				    struct ieee80211_vif *vif)
+{
+	unsigned int default_timeout =
+		mvm->trans->trans_cfg->base_params->wd_timeout;
+
+	/*
+	 * We can't know when the station is asleep or awake, so we
+	 * must disable the queue hang detection.
+	 */
+	if (fw_has_capa(&mvm->fw->ucode_capa,
+			IWL_UCODE_TLV_CAPA_STA_PM_NOTIF) &&
+	    vif->type == NL80211_IFTYPE_AP)
+		return IWL_WATCHDOG_DISABLED;
+	return default_timeout;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void iwl_mvm_connection_loss(struct iwl_mvm *mvm, struct ieee80211_vif *vif,

@@ -2183,7 +2183,11 @@ static int tegra_xusb_enter_elpg(struct tegra_xusb *tegra, bool runtime)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	for (i = 0; i < tegra->num_usb_phys; i++) {
+=======
+	for (i = 0; i < xhci->usb2_rhub.num_ports; i++) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!xhci->usb2_rhub.ports[i])
 			continue;
 		portsc = readl(xhci->usb2_rhub.ports[i]->addr);

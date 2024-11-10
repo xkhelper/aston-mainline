@@ -337,6 +337,7 @@ static bool unix_vertex_dead(struct unix_vertex *vertex)
 	return true;
 }
 
+<<<<<<< HEAD
 static void unix_collect_queue(struct unix_sock *u, struct sk_buff_head *hitlist)
 {
 	skb_queue_splice_init(&u->sk.sk_receive_queue, hitlist);
@@ -349,6 +350,8 @@ static void unix_collect_queue(struct unix_sock *u, struct sk_buff_head *hitlist
 #endif
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void unix_collect_skb(struct list_head *scc, struct sk_buff_head *hitlist)
 {
 	struct unix_vertex *vertex;
@@ -371,11 +374,19 @@ static void unix_collect_skb(struct list_head *scc, struct sk_buff_head *hitlist
 				struct sk_buff_head *embryo_queue = &skb->sk->sk_receive_queue;
 
 				spin_lock(&embryo_queue->lock);
+<<<<<<< HEAD
 				unix_collect_queue(unix_sk(skb->sk), hitlist);
 				spin_unlock(&embryo_queue->lock);
 			}
 		} else {
 			unix_collect_queue(u, hitlist);
+=======
+				skb_queue_splice_init(embryo_queue, hitlist);
+				spin_unlock(&embryo_queue->lock);
+			}
+		} else {
+			skb_queue_splice_init(queue, hitlist);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		spin_unlock(&queue->lock);

@@ -7,7 +7,11 @@
 #ifndef FWEH_H_
 #define FWEH_H_
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/skbuff.h>
 #include <linux/if_ether.h>
 #include <linux/if.h>

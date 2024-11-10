@@ -250,6 +250,7 @@ static void soc24_program_aspm(struct amdgpu_device *adev)
 		adev->nbio.funcs->program_aspm(adev);
 }
 
+<<<<<<< HEAD
 static void soc24_enable_doorbell_aperture(struct amdgpu_device *adev,
 					   bool enable)
 {
@@ -257,6 +258,8 @@ static void soc24_enable_doorbell_aperture(struct amdgpu_device *adev,
 	adev->nbio.funcs->enable_doorbell_selfring_aperture(adev, enable);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const struct amdgpu_ip_block_version soc24_common_ip_block = {
 	.type = AMD_IP_BLOCK_TYPE_COMMON,
 	.major = 1,
@@ -454,6 +457,14 @@ static int soc24_common_late_init(void *handle)
 	if (amdgpu_sriov_vf(adev))
 		xgpu_nv_mailbox_get_irq(adev);
 
+<<<<<<< HEAD
+=======
+	/* Enable selfring doorbell aperture late because doorbell BAR
+	 * aperture will change if resize BAR successfully in gmc sw_init.
+	 */
+	adev->nbio.funcs->enable_doorbell_selfring_aperture(adev, true);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -491,7 +502,11 @@ static int soc24_common_hw_init(void *handle)
 		adev->df.funcs->hw_init(adev);
 
 	/* enable the doorbell aperture */
+<<<<<<< HEAD
 	soc24_enable_doorbell_aperture(adev, true);
+=======
+	adev->nbio.funcs->enable_doorbell_aperture(adev, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -500,8 +515,18 @@ static int soc24_common_hw_fini(void *handle)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
+<<<<<<< HEAD
 	/* disable the doorbell aperture */
 	soc24_enable_doorbell_aperture(adev, false);
+=======
+	/* Disable the doorbell aperture and selfring doorbell aperture
+	 * separately in hw_fini because soc21_enable_doorbell_aperture
+	 * has been removed and there is no need to delay disabling
+	 * selfring doorbell.
+	 */
+	adev->nbio.funcs->enable_doorbell_aperture(adev, false);
+	adev->nbio.funcs->enable_doorbell_selfring_aperture(adev, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (amdgpu_sriov_vf(adev))
 		xgpu_nv_mailbox_put_irq(adev);

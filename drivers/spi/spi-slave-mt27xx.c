@@ -69,7 +69,11 @@ struct mtk_spi_slave {
 	struct clk *spi_clk;
 	struct completion xfer_done;
 	struct spi_transfer *cur_transfer;
+<<<<<<< HEAD
 	bool slave_aborted;
+=======
+	bool target_aborted;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct mtk_spi_compatible *dev_comp;
 };
 
@@ -118,7 +122,11 @@ static void mtk_spi_slave_disable_xfer(struct mtk_spi_slave *mdata)
 static int mtk_spi_slave_wait_for_completion(struct mtk_spi_slave *mdata)
 {
 	if (wait_for_completion_interruptible(&mdata->xfer_done) ||
+<<<<<<< HEAD
 	    mdata->slave_aborted) {
+=======
+	    mdata->target_aborted) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_err(mdata->dev, "interrupted\n");
 		return -EINTR;
 	}
@@ -286,7 +294,11 @@ static int mtk_spi_slave_transfer_one(struct spi_controller *ctlr,
 	struct mtk_spi_slave *mdata = spi_controller_get_devdata(ctlr);
 
 	reinit_completion(&mdata->xfer_done);
+<<<<<<< HEAD
 	mdata->slave_aborted = false;
+=======
+	mdata->target_aborted = false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mdata->cur_transfer = xfer;
 
 	if (xfer->len > mdata->dev_comp->max_fifo_size)
@@ -314,11 +326,19 @@ static int mtk_spi_slave_setup(struct spi_device *spi)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int mtk_slave_abort(struct spi_controller *ctlr)
 {
 	struct mtk_spi_slave *mdata = spi_controller_get_devdata(ctlr);
 
 	mdata->slave_aborted = true;
+=======
+static int mtk_target_abort(struct spi_controller *ctlr)
+{
+	struct mtk_spi_slave *mdata = spi_controller_get_devdata(ctlr);
+
+	mdata->target_aborted = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	complete(&mdata->xfer_done);
 
 	return 0;
@@ -402,7 +422,11 @@ static int mtk_spi_slave_probe(struct platform_device *pdev)
 	ctlr->prepare_message = mtk_spi_slave_prepare_message;
 	ctlr->transfer_one = mtk_spi_slave_transfer_one;
 	ctlr->setup = mtk_spi_slave_setup;
+<<<<<<< HEAD
 	ctlr->slave_abort = mtk_slave_abort;
+=======
+	ctlr->target_abort = mtk_target_abort;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	of_id = of_match_node(mtk_spi_slave_of_match, pdev->dev.of_node);
 	if (!of_id) {

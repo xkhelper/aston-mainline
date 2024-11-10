@@ -26,7 +26,11 @@
 #include <linux/module.h>
 #include <linux/pm.h>
 #include <linux/workqueue.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static bool fnlock;
 module_param(fnlock, bool, 0644);

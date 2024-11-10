@@ -21,6 +21,10 @@ oneOf:
   - $ref: fixed-layout.yaml
   - $ref: kontron,sl28-vpd.yaml
   - $ref: onie,tlv-layout.yaml
+<<<<<<< HEAD
+=======
+  - $ref: u-boot,env.yaml
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 properties:
   compatible: true

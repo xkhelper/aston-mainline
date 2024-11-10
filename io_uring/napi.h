@@ -17,8 +17,11 @@ int io_unregister_napi(struct io_ring_ctx *ctx, void __user *arg);
 
 void __io_napi_add(struct io_ring_ctx *ctx, struct socket *sock);
 
+<<<<<<< HEAD
 void __io_napi_adjust_timeout(struct io_ring_ctx *ctx,
 		struct io_wait_queue *iowq, ktime_t to_wait);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void __io_napi_busy_loop(struct io_ring_ctx *ctx, struct io_wait_queue *iowq);
 int io_napi_sqpoll_busy_poll(struct io_ring_ctx *ctx);
 
@@ -27,6 +30,7 @@ static inline bool io_napi(struct io_ring_ctx *ctx)
 	return !list_empty(&ctx->napi_list);
 }
 
+<<<<<<< HEAD
 static inline void io_napi_adjust_timeout(struct io_ring_ctx *ctx,
 					  struct io_wait_queue *iowq,
 					  ktime_t to_wait)
@@ -36,6 +40,8 @@ static inline void io_napi_adjust_timeout(struct io_ring_ctx *ctx,
 	__io_napi_adjust_timeout(ctx, iowq, to_wait);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void io_napi_busy_loop(struct io_ring_ctx *ctx,
 				     struct io_wait_queue *iowq)
 {
@@ -86,11 +92,14 @@ static inline bool io_napi(struct io_ring_ctx *ctx)
 static inline void io_napi_add(struct io_kiocb *req)
 {
 }
+<<<<<<< HEAD
 static inline void io_napi_adjust_timeout(struct io_ring_ctx *ctx,
 					  struct io_wait_queue *iowq,
 					  ktime_t to_wait)
 {
 }
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void io_napi_busy_loop(struct io_ring_ctx *ctx,
 				     struct io_wait_queue *iowq)
 {

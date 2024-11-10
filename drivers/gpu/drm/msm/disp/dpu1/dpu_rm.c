@@ -132,7 +132,10 @@ int dpu_rm_init(struct drm_device *dev,
 		}
 		rm->ctl_blks[ctl->id - CTL_0] = &hw->base;
 	}
+<<<<<<< HEAD
 	rm->has_active_ctls = cat->caps->has_active_ctls;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 0; i < cat->dspp_count; i++) {
 		struct dpu_hw_dspp *hw;
@@ -367,6 +370,7 @@ static int _dpu_rm_reserve_ctls(
 	int i = 0, j, num_ctls;
 	bool needs_split_display;
 
+<<<<<<< HEAD
 	if (rm->has_active_ctls) {
 		num_ctls = 1;
 		needs_split_display = false;
@@ -376,6 +380,12 @@ static int _dpu_rm_reserve_ctls(
 
 		needs_split_display = _dpu_rm_needs_split_display(top);
 	}
+=======
+	/* each hw_intf needs its own hw_ctrl to program its control path */
+	num_ctls = top->num_intf;
+
+	needs_split_display = _dpu_rm_needs_split_display(top);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (j = 0; j < ARRAY_SIZE(rm->ctl_blks); j++) {
 		const struct dpu_hw_ctl *ctl;
@@ -393,7 +403,11 @@ static int _dpu_rm_reserve_ctls(
 
 		DPU_DEBUG("ctl %d caps 0x%lX\n", j + CTL_0, features);
 
+<<<<<<< HEAD
 		if (!rm->has_active_ctls && needs_split_display != has_split_display)
+=======
+		if (needs_split_display != has_split_display)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 
 		ctl_idx[i] = j;

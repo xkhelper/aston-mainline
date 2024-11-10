@@ -257,6 +257,7 @@ struct snd_kcontrol *snd_soc_component_get_kcontrol(struct snd_soc_component *co
 }
 EXPORT_SYMBOL_GPL(snd_soc_component_get_kcontrol);
 
+<<<<<<< HEAD
 struct snd_kcontrol *
 snd_soc_component_get_kcontrol_locked(struct snd_soc_component *component,
 				      const char * const ctl)
@@ -269,6 +270,8 @@ snd_soc_component_get_kcontrol_locked(struct snd_soc_component *component,
 }
 EXPORT_SYMBOL_GPL(snd_soc_component_get_kcontrol_locked);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int snd_soc_component_notify_control(struct snd_soc_component *component,
 				     const char * const ctl)
 {

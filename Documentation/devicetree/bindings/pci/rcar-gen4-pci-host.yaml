@@ -19,6 +19,10 @@ properties:
       - enum:
           - renesas,r8a779f0-pcie      # R-Car S4-8
           - renesas,r8a779g0-pcie      # R-Car V4H
+<<<<<<< HEAD
+=======
+          - renesas,r8a779h0-pcie      # R-Car V4M
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       - const: renesas,rcar-gen4-pcie  # R-Car Gen4
 
   reg:

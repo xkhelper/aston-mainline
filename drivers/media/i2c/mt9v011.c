@@ -582,7 +582,11 @@ static void mt9v011_remove(struct i2c_client *c)
 /* ----------------------------------------------------------------------- */
 
 static const struct i2c_device_id mt9v011_id[] = {
+<<<<<<< HEAD
 	{ "mt9v011", 0 },
+=======
+	{ "mt9v011" },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, mt9v011_id);

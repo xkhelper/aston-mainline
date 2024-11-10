@@ -30,6 +30,15 @@
 			};
 		};
 	};
+<<<<<<< HEAD
+=======
+
+	sound_card {
+		compatible = "audio-graph-card";
+		label = "HDMI-Audio";
+		dais = <&i2s2_port>;
+	};
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &cpu_dai {
@@ -88,6 +97,16 @@
 					remote-endpoint = <&hdmi_con_out>;
 				};
 			};
+<<<<<<< HEAD
+=======
+
+			port@2 {
+				reg = <2>;
+				codec_endpoint: endpoint {
+					remote-endpoint = <&i2s2_cpu_endpoint>;
+				};
+			};
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 	};
 };
@@ -170,6 +189,26 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
+=======
+&ssi1 {
+	pinctrl-0 = <&ssi1_pins>;
+	pinctrl-names = "default";
+
+	status = "okay";
+
+	i2s2_port: port {
+		i2s2_cpu_endpoint: endpoint {
+			remote-endpoint = <&codec_endpoint>;
+			dai-format = "i2s";
+
+			bitclock-master = <&i2s2_cpu_endpoint>;
+			frame-master = <&i2s2_cpu_endpoint>;
+		};
+	};
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &vccq_sdhi1 {
 	gpios = <&pinctrl RZG2L_GPIO(39, 1) GPIO_ACTIVE_HIGH>;
 };

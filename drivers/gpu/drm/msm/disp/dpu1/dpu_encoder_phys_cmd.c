@@ -59,8 +59,11 @@ static void _dpu_encoder_phys_cmd_update_intf_cfg(
 		return;
 
 	intf_cfg.intf = phys_enc->hw_intf->idx;
+<<<<<<< HEAD
 	if (phys_enc->split_role == ENC_ROLE_MASTER)
 		intf_cfg.intf_master = phys_enc->hw_intf->idx;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intf_cfg.intf_mode_sel = DPU_CTL_MODE_SEL_CMD;
 	intf_cfg.stream_sel = cmd_enc->stream_sel;
 	intf_cfg.mode_3d = dpu_encoder_helper_get_3d_blend_mode(phys_enc);

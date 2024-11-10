@@ -2588,7 +2588,11 @@ irqreturn_t vring_interrupt(int irq, void *_vq)
 
 	/* Just a hint for performance: so it's ok that this can be racy! */
 	if (vq->event)
+<<<<<<< HEAD
 		vq->event_triggered = true;
+=======
+		data_race(vq->event_triggered = true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pr_debug("virtqueue callback for %p (%p)\n", vq, vq->vq.callback);
 	if (vq->vq.callback)

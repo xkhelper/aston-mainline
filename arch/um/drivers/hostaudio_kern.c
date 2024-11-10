@@ -291,7 +291,10 @@ static int hostmixer_release(struct inode *inode, struct file *file)
 
 static const struct file_operations hostaudio_fops = {
 	.owner          = THIS_MODULE,
+<<<<<<< HEAD
 	.llseek         = no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.read           = hostaudio_read,
 	.write          = hostaudio_write,
 	.poll           = hostaudio_poll,
@@ -304,7 +307,10 @@ static const struct file_operations hostaudio_fops = {
 
 static const struct file_operations hostmixer_fops = {
 	.owner          = THIS_MODULE,
+<<<<<<< HEAD
 	.llseek         = no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.unlocked_ioctl	= hostmixer_ioctl_mixdev,
 	.open           = hostmixer_open_mixdev,
 	.release        = hostmixer_release,

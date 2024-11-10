@@ -444,6 +444,10 @@ static void *client_fn(void *arg)
 
 int main(int argc, char *argv[])
 {
+<<<<<<< HEAD
 	test_init(3, server_fn, client_fn);
+=======
+	test_init(4, server_fn, client_fn);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }

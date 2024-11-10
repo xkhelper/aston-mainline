@@ -40,6 +40,20 @@ struct kmsg_dump_iter {
 };
 
 /**
+<<<<<<< HEAD
+=======
+ * struct kmsg_dump_detail - kernel crash detail
+ * @reason: reason for the crash, see kmsg_dump_reason.
+ * @description: optional short string, to provide additional information.
+ */
+
+struct kmsg_dump_detail {
+	enum kmsg_dump_reason reason;
+	const char *description;
+};
+
+/**
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * struct kmsg_dumper - kernel crash message dumper structure
  * @list:	Entry in the dumper list (private)
  * @dump:	Call into dumping code which will retrieve the data with
@@ -49,13 +63,21 @@ struct kmsg_dump_iter {
  */
 struct kmsg_dumper {
 	struct list_head list;
+<<<<<<< HEAD
 	void (*dump)(struct kmsg_dumper *dumper, enum kmsg_dump_reason reason);
+=======
+	void (*dump)(struct kmsg_dumper *dumper, struct kmsg_dump_detail *detail);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	enum kmsg_dump_reason max_reason;
 	bool registered;
 };
 
 #ifdef CONFIG_PRINTK
+<<<<<<< HEAD
 void kmsg_dump(enum kmsg_dump_reason reason);
+=======
+void kmsg_dump_desc(enum kmsg_dump_reason reason, const char *desc);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 bool kmsg_dump_get_line(struct kmsg_dump_iter *iter, bool syslog,
 			char *line, size_t size, size_t *len);
@@ -71,7 +93,11 @@ int kmsg_dump_unregister(struct kmsg_dumper *dumper);
 
 const char *kmsg_dump_reason_str(enum kmsg_dump_reason reason);
 #else
+<<<<<<< HEAD
 static inline void kmsg_dump(enum kmsg_dump_reason reason)
+=======
+static inline void kmsg_dump_desc(enum kmsg_dump_reason reason, const char *desc)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 }
 
@@ -107,4 +133,12 @@ static inline const char *kmsg_dump_reason_str(enum kmsg_dump_reason reason)
 }
 #endif
 
+<<<<<<< HEAD
+=======
+static inline void kmsg_dump(enum kmsg_dump_reason reason)
+{
+	kmsg_dump_desc(reason, NULL);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _LINUX_KMSG_DUMP_H */

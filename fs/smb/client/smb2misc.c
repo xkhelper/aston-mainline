@@ -13,7 +13,11 @@
 #include "smb2proto.h"
 #include "cifs_debug.h"
 #include "cifs_unicode.h"
+<<<<<<< HEAD
 #include "smb2status.h"
+=======
+#include "../common/smb2status.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "smb2glob.h"
 #include "nterr.h"
 #include "cached_dir.h"

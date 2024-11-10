@@ -31,10 +31,17 @@ Design principles
   feature that applies to all dynamic high order allocations in the
   kernel)
 
+<<<<<<< HEAD
 get_user_pages and follow_page
 ==============================
 
 get_user_pages and follow_page if run on a hugepage, will return the
+=======
+get_user_pages and pin_user_pages
+=================================
+
+get_user_pages and pin_user_pages if run on a hugepage, will return the
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 head or tail pages as usual (exactly as they would do on
 hugetlbfs). Most GUP users will only care about the actual physical
 address of the page and its temporary pinning to release after the I/O

@@ -46,7 +46,11 @@ static void *squashfs_decompressor_create(struct squashfs_sb_info *msblk,
 	}
 
 	kfree(comp_opts);
+<<<<<<< HEAD
 	return (__force void *) percpu;
+=======
+	return (void *)(__force unsigned long) percpu;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 out:
 	for_each_possible_cpu(cpu) {
@@ -61,7 +65,11 @@ out:
 static void squashfs_decompressor_destroy(struct squashfs_sb_info *msblk)
 {
 	struct squashfs_stream __percpu *percpu =
+<<<<<<< HEAD
 			(struct squashfs_stream __percpu *) msblk->stream;
+=======
+			(void __percpu *)(unsigned long) msblk->stream;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct squashfs_stream *stream;
 	int cpu;
 
@@ -79,7 +87,11 @@ static int squashfs_decompress(struct squashfs_sb_info *msblk, struct bio *bio,
 {
 	struct squashfs_stream *stream;
 	struct squashfs_stream __percpu *percpu =
+<<<<<<< HEAD
 			(struct squashfs_stream __percpu *) msblk->stream;
+=======
+			(void __percpu *)(unsigned long) msblk->stream;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int res;
 
 	local_lock(&percpu->lock);

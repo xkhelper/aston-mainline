@@ -314,7 +314,11 @@ static ssize_t mce_chrdev_write(struct file *filp, const char __user *ubuf,
 
 	/*
 	 * Need to give user space some time to set everything up,
+<<<<<<< HEAD
 	 * so do it a jiffie or two later everywhere.
+=======
+	 * so do it a jiffy or two later everywhere.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	schedule_timeout(2);
 
@@ -331,7 +335,10 @@ static const struct file_operations mce_chrdev_ops = {
 	.poll			= mce_chrdev_poll,
 	.unlocked_ioctl		= mce_chrdev_ioctl,
 	.compat_ioctl		= compat_ptr_ioctl,
+<<<<<<< HEAD
 	.llseek			= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct miscdevice mce_chrdev_device = {

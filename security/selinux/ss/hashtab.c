@@ -194,7 +194,11 @@ error:
 
 void __init hashtab_cache_init(void)
 {
+<<<<<<< HEAD
 	hashtab_node_cachep = kmem_cache_create("hashtab_node",
 						sizeof(struct hashtab_node), 0,
 						SLAB_PANIC, NULL);
+=======
+	hashtab_node_cachep = KMEM_CACHE(hashtab_node, SLAB_PANIC);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

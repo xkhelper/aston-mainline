@@ -518,7 +518,11 @@ mtk_cqdma_prep_dma_memcpy(struct dma_chan *c, dma_addr_t dest,
 		/* setup dma channel */
 		cvd[i]->ch = c;
 
+<<<<<<< HEAD
 		/* setup sourece, destination, and length */
+=======
+		/* setup source, destination, and length */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		tlen = (len > MTK_CQDMA_MAX_LEN) ? MTK_CQDMA_MAX_LEN : len;
 		cvd[i]->len = tlen;
 		cvd[i]->src = src;
@@ -617,7 +621,11 @@ static int mtk_cqdma_alloc_chan_resources(struct dma_chan *c)
 	u32 i, min_refcnt = U32_MAX, refcnt;
 	unsigned long flags;
 
+<<<<<<< HEAD
 	/* allocate PC with the minimun refcount */
+=======
+	/* allocate PC with the minimum refcount */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < cqdma->dma_channels; ++i) {
 		refcnt = refcount_read(&cqdma->pc[i]->refcnt);
 		if (refcnt < min_refcnt) {

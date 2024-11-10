@@ -1038,7 +1038,11 @@ static const struct nla_policy wwan_rtnl_policy[IFLA_WWAN_MAX + 1] = {
 
 static struct rtnl_link_ops wwan_rtnl_link_ops __read_mostly = {
 	.kind = "wwan",
+<<<<<<< HEAD
 	.maxtype = __IFLA_WWAN_MAX,
+=======
+	.maxtype = IFLA_WWAN_MAX,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.alloc = wwan_rtnl_alloc,
 	.validate = wwan_rtnl_validate,
 	.newlink = wwan_rtnl_newlink,

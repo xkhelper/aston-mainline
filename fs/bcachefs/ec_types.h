@@ -16,6 +16,10 @@ struct stripe {
 	u8			nr_blocks;
 	u8			nr_redundant;
 	u8			blocks_nonempty;
+<<<<<<< HEAD
+=======
+	u8			disk_label;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct gc_stripe {

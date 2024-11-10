@@ -319,7 +319,10 @@ static int pps_cdev_release(struct inode *inode, struct file *file)
 
 static const struct file_operations pps_cdev_fops = {
 	.owner		= THIS_MODULE,
+<<<<<<< HEAD
 	.llseek		= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.poll		= pps_cdev_poll,
 	.fasync		= pps_cdev_fasync,
 	.compat_ioctl	= pps_cdev_compat_ioctl,

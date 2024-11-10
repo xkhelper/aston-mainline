@@ -30,7 +30,10 @@ struct mcp4922_state {
 	struct spi_device *spi;
 	unsigned int value[MCP4922_NUM_CHANNELS];
 	unsigned int vref_mv;
+<<<<<<< HEAD
 	struct regulator *vref_reg;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 mosi[2] __aligned(IIO_DMA_MINALIGN);
 };
 
@@ -132,6 +135,7 @@ static int mcp4922_probe(struct spi_device *spi)
 
 	state = iio_priv(indio_dev);
 	state->spi = spi;
+<<<<<<< HEAD
 	state->vref_reg = devm_regulator_get(&spi->dev, "vref");
 	if (IS_ERR(state->vref_reg))
 		return dev_err_probe(&spi->dev, PTR_ERR(state->vref_reg),
@@ -153,6 +157,15 @@ static int mcp4922_probe(struct spi_device *spi)
 	state->vref_mv = ret / 1000;
 
 	spi_set_drvdata(spi, indio_dev);
+=======
+
+	ret = devm_regulator_get_enable_read_voltage(&spi->dev, "vref");
+	if (ret < 0)
+		return dev_err_probe(&spi->dev, ret, "Failed to get vref voltage\n");
+
+	state->vref_mv = ret / 1000;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	id = spi_get_device_id(spi);
 	indio_dev->info = &mcp4922_info;
 	indio_dev->modes = INDIO_DIRECT_MODE;
@@ -163,6 +176,7 @@ static int mcp4922_probe(struct spi_device *spi)
 		indio_dev->num_channels = MCP4922_NUM_CHANNELS;
 	indio_dev->name = id->name;
 
+<<<<<<< HEAD
 	ret = iio_device_register(indio_dev);
 	if (ret) {
 		dev_err(&spi->dev, "Failed to register iio device: %d\n",
@@ -187,6 +201,15 @@ static void mcp4922_remove(struct spi_device *spi)
 	state = iio_priv(indio_dev);
 	regulator_disable(state->vref_reg);
 }
+=======
+	ret = devm_iio_device_register(&spi->dev, indio_dev);
+	if (ret)
+		return dev_err_probe(&spi->dev, ret, "Failed to register iio device\n");
+
+	return 0;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const struct spi_device_id mcp4922_id[] = {
 	{"mcp4902", ID_MCP4902},
@@ -202,7 +225,10 @@ static struct spi_driver mcp4922_driver = {
 		   .name = "mcp4922",
 		   },
 	.probe = mcp4922_probe,
+<<<<<<< HEAD
 	.remove = mcp4922_remove,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.id_table = mcp4922_id,
 };
 module_spi_driver(mcp4922_driver);

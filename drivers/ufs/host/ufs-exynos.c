@@ -8,7 +8,11 @@
  *
  */
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <crypto/aes.h>
 #include <linux/arm-smccc.h>
 #include <linux/clk.h>

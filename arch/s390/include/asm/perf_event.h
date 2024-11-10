@@ -48,6 +48,7 @@ struct perf_sf_sde_regs {
 	unsigned long reserved:63;	  /* reserved */
 };
 
+<<<<<<< HEAD
 /* Perf PMU definitions for the counter facility */
 #define PERF_CPUM_CF_MAX_CTR		0xffffUL  /* Max ctr for ECCTR */
 
@@ -73,6 +74,10 @@ struct perf_sf_sde_regs {
 #define SAMPLE_FREQ_MODE(hwc)	(SAMPL_FLAGS(hwc) & PERF_CPUM_SF_FREQ_MODE)
 
 #define perf_arch_fetch_caller_regs(regs, __ip) do {			\
+=======
+#define perf_arch_fetch_caller_regs(regs, __ip) do {			\
+	(regs)->psw.mask = 0;						\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	(regs)->psw.addr = (__ip);					\
 	(regs)->gprs[15] = (unsigned long)__builtin_frame_address(0) -	\
 		offsetof(struct stack_frame, back_chain);		\

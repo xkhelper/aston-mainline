@@ -8,5 +8,10 @@
 #include <linux/printk.h>
 #include <linux/linkage.h>
 #include <linux/kconfig.h>
+<<<<<<< HEAD
+=======
+#include <linux/string.h>
+#include <linux/ctype.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif

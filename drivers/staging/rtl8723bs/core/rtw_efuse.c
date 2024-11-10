@@ -5,7 +5,10 @@
  *
  ******************************************************************************/
 #include <drv_types.h>
+<<<<<<< HEAD
 #include <rtw_debug.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <hal_data.h>
 #include <linux/jiffies.h>
 
@@ -38,7 +41,11 @@ Efuse_Read1ByteFromFakeContent(u16 Offset, u8 *Value)
 	if (fakeEfuseBank == 0)
 		*Value = fakeEfuseContent[Offset];
 	else
+<<<<<<< HEAD
 		*Value = fakeBTEfuseContent[fakeEfuseBank-1][Offset];
+=======
+		*Value = fakeBTEfuseContent[fakeEfuseBank - 1][Offset];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return true;
 }
 
@@ -50,7 +57,11 @@ Efuse_Write1ByteToFakeContent(u16 Offset, u8 Value)
 	if (fakeEfuseBank == 0)
 		fakeEfuseContent[Offset] = Value;
 	else
+<<<<<<< HEAD
 		fakeBTEfuseContent[fakeEfuseBank-1][Offset] = Value;
+=======
+		fakeBTEfuseContent[fakeEfuseBank - 1][Offset] = Value;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return true;
 }
 
@@ -206,6 +217,7 @@ u16		Address)
 	if (Address < contentLen) {/* E-fuse 512Byte */
 		/* Write E-fuse Register address bit0~7 */
 		temp = Address & 0xFF;
+<<<<<<< HEAD
 		rtw_write8(Adapter, EFUSE_CTRL+1, temp);
 		Bytetemp = rtw_read8(Adapter, EFUSE_CTRL+2);
 		/* Write E-fuse Register address bit8~9 */
@@ -221,6 +233,23 @@ u16		Address)
 		Bytetemp = rtw_read8(Adapter, EFUSE_CTRL+3);
 		while (!(Bytetemp & 0x80)) {
 			Bytetemp = rtw_read8(Adapter, EFUSE_CTRL+3);
+=======
+		rtw_write8(Adapter, EFUSE_CTRL + 1, temp);
+		Bytetemp = rtw_read8(Adapter, EFUSE_CTRL + 2);
+		/* Write E-fuse Register address bit8~9 */
+		temp = ((Address >> 8) & 0x03) | (Bytetemp & 0xFC);
+		rtw_write8(Adapter, EFUSE_CTRL + 2, temp);
+
+		/* Write 0x30[31]= 0 */
+		Bytetemp = rtw_read8(Adapter, EFUSE_CTRL + 3);
+		temp = Bytetemp & 0x7F;
+		rtw_write8(Adapter, EFUSE_CTRL + 3, temp);
+
+		/* Wait Write-ready (0x30[31]= 1) */
+		Bytetemp = rtw_read8(Adapter, EFUSE_CTRL + 3);
+		while (!(Bytetemp & 0x80)) {
+			Bytetemp = rtw_read8(Adapter, EFUSE_CTRL + 3);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			k++;
 			if (k == 1000)
 				break;
@@ -253,6 +282,7 @@ bool		bPseudoTest)
 
 	/*  -----------------e-fuse reg ctrl --------------------------------- */
 	/* address */
+<<<<<<< HEAD
 	rtw_write8(padapter, EFUSE_CTRL+1, (u8)(addr&0xff));
 	rtw_write8(padapter, EFUSE_CTRL+2, ((u8)((addr>>8) & 0x03)) |
 	(rtw_read8(padapter, EFUSE_CTRL+2)&0xFC));
@@ -263,6 +293,18 @@ bool		bPseudoTest)
 	rtw_write8(padapter, EFUSE_CTRL+3, (readbyte & 0x7f));
 
 	while (!(0x80 & rtw_read8(padapter, EFUSE_CTRL+3)) && (tmpidx < 1000)) {
+=======
+	rtw_write8(padapter, EFUSE_CTRL + 1, (u8)(addr & 0xff));
+	rtw_write8(padapter, EFUSE_CTRL + 2, ((u8)((addr >> 8) & 0x03)) |
+	(rtw_read8(padapter, EFUSE_CTRL + 2) & 0xFC));
+
+	/* rtw_write8(padapter, EFUSE_CTRL+3,  0x72); read cmd */
+	/* Write bit 32 0 */
+	readbyte = rtw_read8(padapter, EFUSE_CTRL + 3);
+	rtw_write8(padapter, EFUSE_CTRL + 3, (readbyte & 0x7f));
+
+	while (!(0x80 & rtw_read8(padapter, EFUSE_CTRL + 3)) && (tmpidx < 1000)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mdelay(1);
 		tmpidx++;
 	}
@@ -282,11 +324,15 @@ u8 efuse_OneByteWrite(struct adapter *padapter, u16 addr, u8 data, bool bPseudoT
 {
 	u8 tmpidx = 0;
 	u8 bResult = false;
+<<<<<<< HEAD
 	u32 efuseValue;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (bPseudoTest)
 		return Efuse_Write1ByteToFakeContent(addr, data);
 
+<<<<<<< HEAD
 
 	/*  -----------------e-fuse reg ctrl --------------------------------- */
 	/* address */
@@ -298,15 +344,26 @@ u8 efuse_OneByteWrite(struct adapter *padapter, u16 addr, u8 data, bool bPseudoT
 	efuseValue |= ((addr<<8 | data) & 0x3FFFF);
 
 
+=======
+	/*  -----------------e-fuse reg ctrl --------------------------------- */
+	/* address */
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*  <20130227, Kordan> 8192E MP chip A-cut had better not set 0x34[11] until B-Cut. */
 
 	/*  <20130121, Kordan> For SMIC EFUSE specificatoin. */
 	/* 0x34[11]: SW force PGMEN input of efuse to high. (for the bank selected by 0x34[9:8]) */
 	/* PHY_SetMacReg(padapter, 0x34, BIT11, 1); */
 	rtw_write16(padapter, 0x34, rtw_read16(padapter, 0x34) | (BIT11));
+<<<<<<< HEAD
 	rtw_write32(padapter, EFUSE_CTRL, 0x90600000|((addr<<8 | data)));
 
 	while ((0x80 &  rtw_read8(padapter, EFUSE_CTRL+3)) && (tmpidx < 100)) {
+=======
+	rtw_write32(padapter, EFUSE_CTRL, 0x90600000 | ((addr << 8 | data)));
+
+	while ((0x80 &  rtw_read8(padapter, EFUSE_CTRL + 3)) && (tmpidx < 100)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mdelay(1);
 		tmpidx++;
 	}
@@ -365,6 +422,7 @@ efuse_WordEnableDataRead(u8 word_en,
 						u8 *sourdata,
 						u8 *targetdata)
 {
+<<<<<<< HEAD
 	if (!(word_en&BIT(0))) {
 		targetdata[0] = sourdata[0];
 		targetdata[1] = sourdata[1];
@@ -378,6 +436,21 @@ efuse_WordEnableDataRead(u8 word_en,
 		targetdata[5] = sourdata[5];
 	}
 	if (!(word_en&BIT(3))) {
+=======
+	if (!(word_en & BIT(0))) {
+		targetdata[0] = sourdata[0];
+		targetdata[1] = sourdata[1];
+	}
+	if (!(word_en & BIT(1))) {
+		targetdata[2] = sourdata[2];
+		targetdata[3] = sourdata[3];
+	}
+	if (!(word_en & BIT(2))) {
+		targetdata[4] = sourdata[4];
+		targetdata[5] = sourdata[5];
+	}
+	if (!(word_en & BIT(3))) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		targetdata[6] = sourdata[6];
 		targetdata[7] = sourdata[7];
 	}
@@ -463,7 +536,11 @@ static void efuse_ShadowRead2Byte(struct adapter *padapter, u16 Offset, u16 *Val
 	struct eeprom_priv *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 
 	*Value = pEEPROM->efuse_eeprom_data[Offset];
+<<<<<<< HEAD
 	*Value |= pEEPROM->efuse_eeprom_data[Offset+1]<<8;
+=======
+	*Value |= pEEPROM->efuse_eeprom_data[Offset + 1] << 8;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 }	/*  EFUSE_ShadowRead2Byte */
 
@@ -473,9 +550,15 @@ static void efuse_ShadowRead4Byte(struct adapter *padapter, u16 Offset, u32 *Val
 	struct eeprom_priv *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 
 	*Value = pEEPROM->efuse_eeprom_data[Offset];
+<<<<<<< HEAD
 	*Value |= pEEPROM->efuse_eeprom_data[Offset+1]<<8;
 	*Value |= pEEPROM->efuse_eeprom_data[Offset+2]<<16;
 	*Value |= pEEPROM->efuse_eeprom_data[Offset+3]<<24;
+=======
+	*Value |= pEEPROM->efuse_eeprom_data[Offset + 1] << 8;
+	*Value |= pEEPROM->efuse_eeprom_data[Offset + 2] << 16;
+	*Value |= pEEPROM->efuse_eeprom_data[Offset + 3] << 24;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 }	/*  efuse_ShadowRead4Byte */
 

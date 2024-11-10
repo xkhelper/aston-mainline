@@ -21,6 +21,10 @@
 #include <asm/processor.h>
 #include <linux/ftrace.h>
 #include <asm/kprobes.h>
+<<<<<<< HEAD
+=======
+#include <linux/rethook.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/paca.h>
 
@@ -133,12 +137,21 @@ int __no_sanitize_address arch_stack_walk_reliable(stack_trace_consume_fn consum
 		 * arch-dependent code, they are generic.
 		 */
 		ip = ftrace_graph_ret_addr(task, &graph_idx, ip, stack);
+<<<<<<< HEAD
 #ifdef CONFIG_KPROBES
+=======
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * Mark stacktraces with kretprobed functions on them
 		 * as unreliable.
 		 */
+<<<<<<< HEAD
 		if (ip == (unsigned long)__kretprobe_trampoline)
+=======
+#ifdef CONFIG_RETHOOK
+		if (ip == (unsigned long)arch_rethook_trampoline)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EINVAL;
 #endif
 

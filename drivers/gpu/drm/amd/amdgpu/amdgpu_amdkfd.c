@@ -364,6 +364,7 @@ allocate_mem_reserve_bo_failed:
 	return r;
 }
 
+<<<<<<< HEAD
 void amdgpu_amdkfd_free_gtt_mem(struct amdgpu_device *adev, void *mem_obj)
 {
 	struct amdgpu_bo *bo = (struct amdgpu_bo *) mem_obj;
@@ -373,6 +374,17 @@ void amdgpu_amdkfd_free_gtt_mem(struct amdgpu_device *adev, void *mem_obj)
 	amdgpu_bo_unpin(bo);
 	amdgpu_bo_unreserve(bo);
 	amdgpu_bo_unref(&(bo));
+=======
+void amdgpu_amdkfd_free_gtt_mem(struct amdgpu_device *adev, void **mem_obj)
+{
+	struct amdgpu_bo **bo = (struct amdgpu_bo **) mem_obj;
+
+	amdgpu_bo_reserve(*bo, true);
+	amdgpu_bo_kunmap(*bo);
+	amdgpu_bo_unpin(*bo);
+	amdgpu_bo_unreserve(*bo);
+	amdgpu_bo_unref(bo);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int amdgpu_amdkfd_alloc_gws(struct amdgpu_device *adev, size_t size,
@@ -783,6 +795,7 @@ int amdgpu_amdkfd_send_close_event_drain_irq(struct amdgpu_device *adev,
 	return 0;
 }
 
+<<<<<<< HEAD
 bool amdgpu_amdkfd_ras_query_utcl2_poison_status(struct amdgpu_device *adev,
 			int hub_inst, int hub_type)
 {
@@ -799,6 +812,8 @@ bool amdgpu_amdkfd_ras_query_utcl2_poison_status(struct amdgpu_device *adev,
 	}
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int amdgpu_amdkfd_check_and_lock_kfd(struct amdgpu_device *adev)
 {
 	return kgd2kfd_check_and_lock_kfd();
@@ -887,3 +902,24 @@ free_ring_funcs:
 
 	return r;
 }
+<<<<<<< HEAD
+=======
+
+/* Stop scheduling on KFD */
+int amdgpu_amdkfd_stop_sched(struct amdgpu_device *adev, uint32_t node_id)
+{
+	if (!adev->kfd.init_complete)
+		return 0;
+
+	return kgd2kfd_stop_sched(adev->kfd.dev, node_id);
+}
+
+/* Start scheduling on KFD */
+int amdgpu_amdkfd_start_sched(struct amdgpu_device *adev, uint32_t node_id)
+{
+	if (!adev->kfd.init_complete)
+		return 0;
+
+	return kgd2kfd_start_sched(adev->kfd.dev, node_id);
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

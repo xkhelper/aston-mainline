@@ -24,7 +24,11 @@
 #include <net/mac80211.h>
 #include <net/codel.h>
 #include <net/codel_impl.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <net/fq_impl.h>
 #include <net/gso.h>
 
@@ -699,7 +703,11 @@ ieee80211_tx_h_rate_ctrl(struct ieee80211_tx_data *tx)
 	txrc.skb = tx->skb;
 	txrc.reported_rate.idx = -1;
 
+<<<<<<< HEAD
 	if (unlikely(info->control.flags & IEEE80211_TX_CTRL_SCAN_TX)) {
+=======
+	if (unlikely(info->control.flags & IEEE80211_TX_CTRL_DONT_USE_RATE_MASK)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		txrc.rate_idx_mask = ~0;
 	} else {
 		txrc.rate_idx_mask = tx->sdata->rc_rateidx_mask[info->band];

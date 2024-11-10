@@ -981,7 +981,11 @@ static int ixgbe_alloc_q_vector(struct ixgbe_adapter *adapter,
 			set_bit(__IXGBE_RX_CSUM_UDP_ZERO_ERR, &ring->state);
 
 #ifdef IXGBE_FCOE
+<<<<<<< HEAD
 		if (adapter->netdev->features & NETIF_F_FCOE_MTU) {
+=======
+		if (adapter->netdev->fcoe_mtu) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			struct ixgbe_ring_feature *f;
 			f = &adapter->ring_feature[RING_F_FCOE];
 			if ((rxr_idx >= f->offset) &&

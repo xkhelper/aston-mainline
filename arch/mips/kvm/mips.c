@@ -125,6 +125,7 @@ int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu)
 	return 1;
 }
 
+<<<<<<< HEAD
 int kvm_arch_hardware_enable(void)
 {
 	return kvm_mips_callbacks->hardware_enable();
@@ -133,6 +134,16 @@ int kvm_arch_hardware_enable(void)
 void kvm_arch_hardware_disable(void)
 {
 	kvm_mips_callbacks->hardware_disable();
+=======
+int kvm_arch_enable_virtualization_cpu(void)
+{
+	return kvm_mips_callbacks->enable_virtualization_cpu();
+}
+
+void kvm_arch_disable_virtualization_cpu(void)
+{
+	kvm_mips_callbacks->disable_virtualization_cpu();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)

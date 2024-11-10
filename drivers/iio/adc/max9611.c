@@ -504,9 +504,15 @@ static int max9611_init(struct max9611_dev *max9611)
 }
 
 static const struct of_device_id max9611_of_table[] = {
+<<<<<<< HEAD
 	{.compatible = "maxim,max9611", .data = "max9611"},
 	{.compatible = "maxim,max9612", .data = "max9612"},
 	{ },
+=======
+	{ .compatible = "maxim,max9611", .data = "max9611" },
+	{ .compatible = "maxim,max9612", .data = "max9612" },
+	{ }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 MODULE_DEVICE_TABLE(of, max9611_of_table);

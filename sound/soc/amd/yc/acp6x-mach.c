@@ -231,6 +231,16 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
 		.driver_data = &acp6x_card,
 		.matches = {
 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+<<<<<<< HEAD
+=======
+			DMI_MATCH(DMI_PRODUCT_NAME, "21M4"),
+		}
+	},
+	{
+		.driver_data = &acp6x_card,
+		.matches = {
+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			DMI_MATCH(DMI_PRODUCT_NAME, "21M5"),
 		}
 	},
@@ -329,6 +339,16 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
 		.driver_data = &acp6x_card,
 		.matches = {
 			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
+<<<<<<< HEAD
+=======
+			DMI_MATCH(DMI_PRODUCT_NAME, "E1404FA"),
+		}
+	},
+	{
+		.driver_data = &acp6x_card,
+		.matches = {
+			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			DMI_MATCH(DMI_PRODUCT_NAME, "E1504FA"),
 		}
 	},
@@ -342,6 +362,16 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
 	{
 		.driver_data = &acp6x_card,
 		.matches = {
+<<<<<<< HEAD
+=======
+			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
+			DMI_MATCH(DMI_PRODUCT_NAME, "M3502RA"),
+		}
+	},
+	{
+		.driver_data = &acp6x_card,
+		.matches = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			DMI_MATCH(DMI_BOARD_VENDOR, "Micro-Star International Co., Ltd."),
 			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 15 B7ED"),
 		}
@@ -384,6 +414,16 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
 	{
 		.driver_data = &acp6x_card,
 		.matches = {
+<<<<<<< HEAD
+=======
+			DMI_MATCH(DMI_BOARD_VENDOR, "TIMI"),
+			DMI_MATCH(DMI_PRODUCT_NAME, "Xiaomi Book Pro 14 2022"),
+		}
+	},
+	{
+		.driver_data = &acp6x_card,
+		.matches = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			DMI_MATCH(DMI_BOARD_VENDOR, "Razer"),
 			DMI_MATCH(DMI_PRODUCT_NAME, "Blade 14 (2022) - RZ09-0427"),
 		}
@@ -448,6 +488,16 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
 		.driver_data = &acp6x_card,
 		.matches = {
 			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
+<<<<<<< HEAD
+=======
+			DMI_MATCH(DMI_BOARD_NAME, "8A7F"),
+		}
+	},
+	{
+		.driver_data = &acp6x_card,
+		.matches = {
+			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			DMI_MATCH(DMI_BOARD_NAME, "8B27"),
 		}
 	},

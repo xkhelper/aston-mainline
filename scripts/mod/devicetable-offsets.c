@@ -153,6 +153,13 @@ int main(void)
 	DEVID_FIELD(i3c_device_id, part_id);
 	DEVID_FIELD(i3c_device_id, extra_info);
 
+<<<<<<< HEAD
+=======
+	DEVID(slim_device_id);
+	DEVID_FIELD(slim_device_id, manf_id);
+	DEVID_FIELD(slim_device_id, prod_code);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	DEVID(spi_device_id);
 	DEVID_FIELD(spi_device_id, name);
 

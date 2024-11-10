@@ -21,16 +21,25 @@
 
 struct ccs_sensor;
 
+<<<<<<< HEAD
 int ccs_read_addr_no_quirk(struct ccs_sensor *sensor, u32 reg, u32 *val);
 int ccs_read_addr(struct ccs_sensor *sensor, u32 reg, u32 *val);
 int ccs_read_addr_8only(struct ccs_sensor *sensor, u32 reg, u32 *val);
 int ccs_read_addr_noconv(struct ccs_sensor *sensor, u32 reg, u32 *val);
 int ccs_write_addr_no_quirk(struct ccs_sensor *sensor, u32 reg, u32 val);
+=======
+int ccs_read_addr(struct ccs_sensor *sensor, u32 reg, u32 *val);
+int ccs_read_addr_8only(struct ccs_sensor *sensor, u32 reg, u32 *val);
+int ccs_read_addr_noconv(struct ccs_sensor *sensor, u32 reg, u32 *val);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int ccs_write_addr(struct ccs_sensor *sensor, u32 reg, u32 val);
 int ccs_write_data_regs(struct ccs_sensor *sensor, struct ccs_reg *regs,
 			size_t num_regs);
 
+<<<<<<< HEAD
 unsigned int ccs_reg_width(u32 reg);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 u32 ccs_reg_conv(struct ccs_sensor *sensor, u32 reg, u32 val);
 
 #define ccs_read(sensor, reg_name, val) \

@@ -117,6 +117,7 @@ static struct irq_work mce_irq_work;
  */
 BLOCKING_NOTIFIER_HEAD(x86_mce_decoder_chain);
 
+<<<<<<< HEAD
 /* Do initial initialization of a struct mce */
 void mce_setup(struct mce *m)
 {
@@ -131,6 +132,34 @@ void mce_setup(struct mce *m)
 	m->mcgcap = __rdmsr(MSR_IA32_MCG_CAP);
 	m->ppin = cpu_data(m->extcpu).ppin;
 	m->microcode = boot_cpu_data.microcode;
+=======
+void mce_prep_record_common(struct mce *m)
+{
+	memset(m, 0, sizeof(struct mce));
+
+	m->cpuid	= cpuid_eax(1);
+	m->cpuvendor	= boot_cpu_data.x86_vendor;
+	m->mcgcap	= __rdmsr(MSR_IA32_MCG_CAP);
+	/* need the internal __ version to avoid deadlocks */
+	m->time		= __ktime_get_real_seconds();
+}
+
+void mce_prep_record_per_cpu(unsigned int cpu, struct mce *m)
+{
+	m->cpu		= cpu;
+	m->extcpu	= cpu;
+	m->apicid	= cpu_data(cpu).topo.initial_apicid;
+	m->microcode	= cpu_data(cpu).microcode;
+	m->ppin		= topology_ppin(cpu);
+	m->socketid	= topology_physical_package_id(cpu);
+}
+
+/* Do initial initialization of a struct mce */
+void mce_prep_record(struct mce *m)
+{
+	mce_prep_record_common(m);
+	mce_prep_record_per_cpu(smp_processor_id(), m);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 DEFINE_PER_CPU(struct mce, injectm);
@@ -436,11 +465,19 @@ static noinstr void mce_wrmsrl(u32 msr, u64 v)
 static noinstr void mce_gather_info(struct mce *m, struct pt_regs *regs)
 {
 	/*
+<<<<<<< HEAD
 	 * Enable instrumentation around mce_setup() which calls external
 	 * facilities.
 	 */
 	instrumentation_begin();
 	mce_setup(m);
+=======
+	 * Enable instrumentation around mce_prep_record() which calls external
+	 * facilities.
+	 */
+	instrumentation_begin();
+	mce_prep_record(m);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	instrumentation_end();
 
 	m->mcgstatus = mce_rdmsrl(MSR_IA32_MCG_STATUS);

@@ -11,6 +11,12 @@ ast-y := \
 	ast_main.o \
 	ast_mm.o \
 	ast_mode.o \
+<<<<<<< HEAD
 	ast_post.o
+=======
+	ast_post.o \
+	ast_sil164.o \
+	ast_vga.o
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 obj-$(CONFIG_DRM_AST) := ast.o

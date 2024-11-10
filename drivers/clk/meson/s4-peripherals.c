@@ -3747,7 +3747,11 @@ static struct clk_regmap *const s4_periphs_clk_regmaps[] = {
 	&s4_adc_extclk_in_gate,
 };
 
+<<<<<<< HEAD
 static struct regmap_config clkc_regmap_config = {
+=======
+static const struct regmap_config clkc_regmap_config = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.reg_bits       = 32,
 	.val_bits       = 32,
 	.reg_stride     = 4,
@@ -3814,3 +3818,7 @@ module_platform_driver(s4_driver);
 MODULE_DESCRIPTION("Amlogic S4 Peripherals Clock Controller driver");
 MODULE_AUTHOR("Yu Tu <yu.tu@amlogic.com>");
 MODULE_LICENSE("GPL");
+<<<<<<< HEAD
+=======
+MODULE_IMPORT_NS(CLK_MESON);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

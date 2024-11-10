@@ -9,8 +9,13 @@
 #include <linux/types.h>
 
 #if IS_ENABLED(CONFIG_DRM_XE_KUNIT_TEST)
+<<<<<<< HEAD
 #include <linux/sched.h>
 #include <kunit/test.h>
+=======
+#include <kunit/test.h>
+#include <kunit/test-bug.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Each test that provides a kunit private test structure, place a test id
@@ -31,8 +36,11 @@ struct xe_test_priv {
 
 #define XE_TEST_DECLARE(x) x
 #define XE_TEST_ONLY(x) unlikely(x)
+<<<<<<< HEAD
 #define XE_TEST_EXPORT
 #define xe_cur_kunit() current->kunit_test
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * xe_cur_kunit_priv - Obtain the struct xe_test_priv pointed to by
@@ -48,10 +56,17 @@ xe_cur_kunit_priv(enum xe_test_priv_id id)
 {
 	struct xe_test_priv *priv;
 
+<<<<<<< HEAD
 	if (!xe_cur_kunit())
 		return NULL;
 
 	priv = xe_cur_kunit()->priv;
+=======
+	if (!kunit_get_current_test())
+		return NULL;
+
+	priv = kunit_get_current_test()->priv;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return priv->id == id ? priv : NULL;
 }
 
@@ -59,8 +74,11 @@ xe_cur_kunit_priv(enum xe_test_priv_id id)
 
 #define XE_TEST_DECLARE(x)
 #define XE_TEST_ONLY(x) 0
+<<<<<<< HEAD
 #define XE_TEST_EXPORT static
 #define xe_cur_kunit() NULL
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define xe_cur_kunit_priv(_id) NULL
 
 #endif

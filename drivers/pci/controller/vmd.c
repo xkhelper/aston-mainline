@@ -204,6 +204,7 @@ static void vmd_irq_disable(struct irq_data *data)
 	raw_spin_unlock_irqrestore(&list_lock, flags);
 }
 
+<<<<<<< HEAD
 /*
  * XXX: Stubbed until we develop acceptable way to not create conflicts with
  * other devices sharing the same vector.
@@ -214,12 +215,17 @@ static int vmd_irq_set_affinity(struct irq_data *data,
 	return -EINVAL;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct irq_chip vmd_msi_controller = {
 	.name			= "VMD-MSI",
 	.irq_enable		= vmd_irq_enable,
 	.irq_disable		= vmd_irq_disable,
 	.irq_compose_msi_msg	= vmd_compose_msi_msg,
+<<<<<<< HEAD
 	.irq_set_affinity	= vmd_irq_set_affinity,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static irq_hw_number_t vmd_get_hwirq(struct msi_domain_info *info,
@@ -326,7 +332,11 @@ static struct msi_domain_ops vmd_msi_domain_ops = {
 
 static struct msi_domain_info vmd_msi_domain_info = {
 	.flags		= MSI_FLAG_USE_DEF_DOM_OPS | MSI_FLAG_USE_DEF_CHIP_OPS |
+<<<<<<< HEAD
 			  MSI_FLAG_PCI_MSIX,
+=======
+			  MSI_FLAG_NO_AFFINITY | MSI_FLAG_PCI_MSIX,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.ops		= &vmd_msi_domain_ops,
 	.chip		= &vmd_msi_controller,
 };
@@ -1053,9 +1063,15 @@ static void vmd_remove(struct pci_dev *dev)
 
 static void vmd_shutdown(struct pci_dev *dev)
 {
+<<<<<<< HEAD
         struct vmd_dev *vmd = pci_get_drvdata(dev);
 
         vmd_remove_irq_domain(vmd);
+=======
+	struct vmd_dev *vmd = pci_get_drvdata(dev);
+
+	vmd_remove_irq_domain(vmd);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #ifdef CONFIG_PM_SLEEP

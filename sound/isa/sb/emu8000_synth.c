@@ -45,7 +45,11 @@ static int snd_emu8000_probe(struct device *_dev)
 	emu->num_ports = hw->seq_ports;
 
 	if (hw->memhdr) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "memhdr is already initialized!?\n");
+=======
+		dev_err(hw->card->dev, "memhdr is already initialized!?\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		snd_util_memhdr_free(hw->memhdr);
 	}
 	hw->memhdr = snd_util_memhdr_new(hw->mem_size);

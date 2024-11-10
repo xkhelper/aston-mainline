@@ -20,7 +20,11 @@ long kvm_arch_dev_ioctl(struct file *filp,
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 int kvm_arch_hardware_enable(void)
+=======
+int kvm_arch_enable_virtualization_cpu(void)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	csr_write(CSR_HEDELEG, KVM_HEDELEG_DEFAULT);
 	csr_write(CSR_HIDELEG, KVM_HIDELEG_DEFAULT);
@@ -35,7 +39,11 @@ int kvm_arch_hardware_enable(void)
 	return 0;
 }
 
+<<<<<<< HEAD
 void kvm_arch_hardware_disable(void)
+=======
+void kvm_arch_disable_virtualization_cpu(void)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	kvm_riscv_aia_disable();
 

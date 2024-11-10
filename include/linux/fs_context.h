@@ -160,6 +160,15 @@ extern int get_tree_keyed(struct fs_context *fc,
 
 int setup_bdev_super(struct super_block *sb, int sb_flags,
 		struct fs_context *fc);
+<<<<<<< HEAD
+=======
+
+#define GET_TREE_BDEV_QUIET_LOOKUP		0x0001
+int get_tree_bdev_flags(struct fs_context *fc,
+		int (*fill_super)(struct super_block *sb,
+				  struct fs_context *fc), unsigned int flags);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern int get_tree_bdev(struct fs_context *fc,
 			       int (*fill_super)(struct super_block *sb,
 						 struct fs_context *fc));

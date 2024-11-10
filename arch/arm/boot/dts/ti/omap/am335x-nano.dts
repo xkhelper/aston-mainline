@@ -231,7 +231,11 @@
 	};
 
 	temperature-sensor@48 {
+<<<<<<< HEAD
 		compatible = "lm75";
+=======
+		compatible = "national,lm75";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		reg = <0x48>;
 	};
 

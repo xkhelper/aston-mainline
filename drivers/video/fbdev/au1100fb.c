@@ -588,7 +588,11 @@ static struct platform_driver au1100fb_driver = {
 		.name		= "au1100-lcd",
 	},
 	.probe		= au1100fb_drv_probe,
+<<<<<<< HEAD
 	.remove_new	= au1100fb_drv_remove,
+=======
+	.remove		= au1100fb_drv_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.suspend	= au1100fb_drv_suspend,
 	.resume		= au1100fb_drv_resume,
 };

@@ -31,8 +31,11 @@ MODULE_DEVICE_TABLE(i2c, max15301_id);
 
 struct max15301_data {
 	int id;
+<<<<<<< HEAD
 	ktime_t access;		/* Chip access time */
 	int delay;		/* Delay between chip accesses in us */
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct pmbus_driver_info info;
 };
 
@@ -55,6 +58,7 @@ static struct max15301_data max15301_data = {
 	}
 };
 
+<<<<<<< HEAD
 /* This chip needs a delay between accesses */
 static inline void max15301_wait(const struct max15301_data *data)
 {
@@ -138,6 +142,8 @@ static int max15301_write_byte(struct i2c_client *client, int page, u8 value)
 	return ret;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int max15301_probe(struct i2c_client *client)
 {
 	int status;
@@ -164,12 +170,16 @@ static int max15301_probe(struct i2c_client *client)
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
 	max15301_data.delay = delay;
 
 	info->read_byte_data = max15301_read_byte_data;
 	info->read_word_data = max15301_read_word_data;
 	info->write_byte = max15301_write_byte;
 	info->write_word_data = max15301_write_word_data;
+=======
+	info->access_delay = delay;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return pmbus_do_probe(client, info);
 }

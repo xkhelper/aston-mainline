@@ -13,6 +13,10 @@
 struct xapic_vcpu {
 	struct kvm_vcpu *vcpu;
 	bool is_x2apic;
+<<<<<<< HEAD
+=======
+	bool has_xavic_errata;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void xapic_guest_code(void)
@@ -31,6 +35,13 @@ static void xapic_guest_code(void)
 	}
 }
 
+<<<<<<< HEAD
+=======
+#define X2APIC_RSVD_BITS_MASK  (GENMASK_ULL(31, 20) | \
+				GENMASK_ULL(17, 16) | \
+				GENMASK_ULL(13, 13))
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void x2apic_guest_code(void)
 {
 	asm volatile("cli");
@@ -41,7 +52,16 @@ static void x2apic_guest_code(void)
 		uint64_t val = x2apic_read_reg(APIC_IRR) |
 			       x2apic_read_reg(APIC_IRR + 0x10) << 32;
 
+<<<<<<< HEAD
 		x2apic_write_reg(APIC_ICR, val);
+=======
+		if (val & X2APIC_RSVD_BITS_MASK) {
+			x2apic_write_reg_fault(APIC_ICR, val);
+		} else {
+			x2apic_write_reg(APIC_ICR, val);
+			GUEST_ASSERT_EQ(x2apic_read_reg(APIC_ICR), val);
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		GUEST_SYNC(val);
 	} while (1);
 }
@@ -71,6 +91,7 @@ static void ____test_icr(struct xapic_vcpu *x, uint64_t val)
 	icr = (u64)(*((u32 *)&xapic.regs[APIC_ICR])) |
 	      (u64)(*((u32 *)&xapic.regs[APIC_ICR2])) << 32;
 	if (!x->is_x2apic) {
+<<<<<<< HEAD
 		val &= (-1u | (0xffull << (32 + 24)));
 		TEST_ASSERT_EQ(icr, val & ~APIC_ICR_BUSY);
 	} else {
@@ -92,6 +113,30 @@ static void __test_icr(struct xapic_vcpu *x, uint64_t val)
 		val &= ~X2APIC_RSVED_BITS_MASK;
 	}
 	____test_icr(x, val | APIC_ICR_BUSY);
+=======
+		if (!x->has_xavic_errata)
+			val &= (-1u | (0xffull << (32 + 24)));
+	} else if (val & X2APIC_RSVD_BITS_MASK) {
+		return;
+	}
+
+	if (x->has_xavic_errata)
+		TEST_ASSERT_EQ(icr & ~APIC_ICR_BUSY, val & ~APIC_ICR_BUSY);
+	else
+		TEST_ASSERT_EQ(icr, val & ~APIC_ICR_BUSY);
+}
+
+static void __test_icr(struct xapic_vcpu *x, uint64_t val)
+{
+	/*
+	 * The BUSY bit is reserved on both AMD and Intel, but only AMD treats
+	 * it is as _must_ be zero.  Intel simply ignores the bit.  Don't test
+	 * the BUSY bit for x2APIC, as there is no single correct behavior.
+	 */
+	if (!x->is_x2apic)
+		____test_icr(x, val | APIC_ICR_BUSY);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	____test_icr(x, val & ~(u64)APIC_ICR_BUSY);
 }
 
@@ -231,6 +276,18 @@ int main(int argc, char *argv[])
 	vm = vm_create_with_one_vcpu(&x.vcpu, xapic_guest_code);
 	x.is_x2apic = false;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * AMD's AVIC implementation is buggy (fails to clear the ICR BUSY bit),
+	 * and also diverges from KVM with respect to ICR2[23:0] (KVM and Intel
+	 * drops writes, AMD does not).  Account for the errata when checking
+	 * that KVM reads back what was written.
+	 */
+	x.has_xavic_errata = host_cpu_is_amd &&
+			     get_kvm_amd_param_bool("avic");
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	vcpu_clear_cpuid_feature(x.vcpu, X86_FEATURE_X2APIC);
 
 	virt_pg_map(vm, APIC_DEFAULT_GPA, APIC_DEFAULT_GPA);

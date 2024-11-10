@@ -39,8 +39,13 @@ of the box, e.g.::
 Debian
 ******
 
+<<<<<<< HEAD
 Debian Unstable (Sid), outside of the freeze period, provides recent Rust
 releases and thus it should generally work out of the box, e.g.::
+=======
+Debian Testing and Debian Unstable (Sid), outside of the freeze period, provide
+recent Rust releases and thus they should generally work out of the box, e.g.::
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	apt install rustc rust-src bindgen rustfmt rust-clippy
 

@@ -147,12 +147,17 @@ static int mxc_rnga_probe(struct platform_device *pdev)
 	mxc_rng->rng.data_present = mxc_rnga_data_present;
 	mxc_rng->rng.data_read = mxc_rnga_data_read;
 
+<<<<<<< HEAD
 	mxc_rng->clk = devm_clk_get(&pdev->dev, NULL);
+=======
+	mxc_rng->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(mxc_rng->clk)) {
 		dev_err(&pdev->dev, "Could not get rng_clk!\n");
 		return PTR_ERR(mxc_rng->clk);
 	}
 
+<<<<<<< HEAD
 	err = clk_prepare_enable(mxc_rng->clk);
 	if (err)
 		return err;
@@ -161,11 +166,18 @@ static int mxc_rnga_probe(struct platform_device *pdev)
 	if (IS_ERR(mxc_rng->mem)) {
 		err = PTR_ERR(mxc_rng->mem);
 		goto err_ioremap;
+=======
+	mxc_rng->mem = devm_platform_ioremap_resource(pdev, 0);
+	if (IS_ERR(mxc_rng->mem)) {
+		err = PTR_ERR(mxc_rng->mem);
+		return err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	err = hwrng_register(&mxc_rng->rng);
 	if (err) {
 		dev_err(&pdev->dev, "MXC RNGA registering failed (%d)\n", err);
+<<<<<<< HEAD
 		goto err_ioremap;
 	}
 
@@ -174,6 +186,12 @@ static int mxc_rnga_probe(struct platform_device *pdev)
 err_ioremap:
 	clk_disable_unprepare(mxc_rng->clk);
 	return err;
+=======
+		return err;
+	}
+
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void mxc_rnga_remove(struct platform_device *pdev)
@@ -181,8 +199,11 @@ static void mxc_rnga_remove(struct platform_device *pdev)
 	struct mxc_rng *mxc_rng = platform_get_drvdata(pdev);
 
 	hwrng_unregister(&mxc_rng->rng);
+<<<<<<< HEAD
 
 	clk_disable_unprepare(mxc_rng->clk);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct of_device_id mxc_rnga_of_match[] = {

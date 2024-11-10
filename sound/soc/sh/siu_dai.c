@@ -788,7 +788,11 @@ static struct platform_driver siu_driver = {
 		.name	= "siu-pcm-audio",
 	},
 	.probe		= siu_probe,
+<<<<<<< HEAD
 	.remove_new	= siu_remove,
+=======
+	.remove		= siu_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(siu_driver);

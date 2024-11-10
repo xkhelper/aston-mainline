@@ -239,6 +239,7 @@ static void vf50_ts_close(struct input_dev *dev_input)
 static int vf50_ts_get_gpiod(struct device *dev, struct gpio_desc **gpio_d,
 			     const char *con_id, enum gpiod_flags flags)
 {
+<<<<<<< HEAD
 	int error;
 
 	*gpio_d = devm_gpiod_get(dev, con_id, flags);
@@ -247,6 +248,12 @@ static int vf50_ts_get_gpiod(struct device *dev, struct gpio_desc **gpio_d,
 		dev_err(dev, "Could not get gpio_%s %d\n", con_id, error);
 		return error;
 	}
+=======
+	*gpio_d = devm_gpiod_get(dev, con_id, flags);
+	if (IS_ERR(*gpio_d))
+		return dev_err_probe(dev, PTR_ERR(*gpio_d),
+				     "Could not get gpio_%s\n", con_id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

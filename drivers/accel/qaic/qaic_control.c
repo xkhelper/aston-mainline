@@ -496,7 +496,11 @@ static int encode_addr_size_pairs(struct dma_xfer *xfer, struct wrapper_list *wr
 	nents = sgt->nents;
 	nents_dma = nents;
 	*size = QAIC_MANAGE_EXT_MSG_LENGTH - msg_hdr_len - sizeof(**out_trans);
+<<<<<<< HEAD
 	for_each_sgtable_sg(sgt, sg, i) {
+=======
+	for_each_sgtable_dma_sg(sgt, sg, i) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		*size -= sizeof(*asp);
 		/* Save 1K for possible follow-up transactions. */
 		if (*size < SZ_1K) {

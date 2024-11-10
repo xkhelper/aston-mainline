@@ -45,11 +45,14 @@ else
 obj-y		:= $(filter-out %/, $(obj-y))
 endif
 
+<<<<<<< HEAD
 ifdef need-dtbslist
 dtb-y		+= $(addsuffix /dtbs-list, $(subdir-ym))
 always-y	+= dtbs-list
 endif
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # Expand $(foo-objs) $(foo-y) etc. by replacing their individuals
 suffix-search = $(strip $(foreach s, $3, $($(1:%$(strip $2)=%$s))))
 # List composite targets that are constructed by combining other targets
@@ -80,6 +83,7 @@ always-y += $(hostprogs-always-y) $(hostprogs-always-m)
 userprogs += $(userprogs-always-y) $(userprogs-always-m)
 always-y += $(userprogs-always-y) $(userprogs-always-m)
 
+<<<<<<< HEAD
 # DTB
 # If CONFIG_OF_ALL_DTBS is enabled, all DT blobs are built
 dtb-$(CONFIG_OF_ALL_DTBS)       += $(dtb-)
@@ -93,6 +97,8 @@ base-dtb-y := $(filter %.dtb, $(call real-search, $(multi-dtb-y), .dtb, -dtbs))
 
 always-y			+= $(dtb-y)
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # Add subdir path
 
 ifneq ($(obj),.)
@@ -104,9 +110,12 @@ lib-y		:= $(addprefix $(obj)/,$(lib-y))
 real-obj-y	:= $(addprefix $(obj)/,$(real-obj-y))
 real-obj-m	:= $(addprefix $(obj)/,$(real-obj-m))
 multi-obj-m	:= $(addprefix $(obj)/, $(multi-obj-m))
+<<<<<<< HEAD
 dtb-y		:= $(addprefix $(obj)/, $(dtb-y))
 multi-dtb-y	:= $(addprefix $(obj)/, $(multi-dtb-y))
 real-dtb-y	:= $(addprefix $(obj)/, $(real-dtb-y))
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 subdir-ym	:= $(addprefix $(obj)/,$(subdir-ym))
 endif
 
@@ -167,6 +176,12 @@ ifneq ($(CONFIG_KASAN_HW_TAGS),y)
 _c_flags += $(if $(patsubst n%,, \
 		$(KASAN_SANITIZE_$(target-stem).o)$(KASAN_SANITIZE)$(is-kernel-object)), \
 		$(CFLAGS_KASAN), $(CFLAGS_KASAN_NOSANITIZE))
+<<<<<<< HEAD
+=======
+_rust_flags += $(if $(patsubst n%,, \
+		$(KASAN_SANITIZE_$(target-stem).o)$(KASAN_SANITIZE)$(is-kernel-object)), \
+		$(RUSTFLAGS_KASAN))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 endif
 endif
 
@@ -238,7 +253,11 @@ modkern_rustflags =                                              \
 
 modkern_aflags = $(if $(part-of-module),				\
 			$(KBUILD_AFLAGS_MODULE) $(AFLAGS_MODULE),	\
+<<<<<<< HEAD
 			$(KBUILD_AFLAGS_KERNEL) $(AFLAGS_KERNEL))
+=======
+			$(KBUILD_AFLAGS_KERNEL) $(AFLAGS_KERNEL) $(modfile_flags))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 c_flags        = -Wp,-MMD,$(depfile) $(NOSTDINC_FLAGS) $(LINUXINCLUDE)     \
 		 -include $(srctree)/include/linux/compiler_types.h       \
@@ -248,19 +267,26 @@ c_flags        = -Wp,-MMD,$(depfile) $(NOSTDINC_FLAGS) $(LINUXINCLUDE)     \
 rust_flags     = $(_rust_flags) $(modkern_rustflags) @$(objtree)/include/generated/rustc_cfg
 
 a_flags        = -Wp,-MMD,$(depfile) $(NOSTDINC_FLAGS) $(LINUXINCLUDE)     \
+<<<<<<< HEAD
 		 $(_a_flags) $(modkern_aflags)
+=======
+		 $(_a_flags) $(modkern_aflags) $(modname_flags)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 cpp_flags      = -Wp,-MMD,$(depfile) $(NOSTDINC_FLAGS) $(LINUXINCLUDE)     \
 		 $(_cpp_flags)
 
 ld_flags       = $(KBUILD_LDFLAGS) $(ldflags-y) $(LDFLAGS_$(@F))
 
+<<<<<<< HEAD
 DTC_INCLUDE    := $(srctree)/scripts/dtc/include-prefixes
 
 dtc_cpp_flags  = -Wp,-MMD,$(depfile).pre.tmp -nostdinc                    \
 		 $(addprefix -I,$(DTC_INCLUDE))                          \
 		 -undef -D__DTS__
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ifdef CONFIG_OBJTOOL
 
 objtool := $(objtree)/tools/objtool/objtool
@@ -350,6 +376,7 @@ cmd_objcopy = $(OBJCOPY) $(OBJCOPYFLAGS) $(OBJCOPYFLAGS_$(@F)) $< $@
 quiet_cmd_gzip = GZIP    $@
       cmd_gzip = cat $(real-prereqs) | $(KGZIP) -n -f -9 > $@
 
+<<<<<<< HEAD
 # DTC
 # ---------------------------------------------------------------------------
 DTC ?= $(objtree)/scripts/dtc/dtc
@@ -438,6 +465,8 @@ $(obj)/%.dtbo: $(src)/%.dtso $(DTC) FORCE
 
 dtc-tmp = $(subst $(comma),_,$(dot-target).dts.tmp)
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # Bzip2
 # ---------------------------------------------------------------------------
 
@@ -530,6 +559,7 @@ quiet_cmd_fit = FIT     $@
 
 # XZ
 # ---------------------------------------------------------------------------
+<<<<<<< HEAD
 # Use xzkern to compress the kernel image and xzmisc to compress other things.
 #
 # xzkern uses a big LZMA2 dictionary since it doesn't increase memory usage
@@ -538,6 +568,19 @@ quiet_cmd_fit = FIT     $@
 # using size_append. The .xz format has the size information available at
 # the end of the file too, but it's in more complex format and it's good to
 # avoid changing the part of the boot code that reads the uncompressed size.
+=======
+# Use xzkern or xzkern_with_size to compress the kernel image and xzmisc to
+# compress other things.
+#
+# xzkern uses a big LZMA2 dictionary since it doesn't increase memory usage
+# of the kernel decompressor. A BCJ filter is used if it is available for
+# the target architecture.
+#
+# xzkern_with_size also appends uncompressed size of the data using
+# size_append. The .xz format has the size information available at the end
+# of the file too, but it's in more complex format and it's good to avoid
+# changing the part of the boot code that reads the uncompressed size.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # Note that the bytes added by size_append will make the xz tool think that
 # the file is corrupt. This is expected.
 #

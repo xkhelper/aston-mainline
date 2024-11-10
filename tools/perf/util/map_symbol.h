@@ -26,4 +26,10 @@ struct addr_map_symbol {
 void map_symbol__exit(struct map_symbol *ms);
 void addr_map_symbol__exit(struct addr_map_symbol *ams);
 
+<<<<<<< HEAD
+=======
+void map_symbol__copy(struct map_symbol *dst, struct map_symbol *src);
+void addr_map_symbol__copy(struct addr_map_symbol *dst, struct addr_map_symbol *src);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif // __PERF_MAP_SYMBOL

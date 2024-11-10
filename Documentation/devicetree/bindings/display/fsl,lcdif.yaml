@@ -50,6 +50,17 @@ properties:
       - const: disp_axi
     minItems: 1
 
+<<<<<<< HEAD
+=======
+  dmas:
+    items:
+      - description: DMA specifier for the RX DMA channel.
+
+  dma-names:
+    items:
+      - const: rx
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   interrupts:
     items:
       - description: LCDIF DMA interrupt
@@ -156,6 +167,21 @@ allOf:
         interrupts:
           maxItems: 1
 
+<<<<<<< HEAD
+=======
+  - if:
+      not:
+        properties:
+          compatible:
+            contains:
+              enum:
+                - fsl,imx28-lcdif
+    then:
+      properties:
+        dmas: false
+        dma-names: false
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 examples:
   - |
     #include <dt-bindings/clock/imx6sx-clock.h>

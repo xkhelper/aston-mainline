@@ -10,7 +10,11 @@
  */
 
 #include <linux/siphash.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #if defined(CONFIG_DCACHE_WORD_ACCESS) && BITS_PER_LONG == 64
 #include <linux/dcache.h>

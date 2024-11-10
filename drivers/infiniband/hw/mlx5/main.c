@@ -48,6 +48,10 @@
 #include <rdma/mlx5_user_ioctl_verbs.h>
 #include <rdma/mlx5_user_ioctl_cmds.h>
 #include "macsec.h"
+<<<<<<< HEAD
+=======
+#include "data_direct.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define UVERBS_MODULE_NAME mlx5_ib
 #include <rdma/uverbs_named_ioctl.h>
@@ -146,6 +150,7 @@ static struct mlx5_roce *mlx5_get_rep_roce(struct mlx5_ib_dev *dev,
 
 		if (upper && port->rep->vport == MLX5_VPORT_UPLINK)
 			continue;
+<<<<<<< HEAD
 
 		read_lock(&port->roce.netdev_lock);
 		rep_ndev = mlx5_ib_get_rep_netdev(port->rep->esw,
@@ -156,6 +161,54 @@ static struct mlx5_roce *mlx5_get_rep_roce(struct mlx5_ib_dev *dev,
 			return &port->roce;
 		}
 		read_unlock(&port->roce.netdev_lock);
+=======
+		rep_ndev = ib_device_get_netdev(&dev->ib_dev, i + 1);
+		if (rep_ndev && rep_ndev == ndev) {
+			dev_put(rep_ndev);
+			*port_num = i + 1;
+			return &port->roce;
+		}
+
+		dev_put(rep_ndev);
+	}
+
+	return NULL;
+}
+
+static bool mlx5_netdev_send_event(struct mlx5_ib_dev *dev,
+				   struct net_device *ndev,
+				   struct net_device *upper,
+				   struct net_device *ib_ndev)
+{
+	if (!dev->ib_active)
+		return false;
+
+	/* Event is about our upper device */
+	if (upper == ndev)
+		return true;
+
+	/* RDMA device is not in lag and not in switchdev */
+	if (!dev->is_rep && !upper && ndev == ib_ndev)
+		return true;
+
+	/* RDMA devie is in switchdev */
+	if (dev->is_rep && ndev == ib_ndev)
+		return true;
+
+	return false;
+}
+
+static struct net_device *mlx5_ib_get_rep_uplink_netdev(struct mlx5_ib_dev *ibdev)
+{
+	struct mlx5_ib_port *port;
+	int i;
+
+	for (i = 0; i < ibdev->num_ports; i++) {
+		port = &ibdev->port[i];
+		if (port->rep && port->rep->vport == MLX5_VPORT_UPLINK) {
+			return ib_device_get_netdev(&ibdev->ib_dev, i + 1);
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return NULL;
@@ -167,6 +220,10 @@ static int mlx5_netdev_event(struct notifier_block *this,
 	struct mlx5_roce *roce = container_of(this, struct mlx5_roce, nb);
 	struct net_device *ndev = netdev_notifier_info_to_dev(ptr);
 	u32 port_num = roce->native_port_num;
+<<<<<<< HEAD
+=======
+	struct net_device *ib_ndev = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct mlx5_core_dev *mdev;
 	struct mlx5_ib_dev *ibdev;
 
@@ -180,47 +237,100 @@ static int mlx5_netdev_event(struct notifier_block *this,
 		/* Should already be registered during the load */
 		if (ibdev->is_rep)
 			break;
+<<<<<<< HEAD
 		write_lock(&roce->netdev_lock);
 		if (ndev->dev.parent == mdev->device)
 			roce->netdev = ndev;
 		write_unlock(&roce->netdev_lock);
+=======
+
+		ib_ndev = ib_device_get_netdev(&ibdev->ib_dev, port_num);
+		/* Exit if already registered */
+		if (ib_ndev)
+			goto put_ndev;
+
+		if (ndev->dev.parent == mdev->device)
+			ib_device_set_netdev(&ibdev->ib_dev, ndev, port_num);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 
 	case NETDEV_UNREGISTER:
 		/* In case of reps, ib device goes away before the netdevs */
+<<<<<<< HEAD
 		write_lock(&roce->netdev_lock);
 		if (roce->netdev == ndev)
 			roce->netdev = NULL;
 		write_unlock(&roce->netdev_lock);
 		break;
+=======
+		if (ibdev->is_rep)
+			break;
+		ib_ndev = ib_device_get_netdev(&ibdev->ib_dev, port_num);
+		if (ib_ndev == ndev)
+			ib_device_set_netdev(&ibdev->ib_dev, NULL, port_num);
+		goto put_ndev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	case NETDEV_CHANGE:
 	case NETDEV_UP:
 	case NETDEV_DOWN: {
+<<<<<<< HEAD
 		struct net_device *lag_ndev = mlx5_lag_get_roce_netdev(mdev);
 		struct net_device *upper = NULL;
 
 		if (lag_ndev) {
 			upper = netdev_master_upper_dev_get(lag_ndev);
 			dev_put(lag_ndev);
+=======
+		struct net_device *upper = NULL;
+
+		if (mlx5_lag_is_roce(mdev) || mlx5_lag_is_sriov(mdev)) {
+			struct net_device *lag_ndev;
+
+			if(mlx5_lag_is_roce(mdev))
+				lag_ndev = ib_device_get_netdev(&ibdev->ib_dev, 1);
+			else /* sriov lag */
+				lag_ndev = mlx5_ib_get_rep_uplink_netdev(ibdev);
+
+			if (lag_ndev) {
+				upper = netdev_master_upper_dev_get(lag_ndev);
+				dev_put(lag_ndev);
+			} else {
+				goto done;
+			}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		if (ibdev->is_rep)
 			roce = mlx5_get_rep_roce(ibdev, ndev, upper, &port_num);
 		if (!roce)
 			return NOTIFY_DONE;
+<<<<<<< HEAD
 		if ((upper == ndev ||
 		     ((!upper || ibdev->is_rep) && ndev == roce->netdev)) &&
 		    ibdev->ib_active) {
+=======
+
+		ib_ndev = ib_device_get_netdev(&ibdev->ib_dev, port_num);
+
+		if (mlx5_netdev_send_event(ibdev, ndev, upper, ib_ndev)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			struct ib_event ibev = { };
 			enum ib_port_state port_state;
 
 			if (get_port_state(&ibdev->ib_dev, port_num,
 					   &port_state))
+<<<<<<< HEAD
 				goto done;
 
 			if (roce->last_port_state == port_state)
 				goto done;
+=======
+				goto put_ndev;
+
+			if (roce->last_port_state == port_state)
+				goto put_ndev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			roce->last_port_state = port_state;
 			ibev.device = &ibdev->ib_dev;
@@ -229,7 +339,11 @@ static int mlx5_netdev_event(struct notifier_block *this,
 			else if (port_state == IB_PORT_ACTIVE)
 				ibev.event = IB_EVENT_PORT_ACTIVE;
 			else
+<<<<<<< HEAD
 				goto done;
+=======
+				goto put_ndev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			ibev.element.port_num = port_num;
 			ib_dispatch_event(&ibev);
@@ -240,11 +354,17 @@ static int mlx5_netdev_event(struct notifier_block *this,
 	default:
 		break;
 	}
+<<<<<<< HEAD
+=======
+put_ndev:
+	dev_put(ib_ndev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 done:
 	mlx5_ib_put_native_port_mdev(ibdev, port_num);
 	return NOTIFY_DONE;
 }
 
+<<<<<<< HEAD
 static struct net_device *mlx5_ib_get_netdev(struct ib_device *device,
 					     u32 port_num)
 {
@@ -272,6 +392,8 @@ out:
 	return ndev;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct mlx5_core_dev *mlx5_ib_get_native_port_mdev(struct mlx5_ib_dev *ibdev,
 						   u32 ib_port_num,
 						   u32 *native_port_num)
@@ -546,11 +668,19 @@ static int mlx5_query_port_roce(struct ib_device *device, u32 port_num,
 	if (!put_mdev)
 		goto out;
 
+<<<<<<< HEAD
 	ndev = mlx5_ib_get_netdev(device, port_num);
 	if (!ndev)
 		goto out;
 
 	if (dev->lag_active) {
+=======
+	ndev = ib_device_get_netdev(device, port_num);
+	if (!ndev)
+		goto out;
+
+	if (mlx5_lag_is_roce(mdev) || mlx5_lag_is_sriov(mdev)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rcu_read_lock();
 		upper = netdev_master_upper_dev_get_rcu(ndev);
 		if (upper) {
@@ -3024,6 +3154,62 @@ static void mlx5_ib_dev_res_cleanup(struct mlx5_ib_dev *dev)
 	mutex_destroy(&devr->srq_lock);
 }
 
+<<<<<<< HEAD
+=======
+static int
+mlx5_ib_create_data_direct_resources(struct mlx5_ib_dev *dev)
+{
+	int inlen = MLX5_ST_SZ_BYTES(create_mkey_in);
+	struct mlx5_core_dev *mdev = dev->mdev;
+	void *mkc;
+	u32 mkey;
+	u32 pdn;
+	u32 *in;
+	int err;
+
+	err = mlx5_core_alloc_pd(mdev, &pdn);
+	if (err)
+		return err;
+
+	in = kvzalloc(inlen, GFP_KERNEL);
+	if (!in) {
+		err = -ENOMEM;
+		goto err;
+	}
+
+	MLX5_SET(create_mkey_in, in, data_direct, 1);
+	mkc = MLX5_ADDR_OF(create_mkey_in, in, memory_key_mkey_entry);
+	MLX5_SET(mkc, mkc, access_mode_1_0, MLX5_MKC_ACCESS_MODE_PA);
+	MLX5_SET(mkc, mkc, lw, 1);
+	MLX5_SET(mkc, mkc, lr, 1);
+	MLX5_SET(mkc, mkc, rw, 1);
+	MLX5_SET(mkc, mkc, rr, 1);
+	MLX5_SET(mkc, mkc, a, 1);
+	MLX5_SET(mkc, mkc, pd, pdn);
+	MLX5_SET(mkc, mkc, length64, 1);
+	MLX5_SET(mkc, mkc, qpn, 0xffffff);
+	err = mlx5_core_create_mkey(mdev, &mkey, in, inlen);
+	kvfree(in);
+	if (err)
+		goto err;
+
+	dev->ddr.mkey = mkey;
+	dev->ddr.pdn = pdn;
+	return 0;
+
+err:
+	mlx5_core_dealloc_pd(mdev, pdn);
+	return err;
+}
+
+static void
+mlx5_ib_free_data_direct_resources(struct mlx5_ib_dev *dev)
+{
+	mlx5_core_destroy_mkey(dev->mdev, dev->ddr.mkey);
+	mlx5_core_dealloc_pd(dev->mdev, dev->ddr.pdn);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static u32 get_core_cap_flags(struct ib_device *ibdev,
 			      struct mlx5_hca_vport_context *rep)
 {
@@ -3124,6 +3310,63 @@ static void get_dev_fw_str(struct ib_device *ibdev, char *str)
 		 fw_rev_sub(dev->mdev));
 }
 
+<<<<<<< HEAD
+=======
+static int lag_event(struct notifier_block *nb, unsigned long event, void *data)
+{
+	struct mlx5_ib_dev *dev = container_of(nb, struct mlx5_ib_dev,
+					       lag_events);
+	struct mlx5_core_dev *mdev = dev->mdev;
+	struct mlx5_ib_port *port;
+	struct net_device *ndev;
+	int  i, err;
+	int portnum;
+
+	portnum = 0;
+	switch (event) {
+	case MLX5_DRIVER_EVENT_ACTIVE_BACKUP_LAG_CHANGE_LOWERSTATE:
+		ndev = data;
+		if (ndev) {
+			if (!mlx5_lag_is_roce(mdev)) {
+				// sriov lag
+				for (i = 0; i < dev->num_ports; i++) {
+					port = &dev->port[i];
+					if (port->rep && port->rep->vport ==
+					    MLX5_VPORT_UPLINK) {
+						portnum = i;
+						break;
+					}
+				}
+			}
+			err = ib_device_set_netdev(&dev->ib_dev, ndev,
+						   portnum + 1);
+			dev_put(ndev);
+			if (err)
+				return err;
+			/* Rescan gids after new netdev assignment */
+			rdma_roce_rescan_device(&dev->ib_dev);
+		}
+		break;
+	default:
+		return NOTIFY_DONE;
+	}
+	return NOTIFY_OK;
+}
+
+static void mlx5e_lag_event_register(struct mlx5_ib_dev *dev)
+{
+	dev->lag_events.notifier_call = lag_event;
+	blocking_notifier_chain_register(&dev->mdev->priv.lag_nh,
+					 &dev->lag_events);
+}
+
+static void mlx5e_lag_event_unregister(struct mlx5_ib_dev *dev)
+{
+	blocking_notifier_chain_unregister(&dev->mdev->priv.lag_nh,
+					   &dev->lag_events);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int mlx5_eth_lag_init(struct mlx5_ib_dev *dev)
 {
 	struct mlx5_core_dev *mdev = dev->mdev;
@@ -3145,6 +3388,10 @@ static int mlx5_eth_lag_init(struct mlx5_ib_dev *dev)
 		goto err_destroy_vport_lag;
 	}
 
+<<<<<<< HEAD
+=======
+	mlx5e_lag_event_register(dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev->flow_db->lag_demux_ft = ft;
 	dev->lag_ports = mlx5_lag_get_num_ports(mdev);
 	dev->lag_active = true;
@@ -3162,6 +3409,10 @@ static void mlx5_eth_lag_cleanup(struct mlx5_ib_dev *dev)
 	if (dev->lag_active) {
 		dev->lag_active = false;
 
+<<<<<<< HEAD
+=======
+		mlx5e_lag_event_unregister(dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mlx5_destroy_flow_table(dev->flow_db->lag_demux_ft);
 		dev->flow_db->lag_demux_ft = NULL;
 
@@ -3420,6 +3671,44 @@ unbind:
 	return false;
 }
 
+<<<<<<< HEAD
+=======
+static int mlx5_ib_data_direct_init(struct mlx5_ib_dev *dev)
+{
+	char vuid[MLX5_ST_SZ_BYTES(array1024_auto) + 1] = {};
+	int ret;
+
+	if (!MLX5_CAP_GEN(dev->mdev, data_direct) ||
+	    !MLX5_CAP_GEN_2(dev->mdev, query_vuid))
+		return 0;
+
+	ret = mlx5_cmd_query_vuid(dev->mdev, true, vuid);
+	if (ret)
+		return ret;
+
+	ret = mlx5_ib_create_data_direct_resources(dev);
+	if (ret)
+		return ret;
+
+	INIT_LIST_HEAD(&dev->data_direct_mr_list);
+	ret = mlx5_data_direct_ib_reg(dev, vuid);
+	if (ret)
+		mlx5_ib_free_data_direct_resources(dev);
+
+	return ret;
+}
+
+static void mlx5_ib_data_direct_cleanup(struct mlx5_ib_dev *dev)
+{
+	if (!MLX5_CAP_GEN(dev->mdev, data_direct) ||
+	    !MLX5_CAP_GEN_2(dev->mdev, query_vuid))
+		return;
+
+	mlx5_data_direct_ib_unreg(dev);
+	mlx5_ib_free_data_direct_resources(dev);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int mlx5_ib_init_multiport_master(struct mlx5_ib_dev *dev)
 {
 	u32 port_num = mlx5_core_native_port_num(dev->mdev) - 1;
@@ -3796,6 +4085,17 @@ ADD_UVERBS_ATTRIBUTES_SIMPLE(
 				   dump_fill_mkey),
 		UA_MANDATORY));
 
+<<<<<<< HEAD
+=======
+ADD_UVERBS_ATTRIBUTES_SIMPLE(
+	mlx5_ib_reg_dmabuf_mr,
+	UVERBS_OBJECT_MR,
+	UVERBS_METHOD_REG_DMABUF_MR,
+	UVERBS_ATTR_FLAGS_IN(MLX5_IB_ATTR_REG_DMABUF_MR_ACCESS_FLAGS,
+			     enum mlx5_ib_uapi_reg_dmabuf_flags,
+			     UA_OPTIONAL));
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct uapi_definition mlx5_ib_defs[] = {
 	UAPI_DEF_CHAIN(mlx5_ib_devx_defs),
 	UAPI_DEF_CHAIN(mlx5_ib_flow_defs),
@@ -3805,6 +4105,10 @@ static const struct uapi_definition mlx5_ib_defs[] = {
 	UAPI_DEF_CHAIN(mlx5_ib_create_cq_defs),
 
 	UAPI_DEF_CHAIN_OBJ_TREE(UVERBS_OBJECT_DEVICE, &mlx5_ib_query_context),
+<<<<<<< HEAD
+=======
+	UAPI_DEF_CHAIN_OBJ_TREE(UVERBS_OBJECT_MR, &mlx5_ib_reg_dmabuf_mr),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	UAPI_DEF_CHAIN_OBJ_TREE_NAMED(MLX5_IB_OBJECT_VAR,
 				UAPI_DEF_IS_OBJ_SUPPORTED(var_is_supported)),
 	UAPI_DEF_CHAIN_OBJ_TREE_NAMED(MLX5_IB_OBJECT_UAR),
@@ -3813,6 +4117,10 @@ static const struct uapi_definition mlx5_ib_defs[] = {
 
 static void mlx5_ib_stage_init_cleanup(struct mlx5_ib_dev *dev)
 {
+<<<<<<< HEAD
+=======
+	mlx5_ib_data_direct_cleanup(dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mlx5_ib_cleanup_multiport_master(dev);
 	WARN_ON(!xa_empty(&dev->odp_mkeys));
 	mutex_destroy(&dev->cap_mask_mutex);
@@ -3828,13 +4136,19 @@ static int mlx5_ib_stage_init_init(struct mlx5_ib_dev *dev)
 
 	dev->ib_dev.node_type = RDMA_NODE_IB_CA;
 	dev->ib_dev.local_dma_lkey = 0 /* not supported for now */;
+<<<<<<< HEAD
 	dev->ib_dev.phys_port_cnt = dev->num_ports;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev->ib_dev.dev.parent = mdev->device;
 	dev->ib_dev.lag_flags = RDMA_LAG_FLAGS_HASH_ALL_SLAVES;
 
 	for (i = 0; i < dev->num_ports; i++) {
 		spin_lock_init(&dev->port[i].mp.mpi_lock);
+<<<<<<< HEAD
 		rwlock_init(&dev->port[i].roce.netdev_lock);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev->port[i].roce.dev = dev;
 		dev->port[i].roce.native_port_num = i + 1;
 		dev->port[i].roce.last_port_state = IB_PORT_DOWN;
@@ -3866,6 +4180,10 @@ static int mlx5_ib_stage_init_init(struct mlx5_ib_dev *dev)
 	dev->ib_dev.num_comp_vectors    = mlx5_comp_vectors_max(mdev);
 
 	mutex_init(&dev->cap_mask_mutex);
+<<<<<<< HEAD
+=======
+	mutex_init(&dev->data_direct_lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	INIT_LIST_HEAD(&dev->qp_list);
 	spin_lock_init(&dev->reset_flow_resource_lock);
 	xa_init(&dev->odp_mkeys);
@@ -3874,6 +4192,13 @@ static int mlx5_ib_stage_init_init(struct mlx5_ib_dev *dev)
 
 	spin_lock_init(&dev->dm.lock);
 	dev->dm.dev = mdev;
+<<<<<<< HEAD
+=======
+	err = mlx5_ib_data_direct_init(dev);
+	if (err)
+		goto err_mp;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 err_mp:
 	mlx5_ib_cleanup_multiport_master(dev);
@@ -4094,7 +4419,10 @@ static const struct ib_device_ops mlx5_ib_dev_common_roce_ops = {
 	.create_wq = mlx5_ib_create_wq,
 	.destroy_rwq_ind_table = mlx5_ib_destroy_rwq_ind_table,
 	.destroy_wq = mlx5_ib_destroy_wq,
+<<<<<<< HEAD
 	.get_netdev = mlx5_ib_get_netdev,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.modify_wq = mlx5_ib_modify_wq,
 
 	INIT_RDMA_OBJ_SIZE(ib_rwq_ind_table, mlx5_ib_rwq_ind_table,
@@ -4293,6 +4621,25 @@ static void mlx5_ib_stage_dev_notifier_cleanup(struct mlx5_ib_dev *dev)
 	mlx5_notifier_unregister(dev->mdev, &dev->mdev_events);
 }
 
+<<<<<<< HEAD
+=======
+void mlx5_ib_data_direct_bind(struct mlx5_ib_dev *ibdev,
+			      struct mlx5_data_direct_dev *dev)
+{
+	mutex_lock(&ibdev->data_direct_lock);
+	ibdev->data_direct_dev = dev;
+	mutex_unlock(&ibdev->data_direct_lock);
+}
+
+void mlx5_ib_data_direct_unbind(struct mlx5_ib_dev *ibdev)
+{
+	mutex_lock(&ibdev->data_direct_lock);
+	mlx5_ib_revoke_data_direct_mrs(ibdev);
+	ibdev->data_direct_dev = NULL;
+	mutex_unlock(&ibdev->data_direct_lock);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void __mlx5_ib_remove(struct mlx5_ib_dev *dev,
 		      const struct mlx5_ib_profile *profile,
 		      int stage)
@@ -4522,6 +4869,10 @@ static struct ib_device *mlx5_ib_add_sub_dev(struct ib_device *parent,
 	mplane->mdev = mparent->mdev;
 	mplane->num_ports = mparent->num_plane;
 	mplane->sub_dev_name = name;
+<<<<<<< HEAD
+=======
+	mplane->ib_dev.phys_port_cnt = mplane->num_ports;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = __mlx5_ib_add(mplane, &plane_profile);
 	if (ret)
@@ -4638,6 +4989,10 @@ static int mlx5r_probe(struct auxiliary_device *adev,
 
 	dev->mdev = mdev;
 	dev->num_ports = num_ports;
+<<<<<<< HEAD
+=======
+	dev->ib_dev.phys_port_cnt = num_ports;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (ll == IB_LINK_LAYER_ETHERNET && !mlx5_get_roce_state(mdev))
 		profile = &raw_eth_profile;
@@ -4715,17 +5070,32 @@ static int __init mlx5_ib_init(void)
 	ret = mlx5r_rep_init();
 	if (ret)
 		goto rep_err;
+<<<<<<< HEAD
+=======
+	ret = mlx5_data_direct_driver_register();
+	if (ret)
+		goto dd_err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = auxiliary_driver_register(&mlx5r_mp_driver);
 	if (ret)
 		goto mp_err;
 	ret = auxiliary_driver_register(&mlx5r_driver);
 	if (ret)
 		goto drv_err;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 
 drv_err:
 	auxiliary_driver_unregister(&mlx5r_mp_driver);
 mp_err:
+<<<<<<< HEAD
+=======
+	mlx5_data_direct_driver_unregister();
+dd_err:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mlx5r_rep_cleanup();
 rep_err:
 	mlx5_ib_qp_event_cleanup();
@@ -4737,6 +5107,10 @@ qp_event_err:
 
 static void __exit mlx5_ib_cleanup(void)
 {
+<<<<<<< HEAD
+=======
+	mlx5_data_direct_driver_unregister();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	auxiliary_driver_unregister(&mlx5r_driver);
 	auxiliary_driver_unregister(&mlx5r_mp_driver);
 	mlx5r_rep_cleanup();

@@ -149,7 +149,10 @@ struct crypto4xx_alg {
 
 int crypto4xx_alloc_sa(struct crypto4xx_ctx *ctx, u32 size);
 void crypto4xx_free_sa(struct crypto4xx_ctx *ctx);
+<<<<<<< HEAD
 void crypto4xx_free_ctx(struct crypto4xx_ctx *ctx);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int crypto4xx_build_pd(struct crypto_async_request *req,
 		       struct crypto4xx_ctx *ctx,
 		       struct scatterlist *src,

@@ -79,6 +79,11 @@ static int kmemleak_test_init(void)
 			per_cpu(kmemleak_test_pointer, i));
 	}
 
+<<<<<<< HEAD
+=======
+	pr_info("__alloc_percpu(64, 4) = %p\n", __alloc_percpu(64, 4));
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 module_init(kmemleak_test_init);

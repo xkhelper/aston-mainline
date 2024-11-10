@@ -7,12 +7,16 @@
 #include <linux/of_platform.h>
 #include <linux/regmap.h>
 #include <linux/mfd/syscon.h>
+<<<<<<< HEAD
 #include <linux/mfd/syscon/imx6q-iomuxc-gpr.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/mach/arch.h>
 
 #include "common.h"
 #include "cpuidle.h"
 
+<<<<<<< HEAD
 static void __init imx6sx_enet_clk_sel(void)
 {
 	struct regmap *gpr;
@@ -33,11 +37,16 @@ static inline void imx6sx_enet_init(void)
 	imx6sx_enet_clk_sel();
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void __init imx6sx_init_machine(void)
 {
 	of_platform_default_populate(NULL, NULL, NULL);
 
+<<<<<<< HEAD
 	imx6sx_enet_init();
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	imx_anatop_init();
 	imx6sx_pm_init();
 }

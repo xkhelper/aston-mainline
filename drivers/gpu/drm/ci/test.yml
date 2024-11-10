@@ -10,6 +10,10 @@
 .lava-test:
   extends:
     - .test-rules
+<<<<<<< HEAD
+=======
+  timeout: "1h30m"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   script:
     # Note: Build dir (and thus install) may be dirty due to GIT_STRATEGY
     - rm -rf install
@@ -69,8 +73,14 @@
 .baremetal-igt-arm64:
   extends:
     - .baremetal-test-arm64
+<<<<<<< HEAD
     - .use-debian/arm64_test
     - .test-rules
+=======
+    - .use-debian/baremetal_arm64_test
+    - .test-rules
+  timeout: "1h30m"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   variables:
     FDO_CI_CONCURRENT: 10
     HWCI_TEST_SCRIPT: "/install/igt_runner.sh"
@@ -79,7 +89,11 @@
     BM_CMDLINE: "ip=dhcp console=ttyMSM0,115200n8 $BM_KERNEL_EXTRA_ARGS root=/dev/nfs rw nfsrootdebug nfsroot=,tcp,nfsvers=4.2 init=/init $BM_KERNELARGS"
     FARM: google
   needs:
+<<<<<<< HEAD
     - debian/arm64_test
+=======
+    - debian/baremetal_arm64_test
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     - job: testing:arm64
       artifacts: false
     - igt:arm64
@@ -160,6 +174,7 @@ msm:sdm845:
   script:
     - ./install/bare-metal/cros-servo.sh
 
+<<<<<<< HEAD
 rockchip:rk3288:
   extends:
     - .lava-igt:arm32
@@ -186,12 +201,67 @@ rockchip:rk3399:
     KERNEL_IMAGE_TYPE: ""
     GPU_VERSION: rk3399
     RUNNER_TAG: mesa-ci-x86-64-lava-rk3399-gru-kevin
+=======
+.rockchip-device:
+  variables:
+    DTB: ${DEVICE_TYPE}
+    BOOT_METHOD: depthcharge
+
+.rockchip-display:
+  stage: rockchip
+  variables:
+    DRIVER_NAME: rockchip
+
+.rk3288:
+  extends:
+    - .lava-igt:arm32
+    - .rockchip-device
+  variables:
+    DEVICE_TYPE: rk3288-veyron-jaq
+    GPU_VERSION: rk3288
+    KERNEL_IMAGE_TYPE: "zimage"
+    RUNNER_TAG: mesa-ci-x86-64-lava-rk3288-veyron-jaq
+
+.rk3399:
+  extends:
+    - .lava-igt:arm64
+    - .rockchip-device
+  parallel: 2
+  variables:
+    DEVICE_TYPE: rk3399-gru-kevin
+    GPU_VERSION: rk3399
+    KERNEL_IMAGE_TYPE: ""
+    RUNNER_TAG: mesa-ci-x86-64-lava-rk3399-gru-kevin
+
+rockchip:rk3288:
+  extends:
+    - .rk3288
+    - .rockchip-display
+
+panfrost:rk3288:
+  extends:
+    - .rk3288
+    - .panfrost-gpu
+
+rockchip:rk3399:
+  extends:
+    - .rk3399
+    - .rockchip-display
+
+panfrost:rk3399:
+  extends:
+    - .rk3399
+    - .panfrost-gpu
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 .i915:
   extends:
     - .lava-igt:x86_64
   stage: i915
+<<<<<<< HEAD
   timeout: "1h30m"
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   variables:
     DRIVER_NAME: i915
     DTB: ""
@@ -280,65 +350,164 @@ amdgpu:stoney:
     GPU_VERSION: stoney
     RUNNER_TAG: mesa-ci-x86-64-lava-hp-11A-G6-EE-grunt
 
+<<<<<<< HEAD
 .mediatek:
+=======
+.mediatek-device:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   extends:
     - .lava-igt:arm64
   stage: mediatek
   variables:
+<<<<<<< HEAD
     DRIVER_NAME: mediatek
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     DTB: ${DEVICE_TYPE}
     BOOT_METHOD: depthcharge
     KERNEL_IMAGE_TYPE: ""
 
+<<<<<<< HEAD
 mediatek:mt8173:
   extends:
     - .mediatek
+=======
+.mediatek-display:
+  stage: mediatek
+  variables:
+    DRIVER_NAME: mediatek
+
+.powervr-gpu:
+  stage: powervr
+  variables:
+    DRIVER_NAME: powervr
+
+.panfrost-gpu:
+  stage: panfrost
+  variables:
+    DRIVER_NAME: panfrost
+
+.mt8173:
+  extends:
+    - .mediatek-device
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   parallel: 4
   variables:
     DEVICE_TYPE: mt8173-elm-hana
     GPU_VERSION: mt8173
     RUNNER_TAG: mesa-ci-x86-64-lava-mt8173-elm-hana
 
+<<<<<<< HEAD
 mediatek:mt8183:
   extends:
     - .mediatek
+=======
+.mt8183:
+  extends:
+    - .mediatek-device
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   parallel: 3
   variables:
     DEVICE_TYPE: mt8183-kukui-jacuzzi-juniper-sku16
     GPU_VERSION: mt8183
     RUNNER_TAG: mesa-ci-x86-64-lava-mt8183-kukui-jacuzzi-juniper-sku16
 
+<<<<<<< HEAD
 # drm-mtk doesn't even probe yet in mainline for mt8192
 .mediatek:mt8192:
   extends:
     - .mediatek
+=======
+mediatek:mt8173:
+  extends:
+    - .mt8173
+    - .mediatek-display
+
+powervr:mt8173:
+  extends:
+    - .mt8173
+    - .powervr-gpu
+  rules:
+    # TODO: powervr driver was merged in linux kernel, but there's no mediatek support yet
+    # Remove the rule once mediatek support is added for powervr
+    - when: never
+
+mediatek:mt8183:
+  extends:
+    - .mt8183
+    - .mediatek-display
+
+panfrost:mt8183:
+  extends:
+    - .mt8183
+    - .panfrost-gpu
+
+# drm-mtk doesn't even probe yet in mainline for mt8192
+.mediatek:mt8192:
+  extends:
+    - .mediatek-device
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   parallel: 3
   variables:
     DEVICE_TYPE: mt8192-asurada-spherion-r0
     GPU_VERSION: mt8192
     RUNNER_TAG: mesa-ci-x86-64-lava-mt8192-asurada-spherion-r0
 
+<<<<<<< HEAD
 .meson:
   extends:
     - .lava-igt:arm64
   stage: meson
   variables:
     DRIVER_NAME: meson
+=======
+.meson-device:
+  extends:
+    - .lava-igt:arm64
+  variables:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     DTB: ${DEVICE_TYPE}
     BOOT_METHOD: u-boot
     KERNEL_IMAGE_TYPE: "image"
 
+<<<<<<< HEAD
 meson:g12b:
   extends:
     - .meson
+=======
+.meson-display:
+  stage: meson
+  variables:
+    DRIVER_NAME: meson
+
+.g12b:
+  extends:
+    - .meson-device
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   parallel: 3
   variables:
     DEVICE_TYPE: meson-g12b-a311d-khadas-vim3
     GPU_VERSION: g12b
     RUNNER_TAG: mesa-ci-x86-64-lava-meson-g12b-a311d-khadas-vim3
 
+<<<<<<< HEAD
 virtio_gpu:none:
   stage: software-driver
+=======
+meson:g12b:
+  extends:
+    - .g12b
+    - .meson-display
+
+panfrost:g12b:
+  extends:
+    - .g12b
+    - .panfrost-gpu
+
+virtio_gpu:none:
+  stage: software-driver
+  timeout: "1h30m"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   variables:
     CROSVM_GALLIUM_DRIVER: llvmpipe
     DRIVER_NAME: virtio_gpu
@@ -361,6 +530,10 @@ virtio_gpu:none:
 
 vkms:none:
   stage: software-driver
+<<<<<<< HEAD
+=======
+  timeout: "1h30m"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   variables:
     DRIVER_NAME: vkms
     GPU_VERSION: none

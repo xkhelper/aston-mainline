@@ -1,11 +1,19 @@
+<<<<<<< HEAD
+=======
+// SPDX-License-Identifier: 0BSD
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * LZMA2 decoder
  *
  * Authors: Lasse Collin <lasse.collin@tukaani.org>
  *          Igor Pavlov <https://7-zip.org/>
+<<<<<<< HEAD
  *
  * This file has been put into the public domain.
  * You can do whatever you want with this file.
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 #include "xz_private.h"
@@ -961,8 +969,12 @@ static bool lzma2_lzma(struct xz_dec_lzma2 *s, struct xz_buf *b)
  * Take care of the LZMA2 control layer, and forward the job of actual LZMA
  * decoding or copying of uncompressed chunks to other functions.
  */
+<<<<<<< HEAD
 XZ_EXTERN enum xz_ret xz_dec_lzma2_run(struct xz_dec_lzma2 *s,
 				       struct xz_buf *b)
+=======
+enum xz_ret xz_dec_lzma2_run(struct xz_dec_lzma2 *s, struct xz_buf *b)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	uint32_t tmp;
 
@@ -1138,8 +1150,12 @@ XZ_EXTERN enum xz_ret xz_dec_lzma2_run(struct xz_dec_lzma2 *s,
 	return XZ_OK;
 }
 
+<<<<<<< HEAD
 XZ_EXTERN struct xz_dec_lzma2 *xz_dec_lzma2_create(enum xz_mode mode,
 						   uint32_t dict_max)
+=======
+struct xz_dec_lzma2 *xz_dec_lzma2_create(enum xz_mode mode, uint32_t dict_max)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct xz_dec_lzma2 *s = kmalloc(sizeof(*s), GFP_KERNEL);
 	if (s == NULL)
@@ -1162,7 +1178,11 @@ XZ_EXTERN struct xz_dec_lzma2 *xz_dec_lzma2_create(enum xz_mode mode,
 	return s;
 }
 
+<<<<<<< HEAD
 XZ_EXTERN enum xz_ret xz_dec_lzma2_reset(struct xz_dec_lzma2 *s, uint8_t props)
+=======
+enum xz_ret xz_dec_lzma2_reset(struct xz_dec_lzma2 *s, uint8_t props)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	/* This limits dictionary size to 3 GiB to keep parsing simpler. */
 	if (props > 39)
@@ -1198,7 +1218,11 @@ XZ_EXTERN enum xz_ret xz_dec_lzma2_reset(struct xz_dec_lzma2 *s, uint8_t props)
 	return XZ_OK;
 }
 
+<<<<<<< HEAD
 XZ_EXTERN void xz_dec_lzma2_end(struct xz_dec_lzma2 *s)
+=======
+void xz_dec_lzma2_end(struct xz_dec_lzma2 *s)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (DEC_IS_MULTI(s->dict.mode))
 		vfree(s->dict.buf);

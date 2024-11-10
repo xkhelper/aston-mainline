@@ -56,7 +56,11 @@ struct xb1s_ff_report {
 	__u8	loop_count;
 } __packed;
 
+<<<<<<< HEAD
 static __u8 *ms_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+=======
+static const __u8 *ms_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		unsigned int *rsize)
 {
 	struct ms_data *ms = hid_get_drvdata(hdev);

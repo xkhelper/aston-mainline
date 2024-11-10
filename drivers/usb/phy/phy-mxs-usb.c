@@ -18,6 +18,10 @@
 #include <linux/regmap.h>
 #include <linux/mfd/syscon.h>
 #include <linux/iopoll.h>
+<<<<<<< HEAD
+=======
+#include <linux/regulator/consumer.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define DRIVER_NAME "mxs_phy"
 
@@ -70,6 +74,12 @@
 #define BM_USBPHY_PLL_EN_USB_CLKS		BIT(6)
 
 /* Anatop Registers */
+<<<<<<< HEAD
+=======
+#define ANADIG_REG_1P1_SET			0x114
+#define ANADIG_REG_1P1_CLR			0x118
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define ANADIG_ANA_MISC0			0x150
 #define ANADIG_ANA_MISC0_SET			0x154
 #define ANADIG_ANA_MISC0_CLR			0x158
@@ -117,6 +127,17 @@
 #define BM_ANADIG_USB2_MISC_RX_VPIN_FS		BIT(29)
 #define BM_ANADIG_USB2_MISC_RX_VMIN_FS		BIT(28)
 
+<<<<<<< HEAD
+=======
+/* System Integration Module (SIM) Registers */
+#define SIM_GPR1				0x30
+
+#define USB_PHY_VLLS_WAKEUP_EN			BIT(0)
+
+#define BM_ANADIG_REG_1P1_ENABLE_WEAK_LINREG	BIT(18)
+#define BM_ANADIG_REG_1P1_TRACK_VDD_SOC_CAP	BIT(19)
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define to_mxs_phy(p) container_of((p), struct mxs_phy, phy)
 
 /* Do disconnection between PHY and controller without vbus */
@@ -149,6 +170,18 @@
 #define MXS_PHY_TX_D_CAL_MIN			79
 #define MXS_PHY_TX_D_CAL_MAX			119
 
+<<<<<<< HEAD
+=======
+/*
+ * At imx6q/6sl/6sx, the PHY2's clock is controlled by hardware directly,
+ * eg, according to PHY's suspend status. In these PHYs, we only need to
+ * open the clock at the initialization and close it at its shutdown routine.
+ * These PHYs can send resume signal without software interfere if not
+ * gate clock.
+ */
+#define MXS_PHY_HARDWARE_CONTROL_PHY2_CLK	BIT(4)
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct mxs_phy_data {
 	unsigned int flags;
 };
@@ -160,12 +193,22 @@ static const struct mxs_phy_data imx23_phy_data = {
 static const struct mxs_phy_data imx6q_phy_data = {
 	.flags = MXS_PHY_SENDING_SOF_TOO_FAST |
 		MXS_PHY_DISCONNECT_LINE_WITHOUT_VBUS |
+<<<<<<< HEAD
 		MXS_PHY_NEED_IP_FIX,
+=======
+		MXS_PHY_NEED_IP_FIX |
+		MXS_PHY_HARDWARE_CONTROL_PHY2_CLK,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct mxs_phy_data imx6sl_phy_data = {
 	.flags = MXS_PHY_DISCONNECT_LINE_WITHOUT_VBUS |
+<<<<<<< HEAD
 		MXS_PHY_NEED_IP_FIX,
+=======
+		MXS_PHY_NEED_IP_FIX |
+		MXS_PHY_HARDWARE_CONTROL_PHY2_CLK,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct mxs_phy_data vf610_phy_data = {
@@ -174,11 +217,21 @@ static const struct mxs_phy_data vf610_phy_data = {
 };
 
 static const struct mxs_phy_data imx6sx_phy_data = {
+<<<<<<< HEAD
 	.flags = MXS_PHY_DISCONNECT_LINE_WITHOUT_VBUS,
 };
 
 static const struct mxs_phy_data imx6ul_phy_data = {
 	.flags = MXS_PHY_DISCONNECT_LINE_WITHOUT_VBUS,
+=======
+	.flags = MXS_PHY_DISCONNECT_LINE_WITHOUT_VBUS |
+		MXS_PHY_HARDWARE_CONTROL_PHY2_CLK,
+};
+
+static const struct mxs_phy_data imx6ul_phy_data = {
+	.flags = MXS_PHY_DISCONNECT_LINE_WITHOUT_VBUS |
+		MXS_PHY_HARDWARE_CONTROL_PHY2_CLK,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct mxs_phy_data imx7ulp_phy_data = {
@@ -201,9 +254,17 @@ struct mxs_phy {
 	struct clk *clk;
 	const struct mxs_phy_data *data;
 	struct regmap *regmap_anatop;
+<<<<<<< HEAD
 	int port_id;
 	u32 tx_reg_set;
 	u32 tx_reg_mask;
+=======
+	struct regmap *regmap_sim;
+	int port_id;
+	u32 tx_reg_set;
+	u32 tx_reg_mask;
+	struct regulator *phy_3p0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static inline bool is_imx6q_phy(struct mxs_phy *mxs_phy)
@@ -221,6 +282,14 @@ static inline bool is_imx7ulp_phy(struct mxs_phy *mxs_phy)
 	return mxs_phy->data == &imx7ulp_phy_data;
 }
 
+<<<<<<< HEAD
+=======
+static inline bool is_imx6ul_phy(struct mxs_phy *mxs_phy)
+{
+	return mxs_phy->data == &imx6ul_phy_data;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * PHY needs some 32K cycles to switch from 32K clock to
  * bus (such as AHB/AXI, etc) clock.
@@ -288,6 +357,19 @@ static int mxs_phy_hw_init(struct mxs_phy *mxs_phy)
 	if (ret)
 		goto disable_pll;
 
+<<<<<<< HEAD
+=======
+	if (mxs_phy->phy_3p0) {
+		ret = regulator_enable(mxs_phy->phy_3p0);
+		if (ret) {
+			dev_err(mxs_phy->phy.dev,
+				"Failed to enable 3p0 regulator, ret=%d\n",
+				ret);
+			return ret;
+		}
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Power up the PHY */
 	writel(0, base + HW_USBPHY_PWD);
 
@@ -448,6 +530,12 @@ static void mxs_phy_shutdown(struct usb_phy *phy)
 	if (is_imx7ulp_phy(mxs_phy))
 		mxs_phy_pll_enable(phy->io_priv, false);
 
+<<<<<<< HEAD
+=======
+	if (mxs_phy->phy_3p0)
+		regulator_disable(mxs_phy->phy_3p0);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	clk_disable_unprepare(mxs_phy->clk);
 }
 
@@ -503,12 +591,28 @@ static int mxs_phy_suspend(struct usb_phy *x, int suspend)
 		}
 		writel(BM_USBPHY_CTRL_CLKGATE,
 		       x->io_priv + HW_USBPHY_CTRL_SET);
+<<<<<<< HEAD
 		clk_disable_unprepare(mxs_phy->clk);
 	} else {
 		mxs_phy_clock_switch_delay();
 		ret = clk_prepare_enable(mxs_phy->clk);
 		if (ret)
 			return ret;
+=======
+		if (!(mxs_phy->port_id == 1 &&
+			(mxs_phy->data->flags &
+				MXS_PHY_HARDWARE_CONTROL_PHY2_CLK)))
+			clk_disable_unprepare(mxs_phy->clk);
+	} else {
+		mxs_phy_clock_switch_delay();
+		if (!(mxs_phy->port_id == 1 &&
+			(mxs_phy->data->flags &
+				MXS_PHY_HARDWARE_CONTROL_PHY2_CLK))) {
+			ret = clk_prepare_enable(mxs_phy->clk);
+			if (ret)
+				return ret;
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		writel(BM_USBPHY_CTRL_CLKGATE,
 		       x->io_priv + HW_USBPHY_CTRL_CLR);
 		writel(0, x->io_priv + HW_USBPHY_PWD);
@@ -738,6 +842,20 @@ static int mxs_phy_probe(struct platform_device *pdev)
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	/* Currently, only imx7ulp has SIM module */
+	if (of_get_property(np, "nxp,sim", NULL)) {
+		mxs_phy->regmap_sim = syscon_regmap_lookup_by_phandle
+			(np, "nxp,sim");
+		if (IS_ERR(mxs_phy->regmap_sim)) {
+			dev_dbg(&pdev->dev,
+				"failed to find regmap for sim\n");
+			return PTR_ERR(mxs_phy->regmap_sim);
+		}
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Precompute which bits of the TX register are to be updated, if any */
 	if (!of_property_read_u32(np, "fsl,tx-cal-45-dn-ohms", &val) &&
 	    val >= MXS_PHY_TX_CAL45_MIN && val <= MXS_PHY_TX_CAL45_MAX) {
@@ -789,6 +907,20 @@ static int mxs_phy_probe(struct platform_device *pdev)
 	mxs_phy->clk = clk;
 	mxs_phy->data = of_device_get_match_data(&pdev->dev);
 
+<<<<<<< HEAD
+=======
+	mxs_phy->phy_3p0 = devm_regulator_get(&pdev->dev, "phy-3p0");
+	if (PTR_ERR(mxs_phy->phy_3p0) == -ENODEV)
+		/* not exist */
+		mxs_phy->phy_3p0 = NULL;
+	else if (IS_ERR(mxs_phy->phy_3p0))
+		return dev_err_probe(&pdev->dev, PTR_ERR(mxs_phy->phy_3p0),
+				"Getting regulator error\n");
+
+	if (mxs_phy->phy_3p0)
+		regulator_set_voltage(mxs_phy->phy_3p0, 3200000, 3200000);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	platform_set_drvdata(pdev, mxs_phy);
 
 	device_set_wakeup_capable(&pdev->dev, true);
@@ -804,28 +936,78 @@ static void mxs_phy_remove(struct platform_device *pdev)
 }
 
 #ifdef CONFIG_PM_SLEEP
+<<<<<<< HEAD
 static void mxs_phy_enable_ldo_in_suspend(struct mxs_phy *mxs_phy, bool on)
 {
 	unsigned int reg = on ? ANADIG_ANA_MISC0_SET : ANADIG_ANA_MISC0_CLR;
+=======
+static void mxs_phy_wakeup_enable(struct mxs_phy *mxs_phy, bool on)
+{
+	u32 mask = USB_PHY_VLLS_WAKEUP_EN;
+
+	/* If the SoCs don't have SIM, quit */
+	if (!mxs_phy->regmap_sim)
+		return;
+
+	if (on) {
+		regmap_update_bits(mxs_phy->regmap_sim, SIM_GPR1, mask, mask);
+		udelay(500);
+	} else {
+		regmap_update_bits(mxs_phy->regmap_sim, SIM_GPR1, mask, 0);
+	}
+}
+
+static void mxs_phy_enable_ldo_in_suspend(struct mxs_phy *mxs_phy, bool on)
+{
+	unsigned int reg;
+	u32 value;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* If the SoCs don't have anatop, quit */
 	if (!mxs_phy->regmap_anatop)
 		return;
 
+<<<<<<< HEAD
 	if (is_imx6q_phy(mxs_phy))
 		regmap_write(mxs_phy->regmap_anatop, reg,
 			BM_ANADIG_ANA_MISC0_STOP_MODE_CONFIG);
 	else if (is_imx6sl_phy(mxs_phy))
 		regmap_write(mxs_phy->regmap_anatop,
 			reg, BM_ANADIG_ANA_MISC0_STOP_MODE_CONFIG_SL);
+=======
+	if (is_imx6q_phy(mxs_phy)) {
+		reg = on ? ANADIG_ANA_MISC0_SET : ANADIG_ANA_MISC0_CLR;
+		regmap_write(mxs_phy->regmap_anatop, reg,
+			BM_ANADIG_ANA_MISC0_STOP_MODE_CONFIG);
+	} else if (is_imx6sl_phy(mxs_phy)) {
+		reg = on ? ANADIG_ANA_MISC0_SET : ANADIG_ANA_MISC0_CLR;
+		regmap_write(mxs_phy->regmap_anatop,
+			reg, BM_ANADIG_ANA_MISC0_STOP_MODE_CONFIG_SL);
+	} else if (is_imx6ul_phy(mxs_phy)) {
+		reg = on ? ANADIG_REG_1P1_SET : ANADIG_REG_1P1_CLR;
+		value = BM_ANADIG_REG_1P1_ENABLE_WEAK_LINREG |
+			BM_ANADIG_REG_1P1_TRACK_VDD_SOC_CAP;
+		if (mxs_phy_get_vbus_status(mxs_phy) && on)
+			regmap_write(mxs_phy->regmap_anatop, reg, value);
+		else if (!on)
+			regmap_write(mxs_phy->regmap_anatop, reg, value);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int mxs_phy_system_suspend(struct device *dev)
 {
 	struct mxs_phy *mxs_phy = dev_get_drvdata(dev);
 
+<<<<<<< HEAD
 	if (device_may_wakeup(dev))
 		mxs_phy_enable_ldo_in_suspend(mxs_phy, true);
+=======
+	if (device_may_wakeup(dev)) {
+		mxs_phy_enable_ldo_in_suspend(mxs_phy, true);
+		mxs_phy_wakeup_enable(mxs_phy, true);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -834,8 +1016,15 @@ static int mxs_phy_system_resume(struct device *dev)
 {
 	struct mxs_phy *mxs_phy = dev_get_drvdata(dev);
 
+<<<<<<< HEAD
 	if (device_may_wakeup(dev))
 		mxs_phy_enable_ldo_in_suspend(mxs_phy, false);
+=======
+	if (device_may_wakeup(dev)) {
+		mxs_phy_enable_ldo_in_suspend(mxs_phy, false);
+		mxs_phy_wakeup_enable(mxs_phy, false);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

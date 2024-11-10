@@ -440,7 +440,11 @@ void intel_cpu_fifo_underrun_irq_handler(struct drm_i915_private *dev_priv,
 			drm_err(&dev_priv->drm, "CPU pipe %c FIFO underrun\n", pipe_name(pipe));
 	}
 
+<<<<<<< HEAD
 	intel_fbc_handle_fifo_underrun_irq(dev_priv);
+=======
+	intel_fbc_handle_fifo_underrun_irq(&dev_priv->display);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**

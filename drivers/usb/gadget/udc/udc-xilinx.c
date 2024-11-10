@@ -947,7 +947,11 @@ static int xudc_ep_disable(struct usb_ep *_ep)
 	ep->desc = NULL;
 	ep->ep_usb.desc = NULL;
 
+<<<<<<< HEAD
 	dev_dbg(udc->dev, "USB Ep %d disable\n ", ep->epnumber);
+=======
+	dev_dbg(udc->dev, "USB Ep %d disable\n", ep->epnumber);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Disable the endpoint.*/
 	epcfg = udc->read_fn(udc->addr + ep->offset);
 	epcfg &= ~XUSB_EP_CFG_VALID_MASK;

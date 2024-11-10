@@ -3449,7 +3449,11 @@ out:
 static int intel_pt_process_event(struct perf_session *session,
 				  union perf_event *event,
 				  struct perf_sample *sample,
+<<<<<<< HEAD
 				  struct perf_tool *tool)
+=======
+				  const struct perf_tool *tool)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct intel_pt *pt = container_of(session->auxtrace, struct intel_pt,
 					   auxtrace);
@@ -3533,7 +3537,11 @@ static int intel_pt_process_event(struct perf_session *session,
 	return err;
 }
 
+<<<<<<< HEAD
 static int intel_pt_flush(struct perf_session *session, struct perf_tool *tool)
+=======
+static int intel_pt_flush(struct perf_session *session, const struct perf_tool *tool)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct intel_pt *pt = container_of(session->auxtrace, struct intel_pt,
 					   auxtrace);
@@ -3600,7 +3608,11 @@ static bool intel_pt_evsel_is_auxtrace(struct perf_session *session,
 
 static int intel_pt_process_auxtrace_event(struct perf_session *session,
 					   union perf_event *event,
+<<<<<<< HEAD
 					   struct perf_tool *tool __maybe_unused)
+=======
+					   const struct perf_tool *tool __maybe_unused)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct intel_pt *pt = container_of(session->auxtrace, struct intel_pt,
 					   auxtrace);
@@ -3659,6 +3671,7 @@ static int intel_pt_queue_data(struct perf_session *session,
 					   data_offset, timestamp);
 }
 
+<<<<<<< HEAD
 struct intel_pt_synth {
 	struct perf_tool dummy_tool;
 	struct perf_session *session;
@@ -3680,16 +3693,25 @@ static int intel_pt_synth_event(struct perf_session *session, const char *name,
 				struct perf_event_attr *attr, u64 id)
 {
 	struct intel_pt_synth intel_pt_synth;
+=======
+static int intel_pt_synth_event(struct perf_session *session, const char *name,
+				struct perf_event_attr *attr, u64 id)
+{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 
 	pr_debug("Synthesizing '%s' event with id %" PRIu64 " sample type %#" PRIx64 "\n",
 		 name, id, (u64)attr->sample_type);
 
+<<<<<<< HEAD
 	memset(&intel_pt_synth, 0, sizeof(struct intel_pt_synth));
 	intel_pt_synth.session = session;
 
 	err = perf_event__synthesize_attr(&intel_pt_synth.dummy_tool, attr, 1,
 					  &id, intel_pt_event_synth);
+=======
+	err = perf_session__deliver_synth_attr_event(session, attr, id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err)
 		pr_err("%s: failed to synthesize '%s' event type\n",
 		       __func__, name);

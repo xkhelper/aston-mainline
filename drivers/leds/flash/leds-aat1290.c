@@ -7,6 +7,10 @@
  *	Author: Jacek Anaszewski <j.anaszewski@samsung.com>
  */
 
+<<<<<<< HEAD
+=======
+#include <linux/cleanup.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/delay.h>
 #include <linux/gpio/consumer.h>
 #include <linux/led-class-flash.h>
@@ -215,7 +219,10 @@ static int aat1290_led_parse_dt(struct aat1290_led *led,
 			struct device_node **sub_node)
 {
 	struct device *dev = &led->pdev->dev;
+<<<<<<< HEAD
 	struct device_node *child_node;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if IS_ENABLED(CONFIG_V4L2_FLASH_LED_CLASS)
 	struct pinctrl *pinctrl;
 #endif
@@ -246,7 +253,12 @@ static int aat1290_led_parse_dt(struct aat1290_led *led,
 	}
 #endif
 
+<<<<<<< HEAD
 	child_node = of_get_next_available_child(dev_of_node(dev), NULL);
+=======
+	struct device_node *child_node __free(device_node) =
+		of_get_next_available_child(dev_of_node(dev), NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!child_node) {
 		dev_err(dev, "No DT child node found for connected LED.\n");
 		return -EINVAL;
@@ -267,7 +279,11 @@ static int aat1290_led_parse_dt(struct aat1290_led *led,
 	if (ret < 0) {
 		dev_err(dev,
 			"flash-max-microamp DT property missing\n");
+<<<<<<< HEAD
 		goto err_parse_dt;
+=======
+		return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	ret = of_property_read_u32(child_node, "flash-max-timeout-us",
@@ -275,15 +291,23 @@ static int aat1290_led_parse_dt(struct aat1290_led *led,
 	if (ret < 0) {
 		dev_err(dev,
 			"flash-max-timeout-us DT property missing\n");
+<<<<<<< HEAD
 		goto err_parse_dt;
+=======
+		return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	*sub_node = child_node;
 
+<<<<<<< HEAD
 err_parse_dt:
 	of_node_put(child_node);
 
 	return ret;
+=======
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void aat1290_led_validate_mm_current(struct aat1290_led *led,

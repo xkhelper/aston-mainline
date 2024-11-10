@@ -678,8 +678,13 @@ static int cdns_spi_probe(struct platform_device *pdev)
 
 clk_dis_all:
 	if (!spi_controller_is_target(ctlr)) {
+<<<<<<< HEAD
 		pm_runtime_set_suspended(&pdev->dev);
 		pm_runtime_disable(&pdev->dev);
+=======
+		pm_runtime_disable(&pdev->dev);
+		pm_runtime_set_suspended(&pdev->dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 remove_ctlr:
 	spi_controller_put(ctlr);
@@ -701,8 +706,15 @@ static void cdns_spi_remove(struct platform_device *pdev)
 
 	cdns_spi_write(xspi, CDNS_SPI_ER, CDNS_SPI_ER_DISABLE);
 
+<<<<<<< HEAD
 	pm_runtime_set_suspended(&pdev->dev);
 	pm_runtime_disable(&pdev->dev);
+=======
+	if (!spi_controller_is_target(ctlr)) {
+		pm_runtime_disable(&pdev->dev);
+		pm_runtime_set_suspended(&pdev->dev);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	spi_unregister_controller(ctlr);
 }

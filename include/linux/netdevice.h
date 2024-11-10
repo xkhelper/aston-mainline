@@ -40,7 +40,10 @@
 #include <net/dcbnl.h>
 #endif
 #include <net/netprio_cgroup.h>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/netdev_features.h>
 #include <linux/neighbour.h>
 #include <linux/netdevice_xmit.h>
@@ -81,6 +84,10 @@ struct xdp_frame;
 struct xdp_metadata_ops;
 struct xdp_md;
 struct ethtool_netdev_state;
+<<<<<<< HEAD
+=======
+struct phy_link_topology;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 typedef u32 xdp_features_t;
 
@@ -356,7 +363,11 @@ struct napi_struct {
 
 	unsigned long		state;
 	int			weight;
+<<<<<<< HEAD
 	int			defer_hard_irqs_count;
+=======
+	u32			defer_hard_irqs_count;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long		gro_bitmask;
 	int			(*poll)(struct napi_struct *, int);
 #ifdef CONFIG_NETPOLL
@@ -645,9 +656,12 @@ struct netdev_queue {
 #ifdef CONFIG_SYSFS
 	struct kobject		kobj;
 #endif
+<<<<<<< HEAD
 #if defined(CONFIG_XPS) && defined(CONFIG_NUMA)
 	int			numa_node;
 #endif
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long		tx_maxrate;
 	/*
 	 * Number of TX timeouts for this queue
@@ -660,6 +674,7 @@ struct netdev_queue {
 #ifdef CONFIG_XDP_SOCKETS
 	struct xsk_buff_pool    *pool;
 #endif
+<<<<<<< HEAD
 	/* NAPI instance for the queue
 	 * Readers and writers must hold RTNL
 	 */
@@ -667,6 +682,15 @@ struct netdev_queue {
 /*
  * write-mostly part
  */
+=======
+
+/*
+ * write-mostly part
+ */
+#ifdef CONFIG_BQL
+	struct dql		dql;
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spinlock_t		_xmit_lock ____cacheline_aligned_in_smp;
 	int			xmit_lock_owner;
 	/*
@@ -676,8 +700,21 @@ struct netdev_queue {
 
 	unsigned long		state;
 
+<<<<<<< HEAD
 #ifdef CONFIG_BQL
 	struct dql		dql;
+=======
+/*
+ * slow- / control-path part
+ */
+	/* NAPI instance for the queue
+	 * Readers and writers must hold RTNL
+	 */
+	struct napi_struct	*napi;
+
+#if defined(CONFIG_XPS) && defined(CONFIG_NUMA)
+	int			numa_node;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 } ____cacheline_aligned_in_smp;
 
@@ -1232,7 +1269,11 @@ struct netdev_net_notifier {
  * int (*ndo_fdb_del)(struct ndmsg *ndm, struct nlattr *tb[],
  *		      struct net_device *dev,
  *		      const unsigned char *addr, u16 vid)
+<<<<<<< HEAD
  *	Deletes the FDB entry from dev coresponding to addr.
+=======
+ *	Deletes the FDB entry from dev corresponding to addr.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * int (*ndo_fdb_del_bulk)(struct nlmsghdr *nlh, struct net_device *dev,
  *			   struct netlink_ext_ack *extack);
  * int (*ndo_fdb_dump)(struct sk_buff *skb, struct netlink_callback *cb,
@@ -1608,7 +1649,12 @@ struct net_device_ops {
  * userspace; this means that the order of these flags can change
  * during any kernel release.
  *
+<<<<<<< HEAD
  * You should have a pretty good reason to be extending these flags.
+=======
+ * You should add bitfield booleans after either net_device::priv_flags
+ * (hotpath) or ::threaded (slowpath) instead of extending these flags.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * @IFF_802_1Q_VLAN: 802.1Q VLAN device
  * @IFF_EBRIDGE: Ethernet bridging device
@@ -1647,10 +1693,13 @@ struct net_device_ops {
  * @IFF_NO_ADDRCONF: prevent ipv6 addrconf
  * @IFF_TX_SKB_NO_LINEAR: device/driver is capable of xmitting frames with
  *	skb_headlen(skb) == 0 (data starts from frag0)
+<<<<<<< HEAD
  * @IFF_CHANGE_PROTO_DOWN: device supports setting carrier via IFLA_PROTO_DOWN
  * @IFF_SEE_ALL_HWTSTAMP_REQUESTS: device wants to see calls to
  *	ndo_hwtstamp_set() for all timestamp requests regardless of source,
  *	even if those aren't HWTSTAMP_SOURCE_NETDEV.
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 enum netdev_priv_flags {
 	IFF_802_1Q_VLAN			= 1<<0,
@@ -1685,6 +1734,7 @@ enum netdev_priv_flags {
 	IFF_L3MDEV_RX_HANDLER		= 1<<29,
 	IFF_NO_ADDRCONF			= BIT_ULL(30),
 	IFF_TX_SKB_NO_LINEAR		= BIT_ULL(31),
+<<<<<<< HEAD
 	IFF_CHANGE_PROTO_DOWN		= BIT_ULL(32),
 	IFF_SEE_ALL_HWTSTAMP_REQUESTS	= BIT_ULL(33),
 };
@@ -1721,6 +1771,10 @@ enum netdev_priv_flags {
 #define IFF_L3MDEV_RX_HANDLER		IFF_L3MDEV_RX_HANDLER
 #define IFF_TX_SKB_NO_LINEAR		IFF_TX_SKB_NO_LINEAR
 
+=======
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Specifies the type of the struct net_device::ml_priv pointer */
 enum netdev_ml_priv_type {
 	ML_PRIV_NONE,
@@ -1750,6 +1804,15 @@ enum netdev_reg_state {
  *	data with strictly "high-level" data, and it has to know about
  *	almost every data structure used in the INET module.
  *
+<<<<<<< HEAD
+=======
+ *	@priv_flags:	flags invisible to userspace defined as bits, see
+ *			enum netdev_priv_flags for the definitions
+ *	@lltx:		device supports lockless Tx. Deprecated for real HW
+ *			drivers. Mainly used by logical interfaces, such as
+ *			bonding and tunnels
+ *
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *	@name:	This is the first field of the "visible" part of this structure
  *		(i.e. as seen by users in the "Space.c" file).  It is the name
  *		of the interface.
@@ -1816,8 +1879,11 @@ enum netdev_reg_state {
  *
  *	@flags:		Interface flags (a la BSD)
  *	@xdp_features:	XDP capability supported by the device
+<<<<<<< HEAD
  *	@priv_flags:	Like 'flags' but invisible to userspace,
  *			see if.h for the definitions
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *	@gflags:	Global flags ( kept as legacy )
  *	@priv_len:	Size of the ->priv flexible array
  *	@priv:		Flexible array containing private data
@@ -1978,6 +2044,10 @@ enum netdev_reg_state {
  *	@fcoe_ddp_xid:	Max exchange id for FCoE LRO by ddp
  *
  *	@priomap:	XXX: need comments on this one
+<<<<<<< HEAD
+=======
+ *	@link_topo:	Physical link topology tracking attached PHYs
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *	@phydev:	Physical device may attach itself
  *			for hardware timestamping
  *	@sfp_bus:	attached &struct sfp_bus structure.
@@ -1990,6 +2060,17 @@ enum netdev_reg_state {
  *
  *	@threaded:	napi threaded mode is enabled
  *
+<<<<<<< HEAD
+=======
+ *	@see_all_hwtstamp_requests: device wants to see calls to
+ *			ndo_hwtstamp_set() for all timestamp requests
+ *			regardless of source, even if those aren't
+ *			HWTSTAMP_SOURCE_NETDEV
+ *	@change_proto_down: device supports setting carrier via IFLA_PROTO_DOWN
+ *	@netns_local: interface can't change network namespaces
+ *	@fcoe_mtu:	device supports maximum FCoE MTU, 2158 bytes
+ *
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *	@net_notifier_list:	List of per-net netdev notifier block
  *				that follow this device when it is moved
  *				to another network namespace.
@@ -2040,7 +2121,14 @@ struct net_device {
 
 	/* TX read-mostly hotpath */
 	__cacheline_group_begin(net_device_read_tx);
+<<<<<<< HEAD
 	unsigned long long	priv_flags;
+=======
+	struct_group(priv_flags_fast,
+		unsigned long		priv_flags:32;
+		unsigned long		lltx:1;
+	);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct net_device_ops *netdev_ops;
 	const struct header_ops *header_ops;
 	struct netdev_queue	*_tx;
@@ -2091,7 +2179,11 @@ struct net_device {
 	unsigned int		real_num_rx_queues;
 	struct netdev_rx_queue	*_rx;
 	unsigned long		gro_flush_timeout;
+<<<<<<< HEAD
 	int			napi_defer_hard_irqs;
+=======
+	u32			napi_defer_hard_irqs;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int		gro_max_size;
 	unsigned int		gro_ipv4_max_size;
 	rx_handler_func_t __rcu	*rx_handler;
@@ -2369,12 +2461,25 @@ struct net_device {
 #if IS_ENABLED(CONFIG_CGROUP_NET_PRIO)
 	struct netprio_map __rcu *priomap;
 #endif
+<<<<<<< HEAD
+=======
+	struct phy_link_topology	*link_topo;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct phy_device	*phydev;
 	struct sfp_bus		*sfp_bus;
 	struct lock_class_key	*qdisc_tx_busylock;
 	bool			proto_down;
 	bool			threaded;
 
+<<<<<<< HEAD
+=======
+	/* priv_flags_slow, ungrouped to save space */
+	unsigned long		see_all_hwtstamp_requests:1;
+	unsigned long		change_proto_down:1;
+	unsigned long		netns_local:1;
+	unsigned long		fcoe_mtu:1;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct list_head	net_notifier_list;
 
 #if IS_ENABLED(CONFIG_MACSEC)
@@ -3094,8 +3199,11 @@ void dev_disable_lro(struct net_device *dev);
 int dev_loopback_xmit(struct net *net, struct sock *sk, struct sk_buff *newskb);
 u16 dev_pick_tx_zero(struct net_device *dev, struct sk_buff *skb,
 		     struct net_device *sb_dev);
+<<<<<<< HEAD
 u16 dev_pick_tx_cpu_id(struct net_device *dev, struct sk_buff *skb,
 		       struct net_device *sb_dev);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int __dev_queue_xmit(struct sk_buff *skb, struct net_device *sb_dev);
 int __dev_direct_xmit(struct sk_buff *skb, u16 queue_id);
@@ -3336,6 +3444,15 @@ static inline void netif_tx_wake_all_queues(struct net_device *dev)
 
 static __always_inline void netif_tx_stop_queue(struct netdev_queue *dev_queue)
 {
+<<<<<<< HEAD
+=======
+	/* Paired with READ_ONCE() from dev_watchdog() */
+	WRITE_ONCE(dev_queue->trans_start, jiffies);
+
+	/* This barrier is paired with smp_mb() from dev_watchdog() */
+	smp_mb__before_atomic();
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Must be an atomic op see netif_txq_try_stop() */
 	set_bit(__QUEUE_STATE_DRV_XOFF, &dev_queue->state);
 }
@@ -3462,6 +3579,15 @@ static inline void netdev_tx_sent_queue(struct netdev_queue *dev_queue,
 	if (likely(dql_avail(&dev_queue->dql) >= 0))
 		return;
 
+<<<<<<< HEAD
+=======
+	/* Paired with READ_ONCE() from dev_watchdog() */
+	WRITE_ONCE(dev_queue->trans_start, jiffies);
+
+	/* This barrier is paired with smp_mb() from dev_watchdog() */
+	smp_mb__before_atomic();
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	set_bit(__QUEUE_STATE_STACK_XOFF, &dev_queue->state);
 
 	/*
@@ -3539,7 +3665,11 @@ static inline void netdev_tx_completed_queue(struct netdev_queue *dev_queue,
 	dql_completed(&dev_queue->dql, bytes);
 
 	/*
+<<<<<<< HEAD
 	 * Without the memory barrier there is a small possiblity that
+=======
+	 * Without the memory barrier there is a small possibility that
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * netdev_tx_sent_queue will miss the update and cause the queue to
 	 * be stopped forever
 	 */
@@ -3578,6 +3708,20 @@ static inline void netdev_tx_reset_queue(struct netdev_queue *q)
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * netdev_tx_reset_subqueue - reset the BQL stats and state of a netdev queue
+ * @dev: network device
+ * @qid: stack index of the queue to reset
+ */
+static inline void netdev_tx_reset_subqueue(const struct net_device *dev,
+					    u32 qid)
+{
+	netdev_tx_reset_queue(netdev_get_tx_queue(dev, qid));
+}
+
+/**
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * 	netdev_reset_queue - reset the packets and bytes count of a network device
  * 	@dev_queue: network device
  *
@@ -3586,7 +3730,11 @@ static inline void netdev_tx_reset_queue(struct netdev_queue *q)
  */
 static inline void netdev_reset_queue(struct net_device *dev_queue)
 {
+<<<<<<< HEAD
 	netdev_tx_reset_queue(netdev_get_tx_queue(dev_queue, 0));
+=======
+	netdev_tx_reset_subqueue(dev_queue, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -3950,8 +4098,16 @@ struct sk_buff *dev_hard_start_xmit(struct sk_buff *skb, struct net_device *dev,
 
 int bpf_xdp_link_attach(const union bpf_attr *attr, struct bpf_prog *prog);
 u8 dev_xdp_prog_count(struct net_device *dev);
+<<<<<<< HEAD
 u32 dev_xdp_prog_id(struct net_device *dev, enum bpf_xdp_mode mode);
 
+=======
+int dev_xdp_propagate(struct net_device *dev, struct netdev_bpf *bpf);
+u32 dev_xdp_prog_id(struct net_device *dev, enum bpf_xdp_mode mode);
+
+u32 dev_get_min_mp_channel_count(const struct net_device *dev);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int __dev_forward_skb(struct net_device *dev, struct sk_buff *skb);
 int dev_forward_skb(struct net_device *dev, struct sk_buff *skb);
 int dev_forward_skb_nomtu(struct net_device *dev, struct sk_buff *skb);
@@ -4449,7 +4605,11 @@ static inline void netif_tx_unlock_bh(struct net_device *dev)
 }
 
 #define HARD_TX_LOCK(dev, txq, cpu) {			\
+<<<<<<< HEAD
 	if ((dev->features & NETIF_F_LLTX) == 0) {	\
+=======
+	if (!(dev)->lltx) {				\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__netif_tx_lock(txq, cpu);		\
 	} else {					\
 		__netif_tx_acquire(txq);		\
@@ -4457,12 +4617,20 @@ static inline void netif_tx_unlock_bh(struct net_device *dev)
 }
 
 #define HARD_TX_TRYLOCK(dev, txq)			\
+<<<<<<< HEAD
 	(((dev->features & NETIF_F_LLTX) == 0) ?	\
+=======
+	(!(dev)->lltx ?					\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__netif_tx_trylock(txq) :		\
 		__netif_tx_acquire(txq))
 
 #define HARD_TX_UNLOCK(dev, txq) {			\
+<<<<<<< HEAD
 	if ((dev->features & NETIF_F_LLTX) == 0) {	\
+=======
+	if (!(dev)->lltx) {				\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__netif_tx_unlock(txq);			\
 	} else {					\
 		__netif_tx_release(txq);		\
@@ -4607,7 +4775,11 @@ void dev_uc_flush(struct net_device *dev);
 void dev_uc_init(struct net_device *dev);
 
 /**
+<<<<<<< HEAD
  *  __dev_uc_sync - Synchonize device's unicast list
+=======
+ *  __dev_uc_sync - Synchronize device's unicast list
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *  @dev:  device to sync
  *  @sync: function to call if address should be added
  *  @unsync: function to call if address should be removed
@@ -4651,7 +4823,11 @@ void dev_mc_flush(struct net_device *dev);
 void dev_mc_init(struct net_device *dev);
 
 /**
+<<<<<<< HEAD
  *  __dev_mc_sync - Synchonize device's multicast list
+=======
+ *  __dev_mc_sync - Synchronize device's multicast list
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *  @dev:  device to sync
  *  @sync: function to call if address should be added
  *  @unsync: function to call if address should be removed
@@ -5026,6 +5202,27 @@ void netif_set_tso_max_segs(struct net_device *dev, unsigned int segs);
 void netif_inherit_tso_max(struct net_device *to,
 			   const struct net_device *from);
 
+<<<<<<< HEAD
+=======
+static inline unsigned int
+netif_get_gro_max_size(const struct net_device *dev, const struct sk_buff *skb)
+{
+	/* pairs with WRITE_ONCE() in netif_set_gro(_ipv4)_max_size() */
+	return skb->protocol == htons(ETH_P_IPV6) ?
+	       READ_ONCE(dev->gro_max_size) :
+	       READ_ONCE(dev->gro_ipv4_max_size);
+}
+
+static inline unsigned int
+netif_get_gso_max_size(const struct net_device *dev, const struct sk_buff *skb)
+{
+	/* pairs with WRITE_ONCE() in netif_set_gso(_ipv4)_max_size() */
+	return skb->protocol == htons(ETH_P_IPV6) ?
+	       READ_ONCE(dev->gso_max_size) :
+	       READ_ONCE(dev->gso_ipv4_max_size);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline bool netif_is_macsec(const struct net_device *dev)
 {
 	return dev->priv_flags & IFF_MACSEC;

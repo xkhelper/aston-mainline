@@ -23,6 +23,10 @@
 		serial3 = &uart3;
 		serial4 = &uart4;
 		serial5 = &uart5;
+<<<<<<< HEAD
+=======
+		spi0 = &spi0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	chosen {
@@ -44,6 +48,7 @@
 	clock-frequency = <32768>;
 };
 
+<<<<<<< HEAD
 &apb_clk {
 	clock-frequency = <62500000>;
 };
@@ -56,6 +61,8 @@
 	clock-frequency = <100000000>;
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &dmac0 {
 	status = "okay";
 };
@@ -79,3 +86,10 @@
 &uart0 {
 	status = "okay";
 };
+<<<<<<< HEAD
+=======
+
+&spi0 {
+	status = "okay";
+};
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

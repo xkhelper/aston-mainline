@@ -286,7 +286,10 @@ static void fsl_rpmsg_remove(struct platform_device *pdev)
 		platform_device_unregister(rpmsg->card_pdev);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int fsl_rpmsg_runtime_resume(struct device *dev)
 {
 	struct fsl_rpmsg *rpmsg = dev_get_drvdata(dev);
@@ -321,20 +324,34 @@ static int fsl_rpmsg_runtime_suspend(struct device *dev)
 
 	return 0;
 }
+<<<<<<< HEAD
 #endif
 
 static const struct dev_pm_ops fsl_rpmsg_pm_ops = {
 	SET_RUNTIME_PM_OPS(fsl_rpmsg_runtime_suspend,
 			   fsl_rpmsg_runtime_resume,
 			   NULL)
+=======
+
+static const struct dev_pm_ops fsl_rpmsg_pm_ops = {
+	RUNTIME_PM_OPS(fsl_rpmsg_runtime_suspend, fsl_rpmsg_runtime_resume,
+		       NULL)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct platform_driver fsl_rpmsg_driver = {
 	.probe  = fsl_rpmsg_probe,
+<<<<<<< HEAD
 	.remove_new = fsl_rpmsg_remove,
 	.driver = {
 		.name = "fsl_rpmsg",
 		.pm = &fsl_rpmsg_pm_ops,
+=======
+	.remove = fsl_rpmsg_remove,
+	.driver = {
+		.name = "fsl_rpmsg",
+		.pm = pm_ptr(&fsl_rpmsg_pm_ops),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.of_match_table = fsl_rpmsg_ids,
 	},
 };

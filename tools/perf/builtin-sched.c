@@ -51,6 +51,10 @@
 #define COMM_LEN		20
 #define SYM_LEN			129
 #define MAX_PID			1024000
+<<<<<<< HEAD
+=======
+#define MAX_PRIO		140
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const char *cpu_list;
 static DECLARE_BITMAP(cpu_bitmap, MAX_NR_CPUS);
@@ -228,11 +232,20 @@ struct perf_sched {
 	bool		show_next;
 	bool		show_migrations;
 	bool		show_state;
+<<<<<<< HEAD
+=======
+	bool		show_prio;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64		skipped_samples;
 	const char	*time_str;
 	struct perf_time_interval ptime;
 	struct perf_time_interval hist_time;
 	volatile bool   thread_funcs_exit;
+<<<<<<< HEAD
+=======
+	const char	*prio_str;
+	DECLARE_BITMAP(prio_bitmap, MAX_PRIO);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* per thread run time data */
@@ -258,6 +271,11 @@ struct thread_runtime {
 	bool comm_changed;
 
 	u64 migrations;
+<<<<<<< HEAD
+=======
+
+	int prio;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* per event run time data */
@@ -920,6 +938,14 @@ struct sort_dimension {
 	struct list_head	list;
 };
 
+<<<<<<< HEAD
+=======
+static inline void init_prio(struct thread_runtime *r)
+{
+	r->prio = -1;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * handle runtime stats saved per thread
  */
@@ -932,6 +958,10 @@ static struct thread_runtime *thread__init_runtime(struct thread *thread)
 		return NULL;
 
 	init_stats(&r->run_stats);
+<<<<<<< HEAD
+=======
+	init_prio(r);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	thread__set_priv(thread, r);
 
 	return r;
@@ -1489,7 +1519,11 @@ again:
 	}
 }
 
+<<<<<<< HEAD
 static int process_sched_wakeup_event(struct perf_tool *tool,
+=======
+static int process_sched_wakeup_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      struct evsel *evsel,
 				      struct perf_sample *sample,
 				      struct machine *machine)
@@ -1502,7 +1536,11 @@ static int process_sched_wakeup_event(struct perf_tool *tool,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int process_sched_wakeup_ignore(struct perf_tool *tool __maybe_unused,
+=======
+static int process_sched_wakeup_ignore(const struct perf_tool *tool __maybe_unused,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      struct evsel *evsel __maybe_unused,
 				      struct perf_sample *sample __maybe_unused,
 				      struct machine *machine __maybe_unused)
@@ -1770,7 +1808,11 @@ out:
 	return 0;
 }
 
+<<<<<<< HEAD
 static int process_sched_switch_event(struct perf_tool *tool,
+=======
+static int process_sched_switch_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      struct evsel *evsel,
 				      struct perf_sample *sample,
 				      struct machine *machine)
@@ -1796,7 +1838,11 @@ static int process_sched_switch_event(struct perf_tool *tool,
 	return err;
 }
 
+<<<<<<< HEAD
 static int process_sched_runtime_event(struct perf_tool *tool,
+=======
+static int process_sched_runtime_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       struct evsel *evsel,
 				       struct perf_sample *sample,
 				       struct machine *machine)
@@ -1809,7 +1855,11 @@ static int process_sched_runtime_event(struct perf_tool *tool,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int perf_sched__process_fork_event(struct perf_tool *tool,
+=======
+static int perf_sched__process_fork_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					  union perf_event *event,
 					  struct perf_sample *sample,
 					  struct machine *machine)
@@ -1826,7 +1876,11 @@ static int perf_sched__process_fork_event(struct perf_tool *tool,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int process_sched_migrate_task_event(struct perf_tool *tool,
+=======
+static int process_sched_migrate_task_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					    struct evsel *evsel,
 					    struct perf_sample *sample,
 					    struct machine *machine)
@@ -1839,12 +1893,20 @@ static int process_sched_migrate_task_event(struct perf_tool *tool,
 	return 0;
 }
 
+<<<<<<< HEAD
 typedef int (*tracepoint_handler)(struct perf_tool *tool,
+=======
+typedef int (*tracepoint_handler)(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				  struct evsel *evsel,
 				  struct perf_sample *sample,
 				  struct machine *machine);
 
+<<<<<<< HEAD
 static int perf_sched__process_tracepoint_sample(struct perf_tool *tool __maybe_unused,
+=======
+static int perf_sched__process_tracepoint_sample(const struct perf_tool *tool __maybe_unused,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						 union perf_event *event __maybe_unused,
 						 struct perf_sample *sample,
 						 struct evsel *evsel,
@@ -1860,7 +1922,11 @@ static int perf_sched__process_tracepoint_sample(struct perf_tool *tool __maybe_
 	return err;
 }
 
+<<<<<<< HEAD
 static int perf_sched__process_comm(struct perf_tool *tool __maybe_unused,
+=======
+static int perf_sched__process_comm(const struct perf_tool *tool __maybe_unused,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    union perf_event *event,
 				    struct perf_sample *sample,
 				    struct machine *machine)
@@ -2036,6 +2102,27 @@ static char *timehist_get_commstr(struct thread *thread)
 	return str;
 }
 
+<<<<<<< HEAD
+=======
+/* prio field format: xxx or xxx->yyy */
+#define MAX_PRIO_STR_LEN 8
+static char *timehist_get_priostr(struct evsel *evsel,
+				  struct thread *thread,
+				  struct perf_sample *sample)
+{
+	static char prio_str[16];
+	int prev_prio = (int)evsel__intval(evsel, sample, "prev_prio");
+	struct thread_runtime *tr = thread__priv(thread);
+
+	if (tr->prio != prev_prio && tr->prio != -1)
+		scnprintf(prio_str, sizeof(prio_str), "%d->%d", tr->prio, prev_prio);
+	else
+		scnprintf(prio_str, sizeof(prio_str), "%d", prev_prio);
+
+	return prio_str;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void timehist_header(struct perf_sched *sched)
 {
 	u32 ncpus = sched->max_cpu.cpu + 1;
@@ -2053,8 +2140,19 @@ static void timehist_header(struct perf_sched *sched)
 		printf(" ");
 	}
 
+<<<<<<< HEAD
 	printf(" %-*s  %9s  %9s  %9s", comm_width,
 		"task name", "wait time", "sch delay", "run time");
+=======
+	if (sched->show_prio) {
+		printf(" %-*s  %-*s  %9s  %9s  %9s",
+		       comm_width, "task name", MAX_PRIO_STR_LEN, "prio",
+		       "wait time", "sch delay", "run time");
+	} else {
+		printf(" %-*s  %9s  %9s  %9s", comm_width,
+		       "task name", "wait time", "sch delay", "run time");
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (sched->show_state)
 		printf("  %s", "state");
@@ -2069,8 +2167,19 @@ static void timehist_header(struct perf_sched *sched)
 	if (sched->show_cpu_visual)
 		printf(" %*s ", ncpus, "");
 
+<<<<<<< HEAD
 	printf(" %-*s  %9s  %9s  %9s", comm_width,
 	       "[tid/pid]", "(msec)", "(msec)", "(msec)");
+=======
+	if (sched->show_prio) {
+		printf(" %-*s  %-*s  %9s  %9s  %9s",
+		       comm_width, "[tid/pid]", MAX_PRIO_STR_LEN, "",
+		       "(msec)", "(msec)", "(msec)");
+	} else {
+		printf(" %-*s  %9s  %9s  %9s", comm_width,
+		       "[tid/pid]", "(msec)", "(msec)", "(msec)");
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (sched->show_state)
 		printf("  %5s", "");
@@ -2085,9 +2194,21 @@ static void timehist_header(struct perf_sched *sched)
 	if (sched->show_cpu_visual)
 		printf(" %.*s ", ncpus, graph_dotted_line);
 
+<<<<<<< HEAD
 	printf(" %.*s  %.9s  %.9s  %.9s", comm_width,
 		graph_dotted_line, graph_dotted_line, graph_dotted_line,
 		graph_dotted_line);
+=======
+	if (sched->show_prio) {
+		printf(" %.*s  %.*s  %.9s  %.9s  %.9s",
+		       comm_width, graph_dotted_line, MAX_PRIO_STR_LEN, graph_dotted_line,
+		       graph_dotted_line, graph_dotted_line, graph_dotted_line);
+	} else {
+		printf(" %.*s  %.9s  %.9s  %.9s", comm_width,
+		       graph_dotted_line, graph_dotted_line, graph_dotted_line,
+		       graph_dotted_line);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (sched->show_state)
 		printf("  %.5s", graph_dotted_line);
@@ -2134,6 +2255,12 @@ static void timehist_print_sample(struct perf_sched *sched,
 
 	printf(" %-*s ", comm_width, timehist_get_commstr(thread));
 
+<<<<<<< HEAD
+=======
+	if (sched->show_prio)
+		printf(" %-*s ", MAX_PRIO_STR_LEN, timehist_get_priostr(evsel, thread, sample));
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	wait_time = tr->dt_sleep + tr->dt_iowait + tr->dt_preempt;
 	print_sched_time(wait_time, 6);
 
@@ -2301,6 +2428,10 @@ static int init_idle_thread(struct thread *thread)
 	if (itr == NULL)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	init_prio(&itr->tr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	init_stats(&itr->tr.run_stats);
 	callchain_init(&itr->callchain);
 	callchain_cursor_reset(&itr->cursor);
@@ -2455,12 +2586,39 @@ static bool timehist_skip_sample(struct perf_sched *sched,
 				 struct perf_sample *sample)
 {
 	bool rc = false;
+<<<<<<< HEAD
+=======
+	int prio = -1;
+	struct thread_runtime *tr = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (thread__is_filtered(thread)) {
 		rc = true;
 		sched->skipped_samples++;
 	}
 
+<<<<<<< HEAD
+=======
+	if (sched->prio_str) {
+		/*
+		 * Because priority may be changed during task execution,
+		 * first read priority from prev sched_in event for current task.
+		 * If prev sched_in event is not saved, then read priority from
+		 * current task sched_out event.
+		 */
+		tr = thread__get_runtime(thread);
+		if (tr && tr->prio != -1)
+			prio = tr->prio;
+		else if (evsel__name_is(evsel, "sched:sched_switch"))
+			prio = evsel__intval(evsel, sample, "prev_prio");
+
+		if (prio != -1 && !test_bit(prio, sched->prio_bitmap)) {
+			rc = true;
+			sched->skipped_samples++;
+		}
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (sched->idle_hist) {
 		if (!evsel__name_is(evsel, "sched:sched_switch"))
 			rc = true;
@@ -2506,7 +2664,11 @@ static void timehist_print_wakeup_event(struct perf_sched *sched,
 	printf("\n");
 }
 
+<<<<<<< HEAD
 static int timehist_sched_wakeup_ignore(struct perf_tool *tool __maybe_unused,
+=======
+static int timehist_sched_wakeup_ignore(const struct perf_tool *tool __maybe_unused,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					union perf_event *event __maybe_unused,
 					struct evsel *evsel __maybe_unused,
 					struct perf_sample *sample __maybe_unused,
@@ -2515,7 +2677,11 @@ static int timehist_sched_wakeup_ignore(struct perf_tool *tool __maybe_unused,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int timehist_sched_wakeup_event(struct perf_tool *tool,
+=======
+static int timehist_sched_wakeup_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       union perf_event *event __maybe_unused,
 				       struct evsel *evsel,
 				       struct perf_sample *sample,
@@ -2599,7 +2765,11 @@ static void timehist_print_migration_event(struct perf_sched *sched,
 	printf("\n");
 }
 
+<<<<<<< HEAD
 static int timehist_migrate_task_event(struct perf_tool *tool,
+=======
+static int timehist_migrate_task_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       union perf_event *event __maybe_unused,
 				       struct evsel *evsel,
 				       struct perf_sample *sample,
@@ -2627,7 +2797,35 @@ static int timehist_migrate_task_event(struct perf_tool *tool,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int timehist_sched_change_event(struct perf_tool *tool,
+=======
+static void timehist_update_task_prio(struct evsel *evsel,
+				      struct perf_sample *sample,
+				      struct machine *machine)
+{
+	struct thread *thread;
+	struct thread_runtime *tr = NULL;
+	const u32 next_pid = evsel__intval(evsel, sample, "next_pid");
+	const u32 next_prio = evsel__intval(evsel, sample, "next_prio");
+
+	if (next_pid == 0)
+		thread = get_idle_thread(sample->cpu);
+	else
+		thread = machine__findnew_thread(machine, -1, next_pid);
+
+	if (thread == NULL)
+		return;
+
+	tr = thread__get_runtime(thread);
+	if (tr == NULL)
+		return;
+
+	tr->prio = next_prio;
+}
+
+static int timehist_sched_change_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       union perf_event *event,
 				       struct evsel *evsel,
 				       struct perf_sample *sample,
@@ -2650,6 +2848,12 @@ static int timehist_sched_change_event(struct perf_tool *tool,
 		goto out;
 	}
 
+<<<<<<< HEAD
+=======
+	if (sched->show_prio || sched->prio_str)
+		timehist_update_task_prio(evsel, sample, machine);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	thread = timehist_get_thread(sched, sample, machine, evsel);
 	if (thread == NULL) {
 		rc = -1;
@@ -2683,9 +2887,18 @@ static int timehist_sched_change_event(struct perf_tool *tool,
 	 * - previous sched event is out of window - we are done
 	 * - sample time is beyond window user cares about - reset it
 	 *   to close out stats for time window interest
+<<<<<<< HEAD
 	 */
 	if (ptime->end) {
 		if (tprev > ptime->end)
+=======
+	 * - If tprev is 0, that is, sched_in event for current task is
+	 *   not recorded, cannot determine whether sched_in event is
+	 *   within time window interest - ignore it
+	 */
+	if (ptime->end) {
+		if (!tprev || tprev > ptime->end)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto out;
 
 		if (t > ptime->end)
@@ -2700,8 +2913,11 @@ static int timehist_sched_change_event(struct perf_tool *tool,
 			struct idle_thread_runtime *itr = (void *)tr;
 			struct thread_runtime *last_tr;
 
+<<<<<<< HEAD
 			BUG_ON(thread__tid(thread) != 0);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (itr->last_thread == NULL)
 				goto out;
 
@@ -2727,10 +2943,17 @@ static int timehist_sched_change_event(struct perf_tool *tool,
 
 			itr->last_thread = NULL;
 		}
+<<<<<<< HEAD
 	}
 
 	if (!sched->summary_only)
 		timehist_print_sample(sched, evsel, sample, &al, thread, t, state);
+=======
+
+		if (!sched->summary_only)
+			timehist_print_sample(sched, evsel, sample, &al, thread, t, state);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 out:
 	if (sched->hist_time.start == 0 && t >= ptime->start)
@@ -2758,7 +2981,11 @@ out:
 	return rc;
 }
 
+<<<<<<< HEAD
 static int timehist_sched_switch_event(struct perf_tool *tool,
+=======
+static int timehist_sched_switch_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     union perf_event *event,
 			     struct evsel *evsel,
 			     struct perf_sample *sample,
@@ -2767,7 +2994,11 @@ static int timehist_sched_switch_event(struct perf_tool *tool,
 	return timehist_sched_change_event(tool, event, evsel, sample, machine);
 }
 
+<<<<<<< HEAD
 static int process_lost(struct perf_tool *tool __maybe_unused,
+=======
+static int process_lost(const struct perf_tool *tool __maybe_unused,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			union perf_event *event,
 			struct perf_sample *sample,
 			struct machine *machine __maybe_unused)
@@ -3010,13 +3241,21 @@ static void timehist_print_summary(struct perf_sched *sched,
 	printf(" (x %d)\n", sched->max_cpu.cpu);
 }
 
+<<<<<<< HEAD
 typedef int (*sched_handler)(struct perf_tool *tool,
+=======
+typedef int (*sched_handler)(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			  union perf_event *event,
 			  struct evsel *evsel,
 			  struct perf_sample *sample,
 			  struct machine *machine);
 
+<<<<<<< HEAD
 static int perf_timehist__process_sample(struct perf_tool *tool,
+=======
+static int perf_timehist__process_sample(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					 union perf_event *event,
 					 struct perf_sample *sample,
 					 struct evsel *evsel,
@@ -3066,6 +3305,50 @@ static int timehist_check_attr(struct perf_sched *sched,
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int timehist_parse_prio_str(struct perf_sched *sched)
+{
+	char *p;
+	unsigned long start_prio, end_prio;
+	const char *str = sched->prio_str;
+
+	if (!str)
+		return 0;
+
+	while (isdigit(*str)) {
+		p = NULL;
+		start_prio = strtoul(str, &p, 0);
+		if (start_prio >= MAX_PRIO || (*p != '\0' && *p != ',' && *p != '-'))
+			return -1;
+
+		if (*p == '-') {
+			str = ++p;
+			p = NULL;
+			end_prio = strtoul(str, &p, 0);
+
+			if (end_prio >= MAX_PRIO || (*p != '\0' && *p != ','))
+				return -1;
+
+			if (end_prio < start_prio)
+				return -1;
+		} else {
+			end_prio = start_prio;
+		}
+
+		for (; start_prio <= end_prio; start_prio++)
+			__set_bit(start_prio, sched->prio_bitmap);
+
+		if (*p)
+			++p;
+
+		str = p;
+	}
+
+	return 0;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int perf_sched__timehist(struct perf_sched *sched)
 {
 	struct evsel_str_handler handlers[] = {
@@ -3100,7 +3383,10 @@ static int perf_sched__timehist(struct perf_sched *sched)
 	sched->tool.tracing_data = perf_event__process_tracing_data;
 	sched->tool.build_id	 = perf_event__process_build_id;
 
+<<<<<<< HEAD
 	sched->tool.ordered_events = true;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sched->tool.ordering_requires_timestamps = true;
 
 	symbol_conf.use_callchain = sched->show_callchain;
@@ -3121,12 +3407,25 @@ static int perf_sched__timehist(struct perf_sched *sched)
 
 	if (perf_time__parse_str(&sched->ptime, sched->time_str) != 0) {
 		pr_err("Invalid time string\n");
+<<<<<<< HEAD
 		return -EINVAL;
+=======
+		err = -EINVAL;
+		goto out;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (timehist_check_attr(sched, evlist) != 0)
 		goto out;
 
+<<<<<<< HEAD
+=======
+	if (timehist_parse_prio_str(sched) != 0) {
+		pr_err("Invalid prio string\n");
+		goto out;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	setup_pager();
 
 	/* prefer sched_waking if it is captured */
@@ -3605,6 +3904,7 @@ int cmd_sched(int argc, const char **argv)
 {
 	static const char default_sort_order[] = "avg, max, switch, runtime";
 	struct perf_sched sched = {
+<<<<<<< HEAD
 		.tool = {
 			.sample		 = perf_sched__process_tracepoint_sample,
 			.comm		 = perf_sched__process_comm,
@@ -3613,6 +3913,8 @@ int cmd_sched(int argc, const char **argv)
 			.fork		 = perf_sched__process_fork_event,
 			.ordered_events = true,
 		},
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.cmp_pid	      = LIST_HEAD_INIT(sched.cmp_pid),
 		.sort_list	      = LIST_HEAD_INIT(sched.sort_list),
 		.sort_order	      = default_sort_order,
@@ -3691,6 +3993,12 @@ int cmd_sched(int argc, const char **argv)
 	OPT_STRING('t', "tid", &symbol_conf.tid_list_str, "tid[,tid...]",
 		   "analyze events only for given thread id(s)"),
 	OPT_STRING('C', "cpu", &cpu_list, "cpu", "list of cpus to profile"),
+<<<<<<< HEAD
+=======
+	OPT_BOOLEAN(0, "show-prio", &sched.show_prio, "Show task priority"),
+	OPT_STRING(0, "prio", &sched.prio_str, "prio",
+		   "analyze events only for given task priority(ies)"),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	OPT_PARENT(sched_options)
 	};
 
@@ -3733,6 +4041,16 @@ int cmd_sched(int argc, const char **argv)
 	};
 	int ret;
 
+<<<<<<< HEAD
+=======
+	perf_tool__init(&sched.tool, /*ordered_events=*/true);
+	sched.tool.sample	 = perf_sched__process_tracepoint_sample;
+	sched.tool.comm		 = perf_sched__process_comm;
+	sched.tool.namespaces	 = perf_event__process_namespaces;
+	sched.tool.lost		 = perf_event__process_lost;
+	sched.tool.fork		 = perf_sched__process_fork_event;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	argc = parse_options_subcommand(argc, argv, sched_options, sched_subcommands,
 					sched_usage, PARSE_OPT_STOP_AT_NON_OPTION);
 	if (!argc)
@@ -3805,5 +4123,11 @@ int cmd_sched(int argc, const char **argv)
 		usage_with_options(sched_usage, sched_options);
 	}
 
+<<<<<<< HEAD
+=======
+	/* free usage string allocated by parse_options_subcommand */
+	free((void *)sched_usage[0]);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }

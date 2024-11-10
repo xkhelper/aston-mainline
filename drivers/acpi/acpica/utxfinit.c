@@ -120,6 +120,21 @@ acpi_status ACPI_INIT_FUNCTION acpi_enable_subsystem(u32 flags)
 	 */
 	acpi_gbl_early_initialization = FALSE;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Obtain a permanent mapping for the FACS. This is required for the
+	 * Global Lock and the Firmware Waking Vector
+	 */
+	if (!(flags & ACPI_NO_FACS_INIT)) {
+		status = acpi_tb_initialize_facs();
+		if (ACPI_FAILURE(status)) {
+			ACPI_WARNING((AE_INFO, "Could not map the FACS table"));
+			return_ACPI_STATUS(status);
+		}
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if (!ACPI_REDUCED_HARDWARE)
 
 	/* Enable ACPI mode */
@@ -138,6 +153,7 @@ acpi_status ACPI_INIT_FUNCTION acpi_enable_subsystem(u32 flags)
 	}
 
 	/*
+<<<<<<< HEAD
 	 * Obtain a permanent mapping for the FACS. This is required for the
 	 * Global Lock and the Firmware Waking Vector
 	 */
@@ -150,6 +166,8 @@ acpi_status ACPI_INIT_FUNCTION acpi_enable_subsystem(u32 flags)
 	}
 
 	/*
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * Initialize ACPI Event handling (Fixed and General Purpose)
 	 *
 	 * Note1: We must have the hardware and events initialized before we can

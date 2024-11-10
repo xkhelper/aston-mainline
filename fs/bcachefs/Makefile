@@ -69,6 +69,10 @@ bcachefs-y		:=	\
 	printbuf.o		\
 	quota.o			\
 	rebalance.o		\
+<<<<<<< HEAD
+=======
+	rcu_pending.o		\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	recovery.o		\
 	recovery_passes.o	\
 	reflink.o		\

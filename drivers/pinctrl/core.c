@@ -1971,7 +1971,11 @@ static void pinctrl_remove_device_debugfs(struct pinctrl_dev *pctldev)
 static void pinctrl_init_debugfs(void)
 {
 	debugfs_root = debugfs_create_dir("pinctrl", NULL);
+<<<<<<< HEAD
 	if (IS_ERR(debugfs_root) || !debugfs_root) {
+=======
+	if (IS_ERR(debugfs_root)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pr_warn("failed to create debugfs directory\n");
 		debugfs_root = NULL;
 		return;

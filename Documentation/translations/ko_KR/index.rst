@@ -11,6 +11,7 @@
 .. toctree::
    :maxdepth: 1
 
+<<<<<<< HEAD
    howto
 
 
@@ -27,3 +28,11 @@
 .. raw:: latex
 
     }\kerneldocEndKR
+=======
+   process/howto
+   core-api/wrappers/memory-barriers.rst
+
+.. raw:: latex
+
+       }\kerneldocEndKR
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

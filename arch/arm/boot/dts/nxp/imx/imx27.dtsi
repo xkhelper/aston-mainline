@@ -88,7 +88,11 @@
 			reg = <0x10000000 0x20000>;
 			ranges;
 
+<<<<<<< HEAD
 			dma: dma@10001000 {
+=======
+			dma: dma-controller@10001000 {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				compatible = "fsl,imx27-dma";
 				reg = <0x10001000 0x1000>;
 				interrupts = <32>;

@@ -43,14 +43,21 @@ enum ice_ctl_q {
 };
 
 /* Control Queue timeout settings - max delay 1s */
+<<<<<<< HEAD
 #define ICE_CTL_Q_SQ_CMD_TIMEOUT	HZ    /* Wait max 1s */
+=======
+#define ICE_CTL_Q_SQ_CMD_TIMEOUT	USEC_PER_SEC
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define ICE_CTL_Q_ADMIN_INIT_TIMEOUT	10    /* Count 10 times */
 #define ICE_CTL_Q_ADMIN_INIT_MSEC	100   /* Check every 100msec */
 
 struct ice_ctl_q_ring {
 	void *dma_head;			/* Virtual address to DMA head */
 	struct ice_dma_mem desc_buf;	/* descriptor ring memory */
+<<<<<<< HEAD
 	void *cmd_buf;			/* command buffer memory */
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	union {
 		struct ice_dma_mem *sq_bi;
@@ -80,8 +87,11 @@ struct ice_sq_cd {
 	struct ice_aq_desc *wb_desc;
 };
 
+<<<<<<< HEAD
 #define ICE_CTL_Q_DETAILS(R, i) (&(((struct ice_sq_cd *)((R).cmd_buf))[i]))
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* rq event information */
 struct ice_rq_event_info {
 	struct ice_aq_desc desc;

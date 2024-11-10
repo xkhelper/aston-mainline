@@ -14,7 +14,11 @@
 #include <linux/module.h>
 #include <linux/string.h>
 #include <asm/mipsregs.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <crypto/internal/hash.h>
 
@@ -77,6 +81,7 @@ static u32 crc32_mips_le_hw(u32 crc_, const u8 *p, unsigned int len)
 {
 	u32 crc = crc_;
 
+<<<<<<< HEAD
 #ifdef CONFIG_64BIT
 	while (len >= sizeof(u64)) {
 		u64 value = get_unaligned_le64(p);
@@ -95,6 +100,28 @@ static u32 crc32_mips_le_hw(u32 crc_, const u8 *p, unsigned int len)
 		CRC32(crc, value, w);
 		p += sizeof(u32);
 		len -= sizeof(u32);
+=======
+	if (IS_ENABLED(CONFIG_64BIT)) {
+		for (; len >= sizeof(u64); p += sizeof(u64), len -= sizeof(u64)) {
+			u64 value = get_unaligned_le64(p);
+
+			CRC32(crc, value, d);
+		}
+
+		if (len & sizeof(u32)) {
+			u32 value = get_unaligned_le32(p);
+
+			CRC32(crc, value, w);
+			p += sizeof(u32);
+		}
+	} else {
+		for (; len >= sizeof(u32); len -= sizeof(u32)) {
+			u32 value = get_unaligned_le32(p);
+
+			CRC32(crc, value, w);
+			p += sizeof(u32);
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (len & sizeof(u16)) {
@@ -117,6 +144,7 @@ static u32 crc32c_mips_le_hw(u32 crc_, const u8 *p, unsigned int len)
 {
 	u32 crc = crc_;
 
+<<<<<<< HEAD
 #ifdef CONFIG_64BIT
 	while (len >= sizeof(u64)) {
 		u64 value = get_unaligned_le64(p);
@@ -135,6 +163,28 @@ static u32 crc32c_mips_le_hw(u32 crc_, const u8 *p, unsigned int len)
 		CRC32C(crc, value, w);
 		p += sizeof(u32);
 		len -= sizeof(u32);
+=======
+	if (IS_ENABLED(CONFIG_64BIT)) {
+		for (; len >= sizeof(u64); p += sizeof(u64), len -= sizeof(u64)) {
+			u64 value = get_unaligned_le64(p);
+
+			CRC32(crc, value, d);
+		}
+
+		if (len & sizeof(u32)) {
+			u32 value = get_unaligned_le32(p);
+
+			CRC32(crc, value, w);
+			p += sizeof(u32);
+		}
+	} else {
+		for (; len >= sizeof(u32); len -= sizeof(u32)) {
+			u32 value = get_unaligned_le32(p);
+
+			CRC32(crc, value, w);
+			p += sizeof(u32);
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (len & sizeof(u16)) {

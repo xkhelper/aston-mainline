@@ -23,6 +23,7 @@ enum {
 	STR_OUT = SNDRV_RAWMIDI_STREAM_OUTPUT
 };
 
+<<<<<<< HEAD
 /* object per UMP group; corresponding to a sequencer port */
 struct seq_ump_group {
 	int group;			/* group index (0-based) */
@@ -32,6 +33,8 @@ struct seq_ump_group {
 	char name[64];			/* seq port name */
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* context for UMP input parsing, per EP */
 struct seq_ump_input_buffer {
 	unsigned char len;		/* total length in words */
@@ -48,7 +51,10 @@ struct seq_ump_client {
 	int opened[2];			/* current opens for each direction */
 	struct snd_rawmidi_file out_rfile; /* rawmidi for output */
 	struct seq_ump_input_buffer input; /* input parser context */
+<<<<<<< HEAD
 	struct seq_ump_group groups[SNDRV_UMP_MAX_GROUPS]; /* table of groups */
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void *ump_info[SNDRV_UMP_MAX_BLOCKS + 1]; /* shadow of seq client ump_info */
 	struct work_struct group_notify_work; /* FB change notification */
 };
@@ -175,7 +181,11 @@ static int seq_ump_unuse(void *pdata, struct snd_seq_port_subscribe *info)
 /* fill port_info from the given UMP EP and group info */
 static void fill_port_info(struct snd_seq_port_info *port,
 			   struct seq_ump_client *client,
+<<<<<<< HEAD
 			   struct seq_ump_group *group)
+=======
+			   struct snd_ump_group *group)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int rawmidi_info = client->ump->core.info_flags;
 
@@ -199,6 +209,11 @@ static void fill_port_info(struct snd_seq_port_info *port,
 	port->ump_group = group->group + 1;
 	if (!group->active)
 		port->capability |= SNDRV_SEQ_PORT_CAP_INACTIVE;
+<<<<<<< HEAD
+=======
+	if (group->is_midi1)
+		port->flags |= SNDRV_SEQ_PORT_FLG_IS_MIDI1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	port->type = SNDRV_SEQ_PORT_TYPE_MIDI_GENERIC |
 		SNDRV_SEQ_PORT_TYPE_MIDI_UMP |
 		SNDRV_SEQ_PORT_TYPE_HARDWARE |
@@ -212,7 +227,11 @@ static void fill_port_info(struct snd_seq_port_info *port,
 }
 
 /* skip non-existing group for static blocks */
+<<<<<<< HEAD
 static bool skip_group(struct seq_ump_client *client, struct seq_ump_group *group)
+=======
+static bool skip_group(struct seq_ump_client *client, struct snd_ump_group *group)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return !group->valid &&
 		(client->ump->info.flags & SNDRV_UMP_EP_INFO_STATIC_BLOCKS);
@@ -221,7 +240,11 @@ static bool skip_group(struct seq_ump_client *client, struct seq_ump_group *grou
 /* create a new sequencer port per UMP group */
 static int seq_ump_group_init(struct seq_ump_client *client, int group_index)
 {
+<<<<<<< HEAD
 	struct seq_ump_group *group = &client->groups[group_index];
+=======
+	struct snd_ump_group *group = &client->ump->groups[group_index];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct snd_seq_port_info *port __free(kfree) = NULL;
 	struct snd_seq_port_callback pcallbacks;
 
@@ -233,7 +256,11 @@ static int seq_ump_group_init(struct seq_ump_client *client, int group_index)
 		return -ENOMEM;
 
 	fill_port_info(port, client, group);
+<<<<<<< HEAD
 	port->flags = SNDRV_SEQ_PORT_FLG_GIVEN_PORT;
+=======
+	port->flags |= SNDRV_SEQ_PORT_FLG_GIVEN_PORT;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	memset(&pcallbacks, 0, sizeof(pcallbacks));
 	pcallbacks.owner = THIS_MODULE;
 	pcallbacks.private_data = client;
@@ -261,7 +288,11 @@ static void update_port_infos(struct seq_ump_client *client)
 		return;
 
 	for (i = 0; i < SNDRV_UMP_MAX_GROUPS; i++) {
+<<<<<<< HEAD
 		if (skip_group(client, &client->groups[i]))
+=======
+		if (skip_group(client, &client->ump->groups[i]))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 
 		old->addr.client = client->seq_client;
@@ -271,7 +302,11 @@ static void update_port_infos(struct seq_ump_client *client)
 						old);
 		if (err < 0)
 			return;
+<<<<<<< HEAD
 		fill_port_info(new, client, &client->groups[i]);
+=======
+		fill_port_info(new, client, &client->ump->groups[i]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (old->capability == new->capability &&
 		    !strcmp(old->name, new->name))
 			continue;
@@ -285,6 +320,7 @@ static void update_port_infos(struct seq_ump_client *client)
 	}
 }
 
+<<<<<<< HEAD
 /* update dir_bits and active flag for all groups in the client */
 static void update_group_attrs(struct seq_ump_client *client)
 {
@@ -336,6 +372,8 @@ static void update_group_attrs(struct seq_ump_client *client)
 	}
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* create a UMP Endpoint port */
 static int create_ump_endpoint_port(struct seq_ump_client *client)
 {
@@ -432,7 +470,11 @@ static void setup_client_group_filter(struct seq_ump_client *client)
 		return;
 	filter = ~(1U << 0); /* always allow groupless messages */
 	for (p = 0; p < SNDRV_UMP_MAX_GROUPS; p++) {
+<<<<<<< HEAD
 		if (client->groups[p].active)
+=======
+		if (client->ump->groups[p].active)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			filter &= ~(1U << (p + 1));
 	}
 	cptr->group_filter = filter;
@@ -445,7 +487,10 @@ static void handle_group_notify(struct work_struct *work)
 	struct seq_ump_client *client =
 		container_of(work, struct seq_ump_client, group_notify_work);
 
+<<<<<<< HEAD
 	update_group_attrs(client);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	update_port_infos(client);
 	setup_client_group_filter(client);
 }
@@ -508,7 +553,10 @@ static int snd_seq_ump_probe(struct device *_dev)
 		client->ump_info[fb->info.block_id + 1] = &fb->info;
 
 	setup_client_midi_version(client);
+<<<<<<< HEAD
 	update_group_attrs(client);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (p = 0; p < SNDRV_UMP_MAX_GROUPS; p++) {
 		err = seq_ump_group_init(client, p);

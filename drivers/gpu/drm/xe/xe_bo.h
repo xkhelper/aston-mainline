@@ -36,8 +36,14 @@
 #define XE_BO_FLAG_PAGETABLE		BIT(12)
 #define XE_BO_FLAG_NEEDS_CPU_ACCESS	BIT(13)
 #define XE_BO_FLAG_NEEDS_UC		BIT(14)
+<<<<<<< HEAD
 #define XE_BO_NEEDS_64K			BIT(15)
 #define XE_BO_FLAG_GGTT_INVALIDATE	BIT(16)
+=======
+#define XE_BO_FLAG_NEEDS_64K		BIT(15)
+#define XE_BO_FLAG_NEEDS_2M		BIT(16)
+#define XE_BO_FLAG_GGTT_INVALIDATE	BIT(17)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* this one is trigger internally only */
 #define XE_BO_FLAG_INTERNAL_TEST	BIT(30)
 #define XE_BO_FLAG_INTERNAL_64K		BIT(31)
@@ -86,7 +92,10 @@ struct xe_bo *xe_bo_create(struct xe_device *xe, struct xe_tile *tile,
 struct xe_bo *xe_bo_create_user(struct xe_device *xe, struct xe_tile *tile,
 				struct xe_vm *vm, size_t size,
 				u16 cpu_caching,
+<<<<<<< HEAD
 				enum ttm_bo_type type,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				u32 flags);
 struct xe_bo *xe_bo_create_pin_map(struct xe_device *xe, struct xe_tile *tile,
 				   struct xe_vm *vm, size_t size,
@@ -126,11 +135,15 @@ static inline struct xe_bo *xe_bo_get(struct xe_bo *bo)
 	return bo;
 }
 
+<<<<<<< HEAD
 static inline void xe_bo_put(struct xe_bo *bo)
 {
 	if (bo)
 		drm_gem_object_put(&bo->ttm.base);
 }
+=======
+void xe_bo_put(struct xe_bo *bo);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline void __xe_bo_unset_bulk_move(struct xe_bo *bo)
 {
@@ -194,9 +207,18 @@ xe_bo_main_addr(struct xe_bo *bo, size_t page_size)
 static inline u32
 xe_bo_ggtt_addr(struct xe_bo *bo)
 {
+<<<<<<< HEAD
 	XE_WARN_ON(bo->ggtt_node.size > bo->size);
 	XE_WARN_ON(bo->ggtt_node.start + bo->ggtt_node.size > (1ull << 32));
 	return bo->ggtt_node.start;
+=======
+	if (XE_WARN_ON(!bo->ggtt_node))
+		return 0;
+
+	XE_WARN_ON(bo->ggtt_node->base.size > bo->size);
+	XE_WARN_ON(bo->ggtt_node->base.start + bo->ggtt_node->base.size > (1ull << 32));
+	return bo->ggtt_node->base.start;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int xe_bo_vmap(struct xe_bo *bo);

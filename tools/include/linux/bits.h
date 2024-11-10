@@ -36,4 +36,22 @@
 #define GENMASK_ULL(h, l) \
 	(GENMASK_INPUT_CHECK(h, l) + __GENMASK_ULL(h, l))
 
+<<<<<<< HEAD
+=======
+#if !defined(__ASSEMBLY__)
+/*
+ * Missing asm support
+ *
+ * __GENMASK_U128() depends on _BIT128() which would not work
+ * in the asm code, as it shifts an 'unsigned __init128' data
+ * type instead of direct representation of 128 bit constants
+ * such as long and unsigned long. The fundamental problem is
+ * that a 128 bit constant will get silently truncated by the
+ * gcc compiler.
+ */
+#define GENMASK_U128(h, l) \
+	(GENMASK_INPUT_CHECK(h, l) + __GENMASK_U128(h, l))
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif	/* __LINUX_BITS_H */

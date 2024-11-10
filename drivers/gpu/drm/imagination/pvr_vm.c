@@ -14,6 +14,10 @@
 #include <drm/drm_gem.h>
 #include <drm/drm_gpuvm.h>
 
+<<<<<<< HEAD
+=======
+#include <linux/bug.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/container_of.h>
 #include <linux/err.h>
 #include <linux/errno.h>
@@ -597,12 +601,34 @@ err_free:
 }
 
 /**
+<<<<<<< HEAD
  * pvr_vm_context_release() - Teardown a VM context.
  * @ref_count: Pointer to reference counter of the VM context.
+=======
+ * pvr_vm_unmap_all() - Unmap all mappings associated with a VM context.
+ * @vm_ctx: Target VM context.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * This function ensures that no mappings are left dangling by unmapping them
  * all in order of ascending device-virtual address.
  */
+<<<<<<< HEAD
+=======
+void
+pvr_vm_unmap_all(struct pvr_vm_context *vm_ctx)
+{
+	WARN_ON(pvr_vm_unmap(vm_ctx, vm_ctx->gpuvm_mgr.mm_start,
+			     vm_ctx->gpuvm_mgr.mm_range));
+}
+
+/**
+ * pvr_vm_context_release() - Teardown a VM context.
+ * @ref_count: Pointer to reference counter of the VM context.
+ *
+ * This function also ensures that no mappings are left dangling by calling
+ * pvr_vm_unmap_all.
+ */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void
 pvr_vm_context_release(struct kref *ref_count)
 {
@@ -612,8 +638,12 @@ pvr_vm_context_release(struct kref *ref_count)
 	if (vm_ctx->fw_mem_ctx_obj)
 		pvr_fw_object_destroy(vm_ctx->fw_mem_ctx_obj);
 
+<<<<<<< HEAD
 	WARN_ON(pvr_vm_unmap(vm_ctx, vm_ctx->gpuvm_mgr.mm_start,
 			     vm_ctx->gpuvm_mgr.mm_range));
+=======
+	pvr_vm_unmap_all(vm_ctx);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pvr_mmu_context_destroy(vm_ctx->mmu_ctx);
 	drm_gem_private_object_fini(&vm_ctx->dummy_gem);

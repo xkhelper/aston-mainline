@@ -10,6 +10,10 @@
 #include <asm/hyp_image.h>
 #include <asm/insn.h>
 #include <asm/virt.h>
+<<<<<<< HEAD
+=======
+#include <asm/sysreg.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define ARM_EXIT_WITH_SERROR_BIT  31
 #define ARM_EXCEPTION_CODE(x)	  ((x) & ~(1U << ARM_EXIT_WITH_SERROR_BIT))
@@ -177,6 +181,10 @@ struct kvm_nvhe_init_params {
 	unsigned long hcr_el2;
 	unsigned long vttbr;
 	unsigned long vtcr;
+<<<<<<< HEAD
+=======
+	unsigned long tmp;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
@@ -235,6 +243,12 @@ extern void __kvm_tlb_flush_vmid(struct kvm_s2_mmu *mmu);
 extern int __kvm_tlbi_s1e2(struct kvm_s2_mmu *mmu, u64 va, u64 sys_encoding);
 
 extern void __kvm_timer_set_cntvoff(u64 cntvoff);
+<<<<<<< HEAD
+=======
+extern void __kvm_at_s1e01(struct kvm_vcpu *vcpu, u32 op, u64 vaddr);
+extern void __kvm_at_s1e2(struct kvm_vcpu *vcpu, u32 op, u64 vaddr);
+extern void __kvm_at_s12(struct kvm_vcpu *vcpu, u32 op, u64 vaddr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 extern int __kvm_vcpu_run(struct kvm_vcpu *vcpu);
 
@@ -259,7 +273,11 @@ extern u64 __kvm_get_mdcr_el2(void);
 	asm volatile(							\
 	"	mrs	%1, spsr_el2\n"					\
 	"	mrs	%2, elr_el2\n"					\
+<<<<<<< HEAD
 	"1:	at	"at_op", %3\n"					\
+=======
+	"1:	" __msr_s(at_op, "%3") "\n"				\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	"	isb\n"							\
 	"	b	9f\n"						\
 	"2:	msr	spsr_el2, %1\n"					\

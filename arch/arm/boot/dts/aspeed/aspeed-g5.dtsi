@@ -139,8 +139,13 @@
 			reg = <0x1e6c0080 0x80>;
 		};
 
+<<<<<<< HEAD
 		cvic: copro-interrupt-controller@1e6c2000 {
 			compatible = "aspeed,ast2500-cvic", "aspeed-cvic";
+=======
+		cvic: interrupt-controller@1e6c2000 {
+			compatible = "aspeed,ast2500-cvic", "aspeed,cvic";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			valid-sources = <0xffffffff>;
 			copro-sw-interrupts = <1>;
 			reg = <0x1e6c2000 0x80>;
@@ -281,6 +286,7 @@
 				interrupts = <0x19>;
 			};
 
+<<<<<<< HEAD
 			xdma: xdma@1e6e7000 {
 				compatible = "aspeed,ast2500-xdma";
 				reg = <0x1e6e7000 0x100>;
@@ -292,6 +298,8 @@
 				status = "disabled";
 			};
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			adc: adc@1e6e9000 {
 				compatible = "aspeed,ast2500-adc";
 				reg = <0x1e6e9000 0xb0>;
@@ -314,6 +322,12 @@
 			sram: sram@1e720000 {
 				compatible = "mmio-sram";
 				reg = <0x1e720000 0x9000>;	// 36K
+<<<<<<< HEAD
+=======
+				ranges;
+				#address-cells = <1>;
+				#size-cells = <1>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			};
 
 			sdmmc: sd-controller@1e740000 {

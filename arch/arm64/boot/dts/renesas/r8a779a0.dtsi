@@ -707,6 +707,10 @@
 			phy-mode = "rgmii";
 			rx-internal-delay-ps = <0>;
 			tx-internal-delay-ps = <0>;
+<<<<<<< HEAD
+=======
+			iommus = <&ipmmu_ds1 0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			#address-cells = <1>;
 			#size-cells = <0>;
 			status = "disabled";
@@ -755,6 +759,10 @@
 			phy-mode = "rgmii";
 			rx-internal-delay-ps = <0>;
 			tx-internal-delay-ps = <0>;
+<<<<<<< HEAD
+=======
+			iommus = <&ipmmu_ds1 1>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			#address-cells = <1>;
 			#size-cells = <0>;
 			status = "disabled";
@@ -803,6 +811,10 @@
 			phy-mode = "rgmii";
 			rx-internal-delay-ps = <0>;
 			tx-internal-delay-ps = <0>;
+<<<<<<< HEAD
+=======
+			iommus = <&ipmmu_ds1 2>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			#address-cells = <1>;
 			#size-cells = <0>;
 			status = "disabled";
@@ -851,6 +863,10 @@
 			phy-mode = "rgmii";
 			rx-internal-delay-ps = <0>;
 			tx-internal-delay-ps = <0>;
+<<<<<<< HEAD
+=======
+			iommus = <&ipmmu_ds1 3>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			#address-cells = <1>;
 			#size-cells = <0>;
 			status = "disabled";
@@ -899,6 +915,10 @@
 			phy-mode = "rgmii";
 			rx-internal-delay-ps = <0>;
 			tx-internal-delay-ps = <0>;
+<<<<<<< HEAD
+=======
+			iommus = <&ipmmu_ds1 4>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			#address-cells = <1>;
 			#size-cells = <0>;
 			status = "disabled";
@@ -947,6 +967,10 @@
 			phy-mode = "rgmii";
 			rx-internal-delay-ps = <0>;
 			tx-internal-delay-ps = <0>;
+<<<<<<< HEAD
+=======
+			iommus = <&ipmmu_ds1 11>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			#address-cells = <1>;
 			#size-cells = <0>;
 			status = "disabled";
@@ -1168,7 +1192,12 @@
 		};
 
 		vin00: video@e6ef0000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6ef0000 0 0x1000>;
 			interrupts = <GIC_SPI 160 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 730>;
@@ -1196,7 +1225,12 @@
 		};
 
 		vin01: video@e6ef1000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6ef1000 0 0x1000>;
 			interrupts = <GIC_SPI 161 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 731>;
@@ -1224,7 +1258,12 @@
 		};
 
 		vin02: video@e6ef2000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6ef2000 0 0x1000>;
 			interrupts = <GIC_SPI 162 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 800>;
@@ -1252,7 +1291,12 @@
 		};
 
 		vin03: video@e6ef3000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6ef3000 0 0x1000>;
 			interrupts = <GIC_SPI 163 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 801>;
@@ -1280,7 +1324,12 @@
 		};
 
 		vin04: video@e6ef4000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6ef4000 0 0x1000>;
 			interrupts = <GIC_SPI 164 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 802>;
@@ -1308,7 +1357,12 @@
 		};
 
 		vin05: video@e6ef5000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6ef5000 0 0x1000>;
 			interrupts = <GIC_SPI 165 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 803>;
@@ -1336,7 +1390,12 @@
 		};
 
 		vin06: video@e6ef6000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6ef6000 0 0x1000>;
 			interrupts = <GIC_SPI 166 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 804>;
@@ -1364,7 +1423,12 @@
 		};
 
 		vin07: video@e6ef7000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6ef7000 0 0x1000>;
 			interrupts = <GIC_SPI 167 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 805>;
@@ -1392,7 +1456,12 @@
 		};
 
 		vin08: video@e6ef8000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6ef8000 0 0x1000>;
 			interrupts = <GIC_SPI 168 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 806>;
@@ -1420,7 +1489,12 @@
 		};
 
 		vin09: video@e6ef9000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6ef9000 0 0x1000>;
 			interrupts = <GIC_SPI 169 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 807>;
@@ -1448,7 +1522,12 @@
 		};
 
 		vin10: video@e6efa000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6efa000 0 0x1000>;
 			interrupts = <GIC_SPI 170 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 808>;
@@ -1476,7 +1555,12 @@
 		};
 
 		vin11: video@e6efb000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6efb000 0 0x1000>;
 			interrupts = <GIC_SPI 171 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 809>;
@@ -1504,7 +1588,12 @@
 		};
 
 		vin12: video@e6efc000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6efc000 0 0x1000>;
 			interrupts = <GIC_SPI 172 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 810>;
@@ -1532,7 +1621,12 @@
 		};
 
 		vin13: video@e6efd000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6efd000 0 0x1000>;
 			interrupts = <GIC_SPI 173 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 811>;
@@ -1560,7 +1654,12 @@
 		};
 
 		vin14: video@e6efe000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6efe000 0 0x1000>;
 			interrupts = <GIC_SPI 174 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 812>;
@@ -1588,7 +1687,12 @@
 		};
 
 		vin15: video@e6eff000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6eff000 0 0x1000>;
 			interrupts = <GIC_SPI 175 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 813>;
@@ -1616,7 +1720,12 @@
 		};
 
 		vin16: video@e6ed0000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6ed0000 0 0x1000>;
 			interrupts = <GIC_SPI 176 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 814>;
@@ -1644,7 +1753,12 @@
 		};
 
 		vin17: video@e6ed1000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6ed1000 0 0x1000>;
 			interrupts = <GIC_SPI 177 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 815>;
@@ -1672,7 +1786,12 @@
 		};
 
 		vin18: video@e6ed2000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6ed2000 0 0x1000>;
 			interrupts = <GIC_SPI 178 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 816>;
@@ -1700,7 +1819,12 @@
 		};
 
 		vin19: video@e6ed3000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6ed3000 0 0x1000>;
 			interrupts = <GIC_SPI 179 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 817>;
@@ -1728,7 +1852,12 @@
 		};
 
 		vin20: video@e6ed4000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6ed4000 0 0x1000>;
 			interrupts = <GIC_SPI 180 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 818>;
@@ -1756,7 +1885,12 @@
 		};
 
 		vin21: video@e6ed5000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6ed5000 0 0x1000>;
 			interrupts = <GIC_SPI 181 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 819>;
@@ -1784,7 +1918,12 @@
 		};
 
 		vin22: video@e6ed6000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6ed6000 0 0x1000>;
 			interrupts = <GIC_SPI 182 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 820>;
@@ -1812,7 +1951,12 @@
 		};
 
 		vin23: video@e6ed7000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6ed7000 0 0x1000>;
 			interrupts = <GIC_SPI 183 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 821>;
@@ -1840,7 +1984,12 @@
 		};
 
 		vin24: video@e6ed8000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6ed8000 0 0x1000>;
 			interrupts = <GIC_SPI 184 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 822>;
@@ -1868,7 +2017,12 @@
 		};
 
 		vin25: video@e6ed9000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6ed9000 0 0x1000>;
 			interrupts = <GIC_SPI 185 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 823>;
@@ -1896,7 +2050,12 @@
 		};
 
 		vin26: video@e6eda000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6eda000 0 0x1000>;
 			interrupts = <GIC_SPI 186 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 824>;
@@ -1924,7 +2083,12 @@
 		};
 
 		vin27: video@e6edb000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6edb000 0 0x1000>;
 			interrupts = <GIC_SPI 187 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 825>;
@@ -1952,7 +2116,12 @@
 		};
 
 		vin28: video@e6edc000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6edc000 0 0x1000>;
 			interrupts = <GIC_SPI 188 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 826>;
@@ -1980,7 +2149,12 @@
 		};
 
 		vin29: video@e6edd000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6edd000 0 0x1000>;
 			interrupts = <GIC_SPI 189 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 827>;
@@ -2008,7 +2182,12 @@
 		};
 
 		vin30: video@e6ede000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6ede000 0 0x1000>;
 			interrupts = <GIC_SPI 190 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 828>;
@@ -2036,7 +2215,12 @@
 		};
 
 		vin31: video@e6edf000 {
+<<<<<<< HEAD
 			compatible = "renesas,vin-r8a779a0";
+=======
+			compatible = "renesas,vin-r8a779a0",
+				     "renesas,rcar-gen4-vin";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xe6edf000 0 0x1000>;
 			interrupts = <GIC_SPI 191 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 829>;
@@ -2096,6 +2280,17 @@
 			resets = <&cpg 709>;
 			#dma-cells = <1>;
 			dma-channels = <16>;
+<<<<<<< HEAD
+=======
+			iommus = <&ipmmu_ds0 0>, <&ipmmu_ds0 1>,
+				 <&ipmmu_ds0 2>, <&ipmmu_ds0 3>,
+				 <&ipmmu_ds0 4>, <&ipmmu_ds0 5>,
+				 <&ipmmu_ds0 6>, <&ipmmu_ds0 7>,
+				 <&ipmmu_ds0 8>, <&ipmmu_ds0 9>,
+				 <&ipmmu_ds0 10>, <&ipmmu_ds0 11>,
+				 <&ipmmu_ds0 12>, <&ipmmu_ds0 13>,
+				 <&ipmmu_ds0 14>, <&ipmmu_ds0 15>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		dmac2: dma-controller@e7351000 {
@@ -2121,6 +2316,13 @@
 			resets = <&cpg 710>;
 			#dma-cells = <1>;
 			dma-channels = <8>;
+<<<<<<< HEAD
+=======
+			iommus = <&ipmmu_ds0 16>, <&ipmmu_ds0 17>,
+				 <&ipmmu_ds0 18>, <&ipmmu_ds0 19>,
+				 <&ipmmu_ds0 20>, <&ipmmu_ds0 21>,
+				 <&ipmmu_ds0 22>, <&ipmmu_ds0 23>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		mmc0: mmc@ee140000 {
@@ -2278,6 +2480,10 @@
 			clocks = <&cpg CPG_MOD 508>;
 			power-domains = <&sysc R8A779A0_PD_ALWAYS_ON>;
 			resets = <&cpg 508>;
+<<<<<<< HEAD
+=======
+			iommus = <&ipmmu_vi1 6>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		fcpvd1: fcp@fea11000 {
@@ -2286,6 +2492,10 @@
 			clocks = <&cpg CPG_MOD 509>;
 			power-domains = <&sysc R8A779A0_PD_ALWAYS_ON>;
 			resets = <&cpg 509>;
+<<<<<<< HEAD
+=======
+			iommus = <&ipmmu_vi1 7>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		vspd0: vsp@fea20000 {
@@ -2449,7 +2659,12 @@
 		};
 
 		isp0: isp@fed00000 {
+<<<<<<< HEAD
 			compatible = "renesas,r8a779a0-isp";
+=======
+			compatible = "renesas,r8a779a0-isp",
+				     "renesas,rcar-gen4-isp";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xfed00000 0 0x10000>;
 			interrupts = <GIC_SPI 153 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 612>;
@@ -2532,7 +2747,12 @@
 		};
 
 		isp1: isp@fed20000 {
+<<<<<<< HEAD
 			compatible = "renesas,r8a779a0-isp";
+=======
+			compatible = "renesas,r8a779a0-isp",
+				     "renesas,rcar-gen4-isp";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xfed20000 0 0x10000>;
 			interrupts = <GIC_SPI 155 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 613>;
@@ -2615,7 +2835,12 @@
 		};
 
 		isp2: isp@fed30000 {
+<<<<<<< HEAD
 			compatible = "renesas,r8a779a0-isp";
+=======
+			compatible = "renesas,r8a779a0-isp",
+				     "renesas,rcar-gen4-isp";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xfed30000 0 0x10000>;
 			interrupts = <GIC_SPI 157 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 614>;
@@ -2698,7 +2923,12 @@
 		};
 
 		isp3: isp@fed40000 {
+<<<<<<< HEAD
 			compatible = "renesas,r8a779a0-isp";
+=======
+			compatible = "renesas,r8a779a0-isp",
+				     "renesas,rcar-gen4-isp";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0 0xfed40000 0 0x10000>;
 			interrupts = <GIC_SPI 159 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&cpg CPG_MOD 615>;

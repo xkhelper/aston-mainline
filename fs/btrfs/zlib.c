@@ -20,6 +20,11 @@
 #include <linux/refcount.h>
 #include "btrfs_inode.h"
 #include "compression.h"
+<<<<<<< HEAD
+=======
+#include "fs.h"
+#include "subpage.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* workspace buffer size for s390 zlib hardware support */
 #define ZLIB_DFLTCC_BUF_SIZE    (4 * PAGE_SIZE)
@@ -108,6 +113,10 @@ int zlib_compress_folios(struct list_head *ws, struct address_space *mapping,
 	unsigned long len = *total_out;
 	unsigned long nr_dest_folios = *out_folios;
 	const unsigned long max_out = nr_dest_folios * PAGE_SIZE;
+<<<<<<< HEAD
+=======
+	const u64 orig_end = start + len;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	*out_folios = 0;
 	*total_out = 0;
@@ -153,6 +162,13 @@ int zlib_compress_folios(struct list_head *ws, struct address_space *mapping,
 			if (in_buf_folios > 1) {
 				int i;
 
+<<<<<<< HEAD
+=======
+				/* S390 hardware acceleration path, not subpage. */
+				ASSERT(!btrfs_is_subpage(
+						inode_to_fs_info(mapping->host),
+						mapping));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				for (i = 0; i < in_buf_folios; i++) {
 					if (data_in) {
 						kunmap_local(data_in);
@@ -167,9 +183,20 @@ int zlib_compress_folios(struct list_head *ws, struct address_space *mapping,
 					copy_page(workspace->buf + i * PAGE_SIZE,
 						  data_in);
 					start += PAGE_SIZE;
+<<<<<<< HEAD
 				}
 				workspace->strm.next_in = workspace->buf;
 			} else {
+=======
+					workspace->strm.avail_in =
+						(in_buf_folios << PAGE_SHIFT);
+				}
+				workspace->strm.next_in = workspace->buf;
+			} else {
+				unsigned int pg_off;
+				unsigned int cur_len;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				if (data_in) {
 					kunmap_local(data_in);
 					folio_put(in_folio);
@@ -179,12 +206,22 @@ int zlib_compress_folios(struct list_head *ws, struct address_space *mapping,
 						start, &in_folio);
 				if (ret < 0)
 					goto out;
+<<<<<<< HEAD
 				data_in = kmap_local_folio(in_folio, 0);
 				start += PAGE_SIZE;
 				workspace->strm.next_in = data_in;
 			}
 			workspace->strm.avail_in = min(bytes_left,
 						       (unsigned long) workspace->buf_size);
+=======
+				pg_off = offset_in_page(start);
+				cur_len = btrfs_calc_input_length(orig_end, start);
+				data_in = kmap_local_folio(in_folio, pg_off);
+				start += PAGE_SIZE;
+				workspace->strm.next_in = data_in;
+				workspace->strm.avail_in = cur_len;
+			}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		ret = zlib_deflate(&workspace->strm, Z_SYNC_FLUSH);
@@ -380,7 +417,11 @@ done:
 }
 
 int zlib_decompress(struct list_head *ws, const u8 *data_in,
+<<<<<<< HEAD
 		struct page *dest_page, unsigned long dest_pgoff, size_t srclen,
+=======
+		struct folio *dest_folio, unsigned long dest_pgoff, size_t srclen,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		size_t destlen)
 {
 	struct workspace *workspace = list_entry(ws, struct workspace, list);
@@ -408,12 +449,20 @@ int zlib_decompress(struct list_head *ws, const u8 *data_in,
 
 	ret = zlib_inflateInit2(&workspace->strm, wbits);
 	if (unlikely(ret != Z_OK)) {
+<<<<<<< HEAD
 		struct btrfs_inode *inode = BTRFS_I(dest_page->mapping->host);
+=======
+		struct btrfs_inode *inode = folio_to_inode(dest_folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		btrfs_err(inode->root->fs_info,
 		"zlib decompression init failed, error %d root %llu inode %llu offset %llu",
 			  ret, btrfs_root_id(inode->root), btrfs_ino(inode),
+<<<<<<< HEAD
 			  page_offset(dest_page));
+=======
+			  folio_pos(dest_folio));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EIO;
 	}
 
@@ -426,16 +475,28 @@ int zlib_decompress(struct list_head *ws, const u8 *data_in,
 	if (ret != Z_STREAM_END)
 		goto out;
 
+<<<<<<< HEAD
 	memcpy_to_page(dest_page, dest_pgoff, workspace->buf, to_copy);
 
 out:
 	if (unlikely(to_copy != destlen)) {
 		struct btrfs_inode *inode = BTRFS_I(dest_page->mapping->host);
+=======
+	memcpy_to_folio(dest_folio, dest_pgoff, workspace->buf, to_copy);
+
+out:
+	if (unlikely(to_copy != destlen)) {
+		struct btrfs_inode *inode = folio_to_inode(dest_folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		btrfs_err(inode->root->fs_info,
 "zlib decompression failed, error %d root %llu inode %llu offset %llu decompressed %lu expected %zu",
 			  ret, btrfs_root_id(inode->root), btrfs_ino(inode),
+<<<<<<< HEAD
 			  page_offset(dest_page), to_copy, destlen);
+=======
+			  folio_pos(dest_folio), to_copy, destlen);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EIO;
 	} else {
 		ret = 0;
@@ -444,7 +505,11 @@ out:
 	zlib_inflateEnd(&workspace->strm);
 
 	if (unlikely(to_copy < destlen))
+<<<<<<< HEAD
 		memzero_page(dest_page, dest_pgoff + to_copy, destlen - to_copy);
+=======
+		folio_zero_range(dest_folio, dest_pgoff + to_copy, destlen - to_copy);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 

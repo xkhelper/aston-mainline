@@ -914,6 +914,11 @@
 			dmas = <&dma 48>, <&dma 48>;
 			dma-names = "rx", "tx";
 			resets = <&r_ccu RST_R_APB2_I2C>;
+<<<<<<< HEAD
+=======
+			pinctrl-names = "default";
+			pinctrl-0 = <&r_i2c_pins>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 			#address-cells = <1>;
 			#size-cells = <0>;

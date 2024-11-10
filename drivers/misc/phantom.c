@@ -279,7 +279,10 @@ static const struct file_operations phantom_file_ops = {
 	.unlocked_ioctl = phantom_ioctl,
 	.compat_ioctl = phantom_compat_ioctl,
 	.poll = phantom_poll,
+<<<<<<< HEAD
 	.llseek = no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static irqreturn_t phantom_isr(int irq, void *data)

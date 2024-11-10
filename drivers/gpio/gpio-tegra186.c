@@ -13,6 +13,10 @@
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
+=======
+#include <linux/property.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/seq_file.h>
 
 #include <dt-bindings/gpio/tegra186-gpio.h>
@@ -928,7 +932,11 @@ static int tegra186_gpio_probe(struct platform_device *pdev)
 
 	irq = &gpio->gpio.irq;
 	gpio_irq_chip_set_chip(irq, &tegra186_gpio_irq_chip);
+<<<<<<< HEAD
 	irq->fwnode = of_node_to_fwnode(pdev->dev.of_node);
+=======
+	irq->fwnode = dev_fwnode(&pdev->dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	irq->child_to_parent_hwirq = tegra186_gpio_child_to_parent_hwirq;
 	irq->populate_parent_alloc_arg = tegra186_gpio_populate_parent_fwspec;
 	irq->child_offset_to_irq = tegra186_gpio_child_offset_to_irq;

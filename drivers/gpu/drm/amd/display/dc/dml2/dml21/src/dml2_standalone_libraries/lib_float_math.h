@@ -2,7 +2,10 @@
 //
 // Copyright 2024 Advanced Micro Devices, Inc.
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifndef __LIB_FLOAT_MATH_H__
 #define __LIB_FLOAT_MATH_H__
 

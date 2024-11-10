@@ -282,7 +282,10 @@ enum igbvf_state_t {
 
 extern char igbvf_driver_name[];
 
+<<<<<<< HEAD
 void igbvf_check_options(struct igbvf_adapter *);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void igbvf_set_ethtool_ops(struct net_device *);
 
 int igbvf_up(struct igbvf_adapter *);

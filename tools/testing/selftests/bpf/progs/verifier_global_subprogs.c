@@ -7,6 +7,10 @@
 #include "bpf_misc.h"
 #include "xdp_metadata.h"
 #include "bpf_kfuncs.h"
+<<<<<<< HEAD
+=======
+#include "err.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* The compiler may be able to detect the access to uninitialized
    memory in the routines performing out of bound memory accesses and
@@ -331,7 +335,15 @@ SEC("?lsm/bpf")
 __success __log_level(2)
 int BPF_PROG(arg_tag_ctx_lsm)
 {
+<<<<<<< HEAD
 	return tracing_subprog_void(ctx) + tracing_subprog_u64(ctx);
+=======
+	int ret;
+
+	ret = tracing_subprog_void(ctx) + tracing_subprog_u64(ctx);
+	set_if_not_errno_or_zero(ret, -1);
+	return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 SEC("?struct_ops/test_1")

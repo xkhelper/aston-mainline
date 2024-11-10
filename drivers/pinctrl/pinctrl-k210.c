@@ -925,7 +925,10 @@ static int k210_fpioa_probe(struct platform_device *pdev)
 	struct device *dev = &pdev->dev;
 	struct device_node *np = dev->of_node;
 	struct k210_fpioa_data *pdata;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dev_info(dev, "K210 FPIOA pin controller\n");
 
@@ -940,6 +943,7 @@ static int k210_fpioa_probe(struct platform_device *pdev)
 	if (IS_ERR(pdata->fpioa))
 		return PTR_ERR(pdata->fpioa);
 
+<<<<<<< HEAD
 	pdata->clk = devm_clk_get(dev, "ref");
 	if (IS_ERR(pdata->clk))
 		return PTR_ERR(pdata->clk);
@@ -954,19 +958,34 @@ static int k210_fpioa_probe(struct platform_device *pdev)
 		if (ret)
 			goto disable_clk;
 	}
+=======
+	pdata->clk = devm_clk_get_enabled(dev, "ref");
+	if (IS_ERR(pdata->clk))
+		return PTR_ERR(pdata->clk);
+
+	pdata->pclk = devm_clk_get_optional_enabled(dev, "pclk");
+	if (IS_ERR(pdata->pclk))
+		return PTR_ERR(pdata->pclk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pdata->sysctl_map =
 		syscon_regmap_lookup_by_phandle_args(np,
 						"canaan,k210-sysctl-power",
 						1, &pdata->power_offset);
+<<<<<<< HEAD
 	if (IS_ERR(pdata->sysctl_map)) {
 		ret = PTR_ERR(pdata->sysctl_map);
 		goto disable_pclk;
 	}
+=======
+	if (IS_ERR(pdata->sysctl_map))
+		return PTR_ERR(pdata->sysctl_map);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	k210_fpioa_init_ties(pdata);
 
 	pdata->pctl = pinctrl_register(&k210_pinctrl_desc, dev, (void *)pdata);
+<<<<<<< HEAD
 	if (IS_ERR(pdata->pctl)) {
 		ret = PTR_ERR(pdata->pctl);
 		goto disable_pclk;
@@ -980,6 +999,12 @@ disable_clk:
 	clk_disable_unprepare(pdata->clk);
 
 	return ret;
+=======
+	if (IS_ERR(pdata->pctl))
+		return PTR_ERR(pdata->pctl);
+
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct of_device_id k210_fpioa_dt_ids[] = {

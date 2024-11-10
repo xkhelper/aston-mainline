@@ -177,9 +177,16 @@ void process_unaccepted_memory(u64 start, u64 end)
 		   start / unit_size, (end - start) / unit_size);
 }
 
+<<<<<<< HEAD
 void accept_memory(phys_addr_t start, phys_addr_t end)
 {
 	unsigned long range_start, range_end;
+=======
+void accept_memory(phys_addr_t start, unsigned long size)
+{
+	unsigned long range_start, range_end;
+	phys_addr_t end = start + size;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long bitmap_size;
 	u64 unit_size;
 

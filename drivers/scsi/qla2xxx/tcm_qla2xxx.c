@@ -24,7 +24,11 @@
 #include <linux/string.h>
 #include <linux/configfs.h>
 #include <linux/ctype.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <scsi/scsi_host.h>
 #include <target/target_core_base.h>
 #include <target/target_core_fabric.h>

@@ -40,7 +40,11 @@
 #include <linux/crc32.h>
 #include <linux/usb.h>
 #include <linux/timer.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "hid-ids.h"
 
@@ -99,7 +103,11 @@ static const char ghl_ps4_magic_data[] = {
 };
 
 /* PS/3 Motion controller */
+<<<<<<< HEAD
 static u8 motion_rdesc[] = {
+=======
+static const u8 motion_rdesc[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	0x05, 0x01,         /*  Usage Page (Desktop),               */
 	0x09, 0x04,         /*  Usage (Joystick),                   */
 	0xA1, 0x01,         /*  Collection (Application),           */
@@ -195,7 +203,11 @@ static u8 motion_rdesc[] = {
 	0xC0                /*  End Collection                      */
 };
 
+<<<<<<< HEAD
 static u8 ps3remote_rdesc[] = {
+=======
+static const u8 ps3remote_rdesc[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	0x05, 0x01,          /* GUsagePage Generic Desktop */
 	0x09, 0x05,          /* LUsage 0x05 [Game Pad] */
 	0xA1, 0x01,          /* MCollection Application (mouse, keyboard) */
@@ -599,15 +611,25 @@ static int guitar_mapping(struct hid_device *hdev, struct hid_input *hi,
 	return 0;
 }
 
+<<<<<<< HEAD
 static u8 *motion_fixup(struct hid_device *hdev, u8 *rdesc,
 			     unsigned int *rsize)
+=======
+static const u8 *motion_fixup(struct hid_device *hdev, u8 *rdesc,
+			      unsigned int *rsize)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	*rsize = sizeof(motion_rdesc);
 	return motion_rdesc;
 }
 
+<<<<<<< HEAD
 static u8 *ps3remote_fixup(struct hid_device *hdev, u8 *rdesc,
 			     unsigned int *rsize)
+=======
+static const u8 *ps3remote_fixup(struct hid_device *hdev, u8 *rdesc,
+				 unsigned int *rsize)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	*rsize = sizeof(ps3remote_rdesc);
 	return ps3remote_rdesc;
@@ -743,7 +765,11 @@ static int sixaxis_mapping(struct hid_device *hdev, struct hid_input *hi,
 	return -1;
 }
 
+<<<<<<< HEAD
 static u8 *sony_report_fixup(struct hid_device *hdev, u8 *rdesc,
+=======
+static const u8 *sony_report_fixup(struct hid_device *hdev, u8 *rdesc,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		unsigned int *rsize)
 {
 	struct sony_sc *sc = hid_get_drvdata(hdev);

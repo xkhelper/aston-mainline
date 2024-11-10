@@ -205,6 +205,7 @@ static struct kobject erofs_feat = {
 int erofs_register_sysfs(struct super_block *sb)
 {
 	struct erofs_sb_info *sbi = EROFS_SB(sb);
+<<<<<<< HEAD
 	char *name;
 	char *str = NULL;
 	int err;
@@ -233,6 +234,18 @@ int erofs_register_sysfs(struct super_block *sb)
 put_sb_kobj:
 	kobject_put(&sbi->s_kobj);
 	wait_for_completion(&sbi->s_kobj_unregister);
+=======
+	int err;
+
+	sbi->s_kobj.kset = &erofs_root;
+	init_completion(&sbi->s_kobj_unregister);
+	err = kobject_init_and_add(&sbi->s_kobj, &erofs_sb_ktype, NULL, "%s",
+				   sb->s_sysfs_name);
+	if (err) {
+		kobject_put(&sbi->s_kobj);
+		wait_for_completion(&sbi->s_kobj_unregister);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 

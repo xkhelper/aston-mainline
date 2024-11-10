@@ -7,6 +7,10 @@
  * Copyright © 2021 Microsoft Corporation
  */
 
+<<<<<<< HEAD
+=======
+#include <arpa/inet.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <errno.h>
 #include <linux/landlock.h>
 #include <linux/securebits.h>
@@ -14,11 +18,20 @@
 #include <sys/socket.h>
 #include <sys/syscall.h>
 #include <sys/types.h>
+<<<<<<< HEAD
+=======
+#include <sys/un.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <sys/wait.h>
 #include <unistd.h>
 
 #include "../kselftest_harness.h"
 
+<<<<<<< HEAD
+=======
+#define TMP_DIR "tmp"
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifndef __maybe_unused
 #define __maybe_unused __attribute__((__unused__))
 #endif
@@ -226,3 +239,41 @@ enforce_ruleset(struct __test_metadata *const _metadata, const int ruleset_fd)
 		TH_LOG("Failed to enforce ruleset: %s", strerror(errno));
 	}
 }
+<<<<<<< HEAD
+=======
+
+struct protocol_variant {
+	int domain;
+	int type;
+};
+
+struct service_fixture {
+	struct protocol_variant protocol;
+	/* port is also stored in ipv4_addr.sin_port or ipv6_addr.sin6_port */
+	unsigned short port;
+	union {
+		struct sockaddr_in ipv4_addr;
+		struct sockaddr_in6 ipv6_addr;
+		struct {
+			struct sockaddr_un unix_addr;
+			socklen_t unix_addr_len;
+		};
+	};
+};
+
+static pid_t __maybe_unused sys_gettid(void)
+{
+	return syscall(__NR_gettid);
+}
+
+static void __maybe_unused set_unix_address(struct service_fixture *const srv,
+					    const unsigned short index)
+{
+	srv->unix_addr.sun_family = AF_UNIX;
+	sprintf(srv->unix_addr.sun_path,
+		"_selftests-landlock-abstract-unix-tid%d-index%d", sys_gettid(),
+		index);
+	srv->unix_addr_len = SUN_LEN(&srv->unix_addr);
+	srv->unix_addr.sun_path[0] = '\0';
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

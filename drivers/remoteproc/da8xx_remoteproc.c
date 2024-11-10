@@ -239,8 +239,11 @@ static int da8xx_rproc_probe(struct platform_device *pdev)
 	struct da8xx_rproc *drproc;
 	struct rproc *rproc;
 	struct irq_data *irq_data;
+<<<<<<< HEAD
 	struct resource *bootreg_res;
 	struct resource *chipsig_res;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct clk *dsp_clk;
 	struct reset_control *dsp_reset;
 	void __iomem *chipsig;
@@ -258,6 +261,7 @@ static int da8xx_rproc_probe(struct platform_device *pdev)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	bootreg_res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
 						   "host1cfg");
 	bootreg = devm_ioremap_resource(dev, bootreg_res);
@@ -267,6 +271,13 @@ static int da8xx_rproc_probe(struct platform_device *pdev)
 	chipsig_res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
 						   "chipsig");
 	chipsig = devm_ioremap_resource(dev, chipsig_res);
+=======
+	bootreg = devm_platform_ioremap_resource_byname(pdev, "host1cfg");
+	if (IS_ERR(bootreg))
+		return PTR_ERR(bootreg);
+
+	chipsig = devm_platform_ioremap_resource_byname(pdev, "chipsig");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(chipsig))
 		return PTR_ERR(chipsig);
 

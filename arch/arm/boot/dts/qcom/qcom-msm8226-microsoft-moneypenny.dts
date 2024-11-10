@@ -10,6 +10,12 @@
 
 #include "qcom-msm8226-microsoft-common.dtsi"
 
+<<<<<<< HEAD
+=======
+/* This device has no magnetometer */
+/delete-node/ &magnetometer;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 / {
 	model = "Nokia Lumia 630";
 	compatible = "microsoft,moneypenny", "qcom,msm8226";

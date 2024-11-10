@@ -849,6 +849,7 @@ static int enetc_get_ts_info(struct net_device *ndev,
 	if (phc_idx) {
 		info->phc_index = *phc_idx;
 		symbol_put(enetc_phc_index);
+<<<<<<< HEAD
 	} else {
 		info->phc_index = -1;
 	}
@@ -860,10 +861,25 @@ static int enetc_get_ts_info(struct net_device *ndev,
 				SOF_TIMESTAMPING_TX_SOFTWARE |
 				SOF_TIMESTAMPING_RX_SOFTWARE |
 				SOF_TIMESTAMPING_SOFTWARE;
+=======
+	}
+
+	if (!IS_ENABLED(CONFIG_FSL_ENETC_PTP_CLOCK)) {
+		info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE;
+
+		return 0;
+	}
+
+	info->so_timestamping = SOF_TIMESTAMPING_TX_HARDWARE |
+				SOF_TIMESTAMPING_RX_HARDWARE |
+				SOF_TIMESTAMPING_RAW_HARDWARE |
+				SOF_TIMESTAMPING_TX_SOFTWARE;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	info->tx_types = (1 << HWTSTAMP_TX_OFF) |
 			 (1 << HWTSTAMP_TX_ON) |
 			 (1 << HWTSTAMP_TX_ONESTEP_SYNC);
+<<<<<<< HEAD
 	info->rx_filters = (1 << HWTSTAMP_FILTER_NONE) |
 			   (1 << HWTSTAMP_FILTER_ALL);
 #else
@@ -871,6 +887,12 @@ static int enetc_get_ts_info(struct net_device *ndev,
 				SOF_TIMESTAMPING_TX_SOFTWARE |
 				SOF_TIMESTAMPING_SOFTWARE;
 #endif
+=======
+
+	info->rx_filters = (1 << HWTSTAMP_FILTER_NONE) |
+			   (1 << HWTSTAMP_FILTER_ALL);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 

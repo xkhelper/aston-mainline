@@ -55,6 +55,10 @@
 #define SMBIOS_FREQHIGH_OFFSET		0x17
 #define SMBIOS_FREQLOW_MASK		0xFF
 #define SMBIOS_CORE_PACKAGE_OFFSET	0x23
+<<<<<<< HEAD
+=======
+#define SMBIOS_THREAD_PACKAGE_OFFSET	0x25
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define LOONGSON_EFI_ENABLE		(1 << 3)
 
 unsigned long fw_arg0, fw_arg1, fw_arg2;
@@ -125,7 +129,11 @@ static void __init parse_cpu_table(const struct dmi_header *dm)
 	cpu_clock_freq = freq_temp * 1000000;
 
 	loongson_sysconf.cpuname = (void *)dmi_string_parse(dm, dmi_data[16]);
+<<<<<<< HEAD
 	loongson_sysconf.cores_per_package = *(dmi_data + SMBIOS_CORE_PACKAGE_OFFSET);
+=======
+	loongson_sysconf.cores_per_package = *(dmi_data + SMBIOS_THREAD_PACKAGE_OFFSET);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pr_info("CpuClock = %llu\n", cpu_clock_freq);
 }
@@ -603,6 +611,11 @@ void __init setup_arch(char **cmdline_p)
 	arch_mem_init(cmdline_p);
 
 	resource_init();
+<<<<<<< HEAD
+=======
+	jump_label_init(); /* Initialise the static keys for paravirtualization */
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_SMP
 	plat_smp_setup();
 	prefill_possible_map();

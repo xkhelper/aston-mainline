@@ -2360,7 +2360,11 @@ int cayman_init(struct radeon_device *rdev)
 	/* Initialize surface registers */
 	radeon_surface_init(rdev);
 	/* Initialize clocks */
+<<<<<<< HEAD
 	radeon_get_clock_info(rdev->ddev);
+=======
+	radeon_get_clock_info(rdev_to_drm(rdev));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Fence driver */
 	radeon_fence_driver_init(rdev);
 	/* initialize memory controller */

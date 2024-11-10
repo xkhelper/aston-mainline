@@ -36,11 +36,19 @@ int
 nv17_fence_sync(struct nouveau_fence *fence,
 		struct nouveau_channel *prev, struct nouveau_channel *chan)
 {
+<<<<<<< HEAD
 	struct nouveau_cli *cli = (void *)prev->user.client;
 	struct nv10_fence_priv *priv = chan->drm->fence;
 	struct nv10_fence_chan *fctx = chan->fence;
 	struct nvif_push *ppush = prev->chan.push;
 	struct nvif_push *npush = chan->chan.push;
+=======
+	struct nouveau_cli *cli = prev->cli;
+	struct nv10_fence_priv *priv = cli->drm->fence;
+	struct nv10_fence_chan *fctx = chan->fence;
+	struct nvif_push *ppush = &prev->chan.push;
+	struct nvif_push *npush = &chan->chan.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 value;
 	int ret;
 
@@ -76,7 +84,11 @@ nv17_fence_sync(struct nouveau_fence *fence,
 static int
 nv17_fence_context_new(struct nouveau_channel *chan)
 {
+<<<<<<< HEAD
 	struct nv10_fence_priv *priv = chan->drm->fence;
+=======
+	struct nv10_fence_priv *priv = chan->cli->drm->fence;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ttm_resource *reg = priv->bo->bo.resource;
 	struct nv10_fence_chan *fctx;
 	u32 start = reg->start * PAGE_SIZE;
@@ -141,7 +153,11 @@ nv17_fence_create(struct nouveau_drm *drm)
 				nouveau_bo_unpin(priv->bo);
 		}
 		if (ret)
+<<<<<<< HEAD
 			nouveau_bo_ref(NULL, &priv->bo);
+=======
+			nouveau_bo_fini(priv->bo);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (ret) {

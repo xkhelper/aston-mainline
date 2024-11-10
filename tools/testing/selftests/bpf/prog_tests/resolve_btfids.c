@@ -103,7 +103,11 @@ static int resolve_symbols(void)
 
 	btf = btf__parse_elf("btf_data.bpf.o", NULL);
 	if (CHECK(libbpf_get_error(btf), "resolve",
+<<<<<<< HEAD
 		  "Failed to load BTF from btf_data.o\n"))
+=======
+		  "Failed to load BTF from btf_data.bpf.o\n"))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -1;
 
 	nr = btf__type_cnt(btf);

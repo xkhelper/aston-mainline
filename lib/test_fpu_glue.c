@@ -42,7 +42,11 @@ static int __init test_fpu_init(void)
 		return -EINVAL;
 
 	selftest_dir = debugfs_create_dir("selftest_helpers", NULL);
+<<<<<<< HEAD
 	if (!selftest_dir)
+=======
+	if (IS_ERR(selftest_dir))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENOMEM;
 
 	debugfs_create_file_unsafe("test_fpu", 0444, selftest_dir, NULL,

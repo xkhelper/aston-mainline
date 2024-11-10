@@ -93,7 +93,11 @@ static const struct __ufs_qcom_bw_table {
 	[MODE_HS_RB][UFS_HS_G3][UFS_LANE_2] = { 1492582,	204800 },
 	[MODE_HS_RB][UFS_HS_G4][UFS_LANE_2] = { 2915200,	409600 },
 	[MODE_HS_RB][UFS_HS_G5][UFS_LANE_2] = { 5836800,	819200 },
+<<<<<<< HEAD
 	[MODE_MAX][0][0]		    = { 7643136,	307200 },
+=======
+	[MODE_MAX][0][0]		    = { 7643136,	819200 },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void ufs_qcom_get_default_testbus_cfg(struct ufs_qcom_host *host);

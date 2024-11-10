@@ -15,6 +15,10 @@
 
 struct dpll_device;
 struct dpll_pin;
+<<<<<<< HEAD
+=======
+struct dpll_pin_esync;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct dpll_device_ops {
 	int (*mode_get)(const struct dpll_device *dpll, void *dpll_priv,
@@ -83,6 +87,16 @@ struct dpll_pin_ops {
 	int (*ffo_get)(const struct dpll_pin *pin, void *pin_priv,
 		       const struct dpll_device *dpll, void *dpll_priv,
 		       s64 *ffo, struct netlink_ext_ack *extack);
+<<<<<<< HEAD
+=======
+	int (*esync_set)(const struct dpll_pin *pin, void *pin_priv,
+			 const struct dpll_device *dpll, void *dpll_priv,
+			 u64 freq, struct netlink_ext_ack *extack);
+	int (*esync_get)(const struct dpll_pin *pin, void *pin_priv,
+			 const struct dpll_device *dpll, void *dpll_priv,
+			 struct dpll_pin_esync *esync,
+			 struct netlink_ext_ack *extack);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct dpll_pin_frequency {
@@ -111,6 +125,16 @@ struct dpll_pin_phase_adjust_range {
 	s32 max;
 };
 
+<<<<<<< HEAD
+=======
+struct dpll_pin_esync {
+	u64 freq;
+	const struct dpll_pin_frequency *range;
+	u8 range_num;
+	u8 pulse;
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct dpll_pin_properties {
 	const char *board_label;
 	const char *panel_label;

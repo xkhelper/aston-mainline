@@ -819,8 +819,12 @@ static bool is_number(const char *str)
 	return errno == 0 && end_ptr != str;
 }
 
+<<<<<<< HEAD
 static int check_parse_id(const char *id, struct parse_events_error *error,
 			  struct perf_pmu *fake_pmu)
+=======
+static int check_parse_id(const char *id, struct parse_events_error *error)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct evlist *evlist;
 	int ret;
@@ -841,7 +845,11 @@ static int check_parse_id(const char *id, struct parse_events_error *error,
 	for (cur = strchr(dup, '@') ; cur; cur = strchr(++cur, '@'))
 		*cur = '/';
 
+<<<<<<< HEAD
 	ret = __parse_events(evlist, dup, /*pmu_filter=*/NULL, error, fake_pmu,
+=======
+	ret = __parse_events(evlist, dup, /*pmu_filter=*/NULL, error, /*fake_pmu=*/true,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     /*warn_if_reordered=*/true, /*fake_tp=*/false);
 	free(dup);
 
@@ -855,7 +863,11 @@ static int check_parse_fake(const char *id)
 	int ret;
 
 	parse_events_error__init(&error);
+<<<<<<< HEAD
 	ret = check_parse_id(id, &error, &perf_pmu__fake);
+=======
+	ret = check_parse_id(id, &error);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	parse_events_error__exit(&error);
 	return ret;
 }
@@ -1051,9 +1063,14 @@ static int test__parsing_fake_callback(const struct pmu_metric *pm,
 }
 
 /*
+<<<<<<< HEAD
  * Parse all the metrics for current architecture,
  * or all defined cpus via the 'fake_pmu'
  * in parse_events.
+=======
+ * Parse all the metrics for current architecture, or all defined cpus via the
+ * 'fake_pmu' in parse_events.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static int test__parsing_fake(struct test_suite *test __maybe_unused,
 			      int subtest __maybe_unused)

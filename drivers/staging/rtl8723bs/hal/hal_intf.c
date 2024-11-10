@@ -5,7 +5,10 @@
  *
  ******************************************************************************/
 #include <drv_types.h>
+<<<<<<< HEAD
 #include <rtw_debug.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <hal_data.h>
 
 void rtw_hal_chip_configure(struct adapter *padapter)
@@ -160,12 +163,15 @@ void rtw_hal_set_odm_var(struct adapter *padapter, enum hal_odm_variable eVariab
 		padapter->HalFunc.SetHalODMVarHandler(padapter, eVariable, pValue1, bSet);
 }
 
+<<<<<<< HEAD
 void rtw_hal_get_odm_var(struct adapter *padapter, enum hal_odm_variable eVariable, void *pValue1, void *pValue2)
 {
 	if (padapter->HalFunc.GetHalODMVarHandler)
 		padapter->HalFunc.GetHalODMVarHandler(padapter, eVariable, pValue1, pValue2);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void rtw_hal_enable_interrupt(struct adapter *padapter)
 {
 	if (padapter->HalFunc.enable_interrupt)

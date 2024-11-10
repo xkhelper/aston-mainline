@@ -652,7 +652,10 @@ static const struct file_operations etb_fops = {
 	.open		= etb_open,
 	.read		= etb_read,
 	.release	= etb_release,
+<<<<<<< HEAD
 	.llseek		= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct attribute *coresight_etb_mgmt_attrs[] = {

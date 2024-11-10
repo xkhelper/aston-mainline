@@ -133,7 +133,11 @@ struct da9063_regulator_info {
 	.suspend_vsel_reg = DA9063_REG_V##regl_name##_B, \
 	.mode = BFIELD(DA9063_REG_##regl_name##_CFG, DA9063_BUCK_MODE_MASK)
 
+<<<<<<< HEAD
 /* Defines asignment of regulators info table to chip model */
+=======
+/* Defines assignment of regulators info table to chip model */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct da9063_dev_model {
 	const struct da9063_regulator_info	*regulator_info;
 	unsigned int				n_regulators;
@@ -715,7 +719,11 @@ static const struct da9063_regulator_info da9063_regulator_info[] = {
 };
 
 /* Link chip model with regulators info table */
+<<<<<<< HEAD
 static struct da9063_dev_model regulators_models[] = {
+=======
+static const struct da9063_dev_model regulators_models[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{
 		.regulator_info = da9063_regulator_info,
 		.n_regulators = ARRAY_SIZE(da9063_regulator_info),

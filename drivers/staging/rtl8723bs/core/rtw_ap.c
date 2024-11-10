@@ -6,8 +6,12 @@
  ******************************************************************************/
 
 #include <drv_types.h>
+<<<<<<< HEAD
 #include <rtw_debug.h>
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void init_mlme_ap_info(struct adapter *padapter)
 {
@@ -277,7 +281,11 @@ void expire_timeout_chk(struct adapter *padapter)
 		/* switch to correct channel of current network  before issue keep-alive frames */
 		if (rtw_get_oper_ch(padapter) != pmlmeext->cur_channel) {
 			backup_oper_channel = rtw_get_oper_ch(padapter);
+<<<<<<< HEAD
 			SelectChannel(padapter, pmlmeext->cur_channel);
+=======
+			r8723bs_select_channel(padapter, pmlmeext->cur_channel);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		/* issue null data to check sta alive*/
@@ -315,7 +323,11 @@ void expire_timeout_chk(struct adapter *padapter)
 		}
 
 		if (backup_oper_channel > 0) /* back to the original operation channel */
+<<<<<<< HEAD
 			SelectChannel(padapter, backup_oper_channel);
+=======
+			r8723bs_select_channel(padapter, backup_oper_channel);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	associated_clients_update(padapter, updated);

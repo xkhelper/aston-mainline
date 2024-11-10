@@ -136,6 +136,7 @@ struct amc6821_data {
  */
 static int amc6821_get_auto_point_temps(struct regmap *regmap, int channel, u8 *temps)
 {
+<<<<<<< HEAD
 	u32 pwm, regval;
 	int err;
 
@@ -159,6 +160,27 @@ static int amc6821_get_auto_point_temps(struct regmap *regmap, int channel, u8 *
 	regval = 32 >> FIELD_GET(AMC6821_TEMP_SLOPE_MASK, regval);
 	if (regval)
 		temps[2] = temps[1] + DIV_ROUND_CLOSEST(255 - pwm, regval);
+=======
+	u32 regs[] = {
+		AMC6821_REG_DCY_LOW_TEMP,
+		AMC6821_REG_PSV_TEMP,
+		channel ? AMC6821_REG_RTEMP_FAN_CTRL : AMC6821_REG_LTEMP_FAN_CTRL
+	};
+	u8 regvals[3];
+	int slope;
+	int err;
+
+	err = regmap_multi_reg_read(regmap, regs, regvals, 3);
+	if (err)
+		return err;
+	temps[0] = regvals[1];
+	temps[1] = FIELD_GET(AMC6821_TEMP_LIMIT_MASK, regvals[2]) * 4;
+
+	/* slope is 32 >> <slope bits> in °C */
+	slope = 32 >> FIELD_GET(AMC6821_TEMP_SLOPE_MASK, regvals[2]);
+	if (slope)
+		temps[2] = temps[1] + DIV_ROUND_CLOSEST(255 - regvals[0], slope);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else
 		temps[2] = 255;
 

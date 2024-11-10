@@ -3,6 +3,7 @@
  * Copyright (C) 2022 Rafał Miłecki <rafal@milecki.pl>
  */
 
+<<<<<<< HEAD
 #include <linux/crc32.h>
 #include <linux/etherdevice.h>
 #include <linux/if_ether.h>
@@ -10,16 +11,25 @@
 #include <linux/module.h>
 #include <linux/mtd/mtd.h>
 #include <linux/nvmem-consumer.h>
+=======
+#include <linux/mod_devicetable.h>
+#include <linux/module.h>
+#include <linux/mtd/mtd.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/nvmem-provider.h>
 #include <linux/of.h>
 #include <linux/platform_device.h>
 #include <linux/slab.h>
 
+<<<<<<< HEAD
 enum u_boot_env_format {
 	U_BOOT_FORMAT_SINGLE,
 	U_BOOT_FORMAT_REDUNDANT,
 	U_BOOT_FORMAT_BROADCOM,
 };
+=======
+#include "layouts/u-boot-env.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct u_boot_env {
 	struct device *dev;
@@ -29,6 +39,7 @@ struct u_boot_env {
 	struct mtd_info *mtd;
 };
 
+<<<<<<< HEAD
 struct u_boot_env_image_single {
 	__le32 crc32;
 	uint8_t data[];
@@ -47,6 +58,8 @@ struct u_boot_env_image_broadcom {
 	DECLARE_FLEX_ARRAY(uint8_t, data);
 } __packed;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int u_boot_env_read(void *context, unsigned int offset, void *val,
 			   size_t bytes)
 {
@@ -69,6 +82,7 @@ static int u_boot_env_read(void *context, unsigned int offset, void *val,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int u_boot_env_read_post_process_ethaddr(void *context, const char *id, int index,
 						unsigned int offset, void *buf, size_t bytes)
 {
@@ -204,6 +218,8 @@ err_out:
 	return err;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int u_boot_env_probe(struct platform_device *pdev)
 {
 	struct nvmem_config config = {
@@ -235,7 +251,11 @@ static int u_boot_env_probe(struct platform_device *pdev)
 	if (IS_ERR(priv->nvmem))
 		return PTR_ERR(priv->nvmem);
 
+<<<<<<< HEAD
 	return u_boot_env_parse(priv);
+=======
+	return u_boot_env_parse(dev, priv->nvmem, priv->format);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct of_device_id u_boot_env_of_match_table[] = {

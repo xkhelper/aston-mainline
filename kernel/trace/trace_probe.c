@@ -276,7 +276,11 @@ int traceprobe_parse_event_name(const char **pevent, const char **pgroup,
 		}
 		trace_probe_log_err(offset, NO_EVENT_NAME);
 		return -EINVAL;
+<<<<<<< HEAD
 	} else if (len > MAX_EVENT_NAME_LEN) {
+=======
+	} else if (len >= MAX_EVENT_NAME_LEN) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		trace_probe_log_err(offset, EVENT_TOO_LONG);
 		return -EINVAL;
 	}

@@ -99,7 +99,10 @@ static ssize_t pnv_eeh_ei_write(struct file *filp,
 
 static const struct file_operations pnv_eeh_ei_fops = {
 	.open	= simple_open,
+<<<<<<< HEAD
 	.llseek	= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.write	= pnv_eeh_ei_write,
 };
 
@@ -860,7 +863,11 @@ static int pnv_eeh_bridge_reset(struct pci_dev *pdev, int option)
 	int64_t rc;
 
 	/* Hot reset to the bus if firmware cannot handle */
+<<<<<<< HEAD
 	if (!dn || !of_get_property(dn, "ibm,reset-by-firmware", NULL))
+=======
+	if (!dn || !of_property_present(dn, "ibm,reset-by-firmware"))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return __pnv_eeh_bridge_reset(pdev, option);
 
 	pr_debug("%s: FW reset PCI bus %04x:%02x with option %d\n",

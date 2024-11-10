@@ -17,6 +17,10 @@
 #include "openclose.h"
 #include "rsrc.h"
 #include "memmap.h"
+<<<<<<< HEAD
+=======
+#include "register.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct io_rsrc_update {
 	struct file			*file;
@@ -37,7 +41,11 @@ static int io_sqe_buffer_register(struct io_ring_ctx *ctx, struct iovec *iov,
 static const struct io_mapped_ubuf dummy_ubuf = {
 	/* set invalid range, so io_import_fixed() fails meeting it */
 	.ubuf = -1UL,
+<<<<<<< HEAD
 	.ubuf_end = 0,
+=======
+	.len = UINT_MAX,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 int __io_account_mem(struct user_struct *user, unsigned long nr_pages)
@@ -114,14 +122,24 @@ static void io_buffer_unmap(struct io_ring_ctx *ctx, struct io_mapped_ubuf **slo
 	struct io_mapped_ubuf *imu = *slot;
 	unsigned int i;
 
+<<<<<<< HEAD
 	if (imu != &dummy_ubuf) {
+=======
+	*slot = NULL;
+	if (imu != &dummy_ubuf) {
+		if (!refcount_dec_and_test(&imu->refs))
+			return;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		for (i = 0; i < imu->nr_bvecs; i++)
 			unpin_user_page(imu->bvec[i].bv_page);
 		if (imu->acct_pages)
 			io_unaccount_mem(ctx, imu->acct_pages);
 		kvfree(imu);
 	}
+<<<<<<< HEAD
 	*slot = NULL;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void io_rsrc_put_work(struct io_rsrc_node *node)
@@ -855,6 +873,101 @@ static int io_buffer_account_pin(struct io_ring_ctx *ctx, struct page **pages,
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static bool io_do_coalesce_buffer(struct page ***pages, int *nr_pages,
+				struct io_imu_folio_data *data, int nr_folios)
+{
+	struct page **page_array = *pages, **new_array = NULL;
+	int nr_pages_left = *nr_pages, i, j;
+
+	/* Store head pages only*/
+	new_array = kvmalloc_array(nr_folios, sizeof(struct page *),
+					GFP_KERNEL);
+	if (!new_array)
+		return false;
+
+	new_array[0] = compound_head(page_array[0]);
+	/*
+	 * The pages are bound to the folio, it doesn't
+	 * actually unpin them but drops all but one reference,
+	 * which is usually put down by io_buffer_unmap().
+	 * Note, needs a better helper.
+	 */
+	if (data->nr_pages_head > 1)
+		unpin_user_pages(&page_array[1], data->nr_pages_head - 1);
+
+	j = data->nr_pages_head;
+	nr_pages_left -= data->nr_pages_head;
+	for (i = 1; i < nr_folios; i++) {
+		unsigned int nr_unpin;
+
+		new_array[i] = page_array[j];
+		nr_unpin = min_t(unsigned int, nr_pages_left - 1,
+					data->nr_pages_mid - 1);
+		if (nr_unpin)
+			unpin_user_pages(&page_array[j+1], nr_unpin);
+		j += data->nr_pages_mid;
+		nr_pages_left -= data->nr_pages_mid;
+	}
+	kvfree(page_array);
+	*pages = new_array;
+	*nr_pages = nr_folios;
+	return true;
+}
+
+static bool io_try_coalesce_buffer(struct page ***pages, int *nr_pages,
+					 struct io_imu_folio_data *data)
+{
+	struct page **page_array = *pages;
+	struct folio *folio = page_folio(page_array[0]);
+	unsigned int count = 1, nr_folios = 1;
+	int i;
+
+	if (*nr_pages <= 1)
+		return false;
+
+	data->nr_pages_mid = folio_nr_pages(folio);
+	if (data->nr_pages_mid == 1)
+		return false;
+
+	data->folio_shift = folio_shift(folio);
+	/*
+	 * Check if pages are contiguous inside a folio, and all folios have
+	 * the same page count except for the head and tail.
+	 */
+	for (i = 1; i < *nr_pages; i++) {
+		if (page_folio(page_array[i]) == folio &&
+			page_array[i] == page_array[i-1] + 1) {
+			count++;
+			continue;
+		}
+
+		if (nr_folios == 1) {
+			if (folio_page_idx(folio, page_array[i-1]) !=
+				data->nr_pages_mid - 1)
+				return false;
+
+			data->nr_pages_head = count;
+		} else if (count != data->nr_pages_mid) {
+			return false;
+		}
+
+		folio = page_folio(page_array[i]);
+		if (folio_size(folio) != (1UL << data->folio_shift) ||
+			folio_page_idx(folio, page_array[i]) != 0)
+			return false;
+
+		count = 1;
+		nr_folios++;
+	}
+	if (nr_folios == 1)
+		data->nr_pages_head = count;
+
+	return io_do_coalesce_buffer(pages, nr_pages, data, nr_folios);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int io_sqe_buffer_register(struct io_ring_ctx *ctx, struct iovec *iov,
 				  struct io_mapped_ubuf **pimu,
 				  struct page **last_hpage)
@@ -864,7 +977,12 @@ static int io_sqe_buffer_register(struct io_ring_ctx *ctx, struct iovec *iov,
 	unsigned long off;
 	size_t size;
 	int ret, nr_pages, i;
+<<<<<<< HEAD
 	struct folio *folio = NULL;
+=======
+	struct io_imu_folio_data data;
+	bool coalesced;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	*pimu = (struct io_mapped_ubuf *)&dummy_ubuf;
 	if (!iov->iov_base)
@@ -879,6 +997,7 @@ static int io_sqe_buffer_register(struct io_ring_ctx *ctx, struct iovec *iov,
 		goto done;
 	}
 
+<<<<<<< HEAD
 	/* If it's a huge page, try to coalesce them into a single bvec entry */
 	if (nr_pages > 1) {
 		folio = page_folio(pages[0]);
@@ -904,6 +1023,10 @@ static int io_sqe_buffer_register(struct io_ring_ctx *ctx, struct iovec *iov,
 			nr_pages = 1;
 		}
 	}
+=======
+	/* If it's huge page(s), try to coalesce them into fewer bvec entries */
+	coalesced = io_try_coalesce_buffer(&pages, &nr_pages, &data);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	imu = kvmalloc(struct_size(imu, bvec, nr_pages), GFP_KERNEL);
 	if (!imu)
@@ -915,6 +1038,7 @@ static int io_sqe_buffer_register(struct io_ring_ctx *ctx, struct iovec *iov,
 		goto done;
 	}
 
+<<<<<<< HEAD
 	off = (unsigned long) iov->iov_base & ~PAGE_MASK;
 	size = iov->iov_len;
 	/* store original address for later verification */
@@ -932,6 +1056,25 @@ static int io_sqe_buffer_register(struct io_ring_ctx *ctx, struct iovec *iov,
 		size_t vec_len;
 
 		vec_len = min_t(size_t, size, PAGE_SIZE - off);
+=======
+	size = iov->iov_len;
+	/* store original address for later verification */
+	imu->ubuf = (unsigned long) iov->iov_base;
+	imu->len = iov->iov_len;
+	imu->nr_bvecs = nr_pages;
+	imu->folio_shift = PAGE_SHIFT;
+	if (coalesced)
+		imu->folio_shift = data.folio_shift;
+	refcount_set(&imu->refs, 1);
+	off = (unsigned long) iov->iov_base & ((1UL << imu->folio_shift) - 1);
+	*pimu = imu;
+	ret = 0;
+
+	for (i = 0; i < nr_pages; i++) {
+		size_t vec_len;
+
+		vec_len = min_t(size_t, size, (1UL << imu->folio_shift) - off);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		bvec_set_page(&imu->bvec[i], pages[i], vec_len, off);
 		off = 0;
 		size -= vec_len;
@@ -1024,7 +1167,11 @@ int io_import_fixed(int ddir, struct iov_iter *iter,
 	if (unlikely(check_add_overflow(buf_addr, (u64)len, &buf_end)))
 		return -EFAULT;
 	/* not inside the mapped region */
+<<<<<<< HEAD
 	if (unlikely(buf_addr < imu->ubuf || buf_end > imu->ubuf_end))
+=======
+	if (unlikely(buf_addr < imu->ubuf || buf_end > (imu->ubuf + imu->len)))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EFAULT;
 
 	/*
@@ -1042,23 +1189,34 @@ int io_import_fixed(int ddir, struct iov_iter *iter,
 		 * we know that:
 		 *
 		 * 1) it's a BVEC iter, we set it up
+<<<<<<< HEAD
 		 * 2) all bvecs are PAGE_SIZE in size, except potentially the
+=======
+		 * 2) all bvecs are the same in size, except potentially the
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 *    first and last bvec
 		 *
 		 * So just find our index, and adjust the iterator afterwards.
 		 * If the offset is within the first bvec (or the whole first
 		 * bvec, just use iov_iter_advance(). This makes it easier
 		 * since we can just skip the first segment, which may not
+<<<<<<< HEAD
 		 * be PAGE_SIZE aligned.
+=======
+		 * be folio_size aligned.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 */
 		const struct bio_vec *bvec = imu->bvec;
 
 		if (offset < bvec->bv_len) {
+<<<<<<< HEAD
 			/*
 			 * Note, huge pages buffers consists of one large
 			 * bvec entry and should always go this way. The other
 			 * branch doesn't expect non PAGE_SIZE'd chunks.
 			 */
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			iter->bvec = bvec;
 			iter->count -= offset;
 			iter->iov_offset = offset;
@@ -1067,14 +1225,116 @@ int io_import_fixed(int ddir, struct iov_iter *iter,
 
 			/* skip first vec */
 			offset -= bvec->bv_len;
+<<<<<<< HEAD
 			seg_skip = 1 + (offset >> PAGE_SHIFT);
+=======
+			seg_skip = 1 + (offset >> imu->folio_shift);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			iter->bvec = bvec + seg_skip;
 			iter->nr_segs -= seg_skip;
 			iter->count -= bvec->bv_len + offset;
+<<<<<<< HEAD
 			iter->iov_offset = offset & ~PAGE_MASK;
+=======
+			iter->iov_offset = offset & ((1UL << imu->folio_shift) - 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
 	return 0;
 }
+<<<<<<< HEAD
+=======
+
+static int io_clone_buffers(struct io_ring_ctx *ctx, struct io_ring_ctx *src_ctx)
+{
+	struct io_mapped_ubuf **user_bufs;
+	struct io_rsrc_data *data;
+	int i, ret, nbufs;
+
+	/*
+	 * Drop our own lock here. We'll setup the data we need and reference
+	 * the source buffers, then re-grab, check, and assign at the end.
+	 */
+	mutex_unlock(&ctx->uring_lock);
+
+	mutex_lock(&src_ctx->uring_lock);
+	ret = -ENXIO;
+	nbufs = src_ctx->nr_user_bufs;
+	if (!nbufs)
+		goto out_unlock;
+	ret = io_rsrc_data_alloc(ctx, IORING_RSRC_BUFFER, NULL, nbufs, &data);
+	if (ret)
+		goto out_unlock;
+
+	ret = -ENOMEM;
+	user_bufs = kcalloc(nbufs, sizeof(*ctx->user_bufs), GFP_KERNEL);
+	if (!user_bufs)
+		goto out_free_data;
+
+	for (i = 0; i < nbufs; i++) {
+		struct io_mapped_ubuf *src = src_ctx->user_bufs[i];
+
+		if (src != &dummy_ubuf)
+			refcount_inc(&src->refs);
+		user_bufs[i] = src;
+	}
+
+	/* Have a ref on the bufs now, drop src lock and re-grab our own lock */
+	mutex_unlock(&src_ctx->uring_lock);
+	mutex_lock(&ctx->uring_lock);
+	if (!ctx->user_bufs) {
+		ctx->user_bufs = user_bufs;
+		ctx->buf_data = data;
+		ctx->nr_user_bufs = nbufs;
+		return 0;
+	}
+
+	/* someone raced setting up buffers, dump ours */
+	for (i = 0; i < nbufs; i++)
+		io_buffer_unmap(ctx, &user_bufs[i]);
+	io_rsrc_data_free(data);
+	kfree(user_bufs);
+	return -EBUSY;
+out_free_data:
+	io_rsrc_data_free(data);
+out_unlock:
+	mutex_unlock(&src_ctx->uring_lock);
+	mutex_lock(&ctx->uring_lock);
+	return ret;
+}
+
+/*
+ * Copy the registered buffers from the source ring whose file descriptor
+ * is given in the src_fd to the current ring. This is identical to registering
+ * the buffers with ctx, except faster as mappings already exist.
+ *
+ * Since the memory is already accounted once, don't account it again.
+ */
+int io_register_clone_buffers(struct io_ring_ctx *ctx, void __user *arg)
+{
+	struct io_uring_clone_buffers buf;
+	bool registered_src;
+	struct file *file;
+	int ret;
+
+	if (ctx->user_bufs || ctx->nr_user_bufs)
+		return -EBUSY;
+	if (copy_from_user(&buf, arg, sizeof(buf)))
+		return -EFAULT;
+	if (buf.flags & ~IORING_REGISTER_SRC_REGISTERED)
+		return -EINVAL;
+	if (memchr_inv(buf.pad, 0, sizeof(buf.pad)))
+		return -EINVAL;
+
+	registered_src = (buf.flags & IORING_REGISTER_SRC_REGISTERED) != 0;
+	file = io_uring_register_get_file(buf.src_fd, registered_src);
+	if (IS_ERR(file))
+		return PTR_ERR(file);
+	ret = io_clone_buffers(ctx, file->private_data);
+	if (!registered_src)
+		fput(file);
+	return ret;
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -245,7 +245,13 @@ static int mt7915_add_interface(struct ieee80211_hw *hw,
 	dev->mt76.vif_mask |= BIT_ULL(mvif->mt76.idx);
 	phy->omac_mask |= BIT_ULL(mvif->mt76.omac_idx);
 
+<<<<<<< HEAD
 	idx = MT7915_WTBL_RESERVED - mvif->mt76.idx;
+=======
+	idx = mt76_wcid_alloc(dev->mt76.wcid_mask, mt7915_wtbl_size(dev));
+	if (idx < 0)
+		return -ENOSPC;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	INIT_LIST_HEAD(&mvif->sta.rc_list);
 	INIT_LIST_HEAD(&mvif->sta.wcid.poll_list);
@@ -272,7 +278,11 @@ static int mt7915_add_interface(struct ieee80211_hw *hw,
 	memset(&mvif->cap, -1, sizeof(mvif->cap));
 
 	mt7915_mcu_add_bss_info(phy, vif, true);
+<<<<<<< HEAD
 	mt7915_mcu_add_sta(dev, vif, NULL, true);
+=======
+	mt7915_mcu_add_sta(dev, vif, NULL, CONN_STATE_PORT_SECURE, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rcu_assign_pointer(dev->mt76.wcid[idx], &mvif->sta.wcid);
 
 out:
@@ -291,7 +301,12 @@ static void mt7915_remove_interface(struct ieee80211_hw *hw,
 	int idx = msta->wcid.idx;
 
 	mt7915_mcu_add_bss_info(phy, vif, false);
+<<<<<<< HEAD
 	mt7915_mcu_add_sta(dev, vif, NULL, false);
+=======
+	mt7915_mcu_add_sta(dev, vif, NULL, CONN_STATE_DISCONNECT, false);
+	mt76_wcid_mask_clear(dev->mt76.wcid_mask, mvif->sta.wcid.idx);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_lock(&dev->mt76.mutex);
 	mt76_testmode_reset(phy->mt76, true);
@@ -317,6 +332,7 @@ static void mt7915_remove_interface(struct ieee80211_hw *hw,
 	mt76_wcid_cleanup(&dev->mt76, &msta->wcid);
 }
 
+<<<<<<< HEAD
 int mt7915_set_channel(struct mt7915_phy *phy)
 {
 	struct mt7915_dev *dev = phy->dev;
@@ -329,6 +345,14 @@ int mt7915_set_channel(struct mt7915_phy *phy)
 
 	mt76_set_channel(phy->mt76);
 
+=======
+int mt7915_set_channel(struct mt76_phy *mphy)
+{
+	struct mt7915_phy *phy = mphy->priv;
+	struct mt7915_dev *dev = phy->dev;
+	int ret;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (dev->cal) {
 		ret = mt7915_mcu_apply_tx_dpd(phy);
 		if (ret)
@@ -347,11 +371,14 @@ int mt7915_set_channel(struct mt7915_phy *phy)
 	phy->noise = 0;
 
 out:
+<<<<<<< HEAD
 	clear_bit(MT76_RESET, &phy->mt76->state);
 	mutex_unlock(&dev->mt76.mutex);
 
 	mt76_txq_schedule_all(phy->mt76);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!mt76_testmode_enabled(phy->mt76))
 		ieee80211_queue_delayed_work(phy->mt76->hw,
 					     &phy->mt76->mac_work,
@@ -374,6 +401,12 @@ static int mt7915_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
 	int idx = key->keyidx;
 	int err = 0;
 
+<<<<<<< HEAD
+=======
+	if (sta && !wcid->sta)
+		return -EOPNOTSUPP;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* The hardware does not support per-STA RX GTK, fallback
 	 * to software mode for these.
 	 */
@@ -464,11 +497,17 @@ static int mt7915_config(struct ieee80211_hw *hw, u32 changed)
 			mutex_unlock(&dev->mt76.mutex);
 		}
 #endif
+<<<<<<< HEAD
 		ieee80211_stop_queues(hw);
 		ret = mt7915_set_channel(phy);
 		if (ret)
 			return ret;
 		ieee80211_wake_queues(hw);
+=======
+		ret = mt76_update_channel(phy->mt76);
+		if (ret)
+			return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (changed & (IEEE80211_CONF_CHANGE_POWER |
@@ -564,8 +603,12 @@ static void mt7915_configure_filter(struct ieee80211_hw *hw,
 
 	MT76_FILTER(CONTROL, MT_WF_RFCR_DROP_CTS |
 			     MT_WF_RFCR_DROP_RTS |
+<<<<<<< HEAD
 			     MT_WF_RFCR_DROP_CTL_RSV |
 			     MT_WF_RFCR_DROP_NDPA);
+=======
+			     MT_WF_RFCR_DROP_CTL_RSV);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	*total_flags = flags;
 	rxfilter = phy->rxfilter;
@@ -633,7 +676,11 @@ static void mt7915_bss_info_changed(struct ieee80211_hw *hw,
 	if (set_bss_info == 1)
 		mt7915_mcu_add_bss_info(phy, vif, true);
 	if (set_sta == 1)
+<<<<<<< HEAD
 		mt7915_mcu_add_sta(dev, vif, NULL, true);
+=======
+		mt7915_mcu_add_sta(dev, vif, NULL, CONN_STATE_PORT_SECURE, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (changed & BSS_CHANGED_ERP_CTS_PROT)
 		mt7915_mac_enable_rtscts(dev, vif, info->use_cts_prot);
@@ -668,7 +715,11 @@ static void mt7915_bss_info_changed(struct ieee80211_hw *hw,
 	if (set_bss_info == 0)
 		mt7915_mcu_add_bss_info(phy, vif, false);
 	if (set_sta == 0)
+<<<<<<< HEAD
 		mt7915_mcu_add_sta(dev, vif, NULL, false);
+=======
+		mt7915_mcu_add_sta(dev, vif, NULL, CONN_STATE_DISCONNECT, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_unlock(&dev->mt76.mutex);
 }
@@ -706,7 +757,11 @@ mt7915_start_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 	err = mt7915_mcu_add_bss_info(phy, vif, true);
 	if (err)
 		goto out;
+<<<<<<< HEAD
 	err = mt7915_mcu_add_sta(dev, vif, NULL, true);
+=======
+	err = mt7915_mcu_add_sta(dev, vif, NULL, CONN_STATE_PORT_SECURE, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out:
 	mutex_unlock(&dev->mt76.mutex);
 
@@ -720,7 +775,11 @@ mt7915_stop_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 	struct mt7915_dev *dev = mt7915_hw_dev(hw);
 
 	mutex_lock(&dev->mt76.mutex);
+<<<<<<< HEAD
 	mt7915_mcu_add_sta(dev, vif, NULL, false);
+=======
+	mt7915_mcu_add_sta(dev, vif, NULL, CONN_STATE_DISCONNECT, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_unlock(&dev->mt76.mutex);
 }
 
@@ -743,8 +802,12 @@ int mt7915_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
 	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
 	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
 	bool ext_phy = mvif->phy != &dev->phy;
+<<<<<<< HEAD
 	int ret, idx;
 	u32 addr;
+=======
+	int idx;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	idx = mt76_wcid_alloc(dev->mt76.wcid_mask, MT7915_WTBL_STA);
 	if (idx < 0)
@@ -753,16 +816,23 @@ int mt7915_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
 	INIT_LIST_HEAD(&msta->rc_list);
 	INIT_LIST_HEAD(&msta->wcid.poll_list);
 	msta->vif = mvif;
+<<<<<<< HEAD
 	msta->wcid.sta = 1;
 	msta->wcid.idx = idx;
 	msta->wcid.phy_idx = ext_phy;
 	msta->wcid.tx_info |= MT_WCID_TX_INFO_SET;
+=======
+	msta->wcid.sta_disabled = 1;
+	msta->wcid.idx = idx;
+	msta->wcid.phy_idx = ext_phy;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	msta->jiffies = jiffies;
 
 	ewma_avg_signal_init(&msta->avg_ack_signal);
 
 	mt7915_mac_wtbl_update(dev, idx,
 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
+<<<<<<< HEAD
 
 	ret = mt7915_mcu_add_sta(dev, vif, sta, true);
 	if (ret)
@@ -772,6 +842,54 @@ int mt7915_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
 	mt76_rmw_field(dev, addr, GENMASK(7, 0), 0xa0);
 
 	return mt7915_mcu_add_rate_ctrl(dev, vif, sta, false);
+=======
+	mt7915_mcu_add_sta(dev, vif, sta, CONN_STATE_DISCONNECT, true);
+
+	return 0;
+}
+
+int mt7915_mac_sta_event(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+			 struct ieee80211_sta *sta, enum mt76_sta_event ev)
+{
+	struct mt7915_dev *dev = container_of(mdev, struct mt7915_dev, mt76);
+	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
+	int i, ret;
+	u32 addr;
+
+	switch (ev) {
+	case MT76_STA_EVENT_ASSOC:
+		ret = mt7915_mcu_add_sta(dev, vif, sta, CONN_STATE_CONNECT, true);
+		if (ret)
+			return ret;
+
+		addr = mt7915_mac_wtbl_lmac_addr(dev, msta->wcid.idx, 30);
+		mt76_rmw_field(dev, addr, GENMASK(7, 0), 0xa0);
+
+		ret = mt7915_mcu_add_rate_ctrl(dev, vif, sta, false);
+		if (ret)
+			return ret;
+
+		msta->wcid.tx_info |= MT_WCID_TX_INFO_SET;
+		msta->wcid.sta = 1;
+		msta->wcid.sta_disabled = 0;
+
+		return 0;
+
+	case MT76_STA_EVENT_AUTHORIZE:
+		return mt7915_mcu_add_sta(dev, vif, sta, CONN_STATE_PORT_SECURE, false);
+
+	case MT76_STA_EVENT_DISASSOC:
+		for (i = 0; i < ARRAY_SIZE(msta->twt.flow); i++)
+			mt7915_mac_twt_teardown_flow(dev, msta, i);
+
+		mt7915_mcu_add_sta(dev, vif, sta, CONN_STATE_DISCONNECT, false);
+		msta->wcid.sta_disabled = 1;
+		msta->wcid.sta = 0;
+		return 0;
+	}
+
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void mt7915_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
@@ -779,16 +897,22 @@ void mt7915_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
 {
 	struct mt7915_dev *dev = container_of(mdev, struct mt7915_dev, mt76);
 	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
+<<<<<<< HEAD
 	int i;
 
 	mt7915_mcu_add_sta(dev, vif, sta, false);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mt7915_mac_wtbl_update(dev, msta->wcid.idx,
 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
 
+<<<<<<< HEAD
 	for (i = 0; i < ARRAY_SIZE(msta->twt.flow); i++)
 		mt7915_mac_twt_teardown_flow(dev, msta, i);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_lock_bh(&mdev->sta_poll_lock);
 	if (!list_empty(&msta->wcid.poll_list))
 		list_del_init(&msta->wcid.poll_list);
@@ -896,6 +1020,7 @@ mt7915_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 }
 
 static int
+<<<<<<< HEAD
 mt7915_sta_add(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 	       struct ieee80211_sta *sta)
 {
@@ -912,6 +1037,8 @@ mt7915_sta_remove(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 }
 
 static int
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 mt7915_get_stats(struct ieee80211_hw *hw,
 		 struct ieee80211_low_level_stats *stats)
 {
@@ -1089,8 +1216,12 @@ static void mt7915_sta_statistics(struct ieee80211_hw *hw,
 	struct rate_info *txrate = &msta->wcid.rate;
 	struct rate_info rxrate = {};
 
+<<<<<<< HEAD
 	if (is_mt7915(&phy->dev->mt76) &&
 	    !mt7915_mcu_get_rx_rate(phy, vif, sta, &rxrate)) {
+=======
+	if (!mt7915_mcu_get_rx_rate(phy, vif, sta, &rxrate)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		sinfo->rxrate = rxrate;
 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_BITRATE);
 	}
@@ -1164,6 +1295,13 @@ static void mt7915_sta_rc_update(struct ieee80211_hw *hw,
 {
 	struct mt7915_phy *phy = mt7915_hw_phy(hw);
 	struct mt7915_dev *dev = phy->dev;
+<<<<<<< HEAD
+=======
+	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
+
+	if (!msta->wcid.sta)
+		return;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mt7915_sta_rc_work(&changed, sta);
 	ieee80211_queue_work(hw, &dev->rc_work);
@@ -1207,6 +1345,12 @@ static void mt7915_sta_set_4addr(struct ieee80211_hw *hw,
 	else
 		clear_bit(MT_WCID_FLAG_4ADDR, &msta->wcid.flags);
 
+<<<<<<< HEAD
+=======
+	if (!msta->wcid.sta)
+		return;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mt76_connac_mcu_wtbl_update_hdr_trans(&dev->mt76, vif, sta);
 }
 
@@ -1223,6 +1367,12 @@ static void mt7915_sta_set_decap_offload(struct ieee80211_hw *hw,
 	else
 		clear_bit(MT_WCID_FLAG_HDR_TRANS, &msta->wcid.flags);
 
+<<<<<<< HEAD
+=======
+	if (!msta->wcid.sta)
+		return;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mt76_connac_mcu_wtbl_update_hdr_trans(&dev->mt76, vif, sta);
 }
 
@@ -1579,6 +1729,15 @@ mt7915_twt_teardown_request(struct ieee80211_hw *hw,
 }
 
 static int
+<<<<<<< HEAD
+=======
+mt7915_set_frag_threshold(struct ieee80211_hw *hw, u32 val)
+{
+	return 0;
+}
+
+static int
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 mt7915_set_radar_background(struct ieee80211_hw *hw,
 			    struct cfg80211_chan_def *chandef)
 {
@@ -1660,6 +1819,20 @@ mt7915_net_fill_forward_path(struct ieee80211_hw *hw,
 }
 #endif
 
+<<<<<<< HEAD
+=======
+static void
+mt7915_reconfig_complete(struct ieee80211_hw *hw,
+			 enum ieee80211_reconfig_type reconfig_type)
+{
+	struct mt7915_phy *phy = mt7915_hw_phy(hw);
+
+	ieee80211_wake_queues(hw);
+	ieee80211_queue_delayed_work(hw, &phy->mt76->mac_work,
+				     MT7915_WATCHDOG_TIME);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const struct ieee80211_ops mt7915_ops = {
 	.add_chanctx = ieee80211_emulate_add_chanctx,
 	.remove_chanctx = ieee80211_emulate_remove_chanctx,
@@ -1676,8 +1849,12 @@ const struct ieee80211_ops mt7915_ops = {
 	.bss_info_changed = mt7915_bss_info_changed,
 	.start_ap = mt7915_start_ap,
 	.stop_ap = mt7915_stop_ap,
+<<<<<<< HEAD
 	.sta_add = mt7915_sta_add,
 	.sta_remove = mt7915_sta_remove,
+=======
+	.sta_state = mt76_sta_state,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sta_pre_rcu_remove = mt76_sta_pre_rcu_remove,
 	.sta_rc_update = mt7915_sta_rc_update,
 	.set_key = mt7915_set_key,
@@ -1708,6 +1885,10 @@ const struct ieee80211_ops mt7915_ops = {
 	.sta_set_decap_offload = mt7915_sta_set_decap_offload,
 	.add_twt_setup = mt7915_mac_add_twt_setup,
 	.twt_teardown_request = mt7915_twt_teardown_request,
+<<<<<<< HEAD
+=======
+	.set_frag_threshold = mt7915_set_frag_threshold,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	CFG80211_TESTMODE_CMD(mt76_testmode_cmd)
 	CFG80211_TESTMODE_DUMP(mt76_testmode_dump)
 #ifdef CONFIG_MAC80211_DEBUGFS
@@ -1718,4 +1899,8 @@ const struct ieee80211_ops mt7915_ops = {
 	.net_fill_forward_path = mt7915_net_fill_forward_path,
 	.net_setup_tc = mt76_wed_net_setup_tc,
 #endif
+<<<<<<< HEAD
+=======
+	.reconfig_complete = mt7915_reconfig_complete,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };

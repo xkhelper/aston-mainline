@@ -12,7 +12,11 @@
  */
 
 #include <linux/gfp.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "tpm.h"
 
 enum tpm2_handle_types {
@@ -169,6 +173,12 @@ void tpm2_flush_space(struct tpm_chip *chip)
 	struct tpm_space *space = &chip->work_space;
 	int i;
 
+<<<<<<< HEAD
+=======
+	if (!space)
+		return;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < ARRAY_SIZE(space->context_tbl); i++)
 		if (space->context_tbl[i] && ~space->context_tbl[i])
 			tpm2_flush_context(chip, space->context_tbl[i]);

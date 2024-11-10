@@ -6599,6 +6599,19 @@ static int ath11k_mac_vdev_delete(struct ath11k *ar, struct ath11k_vif *arvif)
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static void ath11k_mac_bcn_tx_work(struct work_struct *work)
+{
+	struct ath11k_vif *arvif = container_of(work, struct ath11k_vif,
+						bcn_tx_work);
+
+	mutex_lock(&arvif->ar->conf_mutex);
+	ath11k_mac_bcn_tx_event(arvif);
+	mutex_unlock(&arvif->ar->conf_mutex);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int ath11k_mac_op_add_interface(struct ieee80211_hw *hw,
 				       struct ieee80211_vif *vif)
 {
@@ -6637,6 +6650,10 @@ static int ath11k_mac_op_add_interface(struct ieee80211_hw *hw,
 	arvif->vif = vif;
 
 	INIT_LIST_HEAD(&arvif->list);
+<<<<<<< HEAD
+=======
+	INIT_WORK(&arvif->bcn_tx_work, ath11k_mac_bcn_tx_work);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	INIT_DELAYED_WORK(&arvif->connection_loss_work,
 			  ath11k_mac_vif_sta_connection_loss_work);
 
@@ -6879,6 +6896,10 @@ static void ath11k_mac_op_remove_interface(struct ieee80211_hw *hw,
 	int i;
 
 	cancel_delayed_work_sync(&arvif->connection_loss_work);
+<<<<<<< HEAD
+=======
+	cancel_work_sync(&arvif->bcn_tx_work);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_lock(&ar->conf_mutex);
 

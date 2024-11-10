@@ -424,7 +424,11 @@ static void seq_line(struct seq_file *m, char c, int offset, int length)
 	for (i = 0; i < offset; i++)
 		seq_puts(m, " ");
 	for (i = 0; i < length; i++)
+<<<<<<< HEAD
 		seq_printf(m, "%c", c);
+=======
+		seq_putc(m, c);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	seq_puts(m, "\n");
 }
 

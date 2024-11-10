@@ -148,7 +148,11 @@ vmxnet3_xdp_xmit_frame(struct vmxnet3_adapter *adapter,
 	} else { /* XDP buffer from page pool */
 		page = virt_to_page(xdpf->data);
 		tbi->dma_addr = page_pool_get_dma_addr(page) +
+<<<<<<< HEAD
 				VMXNET3_XDP_HEADROOM;
+=======
+				(xdpf->data - (void *)xdpf);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dma_sync_single_for_device(&adapter->pdev->dev,
 					   tbi->dma_addr, buf_size,
 					   DMA_TO_DEVICE);

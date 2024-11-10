@@ -1,5 +1,9 @@
 perf-bench-y += builtin-bench.o
 perf-y += builtin-annotate.o
+<<<<<<< HEAD
+=======
+perf-y += builtin-check.o
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 perf-y += builtin-config.o
 perf-y += builtin-diff.o
 perf-y += builtin-evlist.o

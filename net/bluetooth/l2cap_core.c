@@ -4066,6 +4066,7 @@ response:
 static int l2cap_connect_req(struct l2cap_conn *conn,
 			     struct l2cap_cmd_hdr *cmd, u16 cmd_len, u8 *data)
 {
+<<<<<<< HEAD
 	struct hci_dev *hdev = conn->hcon->hdev;
 	struct hci_conn *hcon = conn->hcon;
 
@@ -4077,6 +4078,11 @@ static int l2cap_connect_req(struct l2cap_conn *conn,
 		mgmt_device_connected(hdev, hcon, NULL, 0);
 	hci_dev_unlock(hdev);
 
+=======
+	if (cmd_len < sizeof(struct l2cap_conn_req))
+		return -EPROTO;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	l2cap_connect(conn, cmd, data, L2CAP_CONN_RSP);
 	return 0;
 }

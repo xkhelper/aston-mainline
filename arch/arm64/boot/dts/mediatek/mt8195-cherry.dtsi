@@ -1228,10 +1228,13 @@
 		spi-max-frequency = <3000000>;
 		wakeup-source;
 
+<<<<<<< HEAD
 		keyboard-backlight {
 			compatible = "google,cros-kbd-led-backlight";
 		};
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		i2c_tunnel: i2c-tunnel {
 			compatible = "google,cros-ec-i2c-tunnel";
 			google,remote-bus = <0>;
@@ -1401,9 +1404,17 @@
 &xhci1 {
 	status = "okay";
 
+<<<<<<< HEAD
 	rx-fifo-depth = <3072>;
 	vusb33-supply = <&mt6359_vusb_ldo_reg>;
 	vbus-supply = <&usb_vbus>;
+=======
+	phys = <&u2port1 PHY_TYPE_USB2>;
+	rx-fifo-depth = <3072>;
+	vusb33-supply = <&mt6359_vusb_ldo_reg>;
+	vbus-supply = <&usb_vbus>;
+	mediatek,u3p-dis-msk = <1>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &xhci2 {

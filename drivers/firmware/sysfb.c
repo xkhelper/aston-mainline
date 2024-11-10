@@ -67,9 +67,17 @@ static bool sysfb_unregister(void)
 void sysfb_disable(struct device *dev)
 {
 	struct screen_info *si = &screen_info;
+<<<<<<< HEAD
 
 	mutex_lock(&disable_lock);
 	if (!dev || dev == sysfb_parent_dev(si)) {
+=======
+	struct device *parent;
+
+	mutex_lock(&disable_lock);
+	parent = sysfb_parent_dev(si);
+	if (!dev || !parent || dev == parent) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		sysfb_unregister();
 		disabled = true;
 	}

@@ -75,6 +75,11 @@ additionalProperties: false
 
 examples:
   - |
+<<<<<<< HEAD
+=======
+    #include <dt-bindings/gpio/gpio.h>
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     i2c {
         #address-cells = <1>;
         #size-cells = <0>;
@@ -92,6 +97,11 @@ examples:
             ovdd-supply = <&camera_vddo_1v8>;
             dvdd-supply = <&camera_vddd_1v2>;
 
+<<<<<<< HEAD
+=======
+            reset-gpios = <&gpio 50 GPIO_ACTIVE_LOW>;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
             port {
                 imx335: endpoint {
                     remote-endpoint = <&cam>;

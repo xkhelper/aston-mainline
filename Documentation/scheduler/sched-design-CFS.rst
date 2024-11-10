@@ -8,10 +8,19 @@ CFS Scheduler
 1.  OVERVIEW
 ============
 
+<<<<<<< HEAD
 CFS stands for "Completely Fair Scheduler," and is the new "desktop" process
 scheduler implemented by Ingo Molnar and merged in Linux 2.6.23.  It is the
 replacement for the previous vanilla scheduler's SCHED_OTHER interactivity
 code.
+=======
+CFS stands for "Completely Fair Scheduler," and is the "desktop" process
+scheduler implemented by Ingo Molnar and merged in Linux 2.6.23. When
+originally merged, it was the replacement for the previous vanilla
+scheduler's SCHED_OTHER interactivity code. Nowadays, CFS is making room
+for EEVDF, for which documentation can be found in
+Documentation/scheduler/sched-eevdf.rst.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 80% of CFS's design can be summed up in a single sentence: CFS basically models
 an "ideal, precise multi-tasking CPU" on real hardware.

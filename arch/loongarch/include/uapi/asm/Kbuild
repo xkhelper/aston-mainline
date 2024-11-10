@@ -1,4 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0
 syscall-y += unistd_64.h
+<<<<<<< HEAD
 
 generic-y += kvm_para.h
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

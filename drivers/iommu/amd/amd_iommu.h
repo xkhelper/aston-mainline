@@ -43,9 +43,16 @@ int amd_iommu_enable_faulting(unsigned int cpu);
 extern int amd_iommu_guest_ir;
 extern enum io_pgtable_fmt amd_iommu_pgtable;
 extern int amd_iommu_gpt_level;
+<<<<<<< HEAD
 
 /* Protection domain ops */
 struct protection_domain *protection_domain_alloc(unsigned int type);
+=======
+extern unsigned long amd_iommu_pgsize_bitmap;
+
+/* Protection domain ops */
+struct protection_domain *protection_domain_alloc(unsigned int type, int nid);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void protection_domain_free(struct protection_domain *domain);
 struct iommu_domain *amd_iommu_domain_alloc_sva(struct device *dev,
 						struct mm_struct *mm);
@@ -87,14 +94,20 @@ int amd_iommu_complete_ppr(struct device *dev, u32 pasid, int status, int tag);
 void amd_iommu_flush_all_caches(struct amd_iommu *iommu);
 void amd_iommu_update_and_flush_device_table(struct protection_domain *domain);
 void amd_iommu_domain_update(struct protection_domain *domain);
+<<<<<<< HEAD
 void amd_iommu_dev_update_dte(struct iommu_dev_data *dev_data, bool set);
 void amd_iommu_domain_flush_complete(struct protection_domain *domain);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void amd_iommu_domain_flush_pages(struct protection_domain *domain,
 				  u64 address, size_t size);
 void amd_iommu_dev_flush_pasid_pages(struct iommu_dev_data *dev_data,
 				     ioasid_t pasid, u64 address, size_t size);
+<<<<<<< HEAD
 void amd_iommu_dev_flush_pasid_all(struct iommu_dev_data *dev_data,
 				   ioasid_t pasid);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_IRQ_REMAP
 int amd_iommu_create_irq_domain(struct amd_iommu *iommu);
@@ -121,11 +134,14 @@ static inline bool check_feature2(u64 mask)
 	return (amd_iommu_efr2 & mask);
 }
 
+<<<<<<< HEAD
 static inline int check_feature_gpt_level(void)
 {
 	return ((amd_iommu_efr >> FEATURE_GATS_SHIFT) & FEATURE_GATS_MASK);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline bool amd_iommu_gt_ppr_supported(void)
 {
 	return (check_feature(FEATURE_GT) &&
@@ -143,6 +159,7 @@ static inline void *iommu_phys_to_virt(unsigned long paddr)
 	return phys_to_virt(__sme_clr(paddr));
 }
 
+<<<<<<< HEAD
 static inline
 void amd_iommu_domain_set_pt_root(struct protection_domain *domain, u64 root)
 {
@@ -156,6 +173,8 @@ void amd_iommu_domain_clr_pt_root(struct protection_domain *domain)
 	amd_iommu_domain_set_pt_root(domain, 0);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int get_pci_sbdf_id(struct pci_dev *pdev)
 {
 	int seg = pci_domain_nr(pdev->bus);
@@ -185,7 +204,10 @@ static inline struct protection_domain *to_pdomain(struct iommu_domain *dom)
 }
 
 bool translation_pre_enabled(struct amd_iommu *iommu);
+<<<<<<< HEAD
 bool amd_iommu_is_attach_deferred(struct device *dev);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int __init add_special_device(u8 type, u8 id, u32 *devid, bool cmd_line);
 
 #ifdef CONFIG_DMI

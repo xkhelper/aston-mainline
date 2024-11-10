@@ -49,6 +49,14 @@
 		 */
 		i2c80 = &nvme_m2_0;
 		i2c81 = &nvme_m2_1;
+<<<<<<< HEAD
+=======
+
+		/*
+		 *  i2c bus 82 assigned to OCP slot
+		 */
+		i2c82 = &ocpslot;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	chosen {
@@ -420,6 +428,20 @@
 		reg = <0x70>;
 		i2c-mux-idle-disconnect;
 
+<<<<<<< HEAD
+=======
+		ocpslot: i2c@0 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <0x0>;
+
+			ocpslot_temp: temperature-sensor@1f {
+				compatible = "ti,tmp421";
+				reg = <0x1f>;
+			};
+		};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		nvmeslot_0_7: i2c@3 {
 			#address-cells = <1>;
 			#size-cells = <0>;
@@ -672,10 +694,13 @@
 	memory-region = <&gfx_memory>;
 };
 
+<<<<<<< HEAD
 &pinctrl {
 	aspeed,external-nodes = <&gfx &lhc>;
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &pwm_tacho {
 	status = "okay";
 	pinctrl-names = "default";

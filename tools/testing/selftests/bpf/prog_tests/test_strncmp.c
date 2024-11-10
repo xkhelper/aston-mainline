@@ -72,7 +72,11 @@ static void test_strncmp_ret(void)
 	got = trigger_strncmp(skel);
 	ASSERT_EQ(got, 0, "strncmp: same str");
 
+<<<<<<< HEAD
 	/* Not-null-termainted string  */
+=======
+	/* Not-null-terminated string  */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	memcpy(skel->bss->str, skel->rodata->target, sizeof(skel->bss->str));
 	skel->bss->str[sizeof(skel->bss->str) - 1] = 'A';
 	got = trigger_strncmp(skel);

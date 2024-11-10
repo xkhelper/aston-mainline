@@ -6,17 +6,26 @@
  * expected.
  */
 
+<<<<<<< HEAD
+=======
+#include <kselftest.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <signal.h>
 #include <ucontext.h>
 #include <sys/prctl.h>
 
 #include "test_signals_utils.h"
+<<<<<<< HEAD
+=======
+#include "sve_helpers.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "testcases.h"
 
 static union {
 	ucontext_t uc;
 	char buf[1024 * 128];
 } context;
+<<<<<<< HEAD
 static unsigned int vls[SVE_VQ_MAX];
 unsigned int nvls = 0;
 
@@ -47,6 +56,20 @@ static bool sme_get_vls(struct tdescr *td)
 	}
 
 	return true;
+=======
+
+static bool sme_get_vls(struct tdescr *td)
+{
+	int res = sve_fill_vls(VLS_USE_SME, 1);
+
+	if (!res)
+		return true;
+
+	if (res == KSFT_SKIP)
+		td->result = KSFT_SKIP;
+
+	return false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int do_one_sme_vl(struct tdescr *td, siginfo_t *si, ucontext_t *uc,

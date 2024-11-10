@@ -787,8 +787,13 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char *strtab,
 	int res;
 	unsigned int num_relocations = sechdrs[relsec].sh_size / sizeof(*rel);
 	struct hlist_head *relocation_hashtable;
+<<<<<<< HEAD
 	struct list_head used_buckets_list;
 	unsigned int hashtable_bits;
+=======
+	unsigned int hashtable_bits;
+	LIST_HEAD(used_buckets_list);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	hashtable_bits = initialize_relocation_hashtable(num_relocations,
 							 &relocation_hashtable);
@@ -796,8 +801,11 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char *strtab,
 	if (!relocation_hashtable)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&used_buckets_list);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pr_debug("Applying relocate section %u to %u\n", relsec,
 	       sechdrs[relsec].sh_info);
 

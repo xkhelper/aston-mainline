@@ -95,11 +95,19 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
 	struct bnxt_qplib_cmdqmsg msg = {};
 	struct creq_query_func_resp_sb *sb;
 	struct bnxt_qplib_rcfw_sbuf sbuf;
+<<<<<<< HEAD
+=======
+	struct bnxt_qplib_chip_ctx *cctx;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cmdq_query_func req = {};
 	u8 *tqm_alloc;
 	int i, rc;
 	u32 temp;
 
+<<<<<<< HEAD
+=======
+	cctx = rcfw->res->cctx;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bnxt_qplib_rcfw_cmd_prep((struct cmdq_base *)&req,
 				 CMDQ_BASE_OPCODE_QUERY_FUNC,
 				 sizeof(req));
@@ -133,10 +141,20 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
 	 * reporting the max number
 	 */
 	attr->max_qp_wqes -= BNXT_QPLIB_RESERVED_QP_WRS + 1;
+<<<<<<< HEAD
 	attr->max_qp_sges = bnxt_qplib_is_chip_gen_p5_p7(rcfw->res->cctx) ?
 			    6 : sb->max_sge;
 	attr->max_cq = le32_to_cpu(sb->max_cq);
 	attr->max_cq_wqes = le32_to_cpu(sb->max_cqe);
+=======
+
+	attr->max_qp_sges = cctx->modes.wqe_mode == BNXT_QPLIB_WQE_MODE_VARIABLE ?
+			    min_t(u32, sb->max_sge_var_wqe, BNXT_VAR_MAX_SGE) : 6;
+	attr->max_cq = le32_to_cpu(sb->max_cq);
+	attr->max_cq_wqes = le32_to_cpu(sb->max_cqe);
+	if (!bnxt_qplib_is_chip_gen_p7(rcfw->res->cctx))
+		attr->max_cq_wqes = min_t(u32, BNXT_QPLIB_MAX_CQ_WQES, attr->max_cq_wqes);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	attr->max_cq_sges = attr->max_qp_sges;
 	attr->max_mr = le32_to_cpu(sb->max_mr);
 	attr->max_mw = le32_to_cpu(sb->max_mw);
@@ -154,7 +172,18 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
 	if (!bnxt_qplib_is_chip_gen_p7(rcfw->res->cctx))
 		attr->l2_db_size = (sb->l2_db_space_size + 1) *
 				    (0x01 << RCFW_DBR_BASE_PAGE_SHIFT);
+<<<<<<< HEAD
 	attr->max_sgid = BNXT_QPLIB_NUM_GIDS_SUPPORTED;
+=======
+	/*
+	 * Read the max gid supported by HW.
+	 * For each entry in HW  GID in HW table, we consume 2
+	 * GID entries in the kernel GID table.  So max_gid reported
+	 * to stack can be up to twice the value reported by the HW, up to 256 gids.
+	 */
+	attr->max_sgid = le32_to_cpu(sb->max_gid);
+	attr->max_sgid = min_t(u32, BNXT_QPLIB_NUM_GIDS_SUPPORTED, 2 * attr->max_sgid);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	attr->dev_cap_flags = le16_to_cpu(sb->dev_cap_flags);
 	attr->dev_cap_flags2 = le16_to_cpu(sb->dev_cap_ext_flags_2);
 
@@ -541,7 +570,11 @@ int bnxt_qplib_alloc_mrw(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mrw)
 	req.pd_id = cpu_to_le32(mrw->pd->id);
 	req.mrw_flags = mrw->type;
 	if ((mrw->type == CMDQ_ALLOCATE_MRW_MRW_FLAGS_PMR &&
+<<<<<<< HEAD
 	     mrw->flags & BNXT_QPLIB_FR_PMR) ||
+=======
+	     mrw->access_flags & BNXT_QPLIB_FR_PMR) ||
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    mrw->type == CMDQ_ALLOCATE_MRW_MRW_FLAGS_MW_TYPE2A ||
 	    mrw->type == CMDQ_ALLOCATE_MRW_MRW_FLAGS_MW_TYPE2B)
 		req.access = CMDQ_ALLOCATE_MRW_ACCESS_CONSUMER_OWNED_KEY;
@@ -653,9 +686,18 @@ int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
 	req.log2_pbl_pg_size = cpu_to_le16(((ilog2(PAGE_SIZE) <<
 				 CMDQ_REGISTER_MR_LOG2_PBL_PG_SIZE_SFT) &
 				CMDQ_REGISTER_MR_LOG2_PBL_PG_SIZE_MASK));
+<<<<<<< HEAD
 	req.access = (mr->flags & 0xFFFF);
 	req.va = cpu_to_le64(mr->va);
 	req.key = cpu_to_le32(mr->lkey);
+=======
+	req.access = (mr->access_flags & 0xFFFF);
+	req.va = cpu_to_le64(mr->va);
+	req.key = cpu_to_le32(mr->lkey);
+	if (_is_alloc_mr_unified(res->dattr->dev_cap_flags))
+		req.key = cpu_to_le32(mr->pd->id);
+	req.flags = cpu_to_le16(mr->flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	req.mr_size = cpu_to_le64(mr->total_size);
 
 	bnxt_qplib_fill_cmdqmsg(&msg, &req, &resp, NULL, sizeof(req),
@@ -664,6 +706,14 @@ int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
 	if (rc)
 		goto fail;
 
+<<<<<<< HEAD
+=======
+	if (_is_alloc_mr_unified(res->dattr->dev_cap_flags)) {
+		mr->lkey = le32_to_cpu(resp.xid);
+		mr->rkey = mr->lkey;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 
 fail:

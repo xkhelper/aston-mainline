@@ -161,6 +161,7 @@ static int lm95245_read_temp(struct device *dev, u32 attr, int channel,
 {
 	struct lm95245_data *data = dev_get_drvdata(dev);
 	struct regmap *regmap = data->regmap;
+<<<<<<< HEAD
 	int ret, regl, regh, regvall, regvalh;
 
 	switch (attr) {
@@ -173,6 +174,20 @@ static int lm95245_read_temp(struct device *dev, u32 attr, int channel,
 		if (ret < 0)
 			return ret;
 		ret = regmap_read(regmap, regh, &regvalh);
+=======
+	unsigned int regs[2];
+	unsigned int regval;
+	u8 regvals[2];
+	int ret;
+
+	switch (attr) {
+	case hwmon_temp_input:
+		regs[0] = channel ? LM95245_REG_R_REMOTE_TEMPL_S :
+				    LM95245_REG_R_LOCAL_TEMPL_S;
+		regs[1] = channel ? LM95245_REG_R_REMOTE_TEMPH_S :
+				    LM95245_REG_R_LOCAL_TEMPH_S;
+		ret = regmap_multi_reg_read(regmap, regs, regvals, 2);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret < 0)
 			return ret;
 		/*
@@ -181,6 +196,7 @@ static int lm95245_read_temp(struct device *dev, u32 attr, int channel,
 		 * Use signed calculation for remote if signed bit is set
 		 * or if reported temperature is below signed limit.
 		 */
+<<<<<<< HEAD
 		if (!channel || (regvalh & 0x80) || regvalh < 0x7f) {
 			*val = temp_from_reg_signed(regvalh, regvall);
 			return 0;
@@ -267,6 +283,79 @@ static int lm95245_read_temp(struct device *dev, u32 attr, int channel,
 		if (ret < 0)
 			return ret;
 		*val = !!(regvalh & STATUS1_DIODE_FAULT);
+=======
+		if (!channel || (regvals[1] & 0x80) || regvals[1] < 0x7f) {
+			*val = temp_from_reg_signed(regvals[1], regvals[0]);
+			return 0;
+		}
+		ret = regmap_bulk_read(regmap, LM95245_REG_R_REMOTE_TEMPH_U, regvals, 2);
+		if (ret)
+			return ret;
+		*val = temp_from_reg_unsigned(regvals[0], regvals[1]);
+		return 0;
+	case hwmon_temp_max:
+		ret = regmap_read(regmap, LM95245_REG_RW_REMOTE_OS_LIMIT,
+				  &regval);
+		if (ret < 0)
+			return ret;
+		*val = regval * 1000;
+		return 0;
+	case hwmon_temp_crit:
+		regs[0] = channel ? LM95245_REG_RW_REMOTE_TCRIT_LIMIT :
+				    LM95245_REG_RW_LOCAL_OS_TCRIT_LIMIT;
+		ret = regmap_read(regmap, regs[0], &regval);
+		if (ret < 0)
+			return ret;
+		*val = regval * 1000;
+		return 0;
+	case hwmon_temp_max_hyst:
+		regs[0] = LM95245_REG_RW_REMOTE_OS_LIMIT;
+		regs[1] = LM95245_REG_RW_COMMON_HYSTERESIS;
+		ret = regmap_multi_reg_read(regmap, regs, regvals, 2);
+		if (ret < 0)
+			return ret;
+		*val = (regvals[0] - regvals[1]) * 1000;
+		return 0;
+	case hwmon_temp_crit_hyst:
+		regs[0] = channel ? LM95245_REG_RW_REMOTE_TCRIT_LIMIT :
+				    LM95245_REG_RW_LOCAL_OS_TCRIT_LIMIT;
+		regs[1] = LM95245_REG_RW_COMMON_HYSTERESIS;
+
+		ret = regmap_multi_reg_read(regmap, regs, regvals, 2);
+		if (ret < 0)
+			return ret;
+		*val = (regvals[0] - regvals[1]) * 1000;
+		return 0;
+	case hwmon_temp_type:
+		ret = regmap_read(regmap, LM95245_REG_RW_CONFIG2, &regval);
+		if (ret < 0)
+			return ret;
+		*val = (regval & CFG2_REMOTE_TT) ? 1 : 2;
+		return 0;
+	case hwmon_temp_offset:
+		ret = regmap_bulk_read(regmap, LM95245_REG_RW_REMOTE_OFFH, regvals, 2);
+		if (ret < 0)
+			return ret;
+		*val = temp_from_reg_signed(regvals[0], regvals[1]);
+		return 0;
+	case hwmon_temp_max_alarm:
+		ret = regmap_read(regmap, LM95245_REG_R_STATUS1, &regval);
+		if (ret < 0)
+			return ret;
+		*val = !!(regval & STATUS1_ROS);
+		return 0;
+	case hwmon_temp_crit_alarm:
+		ret = regmap_read(regmap, LM95245_REG_R_STATUS1, &regval);
+		if (ret < 0)
+			return ret;
+		*val = !!(regval & (channel ? STATUS1_RTCRIT : STATUS1_LOC));
+		return 0;
+	case hwmon_temp_fault:
+		ret = regmap_read(regmap, LM95245_REG_R_STATUS1, &regval);
+		if (ret < 0)
+			return ret;
+		*val = !!(regval & STATUS1_DIODE_FAULT);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	default:
 		return -EOPNOTSUPP;
@@ -279,6 +368,10 @@ static int lm95245_write_temp(struct device *dev, u32 attr, int channel,
 	struct lm95245_data *data = dev_get_drvdata(dev);
 	struct regmap *regmap = data->regmap;
 	unsigned int regval;
+<<<<<<< HEAD
+=======
+	u8 regvals[2];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret, reg;
 
 	switch (attr) {
@@ -311,6 +404,7 @@ static int lm95245_write_temp(struct device *dev, u32 attr, int channel,
 	case hwmon_temp_offset:
 		val = clamp_val(val, -128000, 127875);
 		val = val * 256 / 1000;
+<<<<<<< HEAD
 		mutex_lock(&data->update_lock);
 		ret = regmap_write(regmap, LM95245_REG_RW_REMOTE_OFFL,
 				   val & 0xe0);
@@ -321,6 +415,12 @@ static int lm95245_write_temp(struct device *dev, u32 attr, int channel,
 		ret = regmap_write(regmap, LM95245_REG_RW_REMOTE_OFFH,
 				   (val >> 8) & 0xff);
 		mutex_unlock(&data->update_lock);
+=======
+		regvals[0] = val >> 8;
+		regvals[1] = val & 0xe0;
+
+		ret = regmap_bulk_write(regmap, LM95245_REG_RW_REMOTE_OFFH, regvals, 2);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return ret;
 	case hwmon_temp_type:
 		if (val != 1 && val != 2)

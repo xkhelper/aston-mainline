@@ -35,6 +35,10 @@ properties:
       - samsung,exynosautov9-cmu-top
       - samsung,exynosautov9-cmu-busmc
       - samsung,exynosautov9-cmu-core
+<<<<<<< HEAD
+=======
+      - samsung,exynosautov9-cmu-dpum
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       - samsung,exynosautov9-cmu-fsys0
       - samsung,exynosautov9-cmu-fsys1
       - samsung,exynosautov9-cmu-fsys2
@@ -113,6 +117,27 @@ allOf:
       properties:
         compatible:
           contains:
+<<<<<<< HEAD
+=======
+            const: samsung,exynosautov9-cmu-dpum
+
+    then:
+      properties:
+        clocks:
+          items:
+            - description: External reference clock (26 MHz)
+            - description: DPU Main bus clock (from CMU_TOP)
+
+        clock-names:
+          items:
+            - const: oscclk
+            - const: bus
+
+  - if:
+      properties:
+        compatible:
+          contains:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
             const: samsung,exynosautov9-cmu-fsys0
 
     then:

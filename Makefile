@@ -1,8 +1,14 @@
 # SPDX-License-Identifier: GPL-2.0
 VERSION = 6
+<<<<<<< HEAD
 PATCHLEVEL = 11
 SUBLEVEL = 0
 EXTRAVERSION =
+=======
+PATCHLEVEL = 12
+SUBLEVEL = 0
+EXTRAVERSION = -rc7
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 NAME = Baby Opossum Posse
 
 # *DOCUMENTATION*
@@ -579,10 +585,13 @@ else
 	RUSTC_OR_CLIPPY = $(RUSTC)
 endif
 
+<<<<<<< HEAD
 ifdef RUST_LIB_SRC
 	export RUST_LIB_SRC
 endif
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # Allows the usage of unstable features in stable compilers.
 export RUSTC_BOOTSTRAP := 1
 
@@ -649,9 +658,17 @@ endif
 
 # The expansion should be delayed until arch/$(SRCARCH)/Makefile is included.
 # Some architectures define CROSS_COMPILE in arch/$(SRCARCH)/Makefile.
+<<<<<<< HEAD
 # CC_VERSION_TEXT is referenced from Kconfig (so it needs export),
 # and from include/config/auto.conf.cmd to detect the compiler upgrade.
 CC_VERSION_TEXT = $(subst $(pound),,$(shell LC_ALL=C $(CC) --version 2>/dev/null | head -n 1))
+=======
+# CC_VERSION_TEXT and RUSTC_VERSION_TEXT are referenced from Kconfig (so they
+# need export), and from include/config/auto.conf.cmd to detect the compiler
+# upgrade.
+CC_VERSION_TEXT = $(subst $(pound),,$(shell LC_ALL=C $(CC) --version 2>/dev/null | head -n 1))
+RUSTC_VERSION_TEXT = $(subst $(pound),,$(shell $(RUSTC) --version 2>/dev/null))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 ifneq ($(findstring clang,$(CC_VERSION_TEXT)),)
 include $(srctree)/scripts/Makefile.clang
@@ -672,7 +689,11 @@ ifdef config-build
 # KBUILD_DEFCONFIG may point out an alternative default configuration
 # used for 'make defconfig'
 include $(srctree)/arch/$(SRCARCH)/Makefile
+<<<<<<< HEAD
 export KBUILD_DEFCONFIG KBUILD_KCONFIG CC_VERSION_TEXT
+=======
+export KBUILD_DEFCONFIG KBUILD_KCONFIG CC_VERSION_TEXT RUSTC_VERSION_TEXT
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 config: outputmakefile scripts_basic FORCE
 	$(Q)$(MAKE) $(build)=scripts/kconfig $@
@@ -928,6 +949,10 @@ ifdef CONFIG_SHADOW_CALL_STACK
 ifndef CONFIG_DYNAMIC_SCS
 CC_FLAGS_SCS	:= -fsanitize=shadow-call-stack
 KBUILD_CFLAGS	+= $(CC_FLAGS_SCS)
+<<<<<<< HEAD
+=======
+KBUILD_RUSTFLAGS += -Zsanitizer=shadow-call-stack
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 endif
 export CC_FLAGS_SCS
 endif
@@ -952,6 +977,19 @@ endif
 
 ifdef CONFIG_CFI_CLANG
 CC_FLAGS_CFI	:= -fsanitize=kcfi
+<<<<<<< HEAD
+=======
+ifdef CONFIG_CFI_ICALL_NORMALIZE_INTEGERS
+	CC_FLAGS_CFI	+= -fsanitize-cfi-icall-experimental-normalize-integers
+endif
+ifdef CONFIG_RUST
+	# Always pass -Zsanitizer-cfi-normalize-integers as CONFIG_RUST selects
+	# CONFIG_CFI_ICALL_NORMALIZE_INTEGERS.
+	RUSTC_FLAGS_CFI   := -Zsanitizer=kcfi -Zsanitizer-cfi-normalize-integers
+	KBUILD_RUSTFLAGS += $(RUSTC_FLAGS_CFI)
+	export RUSTC_FLAGS_CFI
+endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 KBUILD_CFLAGS	+= $(CC_FLAGS_CFI)
 export CC_FLAGS_CFI
 endif
@@ -1483,6 +1521,10 @@ endif # CONFIG_MODULES
 # Directories & files removed with 'make clean'
 CLEAN_FILES += vmlinux.symvers modules-only.symvers \
 	       modules.builtin modules.builtin.modinfo modules.nsdeps \
+<<<<<<< HEAD
+=======
+	       modules.builtin.ranges vmlinux.o.map \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	       compile_commands.json rust/test \
 	       rust-project.json .vmlinux.objs .vmlinux.export.c
 
@@ -1635,7 +1677,11 @@ help:
 		echo '* dtbs               - Build device tree blobs for enabled boards'; \
 		echo '  dtbs_install       - Install dtbs to $(INSTALL_DTBS_PATH)'; \
 		echo '  dt_binding_check   - Validate device tree binding documents and examples'; \
+<<<<<<< HEAD
 		echo '  dt_binding_schema  - Build processed device tree binding schemas'; \
+=======
+		echo '  dt_binding_schemas - Build processed device tree binding schemas'; \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		echo '  dtbs_check         - Validate device tree source files';\
 		echo '')
 
@@ -1947,7 +1993,11 @@ clean: $(clean-dirs)
 		-o -name '*.c.[012]*.*' \
 		-o -name '*.ll' \
 		-o -name '*.gcno' \
+<<<<<<< HEAD
 		-o -name '*.*.symversions' \) -type f -print \
+=======
+		\) -type f -print \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		-o -name '.tmp_*' -print \
 		| xargs rm -rf
 

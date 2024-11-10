@@ -91,12 +91,38 @@ static void cpu_probe_common(struct cpuinfo_loongarch *c)
 	unsigned int config;
 	unsigned long asid_mask;
 
+<<<<<<< HEAD
 	c->options = LOONGARCH_CPU_CPUCFG | LOONGARCH_CPU_CSR |
 		     LOONGARCH_CPU_TLB | LOONGARCH_CPU_VINT | LOONGARCH_CPU_WATCH;
+=======
+	c->options = LOONGARCH_CPU_CPUCFG | LOONGARCH_CPU_CSR | LOONGARCH_CPU_VINT;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	elf_hwcap = HWCAP_LOONGARCH_CPUCFG;
 
 	config = read_cpucfg(LOONGARCH_CPUCFG1);
+<<<<<<< HEAD
+=======
+
+	switch (config & CPUCFG1_ISA) {
+	case 0:
+		set_isa(c, LOONGARCH_CPU_ISA_LA32R);
+		break;
+	case 1:
+		set_isa(c, LOONGARCH_CPU_ISA_LA32S);
+		break;
+	case 2:
+		set_isa(c, LOONGARCH_CPU_ISA_LA64);
+		break;
+	default:
+		pr_warn("Warning: unknown ISA level\n");
+	}
+
+	if (config & CPUCFG1_PAGING)
+		c->options |= LOONGARCH_CPU_TLB;
+	if (config & CPUCFG1_IOCSR)
+		c->options |= LOONGARCH_CPU_IOCSR;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (config & CPUCFG1_UAL) {
 		c->options |= LOONGARCH_CPU_UAL;
 		elf_hwcap |= HWCAP_LOONGARCH_UAL;
@@ -106,7 +132,10 @@ static void cpu_probe_common(struct cpuinfo_loongarch *c)
 		elf_hwcap |= HWCAP_LOONGARCH_CRC32;
 	}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	config = read_cpucfg(LOONGARCH_CPUCFG2);
 	if (config & CPUCFG2_LAM) {
 		c->options |= LOONGARCH_CPU_LAM;
@@ -140,6 +169,13 @@ static void cpu_probe_common(struct cpuinfo_loongarch *c)
 		c->options |= LOONGARCH_CPU_PTW;
 		elf_hwcap |= HWCAP_LOONGARCH_PTW;
 	}
+<<<<<<< HEAD
+=======
+	if (config & CPUCFG2_LSPW) {
+		c->options |= LOONGARCH_CPU_LSPW;
+		elf_hwcap |= HWCAP_LOONGARCH_LSPW;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (config & CPUCFG2_LVZP) {
 		c->options |= LOONGARCH_CPU_LVZ;
 		elf_hwcap |= HWCAP_LOONGARCH_LVZ;
@@ -163,6 +199,7 @@ static void cpu_probe_common(struct cpuinfo_loongarch *c)
 	if (config & CPUCFG6_PMP)
 		c->options |= LOONGARCH_CPU_PMP;
 
+<<<<<<< HEAD
 	config = iocsr_read32(LOONGARCH_IOCSR_FEATURES);
 	if (config & IOCSRF_CSRIPI)
 		c->options |= LOONGARCH_CPU_CSRIPI;
@@ -177,6 +214,8 @@ static void cpu_probe_common(struct cpuinfo_loongarch *c)
 	if (config & IOCSRF_VM)
 		c->options |= LOONGARCH_CPU_HYPERVISOR;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	config = csr_read32(LOONGARCH_CSR_ASID);
 	config = (config & CSR_ASID_BIT) >> CSR_ASID_BIT_SHIFT;
 	asid_mask = GENMASK(config - 1, 0);
@@ -209,6 +248,12 @@ static void cpu_probe_common(struct cpuinfo_loongarch *c)
 	default:
 		pr_warn("Warning: unknown TLB type\n");
 	}
+<<<<<<< HEAD
+=======
+
+	if (get_num_brps() + get_num_wrps())
+		c->options |= LOONGARCH_CPU_WATCH;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #define MAX_NAME_LEN	32
@@ -219,8 +264,50 @@ static char cpu_full_name[MAX_NAME_LEN] = "        -        ";
 
 static inline void cpu_probe_loongson(struct cpuinfo_loongarch *c, unsigned int cpu)
 {
+<<<<<<< HEAD
 	uint64_t *vendor = (void *)(&cpu_full_name[VENDOR_OFFSET]);
 	uint64_t *cpuname = (void *)(&cpu_full_name[CPUNAME_OFFSET]);
+=======
+	uint32_t config;
+	uint64_t *vendor = (void *)(&cpu_full_name[VENDOR_OFFSET]);
+	uint64_t *cpuname = (void *)(&cpu_full_name[CPUNAME_OFFSET]);
+	const char *core_name = "Unknown";
+
+	switch (BIT(fls(c->isa_level) - 1)) {
+	case LOONGARCH_CPU_ISA_LA32R:
+	case LOONGARCH_CPU_ISA_LA32S:
+		c->cputype = CPU_LOONGSON32;
+		__cpu_family[cpu] = "Loongson-32bit";
+		break;
+	case LOONGARCH_CPU_ISA_LA64:
+		c->cputype = CPU_LOONGSON64;
+		__cpu_family[cpu] = "Loongson-64bit";
+		break;
+	}
+
+	switch (c->processor_id & PRID_SERIES_MASK) {
+	case PRID_SERIES_LA132:
+		core_name = "LA132";
+		break;
+	case PRID_SERIES_LA264:
+		core_name = "LA264";
+		break;
+	case PRID_SERIES_LA364:
+		core_name = "LA364";
+		break;
+	case PRID_SERIES_LA464:
+		core_name = "LA464";
+		break;
+	case PRID_SERIES_LA664:
+		core_name = "LA664";
+		break;
+	}
+
+	pr_info("%s Processor probed (%s Core)\n", __cpu_family[cpu], core_name);
+
+	if (!cpu_has_iocsr)
+		return;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!__cpu_full_name[cpu])
 		__cpu_full_name[cpu] = cpu_full_name;
@@ -228,6 +315,7 @@ static inline void cpu_probe_loongson(struct cpuinfo_loongarch *c, unsigned int 
 	*vendor = iocsr_read64(LOONGARCH_IOCSR_VENDOR);
 	*cpuname = iocsr_read64(LOONGARCH_IOCSR_CPUNAME);
 
+<<<<<<< HEAD
 	switch (c->processor_id & PRID_SERIES_MASK) {
 	case PRID_SERIES_LA132:
 		c->cputype = CPU_LOONGSON32;
@@ -265,6 +353,23 @@ static inline void cpu_probe_loongson(struct cpuinfo_loongarch *c, unsigned int 
 		__cpu_family[cpu] = "Loongson-64bit";
 		pr_info("64-bit Loongson Processor probed (Unknown Core)\n");
 	}
+=======
+	config = iocsr_read32(LOONGARCH_IOCSR_FEATURES);
+	if (config & IOCSRF_CSRIPI)
+		c->options |= LOONGARCH_CPU_CSRIPI;
+	if (config & IOCSRF_EXTIOI)
+		c->options |= LOONGARCH_CPU_EXTIOI;
+	if (config & IOCSRF_FREQSCALE)
+		c->options |= LOONGARCH_CPU_SCALEFREQ;
+	if (config & IOCSRF_FLATMODE)
+		c->options |= LOONGARCH_CPU_FLATMODE;
+	if (config & IOCSRF_EIODECODE)
+		c->options |= LOONGARCH_CPU_EIODECODE;
+	if (config & IOCSRF_AVEC)
+		c->options |= LOONGARCH_CPU_AVECINT;
+	if (config & IOCSRF_VM)
+		c->options |= LOONGARCH_CPU_HYPERVISOR;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #ifdef CONFIG_64BIT

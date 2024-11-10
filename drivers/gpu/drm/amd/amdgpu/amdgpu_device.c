@@ -1916,6 +1916,11 @@ static int amdgpu_device_init_apu_flags(struct amdgpu_device *adev)
  */
 static int amdgpu_device_check_arguments(struct amdgpu_device *adev)
 {
+<<<<<<< HEAD
+=======
+	int i;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (amdgpu_sched_jobs < 4) {
 		dev_warn(adev->dev, "sched jobs (%d) must be at least 4\n",
 			 amdgpu_sched_jobs);
@@ -1970,6 +1975,12 @@ static int amdgpu_device_check_arguments(struct amdgpu_device *adev)
 
 	adev->firmware.load_type = amdgpu_ucode_get_load_type(adev, amdgpu_fw_load_type);
 
+<<<<<<< HEAD
+=======
+	for (i = 0; i < MAX_XCP; i++)
+		adev->enforce_isolation[i] = !!enforce_isolation;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -2471,6 +2482,10 @@ out:
  */
 static int amdgpu_device_ip_early_init(struct amdgpu_device *adev)
 {
+<<<<<<< HEAD
+=======
+	struct amdgpu_ip_block *ip_block;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct pci_dev *parent;
 	int i, r;
 	bool total;
@@ -2608,7 +2623,14 @@ static int amdgpu_device_ip_early_init(struct amdgpu_device *adev)
 	if (!total)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	amdgpu_amdkfd_device_probe(adev);
+=======
+	ip_block = amdgpu_device_ip_get_ip_block(adev, AMD_IP_BLOCK_TYPE_GFX);
+	if (ip_block->status.valid != false)
+		amdgpu_amdkfd_device_probe(adev);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	adev->cg_flags &= amdgpu_cg_mask;
 	adev->pg_flags &= amdgpu_pg_mask;
 
@@ -3948,6 +3970,30 @@ static void amdgpu_device_check_iommu_direct_map(struct amdgpu_device *adev)
 		adev->ram_is_direct_mapped = true;
 }
 
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_HSA_AMD_P2P)
+/**
+ * amdgpu_device_check_iommu_remap - Check if DMA remapping is enabled.
+ *
+ * @adev: amdgpu_device pointer
+ *
+ * return if IOMMU remapping bar address
+ */
+static bool amdgpu_device_check_iommu_remap(struct amdgpu_device *adev)
+{
+	struct iommu_domain *domain;
+
+	domain = iommu_get_domain_for_dev(adev->dev);
+	if (domain && (domain->type == IOMMU_DOMAIN_DMA ||
+		domain->type ==	IOMMU_DOMAIN_DMA_FQ))
+		return true;
+
+	return false;
+}
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct attribute *amdgpu_dev_attributes[] = {
 	&dev_attr_pcie_replay_count.attr,
 	NULL
@@ -4055,6 +4101,13 @@ int amdgpu_device_init(struct amdgpu_device *adev,
 	mutex_init(&adev->notifier_lock);
 	mutex_init(&adev->pm.stable_pstate_ctx_lock);
 	mutex_init(&adev->benchmark_mutex);
+<<<<<<< HEAD
+=======
+	mutex_init(&adev->gfx.reset_sem_mutex);
+	/* Initialize the mutex for cleaner shader isolation between GFX and compute processes */
+	mutex_init(&adev->enforce_isolation_mutex);
+	mutex_init(&adev->gfx.kfd_sch_mutex);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	amdgpu_device_init_apu_flags(adev);
 
@@ -4073,9 +4126,12 @@ int amdgpu_device_init(struct amdgpu_device *adev,
 	spin_lock_init(&adev->mm_stats.lock);
 	spin_lock_init(&adev->wb.lock);
 
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&adev->shadow_list);
 	mutex_init(&adev->shadow_list_lock);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	INIT_LIST_HEAD(&adev->reset_list);
 
 	INIT_LIST_HEAD(&adev->ras_list);
@@ -4086,6 +4142,24 @@ int amdgpu_device_init(struct amdgpu_device *adev,
 			  amdgpu_device_delayed_init_work_handler);
 	INIT_DELAYED_WORK(&adev->gfx.gfx_off_delay_work,
 			  amdgpu_device_delay_enable_gfx_off);
+<<<<<<< HEAD
+=======
+	/*
+	 * Initialize the enforce_isolation work structures for each XCP
+	 * partition.  This work handler is responsible for enforcing shader
+	 * isolation on AMD GPUs.  It counts the number of emitted fences for
+	 * each GFX and compute ring.  If there are any fences, it schedules
+	 * the `enforce_isolation_work` to be run after a delay.  If there are
+	 * no fences, it signals the Kernel Fusion Driver (KFD) to resume the
+	 * runqueue.
+	 */
+	for (i = 0; i < MAX_XCP; i++) {
+		INIT_DELAYED_WORK(&adev->gfx.enforce_isolation[i].work,
+				  amdgpu_gfx_enforce_isolation_handler);
+		adev->gfx.enforce_isolation[i].adev = adev;
+		adev->gfx.enforce_isolation[i].xcp_id = i;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	INIT_WORK(&adev->xgmi_reset_work, amdgpu_device_xgmi_reset_func);
 
@@ -4482,6 +4556,12 @@ void amdgpu_device_fini_hw(struct amdgpu_device *adev)
 {
 	dev_info(adev->dev, "amdgpu: finishing device.\n");
 	flush_delayed_work(&adev->delayed_init_work);
+<<<<<<< HEAD
+=======
+
+	if (adev->mman.initialized)
+		drain_workqueue(adev->mman.bdev.wq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	adev->shutdown = true;
 
 	/* make sure IB test finished before entering exclusive mode
@@ -4502,9 +4582,12 @@ void amdgpu_device_fini_hw(struct amdgpu_device *adev)
 	}
 	amdgpu_fence_driver_hw_fini(adev);
 
+<<<<<<< HEAD
 	if (adev->mman.initialized)
 		drain_workqueue(adev->mman.bdev.wq);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (adev->pm.sysfs_initialized)
 		amdgpu_pm_sysfs_fini(adev);
 	if (adev->ucode_sysfs_en)
@@ -4981,6 +5064,7 @@ static int amdgpu_device_ip_post_soft_reset(struct amdgpu_device *adev)
 }
 
 /**
+<<<<<<< HEAD
  * amdgpu_device_recover_vram - Recover some VRAM contents
  *
  * @adev: amdgpu_device pointer
@@ -5055,6 +5139,8 @@ static int amdgpu_device_recover_vram(struct amdgpu_device *adev)
 
 
 /**
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * amdgpu_device_reset_sriov - reset ASIC for SR-IOV vf
  *
  * @adev: amdgpu_device pointer
@@ -5116,12 +5202,17 @@ static int amdgpu_device_reset_sriov(struct amdgpu_device *adev,
 	if (r)
 		return r;
 
+<<<<<<< HEAD
 	if (adev->virt.gim_feature & AMDGIM_FEATURE_GIM_FLR_VRAMLOST) {
 		amdgpu_inc_vram_lost(adev);
 		r = amdgpu_device_recover_vram(adev);
 	}
 	if (r)
 		return r;
+=======
+	if (adev->virt.gim_feature & AMDGIM_FEATURE_GIM_FLR_VRAMLOST)
+		amdgpu_inc_vram_lost(adev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* need to be called during full access so we can't do it later like
 	 * bare-metal does.
@@ -5278,16 +5369,25 @@ int amdgpu_device_pre_asic_reset(struct amdgpu_device *adev,
 {
 	int i, r = 0;
 	struct amdgpu_job *job = NULL;
+<<<<<<< HEAD
+=======
+	struct amdgpu_device *tmp_adev = reset_context->reset_req_dev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool need_full_reset =
 		test_bit(AMDGPU_NEED_FULL_RESET, &reset_context->flags);
 
 	if (reset_context->reset_req_dev == adev)
 		job = reset_context->job;
 
+<<<<<<< HEAD
 	if (amdgpu_sriov_vf(adev)) {
 		/* stop the data exchange thread */
 		amdgpu_virt_fini_data_exchange(adev);
 	}
+=======
+	if (amdgpu_sriov_vf(adev))
+		amdgpu_virt_pre_reset(adev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	amdgpu_fence_driver_isr_toggle(adev, true);
 
@@ -5336,6 +5436,19 @@ int amdgpu_device_pre_asic_reset(struct amdgpu_device *adev,
 			}
 		}
 
+<<<<<<< HEAD
+=======
+		if (!test_bit(AMDGPU_SKIP_COREDUMP, &reset_context->flags)) {
+			dev_info(tmp_adev->dev, "Dumping IP State\n");
+			/* Trigger ip dump before we reset the asic */
+			for (i = 0; i < tmp_adev->num_ip_blocks; i++)
+				if (tmp_adev->ip_blocks[i].version->funcs->dump_ip_state)
+					tmp_adev->ip_blocks[i].version->funcs
+						->dump_ip_state((void *)tmp_adev);
+			dev_info(tmp_adev->dev, "Dumping IP State Completed\n");
+		}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (need_full_reset)
 			r = amdgpu_device_ip_suspend(adev);
 		if (need_full_reset)
@@ -5348,6 +5461,7 @@ int amdgpu_device_pre_asic_reset(struct amdgpu_device *adev,
 	return r;
 }
 
+<<<<<<< HEAD
 static int amdgpu_reset_reg_dumps(struct amdgpu_device *adev)
 {
 	int i;
@@ -5365,18 +5479,24 @@ static int amdgpu_reset_reg_dumps(struct amdgpu_device *adev)
 	return 0;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int amdgpu_do_asic_reset(struct list_head *device_list_handle,
 			 struct amdgpu_reset_context *reset_context)
 {
 	struct amdgpu_device *tmp_adev = NULL;
 	bool need_full_reset, skip_hw_reset, vram_lost = false;
 	int r = 0;
+<<<<<<< HEAD
 	uint32_t i;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Try reset handler method first */
 	tmp_adev = list_first_entry(device_list_handle, struct amdgpu_device,
 				    reset_list);
 
+<<<<<<< HEAD
 	if (!test_bit(AMDGPU_SKIP_COREDUMP, &reset_context->flags)) {
 		amdgpu_reset_reg_dumps(tmp_adev);
 
@@ -5389,6 +5509,8 @@ int amdgpu_do_asic_reset(struct list_head *device_list_handle,
 		dev_info(tmp_adev->dev, "Dumping IP State Completed\n");
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	reset_context->reset_device_list = device_list_handle;
 	r = amdgpu_reset_perform_reset(tmp_adev, reset_context);
 	/* If reset handler not implemented, continue; otherwise return */
@@ -5461,7 +5583,11 @@ int amdgpu_do_asic_reset(struct list_head *device_list_handle,
 				vram_lost = amdgpu_device_check_vram_lost(tmp_adev);
 
 				if (!test_bit(AMDGPU_SKIP_COREDUMP, &reset_context->flags))
+<<<<<<< HEAD
 					amdgpu_coredump(tmp_adev, vram_lost, reset_context);
+=======
+					amdgpu_coredump(tmp_adev, false, vram_lost, reset_context->job);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 				if (vram_lost) {
 					DRM_INFO("VRAM is lost due to GPU reset!\n");
@@ -5513,7 +5639,11 @@ int amdgpu_do_asic_reset(struct list_head *device_list_handle,
 				 * bad_page_threshold value to fix this once
 				 * probing driver again.
 				 */
+<<<<<<< HEAD
 				if (!amdgpu_ras_eeprom_check_err_threshold(tmp_adev)) {
+=======
+				if (!amdgpu_ras_is_rma(tmp_adev)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					/* must succeed. */
 					amdgpu_ras_resume(tmp_adev);
 				} else {
@@ -5541,9 +5671,13 @@ out:
 			}
 		}
 
+<<<<<<< HEAD
 		if (!r)
 			r = amdgpu_device_recover_vram(tmp_adev);
 		else
+=======
+		if (r)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			tmp_adev->asic_reset_res = r;
 	}
 
@@ -5879,7 +6013,11 @@ skip_hw_reset:
 			if (!amdgpu_ring_sched_ready(ring))
 				continue;
 
+<<<<<<< HEAD
 			drm_sched_start(&ring->sched, true);
+=======
+			drm_sched_start(&ring->sched);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		if (!drm_drv_uses_atomic_modeset(adev_to_drm(tmp_adev)) && !job_signaled)
@@ -5891,8 +6029,19 @@ skip_hw_reset:
 		tmp_adev->asic_reset_res = 0;
 
 		if (r) {
+<<<<<<< HEAD
 			/* bad news, how to tell it to userspace ? */
 			dev_info(tmp_adev->dev, "GPU reset(%d) failed\n", atomic_read(&tmp_adev->gpu_reset_counter));
+=======
+			/* bad news, how to tell it to userspace ?
+			 * for ras error, we should report GPU bad status instead of
+			 * reset failure
+			 */
+			if (reset_context->src != AMDGPU_RESET_SRC_RAS ||
+			    !amdgpu_ras_eeprom_check_err_threshold(tmp_adev))
+				dev_info(tmp_adev->dev, "GPU reset(%d) failed\n",
+					atomic_read(&tmp_adev->gpu_reset_counter));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			amdgpu_vf_error_put(tmp_adev, AMDGIM_ERROR_VF_GPU_RESET_FAIL, 0, r);
 		} else {
 			dev_info(tmp_adev->dev, "GPU reset(%d) succeeded!\n", atomic_read(&tmp_adev->gpu_reset_counter));
@@ -6138,18 +6287,38 @@ bool amdgpu_device_is_peer_accessible(struct amdgpu_device *adev,
 				      struct amdgpu_device *peer_adev)
 {
 #ifdef CONFIG_HSA_AMD_P2P
+<<<<<<< HEAD
 	uint64_t address_mask = peer_adev->dev->dma_mask ?
 		~*peer_adev->dev->dma_mask : ~((1ULL << 32) - 1);
 	resource_size_t aper_limit =
 		adev->gmc.aper_base + adev->gmc.aper_size - 1;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool p2p_access =
 		!adev->gmc.xgmi.connected_to_cpu &&
 		!(pci_p2pdma_distance(adev->pdev, peer_adev->dev, false) < 0);
 
+<<<<<<< HEAD
 	return pcie_p2p && p2p_access && (adev->gmc.visible_vram_size &&
 		adev->gmc.real_vram_size == adev->gmc.visible_vram_size &&
 		!(adev->gmc.aper_base & address_mask ||
 		  aper_limit & address_mask));
+=======
+	bool is_large_bar = adev->gmc.visible_vram_size &&
+		adev->gmc.real_vram_size == adev->gmc.visible_vram_size;
+	bool p2p_addressable = amdgpu_device_check_iommu_remap(peer_adev);
+
+	if (!p2p_addressable) {
+		uint64_t address_mask = peer_adev->dev->dma_mask ?
+			~*peer_adev->dev->dma_mask : ~((1ULL << 32) - 1);
+		resource_size_t aper_limit =
+			adev->gmc.aper_base + adev->gmc.aper_size - 1;
+
+		p2p_addressable = !(adev->gmc.aper_base & address_mask ||
+				     aper_limit & address_mask);
+	}
+	return pcie_p2p && is_large_bar && p2p_access && p2p_addressable;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else
 	return false;
 #endif
@@ -6374,7 +6543,11 @@ void amdgpu_pci_resume(struct pci_dev *pdev)
 		if (!amdgpu_ring_sched_ready(ring))
 			continue;
 
+<<<<<<< HEAD
 		drm_sched_start(&ring->sched, true);
+=======
+		drm_sched_start(&ring->sched);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	amdgpu_device_unset_mp1_state(adev);

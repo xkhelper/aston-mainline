@@ -3,6 +3,10 @@
  * Copyright (c) 2022, Linaro Limited, All rights reserved.
  * Author: Mike Leach <mike.leach@linaro.org>
  */
+<<<<<<< HEAD
+=======
+#include <linux/coresight.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/coresight-pmu.h>
 #include <linux/cpumask.h>
 #include <linux/kernel.h>
@@ -11,6 +15,7 @@
 
 #include "coresight-trace-id.h"
 
+<<<<<<< HEAD
 /* Default trace ID map. Used on systems that don't require per sink mappings */
 static struct coresight_trace_id_map id_map_default;
 
@@ -23,6 +28,14 @@ static atomic_t perf_cs_etm_session_active = ATOMIC_INIT(0);
 
 /* lock to protect id_map and cpu data  */
 static DEFINE_SPINLOCK(id_map_lock);
+=======
+/* Default trace ID map. Used in sysfs mode and for system sources */
+static DEFINE_PER_CPU(atomic_t, id_map_default_cpu_ids) = ATOMIC_INIT(0);
+static struct coresight_trace_id_map id_map_default = {
+	.cpu_map = &id_map_default_cpu_ids,
+	.lock = __SPIN_LOCK_UNLOCKED(id_map_default.lock)
+};
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* #define TRACE_ID_DEBUG 1 */
 #if defined(TRACE_ID_DEBUG) || defined(CONFIG_COMPILE_TEST)
@@ -32,7 +45,10 @@ static void coresight_trace_id_dump_table(struct coresight_trace_id_map *id_map,
 {
 	pr_debug("%s id_map::\n", func_name);
 	pr_debug("Used = %*pb\n", CORESIGHT_TRACE_IDS_MAX, id_map->used_ids);
+<<<<<<< HEAD
 	pr_debug("Pend = %*pb\n", CORESIGHT_TRACE_IDS_MAX, id_map->pend_rel_ids);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 #define DUMP_ID_MAP(map)   coresight_trace_id_dump_table(map, __func__)
 #define DUMP_ID_CPU(cpu, id) pr_debug("%s called;  cpu=%d, id=%d\n", __func__, cpu, id)
@@ -46,9 +62,15 @@ static void coresight_trace_id_dump_table(struct coresight_trace_id_map *id_map,
 #endif
 
 /* unlocked read of current trace ID value for given CPU */
+<<<<<<< HEAD
 static int _coresight_trace_id_read_cpu_id(int cpu)
 {
 	return atomic_read(&per_cpu(cpu_id, cpu));
+=======
+static int _coresight_trace_id_read_cpu_id(int cpu, struct coresight_trace_id_map *id_map)
+{
+	return atomic_read(per_cpu_ptr(id_map->cpu_map, cpu));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* look for next available odd ID, return 0 if none found */
@@ -119,6 +141,7 @@ static void coresight_trace_id_free(int id, struct coresight_trace_id_map *id_ma
 	clear_bit(id, id_map->used_ids);
 }
 
+<<<<<<< HEAD
 static void coresight_trace_id_set_pend_rel(int id, struct coresight_trace_id_map *id_map)
 {
 	if (WARN(!IS_VALID_CS_TRACE_ID(id), "Invalid Trace ID %d\n", id))
@@ -152,16 +175,44 @@ static void coresight_trace_id_release_all_pending(void)
 }
 
 static int coresight_trace_id_map_get_cpu_id(int cpu, struct coresight_trace_id_map *id_map)
+=======
+/*
+ * Release all IDs and clear CPU associations.
+ */
+static void coresight_trace_id_release_all(struct coresight_trace_id_map *id_map)
+{
+	unsigned long flags;
+	int cpu;
+
+	spin_lock_irqsave(&id_map->lock, flags);
+	bitmap_zero(id_map->used_ids, CORESIGHT_TRACE_IDS_MAX);
+	for_each_possible_cpu(cpu)
+		atomic_set(per_cpu_ptr(id_map->cpu_map, cpu), 0);
+	spin_unlock_irqrestore(&id_map->lock, flags);
+	DUMP_ID_MAP(id_map);
+}
+
+static int _coresight_trace_id_get_cpu_id(int cpu, struct coresight_trace_id_map *id_map)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned long flags;
 	int id;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&id_map_lock, flags);
 
 	/* check for existing allocation for this CPU */
 	id = _coresight_trace_id_read_cpu_id(cpu);
 	if (id)
 		goto get_cpu_id_clr_pend;
+=======
+	spin_lock_irqsave(&id_map->lock, flags);
+
+	/* check for existing allocation for this CPU */
+	id = _coresight_trace_id_read_cpu_id(cpu, id_map);
+	if (id)
+		goto get_cpu_id_out_unlock;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Find a new ID.
@@ -180,6 +231,7 @@ static int coresight_trace_id_map_get_cpu_id(int cpu, struct coresight_trace_id_
 		goto get_cpu_id_out_unlock;
 
 	/* allocate the new id to the cpu */
+<<<<<<< HEAD
 	atomic_set(&per_cpu(cpu_id, cpu), id);
 
 get_cpu_id_clr_pend:
@@ -189,18 +241,29 @@ get_cpu_id_clr_pend:
 
 get_cpu_id_out_unlock:
 	spin_unlock_irqrestore(&id_map_lock, flags);
+=======
+	atomic_set(per_cpu_ptr(id_map->cpu_map, cpu), id);
+
+get_cpu_id_out_unlock:
+	spin_unlock_irqrestore(&id_map->lock, flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	DUMP_ID_CPU(cpu, id);
 	DUMP_ID_MAP(id_map);
 	return id;
 }
 
+<<<<<<< HEAD
 static void coresight_trace_id_map_put_cpu_id(int cpu, struct coresight_trace_id_map *id_map)
+=======
+static void _coresight_trace_id_put_cpu_id(int cpu, struct coresight_trace_id_map *id_map)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned long flags;
 	int id;
 
 	/* check for existing allocation for this CPU */
+<<<<<<< HEAD
 	id = _coresight_trace_id_read_cpu_id(cpu);
 	if (!id)
 		return;
@@ -218,6 +281,18 @@ static void coresight_trace_id_map_put_cpu_id(int cpu, struct coresight_trace_id
 	}
 
 	spin_unlock_irqrestore(&id_map_lock, flags);
+=======
+	id = _coresight_trace_id_read_cpu_id(cpu, id_map);
+	if (!id)
+		return;
+
+	spin_lock_irqsave(&id_map->lock, flags);
+
+	coresight_trace_id_free(id, id_map);
+	atomic_set(per_cpu_ptr(id_map->cpu_map, cpu), 0);
+
+	spin_unlock_irqrestore(&id_map->lock, flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	DUMP_ID_CPU(cpu, id);
 	DUMP_ID_MAP(id_map);
 }
@@ -227,10 +302,17 @@ static int coresight_trace_id_map_get_system_id(struct coresight_trace_id_map *i
 	unsigned long flags;
 	int id;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&id_map_lock, flags);
 	/* prefer odd IDs for system components to avoid legacy CPU IDS */
 	id = coresight_trace_id_alloc_new_id(id_map, 0, true);
 	spin_unlock_irqrestore(&id_map_lock, flags);
+=======
+	spin_lock_irqsave(&id_map->lock, flags);
+	/* prefer odd IDs for system components to avoid legacy CPU IDS */
+	id = coresight_trace_id_alloc_new_id(id_map, 0, true);
+	spin_unlock_irqrestore(&id_map->lock, flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	DUMP_ID(id);
 	DUMP_ID_MAP(id_map);
@@ -241,9 +323,15 @@ static void coresight_trace_id_map_put_system_id(struct coresight_trace_id_map *
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&id_map_lock, flags);
 	coresight_trace_id_free(id, id_map);
 	spin_unlock_irqrestore(&id_map_lock, flags);
+=======
+	spin_lock_irqsave(&id_map->lock, flags);
+	coresight_trace_id_free(id, id_map);
+	spin_unlock_irqrestore(&id_map->lock, flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	DUMP_ID(id);
 	DUMP_ID_MAP(id_map);
@@ -253,6 +341,7 @@ static void coresight_trace_id_map_put_system_id(struct coresight_trace_id_map *
 
 int coresight_trace_id_get_cpu_id(int cpu)
 {
+<<<<<<< HEAD
 	return coresight_trace_id_map_get_cpu_id(cpu, &id_map_default);
 }
 EXPORT_SYMBOL_GPL(coresight_trace_id_get_cpu_id);
@@ -269,6 +358,42 @@ int coresight_trace_id_read_cpu_id(int cpu)
 }
 EXPORT_SYMBOL_GPL(coresight_trace_id_read_cpu_id);
 
+=======
+	return _coresight_trace_id_get_cpu_id(cpu, &id_map_default);
+}
+EXPORT_SYMBOL_GPL(coresight_trace_id_get_cpu_id);
+
+int coresight_trace_id_get_cpu_id_map(int cpu, struct coresight_trace_id_map *id_map)
+{
+	return _coresight_trace_id_get_cpu_id(cpu, id_map);
+}
+EXPORT_SYMBOL_GPL(coresight_trace_id_get_cpu_id_map);
+
+void coresight_trace_id_put_cpu_id(int cpu)
+{
+	_coresight_trace_id_put_cpu_id(cpu, &id_map_default);
+}
+EXPORT_SYMBOL_GPL(coresight_trace_id_put_cpu_id);
+
+void coresight_trace_id_put_cpu_id_map(int cpu, struct coresight_trace_id_map *id_map)
+{
+	_coresight_trace_id_put_cpu_id(cpu, id_map);
+}
+EXPORT_SYMBOL_GPL(coresight_trace_id_put_cpu_id_map);
+
+int coresight_trace_id_read_cpu_id(int cpu)
+{
+	return _coresight_trace_id_read_cpu_id(cpu, &id_map_default);
+}
+EXPORT_SYMBOL_GPL(coresight_trace_id_read_cpu_id);
+
+int coresight_trace_id_read_cpu_id_map(int cpu, struct coresight_trace_id_map *id_map)
+{
+	return _coresight_trace_id_read_cpu_id(cpu, id_map);
+}
+EXPORT_SYMBOL_GPL(coresight_trace_id_read_cpu_id_map);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int coresight_trace_id_get_system_id(void)
 {
 	return coresight_trace_id_map_get_system_id(&id_map_default);
@@ -281,6 +406,7 @@ void coresight_trace_id_put_system_id(int id)
 }
 EXPORT_SYMBOL_GPL(coresight_trace_id_put_system_id);
 
+<<<<<<< HEAD
 void coresight_trace_id_perf_start(void)
 {
 	atomic_inc(&perf_cs_etm_session_active);
@@ -293,5 +419,19 @@ void coresight_trace_id_perf_stop(void)
 	if (!atomic_dec_return(&perf_cs_etm_session_active))
 		coresight_trace_id_release_all_pending();
 	PERF_SESSION(atomic_read(&perf_cs_etm_session_active));
+=======
+void coresight_trace_id_perf_start(struct coresight_trace_id_map *id_map)
+{
+	atomic_inc(&id_map->perf_cs_etm_session_active);
+	PERF_SESSION(atomic_read(&id_map->perf_cs_etm_session_active));
+}
+EXPORT_SYMBOL_GPL(coresight_trace_id_perf_start);
+
+void coresight_trace_id_perf_stop(struct coresight_trace_id_map *id_map)
+{
+	if (!atomic_dec_return(&id_map->perf_cs_etm_session_active))
+		coresight_trace_id_release_all(id_map);
+	PERF_SESSION(atomic_read(&id_map->perf_cs_etm_session_active));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(coresight_trace_id_perf_stop);

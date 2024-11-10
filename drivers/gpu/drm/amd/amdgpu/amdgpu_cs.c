@@ -263,6 +263,13 @@ static int amdgpu_cs_pass1(struct amdgpu_cs_parser *p,
 			if (size < sizeof(struct drm_amdgpu_bo_list_in))
 				goto free_partial_kdata;
 
+<<<<<<< HEAD
+=======
+			/* Only a single BO list is allowed to simplify handling. */
+			if (p->bo_list)
+				goto free_partial_kdata;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ret = amdgpu_cs_p1_bo_handles(p, p->chunks[i].kdata);
 			if (ret)
 				goto free_partial_kdata;
@@ -292,6 +299,10 @@ static int amdgpu_cs_pass1(struct amdgpu_cs_parser *p,
 				       num_ibs[i], &p->jobs[i]);
 		if (ret)
 			goto free_all_kdata;
+<<<<<<< HEAD
+=======
+		p->jobs[i]->enforce_isolation = p->adev->enforce_isolation[fpriv->xcp_id];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	p->gang_leader = p->jobs[p->gang_leader_idx];
 
@@ -1106,7 +1117,11 @@ static int amdgpu_cs_vm_handling(struct amdgpu_cs_parser *p)
 			struct drm_gpu_scheduler *sched = entity->rq->sched;
 			struct amdgpu_ring *ring = to_amdgpu_ring(sched);
 
+<<<<<<< HEAD
 			if (amdgpu_vmid_uses_reserved(vm, ring->vm_hub))
+=======
+			if (amdgpu_vmid_uses_reserved(adev, vm, ring->vm_hub))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				return -EINVAL;
 		}
 	}

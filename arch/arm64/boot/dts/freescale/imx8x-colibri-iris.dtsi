@@ -17,10 +17,30 @@
 	};
 };
 
+<<<<<<< HEAD
+=======
+/* Colibri Analogue Inputs */
+&adc0 {
+	status = "okay";
+};
+
+/* Colibri PWM_A */
+&adma_pwm {
+	status = "okay";
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &colibri_gpio_keys {
 	status = "okay";
 };
 
+<<<<<<< HEAD
+=======
+&extcon_usbc_det {
+	status = "okay";
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Colibri FastEthernet */
 &fec1 {
 	status = "okay";
@@ -108,6 +128,31 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
+=======
+/* USB PHY for usbotg3 */
+&usb3_phy {
+	status = "okay";
+};
+
+&usbotg1 {
+	status = "okay";
+};
+
+&usbotg3 {
+	status = "okay";
+};
+
+&usbotg3_cdns3 {
+	status = "okay";
+};
+
+/* USB PHY for usbotg1 */
+&usbphy1 {
+	status = "okay";
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Colibri SD/MMC Card */
 &usdhc2 {
 	status = "okay";

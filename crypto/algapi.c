@@ -235,7 +235,10 @@ void crypto_remove_spawns(struct crypto_alg *alg, struct list_head *list,
 EXPORT_SYMBOL_GPL(crypto_remove_spawns);
 
 static void crypto_alg_finish_registration(struct crypto_alg *alg,
+<<<<<<< HEAD
 					   bool fulfill_requests,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					   struct list_head *algs_to_put)
 {
 	struct crypto_alg *q;
@@ -247,6 +250,7 @@ static void crypto_alg_finish_registration(struct crypto_alg *alg,
 		if (crypto_is_moribund(q))
 			continue;
 
+<<<<<<< HEAD
 		if (crypto_is_larval(q)) {
 			struct crypto_larval *larval = (void *)q;
 
@@ -271,6 +275,10 @@ static void crypto_alg_finish_registration(struct crypto_alg *alg,
 
 			continue;
 		}
+=======
+		if (crypto_is_larval(q))
+			continue;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (strcmp(alg->cra_name, q->cra_name))
 			continue;
@@ -359,7 +367,11 @@ __crypto_register_alg(struct crypto_alg *alg, struct list_head *algs_to_put)
 		list_add(&larval->alg.cra_list, &crypto_alg_list);
 	} else {
 		alg->cra_flags |= CRYPTO_ALG_TESTED;
+<<<<<<< HEAD
 		crypto_alg_finish_registration(alg, true, algs_to_put);
+=======
+		crypto_alg_finish_registration(alg, algs_to_put);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 out:
@@ -376,7 +388,10 @@ void crypto_alg_tested(const char *name, int err)
 	struct crypto_alg *alg;
 	struct crypto_alg *q;
 	LIST_HEAD(list);
+<<<<<<< HEAD
 	bool best;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	down_write(&crypto_alg_sem);
 	list_for_each_entry(q, &crypto_alg_list, cra_list) {
@@ -390,13 +405,22 @@ void crypto_alg_tested(const char *name, int err)
 	}
 
 	pr_err("alg: Unexpected test result for %s: %d\n", name, err);
+<<<<<<< HEAD
 	goto unlock;
+=======
+	up_write(&crypto_alg_sem);
+	return;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 found:
 	q->cra_flags |= CRYPTO_ALG_DEAD;
 	alg = test->adult;
 
+<<<<<<< HEAD
 	if (list_empty(&alg->cra_list))
+=======
+	if (crypto_is_dead(alg))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto complete;
 
 	if (err == -ECANCELED)
@@ -408,6 +432,7 @@ found:
 
 	alg->cra_flags |= CRYPTO_ALG_TESTED;
 
+<<<<<<< HEAD
 	/*
 	 * If a higher-priority implementation of the same algorithm is
 	 * currently being tested, then don't fulfill request larvals.
@@ -434,6 +459,17 @@ complete:
 unlock:
 	up_write(&crypto_alg_sem);
 
+=======
+	crypto_alg_finish_registration(alg, &list);
+
+complete:
+	list_del_init(&test->alg.cra_list);
+	complete_all(&test->completion);
+
+	up_write(&crypto_alg_sem);
+
+	crypto_alg_put(&test->alg);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	crypto_remove_final(&list);
 }
 EXPORT_SYMBOL_GPL(crypto_alg_tested);
@@ -454,7 +490,10 @@ int crypto_register_alg(struct crypto_alg *alg)
 {
 	struct crypto_larval *larval;
 	LIST_HEAD(algs_to_put);
+<<<<<<< HEAD
 	bool test_started = false;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 
 	alg->cra_flags &= ~CRYPTO_ALG_DEAD;
@@ -465,15 +504,26 @@ int crypto_register_alg(struct crypto_alg *alg)
 	down_write(&crypto_alg_sem);
 	larval = __crypto_register_alg(alg, &algs_to_put);
 	if (!IS_ERR_OR_NULL(larval)) {
+<<<<<<< HEAD
 		test_started = crypto_boot_test_finished();
 		larval->test_started = test_started;
+=======
+		bool test_started = crypto_boot_test_finished();
+
+		larval->test_started = test_started;
+		if (test_started)
+			crypto_schedule_test(larval);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	up_write(&crypto_alg_sem);
 
 	if (IS_ERR(larval))
 		return PTR_ERR(larval);
+<<<<<<< HEAD
 	if (test_started)
 		crypto_wait_for_test(larval);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	crypto_remove_final(&algs_to_put);
 	return 0;
 }
@@ -688,8 +738,15 @@ int crypto_register_instance(struct crypto_template *tmpl,
 	larval = __crypto_register_alg(&inst->alg, &algs_to_put);
 	if (IS_ERR(larval))
 		goto unlock;
+<<<<<<< HEAD
 	else if (larval)
 		larval->test_started = true;
+=======
+	else if (larval) {
+		larval->test_started = true;
+		crypto_schedule_test(larval);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	hlist_add_head(&inst->list, &tmpl->instances);
 	inst->tmpl = tmpl;
@@ -699,8 +756,11 @@ unlock:
 
 	if (IS_ERR(larval))
 		return PTR_ERR(larval);
+<<<<<<< HEAD
 	if (larval)
 		crypto_wait_for_test(larval);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	crypto_remove_final(&algs_to_put);
 	return 0;
 }
@@ -1084,6 +1144,10 @@ static void __init crypto_start_tests(void)
 
 			l->test_started = true;
 			larval = l;
+<<<<<<< HEAD
+=======
+			crypto_schedule_test(larval);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		}
 
@@ -1091,8 +1155,11 @@ static void __init crypto_start_tests(void)
 
 		if (!larval)
 			break;
+<<<<<<< HEAD
 
 		crypto_wait_for_test(larval);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	set_crypto_boot_test_finished();

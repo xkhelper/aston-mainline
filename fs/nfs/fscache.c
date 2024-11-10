@@ -267,6 +267,10 @@ static int nfs_netfs_init_request(struct netfs_io_request *rreq, struct file *fi
 	rreq->debug_id = atomic_inc_return(&nfs_netfs_debug_id);
 	/* [DEPRECATED] Use PG_private_2 to mark folio being written to the cache. */
 	__set_bit(NETFS_RREQ_USE_PGPRIV2, &rreq->flags);
+<<<<<<< HEAD
+=======
+	rreq->io_streams[0].sreq_max_len = NFS_SB(rreq->inode->i_sb)->rsize;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -288,6 +292,7 @@ static struct nfs_netfs_io_data *nfs_netfs_alloc(struct netfs_io_subrequest *sre
 	return netfs;
 }
 
+<<<<<<< HEAD
 static bool nfs_netfs_clamp_length(struct netfs_io_subrequest *sreq)
 {
 	size_t	rsize = NFS_SB(sreq->rreq->inode->i_sb)->rsize;
@@ -296,6 +301,8 @@ static bool nfs_netfs_clamp_length(struct netfs_io_subrequest *sreq)
 	return true;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void nfs_netfs_issue_read(struct netfs_io_subrequest *sreq)
 {
 	struct nfs_netfs_io_data	*netfs;
@@ -304,17 +311,29 @@ static void nfs_netfs_issue_read(struct netfs_io_subrequest *sreq)
 	struct nfs_open_context *ctx = sreq->rreq->netfs_priv;
 	struct page *page;
 	unsigned long idx;
+<<<<<<< HEAD
 	int err;
 	pgoff_t start = (sreq->start + sreq->transferred) >> PAGE_SHIFT;
 	pgoff_t last = ((sreq->start + sreq->len -
 			 sreq->transferred - 1) >> PAGE_SHIFT);
+=======
+	pgoff_t start, last;
+	int err;
+
+	start = (sreq->start + sreq->transferred) >> PAGE_SHIFT;
+	last = ((sreq->start + sreq->len - sreq->transferred - 1) >> PAGE_SHIFT);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	nfs_pageio_init_read(&pgio, inode, false,
 			     &nfs_async_read_completion_ops);
 
 	netfs = nfs_netfs_alloc(sreq);
 	if (!netfs)
+<<<<<<< HEAD
 		return netfs_subreq_terminated(sreq, -ENOMEM, false);
+=======
+		return netfs_read_subreq_terminated(sreq, -ENOMEM, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pgio.pg_netfs = netfs; /* used in completion */
 
@@ -380,5 +399,8 @@ const struct netfs_request_ops nfs_netfs_ops = {
 	.init_request		= nfs_netfs_init_request,
 	.free_request		= nfs_netfs_free_request,
 	.issue_read		= nfs_netfs_issue_read,
+<<<<<<< HEAD
 	.clamp_length		= nfs_netfs_clamp_length
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };

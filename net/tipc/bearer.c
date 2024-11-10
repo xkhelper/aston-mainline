@@ -163,8 +163,17 @@ static int bearer_name_validate(const char *name,
 
 	/* return bearer name components, if necessary */
 	if (name_parts) {
+<<<<<<< HEAD
 		strcpy(name_parts->media_name, media_name);
 		strcpy(name_parts->if_name, if_name);
+=======
+		if (strscpy(name_parts->media_name, media_name,
+			    TIPC_MAX_MEDIA_NAME) < 0)
+			return 0;
+		if (strscpy(name_parts->if_name, if_name,
+			    TIPC_MAX_IF_NAME) < 0)
+			return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return 1;
 }
@@ -322,7 +331,11 @@ static int tipc_enable_bearer(struct net *net, const char *name,
 	if (!b)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	strcpy(b->name, name);
+=======
+	strscpy(b->name, name);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	b->media = m;
 	res = m->enable_media(net, b, attr);
 	if (res) {

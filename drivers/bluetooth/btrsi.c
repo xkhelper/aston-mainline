@@ -17,7 +17,11 @@
 #include <linux/kernel.h>
 #include <net/bluetooth/bluetooth.h>
 #include <net/bluetooth/hci_core.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <net/rsi_91x.h>
 
 #define RSI_DMA_ALIGN	8

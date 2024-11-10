@@ -2025,6 +2025,7 @@ static int sunxi_nand_chip_init(struct device *dev, struct sunxi_nfc *nfc,
 static int sunxi_nand_chips_init(struct device *dev, struct sunxi_nfc *nfc)
 {
 	struct device_node *np = dev->of_node;
+<<<<<<< HEAD
 	struct device_node *nand_np;
 	int ret;
 
@@ -2032,6 +2033,13 @@ static int sunxi_nand_chips_init(struct device *dev, struct sunxi_nfc *nfc)
 		ret = sunxi_nand_chip_init(dev, nfc, nand_np);
 		if (ret) {
 			of_node_put(nand_np);
+=======
+	int ret;
+
+	for_each_child_of_node_scoped(np, nand_np) {
+		ret = sunxi_nand_chip_init(dev, nfc, nand_np);
+		if (ret) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			sunxi_nand_chips_cleanup(nfc);
 			return ret;
 		}

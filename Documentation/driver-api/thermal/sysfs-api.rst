@@ -58,10 +58,16 @@ temperature) and throttle appropriate devices.
     ops:
 	thermal zone device call-backs.
 
+<<<<<<< HEAD
 	.bind:
 		bind the thermal zone device with a thermal cooling device.
 	.unbind:
 		unbind the thermal zone device with a thermal cooling device.
+=======
+	.should_bind:
+		check whether or not a given cooling device should be bound to
+		a given trip point in this thermal zone.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.get_temp:
 		get the current temperature of the thermal zone.
 	.set_trips:
@@ -246,6 +252,7 @@ temperature) and throttle appropriate devices.
     It deletes the corresponding entry from /sys/class/thermal folder and
     unbinds itself from all the thermal zone devices using it.
 
+<<<<<<< HEAD
 1.3 interface for binding a thermal zone device with a thermal cooling device
 -----------------------------------------------------------------------------
 
@@ -296,6 +303,8 @@ temperature) and throttle appropriate devices.
 	indicates which trip point in this thermal zone the cooling device
 	is associated with.
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 1.4 Thermal Zone Parameters
 ---------------------------
 
@@ -366,8 +375,11 @@ Thermal cooling device sys I/F, created once it's registered::
 
 Then next two dynamic attributes are created/removed in pairs. They represent
 the relationship between a thermal zone and its associated cooling device.
+<<<<<<< HEAD
 They are created/removed for each successful execution of
 thermal_zone_bind_cooling_device/thermal_zone_unbind_cooling_device.
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 ::
 
@@ -459,6 +471,7 @@ are supposed to implement the callback. If they don't, the thermal
 framework calculated the trend by comparing the previous and the current
 temperature values.
 
+<<<<<<< HEAD
 4.2. get_thermal_instance
 -------------------------
 
@@ -467,6 +480,9 @@ This function returns the thermal_instance corresponding to a given
 if such an instance does not exist.
 
 4.3. thermal_cdev_update
+=======
+4.2. thermal_cdev_update
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ------------------------
 
 This function serves as an arbitrator to set the state of a cooling

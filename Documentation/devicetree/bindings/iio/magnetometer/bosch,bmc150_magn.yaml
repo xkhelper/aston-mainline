@@ -36,6 +36,12 @@ properties:
   interrupts:
     maxItems: 1
 
+<<<<<<< HEAD
+=======
+  mount-matrix:
+    description: an optional 3x3 mounting rotation matrix.
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 additionalProperties: false
 
 required:

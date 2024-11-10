@@ -231,6 +231,14 @@ xchk_should_terminate(
 	return false;
 }
 
+<<<<<<< HEAD
+=======
+static inline int xchk_nothing(struct xfs_scrub *sc)
+{
+	return -ENOENT;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Metadata scrubbers */
 int xchk_tester(struct xfs_scrub *sc);
 int xchk_superblock(struct xfs_scrub *sc);
@@ -254,6 +262,7 @@ int xchk_dirtree(struct xfs_scrub *sc);
 int xchk_rtbitmap(struct xfs_scrub *sc);
 int xchk_rtsummary(struct xfs_scrub *sc);
 #else
+<<<<<<< HEAD
 static inline int
 xchk_rtbitmap(struct xfs_scrub *sc)
 {
@@ -264,11 +273,16 @@ xchk_rtsummary(struct xfs_scrub *sc)
 {
 	return -ENOENT;
 }
+=======
+# define xchk_rtbitmap		xchk_nothing
+# define xchk_rtsummary		xchk_nothing
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 #ifdef CONFIG_XFS_QUOTA
 int xchk_quota(struct xfs_scrub *sc);
 int xchk_quotacheck(struct xfs_scrub *sc);
 #else
+<<<<<<< HEAD
 static inline int
 xchk_quota(struct xfs_scrub *sc)
 {
@@ -279,6 +293,10 @@ xchk_quotacheck(struct xfs_scrub *sc)
 {
 	return -ENOENT;
 }
+=======
+# define xchk_quota		xchk_nothing
+# define xchk_quotacheck	xchk_nothing
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 int xchk_fscounters(struct xfs_scrub *sc);
 int xchk_nlinks(struct xfs_scrub *sc);

@@ -8,6 +8,11 @@
 #include <errno.h>
 #include <string.h>
 #include <limits.h>
+<<<<<<< HEAD
+=======
+
+#include <xalloc.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "modpost.h"
 
 /*
@@ -305,7 +310,11 @@ static int parse_source_files(const char *objfile, struct md4_ctx *md)
 	const char *base;
 	int dirlen, ret = 0, check_files = 0;
 
+<<<<<<< HEAD
 	cmd = NOFAIL(malloc(strlen(objfile) + sizeof("..cmd")));
+=======
+	cmd = xmalloc(strlen(objfile) + sizeof("..cmd"));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	base = strrchr(objfile, '/');
 	if (base) {
@@ -316,7 +325,11 @@ static int parse_source_files(const char *objfile, struct md4_ctx *md)
 		dirlen = 0;
 		sprintf(cmd, ".%s.cmd", objfile);
 	}
+<<<<<<< HEAD
 	dir = NOFAIL(malloc(dirlen + 1));
+=======
+	dir = xmalloc(dirlen + 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	strncpy(dir, objfile, dirlen);
 	dir[dirlen] = '\0';
 
@@ -390,7 +403,11 @@ out_file:
 /* Calc and record src checksum. */
 void get_src_version(const char *modname, char sum[], unsigned sumlen)
 {
+<<<<<<< HEAD
 	char *buf;
+=======
+	char *buf, *pos;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct md4_ctx md;
 	char *fname;
 	char filelist[PATH_MAX + 1];
@@ -399,9 +416,16 @@ void get_src_version(const char *modname, char sum[], unsigned sumlen)
 	snprintf(filelist, sizeof(filelist), "%s.mod", modname);
 
 	buf = read_text_file(filelist);
+<<<<<<< HEAD
 
 	md4_init(&md);
 	while ((fname = strsep(&buf, "\n"))) {
+=======
+	pos = buf;
+
+	md4_init(&md);
+	while ((fname = strsep(&pos, "\n"))) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!*fname)
 			continue;
 		if (!(is_static_library(fname)) &&

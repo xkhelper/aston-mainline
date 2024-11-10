@@ -532,6 +532,12 @@ void intel_plane_fixup_bitmasks(struct intel_crtc_state *crtc_state);
 
 void intel_update_watermarks(struct drm_i915_private *i915);
 
+<<<<<<< HEAD
+=======
+bool intel_crtc_vrr_disabling(struct intel_atomic_state *state,
+			      struct intel_crtc *crtc);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* modesetting */
 int intel_modeset_pipes_in_mask_early(struct intel_atomic_state *state,
 				      const char *reason, u8 pipe_mask);

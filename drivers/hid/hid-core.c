@@ -20,7 +20,11 @@
 #include <linux/list.h>
 #include <linux/mm.h>
 #include <linux/spinlock.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/byteorder.h>
 #include <linux/input.h>
 #include <linux/wait.h>
@@ -723,7 +727,11 @@ static void hid_device_release(struct device *dev)
  * items, though they are not used yet.
  */
 
+<<<<<<< HEAD
 static u8 *fetch_item(__u8 *start, __u8 *end, struct hid_item *item)
+=======
+static const u8 *fetch_item(const __u8 *start, const __u8 *end, struct hid_item *item)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u8 b;
 
@@ -880,8 +888,13 @@ static int hid_scan_report(struct hid_device *hid)
 {
 	struct hid_parser *parser;
 	struct hid_item item;
+<<<<<<< HEAD
 	__u8 *start = hid->dev_rdesc;
 	__u8 *end = start + hid->dev_rsize;
+=======
+	const __u8 *start = hid->dev_rdesc;
+	const __u8 *end = start + hid->dev_rsize;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	static int (*dispatch_type[])(struct hid_parser *parser,
 				      struct hid_item *item) = {
 		hid_scan_main,
@@ -946,7 +959,11 @@ static int hid_scan_report(struct hid_device *hid)
  * Allocate the device report as read by the bus driver. This function should
  * only be called from parse() in ll drivers.
  */
+<<<<<<< HEAD
 int hid_parse_report(struct hid_device *hid, __u8 *start, unsigned size)
+=======
+int hid_parse_report(struct hid_device *hid, const __u8 *start, unsigned size)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	hid->dev_rdesc = kmemdup(start, size, GFP_KERNEL);
 	if (!hid->dev_rdesc)
@@ -1204,10 +1221,17 @@ int hid_open_report(struct hid_device *device)
 	struct hid_parser *parser;
 	struct hid_item item;
 	unsigned int size;
+<<<<<<< HEAD
 	__u8 *start;
 	__u8 *buf;
 	__u8 *end;
 	__u8 *next;
+=======
+	const __u8 *start;
+	__u8 *buf;
+	const __u8 *end;
+	const __u8 *next;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 	int i;
 	static int (*dispatch_type[])(struct hid_parser *parser,
@@ -1875,7 +1899,11 @@ u8 *hid_alloc_report_buf(struct hid_report *report, gfp_t flags)
 
 	u32 len = hid_report_len(report) + 7;
 
+<<<<<<< HEAD
 	return kmalloc(len, flags);
+=======
+	return kzalloc(len, flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(hid_alloc_report_buf);
 
@@ -1912,6 +1940,34 @@ int hid_set_field(struct hid_field *field, unsigned offset, __s32 value)
 }
 EXPORT_SYMBOL_GPL(hid_set_field);
 
+<<<<<<< HEAD
+=======
+struct hid_field *hid_find_field(struct hid_device *hdev, unsigned int report_type,
+				 unsigned int application, unsigned int usage)
+{
+	struct list_head *report_list = &hdev->report_enum[report_type].report_list;
+	struct hid_report *report;
+	int i, j;
+
+	list_for_each_entry(report, report_list, list) {
+		if (report->application != application)
+			continue;
+
+		for (i = 0; i < report->maxfield; i++) {
+			struct hid_field *field = report->field[i];
+
+			for (j = 0; j < field->maxusage; j++) {
+				if (field->usage[j].hid == usage)
+					return field;
+			}
+		}
+	}
+
+	return NULL;
+}
+EXPORT_SYMBOL_GPL(hid_find_field);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct hid_report *hid_get_report(struct hid_report_enum *report_enum,
 		const u8 *data)
 {

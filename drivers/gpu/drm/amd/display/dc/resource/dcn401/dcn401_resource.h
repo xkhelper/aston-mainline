@@ -536,7 +536,12 @@ void dcn401_prepare_mcache_programming(struct dc *dc, struct dc_state *context);
 	SRI_ARR(OPTC_WIDTH_CONTROL, ODM, inst),                                  \
 	SRI_ARR(OPTC_WIDTH_CONTROL2, ODM, inst),                                 \
 	SRI_ARR(OPTC_MEMORY_CONFIG, ODM, inst),                                  \
+<<<<<<< HEAD
 	SRI_ARR(OTG_DRR_CONTROL, OTG, inst)
+=======
+	SRI_ARR(OTG_DRR_CONTROL, OTG, inst),										 \
+	SRI_ARR(OTG_PSTATE_REGISTER, OTG, inst)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* HUBBUB */
 #define HUBBUB_REG_LIST_DCN4_01_RI(id)                                       \

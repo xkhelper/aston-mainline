@@ -81,7 +81,11 @@ static struct dentry *ntfs_lookup(struct inode *dir, struct dentry *dentry,
 		if (err < 0)
 			inode = ERR_PTR(err);
 		else {
+<<<<<<< HEAD
 			ni_lock(ni);
+=======
+			ni_lock_dir(ni);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			inode = dir_search_u(dir, uni, NULL);
 			ni_unlock(ni);
 		}
@@ -395,7 +399,11 @@ static int ntfs_d_hash(const struct dentry *dentry, struct qstr *name)
 	/*
 	 * Try slow way with current upcase table
 	 */
+<<<<<<< HEAD
 	uni = __getname();
+=======
+	uni = kmem_cache_alloc(names_cachep, GFP_NOWAIT);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!uni)
 		return -ENOMEM;
 
@@ -417,7 +425,11 @@ static int ntfs_d_hash(const struct dentry *dentry, struct qstr *name)
 	err = 0;
 
 out:
+<<<<<<< HEAD
 	__putname(uni);
+=======
+	kmem_cache_free(names_cachep, uni);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
@@ -503,7 +515,11 @@ const struct inode_operations ntfs_dir_inode_operations = {
 	.rename		= ntfs_rename,
 	.get_acl	= ntfs_get_acl,
 	.set_acl	= ntfs_set_acl,
+<<<<<<< HEAD
 	.setattr	= ntfs3_setattr,
+=======
+	.setattr	= ntfs_setattr,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.getattr	= ntfs_getattr,
 	.listxattr	= ntfs_listxattr,
 	.fiemap		= ntfs_fiemap,
@@ -512,7 +528,11 @@ const struct inode_operations ntfs_dir_inode_operations = {
 };
 
 const struct inode_operations ntfs_special_inode_operations = {
+<<<<<<< HEAD
 	.setattr	= ntfs3_setattr,
+=======
+	.setattr	= ntfs_setattr,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.getattr	= ntfs_getattr,
 	.listxattr	= ntfs_listxattr,
 	.get_acl	= ntfs_get_acl,

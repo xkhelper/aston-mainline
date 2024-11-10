@@ -34,7 +34,11 @@
 #include <linux/sort.h>
 #include <linux/units.h>
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static char *mutex_path_override;
 

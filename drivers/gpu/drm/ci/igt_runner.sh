@@ -20,6 +20,7 @@ cat /sys/kernel/debug/dri/*/state
 set -e
 
 case "$DRIVER_NAME" in
+<<<<<<< HEAD
     rockchip|meson)
         export IGT_FORCE_DRIVER="panfrost"
         ;;
@@ -30,6 +31,8 @@ case "$DRIVER_NAME" in
             export IGT_FORCE_DRIVER="panfrost"
         fi
         ;;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     amdgpu|vkms)
         # Cannot use HWCI_KERNEL_MODULES as at that point we don't have the module in /lib
         mv /install/modules/lib/modules/* /lib/modules/. || true
@@ -80,6 +83,10 @@ igt-runner \
     --igt-folder /igt/libexec/igt-gpu-tools \
     --caselist $TESTLIST \
     --output /results \
+<<<<<<< HEAD
+=======
+    -vvvv \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     $IGT_SKIPS \
     $IGT_FLAKES \
     $IGT_FAILS \

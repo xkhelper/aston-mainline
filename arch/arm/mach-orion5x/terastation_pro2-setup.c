@@ -349,7 +349,11 @@ static void __init tsp2_init(void)
 	i2c_register_board_info(0, &tsp2_i2c_rtc, 1);
 
 	/* register Terastation Pro II specific power-off method */
+<<<<<<< HEAD
 	pm_power_off = tsp2_power_off;
+=======
+	register_platform_power_off(tsp2_power_off);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 MACHINE_START(TERASTATION_PRO2, "Buffalo Terastation Pro II/Live")

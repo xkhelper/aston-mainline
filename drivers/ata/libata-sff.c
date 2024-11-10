@@ -26,7 +26,10 @@ static struct workqueue_struct *ata_sff_wq;
 const struct ata_port_operations ata_sff_port_ops = {
 	.inherits		= &ata_base_port_ops,
 
+<<<<<<< HEAD
 	.qc_prep		= ata_noop_qc_prep,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.qc_issue		= ata_sff_qc_issue,
 	.qc_fill_rtf		= ata_sff_qc_fill_rtf,
 
@@ -970,7 +973,11 @@ fsm_start:
 			 * We ignore ERR here to workaround and proceed sending
 			 * the CDB.
 			 */
+<<<<<<< HEAD
 			if (!(qc->dev->horkage & ATA_HORKAGE_STUCK_ERR)) {
+=======
+			if (!(qc->dev->quirks & ATA_QUIRK_STUCK_ERR)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				ata_ehi_push_desc(ehi, "ST_FIRST: "
 					"DRQ=1 with device error, "
 					"dev_stat 0x%X", status);
@@ -1045,8 +1052,13 @@ fsm_start:
 					 * IDENTIFY, it's likely a phantom
 					 * device.  Mark hint.
 					 */
+<<<<<<< HEAD
 					if (qc->dev->horkage &
 					    ATA_HORKAGE_DIAGNOSTIC)
+=======
+					if (qc->dev->quirks &
+					    ATA_QUIRK_DIAGNOSTIC)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						qc->err_mask |=
 							AC_ERR_NODEV_HINT;
 				} else {
@@ -1762,7 +1774,11 @@ unsigned int ata_sff_dev_classify(struct ata_device *dev, int present,
 	/* see if device passed diags: continue and warn later */
 	if (err == 0)
 		/* diagnostic fail : do nothing _YET_ */
+<<<<<<< HEAD
 		dev->horkage |= ATA_HORKAGE_DIAGNOSTIC;
+=======
+		dev->quirks |= ATA_QUIRK_DIAGNOSTIC;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else if (err == 1)
 		/* do nothing */ ;
 	else if ((dev->devno == 0) && (err == 0x81))
@@ -1781,7 +1797,11 @@ unsigned int ata_sff_dev_classify(struct ata_device *dev, int present,
 		 * device signature is invalid with diagnostic
 		 * failure.
 		 */
+<<<<<<< HEAD
 		if (present && (dev->horkage & ATA_HORKAGE_DIAGNOSTIC))
+=======
+		if (present && (dev->quirks & ATA_QUIRK_DIAGNOSTIC))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			class = ATA_DEV_ATA;
 		else
 			class = ATA_DEV_NONE;

@@ -109,6 +109,7 @@ EXPORT_SYMBOL_GPL(i2c_slave_event);
 bool i2c_detect_slave_mode(struct device *dev)
 {
 	if (IS_BUILTIN(CONFIG_OF) && dev->of_node) {
+<<<<<<< HEAD
 		struct device_node *child;
 		u32 reg;
 
@@ -118,6 +119,14 @@ bool i2c_detect_slave_mode(struct device *dev)
 				of_node_put(child);
 				return true;
 			}
+=======
+		u32 reg;
+
+		for_each_child_of_node_scoped(dev->of_node, child) {
+			of_property_read_u32(child, "reg", &reg);
+			if (reg & I2C_OWN_SLAVE_ADDRESS)
+				return true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	} else if (IS_BUILTIN(CONFIG_ACPI) && ACPI_HANDLE(dev)) {
 		dev_dbg(dev, "ACPI slave is not supported yet\n");

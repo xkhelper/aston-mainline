@@ -186,9 +186,15 @@ int meson_card_set_fe_link(struct snd_soc_card *card,
 	link->dpcm_merged_rate = 1;
 
 	if (is_playback)
+<<<<<<< HEAD
 		link->dpcm_playback = 1;
 	else
 		link->dpcm_capture = 1;
+=======
+		link->playback_only = 1;
+	else
+		link->capture_only = 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return meson_card_set_link_name(card, link, node, "fe");
 }

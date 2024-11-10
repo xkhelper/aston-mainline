@@ -19,6 +19,10 @@
 #include "util/bpf-filter.h"
 #include "util/env.h"
 #include "util/kvm-stat.h"
+<<<<<<< HEAD
+=======
+#include "util/stat.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "util/kwork.h"
 #include "util/sample.h"
 #include "util/lock-contention.h"
@@ -1355,6 +1359,10 @@ error:
 
 unsigned int scripting_max_stack = PERF_MAX_STACK_DEPTH;
 
+<<<<<<< HEAD
+=======
+#ifdef HAVE_KVM_STAT_SUPPORT
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool kvm_entry_event(struct evsel *evsel __maybe_unused)
 {
 	return false;
@@ -1384,6 +1392,10 @@ void exit_event_decode_key(struct perf_kvm_stat *kvm __maybe_unused,
 			   char *decode __maybe_unused)
 {
 }
+<<<<<<< HEAD
+=======
+#endif // HAVE_KVM_STAT_SUPPORT
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int find_scripts(char **scripts_array  __maybe_unused, char **scripts_path_array  __maybe_unused,
 		int num  __maybe_unused, int pathlen __maybe_unused)

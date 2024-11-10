@@ -225,6 +225,10 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
 	if (bus) {
 		memcpy(bus->sysdata, info->cfg, sizeof(struct pci_config_window));
 		kfree(info);
+<<<<<<< HEAD
+=======
+		kfree(root_ops);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		struct pci_bus *child;
 

@@ -69,7 +69,11 @@ bool udl_probe_edid(struct udl_device *udl)
 	 * The adapter sends all-zeros if no monitor has been
 	 * connected. We consider anything else a connection.
 	 */
+<<<<<<< HEAD
 	return !!memchr_inv(hdr, 0, sizeof(hdr));
+=======
+	return !mem_is_zero(hdr, sizeof(hdr));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 const struct drm_edid *udl_edid_read(struct drm_connector *connector)

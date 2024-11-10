@@ -11,6 +11,10 @@
 #include <stdint.h>
 
 #include "processor.h"
+<<<<<<< HEAD
+=======
+#include "ucall_common.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define APIC_DEFAULT_GPA		0xfee00000ULL
 
@@ -93,9 +97,35 @@ static inline uint64_t x2apic_read_reg(unsigned int reg)
 	return rdmsr(APIC_BASE_MSR + (reg >> 4));
 }
 
+<<<<<<< HEAD
 static inline void x2apic_write_reg(unsigned int reg, uint64_t value)
 {
 	wrmsr(APIC_BASE_MSR + (reg >> 4), value);
 }
 
+=======
+static inline uint8_t x2apic_write_reg_safe(unsigned int reg, uint64_t value)
+{
+	return wrmsr_safe(APIC_BASE_MSR + (reg >> 4), value);
+}
+
+static inline void x2apic_write_reg(unsigned int reg, uint64_t value)
+{
+	uint8_t fault = x2apic_write_reg_safe(reg, value);
+
+	__GUEST_ASSERT(!fault, "Unexpected fault 0x%x on WRMSR(%x) = %lx\n",
+		       fault, APIC_BASE_MSR + (reg >> 4), value);
+}
+
+static inline void x2apic_write_reg_fault(unsigned int reg, uint64_t value)
+{
+	uint8_t fault = x2apic_write_reg_safe(reg, value);
+
+	__GUEST_ASSERT(fault == GP_VECTOR,
+		       "Wanted #GP on WRMSR(%x) = %lx, got 0x%x\n",
+		       APIC_BASE_MSR + (reg >> 4), value, fault);
+}
+
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* SELFTEST_KVM_APIC_H */

@@ -71,8 +71,11 @@ snd-soc-cs35l41-lib-y := cs35l41-lib.o
 snd-soc-cs35l41-y := cs35l41.o
 snd-soc-cs35l41-spi-y := cs35l41-spi.o
 snd-soc-cs35l41-i2c-y := cs35l41-i2c.o
+<<<<<<< HEAD
 snd-soc-cs35l43-i2c-y := cs35l43-i2c.o cs35l43.o cs35l43-tables.o
 snd-soc-cs35l43-spi-y := cs35l43-spi.o cs35l43.o cs35l43-tables.o
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 snd-soc-cs35l45-y := cs35l45.o cs35l45-tables.o
 snd-soc-cs35l45-spi-y := cs35l45-spi.o
 snd-soc-cs35l45-i2c-y := cs35l45-i2c.o
@@ -179,6 +182,10 @@ snd-soc-ml26124-y := ml26124.o
 snd-soc-msm8916-analog-y := msm8916-wcd-analog.o
 snd-soc-msm8916-digital-y := msm8916-wcd-digital.o
 snd-soc-mt6351-y := mt6351.o
+<<<<<<< HEAD
+=======
+snd-soc-mt6357-y := mt6357.o
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 snd-soc-mt6358-y := mt6358.o
 snd-soc-mt6359-y := mt6359.o
 snd-soc-mt6359-accdet-y := mt6359-accdet.o
@@ -479,8 +486,11 @@ obj-$(CONFIG_SND_SOC_CS35L41)	+= snd-soc-cs35l41.o
 obj-$(CONFIG_SND_SOC_CS35L41_LIB)	+= snd-soc-cs35l41-lib.o
 obj-$(CONFIG_SND_SOC_CS35L41_SPI)	+= snd-soc-cs35l41-spi.o
 obj-$(CONFIG_SND_SOC_CS35L41_I2C)	+= snd-soc-cs35l41-i2c.o
+<<<<<<< HEAD
 obj-$(CONFIG_SND_SOC_CS35L43_I2C)	+= snd-soc-cs35l43-i2c.o
 obj-$(CONFIG_SND_SOC_CS35L43_SPI)	+= snd-soc-cs35l43-spi.o
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 obj-$(CONFIG_SND_SOC_CS35L45)	+= snd-soc-cs35l45.o
 obj-$(CONFIG_SND_SOC_CS35L45_SPI)	+= snd-soc-cs35l45-spi.o
 obj-$(CONFIG_SND_SOC_CS35L45_I2C)	+= snd-soc-cs35l45-i2c.o
@@ -582,6 +592,10 @@ obj-$(CONFIG_SND_SOC_ML26124)	+= snd-soc-ml26124.o
 obj-$(CONFIG_SND_SOC_MSM8916_WCD_ANALOG) +=snd-soc-msm8916-analog.o
 obj-$(CONFIG_SND_SOC_MSM8916_WCD_DIGITAL) +=snd-soc-msm8916-digital.o
 obj-$(CONFIG_SND_SOC_MT6351)	+= snd-soc-mt6351.o
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_SND_SOC_MT6357)	+= snd-soc-mt6357.o
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 obj-$(CONFIG_SND_SOC_MT6358)	+= snd-soc-mt6358.o
 obj-$(CONFIG_SND_SOC_MT6359)	+= snd-soc-mt6359.o
 obj-$(CONFIG_SND_SOC_MT6359_ACCDET) += mt6359-accdet.o

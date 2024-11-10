@@ -509,7 +509,11 @@ static int imx_dsp_rproc_mbox_alloc(struct imx_dsp_rproc *priv)
 	struct mbox_client *cl;
 	int ret;
 
+<<<<<<< HEAD
 	if (!of_get_property(dev->of_node, "mbox-names", NULL))
+=======
+	if (!of_property_present(dev->of_node, "mbox-names"))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	cl = &priv->cl;

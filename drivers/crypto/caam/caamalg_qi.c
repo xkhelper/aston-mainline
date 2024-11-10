@@ -19,7 +19,11 @@
 #include "jr.h"
 #include "caamalg_desc.h"
 #include <crypto/xts.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/device.h>
 #include <linux/err.h>
 #include <linux/dma-mapping.h>
@@ -961,7 +965,11 @@ static struct aead_edesc *aead_edesc_alloc(struct aead_request *req,
 
 	drv_ctx = get_drv_ctx(ctx, encrypt ? ENCRYPT : DECRYPT);
 	if (IS_ERR(drv_ctx))
+<<<<<<< HEAD
 		return (struct aead_edesc *)drv_ctx;
+=======
+		return ERR_CAST(drv_ctx);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* allocate space for base edesc and hw desc commands, link tables */
 	edesc = qi_cache_alloc(flags);
@@ -1271,7 +1279,11 @@ static struct skcipher_edesc *skcipher_edesc_alloc(struct skcipher_request *req,
 
 	drv_ctx = get_drv_ctx(ctx, encrypt ? ENCRYPT : DECRYPT);
 	if (IS_ERR(drv_ctx))
+<<<<<<< HEAD
 		return (struct skcipher_edesc *)drv_ctx;
+=======
+		return ERR_CAST(drv_ctx);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	src_nents = sg_nents_for_len(req->src, req->cryptlen);
 	if (unlikely(src_nents < 0)) {

@@ -13,7 +13,11 @@
 
 #include "mpi-internal.h"
 
+<<<<<<< HEAD
 void mpi_mul(MPI w, MPI u, MPI v)
+=======
+int mpi_mul(MPI w, MPI u, MPI v)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	mpi_size_t usize, vsize, wsize;
 	mpi_ptr_t up, vp, wp;
@@ -21,6 +25,10 @@ void mpi_mul(MPI w, MPI u, MPI v)
 	int usign, vsign, sign_product;
 	int assign_wp = 0;
 	mpi_ptr_t tmp_limb = NULL;
+<<<<<<< HEAD
+=======
+	int err = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (u->nlimbs < v->nlimbs) {
 		/* Swap U and V. */
@@ -46,15 +54,30 @@ void mpi_mul(MPI w, MPI u, MPI v)
 	if (w->alloced < wsize) {
 		if (wp == up || wp == vp) {
 			wp = mpi_alloc_limb_space(wsize);
+<<<<<<< HEAD
 			assign_wp = 1;
 		} else {
 			mpi_resize(w, wsize);
+=======
+			if (!wp)
+				return -ENOMEM;
+			assign_wp = 1;
+		} else {
+			err = mpi_resize(w, wsize);
+			if (err)
+				return err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			wp = w->d;
 		}
 	} else { /* Make U and V not overlap with W.	*/
 		if (wp == up) {
 			/* W and U are identical.  Allocate temporary space for U. */
 			up = tmp_limb = mpi_alloc_limb_space(usize);
+<<<<<<< HEAD
+=======
+			if (!up)
+				return -ENOMEM;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/* Is V identical too?  Keep it identical with U.  */
 			if (wp == vp)
 				vp = up;
@@ -63,6 +86,11 @@ void mpi_mul(MPI w, MPI u, MPI v)
 		} else if (wp == vp) {
 			/* W and V are identical.  Allocate temporary space for V. */
 			vp = tmp_limb = mpi_alloc_limb_space(vsize);
+<<<<<<< HEAD
+=======
+			if (!vp)
+				return -ENOMEM;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/* Copy to the temporary space.  */
 			MPN_COPY(vp, wp, vsize);
 		}
@@ -71,7 +99,16 @@ void mpi_mul(MPI w, MPI u, MPI v)
 	if (!vsize)
 		wsize = 0;
 	else {
+<<<<<<< HEAD
 		mpihelp_mul(wp, up, usize, vp, vsize, &cy);
+=======
+		err = mpihelp_mul(wp, up, usize, vp, vsize, &cy);
+		if (err) {
+			if (assign_wp)
+				mpi_free_limb_space(wp);
+			goto free_tmp_limb;
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		wsize -= cy ? 0:1;
 	}
 
@@ -79,6 +116,7 @@ void mpi_mul(MPI w, MPI u, MPI v)
 		mpi_assign_limb_space(w, wp, wsize);
 	w->nlimbs = wsize;
 	w->sign = sign_product;
+<<<<<<< HEAD
 	if (tmp_limb)
 		mpi_free_limb_space(tmp_limb);
 }
@@ -88,5 +126,19 @@ void mpi_mulm(MPI w, MPI u, MPI v, MPI m)
 {
 	mpi_mul(w, u, v);
 	mpi_tdiv_r(w, w, m);
+=======
+
+free_tmp_limb:
+	if (tmp_limb)
+		mpi_free_limb_space(tmp_limb);
+	return err;
+}
+EXPORT_SYMBOL_GPL(mpi_mul);
+
+int mpi_mulm(MPI w, MPI u, MPI v, MPI m)
+{
+	return mpi_mul(w, u, v) ?:
+	       mpi_tdiv_r(w, w, m);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(mpi_mulm);

@@ -196,7 +196,10 @@ static long geodewdt_ioctl(struct file *file, unsigned int cmd,
 
 static const struct file_operations geodewdt_fops = {
 	.owner          = THIS_MODULE,
+<<<<<<< HEAD
 	.llseek         = no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.write          = geodewdt_write,
 	.unlocked_ioctl = geodewdt_ioctl,
 	.compat_ioctl	= compat_ptr_ioctl,

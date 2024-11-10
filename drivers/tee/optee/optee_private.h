@@ -7,7 +7,13 @@
 #define OPTEE_PRIVATE_H
 
 #include <linux/arm-smccc.h>
+<<<<<<< HEAD
 #include <linux/rhashtable.h>
+=======
+#include <linux/notifier.h>
+#include <linux/rhashtable.h>
+#include <linux/rpmb.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/semaphore.h>
 #include <linux/tee_core.h>
 #include <linux/types.h>
@@ -20,6 +26,10 @@
 /* Some Global Platform error codes used in this driver */
 #define TEEC_SUCCESS			0x00000000
 #define TEEC_ERROR_BAD_PARAMETERS	0xFFFF0006
+<<<<<<< HEAD
+=======
+#define TEEC_ERROR_ITEM_NOT_FOUND	0xFFFF0008
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define TEEC_ERROR_NOT_SUPPORTED	0xFFFF000A
 #define TEEC_ERROR_COMMUNICATION	0xFFFF000E
 #define TEEC_ERROR_OUT_OF_MEMORY	0xFFFF000C
@@ -28,6 +38,10 @@
 
 /* API Return Codes are from the GP TEE Internal Core API Specification */
 #define TEE_ERROR_TIMEOUT		0xFFFF3001
+<<<<<<< HEAD
+=======
+#define TEE_ERROR_STORAGE_NOT_AVAILABLE	0xF0100003
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define TEEC_ORIGIN_COMMS		0x00000002
 
@@ -200,6 +214,15 @@ struct optee_ops {
  * @notif:		notification synchronization struct
  * @supp:		supplicant synchronization struct for RPC to supplicant
  * @pool:		shared memory pool
+<<<<<<< HEAD
+=======
+ * @mutex:		mutex protecting @rpmb_dev
+ * @rpmb_dev:		current RPMB device or NULL
+ * @rpmb_scan_bus_done	flag if device registation of RPMB dependent devices
+ *			was already done
+ * @rpmb_scan_bus_work	workq to for an RPMB device and to scan optee bus
+ *			and register RPMB dependent optee drivers
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @rpc_param_count:	If > 0 number of RPC parameters to make room for
  * @scan_bus_done	flag if device registation was already done.
  * @scan_bus_work	workq to scan optee bus and register optee drivers
@@ -218,9 +241,22 @@ struct optee {
 	struct optee_notif notif;
 	struct optee_supp supp;
 	struct tee_shm_pool *pool;
+<<<<<<< HEAD
 	unsigned int rpc_param_count;
 	bool   scan_bus_done;
 	struct work_struct scan_bus_work;
+=======
+	/* Protects rpmb_dev pointer */
+	struct mutex rpmb_dev_mutex;
+	struct rpmb_dev *rpmb_dev;
+	struct notifier_block rpmb_intf;
+	unsigned int rpc_param_count;
+	bool scan_bus_done;
+	bool rpmb_scan_bus_done;
+	bool in_kernel_rpmb_routing;
+	struct work_struct scan_bus_work;
+	struct work_struct rpmb_scan_bus_work;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct optee_session {
@@ -253,6 +289,11 @@ struct optee_call_ctx {
 	size_t num_entries;
 };
 
+<<<<<<< HEAD
+=======
+extern struct blocking_notifier_head optee_rpmb_intf_added;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int optee_notif_init(struct optee *optee, u_int max_key);
 void optee_notif_uninit(struct optee *optee);
 int optee_notif_wait(struct optee *optee, u_int key, u32 timeout);
@@ -283,9 +324,20 @@ int optee_cancel_req(struct tee_context *ctx, u32 cancel_id, u32 session);
 
 #define PTA_CMD_GET_DEVICES		0x0
 #define PTA_CMD_GET_DEVICES_SUPP	0x1
+<<<<<<< HEAD
 int optee_enumerate_devices(u32 func);
 void optee_unregister_devices(void);
 
+=======
+#define PTA_CMD_GET_DEVICES_RPMB	0x2
+int optee_enumerate_devices(u32 func);
+void optee_unregister_devices(void);
+void optee_bus_scan_rpmb(struct work_struct *work);
+int optee_rpmb_intf_rdev(struct notifier_block *intf, unsigned long action,
+			 void *data);
+
+void optee_set_dev_group(struct optee *optee);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void optee_remove_common(struct optee *optee);
 int optee_open(struct tee_context *ctx, bool cap_memref_null);
 void optee_release(struct tee_context *ctx);

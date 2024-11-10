@@ -248,7 +248,11 @@ static struct platform_driver tegra_audio_graph_card = {
 		.of_match_table = graph_of_tegra_match,
 	},
 	.probe = tegra_audio_graph_probe,
+<<<<<<< HEAD
 	.remove_new = simple_util_remove,
+=======
+	.remove = simple_util_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(tegra_audio_graph_card);
 

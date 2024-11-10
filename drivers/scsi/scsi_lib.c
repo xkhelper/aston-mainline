@@ -23,7 +23,11 @@
 #include <linux/blk-mq.h>
 #include <linux/blk-integrity.h>
 #include <linux/ratelimit.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <scsi/scsi.h>
 #include <scsi/scsi_cmnd.h>
@@ -1163,7 +1167,10 @@ blk_status_t scsi_alloc_sgtables(struct scsi_cmnd *cmd)
 
 	if (blk_integrity_rq(rq)) {
 		struct scsi_data_buffer *prot_sdb = cmd->prot_sdb;
+<<<<<<< HEAD
 		int ivecs;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (WARN_ON_ONCE(!prot_sdb)) {
 			/*
@@ -1175,20 +1182,29 @@ blk_status_t scsi_alloc_sgtables(struct scsi_cmnd *cmd)
 			goto out_free_sgtables;
 		}
 
+<<<<<<< HEAD
 		ivecs = blk_rq_count_integrity_sg(rq->q, rq->bio);
 
 		if (sg_alloc_table_chained(&prot_sdb->table, ivecs,
+=======
+		if (sg_alloc_table_chained(&prot_sdb->table,
+				rq->nr_integrity_segments,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				prot_sdb->table.sgl,
 				SCSI_INLINE_PROT_SG_CNT)) {
 			ret = BLK_STS_RESOURCE;
 			goto out_free_sgtables;
 		}
 
+<<<<<<< HEAD
 		count = blk_rq_map_integrity_sg(rq->q, rq->bio,
 						prot_sdb->table.sgl);
 		BUG_ON(count > ivecs);
 		BUG_ON(count > queue_max_integrity_segments(rq->q));
 
+=======
+		count = blk_rq_map_integrity_sg(rq, prot_sdb->table.sgl);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		cmd->prot_sdb = prot_sdb;
 		cmd->prot_sdb->table.nents = count;
 	}
@@ -1988,8 +2004,20 @@ void scsi_init_limits(struct Scsi_Host *shost, struct queue_limits *lim)
 	if (shost->no_highmem)
 		lim->features |= BLK_FEAT_BOUNCE_HIGH;
 
+<<<<<<< HEAD
 	dma_set_seg_boundary(dev, shost->dma_boundary);
 	dma_set_max_seg_size(dev, shost->max_segment_size);
+=======
+	/*
+	 * Propagate the DMA formation properties to the dma-mapping layer as
+	 * a courtesy service to the LLDDs.  This needs to check that the buses
+	 * actually support the DMA API first, though.
+	 */
+	if (dev->dma_parms) {
+		dma_set_seg_boundary(dev, shost->dma_boundary);
+		dma_set_max_seg_size(dev, shost->max_segment_size);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(scsi_init_limits);
 

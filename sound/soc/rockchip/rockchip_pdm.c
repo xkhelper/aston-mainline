@@ -703,7 +703,11 @@ static const struct dev_pm_ops rockchip_pdm_pm_ops = {
 
 static struct platform_driver rockchip_pdm_driver = {
 	.probe  = rockchip_pdm_probe,
+<<<<<<< HEAD
 	.remove_new = rockchip_pdm_remove,
+=======
+	.remove = rockchip_pdm_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "rockchip-pdm",
 		.of_match_table = of_match_ptr(rockchip_pdm_match),

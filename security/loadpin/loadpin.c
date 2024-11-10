@@ -296,7 +296,11 @@ static int read_trusted_verity_root_digests(unsigned int fd)
 		return -EPERM;
 
 	f = fdget(fd);
+<<<<<<< HEAD
 	if (!f.file)
+=======
+	if (!fd_file(f))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	data = kzalloc(SZ_4K, GFP_KERNEL);
@@ -305,7 +309,11 @@ static int read_trusted_verity_root_digests(unsigned int fd)
 		goto err;
 	}
 
+<<<<<<< HEAD
 	rc = kernel_read_file(f.file, 0, (void **)&data, SZ_4K - 1, NULL, READING_POLICY);
+=======
+	rc = kernel_read_file(fd_file(f), 0, (void **)&data, SZ_4K - 1, NULL, READING_POLICY);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc < 0)
 		goto err;
 

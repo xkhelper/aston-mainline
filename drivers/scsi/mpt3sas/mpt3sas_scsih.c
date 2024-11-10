@@ -54,7 +54,11 @@
 #include <linux/interrupt.h>
 #include <linux/raid_class.h>
 #include <linux/blk-mq-pci.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "mpt3sas_base.h"
 
@@ -12301,10 +12305,15 @@ _scsih_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 	scsi_host_set_guard(shost, SHOST_DIX_GUARD_CRC);
 
 	/* event thread */
+<<<<<<< HEAD
 	snprintf(ioc->firmware_event_name, sizeof(ioc->firmware_event_name),
 	    "fw_event_%s%d", ioc->driver_name, ioc->id);
 	ioc->firmware_event_thread = alloc_ordered_workqueue(
 	    ioc->firmware_event_name, 0);
+=======
+	ioc->firmware_event_thread = alloc_ordered_workqueue(
+		"fw_event_%s%d", 0, ioc->driver_name, ioc->id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ioc->firmware_event_thread) {
 		ioc_err(ioc, "failure at %s:%d/%s()!\n",
 			__FILE__, __LINE__, __func__);

@@ -27,8 +27,11 @@
 #include "../kselftest_harness.h"
 #include "clone3_selftests.h"
 
+<<<<<<< HEAD
 #define MAX_PID_NS_LEVEL 32
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void child_exit(int ret)
 {
 	fflush(stdout);

@@ -4,7 +4,10 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <net/if.h>
+<<<<<<< HEAD
 #include <linux/in6.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/if_alg.h>
 
 #include "test_progs.h"

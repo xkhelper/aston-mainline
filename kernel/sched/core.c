@@ -163,13 +163,27 @@ static inline int __task_prio(const struct task_struct *p)
 	if (p->sched_class == &stop_sched_class) /* trumps deadline */
 		return -2;
 
+<<<<<<< HEAD
 	if (rt_prio(p->prio)) /* includes deadline */
+=======
+	if (p->dl_server)
+		return -1; /* deadline */
+
+	if (rt_or_dl_prio(p->prio))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return p->prio; /* [-1, 99] */
 
 	if (p->sched_class == &idle_sched_class)
 		return MAX_RT_PRIO + NICE_WIDTH; /* 140 */
 
+<<<<<<< HEAD
 	return MAX_RT_PRIO + MAX_NICE; /* 120, squash fair */
+=======
+	if (task_on_scx(p))
+		return MAX_RT_PRIO + MAX_NICE + 1; /* 120, squash ext */
+
+	return MAX_RT_PRIO + MAX_NICE; /* 119, squash fair */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -192,12 +206,41 @@ static inline bool prio_less(const struct task_struct *a,
 	if (-pb < -pa)
 		return false;
 
+<<<<<<< HEAD
 	if (pa == -1) /* dl_prio() doesn't work because of stop_class above */
 		return !dl_time_before(a->dl.deadline, b->dl.deadline);
+=======
+	if (pa == -1) { /* dl_prio() doesn't work because of stop_class above */
+		const struct sched_dl_entity *a_dl, *b_dl;
+
+		a_dl = &a->dl;
+		/*
+		 * Since,'a' and 'b' can be CFS tasks served by DL server,
+		 * __task_prio() can return -1 (for DL) even for those. In that
+		 * case, get to the dl_server's DL entity.
+		 */
+		if (a->dl_server)
+			a_dl = a->dl_server;
+
+		b_dl = &b->dl;
+		if (b->dl_server)
+			b_dl = b->dl_server;
+
+		return !dl_time_before(a_dl->deadline, b_dl->deadline);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (pa == MAX_RT_PRIO + MAX_NICE)	/* fair */
 		return cfs_prio_less(a, b, in_fi);
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SCHED_CLASS_EXT
+	if (pa == MAX_RT_PRIO + MAX_NICE + 1)	/* ext */
+		return scx_prio_less(a, b, in_fi);
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return false;
 }
 
@@ -240,6 +283,12 @@ static inline int rb_sched_core_cmp(const void *key, const struct rb_node *node)
 
 void sched_core_enqueue(struct rq *rq, struct task_struct *p)
 {
+<<<<<<< HEAD
+=======
+	if (p->se.sched_delayed)
+		return;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rq->core->core_task_seq++;
 
 	if (!p->core_cookie)
@@ -250,6 +299,12 @@ void sched_core_enqueue(struct rq *rq, struct task_struct *p)
 
 void sched_core_dequeue(struct rq *rq, struct task_struct *p, int flags)
 {
+<<<<<<< HEAD
+=======
+	if (p->se.sched_delayed)
+		return;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rq->core->core_task_seq++;
 
 	if (sched_core_enqueued(p)) {
@@ -515,6 +570,14 @@ sched_core_dequeue(struct rq *rq, struct task_struct *p, int flags) { }
  *   ON_RQ_MIGRATING state is used for migration without holding both
  *   rq->locks. It indicates task_cpu() is not stable, see task_rq_lock().
  *
+<<<<<<< HEAD
+=======
+ *   Additionally it is possible to be ->on_rq but still be considered not
+ *   runnable when p->se.sched_delayed is true. These tasks are on the runqueue
+ *   but will be dequeued as soon as they get picked again. See the
+ *   task_is_runnable() helper.
+ *
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * p->on_cpu <- { 0, 1 }:
  *
  *   is set by prepare_task() and cleared by finish_task() such that it will be
@@ -1255,11 +1318,22 @@ bool sched_can_stop_tick(struct rq *rq)
 		return true;
 
 	/*
+<<<<<<< HEAD
 	 * If there are no DL,RR/FIFO tasks, there must only be CFS tasks left;
 	 * if there's more than one we need the tick for involuntary
 	 * preemption.
 	 */
 	if (rq->nr_running > 1)
+=======
+	 * If there are no DL,RR/FIFO tasks, there must only be CFS or SCX tasks
+	 * left. For CFS, if there's more than one we need the tick for
+	 * involuntary preemption. For SCX, ask.
+	 */
+	if (scx_enabled() && !scx_can_stop_tick(rq))
+		return false;
+
+	if (rq->cfs.nr_running > 1)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return false;
 
 	/*
@@ -1269,7 +1343,11 @@ bool sched_can_stop_tick(struct rq *rq)
 	 * dequeued by migrating while the constrained task continues to run.
 	 * E.g. going from 2->1 without going through pick_next_task().
 	 */
+<<<<<<< HEAD
 	if (sched_feat(HZ_BW) && __need_bw_check(rq, rq->curr)) {
+=======
+	if (__need_bw_check(rq, rq->curr)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (cfs_task_bw_constrained(rq->curr))
 			return false;
 	}
@@ -1341,8 +1419,13 @@ void set_load_weight(struct task_struct *p, bool update_load)
 	 * SCHED_OTHER tasks have to update their load when changing their
 	 * weight
 	 */
+<<<<<<< HEAD
 	if (update_load && p->sched_class == &fair_sched_class)
 		reweight_task(p, &lw);
+=======
+	if (update_load && p->sched_class->reweight_task)
+		p->sched_class->reweight_task(task_rq(p), p, &lw);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else
 		p->se.load = lw;
 }
@@ -1672,6 +1755,12 @@ static inline void uclamp_rq_inc(struct rq *rq, struct task_struct *p)
 	if (unlikely(!p->sched_class->uclamp_enabled))
 		return;
 
+<<<<<<< HEAD
+=======
+	if (p->se.sched_delayed)
+		return;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for_each_clamp_id(clamp_id)
 		uclamp_rq_inc_id(rq, p, clamp_id);
 
@@ -1696,6 +1785,12 @@ static inline void uclamp_rq_dec(struct rq *rq, struct task_struct *p)
 	if (unlikely(!p->sched_class->uclamp_enabled))
 		return;
 
+<<<<<<< HEAD
+=======
+	if (p->se.sched_delayed)
+		return;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for_each_clamp_id(clamp_id)
 		uclamp_rq_dec_id(rq, p, clamp_id);
 }
@@ -1970,6 +2065,7 @@ void enqueue_task(struct rq *rq, struct task_struct *p, int flags)
 	if (!(flags & ENQUEUE_NOCLOCK))
 		update_rq_clock(rq);
 
+<<<<<<< HEAD
 	if (!(flags & ENQUEUE_RESTORE)) {
 		sched_info_enqueue(rq, p);
 		psi_enqueue(p, (flags & ENQUEUE_WAKEUP) && !(flags & ENQUEUE_MIGRATED));
@@ -1978,11 +2074,32 @@ void enqueue_task(struct rq *rq, struct task_struct *p, int flags)
 	uclamp_rq_inc(rq, p);
 	p->sched_class->enqueue_task(rq, p, flags);
 
+=======
+	p->sched_class->enqueue_task(rq, p, flags);
+	/*
+	 * Must be after ->enqueue_task() because ENQUEUE_DELAYED can clear
+	 * ->sched_delayed.
+	 */
+	uclamp_rq_inc(rq, p);
+
+	if (!(flags & ENQUEUE_RESTORE)) {
+		sched_info_enqueue(rq, p);
+		psi_enqueue(p, flags & ENQUEUE_MIGRATED);
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (sched_core_enabled(rq))
 		sched_core_enqueue(rq, p);
 }
 
+<<<<<<< HEAD
 void dequeue_task(struct rq *rq, struct task_struct *p, int flags)
+=======
+/*
+ * Must only return false when DEQUEUE_SLEEP.
+ */
+inline bool dequeue_task(struct rq *rq, struct task_struct *p, int flags)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (sched_core_enabled(rq))
 		sched_core_dequeue(rq, p, flags);
@@ -1992,11 +2109,23 @@ void dequeue_task(struct rq *rq, struct task_struct *p, int flags)
 
 	if (!(flags & DEQUEUE_SAVE)) {
 		sched_info_dequeue(rq, p);
+<<<<<<< HEAD
 		psi_dequeue(p, flags & DEQUEUE_SLEEP);
 	}
 
 	uclamp_rq_dec(rq, p);
 	p->sched_class->dequeue_task(rq, p, flags);
+=======
+		psi_dequeue(p, !(flags & DEQUEUE_SLEEP));
+	}
+
+	/*
+	 * Must be before ->dequeue_task() because ->dequeue_task() can 'fail'
+	 * and mark the task ->sched_delayed.
+	 */
+	uclamp_rq_dec(rq, p);
+	return p->sched_class->dequeue_task(rq, p, flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void activate_task(struct rq *rq, struct task_struct *p, int flags)
@@ -2014,12 +2143,34 @@ void activate_task(struct rq *rq, struct task_struct *p, int flags)
 
 void deactivate_task(struct rq *rq, struct task_struct *p, int flags)
 {
+<<<<<<< HEAD
 	WRITE_ONCE(p->on_rq, (flags & DEQUEUE_SLEEP) ? 0 : TASK_ON_RQ_MIGRATING);
 	ASSERT_EXCLUSIVE_WRITER(p->on_rq);
 
 	dequeue_task(rq, p, flags);
 }
 
+=======
+	SCHED_WARN_ON(flags & DEQUEUE_SLEEP);
+
+	WRITE_ONCE(p->on_rq, TASK_ON_RQ_MIGRATING);
+	ASSERT_EXCLUSIVE_WRITER(p->on_rq);
+
+	/*
+	 * Code explicitly relies on TASK_ON_RQ_MIGRATING begin set *before*
+	 * dequeue_task() and cleared *after* enqueue_task().
+	 */
+
+	dequeue_task(rq, p, flags);
+}
+
+static void block_task(struct rq *rq, struct task_struct *p, int flags)
+{
+	if (dequeue_task(rq, p, DEQUEUE_SLEEP | flags))
+		__block_task(rq, p);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * task_curr - is this task currently executing on a CPU?
  * @p: the task in question.
@@ -2032,6 +2183,20 @@ inline int task_curr(const struct task_struct *p)
 }
 
 /*
+<<<<<<< HEAD
+=======
+ * ->switching_to() is called with the pi_lock and rq_lock held and must not
+ * mess with locking.
+ */
+void check_class_changing(struct rq *rq, struct task_struct *p,
+			  const struct sched_class *prev_class)
+{
+	if (prev_class != p->sched_class && p->sched_class->switching_to)
+		p->sched_class->switching_to(rq, p);
+}
+
+/*
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * switched_from, switched_to and prio_changed must _NOT_ drop rq->lock,
  * use the balance_callback list if you want balancing.
  *
@@ -2233,6 +2398,15 @@ void migrate_disable(void)
 	struct task_struct *p = current;
 
 	if (p->migration_disabled) {
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_DEBUG_PREEMPT
+		/*
+		 *Warn about overflow half-way through the range.
+		 */
+		WARN_ON_ONCE((s16)p->migration_disabled < 0);
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		p->migration_disabled++;
 		return;
 	}
@@ -2251,14 +2425,29 @@ void migrate_enable(void)
 		.flags     = SCA_MIGRATE_ENABLE,
 	};
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_DEBUG_PREEMPT
+	/*
+	 * Check both overflow from migrate_disable() and superfluous
+	 * migrate_enable().
+	 */
+	if (WARN_ON_ONCE((s16)p->migration_disabled <= 0))
+		return;
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (p->migration_disabled > 1) {
 		p->migration_disabled--;
 		return;
 	}
 
+<<<<<<< HEAD
 	if (WARN_ON_ONCE(!p->migration_disabled))
 		return;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Ensure stop_task runs either before or after this, and that
 	 * __set_cpus_allowed_ptr(SCA_MIGRATE_ENABLE) doesn't schedule().
@@ -2289,7 +2478,11 @@ static inline bool rq_has_pinned_tasks(struct rq *rq)
 static inline bool is_cpu_allowed(struct task_struct *p, int cpu)
 {
 	/* When not in the task's cpumask, no point in looking further. */
+<<<<<<< HEAD
 	if (!cpumask_test_cpu(cpu, p->cpus_ptr))
+=======
+	if (!task_allowed_on_cpu(p, cpu))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return false;
 
 	/* migrate_disabled() must be allowed to finish. */
@@ -2298,7 +2491,11 @@ static inline bool is_cpu_allowed(struct task_struct *p, int cpu)
 
 	/* Non kernel threads are not allowed during either online or offline. */
 	if (!(p->flags & PF_KTHREAD))
+<<<<<<< HEAD
 		return cpu_active(cpu) && task_cpu_possible(cpu, p);
+=======
+		return cpu_active(cpu);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* KTHREAD_IS_PER_CPU is always allowed. */
 	if (kthread_is_per_cpu(p))
@@ -3429,6 +3626,7 @@ out:
  * The caller (fork, wakeup) owns p->pi_lock, ->cpus_ptr is stable.
  */
 static inline
+<<<<<<< HEAD
 int select_task_rq(struct task_struct *p, int cpu, int wake_flags)
 {
 	lockdep_assert_held(&p->pi_lock);
@@ -3437,6 +3635,18 @@ int select_task_rq(struct task_struct *p, int cpu, int wake_flags)
 		cpu = p->sched_class->select_task_rq(p, cpu, wake_flags);
 	else
 		cpu = cpumask_any(p->cpus_ptr);
+=======
+int select_task_rq(struct task_struct *p, int cpu, int *wake_flags)
+{
+	lockdep_assert_held(&p->pi_lock);
+
+	if (p->nr_cpus_allowed > 1 && !is_migration_disabled(p)) {
+		cpu = p->sched_class->select_task_rq(p, cpu, *wake_flags);
+		*wake_flags |= WF_RQ_SELECTED;
+	} else {
+		cpu = cpumask_any(p->cpus_ptr);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * In order not to call set_task_cpu() on a blocking task we need
@@ -3570,6 +3780,11 @@ ttwu_do_activate(struct rq *rq, struct task_struct *p, int wake_flags,
 		rq->nr_uninterruptible--;
 
 #ifdef CONFIG_SMP
+<<<<<<< HEAD
+=======
+	if (wake_flags & WF_RQ_SELECTED)
+		en_flags |= ENQUEUE_RQ_SELECTED;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (wake_flags & WF_MIGRATED)
 		en_flags |= ENQUEUE_MIGRATED;
 	else
@@ -3607,8 +3822,11 @@ ttwu_do_activate(struct rq *rq, struct task_struct *p, int wake_flags,
 		rq->idle_stamp = 0;
 	}
 #endif
+<<<<<<< HEAD
 
 	p->dl_server = NULL;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -3644,12 +3862,21 @@ static int ttwu_runnable(struct task_struct *p, int wake_flags)
 
 	rq = __task_rq_lock(p, &rf);
 	if (task_on_rq_queued(p)) {
+<<<<<<< HEAD
+=======
+		update_rq_clock(rq);
+		if (p->se.sched_delayed)
+			enqueue_task(rq, p, ENQUEUE_NOCLOCK | ENQUEUE_DELAYED);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!task_on_cpu(rq, p)) {
 			/*
 			 * When on_rq && !on_cpu the task is preempted, see if
 			 * it should preempt the task that is current now.
 			 */
+<<<<<<< HEAD
 			update_rq_clock(rq);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			wakeup_preempt(rq, p, wake_flags);
 		}
 		ttwu_do_wakeup(p);
@@ -3776,6 +4003,18 @@ bool cpus_share_resources(int this_cpu, int that_cpu)
 static inline bool ttwu_queue_cond(struct task_struct *p, int cpu)
 {
 	/*
+<<<<<<< HEAD
+=======
+	 * The BPF scheduler may depend on select_task_rq() being invoked during
+	 * wakeups. In addition, @p may end up executing on a different CPU
+	 * regardless of what happens in the wakeup path making the ttwu_queue
+	 * optimization less meaningful. Skip if on SCX.
+	 */
+	if (task_on_scx(p))
+		return false;
+
+	/*
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * Do not complicate things with the async wake_list while the CPU is
 	 * in hotplug state.
 	 */
@@ -4022,6 +4261,11 @@ int try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
 	guard(preempt)();
 	int cpu, success = 0;
 
+<<<<<<< HEAD
+=======
+	wake_flags |= WF_TTWU;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (p == current) {
 		/*
 		 * We're waking current, this means 'p->on_rq' and 'task_cpu(p)
@@ -4029,11 +4273,22 @@ int try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
 		 * case the whole 'p->on_rq && ttwu_runnable()' case below
 		 * without taking any locks.
 		 *
+<<<<<<< HEAD
+=======
+		 * Specifically, given current runs ttwu() we must be before
+		 * schedule()'s block_task(), as such this must not observe
+		 * sched_delayed.
+		 *
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 * In particular:
 		 *  - we rely on Program-Order guarantees for all the ordering,
 		 *  - we're serialized against set_special_state() by virtue of
 		 *    it disabling IRQs (this allows not taking ->pi_lock).
 		 */
+<<<<<<< HEAD
+=======
+		SCHED_WARN_ON(p->se.sched_delayed);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!ttwu_state_match(p, state, &success))
 			goto out;
 
@@ -4149,7 +4404,11 @@ int try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
 		 */
 		smp_cond_load_acquire(&p->on_cpu, !VAL);
 
+<<<<<<< HEAD
 		cpu = select_task_rq(p, p->wake_cpu, wake_flags | WF_TTWU);
+=======
+		cpu = select_task_rq(p, p->wake_cpu, &wake_flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (task_cpu(p) != cpu) {
 			if (p->in_iowait) {
 				delayacct_blkio_end(p);
@@ -4214,9 +4473,16 @@ static bool __task_needs_rq_lock(struct task_struct *p)
  * @arg: Argument to function.
  *
  * Fix the task in it's current state by avoiding wakeups and or rq operations
+<<<<<<< HEAD
  * and call @func(@arg) on it.  This function can use ->on_rq and task_curr()
  * to work out what the state is, if required.  Given that @func can be invoked
  * with a runqueue lock held, it had better be quite lightweight.
+=======
+ * and call @func(@arg) on it.  This function can use task_is_runnable() and
+ * task_curr() to work out what the state is, if required.  Given that @func
+ * can be invoked with a runqueue lock held, it had better be quite
+ * lightweight.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Returns:
  *   Whatever @func returns
@@ -4322,9 +4588,17 @@ static void __sched_fork(unsigned long clone_flags, struct task_struct *p)
 	p->se.nr_migrations		= 0;
 	p->se.vruntime			= 0;
 	p->se.vlag			= 0;
+<<<<<<< HEAD
 	p->se.slice			= sysctl_sched_base_slice;
 	INIT_LIST_HEAD(&p->se.group_node);
 
+=======
+	INIT_LIST_HEAD(&p->se.group_node);
+
+	/* A delayed task cannot be in clone(). */
+	SCHED_WARN_ON(p->se.sched_delayed);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_FAIR_GROUP_SCHED
 	p->se.cfs_rq			= NULL;
 #endif
@@ -4342,6 +4616,13 @@ static void __sched_fork(unsigned long clone_flags, struct task_struct *p)
 	p->rt.on_rq		= 0;
 	p->rt.on_list		= 0;
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SCHED_CLASS_EXT
+	init_scx_entity(&p->scx);
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_PREEMPT_NOTIFIERS
 	INIT_HLIST_HEAD(&p->preempt_notifiers);
 #endif
@@ -4572,6 +4853,11 @@ int sched_fork(unsigned long clone_flags, struct task_struct *p)
 
 		p->prio = p->normal_prio = p->static_prio;
 		set_load_weight(p, false);
+<<<<<<< HEAD
+=======
+		p->se.custom_slice = 0;
+		p->se.slice = sysctl_sched_base_slice;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * We don't need the reset flag anymore after the fork. It has
@@ -4582,10 +4868,25 @@ int sched_fork(unsigned long clone_flags, struct task_struct *p)
 
 	if (dl_prio(p->prio))
 		return -EAGAIN;
+<<<<<<< HEAD
 	else if (rt_prio(p->prio))
 		p->sched_class = &rt_sched_class;
 	else
 		p->sched_class = &fair_sched_class;
+=======
+
+	scx_pre_fork(p);
+
+	if (rt_prio(p->prio)) {
+		p->sched_class = &rt_sched_class;
+#ifdef CONFIG_SCHED_CLASS_EXT
+	} else if (task_should_scx(p->policy)) {
+		p->sched_class = &ext_sched_class;
+#endif
+	} else {
+		p->sched_class = &fair_sched_class;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	init_entity_runnable_average(&p->se);
 
@@ -4605,7 +4906,11 @@ int sched_fork(unsigned long clone_flags, struct task_struct *p)
 	return 0;
 }
 
+<<<<<<< HEAD
 void sched_cgroup_fork(struct task_struct *p, struct kernel_clone_args *kargs)
+=======
+int sched_cgroup_fork(struct task_struct *p, struct kernel_clone_args *kargs)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned long flags;
 
@@ -4632,11 +4937,25 @@ void sched_cgroup_fork(struct task_struct *p, struct kernel_clone_args *kargs)
 	if (p->sched_class->task_fork)
 		p->sched_class->task_fork(p);
 	raw_spin_unlock_irqrestore(&p->pi_lock, flags);
+<<<<<<< HEAD
+=======
+
+	return scx_fork(p);
+}
+
+void sched_cancel_fork(struct task_struct *p)
+{
+	scx_cancel_fork(p);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void sched_post_fork(struct task_struct *p)
 {
 	uclamp_post_fork(p);
+<<<<<<< HEAD
+=======
+	scx_post_fork(p);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 unsigned long to_ratio(u64 period, u64 runtime)
@@ -4666,6 +4985,10 @@ void wake_up_new_task(struct task_struct *p)
 {
 	struct rq_flags rf;
 	struct rq *rq;
+<<<<<<< HEAD
+=======
+	int wake_flags = WF_FORK;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	raw_spin_lock_irqsave(&p->pi_lock, rf.flags);
 	WRITE_ONCE(p->__state, TASK_RUNNING);
@@ -4680,15 +5003,25 @@ void wake_up_new_task(struct task_struct *p)
 	 */
 	p->recent_used_cpu = task_cpu(p);
 	rseq_migrate(p);
+<<<<<<< HEAD
 	__set_task_cpu(p, select_task_rq(p, task_cpu(p), WF_FORK));
+=======
+	__set_task_cpu(p, select_task_rq(p, task_cpu(p), &wake_flags));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	rq = __task_rq_lock(p, &rf);
 	update_rq_clock(rq);
 	post_init_entity_util_avg(p);
 
+<<<<<<< HEAD
 	activate_task(rq, p, ENQUEUE_NOCLOCK);
 	trace_sched_wakeup_new(p);
 	wakeup_preempt(rq, p, WF_FORK);
+=======
+	activate_task(rq, p, ENQUEUE_NOCLOCK | ENQUEUE_INITIAL);
+	trace_sched_wakeup_new(p);
+	wakeup_preempt(rq, p, wake_flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_SMP
 	if (p->sched_class->task_woken) {
 		/*
@@ -5469,6 +5802,10 @@ void sched_tick(void)
 	calc_global_load_tick(rq);
 	sched_core_tick(rq);
 	task_tick_mm_cid(rq, curr);
+<<<<<<< HEAD
+=======
+	scx_tick(rq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rq_unlock(rq, &rf);
 
@@ -5481,8 +5818,15 @@ void sched_tick(void)
 		wq_worker_tick(curr);
 
 #ifdef CONFIG_SMP
+<<<<<<< HEAD
 	rq->idle_balance = idle_cpu(cpu);
 	sched_balance_trigger(rq);
+=======
+	if (!scx_switched_all()) {
+		rq->idle_balance = idle_cpu(cpu);
+		sched_balance_trigger(rq);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 }
 
@@ -5762,18 +6106,41 @@ static inline void schedule_debug(struct task_struct *prev, bool preempt)
 		preempt_count_set(PREEMPT_DISABLED);
 	}
 	rcu_sleep_check();
+<<<<<<< HEAD
 	SCHED_WARN_ON(ct_state() == CONTEXT_USER);
+=======
+	SCHED_WARN_ON(ct_state() == CT_STATE_USER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	profile_hit(SCHED_PROFILING, __builtin_return_address(0));
 
 	schedstat_inc(this_rq()->sched_count);
 }
 
+<<<<<<< HEAD
 static void put_prev_task_balance(struct rq *rq, struct task_struct *prev,
 				  struct rq_flags *rf)
 {
 #ifdef CONFIG_SMP
 	const struct sched_class *class;
+=======
+static void prev_balance(struct rq *rq, struct task_struct *prev,
+			 struct rq_flags *rf)
+{
+	const struct sched_class *start_class = prev->sched_class;
+	const struct sched_class *class;
+
+#ifdef CONFIG_SCHED_CLASS_EXT
+	/*
+	 * SCX requires a balance() call before every pick_next_task() including
+	 * when waking up from SCHED_IDLE. If @start_class is below SCX, start
+	 * from SCX instead.
+	 */
+	if (scx_enabled() && sched_class_above(&ext_sched_class, start_class))
+		start_class = &ext_sched_class;
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * We must do the balancing pass before put_prev_task(), such
 	 * that when we release the rq->lock the task is in the same
@@ -5782,6 +6149,7 @@ static void put_prev_task_balance(struct rq *rq, struct task_struct *prev,
 	 * We can terminate the balance pass as soon as we know there is
 	 * a runnable task of @class priority or higher.
 	 */
+<<<<<<< HEAD
 	for_class_range(class, prev->sched_class, &idle_sched_class) {
 		if (class->balance(rq, prev, rf))
 			break;
@@ -5789,6 +6157,12 @@ static void put_prev_task_balance(struct rq *rq, struct task_struct *prev,
 #endif
 
 	put_prev_task(rq, prev);
+=======
+	for_active_class_range(class, start_class, &idle_sched_class) {
+		if (class->balance && class->balance(rq, prev, rf))
+			break;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -5800,6 +6174,14 @@ __pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
 	const struct sched_class *class;
 	struct task_struct *p;
 
+<<<<<<< HEAD
+=======
+	rq->dl_server = NULL;
+
+	if (scx_enabled())
+		goto restart;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Optimization: we know that if all tasks are in the fair class we can
 	 * call that function directly, but only if the @prev task wasn't of a
@@ -5815,6 +6197,7 @@ __pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
 
 		/* Assume the next prioritized class is idle_sched_class */
 		if (!p) {
+<<<<<<< HEAD
 			put_prev_task(rq, prev);
 			p = pick_next_task_idle(rq);
 		}
@@ -5826,10 +6209,17 @@ __pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
 		if (p->dl_server)
 			p->dl_server = NULL;
 
+=======
+			p = pick_task_idle(rq);
+			put_prev_set_next_task(rq, prev, p);
+		}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return p;
 	}
 
 restart:
+<<<<<<< HEAD
 	put_prev_task_balance(rq, prev, rf);
 
 	/*
@@ -5844,6 +6234,22 @@ restart:
 		p = class->pick_next_task(rq);
 		if (p)
 			return p;
+=======
+	prev_balance(rq, prev, rf);
+
+	for_each_active_class(class) {
+		if (class->pick_next_task) {
+			p = class->pick_next_task(rq, prev);
+			if (p)
+				return p;
+		} else {
+			p = class->pick_task(rq);
+			if (p) {
+				put_prev_set_next_task(rq, prev, p);
+				return p;
+			}
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	BUG(); /* The idle class should always have a runnable task. */
@@ -5873,7 +6279,13 @@ static inline struct task_struct *pick_task(struct rq *rq)
 	const struct sched_class *class;
 	struct task_struct *p;
 
+<<<<<<< HEAD
 	for_each_class(class) {
+=======
+	rq->dl_server = NULL;
+
+	for_each_active_class(class) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		p = class->pick_task(rq);
 		if (p)
 			return p;
@@ -5911,6 +6323,10 @@ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
 		 * another cpu during offline.
 		 */
 		rq->core_pick = NULL;
+<<<<<<< HEAD
+=======
+		rq->core_dl_server = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return __pick_next_task(rq, prev, rf);
 	}
 
@@ -5929,6 +6345,7 @@ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
 		WRITE_ONCE(rq->core_sched_seq, rq->core->core_pick_seq);
 
 		next = rq->core_pick;
+<<<<<<< HEAD
 		if (next != prev) {
 			put_prev_task(rq, prev);
 			set_next_task(rq, next);
@@ -5939,6 +6356,15 @@ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
 	}
 
 	put_prev_task_balance(rq, prev, rf);
+=======
+		rq->dl_server = rq->core_dl_server;
+		rq->core_pick = NULL;
+		rq->core_dl_server = NULL;
+		goto out_set_next;
+	}
+
+	prev_balance(rq, prev, rf);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	smt_mask = cpu_smt_mask(cpu);
 	need_sync = !!rq->core->core_cookie;
@@ -5979,6 +6405,10 @@ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
 		next = pick_task(rq);
 		if (!next->core_cookie) {
 			rq->core_pick = NULL;
+<<<<<<< HEAD
+=======
+			rq->core_dl_server = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/*
 			 * For robustness, update the min_vruntime_fi for
 			 * unconstrained picks as well.
@@ -6006,7 +6436,13 @@ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
 		if (i != cpu && (rq_i != rq->core || !core_clock_updated))
 			update_rq_clock(rq_i);
 
+<<<<<<< HEAD
 		p = rq_i->core_pick = pick_task(rq_i);
+=======
+		rq_i->core_pick = p = pick_task(rq_i);
+		rq_i->core_dl_server = rq_i->dl_server;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!max || prio_less(max, p, fi_before))
 			max = p;
 	}
@@ -6030,6 +6466,10 @@ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
 		}
 
 		rq_i->core_pick = p;
+<<<<<<< HEAD
+=======
+		rq_i->core_dl_server = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (p == rq_i->idle) {
 			if (rq_i->nr_running) {
@@ -6090,6 +6530,10 @@ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
 
 		if (i == cpu) {
 			rq_i->core_pick = NULL;
+<<<<<<< HEAD
+=======
+			rq_i->core_dl_server = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 		}
 
@@ -6098,6 +6542,10 @@ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
 
 		if (rq_i->curr == rq_i->core_pick) {
 			rq_i->core_pick = NULL;
+<<<<<<< HEAD
+=======
+			rq_i->core_dl_server = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 		}
 
@@ -6105,8 +6553,12 @@ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
 	}
 
 out_set_next:
+<<<<<<< HEAD
 	set_next_task(rq, next);
 out:
+=======
+	put_prev_set_next_task(rq, prev, next);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rq->core->core_forceidle_count && next == rq->idle)
 		queue_core_balance(rq);
 
@@ -6342,6 +6794,7 @@ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
  * Constants for the sched_mode argument of __schedule().
  *
  * The mode argument allows RT enabled kernels to differentiate a
+<<<<<<< HEAD
  * preemption from blocking on an 'sleeping' spin/rwlock. Note that
  * SM_MASK_PREEMPT for !RT has all bits set, which allows the compiler to
  * optimize the AND operation out and just check for zero.
@@ -6355,6 +6808,14 @@ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
 #else
 # define SM_MASK_PREEMPT	SM_PREEMPT
 #endif
+=======
+ * preemption from blocking on an 'sleeping' spin/rwlock.
+ */
+#define SM_IDLE			(-1)
+#define SM_NONE			0
+#define SM_PREEMPT		1
+#define SM_RTLOCK_WAIT		2
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * __schedule() is the main scheduler function.
@@ -6395,9 +6856,21 @@ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
  *
  * WARNING: must be called with preemption disabled!
  */
+<<<<<<< HEAD
 static void __sched notrace __schedule(unsigned int sched_mode)
 {
 	struct task_struct *prev, *next;
+=======
+static void __sched notrace __schedule(int sched_mode)
+{
+	struct task_struct *prev, *next;
+	/*
+	 * On PREEMPT_RT kernel, SM_RTLOCK_WAIT is noted
+	 * as a preemption by schedule_debug() and RCU.
+	 */
+	bool preempt = sched_mode > SM_NONE;
+	bool block = false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long *switch_count;
 	unsigned long prev_state;
 	struct rq_flags rf;
@@ -6408,13 +6881,21 @@ static void __sched notrace __schedule(unsigned int sched_mode)
 	rq = cpu_rq(cpu);
 	prev = rq->curr;
 
+<<<<<<< HEAD
 	schedule_debug(prev, !!sched_mode);
+=======
+	schedule_debug(prev, preempt);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (sched_feat(HRTICK) || sched_feat(HRTICK_DL))
 		hrtick_clear(rq);
 
 	local_irq_disable();
+<<<<<<< HEAD
 	rcu_note_context_switch(!!sched_mode);
+=======
+	rcu_note_context_switch(preempt);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Make sure that signal_pending_state()->signal_pending() below
@@ -6443,22 +6924,48 @@ static void __sched notrace __schedule(unsigned int sched_mode)
 
 	switch_count = &prev->nivcsw;
 
+<<<<<<< HEAD
+=======
+	/* Task state changes only considers SM_PREEMPT as preemption */
+	preempt = sched_mode == SM_PREEMPT;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * We must load prev->state once (task_struct::state is volatile), such
 	 * that we form a control dependency vs deactivate_task() below.
 	 */
 	prev_state = READ_ONCE(prev->__state);
+<<<<<<< HEAD
 	if (!(sched_mode & SM_MASK_PREEMPT) && prev_state) {
 		if (signal_pending_state(prev_state, prev)) {
 			WRITE_ONCE(prev->__state, TASK_RUNNING);
 		} else {
+=======
+	if (sched_mode == SM_IDLE) {
+		/* SCX must consult the BPF scheduler to tell if rq is empty */
+		if (!rq->nr_running && !scx_enabled()) {
+			next = prev;
+			goto picked;
+		}
+	} else if (!preempt && prev_state) {
+		if (signal_pending_state(prev_state, prev)) {
+			WRITE_ONCE(prev->__state, TASK_RUNNING);
+		} else {
+			int flags = DEQUEUE_NOCLOCK;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			prev->sched_contributes_to_load =
 				(prev_state & TASK_UNINTERRUPTIBLE) &&
 				!(prev_state & TASK_NOLOAD) &&
 				!(prev_state & TASK_FROZEN);
 
+<<<<<<< HEAD
 			if (prev->sched_contributes_to_load)
 				rq->nr_uninterruptible++;
+=======
+			if (unlikely(is_special_task_state(prev_state)))
+				flags |= DEQUEUE_SPECIAL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			/*
 			 * __schedule()			ttwu()
@@ -6471,17 +6978,26 @@ static void __sched notrace __schedule(unsigned int sched_mode)
 			 *
 			 * After this, schedule() must not care about p->state any more.
 			 */
+<<<<<<< HEAD
 			deactivate_task(rq, prev, DEQUEUE_SLEEP | DEQUEUE_NOCLOCK);
 
 			if (prev->in_iowait) {
 				atomic_inc(&rq->nr_iowait);
 				delayacct_blkio_start();
 			}
+=======
+			block_task(rq, prev, flags);
+			block = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		switch_count = &prev->nvcsw;
 	}
 
 	next = pick_next_task(rq, prev, &rf);
+<<<<<<< HEAD
+=======
+picked:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	clear_tsk_need_resched(prev);
 	clear_preempt_need_resched();
 #ifdef CONFIG_SCHED_DEBUG
@@ -6521,9 +7037,15 @@ static void __sched notrace __schedule(unsigned int sched_mode)
 
 		migrate_disable_switch(rq, prev);
 		psi_account_irqtime(rq, prev, next);
+<<<<<<< HEAD
 		psi_sched_switch(prev, next, !task_on_rq_queued(prev));
 
 		trace_sched_switch(sched_mode & SM_MASK_PREEMPT, prev, next, prev_state);
+=======
+		psi_sched_switch(prev, next, block);
+
+		trace_sched_switch(preempt, prev, next, prev_state);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* Also unlocks the rq: */
 		rq = context_switch(rq, prev, next, &rf);
@@ -6599,7 +7121,11 @@ static void sched_update_worker(struct task_struct *tsk)
 	}
 }
 
+<<<<<<< HEAD
 static __always_inline void __schedule_loop(unsigned int sched_mode)
+=======
+static __always_inline void __schedule_loop(int sched_mode)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	do {
 		preempt_disable();
@@ -6644,7 +7170,11 @@ void __sched schedule_idle(void)
 	 */
 	WARN_ON_ONCE(current->__state);
 	do {
+<<<<<<< HEAD
 		__schedule(SM_NONE);
+=======
+		__schedule(SM_IDLE);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} while (need_resched());
 }
 
@@ -6658,7 +7188,11 @@ asmlinkage __visible void __sched schedule_user(void)
 	 * we find a better solution.
 	 *
 	 * NB: There are buggy callers of this function.  Ideally we
+<<<<<<< HEAD
 	 * should warn if prev_state != CONTEXT_USER, but that will trigger
+=======
+	 * should warn if prev_state != CT_STATE_USER, but that will trigger
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * too frequently to make sense yet.
 	 */
 	enum ctx_state prev_state = exception_enter();
@@ -6864,6 +7398,7 @@ int default_wake_function(wait_queue_entry_t *curr, unsigned mode, int wake_flag
 }
 EXPORT_SYMBOL(default_wake_function);
 
+<<<<<<< HEAD
 void __setscheduler_prio(struct task_struct *p, int prio)
 {
 	if (dl_prio(prio))
@@ -6874,6 +7409,22 @@ void __setscheduler_prio(struct task_struct *p, int prio)
 		p->sched_class = &fair_sched_class;
 
 	p->prio = prio;
+=======
+const struct sched_class *__setscheduler_class(int policy, int prio)
+{
+	if (dl_prio(prio))
+		return &dl_sched_class;
+
+	if (rt_prio(prio))
+		return &rt_sched_class;
+
+#ifdef CONFIG_SCHED_CLASS_EXT
+	if (task_should_scx(policy))
+		return &ext_sched_class;
+#endif
+
+	return &fair_sched_class;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #ifdef CONFIG_RT_MUTEXES
@@ -6919,7 +7470,11 @@ void rt_mutex_setprio(struct task_struct *p, struct task_struct *pi_task)
 {
 	int prio, oldprio, queued, running, queue_flag =
 		DEQUEUE_SAVE | DEQUEUE_MOVE | DEQUEUE_NOCLOCK;
+<<<<<<< HEAD
 	const struct sched_class *prev_class;
+=======
+	const struct sched_class *prev_class, *next_class;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct rq_flags rf;
 	struct rq *rq;
 
@@ -6977,6 +7532,14 @@ void rt_mutex_setprio(struct task_struct *p, struct task_struct *pi_task)
 		queue_flag &= ~DEQUEUE_MOVE;
 
 	prev_class = p->sched_class;
+<<<<<<< HEAD
+=======
+	next_class = __setscheduler_class(p->policy, prio);
+
+	if (prev_class != next_class && p->se.sched_delayed)
+		dequeue_task(rq, p, DEQUEUE_SLEEP | DEQUEUE_DELAYED | DEQUEUE_NOCLOCK);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	queued = task_on_rq_queued(p);
 	running = task_current(rq, p);
 	if (queued)
@@ -7014,7 +7577,14 @@ void rt_mutex_setprio(struct task_struct *p, struct task_struct *pi_task)
 			p->rt.timeout = 0;
 	}
 
+<<<<<<< HEAD
 	__setscheduler_prio(p, prio);
+=======
+	p->sched_class = next_class;
+	p->prio = prio;
+
+	check_class_changing(rq, p, prev_class);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (queued)
 		enqueue_task(rq, p, queue_flag);
@@ -7405,7 +7975,11 @@ EXPORT_SYMBOL(io_schedule);
 
 void sched_show_task(struct task_struct *p)
 {
+<<<<<<< HEAD
 	unsigned long free = 0;
+=======
+	unsigned long free;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ppid;
 
 	if (!try_get_task_stack(p))
@@ -7415,9 +7989,13 @@ void sched_show_task(struct task_struct *p)
 
 	if (task_is_running(p))
 		pr_cont("  running task    ");
+<<<<<<< HEAD
 #ifdef CONFIG_DEBUG_STACK_USAGE
 	free = stack_not_used(p);
 #endif
+=======
+	free = stack_not_used(p);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ppid = 0;
 	rcu_read_lock();
 	if (pid_alive(p))
@@ -7429,6 +8007,10 @@ void sched_show_task(struct task_struct *p)
 
 	print_worker_info(KERN_INFO, p);
 	print_stop_info(KERN_INFO, p);
+<<<<<<< HEAD
+=======
+	print_scx_info(KERN_INFO, p);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	show_stack(p, NULL, KERN_INFO);
 	put_task_stack(p);
 }
@@ -7957,6 +8539,11 @@ int sched_cpu_activate(unsigned int cpu)
 		cpuset_cpu_active();
 	}
 
+<<<<<<< HEAD
+=======
+	scx_rq_activate(rq);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Put the rq online, if not already. This happens:
 	 *
@@ -8006,6 +8593,11 @@ int sched_cpu_deactivate(unsigned int cpu)
 
 	sched_set_rq_offline(rq, cpu);
 
+<<<<<<< HEAD
+=======
+	scx_rq_deactivate(rq);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * When going down, decrement the number of cores with SMT present.
 	 */
@@ -8190,11 +8782,23 @@ void __init sched_init(void)
 	int i;
 
 	/* Make sure the linker didn't screw up */
+<<<<<<< HEAD
 	BUG_ON(&idle_sched_class != &fair_sched_class + 1 ||
 	       &fair_sched_class != &rt_sched_class + 1 ||
 	       &rt_sched_class   != &dl_sched_class + 1);
 #ifdef CONFIG_SMP
 	BUG_ON(&dl_sched_class != &stop_sched_class + 1);
+=======
+#ifdef CONFIG_SMP
+	BUG_ON(!sched_class_above(&stop_sched_class, &dl_sched_class));
+#endif
+	BUG_ON(!sched_class_above(&dl_sched_class, &rt_sched_class));
+	BUG_ON(!sched_class_above(&rt_sched_class, &fair_sched_class));
+	BUG_ON(!sched_class_above(&fair_sched_class, &idle_sched_class));
+#ifdef CONFIG_SCHED_CLASS_EXT
+	BUG_ON(!sched_class_above(&fair_sched_class, &ext_sched_class));
+	BUG_ON(!sched_class_above(&ext_sched_class, &idle_sched_class));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 	wait_bit_init();
@@ -8218,6 +8822,12 @@ void __init sched_init(void)
 		root_task_group.shares = ROOT_TASK_GROUP_LOAD;
 		init_cfs_bandwidth(&root_task_group.cfs_bandwidth, NULL);
 #endif /* CONFIG_FAIR_GROUP_SCHED */
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_EXT_GROUP_SCHED
+		root_task_group.scx_weight = CGROUP_WEIGHT_DFL;
+#endif /* CONFIG_EXT_GROUP_SCHED */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_RT_GROUP_SCHED
 		root_task_group.rt_se = (struct sched_rt_entity **)ptr;
 		ptr += nr_cpu_ids * sizeof(void **);
@@ -8228,8 +8838,11 @@ void __init sched_init(void)
 #endif /* CONFIG_RT_GROUP_SCHED */
 	}
 
+<<<<<<< HEAD
 	init_rt_bandwidth(&def_rt_bandwidth, global_rt_period(), global_rt_runtime());
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_SMP
 	init_defrootdomain();
 #endif
@@ -8284,8 +8897,18 @@ void __init sched_init(void)
 		init_tg_cfs_entry(&root_task_group, &rq->cfs, NULL, i, NULL);
 #endif /* CONFIG_FAIR_GROUP_SCHED */
 
+<<<<<<< HEAD
 		rq->rt.rt_runtime = def_rt_bandwidth.rt_runtime;
 #ifdef CONFIG_RT_GROUP_SCHED
+=======
+#ifdef CONFIG_RT_GROUP_SCHED
+		/*
+		 * This is required for init cpu because rt.c:__enable_runtime()
+		 * starts working after scheduler_running, which is not the case
+		 * yet.
+		 */
+		rq->rt.rt_runtime = global_rt_runtime();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		init_tg_rt_entry(&root_task_group, &rq->rt, NULL, i, NULL);
 #endif
 #ifdef CONFIG_SMP
@@ -8317,10 +8940,18 @@ void __init sched_init(void)
 #endif /* CONFIG_SMP */
 		hrtick_rq_init(rq);
 		atomic_set(&rq->nr_iowait, 0);
+<<<<<<< HEAD
+=======
+		fair_server_init(rq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_SCHED_CORE
 		rq->core = rq;
 		rq->core_pick = NULL;
+<<<<<<< HEAD
+=======
+		rq->core_dl_server = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rq->core_enabled = 0;
 		rq->core_tree = RB_ROOT;
 		rq->core_forceidle_count = 0;
@@ -8333,6 +8964,10 @@ void __init sched_init(void)
 	}
 
 	set_load_weight(&init_task, false);
+<<<<<<< HEAD
+=======
+	init_task.se.slice = sysctl_sched_base_slice,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * The boot idle thread does lazy MMU switching as well:
@@ -8363,6 +8998,10 @@ void __init sched_init(void)
 	balance_push_set(smp_processor_id(), false);
 #endif
 	init_sched_fair_class();
+<<<<<<< HEAD
+=======
+	init_sched_ext_class();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	psi_init();
 
@@ -8548,7 +9187,11 @@ void normalize_rt_tasks(void)
 		schedstat_set(p->stats.sleep_start, 0);
 		schedstat_set(p->stats.block_start, 0);
 
+<<<<<<< HEAD
 		if (!dl_task(p) && !rt_task(p)) {
+=======
+		if (!rt_or_dl_task(p)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/*
 			 * Renice negative nice level userspace
 			 * tasks back to 0:
@@ -8648,6 +9291,10 @@ struct task_group *sched_create_group(struct task_group *parent)
 	if (!alloc_rt_sched_group(tg, parent))
 		goto err;
 
+<<<<<<< HEAD
+=======
+	scx_group_set_weight(tg, CGROUP_WEIGHT_DFL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	alloc_uclamp_sched_group(tg, parent);
 
 	return tg;
@@ -8775,6 +9422,10 @@ void sched_move_task(struct task_struct *tsk)
 		put_prev_task(rq, tsk);
 
 	sched_change_group(tsk, group);
+<<<<<<< HEAD
+=======
+	scx_move_task(tsk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (queued)
 		enqueue_task(rq, tsk, queue_flags);
@@ -8789,11 +9440,14 @@ void sched_move_task(struct task_struct *tsk)
 	}
 }
 
+<<<<<<< HEAD
 static inline struct task_group *css_tg(struct cgroup_subsys_state *css)
 {
 	return css ? container_of(css, struct task_group, css) : NULL;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct cgroup_subsys_state *
 cpu_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
 {
@@ -8817,6 +9471,14 @@ static int cpu_cgroup_css_online(struct cgroup_subsys_state *css)
 {
 	struct task_group *tg = css_tg(css);
 	struct task_group *parent = css_tg(css->parent);
+<<<<<<< HEAD
+=======
+	int ret;
+
+	ret = scx_tg_online(tg);
+	if (ret)
+		return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (parent)
 		sched_online_group(tg, parent);
@@ -8831,6 +9493,16 @@ static int cpu_cgroup_css_online(struct cgroup_subsys_state *css)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static void cpu_cgroup_css_offline(struct cgroup_subsys_state *css)
+{
+	struct task_group *tg = css_tg(css);
+
+	scx_tg_offline(tg);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void cpu_cgroup_css_released(struct cgroup_subsys_state *css)
 {
 	struct task_group *tg = css_tg(css);
@@ -8848,9 +9520,15 @@ static void cpu_cgroup_css_free(struct cgroup_subsys_state *css)
 	sched_unregister_group(tg);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_RT_GROUP_SCHED
 static int cpu_cgroup_can_attach(struct cgroup_taskset *tset)
 {
+=======
+static int cpu_cgroup_can_attach(struct cgroup_taskset *tset)
+{
+#ifdef CONFIG_RT_GROUP_SCHED
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct task_struct *task;
 	struct cgroup_subsys_state *css;
 
@@ -8858,9 +9536,15 @@ static int cpu_cgroup_can_attach(struct cgroup_taskset *tset)
 		if (!sched_rt_can_attach(css_tg(css), task))
 			return -EINVAL;
 	}
+<<<<<<< HEAD
 	return 0;
 }
 #endif
+=======
+#endif
+	return scx_cgroup_can_attach(tset);
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void cpu_cgroup_attach(struct cgroup_taskset *tset)
 {
@@ -8869,6 +9553,16 @@ static void cpu_cgroup_attach(struct cgroup_taskset *tset)
 
 	cgroup_taskset_for_each(task, css, tset)
 		sched_move_task(task);
+<<<<<<< HEAD
+=======
+
+	scx_cgroup_finish_attach();
+}
+
+static void cpu_cgroup_cancel_attach(struct cgroup_taskset *tset)
+{
+	scx_cgroup_cancel_attach(tset);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #ifdef CONFIG_UCLAMP_TASK_GROUP
@@ -9045,6 +9739,7 @@ static int cpu_uclamp_max_show(struct seq_file *sf, void *v)
 }
 #endif /* CONFIG_UCLAMP_TASK_GROUP */
 
+<<<<<<< HEAD
 #ifdef CONFIG_FAIR_GROUP_SCHED
 static int cpu_shares_write_u64(struct cgroup_subsys_state *css,
 				struct cftype *cftype, u64 shareval)
@@ -9052,15 +9747,45 @@ static int cpu_shares_write_u64(struct cgroup_subsys_state *css,
 	if (shareval > scale_load_down(ULONG_MAX))
 		shareval = MAX_SHARES;
 	return sched_group_set_shares(css_tg(css), scale_load(shareval));
+=======
+#ifdef CONFIG_GROUP_SCHED_WEIGHT
+static unsigned long tg_weight(struct task_group *tg)
+{
+#ifdef CONFIG_FAIR_GROUP_SCHED
+	return scale_load_down(tg->shares);
+#else
+	return sched_weight_from_cgroup(tg->scx_weight);
+#endif
+}
+
+static int cpu_shares_write_u64(struct cgroup_subsys_state *css,
+				struct cftype *cftype, u64 shareval)
+{
+	int ret;
+
+	if (shareval > scale_load_down(ULONG_MAX))
+		shareval = MAX_SHARES;
+	ret = sched_group_set_shares(css_tg(css), scale_load(shareval));
+	if (!ret)
+		scx_group_set_weight(css_tg(css),
+				     sched_weight_to_cgroup(shareval));
+	return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static u64 cpu_shares_read_u64(struct cgroup_subsys_state *css,
 			       struct cftype *cft)
 {
+<<<<<<< HEAD
 	struct task_group *tg = css_tg(css);
 
 	return (u64) scale_load_down(tg->shares);
 }
+=======
+	return tg_weight(css_tg(css));
+}
+#endif /* CONFIG_GROUP_SCHED_WEIGHT */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_CFS_BANDWIDTH
 static DEFINE_MUTEX(cfs_constraints_mutex);
@@ -9406,7 +10131,10 @@ static int cpu_cfs_local_stat_show(struct seq_file *sf, void *v)
 	return 0;
 }
 #endif /* CONFIG_CFS_BANDWIDTH */
+<<<<<<< HEAD
 #endif /* CONFIG_FAIR_GROUP_SCHED */
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_RT_GROUP_SCHED
 static int cpu_rt_runtime_write(struct cgroup_subsys_state *css,
@@ -9434,7 +10162,11 @@ static u64 cpu_rt_period_read_uint(struct cgroup_subsys_state *css,
 }
 #endif /* CONFIG_RT_GROUP_SCHED */
 
+<<<<<<< HEAD
 #ifdef CONFIG_FAIR_GROUP_SCHED
+=======
+#ifdef CONFIG_GROUP_SCHED_WEIGHT
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static s64 cpu_idle_read_s64(struct cgroup_subsys_state *css,
 			       struct cftype *cft)
 {
@@ -9444,12 +10176,25 @@ static s64 cpu_idle_read_s64(struct cgroup_subsys_state *css,
 static int cpu_idle_write_s64(struct cgroup_subsys_state *css,
 				struct cftype *cft, s64 idle)
 {
+<<<<<<< HEAD
 	return sched_group_set_idle(css_tg(css), idle);
+=======
+	int ret;
+
+	ret = sched_group_set_idle(css_tg(css), idle);
+	if (!ret)
+		scx_group_set_idle(css_tg(css), idle);
+	return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 #endif
 
 static struct cftype cpu_legacy_files[] = {
+<<<<<<< HEAD
 #ifdef CONFIG_FAIR_GROUP_SCHED
+=======
+#ifdef CONFIG_GROUP_SCHED_WEIGHT
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{
 		.name = "shares",
 		.read_u64 = cpu_shares_read_u64,
@@ -9559,6 +10304,7 @@ static int cpu_local_stat_show(struct seq_file *sf,
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_FAIR_GROUP_SCHED
 static u64 cpu_weight_read_u64(struct cgroup_subsys_state *css,
 			       struct cftype *cft)
@@ -9585,12 +10331,41 @@ static int cpu_weight_write_u64(struct cgroup_subsys_state *css,
 	weight = DIV_ROUND_CLOSEST_ULL(weight * 1024, CGROUP_WEIGHT_DFL);
 
 	return sched_group_set_shares(css_tg(css), scale_load(weight));
+=======
+#ifdef CONFIG_GROUP_SCHED_WEIGHT
+
+static u64 cpu_weight_read_u64(struct cgroup_subsys_state *css,
+			       struct cftype *cft)
+{
+	return sched_weight_to_cgroup(tg_weight(css_tg(css)));
+}
+
+static int cpu_weight_write_u64(struct cgroup_subsys_state *css,
+				struct cftype *cft, u64 cgrp_weight)
+{
+	unsigned long weight;
+	int ret;
+
+	if (cgrp_weight < CGROUP_WEIGHT_MIN || cgrp_weight > CGROUP_WEIGHT_MAX)
+		return -ERANGE;
+
+	weight = sched_weight_from_cgroup(cgrp_weight);
+
+	ret = sched_group_set_shares(css_tg(css), scale_load(weight));
+	if (!ret)
+		scx_group_set_weight(css_tg(css), cgrp_weight);
+	return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static s64 cpu_weight_nice_read_s64(struct cgroup_subsys_state *css,
 				    struct cftype *cft)
 {
+<<<<<<< HEAD
 	unsigned long weight = scale_load_down(css_tg(css)->shares);
+=======
+	unsigned long weight = tg_weight(css_tg(css));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int last_delta = INT_MAX;
 	int prio, delta;
 
@@ -9609,7 +10384,11 @@ static int cpu_weight_nice_write_s64(struct cgroup_subsys_state *css,
 				     struct cftype *cft, s64 nice)
 {
 	unsigned long weight;
+<<<<<<< HEAD
 	int idx;
+=======
+	int idx, ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (nice < MIN_NICE || nice > MAX_NICE)
 		return -ERANGE;
@@ -9618,9 +10397,19 @@ static int cpu_weight_nice_write_s64(struct cgroup_subsys_state *css,
 	idx = array_index_nospec(idx, 40);
 	weight = sched_prio_to_weight[idx];
 
+<<<<<<< HEAD
 	return sched_group_set_shares(css_tg(css), scale_load(weight));
 }
 #endif
+=======
+	ret = sched_group_set_shares(css_tg(css), scale_load(weight));
+	if (!ret)
+		scx_group_set_weight(css_tg(css),
+				     sched_weight_to_cgroup(weight));
+	return ret;
+}
+#endif /* CONFIG_GROUP_SCHED_WEIGHT */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void __maybe_unused cpu_period_quota_print(struct seq_file *sf,
 						  long period, long quota)
@@ -9680,7 +10469,11 @@ static ssize_t cpu_max_write(struct kernfs_open_file *of,
 #endif
 
 static struct cftype cpu_files[] = {
+<<<<<<< HEAD
 #ifdef CONFIG_FAIR_GROUP_SCHED
+=======
+#ifdef CONFIG_GROUP_SCHED_WEIGHT
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{
 		.name = "weight",
 		.flags = CFTYPE_NOT_ON_ROOT,
@@ -9734,14 +10527,24 @@ static struct cftype cpu_files[] = {
 struct cgroup_subsys cpu_cgrp_subsys = {
 	.css_alloc	= cpu_cgroup_css_alloc,
 	.css_online	= cpu_cgroup_css_online,
+<<<<<<< HEAD
+=======
+	.css_offline	= cpu_cgroup_css_offline,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.css_released	= cpu_cgroup_css_released,
 	.css_free	= cpu_cgroup_css_free,
 	.css_extra_stat_show = cpu_extra_stat_show,
 	.css_local_stat_show = cpu_local_stat_show,
+<<<<<<< HEAD
 #ifdef CONFIG_RT_GROUP_SCHED
 	.can_attach	= cpu_cgroup_can_attach,
 #endif
 	.attach		= cpu_cgroup_attach,
+=======
+	.can_attach	= cpu_cgroup_can_attach,
+	.attach		= cpu_cgroup_attach,
+	.cancel_attach	= cpu_cgroup_cancel_attach,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.legacy_cftypes	= cpu_legacy_files,
 	.dfl_cftypes	= cpu_files,
 	.early_init	= true,
@@ -9752,7 +10555,11 @@ struct cgroup_subsys cpu_cgrp_subsys = {
 
 void dump_cpu_task(int cpu)
 {
+<<<<<<< HEAD
 	if (cpu == smp_processor_id() && in_hardirq()) {
+=======
+	if (in_hardirq() && cpu == smp_processor_id()) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct pt_regs *regs;
 
 		regs = get_irq_regs();
@@ -10255,7 +11062,13 @@ void task_tick_mm_cid(struct rq *rq, struct task_struct *curr)
 		return;
 	if (time_before(now, READ_ONCE(curr->mm->mm_cid_next_scan)))
 		return;
+<<<<<<< HEAD
 	task_work_add(curr, work, TWA_RESUME);
+=======
+
+	/* No page allocation under rq lock */
+	task_work_add(curr, work, TWA_RESUME | TWAF_NO_ALLOC);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void sched_mm_cid_exit_signals(struct task_struct *t)
@@ -10331,3 +11144,41 @@ void sched_mm_cid_fork(struct task_struct *t)
 	t->mm_cid_active = 1;
 }
 #endif
+<<<<<<< HEAD
+=======
+
+#ifdef CONFIG_SCHED_CLASS_EXT
+void sched_deq_and_put_task(struct task_struct *p, int queue_flags,
+			    struct sched_enq_and_set_ctx *ctx)
+{
+	struct rq *rq = task_rq(p);
+
+	lockdep_assert_rq_held(rq);
+
+	*ctx = (struct sched_enq_and_set_ctx){
+		.p = p,
+		.queue_flags = queue_flags,
+		.queued = task_on_rq_queued(p),
+		.running = task_current(rq, p),
+	};
+
+	update_rq_clock(rq);
+	if (ctx->queued)
+		dequeue_task(rq, p, queue_flags | DEQUEUE_NOCLOCK);
+	if (ctx->running)
+		put_prev_task(rq, p);
+}
+
+void sched_enq_and_set_task(struct sched_enq_and_set_ctx *ctx)
+{
+	struct rq *rq = task_rq(ctx->p);
+
+	lockdep_assert_rq_held(rq);
+
+	if (ctx->queued)
+		enqueue_task(rq, ctx->p, ctx->queue_flags | ENQUEUE_NOCLOCK);
+	if (ctx->running)
+		set_next_task(rq, ctx->p);
+}
+#endif	/* CONFIG_SCHED_CLASS_EXT */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

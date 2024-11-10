@@ -9,6 +9,10 @@
  */
 
 #include <linux/auxiliary_bus.h>
+<<<<<<< HEAD
+=======
+#include <linux/intel_vsec.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/pci.h>
@@ -16,7 +20,10 @@
 #include <linux/uaccess.h>
 #include <linux/overflow.h>
 
+<<<<<<< HEAD
 #include "../vsec.h"
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "class.h"
 
 /* Crashlog discovery header types */

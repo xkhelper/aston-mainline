@@ -28,6 +28,10 @@ struct aplic_priv {
 	u32			gsi_base;
 	u32			nr_irqs;
 	u32			nr_idcs;
+<<<<<<< HEAD
+=======
+	u32			acpi_aplic_id;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void __iomem		*regs;
 	struct aplic_msicfg	msicfg;
 };

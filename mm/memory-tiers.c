@@ -6,6 +6,10 @@
 #include <linux/memory.h>
 #include <linux/memory-tiers.h>
 #include <linux/notifier.h>
+<<<<<<< HEAD
+=======
+#include <linux/sched/sysctl.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "internal.h"
 
@@ -50,6 +54,27 @@ static const struct bus_type memory_tier_subsys = {
 	.dev_name = "memory_tier",
 };
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_NUMA_BALANCING
+/**
+ * folio_use_access_time - check if a folio reuses cpupid for page access time
+ * @folio: folio to check
+ *
+ * folio's _last_cpupid field is repurposed by memory tiering. In memory
+ * tiering mode, cpupid of slow memory folio (not toptier memory) is used to
+ * record page access time.
+ *
+ * Return: the folio _last_cpupid is used to record page access time
+ */
+bool folio_use_access_time(struct folio *folio)
+{
+	return (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING) &&
+	       !node_is_toptier(folio_nid(folio));
+}
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_MIGRATION
 static int top_tier_adistance;
 /*
@@ -749,10 +774,17 @@ int mt_set_default_dram_perf(int nid, struct access_coordinate *perf,
 		pr_info(
 "memory-tiers: the performance of DRAM node %d mismatches that of the reference\n"
 "DRAM node %d.\n", nid, default_dram_perf_ref_nid);
+<<<<<<< HEAD
 		pr_info("  performance of reference DRAM node %d:\n",
 			default_dram_perf_ref_nid);
 		dump_hmem_attrs(&default_dram_perf, "    ");
 		pr_info("  performance of DRAM node %d:\n", nid);
+=======
+		pr_info("  performance of reference DRAM node %d from %s:\n",
+			default_dram_perf_ref_nid, default_dram_perf_ref_source);
+		dump_hmem_attrs(&default_dram_perf, "    ");
+		pr_info("  performance of DRAM node %d from %s:\n", nid, source);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dump_hmem_attrs(perf, "    ");
 		pr_info(
 "  disable default DRAM node performance based abstract distance algorithm.\n");
@@ -895,13 +927,21 @@ static int __init memory_tier_init(void)
 	WARN_ON(!node_demotion);
 #endif
 
+<<<<<<< HEAD
 	guard(mutex)(&memory_tier_lock);
+=======
+	mutex_lock(&memory_tier_lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * For now we can have 4 faster memory tiers with smaller adistance
 	 * than default DRAM tier.
 	 */
 	default_dram_type = mt_find_alloc_memory_type(MEMTIER_ADISTANCE_DRAM,
 						      &default_memory_types);
+<<<<<<< HEAD
+=======
+	mutex_unlock(&memory_tier_lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(default_dram_type))
 		panic("%s() failed to allocate default DRAM tier\n", __func__);
 
@@ -921,8 +961,12 @@ bool numa_demotion_enabled = false;
 static ssize_t demotion_enabled_show(struct kobject *kobj,
 				     struct kobj_attribute *attr, char *buf)
 {
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%s\n",
 			  numa_demotion_enabled ? "true" : "false");
+=======
+	return sysfs_emit(buf, "%s\n", str_true_false(numa_demotion_enabled));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static ssize_t demotion_enabled_store(struct kobject *kobj,

@@ -157,11 +157,24 @@ properties:
 
       - items:
           - enum:
+<<<<<<< HEAD
+=======
+              - wingtech,wt82918hd
+          - const: qcom,msm8929
+
+      - items:
+          - enum:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - huawei,kiwi
               - longcheer,l9100
               - samsung,a7
               - sony,kanuti-tulip
               - square,apq8039-t2
+<<<<<<< HEAD
+=======
+              - wingtech,wt82918
+              - wingtech,wt82918hdhw39
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - const: qcom,msm8939
 
       - items:
@@ -228,12 +241,21 @@ properties:
               - samsung,grandprimelte
               - samsung,gt510
               - samsung,gt58
+<<<<<<< HEAD
+=======
+              - samsung,j3ltetw
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - samsung,j5
               - samsung,j5x
               - samsung,rossa
               - samsung,serranove
               - thwc,uf896
               - thwc,ufi001c
+<<<<<<< HEAD
+=======
+              - wingtech,wt86518
+              - wingtech,wt86528
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - wingtech,wt88047
               - yiming,uz801-v3
           - const: qcom,msm8916
@@ -250,6 +272,10 @@ properties:
       - items:
           - enum:
               - lg,bullhead
+<<<<<<< HEAD
+=======
+              - lg,h815
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - microsoft,talkman
               - xiaomi,libra
           - const: qcom,msm8992
@@ -1040,8 +1066,21 @@ properties:
 
       - items:
           - enum:
+<<<<<<< HEAD
               - asus,vivobook-s15
               - lenovo,yoga-slim7x
+=======
+              - lenovo,thinkpad-t14s
+          - const: qcom,x1e78100
+          - const: qcom,x1e80100
+
+      - items:
+          - enum:
+              - asus,vivobook-s15
+              - lenovo,yoga-slim7x
+              - microsoft,romulus13
+              - microsoft,romulus15
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - qcom,x1e80100-crd
               - qcom,x1e80100-qcp
           - const: qcom,x1e80100

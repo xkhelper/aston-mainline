@@ -27,7 +27,11 @@ struct chachapoly_ctx {
 	struct crypto_ahash *poly;
 	/* key bytes we use for the ChaCha20 IV */
 	unsigned int saltlen;
+<<<<<<< HEAD
 	u8 salt[];
+=======
+	u8 salt[] __counted_by(saltlen);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct poly_req {

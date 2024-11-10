@@ -1431,7 +1431,11 @@ bfa_cb_lps_flogo_comp(void *bfad, void *uarg)
  *	param[in]	vf_id - VF_ID
  *
  *	return
+<<<<<<< HEAD
  *	If lookup succeeds, retuns fcs vf object, otherwise returns NULL
+=======
+ *	If lookup succeeds, returns fcs vf object, otherwise returns NULL
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 bfa_fcs_vf_t   *
 bfa_fcs_vf_lookup(struct bfa_fcs_s *fcs, u16 vf_id)

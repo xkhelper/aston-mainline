@@ -22,6 +22,12 @@ description:
   configure the clocks of the parent serial device so that a requested baud of 38.4 kBaud
   results in the standard MIDI baud rate, and set the 'current-speed' property to 38400 (default)
 
+<<<<<<< HEAD
+=======
+allOf:
+  - $ref: /schemas/serial/serial-peripheral-props.yaml#
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 properties:
   compatible:
     const: serial-midi

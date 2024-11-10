@@ -35,7 +35,11 @@ struct mpq7932_data {
 };
 
 #if IS_ENABLED(CONFIG_SENSORS_MPQ7932_REGULATOR)
+<<<<<<< HEAD
 static struct regulator_desc mpq7932_regulators_desc[] = {
+=======
+static const struct regulator_desc mpq7932_regulators_desc[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	PMBUS_REGULATOR_STEP("buck", 0, MPQ7932_N_VOLTAGES,
 			     MPQ7932_UV_STEP, MPQ7932_BUCK_UV_MIN),
 	PMBUS_REGULATOR_STEP("buck", 1, MPQ7932_N_VOLTAGES,

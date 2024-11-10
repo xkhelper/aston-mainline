@@ -13,7 +13,11 @@
 #endif
 #include "../include/asm/inat.h" /* __ignore_sync_check__ */
 #include "../include/asm/insn.h" /* __ignore_sync_check__ */
+<<<<<<< HEAD
 #include "../include/asm-generic/unaligned.h" /* __ignore_sync_check__ */
+=======
+#include "../include/linux/unaligned.h" /* __ignore_sync_check__ */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/errno.h>
 #include <linux/kconfig.h>

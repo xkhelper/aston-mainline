@@ -276,7 +276,11 @@ static int sc27xx_led_register(struct device *dev, struct sc27xx_led_priv *priv)
 static int sc27xx_led_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
+<<<<<<< HEAD
 	struct device_node *np = dev_of_node(dev), *child;
+=======
+	struct device_node *np = dev_of_node(dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct sc27xx_led_priv *priv;
 	u32 base, count, reg;
 	int err;
@@ -304,6 +308,7 @@ static int sc27xx_led_probe(struct platform_device *pdev)
 		return err;
 	}
 
+<<<<<<< HEAD
 	for_each_available_child_of_node(np, child) {
 		err = of_property_read_u32(child, "reg", &reg);
 		if (err) {
@@ -315,6 +320,15 @@ static int sc27xx_led_probe(struct platform_device *pdev)
 			of_node_put(child);
 			return -EINVAL;
 		}
+=======
+	for_each_available_child_of_node_scoped(np, child) {
+		err = of_property_read_u32(child, "reg", &reg);
+		if (err)
+			return err;
+
+		if (reg >= SC27XX_LEDS_MAX || priv->leds[reg].active)
+			return -EINVAL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		priv->leds[reg].fwnode = of_fwnode_handle(child);
 		priv->leds[reg].active = true;

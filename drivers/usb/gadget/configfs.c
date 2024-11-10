@@ -6,6 +6,7 @@
 #include <linux/kstrtox.h>
 #include <linux/nls.h>
 #include <linux/usb/composite.h>
+<<<<<<< HEAD
 #include <linux/usb/gadget_configfs.h>
 #include <linux/usb/webusb.h>
 #include "configfs.h"
@@ -13,6 +14,15 @@
 #include "u_os_desc.h"
 
 int check_user_usb_string(const char *name,
+=======
+#include <linux/usb/func_utils.h>
+#include <linux/usb/gadget_configfs.h>
+#include <linux/usb/webusb.h>
+#include "configfs.h"
+#include "u_os_desc.h"
+
+static int check_user_usb_string(const char *name,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct usb_gadget_strings *stringtab_dev)
 {
 	u16 num;
@@ -902,7 +912,11 @@ static struct configfs_group_operations gadget_language_langid_group_ops = {
 	.drop_item		= gadget_language_string_drop,
 };
 
+<<<<<<< HEAD
 static struct config_item_type gadget_language_type = {
+=======
+static const struct config_item_type gadget_language_type = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.ct_item_ops	= &gadget_language_langid_item_ops,
 	.ct_group_ops	= &gadget_language_langid_group_ops,
 	.ct_attrs	= gadget_language_langid_attrs,
@@ -961,7 +975,11 @@ static struct configfs_group_operations gadget_language_group_ops = {
 	.drop_item      = &gadget_language_drop,
 };
 
+<<<<<<< HEAD
 static struct config_item_type gadget_language_strings_type = {
+=======
+static const struct config_item_type gadget_language_strings_type = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.ct_group_ops   = &gadget_language_group_ops,
 	.ct_owner       = THIS_MODULE,
 };
@@ -1106,7 +1124,11 @@ static struct configfs_attribute *webusb_attrs[] = {
 	NULL,
 };
 
+<<<<<<< HEAD
 static struct config_item_type webusb_type = {
+=======
+static const struct config_item_type webusb_type = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.ct_attrs	= webusb_attrs,
 	.ct_owner	= THIS_MODULE,
 };
@@ -1263,7 +1285,11 @@ static struct configfs_item_operations os_desc_ops = {
 	.drop_link		= os_desc_unlink,
 };
 
+<<<<<<< HEAD
 static struct config_item_type os_desc_type = {
+=======
+static const struct config_item_type os_desc_type = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.ct_item_ops	= &os_desc_ops,
 	.ct_attrs	= os_desc_attrs,
 	.ct_owner	= THIS_MODULE,

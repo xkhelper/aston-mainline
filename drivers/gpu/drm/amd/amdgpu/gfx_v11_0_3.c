@@ -97,7 +97,11 @@ static int gfx_v11_0_3_poison_consumption_handler(struct amdgpu_device *adev,
 			ras->gpu_reset_flags |= AMDGPU_RAS_GPU_RESET_MODE2_RESET;
 		}
 
+<<<<<<< HEAD
 		if (con && !con->is_rma)
+=======
+		if (con && !amdgpu_ras_is_rma(adev))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			amdgpu_ras_reset_gpu(adev);
 	}
 

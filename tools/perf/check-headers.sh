@@ -22,6 +22,10 @@ FILES=(
   "include/vdso/bits.h"
   "include/linux/const.h"
   "include/vdso/const.h"
+<<<<<<< HEAD
+=======
+  "include/vdso/unaligned.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   "include/linux/hash.h"
   "include/linux/list-sort.h"
   "include/uapi/linux/hw_breakpoint.h"
@@ -136,6 +140,33 @@ beauty_check () {
   check_2 "tools/perf/trace/beauty/$file" "$file" "$@"
 }
 
+<<<<<<< HEAD
+=======
+check_ignore_some_hunks () {
+  orig_file="$1"
+  tools_file="tools/$orig_file"
+  hunks_to_ignore="tools/perf/check-header_ignore_hunks/$orig_file"
+
+  if [ ! -f "$hunks_to_ignore" ]; then
+    echo "$hunks_to_ignore not found. Skipping $orig_file check."
+    FAILURES+=(
+      "$tools_file $orig_file"
+    )
+    return
+  fi
+
+  cmd="diff -u \"$tools_file\" \"$orig_file\" | grep -vf \"$hunks_to_ignore\" | wc -l | grep -qw 0"
+
+  if [ -f "$orig_file" ] && ! eval "$cmd"
+  then
+    FAILURES+=(
+      "$tools_file $orig_file"
+    )
+  fi
+}
+
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # Check if we have the kernel headers (tools/perf/../../include), else
 # we're probably on a detached tarball, so no point in trying to check
 # differences.
@@ -163,15 +194,25 @@ check arch/x86/lib/memcpy_64.S        '-I "^EXPORT_SYMBOL" -I "^#include <asm/ex
 check arch/x86/lib/memset_64.S        '-I "^EXPORT_SYMBOL" -I "^#include <asm/export.h>" -I"^SYM_FUNC_START\(_LOCAL\)*(memset_\(erms\|orig\))"'
 check arch/x86/include/asm/amd-ibs.h  '-I "^#include [<\"]\(asm/\)*msr-index.h"'
 check arch/arm64/include/asm/cputype.h '-I "^#include [<\"]\(asm/\)*sysreg.h"'
+<<<<<<< HEAD
 check include/asm-generic/unaligned.h '-I "^#include <linux/unaligned/packed_struct.h>" -I "^#include <asm/byteorder.h>" -I "^#pragma GCC diagnostic"'
+=======
+check include/linux/unaligned.h '-I "^#include <linux/unaligned/packed_struct.h>" -I "^#include <asm/byteorder.h>" -I "^#pragma GCC diagnostic"'
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 check include/uapi/asm-generic/mman.h '-I "^#include <\(uapi/\)*asm-generic/mman-common\(-tools\)*.h>"'
 check include/uapi/linux/mman.h       '-I "^#include <\(uapi/\)*asm/mman.h>"'
 check include/linux/build_bug.h       '-I "^#\(ifndef\|endif\)\( \/\/\)* static_assert$"'
 check include/linux/ctype.h	      '-I "isdigit("'
 check lib/ctype.c		      '-I "^EXPORT_SYMBOL" -I "^#include <linux/export.h>" -B'
+<<<<<<< HEAD
 check lib/list_sort.c		      '-I "^#include <linux/bug.h>"'
 
 # diff non-symmetric files
+=======
+
+# diff non-symmetric files
+check_2 tools/perf/arch/x86/entry/syscalls/syscall_32.tbl arch/x86/entry/syscalls/syscall_32.tbl
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 check_2 tools/perf/arch/x86/entry/syscalls/syscall_64.tbl arch/x86/entry/syscalls/syscall_64.tbl
 check_2 tools/perf/arch/powerpc/entry/syscalls/syscall.tbl arch/powerpc/kernel/syscalls/syscall.tbl
 check_2 tools/perf/arch/s390/entry/syscalls/syscall.tbl arch/s390/kernel/syscalls/syscall.tbl
@@ -186,6 +227,13 @@ done
 check_2 tools/perf/util/hashmap.h tools/lib/bpf/hashmap.h
 check_2 tools/perf/util/hashmap.c tools/lib/bpf/hashmap.c
 
+<<<<<<< HEAD
+=======
+# Files with larger differences
+
+check_ignore_some_hunks lib/list_sort.c
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 cd tools/perf || exit
 
 if [ ${#FAILURES[@]} -gt 0 ]

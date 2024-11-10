@@ -2297,10 +2297,15 @@ static int wsa_macro_vi_feed_mixer_put(struct snd_kcontrol *kcontrol,
 	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
 	u32 enable = ucontrol->value.integer.value[0];
 	u32 spk_tx_id = mixer->shift;
+<<<<<<< HEAD
+=======
+	u32 dai_id = widget->shift;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (enable) {
 		if (spk_tx_id == WSA_MACRO_TX0 &&
 			!test_bit(WSA_MACRO_TX0,
+<<<<<<< HEAD
 				&wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
 			set_bit(WSA_MACRO_TX0,
 				&wsa->active_ch_mask[WSA_MACRO_AIF_VI]);
@@ -2312,10 +2317,24 @@ static int wsa_macro_vi_feed_mixer_put(struct snd_kcontrol *kcontrol,
 			set_bit(WSA_MACRO_TX1,
 				&wsa->active_ch_mask[WSA_MACRO_AIF_VI]);
 			wsa->active_ch_cnt[WSA_MACRO_AIF_VI]++;
+=======
+				&wsa->active_ch_mask[dai_id])) {
+			set_bit(WSA_MACRO_TX0,
+				&wsa->active_ch_mask[dai_id]);
+			wsa->active_ch_cnt[dai_id]++;
+		}
+		if (spk_tx_id == WSA_MACRO_TX1 &&
+			!test_bit(WSA_MACRO_TX1,
+				&wsa->active_ch_mask[dai_id])) {
+			set_bit(WSA_MACRO_TX1,
+				&wsa->active_ch_mask[dai_id]);
+			wsa->active_ch_cnt[dai_id]++;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	} else {
 		if (spk_tx_id == WSA_MACRO_TX0 &&
 			test_bit(WSA_MACRO_TX0,
+<<<<<<< HEAD
 				&wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
 			clear_bit(WSA_MACRO_TX0,
 				&wsa->active_ch_mask[WSA_MACRO_AIF_VI]);
@@ -2327,6 +2346,19 @@ static int wsa_macro_vi_feed_mixer_put(struct snd_kcontrol *kcontrol,
 			clear_bit(WSA_MACRO_TX1,
 				&wsa->active_ch_mask[WSA_MACRO_AIF_VI]);
 			wsa->active_ch_cnt[WSA_MACRO_AIF_VI]--;
+=======
+				&wsa->active_ch_mask[dai_id])) {
+			clear_bit(WSA_MACRO_TX0,
+				&wsa->active_ch_mask[dai_id]);
+			wsa->active_ch_cnt[dai_id]--;
+		}
+		if (spk_tx_id == WSA_MACRO_TX1 &&
+			test_bit(WSA_MACRO_TX1,
+				&wsa->active_ch_mask[dai_id])) {
+			clear_bit(WSA_MACRO_TX1,
+				&wsa->active_ch_mask[dai_id]);
+			wsa->active_ch_cnt[dai_id]--;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 	snd_soc_dapm_mixer_update_power(widget->dapm, kcontrol, enable, NULL);
@@ -2979,7 +3011,11 @@ static struct platform_driver wsa_macro_driver = {
 		.pm = &wsa_macro_pm_ops,
 	},
 	.probe = wsa_macro_probe,
+<<<<<<< HEAD
 	.remove_new = wsa_macro_remove,
+=======
+	.remove = wsa_macro_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(wsa_macro_driver);

@@ -4,6 +4,10 @@
  * Author: Lukasz Luba <l.luba@partner.samsung.com>
  */
 
+<<<<<<< HEAD
+=======
+#include <linux/cleanup.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/clk.h>
 #include <linux/devfreq.h>
 #include <linux/devfreq-event.h>
@@ -339,10 +343,15 @@ static int exynos5_switch_timing_regs(struct exynos5_dmc *dmc, bool set)
 static int exynos5_init_freq_table(struct exynos5_dmc *dmc,
 				   struct devfreq_dev_profile *profile)
 {
+<<<<<<< HEAD
+=======
+	struct device *dev = dmc->dev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int i, ret;
 	int idx;
 	unsigned long freq;
 
+<<<<<<< HEAD
 	ret = devm_pm_opp_of_add_table(dmc->dev);
 	if (ret < 0) {
 		dev_err(dmc->dev, "Failed to get OPP table\n");
@@ -352,6 +361,17 @@ static int exynos5_init_freq_table(struct exynos5_dmc *dmc,
 	dmc->opp_count = dev_pm_opp_get_opp_count(dmc->dev);
 
 	dmc->opp = devm_kmalloc_array(dmc->dev, dmc->opp_count,
+=======
+	ret = devm_pm_opp_of_add_table(dev);
+	if (ret < 0) {
+		dev_err(dev, "Failed to get OPP table\n");
+		return ret;
+	}
+
+	dmc->opp_count = dev_pm_opp_get_opp_count(dev);
+
+	dmc->opp = devm_kmalloc_array(dev, dmc->opp_count,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      sizeof(struct dmc_opp_table), GFP_KERNEL);
 	if (!dmc->opp)
 		return -ENOMEM;
@@ -360,7 +380,11 @@ static int exynos5_init_freq_table(struct exynos5_dmc *dmc,
 	for (i = 0, freq = ULONG_MAX; i < dmc->opp_count; i++, freq--) {
 		struct dev_pm_opp *opp;
 
+<<<<<<< HEAD
 		opp = dev_pm_opp_find_freq_floor(dmc->dev, &freq);
+=======
+		opp = dev_pm_opp_find_freq_floor(dev, &freq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (IS_ERR(opp))
 			return PTR_ERR(opp);
 
@@ -1175,6 +1199,7 @@ static int create_timings_aligned(struct exynos5_dmc *dmc, u32 *reg_timing_row,
 static int of_get_dram_timings(struct exynos5_dmc *dmc)
 {
 	int ret = 0;
+<<<<<<< HEAD
 	int idx;
 	struct device_node *np_ddr;
 	u32 freq_mhz, clk_period_ps;
@@ -1220,6 +1245,46 @@ static int of_get_dram_timings(struct exynos5_dmc *dmc)
 		dev_warn(dmc->dev, "could not get tck from DT\n");
 		ret = -EINVAL;
 		goto put_node;
+=======
+	struct device *dev = dmc->dev;
+	int idx;
+	u32 freq_mhz, clk_period_ps;
+
+	struct device_node *np_ddr __free(device_node) =
+		of_parse_phandle(dev->of_node, "device-handle", 0);
+	if (!np_ddr) {
+		dev_warn(dev, "could not find 'device-handle' in DT\n");
+		return -EINVAL;
+	}
+
+	dmc->timing_row = devm_kmalloc_array(dev, TIMING_COUNT,
+					     sizeof(u32), GFP_KERNEL);
+	if (!dmc->timing_row)
+		return -ENOMEM;
+
+	dmc->timing_data = devm_kmalloc_array(dev, TIMING_COUNT,
+					      sizeof(u32), GFP_KERNEL);
+	if (!dmc->timing_data)
+		return -ENOMEM;
+
+	dmc->timing_power = devm_kmalloc_array(dev, TIMING_COUNT,
+					       sizeof(u32), GFP_KERNEL);
+	if (!dmc->timing_power)
+		return -ENOMEM;
+
+	dmc->timings = of_lpddr3_get_ddr_timings(np_ddr, dev,
+						 DDR_TYPE_LPDDR3,
+						 &dmc->timings_arr_size);
+	if (!dmc->timings) {
+		dev_warn(dev, "could not get timings from DT\n");
+		return -EINVAL;
+	}
+
+	dmc->min_tck = of_lpddr3_get_min_tck(np_ddr, dev);
+	if (!dmc->min_tck) {
+		dev_warn(dev, "could not get tck from DT\n");
+		return -EINVAL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* Sorted array of OPPs with frequency ascending */
@@ -1239,8 +1304,11 @@ static int of_get_dram_timings(struct exynos5_dmc *dmc)
 	dmc->bypass_timing_data = dmc->timing_data[idx - 1];
 	dmc->bypass_timing_power = dmc->timing_power[idx - 1];
 
+<<<<<<< HEAD
 put_node:
 	of_node_put(np_ddr);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -1254,10 +1322,15 @@ put_node:
 static int exynos5_dmc_init_clks(struct exynos5_dmc *dmc)
 {
 	int ret;
+<<<<<<< HEAD
+=======
+	struct device *dev = dmc->dev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long target_volt = 0;
 	unsigned long target_rate = 0;
 	unsigned int tmp;
 
+<<<<<<< HEAD
 	dmc->fout_spll = devm_clk_get(dmc->dev, "fout_spll");
 	if (IS_ERR(dmc->fout_spll))
 		return PTR_ERR(dmc->fout_spll);
@@ -1282,6 +1355,31 @@ static int exynos5_dmc_init_clks(struct exynos5_dmc *dmc)
 	dmc->mout_spll = devm_clk_get(dmc->dev, "ff_dout_spll2");
 	if (IS_ERR(dmc->mout_spll)) {
 		dmc->mout_spll = devm_clk_get(dmc->dev, "mout_sclk_spll");
+=======
+	dmc->fout_spll = devm_clk_get(dev, "fout_spll");
+	if (IS_ERR(dmc->fout_spll))
+		return PTR_ERR(dmc->fout_spll);
+
+	dmc->fout_bpll = devm_clk_get(dev, "fout_bpll");
+	if (IS_ERR(dmc->fout_bpll))
+		return PTR_ERR(dmc->fout_bpll);
+
+	dmc->mout_mclk_cdrex = devm_clk_get(dev, "mout_mclk_cdrex");
+	if (IS_ERR(dmc->mout_mclk_cdrex))
+		return PTR_ERR(dmc->mout_mclk_cdrex);
+
+	dmc->mout_bpll = devm_clk_get(dev, "mout_bpll");
+	if (IS_ERR(dmc->mout_bpll))
+		return PTR_ERR(dmc->mout_bpll);
+
+	dmc->mout_mx_mspll_ccore = devm_clk_get(dev, "mout_mx_mspll_ccore");
+	if (IS_ERR(dmc->mout_mx_mspll_ccore))
+		return PTR_ERR(dmc->mout_mx_mspll_ccore);
+
+	dmc->mout_spll = devm_clk_get(dev, "ff_dout_spll2");
+	if (IS_ERR(dmc->mout_spll)) {
+		dmc->mout_spll = devm_clk_get(dev, "mout_sclk_spll");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (IS_ERR(dmc->mout_spll))
 			return PTR_ERR(dmc->mout_spll);
 	}
@@ -1329,6 +1427,7 @@ static int exynos5_dmc_init_clks(struct exynos5_dmc *dmc)
  */
 static int exynos5_performance_counters_init(struct exynos5_dmc *dmc)
 {
+<<<<<<< HEAD
 	int ret, i;
 
 	dmc->num_counters = devfreq_event_get_edev_count(dmc->dev,
@@ -1339,28 +1438,52 @@ static int exynos5_performance_counters_init(struct exynos5_dmc *dmc)
 	}
 
 	dmc->counter = devm_kcalloc(dmc->dev, dmc->num_counters,
+=======
+	struct device *dev = dmc->dev;
+	int ret, i;
+
+	dmc->num_counters = devfreq_event_get_edev_count(dev, "devfreq-events");
+	if (dmc->num_counters < 0) {
+		dev_err(dev, "could not get devfreq-event counters\n");
+		return dmc->num_counters;
+	}
+
+	dmc->counter = devm_kcalloc(dev, dmc->num_counters,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    sizeof(*dmc->counter), GFP_KERNEL);
 	if (!dmc->counter)
 		return -ENOMEM;
 
 	for (i = 0; i < dmc->num_counters; i++) {
 		dmc->counter[i] =
+<<<<<<< HEAD
 			devfreq_event_get_edev_by_phandle(dmc->dev,
 						"devfreq-events", i);
+=======
+			devfreq_event_get_edev_by_phandle(dev, "devfreq-events", i);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (IS_ERR_OR_NULL(dmc->counter[i]))
 			return -EPROBE_DEFER;
 	}
 
 	ret = exynos5_counters_enable_edev(dmc);
 	if (ret < 0) {
+<<<<<<< HEAD
 		dev_err(dmc->dev, "could not enable event counter\n");
+=======
+		dev_err(dev, "could not enable event counter\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return ret;
 	}
 
 	ret = exynos5_counters_set_event(dmc);
 	if (ret < 0) {
 		exynos5_counters_disable_edev(dmc);
+<<<<<<< HEAD
 		dev_err(dmc->dev, "could not set event counter\n");
+=======
+		dev_err(dev, "could not set event counter\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return ret;
 	}
 

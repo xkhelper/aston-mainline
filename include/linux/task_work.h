@@ -14,11 +14,21 @@ init_task_work(struct callback_head *twork, task_work_func_t func)
 }
 
 enum task_work_notify_mode {
+<<<<<<< HEAD
 	TWA_NONE,
+=======
+	TWA_NONE = 0,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	TWA_RESUME,
 	TWA_SIGNAL,
 	TWA_SIGNAL_NO_IPI,
 	TWA_NMI_CURRENT,
+<<<<<<< HEAD
+=======
+
+	TWA_FLAGS = 0xff00,
+	TWAF_NO_ALLOC = 0x0100,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static inline bool task_work_pending(struct task_struct *task)

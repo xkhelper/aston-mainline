@@ -2480,7 +2480,11 @@ static int pl011_console_match(struct console *co, char *name, int idx,
 			continue;
 
 		co->index = i;
+<<<<<<< HEAD
 		port->cons = co;
+=======
+		uart_port_set_cons(port, co);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return pl011_console_setup(co, options);
 	}
 

@@ -133,6 +133,7 @@ nvkm_object_unmap(struct nvkm_object *object)
 }
 
 int
+<<<<<<< HEAD
 nvkm_object_rd08(struct nvkm_object *object, u64 addr, u8 *data)
 {
 	if (likely(object->func->rd08))
@@ -181,6 +182,8 @@ nvkm_object_wr32(struct nvkm_object *object, u64 addr, u32 data)
 }
 
 int
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 nvkm_object_bind(struct nvkm_object *object, struct nvkm_gpuobj *gpuobj,
 		 int align, struct nvkm_gpuobj **pgpuobj)
 {
@@ -313,8 +316,11 @@ nvkm_object_ctor(const struct nvkm_object_func *func,
 	object->engine = nvkm_engine_ref(oclass->engine);
 	object->oclass = oclass->base.oclass;
 	object->handle = oclass->handle;
+<<<<<<< HEAD
 	object->route  = oclass->route;
 	object->token  = oclass->token;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	object->object = oclass->object;
 	INIT_LIST_HEAD(&object->head);
 	INIT_LIST_HEAD(&object->tree);

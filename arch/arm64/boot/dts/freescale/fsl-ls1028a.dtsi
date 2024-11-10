@@ -112,6 +112,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	reboot {
 		compatible = "syscon-reboot";
 		regmap = <&rst>;
@@ -119,6 +120,8 @@
 		mask = <0x02>;
 	};
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	timer {
 		compatible = "arm,armv8-timer";
 		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(2) |
@@ -150,6 +153,10 @@
 		its: msi-controller@6020000 {
 			compatible = "arm,gic-v3-its";
 			msi-controller;
+<<<<<<< HEAD
+=======
+			#msi-cells = <1>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0x0 0x06020000 0 0x20000>;/* GIC Translater */
 		};
 	};
@@ -235,10 +242,23 @@
 			};
 		};
 
+<<<<<<< HEAD
 		rst: syscon@1e60000 {
 			compatible = "syscon";
 			reg = <0x0 0x1e60000 0x0 0x10000>;
 			little-endian;
+=======
+		syscon@1e60000 {
+			compatible = "fsl,ls1028a-reset", "syscon", "simple-mfd";
+			reg = <0x0 0x1e60000 0x0 0x10000>;
+			little-endian;
+
+			reboot {
+				compatible = "syscon-reboot";
+				offset = <0>;
+				mask = <0x02>;
+			};
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		sfp: efuse@1e80000 {
@@ -381,7 +401,10 @@
 			dmas = <&edma0 0 62>, <&edma0 0 60>;
 			dma-names = "tx", "rx";
 			spi-num-chipselects = <4>;
+<<<<<<< HEAD
 			little-endian;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 		};
 
@@ -397,7 +420,10 @@
 			dmas = <&edma0 0 58>, <&edma0 0 56>;
 			dma-names = "tx", "rx";
 			spi-num-chipselects = <4>;
+<<<<<<< HEAD
 			little-endian;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 		};
 
@@ -413,7 +439,10 @@
 			dmas = <&edma0 0 54>, <&edma0 0 2>;
 			dma-names = "tx", "rx";
 			spi-num-chipselects = <3>;
+<<<<<<< HEAD
 			little-endian;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 		};
 
@@ -662,7 +691,11 @@
 			bus-range = <0x0 0xff>;
 			ranges = <0x81000000 0x0 0x00000000 0x80 0x00010000 0x0 0x00010000   /* downstream I/O */
 				  0x82000000 0x0 0x40000000 0x80 0x40000000 0x0 0x40000000>; /* non-prefetchable memory */
+<<<<<<< HEAD
 			msi-parent = <&its>;
+=======
+			msi-parent = <&its 0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			#interrupt-cells = <1>;
 			interrupt-map-mask = <0 0 0 7>;
 			interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>,
@@ -701,7 +734,11 @@
 			bus-range = <0x0 0xff>;
 			ranges = <0x81000000 0x0 0x00000000 0x88 0x00010000 0x0 0x00010000   /* downstream I/O */
 				  0x82000000 0x0 0x40000000 0x88 0x40000000 0x0 0x40000000>; /* non-prefetchable memory */
+<<<<<<< HEAD
 			msi-parent = <&its>;
+=======
+			msi-parent = <&its 0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			#interrupt-cells = <1>;
 			interrupt-map-mask = <0 0 0 7>;
 			interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>,
@@ -1080,7 +1117,11 @@
 			reg = <0x01 0xf0000000 0x0 0x100000>;
 			#address-cells = <3>;
 			#size-cells = <2>;
+<<<<<<< HEAD
 			msi-parent = <&its>;
+=======
+			msi-parent = <&its 0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			device_type = "pci";
 			bus-range = <0x0 0x0>;
 			dma-coherent;
@@ -1319,7 +1360,11 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		rcpm: power-controller@1e34040 {
+=======
+		rcpm: wakeup-controller@1e34040 {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			compatible = "fsl,ls1028a-rcpm", "fsl,qoriq-rcpm-2.1+";
 			reg = <0x0 0x1e34040 0x0 0x1c>;
 			#fsl,rcpm-wakeup-cells = <7>;

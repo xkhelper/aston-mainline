@@ -283,6 +283,19 @@ struct iwl_mei_colloc_info {
 	u8 bssid[ETH_ALEN];
 };
 
+<<<<<<< HEAD
+=======
+/**
+ * enum iwl_mei_sap_version - SAP version
+ * @IWL_MEI_SAP_VERSION_3: SAP version 3
+ * @IWL_MEI_SAP_VERSION_4: SAP version 4
+ */
+enum iwl_mei_sap_version {
+	IWL_MEI_SAP_VERSION_3 = 3,
+	IWL_MEI_SAP_VERSION_4 = 4,
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * struct iwl_mei_ops - driver's operations called by iwlmei
  * Operations will not be called more than once concurrently.

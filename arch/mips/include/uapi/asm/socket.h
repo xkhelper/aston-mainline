@@ -151,6 +151,15 @@
 #define SO_PASSPIDFD		76
 #define SO_PEERPIDFD		77
 
+<<<<<<< HEAD
+=======
+#define SO_DEVMEM_LINEAR	78
+#define SCM_DEVMEM_LINEAR	SO_DEVMEM_LINEAR
+#define SO_DEVMEM_DMABUF	79
+#define SCM_DEVMEM_DMABUF	SO_DEVMEM_DMABUF
+#define SO_DEVMEM_DONTNEED	80
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if !defined(__KERNEL__)
 
 #if __BITS_PER_LONG == 64

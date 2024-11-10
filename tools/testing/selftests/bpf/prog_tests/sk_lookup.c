@@ -18,7 +18,10 @@
 #include <arpa/inet.h>
 #include <assert.h>
 #include <errno.h>
+<<<<<<< HEAD
 #include <error.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <fcntl.h>
 #include <sched.h>
 #include <stdio.h>
@@ -47,8 +50,11 @@
 #define INT_IP6		"fd00::2"
 #define INT_PORT	8008
 
+<<<<<<< HEAD
 #define IO_TIMEOUT_SEC	3
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum server {
 	SERVER_A = 0,
 	SERVER_B = 1,
@@ -108,6 +114,7 @@ static int attach_reuseport(int sock_fd, struct bpf_program *reuseport_prog)
 	return 0;
 }
 
+<<<<<<< HEAD
 static socklen_t inetaddr_len(const struct sockaddr_storage *addr)
 {
 	return (addr->ss_family == AF_INET ? sizeof(struct sockaddr_in) :
@@ -148,6 +155,8 @@ static int make_socket(int sotype, const char *ip, int port,
 	return fd;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int setsockopts(int fd, void *opts)
 {
 	struct cb_opts *co = (struct cb_opts *)opts;
@@ -229,6 +238,7 @@ fail:
 	return -1;
 }
 
+<<<<<<< HEAD
 static int make_client(int sotype, const char *ip, int port)
 {
 	struct sockaddr_storage addr = {0};
@@ -250,6 +260,8 @@ fail:
 	return -1;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static __u64 socket_cookie(int fd)
 {
 	__u64 cookie;
@@ -646,8 +658,14 @@ static void run_lookup_prog(const struct test *t)
 			goto close;
 	}
 
+<<<<<<< HEAD
 	client_fd = make_client(t->sotype, t->connect_to.ip, t->connect_to.port);
 	if (client_fd < 0)
+=======
+	client_fd = connect_to_addr_str(is_ipv6(t->connect_to.ip) ? AF_INET6 : AF_INET,
+					t->sotype, t->connect_to.ip, t->connect_to.port, NULL);
+	if (!ASSERT_OK_FD(client_fd, "connect_to_addr_str"))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto close;
 
 	if (t->sotype == SOCK_STREAM)
@@ -862,9 +880,17 @@ static void test_redirect_lookup(struct test_sk_lookup *skel)
 
 static void drop_on_lookup(const struct test *t)
 {
+<<<<<<< HEAD
 	struct sockaddr_storage dst = {};
 	int client_fd, server_fd, err;
 	struct bpf_link *lookup_link;
+=======
+	int family = is_ipv6(t->connect_to.ip) ? AF_INET6 : AF_INET;
+	struct sockaddr_storage dst = {};
+	int client_fd, server_fd, err;
+	struct bpf_link *lookup_link;
+	socklen_t len;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ssize_t n;
 
 	lookup_link = attach_lookup_prog(t->lookup_prog);
@@ -876,12 +902,23 @@ static void drop_on_lookup(const struct test *t)
 	if (server_fd < 0)
 		goto detach;
 
+<<<<<<< HEAD
 	client_fd = make_socket(t->sotype, t->connect_to.ip,
 				t->connect_to.port, &dst);
 	if (client_fd < 0)
 		goto close_srv;
 
 	err = connect(client_fd, (void *)&dst, inetaddr_len(&dst));
+=======
+	client_fd = client_socket(family, t->sotype, NULL);
+	if (!ASSERT_OK_FD(client_fd, "client_socket"))
+		goto close_srv;
+
+	err = make_sockaddr(family, t->connect_to.ip, t->connect_to.port, &dst, &len);
+	if (!ASSERT_OK(err, "make_sockaddr"))
+		goto close_all;
+	err = connect(client_fd, (void *)&dst, len);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (t->sotype == SOCK_DGRAM) {
 		err = send_byte(client_fd);
 		if (err)
@@ -976,9 +1013,17 @@ static void test_drop_on_lookup(struct test_sk_lookup *skel)
 
 static void drop_on_reuseport(const struct test *t)
 {
+<<<<<<< HEAD
 	struct sockaddr_storage dst = { 0 };
 	int client, server1, server2, err;
 	struct bpf_link *lookup_link;
+=======
+	int family = is_ipv6(t->connect_to.ip) ? AF_INET6 : AF_INET;
+	struct sockaddr_storage dst = { 0 };
+	int client, server1, server2, err;
+	struct bpf_link *lookup_link;
+	socklen_t len;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ssize_t n;
 
 	lookup_link = attach_lookup_prog(t->lookup_prog);
@@ -1000,12 +1045,23 @@ static void drop_on_reuseport(const struct test *t)
 	if (server2 < 0)
 		goto close_srv1;
 
+<<<<<<< HEAD
 	client = make_socket(t->sotype, t->connect_to.ip,
 			     t->connect_to.port, &dst);
 	if (client < 0)
 		goto close_srv2;
 
 	err = connect(client, (void *)&dst, inetaddr_len(&dst));
+=======
+	client = client_socket(family, t->sotype, NULL);
+	if (!ASSERT_OK_FD(client, "client_socket"))
+		goto close_srv2;
+
+	err = make_sockaddr(family, t->connect_to.ip, t->connect_to.port, &dst, &len);
+	if (!ASSERT_OK(err, "make_sockaddr"))
+		goto close_all;
+	err = connect(client, (void *)&dst, len);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (t->sotype == SOCK_DGRAM) {
 		err = send_byte(client);
 		if (err)
@@ -1152,8 +1208,13 @@ static void run_sk_assign_connected(struct test_sk_lookup *skel,
 	if (server_fd < 0)
 		return;
 
+<<<<<<< HEAD
 	connected_fd = make_client(sotype, EXT_IP4, EXT_PORT);
 	if (connected_fd < 0)
+=======
+	connected_fd = connect_to_addr_str(AF_INET, sotype, EXT_IP4, EXT_PORT, NULL);
+	if (!ASSERT_OK_FD(connected_fd, "connect_to_addr_str"))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out_close_server;
 
 	/* Put a connected socket in redirect map */
@@ -1166,8 +1227,13 @@ static void run_sk_assign_connected(struct test_sk_lookup *skel,
 		goto out_close_connected;
 
 	/* Try to redirect TCP SYN / UDP packet to a connected socket */
+<<<<<<< HEAD
 	client_fd = make_client(sotype, EXT_IP4, EXT_PORT);
 	if (client_fd < 0)
+=======
+	client_fd = connect_to_addr_str(AF_INET, sotype, EXT_IP4, EXT_PORT, NULL);
+	if (!ASSERT_OK_FD(client_fd, "connect_to_addr_str"))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out_unlink_prog;
 	if (sotype == SOCK_DGRAM) {
 		send_byte(client_fd);
@@ -1219,6 +1285,10 @@ static void run_multi_prog_lookup(const struct test_multi_prog *t)
 	int map_fd, server_fd, client_fd;
 	struct bpf_link *link1, *link2;
 	int prog_idx, done, err;
+<<<<<<< HEAD
+=======
+	socklen_t len;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	map_fd = bpf_map__fd(t->run_map);
 
@@ -1248,11 +1318,22 @@ static void run_multi_prog_lookup(const struct test_multi_prog *t)
 	if (err)
 		goto out_close_server;
 
+<<<<<<< HEAD
 	client_fd = make_socket(SOCK_STREAM, EXT_IP4, EXT_PORT, &dst);
 	if (client_fd < 0)
 		goto out_close_server;
 
 	err = connect(client_fd, (void *)&dst, inetaddr_len(&dst));
+=======
+	client_fd = client_socket(AF_INET, SOCK_STREAM, NULL);
+	if (!ASSERT_OK_FD(client_fd, "client_socket"))
+		goto out_close_server;
+
+	err = make_sockaddr(AF_INET, EXT_IP4, EXT_PORT, &dst, &len);
+	if (!ASSERT_OK(err, "make_sockaddr"))
+		goto out_close_client;
+	err = connect(client_fd, (void *)&dst, len);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (CHECK(err && !t->expect_errno, "connect",
 		  "unexpected error %d\n", errno))
 		goto out_close_client;

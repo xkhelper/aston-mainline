@@ -90,6 +90,15 @@ struct amdgpu_bo_va {
 	bool				cleared;
 
 	bool				is_xgmi;
+<<<<<<< HEAD
+=======
+
+	/*
+	 * protected by vm reservation lock
+	 * if non-zero, cannot unmap from GPU because user queues may still access it
+	 */
+	unsigned int			queue_refcount;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct amdgpu_bo {
@@ -130,8 +139,11 @@ struct amdgpu_bo_user {
 
 struct amdgpu_bo_vm {
 	struct amdgpu_bo		bo;
+<<<<<<< HEAD
 	struct amdgpu_bo		*shadow;
 	struct list_head		shadow_list;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct amdgpu_vm_bo_base        entries[];
 };
 
@@ -269,6 +281,7 @@ static inline bool amdgpu_bo_encrypted(struct amdgpu_bo *bo)
 	return bo->flags & AMDGPU_GEM_CREATE_ENCRYPTED;
 }
 
+<<<<<<< HEAD
 /**
  * amdgpu_bo_shadowed - check if the BO is shadowed
  *
@@ -285,6 +298,8 @@ static inline struct amdgpu_bo *amdgpu_bo_shadowed(struct amdgpu_bo *bo)
 	return NULL;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool amdgpu_bo_is_amdgpu_bo(struct ttm_buffer_object *bo);
 void amdgpu_bo_placement_from_domain(struct amdgpu_bo *abo, u32 domain);
 
@@ -316,8 +331,11 @@ void amdgpu_bo_kunmap(struct amdgpu_bo *bo);
 struct amdgpu_bo *amdgpu_bo_ref(struct amdgpu_bo *bo);
 void amdgpu_bo_unref(struct amdgpu_bo **bo);
 int amdgpu_bo_pin(struct amdgpu_bo *bo, u32 domain);
+<<<<<<< HEAD
 int amdgpu_bo_pin_restricted(struct amdgpu_bo *bo, u32 domain,
 			     u64 min_offset, u64 max_offset);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void amdgpu_bo_unpin(struct amdgpu_bo *bo);
 int amdgpu_bo_init(struct amdgpu_device *adev);
 void amdgpu_bo_fini(struct amdgpu_device *adev);
@@ -343,9 +361,12 @@ u64 amdgpu_bo_gpu_offset(struct amdgpu_bo *bo);
 u64 amdgpu_bo_gpu_offset_no_check(struct amdgpu_bo *bo);
 void amdgpu_bo_get_memory(struct amdgpu_bo *bo,
 			  struct amdgpu_mem_stats *stats);
+<<<<<<< HEAD
 void amdgpu_bo_add_to_shadow_list(struct amdgpu_bo_vm *vmbo);
 int amdgpu_bo_restore_shadow(struct amdgpu_bo *shadow,
 			     struct dma_fence **fence);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 uint32_t amdgpu_bo_get_preferred_domain(struct amdgpu_device *adev,
 					    uint32_t domain);
 

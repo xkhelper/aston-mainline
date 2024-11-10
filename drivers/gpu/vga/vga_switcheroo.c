@@ -926,8 +926,12 @@ static void vga_switcheroo_debugfs_init(struct vgasr_priv *priv)
 /**
  * vga_switcheroo_process_delayed_switch() - helper for delayed switching
  *
+<<<<<<< HEAD
  * Process a delayed switch if one is pending. DRM drivers should call this
  * from their ->lastclose callback.
+=======
+ * Process a delayed switch if one is pending.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Return: 0 on success. -EINVAL if no delayed switch is pending, if the client
  * has unregistered in the meantime or if there are other clients blocking the

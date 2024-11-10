@@ -3,6 +3,10 @@
 #define _UAPI__LINUX_FUNCTIONFS_H__
 
 
+<<<<<<< HEAD
+=======
+#include <linux/const.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/types.h>
 #include <linux/ioctl.h>
 
@@ -37,6 +41,34 @@ struct usb_endpoint_descriptor_no_audio {
 	__u8  bInterval;
 } __attribute__((packed));
 
+<<<<<<< HEAD
+=======
+/**
+ * struct usb_dfu_functional_descriptor - DFU Functional descriptor
+ * @bLength:		Size of the descriptor (bytes)
+ * @bDescriptorType:	USB_DT_DFU_FUNCTIONAL
+ * @bmAttributes:	DFU attributes
+ * @wDetachTimeOut:	Maximum time to wait after DFU_DETACH (ms, le16)
+ * @wTransferSize:	Maximum number of bytes per control-write (le16)
+ * @bcdDFUVersion:	DFU Spec version (BCD, le16)
+ */
+struct usb_dfu_functional_descriptor {
+	__u8  bLength;
+	__u8  bDescriptorType;
+	__u8  bmAttributes;
+	__le16 wDetachTimeOut;
+	__le16 wTransferSize;
+	__le16 bcdDFUVersion;
+} __attribute__ ((packed));
+
+/* from DFU functional descriptor bmAttributes */
+#define DFU_FUNC_ATT_CAN_DOWNLOAD	_BITUL(0)
+#define DFU_FUNC_ATT_CAN_UPLOAD		_BITUL(1)
+#define DFU_FUNC_ATT_MANIFEST_TOLERANT	_BITUL(2)
+#define DFU_FUNC_ATT_WILL_DETACH	_BITUL(3)
+
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct usb_functionfs_descs_head_v2 {
 	__le32 magic;
 	__le32 length;
@@ -104,6 +136,7 @@ struct usb_ffs_dmabuf_transfer_req {
 
 #ifndef __KERNEL__
 
+<<<<<<< HEAD
 /*
  * Descriptors format:
  *
@@ -121,6 +154,40 @@ struct usb_ffs_dmabuf_transfer_req {
  * |     | hs_descrs | Descriptor[] | list of high-speed descriptors       |
  * |     | ss_descrs | Descriptor[] | list of super-speed descriptors      |
  * |     | os_descrs | OSDesc[]     | list of MS OS descriptors            |
+=======
+/**
+ * DOC: descriptors
+ *
+ * Descriptors format:
+ *
+ * +-----+-----------+--------------+--------------------------------------+
+ * | off | name      | type         | description                          |
+ * +-----+-----------+--------------+--------------------------------------+
+ * |   0 | magic     | LE32         | FUNCTIONFS_DESCRIPTORS_MAGIC_V2      |
+ * +-----+-----------+--------------+--------------------------------------+
+ * |   4 | length    | LE32         | length of the whole data chunk       |
+ * +-----+-----------+--------------+--------------------------------------+
+ * |   8 | flags     | LE32         | combination of functionfs_flags      |
+ * +-----+-----------+--------------+--------------------------------------+
+ * |     | eventfd   | LE32         | eventfd file descriptor              |
+ * +-----+-----------+--------------+--------------------------------------+
+ * |     | fs_count  | LE32         | number of full-speed descriptors     |
+ * +-----+-----------+--------------+--------------------------------------+
+ * |     | hs_count  | LE32         | number of high-speed descriptors     |
+ * +-----+-----------+--------------+--------------------------------------+
+ * |     | ss_count  | LE32         | number of super-speed descriptors    |
+ * +-----+-----------+--------------+--------------------------------------+
+ * |     | os_count  | LE32         | number of MS OS descriptors          |
+ * +-----+-----------+--------------+--------------------------------------+
+ * |     | fs_descrs | Descriptor[] | list of full-speed descriptors       |
+ * +-----+-----------+--------------+--------------------------------------+
+ * |     | hs_descrs | Descriptor[] | list of high-speed descriptors       |
+ * +-----+-----------+--------------+--------------------------------------+
+ * |     | ss_descrs | Descriptor[] | list of super-speed descriptors      |
+ * +-----+-----------+--------------+--------------------------------------+
+ * |     | os_descrs | OSDesc[]     | list of MS OS descriptors            |
+ * +-----+-----------+--------------+--------------------------------------+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Depending on which flags are set, various fields may be missing in the
  * structure.  Any flags that are not recognised cause the whole block to be
@@ -128,6 +195,7 @@ struct usb_ffs_dmabuf_transfer_req {
  *
  * Legacy descriptors format (deprecated as of 3.14):
  *
+<<<<<<< HEAD
  * | off | name      | type         | description                          |
  * |-----+-----------+--------------+--------------------------------------|
  * |   0 | magic     | LE32         | FUNCTIONFS_DESCRIPTORS_MAGIC         |
@@ -136,21 +204,51 @@ struct usb_ffs_dmabuf_transfer_req {
  * |  12 | hs_count  | LE32         | number of high-speed descriptors     |
  * |  16 | fs_descrs | Descriptor[] | list of full-speed descriptors       |
  * |     | hs_descrs | Descriptor[] | list of high-speed descriptors       |
+=======
+ * +-----+-----------+--------------+--------------------------------------+
+ * | off | name      | type         | description                          |
+ * +-----+-----------+--------------+--------------------------------------+
+ * |   0 | magic     | LE32         | FUNCTIONFS_DESCRIPTORS_MAGIC         |
+ * +-----+-----------+--------------+--------------------------------------+
+ * |   4 | length    | LE32         | length of the whole data chunk       |
+ * +-----+-----------+--------------+--------------------------------------+
+ * |   8 | fs_count  | LE32         | number of full-speed descriptors     |
+ * +-----+-----------+--------------+--------------------------------------+
+ * |  12 | hs_count  | LE32         | number of high-speed descriptors     |
+ * +-----+-----------+--------------+--------------------------------------+
+ * |  16 | fs_descrs | Descriptor[] | list of full-speed descriptors       |
+ * +-----+-----------+--------------+--------------------------------------+
+ * |     | hs_descrs | Descriptor[] | list of high-speed descriptors       |
+ * +-----+-----------+--------------+--------------------------------------+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * All numbers must be in little endian order.
  *
  * Descriptor[] is an array of valid USB descriptors which have the following
  * format:
  *
+<<<<<<< HEAD
  * | off | name            | type | description              |
  * |-----+-----------------+------+--------------------------|
  * |   0 | bLength         | U8   | length of the descriptor |
  * |   1 | bDescriptorType | U8   | descriptor type          |
  * |   2 | payload         |      | descriptor's payload     |
+=======
+ * +-----+-----------------+------+--------------------------+
+ * | off | name            | type | description              |
+ * +-----+-----------------+------+--------------------------+
+ * |   0 | bLength         | U8   | length of the descriptor |
+ * +-----+-----------------+------+--------------------------+
+ * |   1 | bDescriptorType | U8   | descriptor type          |
+ * +-----+-----------------+------+--------------------------+
+ * |   2 | payload         |      | descriptor's payload     |
+ * +-----+-----------------+------+--------------------------+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * OSDesc[] is an array of valid MS OS Feature Descriptors which have one of
  * the following formats:
  *
+<<<<<<< HEAD
  * | off | name            | type | description              |
  * |-----+-----------------+------+--------------------------|
  * |   0 | inteface        | U8   | related interface number |
@@ -169,10 +267,46 @@ struct usb_ffs_dmabuf_transfer_req {
  * |   7 | wIndex          | U16  | currently supported: 5   |
  * |   9 | wCount          | U16  | number of ext. compat.   |
  * |  11 | ExtProp[]       |      | list of ext. prop. d.    |
+=======
+ * +-----+-----------------+------+--------------------------+
+ * | off | name            | type | description              |
+ * +-----+-----------------+------+--------------------------+
+ * |   0 | inteface        | U8   | related interface number |
+ * +-----+-----------------+------+--------------------------+
+ * |   1 | dwLength        | U32  | length of the descriptor |
+ * +-----+-----------------+------+--------------------------+
+ * |   5 | bcdVersion      | U16  | currently supported: 1   |
+ * +-----+-----------------+------+--------------------------+
+ * |   7 | wIndex          | U16  | currently supported: 4   |
+ * +-----+-----------------+------+--------------------------+
+ * |   9 | bCount          | U8   | number of ext. compat.   |
+ * +-----+-----------------+------+--------------------------+
+ * |  10 | Reserved        | U8   | 0                        |
+ * +-----+-----------------+------+--------------------------+
+ * |  11 | ExtCompat[]     |      | list of ext. compat. d.  |
+ * +-----+-----------------+------+--------------------------+
+ *
+ * +-----+-----------------+------+--------------------------+
+ * | off | name            | type | description              |
+ * +-----+-----------------+------+--------------------------+
+ * |   0 | inteface        | U8   | related interface number |
+ * +-----+-----------------+------+--------------------------+
+ * |   1 | dwLength        | U32  | length of the descriptor |
+ * +-----+-----------------+------+--------------------------+
+ * |   5 | bcdVersion      | U16  | currently supported: 1   |
+ * +-----+-----------------+------+--------------------------+
+ * |   7 | wIndex          | U16  | currently supported: 5   |
+ * +-----+-----------------+------+--------------------------+
+ * |   9 | wCount          | U16  | number of ext. compat.   |
+ * +-----+-----------------+------+--------------------------+
+ * |  11 | ExtProp[]       |      | list of ext. prop. d.    |
+ * +-----+-----------------+------+--------------------------+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * ExtCompat[] is an array of valid Extended Compatiblity descriptors
  * which have the following format:
  *
+<<<<<<< HEAD
  * | off | name                  | type | description                         |
  * |-----+-----------------------+------+-------------------------------------|
  * |   0 | bFirstInterfaceNumber | U8   | index of the interface or of the 1st|
@@ -181,10 +315,28 @@ struct usb_ffs_dmabuf_transfer_req {
  * |   2 | CompatibleID          | U8[8]| compatible ID string                |
  * |  10 | SubCompatibleID       | U8[8]| subcompatible ID string             |
  * |  18 | Reserved              | U8[6]| 0                                   |
+=======
+ * +-----+-----------------------+------+-------------------------------------+
+ * | off | name                  | type | description                         |
+ * +-----+-----------------------+------+-------------------------------------+
+ * |   0 | bFirstInterfaceNumber | U8   | index of the interface or of the 1st|
+ * +-----+-----------------------+------+-------------------------------------+
+ * |     |                       |      | interface in an IAD group           |
+ * +-----+-----------------------+------+-------------------------------------+
+ * |   1 | Reserved              | U8   | 1                                   |
+ * +-----+-----------------------+------+-------------------------------------+
+ * |   2 | CompatibleID          | U8[8]| compatible ID string                |
+ * +-----+-----------------------+------+-------------------------------------+
+ * |  10 | SubCompatibleID       | U8[8]| subcompatible ID string             |
+ * +-----+-----------------------+------+-------------------------------------+
+ * |  18 | Reserved              | U8[6]| 0                                   |
+ * +-----+-----------------------+------+-------------------------------------+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * ExtProp[] is an array of valid Extended Properties descriptors
  * which have the following format:
  *
+<<<<<<< HEAD
  * | off | name                  | type | description                         |
  * |-----+-----------------------+------+-------------------------------------|
  * |   0 | dwSize                | U32  | length of the descriptor            |
@@ -193,6 +345,23 @@ struct usb_ffs_dmabuf_transfer_req {
  * |  10 | bPropertyName         |U8[NL]| name of this property               |
  * |10+NL| dwPropertyDataLength  | U32  | bPropertyData length (DL)           |
  * |14+NL| bProperty             |U8[DL]| payload of this property            |
+=======
+ * +-----+-----------------------+------+-------------------------------------+
+ * | off | name                  | type | description                         |
+ * +-----+-----------------------+------+-------------------------------------+
+ * |   0 | dwSize                | U32  | length of the descriptor            |
+ * +-----+-----------------------+------+-------------------------------------+
+ * |   4 | dwPropertyDataType    | U32  | 1..7                                |
+ * +-----+-----------------------+------+-------------------------------------+
+ * |   8 | wPropertyNameLength   | U16  | bPropertyName length (NL)           |
+ * +-----+-----------------------+------+-------------------------------------+
+ * |  10 | bPropertyName         |U8[NL]| name of this property               |
+ * +-----+-----------------------+------+-------------------------------------+
+ * |10+NL| dwPropertyDataLength  | U32  | bPropertyData length (DL)           |
+ * +-----+-----------------------+------+-------------------------------------+
+ * |14+NL| bProperty             |U8[DL]| payload of this property            |
+ * +-----+-----------------------+------+-------------------------------------+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 struct usb_functionfs_strings_head {

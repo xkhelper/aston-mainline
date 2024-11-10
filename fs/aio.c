@@ -100,7 +100,11 @@ struct kioctx {
 
 	unsigned long		user_id;
 
+<<<<<<< HEAD
 	struct __percpu kioctx_cpu *cpu;
+=======
+	struct kioctx_cpu __percpu *cpu;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * For percpu reqs_available, number of slots we move to/from global

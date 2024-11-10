@@ -485,7 +485,10 @@ struct cxgbi_device {
 	unsigned char nmtus;
 	unsigned char nports;
 	struct pci_dev *pdev;
+<<<<<<< HEAD
 	struct dentry *debugfs_root;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct iscsi_transport *itp;
 	struct module *owner;
 
@@ -499,7 +502,10 @@ struct cxgbi_device {
 	unsigned int rxq_idx_cntr;
 	struct cxgbi_ports_map pmap;
 
+<<<<<<< HEAD
 	void (*dev_ddp_cleanup)(struct cxgbi_device *);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cxgbi_ppm* (*cdev2ppm)(struct cxgbi_device *);
 	int (*csk_ddp_set_map)(struct cxgbi_ppm *, struct cxgbi_sock *,
 			       struct cxgbi_task_tag_info *);
@@ -512,7 +518,10 @@ struct cxgbi_device {
 				   unsigned int, int);
 
 	void (*csk_release_offload_resources)(struct cxgbi_sock *);
+<<<<<<< HEAD
 	int (*csk_rx_pdu_ready)(struct cxgbi_sock *, struct sk_buff *);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 (*csk_send_rx_credits)(struct cxgbi_sock *, u32);
 	int (*csk_push_tx_frames)(struct cxgbi_sock *, int);
 	void (*csk_send_abort_req)(struct cxgbi_sock *);

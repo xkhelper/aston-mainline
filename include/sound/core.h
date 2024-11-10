@@ -99,7 +99,11 @@ struct snd_card {
 	struct device *ctl_dev;		/* control device */
 	unsigned int last_numid;	/* last used numeric ID */
 	struct rw_semaphore controls_rwsem;	/* controls lock (list and values) */
+<<<<<<< HEAD
 	rwlock_t ctl_files_rwlock;	/* ctl_files list lock */
+=======
+	rwlock_t controls_rwlock;	/* lock for lookup and ctl_files list */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int controls_count;		/* count of all controls */
 	size_t user_ctl_alloc_size;	// current memory allocation by user controls.
 	struct list_head controls;	/* all controls for this card */
@@ -345,6 +349,7 @@ void release_and_free_resource(struct resource *res);
 
 /* --- */
 
+<<<<<<< HEAD
 /* sound printk debug levels */
 enum {
 	SND_PR_ALWAYS,
@@ -385,6 +390,10 @@ void __snd_printk(unsigned int level, const char *file, int line,
 	__snd_printk(level, __FILE__, __LINE__, fmt, ##__VA_ARGS__)
 
 /**
+=======
+#ifdef CONFIG_SND_DEBUG
+/**
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * snd_BUG - give a BUG warning message and stack trace
  *
  * Calls WARN() if CONFIG_SND_DEBUG is set.
@@ -393,12 +402,15 @@ void __snd_printk(unsigned int level, const char *file, int line,
 #define snd_BUG()		WARN(1, "BUG?\n")
 
 /**
+<<<<<<< HEAD
  * snd_printd_ratelimit - Suppress high rates of output when
  * 			  CONFIG_SND_DEBUG is enabled.
  */
 #define snd_printd_ratelimit() printk_ratelimit()
 
 /**
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * snd_BUG_ON - debugging check macro
  * @cond: condition to evaluate
  *
@@ -409,11 +421,14 @@ void __snd_printk(unsigned int level, const char *file, int line,
 
 #else /* !CONFIG_SND_DEBUG */
 
+<<<<<<< HEAD
 __printf(1, 2)
 static inline void snd_printd(const char *format, ...) {}
 __printf(2, 3)
 static inline void _snd_printd(int level, const char *format, ...) {}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define snd_BUG()			do { } while (0)
 
 #define snd_BUG_ON(condition) ({ \
@@ -421,6 +436,7 @@ static inline void _snd_printd(int level, const char *format, ...) {}
 	unlikely(__ret_warn_on); \
 })
 
+<<<<<<< HEAD
 static inline bool snd_printd_ratelimit(void) { return false; }
 
 #endif /* CONFIG_SND_DEBUG */
@@ -441,6 +457,10 @@ static inline void snd_printdd(const char *format, ...) {}
 #endif
 
 
+=======
+#endif /* CONFIG_SND_DEBUG */
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define SNDRV_OSS_VERSION         ((3<<16)|(8<<8)|(1<<4)|(0))	/* 3.8.1a */
 
 /* for easier backward-porting */

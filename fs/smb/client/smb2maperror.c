@@ -12,7 +12,11 @@
 #include "cifs_debug.h"
 #include "smb2pdu.h"
 #include "smb2proto.h"
+<<<<<<< HEAD
 #include "smb2status.h"
+=======
+#include "../common/smb2status.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "smb2glob.h"
 #include "trace.h"
 

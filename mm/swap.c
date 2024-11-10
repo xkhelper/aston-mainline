@@ -47,6 +47,7 @@
 int page_cluster;
 const int page_cluster_max = 31;
 
+<<<<<<< HEAD
 /* Protecting only lru_rotate.fbatch which requires disabling interrupts */
 struct lru_rotate {
 	local_lock_t lock;
@@ -61,17 +62,37 @@ static DEFINE_PER_CPU(struct lru_rotate, lru_rotate) = {
  * by disabling preemption (and interrupts remain enabled).
  */
 struct cpu_fbatches {
+=======
+struct cpu_fbatches {
+	/*
+	 * The following folio batches are grouped together because they are protected
+	 * by disabling preemption (and interrupts remain enabled).
+	 */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	local_lock_t lock;
 	struct folio_batch lru_add;
 	struct folio_batch lru_deactivate_file;
 	struct folio_batch lru_deactivate;
 	struct folio_batch lru_lazyfree;
 #ifdef CONFIG_SMP
+<<<<<<< HEAD
 	struct folio_batch activate;
 #endif
 };
 static DEFINE_PER_CPU(struct cpu_fbatches, cpu_fbatches) = {
 	.lock = INIT_LOCAL_LOCK(lock),
+=======
+	struct folio_batch lru_activate;
+#endif
+	/* Protecting the following batches which require disabling interrupts */
+	local_lock_t lock_irq;
+	struct folio_batch lru_move_tail;
+};
+
+static DEFINE_PER_CPU(struct cpu_fbatches, cpu_fbatches) = {
+	.lock = INIT_LOCAL_LOCK(lock),
+	.lock_irq = INIT_LOCAL_LOCK(lock_irq),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void __page_cache_release(struct folio *folio, struct lruvec **lruvecp,
@@ -117,13 +138,23 @@ void __folio_put(struct folio *folio)
 	if (unlikely(folio_is_zone_device(folio))) {
 		free_zone_device_folio(folio);
 		return;
+<<<<<<< HEAD
 	} else if (folio_test_hugetlb(folio)) {
+=======
+	}
+
+	if (folio_test_hugetlb(folio)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		free_huge_folio(folio);
 		return;
 	}
 
 	page_cache_release(folio);
+<<<<<<< HEAD
 	folio_undo_large_rmappable(folio);
+=======
+	folio_unqueue_deferred_split(folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mem_cgroup_uncharge(folio);
 	free_unref_page(&folio->page, folio_order(folio));
 }
@@ -162,7 +193,11 @@ EXPORT_SYMBOL(put_pages_list);
 
 typedef void (*move_fn_t)(struct lruvec *lruvec, struct folio *folio);
 
+<<<<<<< HEAD
 static void lru_add_fn(struct lruvec *lruvec, struct folio *folio)
+=======
+static void lru_add(struct lruvec *lruvec, struct folio *folio)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int was_unevictable = folio_test_clear_unevictable(folio);
 	long nr_pages = folio_nr_pages(folio);
@@ -222,6 +257,7 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
 	folios_put(fbatch);
 }
 
+<<<<<<< HEAD
 static void folio_batch_add_and_move(struct folio_batch *fbatch,
 		struct folio *folio, move_fn_t move_fn)
 {
@@ -239,6 +275,52 @@ static void lru_move_tail_fn(struct lruvec *lruvec, struct folio *folio)
 		lruvec_add_folio_tail(lruvec, folio);
 		__count_vm_events(PGROTATED, folio_nr_pages(folio));
 	}
+=======
+static void __folio_batch_add_and_move(struct folio_batch __percpu *fbatch,
+		struct folio *folio, move_fn_t move_fn,
+		bool on_lru, bool disable_irq)
+{
+	unsigned long flags;
+
+	if (on_lru && !folio_test_clear_lru(folio))
+		return;
+
+	folio_get(folio);
+
+	if (disable_irq)
+		local_lock_irqsave(&cpu_fbatches.lock_irq, flags);
+	else
+		local_lock(&cpu_fbatches.lock);
+
+	if (!folio_batch_add(this_cpu_ptr(fbatch), folio) || folio_test_large(folio) ||
+	    lru_cache_disabled())
+		folio_batch_move_lru(this_cpu_ptr(fbatch), move_fn);
+
+	if (disable_irq)
+		local_unlock_irqrestore(&cpu_fbatches.lock_irq, flags);
+	else
+		local_unlock(&cpu_fbatches.lock);
+}
+
+#define folio_batch_add_and_move(folio, op, on_lru)						\
+	__folio_batch_add_and_move(								\
+		&cpu_fbatches.op,								\
+		folio,										\
+		op,										\
+		on_lru,										\
+		offsetof(struct cpu_fbatches, op) >= offsetof(struct cpu_fbatches, lock_irq)	\
+	)
+
+static void lru_move_tail(struct lruvec *lruvec, struct folio *folio)
+{
+	if (folio_test_unevictable(folio))
+		return;
+
+	lruvec_del_folio(lruvec, folio);
+	folio_clear_active(folio);
+	lruvec_add_folio_tail(lruvec, folio);
+	__count_vm_events(PGROTATED, folio_nr_pages(folio));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -250,6 +332,7 @@ static void lru_move_tail_fn(struct lruvec *lruvec, struct folio *folio)
  */
 void folio_rotate_reclaimable(struct folio *folio)
 {
+<<<<<<< HEAD
 	if (!folio_test_locked(folio) && !folio_test_dirty(folio) &&
 	    !folio_test_unevictable(folio)) {
 		struct folio_batch *fbatch;
@@ -266,6 +349,13 @@ void folio_rotate_reclaimable(struct folio *folio)
 		folio_batch_add_and_move(fbatch, folio, lru_move_tail_fn);
 		local_unlock_irqrestore(&lru_rotate.lock, flags);
 	}
+=======
+	if (folio_test_locked(folio) || folio_test_dirty(folio) ||
+	    folio_test_unevictable(folio))
+		return;
+
+	folio_batch_add_and_move(folio, lru_move_tail, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void lru_note_cost(struct lruvec *lruvec, bool file,
@@ -326,6 +416,7 @@ void lru_note_cost_refault(struct folio *folio)
 		      folio_nr_pages(folio), 0);
 }
 
+<<<<<<< HEAD
 static void folio_activate_fn(struct lruvec *lruvec, struct folio *folio)
 {
 	if (!folio_test_active(folio) && !folio_test_unevictable(folio)) {
@@ -340,19 +431,44 @@ static void folio_activate_fn(struct lruvec *lruvec, struct folio *folio)
 		__count_memcg_events(lruvec_memcg(lruvec), PGACTIVATE,
 				     nr_pages);
 	}
+=======
+static void lru_activate(struct lruvec *lruvec, struct folio *folio)
+{
+	long nr_pages = folio_nr_pages(folio);
+
+	if (folio_test_active(folio) || folio_test_unevictable(folio))
+		return;
+
+
+	lruvec_del_folio(lruvec, folio);
+	folio_set_active(folio);
+	lruvec_add_folio(lruvec, folio);
+	trace_mm_lru_activate(folio);
+
+	__count_vm_events(PGACTIVATE, nr_pages);
+	__count_memcg_events(lruvec_memcg(lruvec), PGACTIVATE, nr_pages);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #ifdef CONFIG_SMP
 static void folio_activate_drain(int cpu)
 {
+<<<<<<< HEAD
 	struct folio_batch *fbatch = &per_cpu(cpu_fbatches.activate, cpu);
 
 	if (folio_batch_count(fbatch))
 		folio_batch_move_lru(fbatch, folio_activate_fn);
+=======
+	struct folio_batch *fbatch = &per_cpu(cpu_fbatches.lru_activate, cpu);
+
+	if (folio_batch_count(fbatch))
+		folio_batch_move_lru(fbatch, lru_activate);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void folio_activate(struct folio *folio)
 {
+<<<<<<< HEAD
 	if (!folio_test_active(folio) && !folio_test_unevictable(folio)) {
 		struct folio_batch *fbatch;
 
@@ -367,6 +483,12 @@ void folio_activate(struct folio *folio)
 		folio_batch_add_and_move(fbatch, folio, folio_activate_fn);
 		local_unlock(&cpu_fbatches.lock);
 	}
+=======
+	if (folio_test_active(folio) || folio_test_unevictable(folio))
+		return;
+
+	folio_batch_add_and_move(folio, lru_activate, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #else
@@ -378,12 +500,22 @@ void folio_activate(struct folio *folio)
 {
 	struct lruvec *lruvec;
 
+<<<<<<< HEAD
 	if (folio_test_clear_lru(folio)) {
 		lruvec = folio_lruvec_lock_irq(folio);
 		folio_activate_fn(lruvec, folio);
 		unlock_page_lruvec_irq(lruvec);
 		folio_set_lru(folio);
 	}
+=======
+	if (!folio_test_clear_lru(folio))
+		return;
+
+	lruvec = folio_lruvec_lock_irq(folio);
+	lru_activate(lruvec, folio);
+	unlock_page_lruvec_irq(lruvec);
+	folio_set_lru(folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 #endif
 
@@ -482,7 +614,11 @@ void folio_mark_accessed(struct folio *folio)
 	} else if (!folio_test_active(folio)) {
 		/*
 		 * If the folio is on the LRU, queue it for activation via
+<<<<<<< HEAD
 		 * cpu_fbatches.activate. Otherwise, assume the folio is in a
+=======
+		 * cpu_fbatches.lru_activate. Otherwise, assume the folio is in a
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 * folio_batch, mark it active and it'll be moved to the active
 		 * LRU on the next drain.
 		 */
@@ -509,8 +645,11 @@ EXPORT_SYMBOL(folio_mark_accessed);
  */
 void folio_add_lru(struct folio *folio)
 {
+<<<<<<< HEAD
 	struct folio_batch *fbatch;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	VM_BUG_ON_FOLIO(folio_test_active(folio) &&
 			folio_test_unevictable(folio), folio);
 	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
@@ -520,11 +659,15 @@ void folio_add_lru(struct folio *folio)
 	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
 		folio_set_active(folio);
 
+<<<<<<< HEAD
 	folio_get(folio);
 	local_lock(&cpu_fbatches.lock);
 	fbatch = this_cpu_ptr(&cpu_fbatches.lru_add);
 	folio_batch_add_and_move(fbatch, folio, lru_add_fn);
 	local_unlock(&cpu_fbatches.lock);
+=======
+	folio_batch_add_and_move(folio, lru_add, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(folio_add_lru);
 
@@ -567,7 +710,11 @@ void folio_add_lru_vma(struct folio *folio, struct vm_area_struct *vma)
  * written out by flusher threads as this is much more efficient
  * than the single-page writeout from reclaim.
  */
+<<<<<<< HEAD
 static void lru_deactivate_file_fn(struct lruvec *lruvec, struct folio *folio)
+=======
+static void lru_deactivate_file(struct lruvec *lruvec, struct folio *folio)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	bool active = folio_test_active(folio);
 	long nr_pages = folio_nr_pages(folio);
@@ -608,6 +755,7 @@ static void lru_deactivate_file_fn(struct lruvec *lruvec, struct folio *folio)
 	}
 }
 
+<<<<<<< HEAD
 static void lru_deactivate_fn(struct lruvec *lruvec, struct folio *folio)
 {
 	if (!folio_test_unevictable(folio) && (folio_test_active(folio) || lru_gen_enabled())) {
@@ -645,6 +793,45 @@ static void lru_lazyfree_fn(struct lruvec *lruvec, struct folio *folio)
 		__count_memcg_events(lruvec_memcg(lruvec), PGLAZYFREE,
 				     nr_pages);
 	}
+=======
+static void lru_deactivate(struct lruvec *lruvec, struct folio *folio)
+{
+	long nr_pages = folio_nr_pages(folio);
+
+	if (folio_test_unevictable(folio) || !(folio_test_active(folio) || lru_gen_enabled()))
+		return;
+
+	lruvec_del_folio(lruvec, folio);
+	folio_clear_active(folio);
+	folio_clear_referenced(folio);
+	lruvec_add_folio(lruvec, folio);
+
+	__count_vm_events(PGDEACTIVATE, nr_pages);
+	__count_memcg_events(lruvec_memcg(lruvec), PGDEACTIVATE, nr_pages);
+}
+
+static void lru_lazyfree(struct lruvec *lruvec, struct folio *folio)
+{
+	long nr_pages = folio_nr_pages(folio);
+
+	if (!folio_test_anon(folio) || !folio_test_swapbacked(folio) ||
+	    folio_test_swapcache(folio) || folio_test_unevictable(folio))
+		return;
+
+	lruvec_del_folio(lruvec, folio);
+	folio_clear_active(folio);
+	folio_clear_referenced(folio);
+	/*
+	 * Lazyfree folios are clean anonymous folios.  They have
+	 * the swapbacked flag cleared, to distinguish them from normal
+	 * anonymous folios
+	 */
+	folio_clear_swapbacked(folio);
+	lruvec_add_folio(lruvec, folio);
+
+	__count_vm_events(PGLAZYFREE, nr_pages);
+	__count_memcg_events(lruvec_memcg(lruvec), PGLAZYFREE, nr_pages);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -658,21 +845,34 @@ void lru_add_drain_cpu(int cpu)
 	struct folio_batch *fbatch = &fbatches->lru_add;
 
 	if (folio_batch_count(fbatch))
+<<<<<<< HEAD
 		folio_batch_move_lru(fbatch, lru_add_fn);
 
 	fbatch = &per_cpu(lru_rotate.fbatch, cpu);
+=======
+		folio_batch_move_lru(fbatch, lru_add);
+
+	fbatch = &fbatches->lru_move_tail;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Disabling interrupts below acts as a compiler barrier. */
 	if (data_race(folio_batch_count(fbatch))) {
 		unsigned long flags;
 
 		/* No harm done if a racing interrupt already did this */
+<<<<<<< HEAD
 		local_lock_irqsave(&lru_rotate.lock, flags);
 		folio_batch_move_lru(fbatch, lru_move_tail_fn);
 		local_unlock_irqrestore(&lru_rotate.lock, flags);
+=======
+		local_lock_irqsave(&cpu_fbatches.lock_irq, flags);
+		folio_batch_move_lru(fbatch, lru_move_tail);
+		local_unlock_irqrestore(&cpu_fbatches.lock_irq, flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	fbatch = &fbatches->lru_deactivate_file;
 	if (folio_batch_count(fbatch))
+<<<<<<< HEAD
 		folio_batch_move_lru(fbatch, lru_deactivate_file_fn);
 
 	fbatch = &fbatches->lru_deactivate;
@@ -682,6 +882,17 @@ void lru_add_drain_cpu(int cpu)
 	fbatch = &fbatches->lru_lazyfree;
 	if (folio_batch_count(fbatch))
 		folio_batch_move_lru(fbatch, lru_lazyfree_fn);
+=======
+		folio_batch_move_lru(fbatch, lru_deactivate_file);
+
+	fbatch = &fbatches->lru_deactivate;
+	if (folio_batch_count(fbatch))
+		folio_batch_move_lru(fbatch, lru_deactivate);
+
+	fbatch = &fbatches->lru_lazyfree;
+	if (folio_batch_count(fbatch))
+		folio_batch_move_lru(fbatch, lru_lazyfree);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	folio_activate_drain(cpu);
 }
@@ -698,12 +909,16 @@ void lru_add_drain_cpu(int cpu)
  */
 void deactivate_file_folio(struct folio *folio)
 {
+<<<<<<< HEAD
 	struct folio_batch *fbatch;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Deactivating an unevictable folio will not accelerate reclaim */
 	if (folio_test_unevictable(folio))
 		return;
 
+<<<<<<< HEAD
 	folio_get(folio);
 	if (!folio_test_clear_lru(folio)) {
 		folio_put(folio);
@@ -714,6 +929,9 @@ void deactivate_file_folio(struct folio *folio)
 	fbatch = this_cpu_ptr(&cpu_fbatches.lru_deactivate_file);
 	folio_batch_add_and_move(fbatch, folio, lru_deactivate_file_fn);
 	local_unlock(&cpu_fbatches.lock);
+=======
+	folio_batch_add_and_move(folio, lru_deactivate_file, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -726,6 +944,7 @@ void deactivate_file_folio(struct folio *folio)
  */
 void folio_deactivate(struct folio *folio)
 {
+<<<<<<< HEAD
 	if (!folio_test_unevictable(folio) && (folio_test_active(folio) ||
 	    lru_gen_enabled())) {
 		struct folio_batch *fbatch;
@@ -741,6 +960,12 @@ void folio_deactivate(struct folio *folio)
 		folio_batch_add_and_move(fbatch, folio, lru_deactivate_fn);
 		local_unlock(&cpu_fbatches.lock);
 	}
+=======
+	if (folio_test_unevictable(folio) || !(folio_test_active(folio) || lru_gen_enabled()))
+		return;
+
+	folio_batch_add_and_move(folio, lru_deactivate, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -752,6 +977,7 @@ void folio_deactivate(struct folio *folio)
  */
 void folio_mark_lazyfree(struct folio *folio)
 {
+<<<<<<< HEAD
 	if (folio_test_anon(folio) && folio_test_swapbacked(folio) &&
 	    !folio_test_swapcache(folio) && !folio_test_unevictable(folio)) {
 		struct folio_batch *fbatch;
@@ -767,6 +993,13 @@ void folio_mark_lazyfree(struct folio *folio)
 		folio_batch_add_and_move(fbatch, folio, lru_lazyfree_fn);
 		local_unlock(&cpu_fbatches.lock);
 	}
+=======
+	if (!folio_test_anon(folio) || !folio_test_swapbacked(folio) ||
+	    folio_test_swapcache(folio) || folio_test_unevictable(folio))
+		return;
+
+	folio_batch_add_and_move(folio, lru_lazyfree, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void lru_add_drain(void)
@@ -816,11 +1049,19 @@ static bool cpu_needs_drain(unsigned int cpu)
 
 	/* Check these in order of likelihood that they're not zero */
 	return folio_batch_count(&fbatches->lru_add) ||
+<<<<<<< HEAD
 		data_race(folio_batch_count(&per_cpu(lru_rotate.fbatch, cpu))) ||
 		folio_batch_count(&fbatches->lru_deactivate_file) ||
 		folio_batch_count(&fbatches->lru_deactivate) ||
 		folio_batch_count(&fbatches->lru_lazyfree) ||
 		folio_batch_count(&fbatches->activate) ||
+=======
+		folio_batch_count(&fbatches->lru_move_tail) ||
+		folio_batch_count(&fbatches->lru_deactivate_file) ||
+		folio_batch_count(&fbatches->lru_deactivate) ||
+		folio_batch_count(&fbatches->lru_lazyfree) ||
+		folio_batch_count(&fbatches->lru_activate) ||
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		need_mlock_drain(cpu) ||
 		has_bh_in_lru(cpu, NULL);
 }
@@ -938,8 +1179,13 @@ atomic_t lru_disable_count = ATOMIC_INIT(0);
 
 /*
  * lru_cache_disable() needs to be called before we start compiling
+<<<<<<< HEAD
  * a list of pages to be migrated using isolate_lru_page().
  * It drains pages on LRU cache and then disable on all cpus until
+=======
+ * a list of folios to be migrated using folio_isolate_lru().
+ * It drains folios on LRU cache and then disable on all cpus until
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * lru_cache_enable is called.
  *
  * Must be paired with a call to lru_cache_enable().
@@ -1020,7 +1266,11 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
 			free_huge_folio(folio);
 			continue;
 		}
+<<<<<<< HEAD
 		folio_undo_large_rmappable(folio);
+=======
+		folio_unqueue_deferred_split(folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__page_cache_release(folio, &lruvec, &flags);
 
 		if (j != i)

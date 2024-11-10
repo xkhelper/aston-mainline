@@ -314,7 +314,11 @@ static void ntb_transport_bus_remove(struct device *dev)
 	put_device(dev);
 }
 
+<<<<<<< HEAD
 static struct bus_type ntb_transport_bus = {
+=======
+static const struct bus_type ntb_transport_bus = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name = "ntb_transport",
 	.match = ntb_transport_bus_match,
 	.probe = ntb_transport_bus_probe,
@@ -377,6 +381,11 @@ EXPORT_SYMBOL_GPL(ntb_transport_unregister_client_dev);
  * @device_name: Name of NTB client device
  *
  * Register an NTB client device with the NTB transport layer
+<<<<<<< HEAD
+=======
+ *
+ * Returns: %0 on success or -errno code on error
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int ntb_transport_register_client_dev(char *device_name)
 {
@@ -807,16 +816,40 @@ static void ntb_free_mw(struct ntb_transport_ctx *nt, int num_mw)
 }
 
 static int ntb_alloc_mw_buffer(struct ntb_transport_mw *mw,
+<<<<<<< HEAD
 			       struct device *dma_dev, size_t align)
+=======
+			       struct device *ntb_dev, size_t align)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	dma_addr_t dma_addr;
 	void *alloc_addr, *virt_addr;
 	int rc;
 
+<<<<<<< HEAD
 	alloc_addr = dma_alloc_coherent(dma_dev, mw->alloc_size,
 					&dma_addr, GFP_KERNEL);
 	if (!alloc_addr) {
 		dev_err(dma_dev, "Unable to alloc MW buff of size %zu\n",
+=======
+	/*
+	 * The buffer here is allocated against the NTB device. The reason to
+	 * use dma_alloc_*() call is to allocate a large IOVA contiguous buffer
+	 * backing the NTB BAR for the remote host to write to. During receive
+	 * processing, the data is being copied out of the receive buffer to
+	 * the kernel skbuff. When a DMA device is being used, dma_map_page()
+	 * is called on the kvaddr of the receive buffer (from dma_alloc_*())
+	 * and remapped against the DMA device. It appears to be a double
+	 * DMA mapping of buffers, but first is mapped to the NTB device and
+	 * second is to the DMA device. DMA_ATTR_FORCE_CONTIGUOUS is necessary
+	 * in order for the later dma_map_page() to not fail.
+	 */
+	alloc_addr = dma_alloc_attrs(ntb_dev, mw->alloc_size,
+				     &dma_addr, GFP_KERNEL,
+				     DMA_ATTR_FORCE_CONTIGUOUS);
+	if (!alloc_addr) {
+		dev_err(ntb_dev, "Unable to alloc MW buff of size %zu\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			mw->alloc_size);
 		return -ENOMEM;
 	}
@@ -845,7 +878,11 @@ static int ntb_alloc_mw_buffer(struct ntb_transport_mw *mw,
 	return 0;
 
 err:
+<<<<<<< HEAD
 	dma_free_coherent(dma_dev, mw->alloc_size, alloc_addr, dma_addr);
+=======
+	dma_free_coherent(ntb_dev, mw->alloc_size, alloc_addr, dma_addr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return rc;
 }
@@ -1966,9 +2003,15 @@ static bool ntb_dma_filter_fn(struct dma_chan *chan, void *node)
 
 /**
  * ntb_transport_create_queue - Create a new NTB transport layer queue
+<<<<<<< HEAD
  * @rx_handler: receive callback function
  * @tx_handler: transmit callback function
  * @event_handler: event callback function
+=======
+ * @data: pointer for callback data
+ * @client_dev: &struct device pointer
+ * @handlers: pointer to various ntb queue (callback) handlers
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Create a new NTB transport layer queue and provide the queue with a callback
  * routine for both transmit and receive.  The receive callback routine will be

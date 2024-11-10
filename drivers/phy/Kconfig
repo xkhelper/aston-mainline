@@ -95,6 +95,10 @@ source "drivers/phy/mediatek/Kconfig"
 source "drivers/phy/microchip/Kconfig"
 source "drivers/phy/motorola/Kconfig"
 source "drivers/phy/mscc/Kconfig"
+<<<<<<< HEAD
+=======
+source "drivers/phy/nuvoton/Kconfig"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 source "drivers/phy/qualcomm/Kconfig"
 source "drivers/phy/ralink/Kconfig"
 source "drivers/phy/realtek/Kconfig"

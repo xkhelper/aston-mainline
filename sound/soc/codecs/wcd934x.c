@@ -2643,8 +2643,13 @@ static void wcd934x_mbhc_get_result_params(struct wcd934x_codec *wcd934x,
 	s16 c1;
 	s32 x1, d1;
 	int32_t denom;
+<<<<<<< HEAD
 	int minCode_param[] = {
 			3277, 1639, 820, 410, 205, 103, 52, 26
+=======
+	static const int minCode_param[] = {
+		3277, 1639, 820, 410, 205, 103, 52, 26
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	regmap_update_bits(wcd934x->regmap, WCD934X_ANA_MBHC_ZDET, 0x20, 0x20);

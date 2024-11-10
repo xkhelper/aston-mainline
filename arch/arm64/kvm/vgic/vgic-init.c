@@ -417,8 +417,33 @@ static void __kvm_vgic_vcpu_destroy(struct kvm_vcpu *vcpu)
 	kfree(vgic_cpu->private_irqs);
 	vgic_cpu->private_irqs = NULL;
 
+<<<<<<< HEAD
 	if (vcpu->kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3)
 		vgic_cpu->rd_iodev.base_addr = VGIC_ADDR_UNDEF;
+=======
+	if (vcpu->kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3) {
+		/*
+		 * If this vCPU is being destroyed because of a failed creation
+		 * then unregister the redistributor to avoid leaving behind a
+		 * dangling pointer to the vCPU struct.
+		 *
+		 * vCPUs that have been successfully created (i.e. added to
+		 * kvm->vcpu_array) get unregistered in kvm_vgic_destroy(), as
+		 * this function gets called while holding kvm->arch.config_lock
+		 * in the VM teardown path and would otherwise introduce a lock
+		 * inversion w.r.t. kvm->srcu.
+		 *
+		 * vCPUs that failed creation are torn down outside of the
+		 * kvm->arch.config_lock and do not get unregistered in
+		 * kvm_vgic_destroy(), meaning it is both safe and necessary to
+		 * do so here.
+		 */
+		if (kvm_get_vcpu_by_id(vcpu->kvm, vcpu->vcpu_id) != vcpu)
+			vgic_unregister_redist_iodev(vcpu);
+
+		vgic_cpu->rd_iodev.base_addr = VGIC_ADDR_UNDEF;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void kvm_vgic_vcpu_destroy(struct kvm_vcpu *vcpu)
@@ -524,22 +549,48 @@ int kvm_vgic_map_resources(struct kvm *kvm)
 	if (ret)
 		goto out;
 
+<<<<<<< HEAD
 	dist->ready = true;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dist_base = dist->vgic_dist_base;
 	mutex_unlock(&kvm->arch.config_lock);
 
 	ret = vgic_register_dist_iodev(kvm, dist_base, type);
+<<<<<<< HEAD
 	if (ret)
 		kvm_err("Unable to register VGIC dist MMIO regions\n");
 
+=======
+	if (ret) {
+		kvm_err("Unable to register VGIC dist MMIO regions\n");
+		goto out_slots;
+	}
+
+	/*
+	 * kvm_io_bus_register_dev() guarantees all readers see the new MMIO
+	 * registration before returning through synchronize_srcu(), which also
+	 * implies a full memory barrier. As such, marking the distributor as
+	 * 'ready' here is guaranteed to be ordered after all vCPUs having seen
+	 * a completely configured distributor.
+	 */
+	dist->ready = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	goto out_slots;
 out:
 	mutex_unlock(&kvm->arch.config_lock);
 out_slots:
+<<<<<<< HEAD
 	mutex_unlock(&kvm->slots_lock);
 
 	if (ret)
 		kvm_vgic_destroy(kvm);
+=======
+	if (ret)
+		kvm_vm_dead(kvm);
+
+	mutex_unlock(&kvm->slots_lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }

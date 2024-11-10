@@ -126,7 +126,10 @@ static const char * const clock_names[SYSC_MAX_CLOCKS] = {
  * @enabled: sysc runtime enabled status
  * @needs_resume: runtime resume needed on resume from suspend
  * @child_needs_resume: runtime resume needed for child on resume from suspend
+<<<<<<< HEAD
  * @disable_on_idle: status flag used for disabling modules with resets
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @idle_work: work structure used to perform delayed idle on a module
  * @pre_reset_quirk: module specific pre-reset quirk
  * @post_reset_quirk: module specific post-reset quirk
@@ -2569,14 +2572,22 @@ static const struct sysc_dts_quirk sysc_dts_quirks[] = {
 static void sysc_parse_dts_quirks(struct sysc *ddata, struct device_node *np,
 				  bool is_child)
 {
+<<<<<<< HEAD
 	const struct property *prop;
 	int i, len;
+=======
+	int i;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 0; i < ARRAY_SIZE(sysc_dts_quirks); i++) {
 		const char *name = sysc_dts_quirks[i].name;
 
+<<<<<<< HEAD
 		prop = of_get_property(np, name, &len);
 		if (!prop)
+=======
+		if (!of_property_present(np, name))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 
 		ddata->cfg.quirks |= sysc_dts_quirks[i].mask;

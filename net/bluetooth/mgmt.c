@@ -25,7 +25,11 @@
 /* Bluetooth HCI Management interface */
 
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <net/bluetooth/bluetooth.h>
 #include <net/bluetooth/hci_core.h>
@@ -1453,10 +1457,22 @@ static void cmd_status_rsp(struct mgmt_pending_cmd *cmd, void *data)
 
 static void cmd_complete_rsp(struct mgmt_pending_cmd *cmd, void *data)
 {
+<<<<<<< HEAD
 	if (cmd->cmd_complete) {
 		u8 *status = data;
 
 		cmd->cmd_complete(cmd, *status);
+=======
+	struct cmd_lookup *match = data;
+
+	/* dequeue cmd_sync entries using cmd as data as that is about to be
+	 * removed/freed.
+	 */
+	hci_cmd_sync_dequeue(match->hdev, NULL, cmd, NULL);
+
+	if (cmd->cmd_complete) {
+		cmd->cmd_complete(cmd, match->mgmt_status);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mgmt_pending_remove(cmd);
 
 		return;
@@ -9394,12 +9410,20 @@ void mgmt_index_added(struct hci_dev *hdev)
 void mgmt_index_removed(struct hci_dev *hdev)
 {
 	struct mgmt_ev_ext_index ev;
+<<<<<<< HEAD
 	u8 status = MGMT_STATUS_INVALID_INDEX;
+=======
+	struct cmd_lookup match = { NULL, hdev, MGMT_STATUS_INVALID_INDEX };
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (test_bit(HCI_QUIRK_RAW_DEVICE, &hdev->quirks))
 		return;
 
+<<<<<<< HEAD
 	mgmt_pending_foreach(0, hdev, cmd_complete_rsp, &status);
+=======
+	mgmt_pending_foreach(0, hdev, cmd_complete_rsp, &match);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (hci_dev_test_flag(hdev, HCI_UNCONFIGURED)) {
 		mgmt_index_event(MGMT_EV_UNCONF_INDEX_REMOVED, hdev, NULL, 0,
@@ -9450,7 +9474,11 @@ void mgmt_power_on(struct hci_dev *hdev, int err)
 void __mgmt_power_off(struct hci_dev *hdev)
 {
 	struct cmd_lookup match = { NULL, hdev };
+<<<<<<< HEAD
 	u8 status, zero_cod[] = { 0, 0, 0 };
+=======
+	u8 zero_cod[] = { 0, 0, 0 };
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mgmt_pending_foreach(MGMT_OP_SET_POWERED, hdev, settings_rsp, &match);
 
@@ -9462,11 +9490,19 @@ void __mgmt_power_off(struct hci_dev *hdev)
 	 * status responses.
 	 */
 	if (hci_dev_test_flag(hdev, HCI_UNREGISTER))
+<<<<<<< HEAD
 		status = MGMT_STATUS_INVALID_INDEX;
 	else
 		status = MGMT_STATUS_NOT_POWERED;
 
 	mgmt_pending_foreach(0, hdev, cmd_complete_rsp, &status);
+=======
+		match.mgmt_status = MGMT_STATUS_INVALID_INDEX;
+	else
+		match.mgmt_status = MGMT_STATUS_NOT_POWERED;
+
+	mgmt_pending_foreach(0, hdev, cmd_complete_rsp, &match);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (memcmp(hdev->dev_class, zero_cod, sizeof(zero_cod)) != 0) {
 		mgmt_limited_event(MGMT_EV_CLASS_OF_DEV_CHANGED, hdev,
@@ -9779,6 +9815,7 @@ void mgmt_disconnect_failed(struct hci_dev *hdev, bdaddr_t *bdaddr,
 	mgmt_pending_remove(cmd);
 }
 
+<<<<<<< HEAD
 void mgmt_connect_failed(struct hci_dev *hdev, bdaddr_t *bdaddr, u8 link_type,
 			 u8 addr_type, u8 status)
 {
@@ -9786,6 +9823,20 @@ void mgmt_connect_failed(struct hci_dev *hdev, bdaddr_t *bdaddr, u8 link_type,
 
 	bacpy(&ev.addr.bdaddr, bdaddr);
 	ev.addr.type = link_to_bdaddr(link_type, addr_type);
+=======
+void mgmt_connect_failed(struct hci_dev *hdev, struct hci_conn *conn, u8 status)
+{
+	struct mgmt_ev_connect_failed ev;
+
+	if (test_and_clear_bit(HCI_CONN_MGMT_CONNECTED, &conn->flags)) {
+		mgmt_device_disconnected(hdev, &conn->dst, conn->type,
+					 conn->dst_type, status, true);
+		return;
+	}
+
+	bacpy(&ev.addr.bdaddr, &conn->dst);
+	ev.addr.type = link_to_bdaddr(conn->type, conn->dst_type);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ev.status = mgmt_status(status);
 
 	mgmt_event(MGMT_EV_CONNECT_FAILED, hdev, &ev, sizeof(ev), NULL);

@@ -3809,7 +3809,11 @@ next:
 		if (async && *total_trimmed)
 			break;
 
+<<<<<<< HEAD
 		if (fatal_signal_pending(current)) {
+=======
+		if (btrfs_trim_interrupted()) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ret = -ERESTARTSYS;
 			break;
 		}
@@ -4000,7 +4004,11 @@ next:
 		}
 		block_group->discard_cursor = start;
 
+<<<<<<< HEAD
 		if (fatal_signal_pending(current)) {
+=======
+		if (btrfs_trim_interrupted()) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (start != offset)
 				reset_trimming_bitmap(ctl, offset);
 			ret = -ERESTARTSYS;

@@ -426,6 +426,11 @@ static void drm_connector_cleanup_action(struct drm_device *dev,
  *
  * The connector structure should be allocated with drmm_kzalloc().
  *
+<<<<<<< HEAD
+=======
+ * The @drm_connector_funcs.destroy hook must be NULL.
+ *
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Returns:
  * Zero on success, error code on failure.
  */
@@ -474,6 +479,11 @@ EXPORT_SYMBOL(drmm_connector_init);
  *
  * The connector structure should be allocated with drmm_kzalloc().
  *
+<<<<<<< HEAD
+=======
+ * The @drm_connector_funcs.destroy hook must be NULL.
+ *
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Returns:
  * Zero on success, error code on failure.
  */
@@ -2315,6 +2325,7 @@ EXPORT_SYMBOL(drm_mode_create_aspect_ratio_property);
  * DOC: standard connector properties
  *
  * Colorspace:
+<<<<<<< HEAD
  *     This property helps select a suitable colorspace based on the sink
  *     capability. Modern sink devices support wider gamut like BT2020.
  *     This helps switch to BT2020 mode if the BT2020 encoded video stream
@@ -2333,6 +2344,73 @@ EXPORT_SYMBOL(drm_mode_create_aspect_ratio_property);
  *        converted the CRTC output to.
  *      - This property is just to inform sink what colorspace
  *        source is trying to drive.
+=======
+ *	This property is used to inform the driver about the color encoding
+ *	user space configured the pixel operation properties to produce.
+ *	The variants set the colorimetry, transfer characteristics, and which
+ *	YCbCr conversion should be used when necessary.
+ *	The transfer characteristics from HDR_OUTPUT_METADATA takes precedence
+ *	over this property.
+ *	User space always configures the pixel operation properties to produce
+ *	full quantization range data (see the Broadcast RGB property).
+ *
+ *	Drivers inform the sink about what colorimetry, transfer
+ *	characteristics, YCbCr conversion, and quantization range to expect
+ *	(this can depend on the output mode, output format and other
+ *	properties). Drivers also convert the user space provided data to what
+ *	the sink expects.
+ *
+ *	User space has to check if the sink supports all of the possible
+ *	colorimetries that the driver is allowed to pick by parsing the EDID.
+ *
+ *	For historical reasons this property exposes a number of variants which
+ *	result in undefined behavior.
+ *
+ *	Default:
+ *		The behavior is driver-specific.
+ *
+ *	BT2020_RGB:
+ *
+ *	BT2020_YCC:
+ *		User space configures the pixel operation properties to produce
+ *		RGB content with Rec. ITU-R BT.2020 colorimetry, Rec.
+ *		ITU-R BT.2020 (Table 4, RGB) transfer characteristics and full
+ *		quantization range.
+ *		User space can use the HDR_OUTPUT_METADATA property to set the
+ *		transfer characteristics to PQ (Rec. ITU-R BT.2100 Table 4) or
+ *		HLG (Rec. ITU-R BT.2100 Table 5) in which case, user space
+ *		configures pixel operation properties to produce content with
+ *		the respective transfer characteristics.
+ *		User space has to make sure the sink supports Rec.
+ *		ITU-R BT.2020 R'G'B' and Rec. ITU-R BT.2020 Y'C'BC'R
+ *		colorimetry.
+ *		Drivers can configure the sink to use an RGB format, tell the
+ *		sink to expect Rec. ITU-R BT.2020 R'G'B' colorimetry and convert
+ *		to the appropriate quantization range.
+ *		Drivers can configure the sink to use a YCbCr format, tell the
+ *		sink to expect Rec. ITU-R BT.2020 Y'C'BC'R colorimetry, convert
+ *		to YCbCr using the Rec. ITU-R BT.2020 non-constant luminance
+ *		conversion matrix and convert to the appropriate quantization
+ *		range.
+ *		The variants BT2020_RGB and BT2020_YCC are equivalent and the
+ *		driver chooses between RGB and YCbCr on its own.
+ *
+ *	SMPTE_170M_YCC:
+ *	BT709_YCC:
+ *	XVYCC_601:
+ *	XVYCC_709:
+ *	SYCC_601:
+ *	opYCC_601:
+ *	opRGB:
+ *	BT2020_CYCC:
+ *	DCI-P3_RGB_D65:
+ *	DCI-P3_RGB_Theater:
+ *	RGB_WIDE_FIXED:
+ *	RGB_WIDE_FLOAT:
+ *
+ *	BT601_YCC:
+ *		The behavior is undefined.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Because between HDMI and DP have different colorspaces,
  * drm_mode_create_hdmi_colorspace_property() is used for HDMI connector and

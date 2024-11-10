@@ -578,7 +578,11 @@ static int mal_probe(struct platform_device *ofdev)
 		printk(KERN_ERR "%pOF: Support for 405EZ not enabled!\n",
 				ofdev->dev.of_node);
 		err = -ENODEV;
+<<<<<<< HEAD
 		goto fail;
+=======
+		goto fail_unmap;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	}
 
@@ -742,6 +746,11 @@ static void mal_remove(struct platform_device *ofdev)
 
 	free_netdev(mal->dummy_dev);
 
+<<<<<<< HEAD
+=======
+	dcr_unmap(mal->dcr_host, 0x100);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dma_free_coherent(&ofdev->dev,
 			  sizeof(struct mal_descriptor) *
 			  (NUM_TX_BUFF * mal->num_tx_chans +

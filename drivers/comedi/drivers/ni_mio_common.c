@@ -166,6 +166,7 @@ static const struct comedi_lrange range_ni_M_ai_628x = {
 	}
 };
 
+<<<<<<< HEAD
 static const struct comedi_lrange range_ni_E_ao_ext = {
 	4, {
 		BIP_RANGE(10),
@@ -175,6 +176,8 @@ static const struct comedi_lrange range_ni_E_ao_ext = {
 	}
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct comedi_lrange *const ni_range_lkup[] = {
 	[ai_gain_16] = &range_ni_E_ai,
 	[ai_gain_8] = &range_ni_E_ai_limited,

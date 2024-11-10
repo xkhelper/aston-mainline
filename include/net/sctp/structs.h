@@ -521,7 +521,11 @@ struct sctp_datamsg {
 	refcount_t refcnt;
 	/* When is this message no longer interesting to the peer? */
 	unsigned long expires_at;
+<<<<<<< HEAD
 	/* Did the messenge fail to send? */
+=======
+	/* Did the message fail to send? */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int send_error;
 	u8 send_failed:1,
 	   can_delay:1,	/* should this message be Nagle delayed */
@@ -792,7 +796,11 @@ struct sctp_transport {
 		 */
 		hb_sent:1,
 
+<<<<<<< HEAD
 		/* Is the Path MTU update pending on this tranport */
+=======
+		/* Is the Path MTU update pending on this transport */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pmtu_pending:1,
 
 		dst_pending_confirm:1,	/* need to confirm neighbour */
@@ -1223,7 +1231,11 @@ enum sctp_endpoint_type {
 };
 
 /*
+<<<<<<< HEAD
  * A common base class to bridge the implmentation view of a
+=======
+ * A common base class to bridge the implementation view of a
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * socket (usually listening) endpoint versus an association's
  * local endpoint.
  * This common structure is useful for several purposes:
@@ -1353,7 +1365,11 @@ struct sctp_endpoint {
 	struct rcu_head rcu;
 };
 
+<<<<<<< HEAD
 /* Recover the outter endpoint structure. */
+=======
+/* Recover the outer endpoint structure. */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline struct sctp_endpoint *sctp_ep(struct sctp_ep_common *base)
 {
 	struct sctp_endpoint *ep;
@@ -1906,7 +1922,11 @@ struct sctp_association {
 	__u32 rwnd_over;
 
 	/* Keeps treack of rwnd pressure.  This happens when we have
+<<<<<<< HEAD
 	 * a window, but not recevie buffer (i.e small packets).  This one
+=======
+	 * a window, but not receive buffer (i.e small packets).  This one
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * is releases slowly (1 PMTU at a time ).
 	 */
 	__u32 rwnd_press;
@@ -1994,7 +2014,11 @@ struct sctp_association {
 
 	/* ADDIP Section 5.2 Upon reception of an ASCONF Chunk.
 	 *
+<<<<<<< HEAD
 	 * This is needed to implement itmes E1 - E4 of the updated
+=======
+	 * This is needed to implement items E1 - E4 of the updated
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * spec.  Here is the justification:
 	 *
 	 * Since the peer may bundle multiple ASCONF chunks toward us,
@@ -2005,7 +2029,11 @@ struct sctp_association {
 
 	/* These ASCONF chunks are waiting to be sent.
 	 *
+<<<<<<< HEAD
 	 * These chunaks can't be pushed to outqueue until receiving
+=======
+	 * These chunks can't be pushed to outqueue until receiving
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * ASCONF_ACK for the previous ASCONF indicated by
 	 * addip_last_asconf, so as to guarantee that only one ASCONF
 	 * is in flight at any time.
@@ -2059,13 +2087,21 @@ struct sctp_association {
 	struct sctp_transport *new_transport;
 
 	/* SCTP AUTH: list of the endpoint shared keys.  These
+<<<<<<< HEAD
 	 * keys are provided out of band by the user applicaton
+=======
+	 * keys are provided out of band by the user application
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * and can't change during the lifetime of the association
 	 */
 	struct list_head endpoint_shared_keys;
 
 	/* SCTP AUTH:
+<<<<<<< HEAD
 	 * The current generated assocaition shared key (secret)
+=======
+	 * The current generated association shared key (secret)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	struct sctp_auth_bytes *asoc_shared_key;
 	struct sctp_shared_key *shkey;
@@ -2121,7 +2157,11 @@ enum {
 	SCTP_ASSOC_EYECATCHER = 0xa550c123,
 };
 
+<<<<<<< HEAD
 /* Recover the outter association structure. */
+=======
+/* Recover the outer association structure. */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline struct sctp_association *sctp_assoc(struct sctp_ep_common *base)
 {
 	struct sctp_association *asoc;

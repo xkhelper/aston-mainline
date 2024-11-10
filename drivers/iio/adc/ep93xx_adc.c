@@ -228,7 +228,11 @@ static void ep93xx_adc_remove(struct platform_device *pdev)
 
 static const struct of_device_id ep93xx_adc_of_ids[] = {
 	{ .compatible = "cirrus,ep9301-adc" },
+<<<<<<< HEAD
 	{}
+=======
+	{ }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(of, ep93xx_adc_of_ids);
 

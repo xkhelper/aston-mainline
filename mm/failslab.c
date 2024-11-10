@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <linux/fault-inject.h>
 #include <linux/error-injection.h>
+<<<<<<< HEAD
+=======
+#include <linux/debugfs.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/slab.h>
 #include <linux/mm.h>
 #include "slab.h"

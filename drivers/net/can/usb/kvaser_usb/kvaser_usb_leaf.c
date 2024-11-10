@@ -119,6 +119,13 @@
 /* Extended CAN identifier flag */
 #define KVASER_EXTENDED_FRAME		BIT(31)
 
+<<<<<<< HEAD
+=======
+/* USBCanII timestamp */
+#define KVASER_USB_USBCAN_CLK_OVERFLOW_MASK GENMASK(31, 16)
+#define KVASER_USB_USBCAN_TIMESTAMP_FACTOR 10
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct kvaser_cmd_simple {
 	u8 tid;
 	u8 channel;
@@ -235,6 +242,23 @@ struct kvaser_cmd_tx_acknowledge_header {
 	u8 tid;
 } __packed;
 
+<<<<<<< HEAD
+=======
+struct leaf_cmd_tx_acknowledge {
+	u8 channel;
+	u8 tid;
+	__le16 time[3];
+	u8 padding[2];
+} __packed;
+
+struct usbcan_cmd_tx_acknowledge {
+	u8 channel;
+	u8 tid;
+	__le16 time;
+	u8 padding[2];
+} __packed;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct leaf_cmd_can_error_event {
 	u8 tid;
 	u8 flags;
@@ -281,6 +305,15 @@ struct usbcan_cmd_error_event {
 	__le16 padding;
 } __packed;
 
+<<<<<<< HEAD
+=======
+struct usbcan_cmd_clk_overflow_event {
+	u8 tid;
+	u8 padding;
+	__le32 time;
+} __packed;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct kvaser_cmd_ctrl_mode {
 	u8 tid;
 	u8 channel;
@@ -347,6 +380,10 @@ struct kvaser_cmd {
 			struct leaf_cmd_error_event error_event;
 			struct kvaser_cmd_cap_req cap_req;
 			struct kvaser_cmd_cap_res cap_res;
+<<<<<<< HEAD
+=======
+			struct leaf_cmd_tx_acknowledge tx_ack;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} __packed leaf;
 
 		union {
@@ -355,6 +392,11 @@ struct kvaser_cmd {
 			struct usbcan_cmd_chip_state_event chip_state_event;
 			struct usbcan_cmd_can_error_event can_error_event;
 			struct usbcan_cmd_error_event error_event;
+<<<<<<< HEAD
+=======
+			struct usbcan_cmd_tx_acknowledge tx_ack;
+			struct usbcan_cmd_clk_overflow_event clk_overflow_event;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} __packed usbcan;
 
 		struct kvaser_cmd_tx_can tx_can;
@@ -370,7 +412,11 @@ static const u8 kvaser_usb_leaf_cmd_sizes_leaf[] = {
 	[CMD_START_CHIP_REPLY]		= kvaser_fsize(u.simple),
 	[CMD_STOP_CHIP_REPLY]		= kvaser_fsize(u.simple),
 	[CMD_GET_CARD_INFO_REPLY]	= kvaser_fsize(u.cardinfo),
+<<<<<<< HEAD
 	[CMD_TX_ACKNOWLEDGE]		= kvaser_fsize(u.tx_acknowledge_header),
+=======
+	[CMD_TX_ACKNOWLEDGE]		= kvaser_fsize(u.leaf.tx_ack),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	[CMD_GET_SOFTWARE_INFO_REPLY]	= kvaser_fsize(u.leaf.softinfo),
 	[CMD_RX_STD_MESSAGE]		= kvaser_fsize(u.leaf.rx_can),
 	[CMD_RX_EXT_MESSAGE]		= kvaser_fsize(u.leaf.rx_can),
@@ -388,15 +434,23 @@ static const u8 kvaser_usb_leaf_cmd_sizes_usbcan[] = {
 	[CMD_START_CHIP_REPLY]		= kvaser_fsize(u.simple),
 	[CMD_STOP_CHIP_REPLY]		= kvaser_fsize(u.simple),
 	[CMD_GET_CARD_INFO_REPLY]	= kvaser_fsize(u.cardinfo),
+<<<<<<< HEAD
 	[CMD_TX_ACKNOWLEDGE]		= kvaser_fsize(u.tx_acknowledge_header),
+=======
+	[CMD_TX_ACKNOWLEDGE]		= kvaser_fsize(u.usbcan.tx_ack),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	[CMD_GET_SOFTWARE_INFO_REPLY]	= kvaser_fsize(u.usbcan.softinfo),
 	[CMD_RX_STD_MESSAGE]		= kvaser_fsize(u.usbcan.rx_can),
 	[CMD_RX_EXT_MESSAGE]		= kvaser_fsize(u.usbcan.rx_can),
 	[CMD_CHIP_STATE_EVENT]		= kvaser_fsize(u.usbcan.chip_state_event),
 	[CMD_CAN_ERROR_EVENT]		= kvaser_fsize(u.usbcan.can_error_event),
 	[CMD_ERROR_EVENT]		= kvaser_fsize(u.usbcan.error_event),
+<<<<<<< HEAD
 	/* ignored events: */
 	[CMD_USBCAN_CLOCK_OVERFLOW_EVENT] = CMD_SIZE_ANY,
+=======
+	[CMD_USBCAN_CLOCK_OVERFLOW_EVENT] = kvaser_fsize(u.usbcan.clk_overflow_event),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* Summary of a kvaser error event, for a unified Leaf/Usbcan error
@@ -463,11 +517,35 @@ static const struct kvaser_usb_dev_cfg kvaser_usb_leaf_usbcan_dev_cfg = {
 	.bittiming_const = &kvaser_usb_leaf_m16c_bittiming_const,
 };
 
+<<<<<<< HEAD
 static const struct kvaser_usb_dev_cfg kvaser_usb_leaf_m32c_dev_cfg = {
 	.clock = {
 		.freq = 16 * MEGA /* Hz */,
 	},
 	.timestamp_freq = 1,
+=======
+static const struct kvaser_usb_dev_cfg kvaser_usb_leaf_m32c_dev_cfg_16mhz = {
+	.clock = {
+		.freq = 16 * MEGA /* Hz */,
+	},
+	.timestamp_freq = 16,
+	.bittiming_const = &kvaser_usb_leaf_m32c_bittiming_const,
+};
+
+static const struct kvaser_usb_dev_cfg kvaser_usb_leaf_m32c_dev_cfg_24mhz = {
+	.clock = {
+		.freq = 16 * MEGA /* Hz */,
+	},
+	.timestamp_freq = 24,
+	.bittiming_const = &kvaser_usb_leaf_m32c_bittiming_const,
+};
+
+static const struct kvaser_usb_dev_cfg kvaser_usb_leaf_m32c_dev_cfg_32mhz = {
+	.clock = {
+		.freq = 16 * MEGA /* Hz */,
+	},
+	.timestamp_freq = 32,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.bittiming_const = &kvaser_usb_leaf_m32c_bittiming_const,
 };
 
@@ -475,7 +553,11 @@ static const struct kvaser_usb_dev_cfg kvaser_usb_leaf_imx_dev_cfg_16mhz = {
 	.clock = {
 		.freq = 16 * MEGA /* Hz */,
 	},
+<<<<<<< HEAD
 	.timestamp_freq = 1,
+=======
+	.timestamp_freq = 16,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.bittiming_const = &kvaser_usb_flexc_bittiming_const,
 };
 
@@ -483,7 +565,11 @@ static const struct kvaser_usb_dev_cfg kvaser_usb_leaf_imx_dev_cfg_24mhz = {
 	.clock = {
 		.freq = 24 * MEGA /* Hz */,
 	},
+<<<<<<< HEAD
 	.timestamp_freq = 1,
+=======
+	.timestamp_freq = 24,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.bittiming_const = &kvaser_usb_flexc_bittiming_const,
 };
 
@@ -491,10 +577,26 @@ static const struct kvaser_usb_dev_cfg kvaser_usb_leaf_imx_dev_cfg_32mhz = {
 	.clock = {
 		.freq = 32 * MEGA /* Hz */,
 	},
+<<<<<<< HEAD
 	.timestamp_freq = 1,
 	.bittiming_const = &kvaser_usb_flexc_bittiming_const,
 };
 
+=======
+	.timestamp_freq = 32,
+	.bittiming_const = &kvaser_usb_flexc_bittiming_const,
+};
+
+static inline ktime_t kvaser_usb_usbcan_timestamp_to_ktime(const struct kvaser_usb *dev,
+							   __le16 timestamp)
+{
+	u64 ticks = le16_to_cpu(timestamp) |
+		    dev->card_data.usbcan_timestamp_msb;
+
+	return kvaser_usb_ticks_to_ktime(dev->cfg, ticks * KVASER_USB_USBCAN_TIMESTAMP_FACTOR);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int kvaser_usb_leaf_verify_size(const struct kvaser_usb *dev,
 				       const struct kvaser_cmd *cmd)
 {
@@ -678,8 +780,24 @@ static void kvaser_usb_leaf_get_software_info_leaf(struct kvaser_usb *dev,
 	if (dev->driver_info->quirks & KVASER_USB_QUIRK_IGNORE_CLK_FREQ) {
 		/* Firmware expects bittiming parameters calculated for 16MHz
 		 * clock, regardless of the actual clock
+<<<<<<< HEAD
 		 */
 		dev->cfg = &kvaser_usb_leaf_m32c_dev_cfg;
+=======
+		 * Though, the reported freq is used for timestamps
+		 */
+		switch (sw_options & KVASER_USB_LEAF_SWOPTION_FREQ_MASK) {
+		case KVASER_USB_LEAF_SWOPTION_FREQ_16_MHZ_CLK:
+			dev->cfg = &kvaser_usb_leaf_m32c_dev_cfg_16mhz;
+			break;
+		case KVASER_USB_LEAF_SWOPTION_FREQ_24_MHZ_CLK:
+			dev->cfg = &kvaser_usb_leaf_m32c_dev_cfg_24mhz;
+			break;
+		case KVASER_USB_LEAF_SWOPTION_FREQ_32_MHZ_CLK:
+			dev->cfg = &kvaser_usb_leaf_m32c_dev_cfg_32mhz;
+			break;
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		switch (sw_options & KVASER_USB_LEAF_SWOPTION_FREQ_MASK) {
 		case KVASER_USB_LEAF_SWOPTION_FREQ_16_MHZ_CLK:
@@ -880,6 +998,11 @@ static void kvaser_usb_leaf_tx_acknowledge(const struct kvaser_usb *dev,
 	struct kvaser_usb_net_priv *priv;
 	unsigned long flags;
 	u8 channel, tid;
+<<<<<<< HEAD
+=======
+	struct sk_buff *skb;
+	ktime_t hwtstamp = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	channel = cmd->u.tx_acknowledge_header.channel;
 	tid = cmd->u.tx_acknowledge_header.tid;
@@ -901,6 +1024,7 @@ static void kvaser_usb_leaf_tx_acknowledge(const struct kvaser_usb *dev,
 
 	/* Sometimes the state change doesn't come after a bus-off event */
 	if (priv->can.restart_ms && priv->can.state == CAN_STATE_BUS_OFF) {
+<<<<<<< HEAD
 		struct sk_buff *skb;
 		struct can_frame *cf;
 
@@ -909,6 +1033,16 @@ static void kvaser_usb_leaf_tx_acknowledge(const struct kvaser_usb *dev,
 			cf->can_id |= CAN_ERR_RESTARTED;
 
 			netif_rx(skb);
+=======
+		struct sk_buff *err_skb;
+		struct can_frame *cf;
+
+		err_skb = alloc_can_err_skb(priv->netdev, &cf);
+		if (err_skb) {
+			cf->can_id |= CAN_ERR_RESTARTED;
+
+			netif_rx(err_skb);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			netdev_err(priv->netdev,
 				   "No memory left for err_skb\n");
@@ -919,9 +1053,26 @@ static void kvaser_usb_leaf_tx_acknowledge(const struct kvaser_usb *dev,
 
 		priv->can.state = CAN_STATE_ERROR_ACTIVE;
 	}
+<<<<<<< HEAD
 
 	spin_lock_irqsave(&priv->tx_contexts_lock, flags);
 
+=======
+	switch (dev->driver_info->family) {
+	case KVASER_LEAF:
+		hwtstamp = kvaser_usb_timestamp48_to_ktime(dev->cfg, cmd->u.leaf.tx_ack.time);
+		break;
+	case KVASER_USBCAN:
+		hwtstamp = kvaser_usb_usbcan_timestamp_to_ktime(dev, cmd->u.usbcan.tx_ack.time);
+		break;
+	}
+
+	spin_lock_irqsave(&priv->tx_contexts_lock, flags);
+
+	skb = priv->can.echo_skb[context->echo_index];
+	if (skb)
+		skb_hwtstamps(skb)->hwtstamp = hwtstamp;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	stats->tx_packets++;
 	stats->tx_bytes += can_get_echo_skb(priv->netdev,
 					    context->echo_index, NULL);
@@ -1299,6 +1450,10 @@ static void kvaser_usb_leaf_rx_can_msg(const struct kvaser_usb *dev,
 	struct net_device_stats *stats;
 	u8 channel = cmd->u.rx_can_header.channel;
 	const u8 *rx_data = NULL;	/* GCC */
+<<<<<<< HEAD
+=======
+	ktime_t hwtstamp = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (channel >= dev->nchannels) {
 		dev_err(&dev->intf->dev,
@@ -1329,9 +1484,17 @@ static void kvaser_usb_leaf_rx_can_msg(const struct kvaser_usb *dev,
 	switch (dev->driver_info->family) {
 	case KVASER_LEAF:
 		rx_data = cmd->u.leaf.rx_can.data;
+<<<<<<< HEAD
 		break;
 	case KVASER_USBCAN:
 		rx_data = cmd->u.usbcan.rx_can.data;
+=======
+		hwtstamp = kvaser_usb_timestamp48_to_ktime(dev->cfg, cmd->u.leaf.rx_can.time);
+		break;
+	case KVASER_USBCAN:
+		rx_data = cmd->u.usbcan.rx_can.data;
+		hwtstamp = kvaser_usb_usbcan_timestamp_to_ktime(dev, cmd->u.usbcan.rx_can.time);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	}
 
@@ -1375,6 +1538,10 @@ static void kvaser_usb_leaf_rx_can_msg(const struct kvaser_usb *dev,
 			memcpy(cf->data, &rx_data[6], cf->len);
 	}
 
+<<<<<<< HEAD
+=======
+	skb_hwtstamps(skb)->hwtstamp = hwtstamp;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	stats->rx_packets++;
 	if (!(cf->can_id & CAN_RTR_FLAG))
 		stats->rx_bytes += cf->len;
@@ -1508,7 +1675,11 @@ static void kvaser_usb_leaf_get_busparams_reply(const struct kvaser_usb *dev,
 	complete(&priv->get_busparams_comp);
 }
 
+<<<<<<< HEAD
 static void kvaser_usb_leaf_handle_command(const struct kvaser_usb *dev,
+=======
+static void kvaser_usb_leaf_handle_command(struct kvaser_usb *dev,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					   const struct kvaser_cmd *cmd)
 {
 	if (kvaser_usb_leaf_verify_size(dev, cmd) < 0)
@@ -1554,12 +1725,24 @@ static void kvaser_usb_leaf_handle_command(const struct kvaser_usb *dev,
 		kvaser_usb_leaf_get_busparams_reply(dev, cmd);
 		break;
 
+<<<<<<< HEAD
 	/* Ignored commands */
 	case CMD_USBCAN_CLOCK_OVERFLOW_EVENT:
 		if (dev->driver_info->family != KVASER_USBCAN)
 			goto warn;
 		break;
 
+=======
+	case CMD_USBCAN_CLOCK_OVERFLOW_EVENT:
+		if (dev->driver_info->family != KVASER_USBCAN)
+			goto warn;
+		dev->card_data.usbcan_timestamp_msb =
+					le32_to_cpu(cmd->u.usbcan.clk_overflow_event.time) &
+					KVASER_USB_USBCAN_CLK_OVERFLOW_MASK;
+		break;
+
+	/* Ignored commands */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case CMD_FLUSH_QUEUE_REPLY:
 		if (dev->driver_info->family != KVASER_LEAF)
 			goto warn;

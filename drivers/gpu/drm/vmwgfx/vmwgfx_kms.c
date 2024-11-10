@@ -1283,7 +1283,10 @@ static int vmw_kms_new_framebuffer_surface(struct vmw_private *dev_priv,
 {
 	struct drm_device *dev = &dev_priv->drm;
 	struct vmw_framebuffer_surface *vfbs;
+<<<<<<< HEAD
 	enum SVGA3dSurfaceFormat format;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct vmw_surface *surface;
 	int ret;
 
@@ -1320,6 +1323,7 @@ static int vmw_kms_new_framebuffer_surface(struct vmw_private *dev_priv,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	switch (mode_cmd->pixel_format) {
 	case DRM_FORMAT_ARGB8888:
 		format = SVGA3D_A8R8G8B8;
@@ -1348,6 +1352,8 @@ static int vmw_kms_new_framebuffer_surface(struct vmw_private *dev_priv,
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	vfbs = kzalloc(sizeof(*vfbs), GFP_KERNEL);
 	if (!vfbs) {
 		ret = -ENOMEM;
@@ -1539,6 +1545,10 @@ static struct drm_framebuffer *vmw_kms_fb_create(struct drm_device *dev,
 		DRM_ERROR("Surface size cannot exceed %dx%d\n",
 			dev_priv->texture_max_width,
 			dev_priv->texture_max_height);
+<<<<<<< HEAD
+=======
+		ret = -EINVAL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto err_out;
 	}
 
@@ -2225,7 +2235,11 @@ int vmw_kms_update_layout_ioctl(struct drm_device *dev, void *data,
 	struct drm_mode_config *mode_config = &dev->mode_config;
 	struct drm_vmw_update_layout_arg *arg =
 		(struct drm_vmw_update_layout_arg *)data;
+<<<<<<< HEAD
 	void __user *user_rects;
+=======
+	const void __user *user_rects;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_vmw_rect *rects;
 	struct drm_rect *drm_rects;
 	unsigned rects_size;
@@ -2237,6 +2251,11 @@ int vmw_kms_update_layout_ioctl(struct drm_device *dev, void *data,
 					    VMWGFX_MIN_INITIAL_HEIGHT};
 		vmw_du_update_layout(dev_priv, 1, &def_rect);
 		return 0;
+<<<<<<< HEAD
+=======
+	} else if (arg->num_outputs > VMWGFX_NUM_DISPLAY_UNITS) {
+		return -E2BIG;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	rects_size = arg->num_outputs * sizeof(struct drm_vmw_rect);

@@ -476,6 +476,11 @@ btrfs_get_bdev_and_sb(const char *device_path, blk_mode_t flags, void *holder,
 
 	if (IS_ERR(*bdev_file)) {
 		ret = PTR_ERR(*bdev_file);
+<<<<<<< HEAD
+=======
+		btrfs_err(NULL, "failed to open device for path %s with flags 0x%x: %d",
+			  device_path, flags, ret);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto error;
 	}
 	bdev = file_bdev(*bdev_file);
@@ -1103,6 +1108,10 @@ static void btrfs_close_one_device(struct btrfs_device *device)
 	if (device->bdev) {
 		fs_devices->open_devices--;
 		device->bdev = NULL;
+<<<<<<< HEAD
+=======
+		device->bdev_file = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	clear_bit(BTRFS_DEV_STATE_WRITEABLE, &device->dev_state);
 	btrfs_destroy_dev_zone_info(device);
@@ -4784,6 +4793,7 @@ int btrfs_cancel_balance(struct btrfs_fs_info *fs_info)
 	return 0;
 }
 
+<<<<<<< HEAD
 int btrfs_uuid_scan_kthread(void *data)
 {
 	struct btrfs_fs_info *fs_info = data;
@@ -4961,6 +4971,8 @@ int btrfs_create_uuid_tree(struct btrfs_fs_info *fs_info)
 	return 0;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * shrinking a device means finding all of the device extents past
  * the new size, and then following the back refs to the chunks.
@@ -5956,11 +5968,39 @@ void btrfs_mapping_tree_free(struct btrfs_fs_info *fs_info)
 	write_unlock(&fs_info->mapping_tree_lock);
 }
 
+<<<<<<< HEAD
 int btrfs_num_copies(struct btrfs_fs_info *fs_info, u64 logical, u64 len)
 {
 	struct btrfs_chunk_map *map;
 	enum btrfs_raid_types index;
 	int ret = 1;
+=======
+static int btrfs_chunk_map_num_copies(const struct btrfs_chunk_map *map)
+{
+	enum btrfs_raid_types index = btrfs_bg_flags_to_raid_index(map->type);
+
+	if (map->type & BTRFS_BLOCK_GROUP_RAID5)
+		return 2;
+
+	/*
+	 * There could be two corrupted data stripes, we need to loop retry in
+	 * order to rebuild the correct data.
+	 *
+	 * Fail a stripe at a time on every retry except the stripe under
+	 * reconstruction.
+	 */
+	if (map->type & BTRFS_BLOCK_GROUP_RAID6)
+		return map->num_stripes;
+
+	/* Non-RAID56, use their ncopies from btrfs_raid_array. */
+	return btrfs_raid_array[index].ncopies;
+}
+
+int btrfs_num_copies(struct btrfs_fs_info *fs_info, u64 logical, u64 len)
+{
+	struct btrfs_chunk_map *map;
+	int ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	map = btrfs_get_chunk_map(fs_info, logical, len);
 	if (IS_ERR(map))
@@ -5972,6 +6012,7 @@ int btrfs_num_copies(struct btrfs_fs_info *fs_info, u64 logical, u64 len)
 		 */
 		return 1;
 
+<<<<<<< HEAD
 	index = btrfs_bg_flags_to_raid_index(map->type);
 
 	/* Non-RAID56, use their ncopies from btrfs_raid_array. */
@@ -5988,6 +6029,9 @@ int btrfs_num_copies(struct btrfs_fs_info *fs_info, u64 logical, u64 len)
 		 * stripe under reconstruction.
 		 */
 		ret = map->num_stripes;
+=======
+	ret = btrfs_chunk_map_num_copies(map);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	btrfs_free_chunk_map(map);
 	return ret;
 }
@@ -6637,14 +6681,24 @@ int btrfs_map_block(struct btrfs_fs_info *fs_info, enum btrfs_map_op op,
 	io_geom.stripe_index = 0;
 	io_geom.op = op;
 
+<<<<<<< HEAD
 	num_copies = btrfs_num_copies(fs_info, logical, fs_info->sectorsize);
 	if (io_geom.mirror_num > num_copies)
 		return -EINVAL;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	map = btrfs_get_chunk_map(fs_info, logical, *length);
 	if (IS_ERR(map))
 		return PTR_ERR(map);
 
+<<<<<<< HEAD
+=======
+	num_copies = btrfs_chunk_map_num_copies(map);
+	if (io_geom.mirror_num > num_copies)
+		return -EINVAL;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	map_offset = logical - map->start;
 	io_geom.raid56_full_stripe_start = (u64)-1;
 	max_len = btrfs_max_io_len(map, map_offset, &io_geom);

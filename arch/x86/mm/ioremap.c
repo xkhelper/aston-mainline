@@ -11,6 +11,10 @@
 #include <linux/init.h>
 #include <linux/io.h>
 #include <linux/ioport.h>
+<<<<<<< HEAD
+=======
+#include <linux/ioremap.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/slab.h>
 #include <linux/vmalloc.h>
 #include <linux/mmiotrace.h>
@@ -457,7 +461,11 @@ void iounmap(volatile void __iomem *addr)
 {
 	struct vm_struct *p, *o;
 
+<<<<<<< HEAD
 	if ((void __force *)addr <= high_memory)
+=======
+	if (WARN_ON_ONCE(!is_ioremap_addr((void __force *)addr)))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	/*

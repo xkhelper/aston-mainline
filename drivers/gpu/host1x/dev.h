@@ -9,6 +9,10 @@
 #include <linux/device.h>
 #include <linux/iommu.h>
 #include <linux/iova.h>
+<<<<<<< HEAD
+=======
+#include <linux/irqreturn.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/platform_device.h>
 #include <linux/reset.h>
 
@@ -81,6 +85,10 @@ struct host1x_intr_ops {
 	void (*disable_syncpt_intr)(struct host1x *host, unsigned int id);
 	void (*disable_all_syncpt_intrs)(struct host1x *host);
 	int (*free_syncpt_irq)(struct host1x *host);
+<<<<<<< HEAD
+=======
+	irqreturn_t (*isr)(int irq, void *dev_id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct host1x_sid_entry {

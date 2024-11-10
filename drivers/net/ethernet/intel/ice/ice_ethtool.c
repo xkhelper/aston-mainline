@@ -3792,8 +3792,11 @@ ice_get_ts_info(struct net_device *dev, struct kernel_ethtool_ts_info *info)
 		return ethtool_op_get_ts_info(dev, info);
 
 	info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE |
+<<<<<<< HEAD
 				SOF_TIMESTAMPING_RX_SOFTWARE |
 				SOF_TIMESTAMPING_SOFTWARE |
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				SOF_TIMESTAMPING_TX_HARDWARE |
 				SOF_TIMESTAMPING_RX_HARDWARE |
 				SOF_TIMESTAMPING_RAW_HARDWARE;
@@ -4414,7 +4417,11 @@ ice_repr_get_drvinfo(struct net_device *netdev,
 {
 	struct ice_repr *repr = ice_netdev_to_repr(netdev);
 
+<<<<<<< HEAD
 	if (ice_check_vf_ready_for_cfg(repr->vf))
+=======
+	if (repr->ops.ready(repr))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	__ice_get_drvinfo(netdev, drvinfo, repr->src_vsi);
@@ -4426,8 +4433,12 @@ ice_repr_get_strings(struct net_device *netdev, u32 stringset, u8 *data)
 	struct ice_repr *repr = ice_netdev_to_repr(netdev);
 
 	/* for port representors only ETH_SS_STATS is supported */
+<<<<<<< HEAD
 	if (ice_check_vf_ready_for_cfg(repr->vf) ||
 	    stringset != ETH_SS_STATS)
+=======
+	if (repr->ops.ready(repr) || stringset != ETH_SS_STATS)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	__ice_get_strings(netdev, stringset, data, repr->src_vsi);
@@ -4440,7 +4451,11 @@ ice_repr_get_ethtool_stats(struct net_device *netdev,
 {
 	struct ice_repr *repr = ice_netdev_to_repr(netdev);
 
+<<<<<<< HEAD
 	if (ice_check_vf_ready_for_cfg(repr->vf))
+=======
+	if (repr->ops.ready(repr))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	__ice_get_ethtool_stats(netdev, stats, data, repr->src_vsi);
@@ -4725,6 +4740,10 @@ static const struct ethtool_ops ice_ethtool_ops = {
 				     ETHTOOL_COALESCE_USE_ADAPTIVE |
 				     ETHTOOL_COALESCE_RX_USECS_HIGH,
 	.cap_rss_sym_xor_supported = true,
+<<<<<<< HEAD
+=======
+	.rxfh_per_ctx_key	= true,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.get_link_ksettings	= ice_get_link_ksettings,
 	.set_link_ksettings	= ice_set_link_ksettings,
 	.get_fec_stats		= ice_get_fec_stats,

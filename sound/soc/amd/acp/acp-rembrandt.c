@@ -295,7 +295,11 @@ static const struct dev_pm_ops rmb_dma_pm_ops = {
 
 static struct platform_driver rembrandt_driver = {
 	.probe = rembrandt_audio_probe,
+<<<<<<< HEAD
 	.remove_new = rembrandt_audio_remove,
+=======
+	.remove = rembrandt_audio_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "acp_asoc_rembrandt",
 		.pm = &rmb_dma_pm_ops,

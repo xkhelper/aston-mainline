@@ -17,6 +17,7 @@
 
 static const __maybe_unused DECLARE_TLV_DB_SCALE(dvc_tlv, -10000, 100, 0);
 static const __maybe_unused DECLARE_TLV_DB_SCALE(amp_vol_tlv, 1100, 50, 0);
+<<<<<<< HEAD
 static const __maybe_unused DECLARE_TLV_DB_SCALE(tas2563_dvc_tlv, -12150, 50, 1);
 
 /* pow(10, db/20) * pow(2,30) */
@@ -278,4 +279,7 @@ static const __maybe_unused unsigned char tas2563_dvc_table[][4] = {
 	{ 0X78, 0X8D, 0XB4, 0XE9 }, /* 5.5db */
 	{ 0XFF, 0XFF, 0XFF, 0XFF }, /* 6.0db */
 };
+=======
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

@@ -137,6 +137,7 @@ __found_pages:
 /*
  * check if the given pointer is valid for pages
  */
+<<<<<<< HEAD
 static int is_valid_page(unsigned long ptr)
 {
 	if (ptr & ~0x3fffffffUL) {
@@ -145,6 +146,16 @@ static int is_valid_page(unsigned long ptr)
 	}
 	if (ptr & (SNDRV_TRIDENT_PAGE_SIZE-1)) {
 		snd_printk(KERN_ERR "page is not aligned\n");
+=======
+static int is_valid_page(struct snd_trident *trident, unsigned long ptr)
+{
+	if (ptr & ~0x3fffffffUL) {
+		dev_err(trident->card->dev, "max memory size is 1GB!!\n");
+		return 0;
+	}
+	if (ptr & (SNDRV_TRIDENT_PAGE_SIZE-1)) {
+		dev_err(trident->card->dev, "page is not aligned\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 	return 1;
@@ -184,7 +195,11 @@ snd_trident_alloc_sg_pages(struct snd_trident *trident,
 	for (page = firstpg(blk); page <= lastpg(blk); page++, idx++) {
 		unsigned long ofs = idx << PAGE_SHIFT;
 		dma_addr_t addr = snd_pcm_sgbuf_get_addr(substream, ofs);
+<<<<<<< HEAD
 		if (! is_valid_page(addr)) {
+=======
+		if (!is_valid_page(trident, addr)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			__snd_util_mem_free(hdr, blk);
 			mutex_unlock(&hdr->block_mutex);
 			return NULL;
@@ -227,7 +242,11 @@ snd_trident_alloc_cont_pages(struct snd_trident *trident,
 	addr = runtime->dma_addr;
 	for (page = firstpg(blk); page <= lastpg(blk); page++,
 	     addr += SNDRV_TRIDENT_PAGE_SIZE) {
+<<<<<<< HEAD
 		if (! is_valid_page(addr)) {
+=======
+		if (!is_valid_page(trident, addr)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			__snd_util_mem_free(hdr, blk);
 			mutex_unlock(&hdr->block_mutex);
 			return NULL;

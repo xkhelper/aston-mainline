@@ -450,8 +450,13 @@ static int wiz_mode_select(struct wiz *wiz)
 		} else if (wiz->lane_phy_type[i] == PHY_TYPE_USXGMII) {
 			ret = regmap_field_write(wiz->p0_mac_src_sel[i], 0x3);
 			ret = regmap_field_write(wiz->p0_rxfclk_sel[i], 0x3);
+<<<<<<< HEAD
 			ret = regmap_field_write(wiz->p0_refclk_sel[i], 0x3);
 			mode = LANE_MODE_GEN1;
+=======
+			ret = regmap_field_write(wiz->p0_refclk_sel[i], 0x2);
+			mode = LANE_MODE_GEN2;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			continue;
 		}
@@ -1179,6 +1184,7 @@ static int wiz_clock_probe(struct wiz *wiz, struct device_node *node)
 
 		ret = wiz_mux_of_clk_register(wiz, clk_node, wiz->mux_sel_field[i],
 					      clk_mux_sel[i].table);
+<<<<<<< HEAD
 		if (ret) {
 			dev_err_probe(dev, ret, "Failed to register %s clock\n",
 				      node_name);
@@ -1187,6 +1193,15 @@ static int wiz_clock_probe(struct wiz *wiz, struct device_node *node)
 		}
 
 		of_node_put(clk_node);
+=======
+		of_node_put(clk_node);
+		if (ret) {
+			dev_err_probe(dev, ret, "Failed to register %s clock\n",
+				      node_name);
+			goto err;
+		}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	for (i = 0; i < wiz->clk_div_sel_num; i++) {
@@ -1199,6 +1214,7 @@ static int wiz_clock_probe(struct wiz *wiz, struct device_node *node)
 
 		ret = wiz_div_clk_register(wiz, clk_node, wiz->div_sel_field[i],
 					   clk_div_sel[i].table);
+<<<<<<< HEAD
 		if (ret) {
 			dev_err_probe(dev, ret, "Failed to register %s clock\n",
 				      node_name);
@@ -1207,6 +1223,14 @@ static int wiz_clock_probe(struct wiz *wiz, struct device_node *node)
 		}
 
 		of_node_put(clk_node);
+=======
+		of_node_put(clk_node);
+		if (ret) {
+			dev_err_probe(dev, ret, "Failed to register %s clock\n",
+				      node_name);
+			goto err;
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
@@ -1407,7 +1431,11 @@ MODULE_DEVICE_TABLE(of, wiz_id_table);
 
 static int wiz_get_lane_phy_types(struct device *dev, struct wiz *wiz)
 {
+<<<<<<< HEAD
 	struct device_node *serdes, *subnode;
+=======
+	struct device_node *serdes;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	serdes = of_get_child_by_name(dev->of_node, "serdes");
 	if (!serdes) {
@@ -1415,7 +1443,11 @@ static int wiz_get_lane_phy_types(struct device *dev, struct wiz *wiz)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	for_each_child_of_node(serdes, subnode) {
+=======
+	for_each_child_of_node_scoped(serdes, subnode) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		u32 reg, num_lanes = 1, phy_type = PHY_NONE;
 		int ret, i;
 
@@ -1425,7 +1457,10 @@ static int wiz_get_lane_phy_types(struct device *dev, struct wiz *wiz)
 
 		ret = of_property_read_u32(subnode, "reg", &reg);
 		if (ret) {
+<<<<<<< HEAD
 			of_node_put(subnode);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			dev_err(dev,
 				"%s: Reading \"reg\" from \"%s\" failed: %d\n",
 				__func__, subnode->name, ret);
@@ -1578,8 +1613,13 @@ static int wiz_probe(struct platform_device *pdev)
 
 	phy_reset_dev = &wiz->wiz_phy_reset_dev;
 	phy_reset_dev->dev = dev;
+<<<<<<< HEAD
 	phy_reset_dev->ops = &wiz_phy_reset_ops,
 	phy_reset_dev->owner = THIS_MODULE,
+=======
+	phy_reset_dev->ops = &wiz_phy_reset_ops;
+	phy_reset_dev->owner = THIS_MODULE;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	phy_reset_dev->of_node = node;
 	/* Reset for each of the lane and one for the entire SERDES */
 	phy_reset_dev->nr_resets = num_lanes + 1;

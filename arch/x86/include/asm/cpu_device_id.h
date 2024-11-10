@@ -193,6 +193,7 @@
 	X86_MATCH_VENDOR_FAM_MODEL(vendor, family, X86_MODEL_ANY, data)
 
 /**
+<<<<<<< HEAD
  * X86_MATCH_INTEL_FAM6_MODEL - Match vendor INTEL, family 6 and model
  * @model:	The model name without the INTEL_FAM6_ prefix or ANY
  *		The model name is expanded to INTEL_FAM6_@model internally
@@ -213,6 +214,8 @@
 						     steppings, X86_FEATURE_ANY, data)
 
 /**
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * X86_MATCH_VFM - Match encoded vendor/family/model
  * @vfm:	Encoded 8-bits each for vendor, family, model
  * @data:	Driver specific data or NULL. The internal storage

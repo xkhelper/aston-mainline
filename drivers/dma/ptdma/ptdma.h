@@ -192,7 +192,11 @@ struct pt_cmd_queue {
 	/* Queue dma pool */
 	struct dma_pool *dma_pool;
 
+<<<<<<< HEAD
 	/* Queue base address (not neccessarily aligned)*/
+=======
+	/* Queue base address (not necessarily aligned)*/
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ptdma_desc *qbase;
 
 	/* Aligned queue start address (per requirement) */

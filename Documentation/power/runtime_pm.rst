@@ -811,8 +811,13 @@ subsystem-level dev_pm_ops structure.
 
 Device drivers that wish to use the same function as a system suspend, freeze,
 poweroff and runtime suspend callback, and similarly for system resume, thaw,
+<<<<<<< HEAD
 restore, and runtime resume, can achieve this with the help of the
 UNIVERSAL_DEV_PM_OPS macro defined in include/linux/pm.h (possibly setting its
+=======
+restore, and runtime resume, can achieve similar behaviour with the help of the
+DEFINE_RUNTIME_DEV_PM_OPS() defined in include/linux/pm_runtime.h (possibly setting its
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 last argument to NULL).
 
 8. "No-Callback" Devices

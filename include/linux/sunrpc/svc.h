@@ -21,6 +21,10 @@
 #include <linux/wait.h>
 #include <linux/mm.h>
 #include <linux/pagevec.h>
+<<<<<<< HEAD
+=======
+#include <linux/kthread.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  *
@@ -33,9 +37,15 @@
  * node traffic on multi-node NUMA NFS servers.
  */
 struct svc_pool {
+<<<<<<< HEAD
 	unsigned int		sp_id;	    	/* pool id; also node id on NUMA */
 	struct lwq		sp_xprts;	/* pending transports */
 	atomic_t		sp_nrthreads;	/* # of threads in pool */
+=======
+	unsigned int		sp_id;		/* pool id; also node id on NUMA */
+	struct lwq		sp_xprts;	/* pending transports */
+	unsigned int		sp_nrthreads;	/* # of threads in pool */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct list_head	sp_all_threads;	/* all server threads */
 	struct llist_head	sp_idle_threads; /* idle server threads */
 
@@ -66,9 +76,16 @@ enum {
  * We currently do not support more than one RPC program per daemon.
  */
 struct svc_serv {
+<<<<<<< HEAD
 	struct svc_program *	sv_program;	/* RPC program */
 	struct svc_stat *	sv_stats;	/* RPC statistics */
 	spinlock_t		sv_lock;
+=======
+	struct svc_program *	sv_programs;	/* RPC programs */
+	struct svc_stat *	sv_stats;	/* RPC statistics */
+	spinlock_t		sv_lock;
+	unsigned int		sv_nprogs;	/* Number of sv_programs */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int		sv_nrthreads;	/* # of server threads */
 	unsigned int		sv_maxconn;	/* max connections allowed or
 						 * '0' causing max to be based
@@ -232,6 +249,14 @@ struct svc_rqst {
 	struct net		*rq_bc_net;	/* pointer to backchannel's
 						 * net namespace
 						 */
+<<<<<<< HEAD
+=======
+
+	int			rq_err;		/* Thread sets this to inidicate
+						 * initialisation success.
+						 */
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long	bc_to_initval;
 	unsigned int	bc_to_retries;
 	void **			rq_lease_breaker; /* The v4 client breaking a lease */
@@ -305,6 +330,34 @@ static inline bool svc_thread_should_stop(struct svc_rqst *rqstp)
 	return test_bit(RQ_VICTIM, &rqstp->rq_flags);
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * svc_thread_init_status - report whether thread has initialised successfully
+ * @rqstp: the thread in question
+ * @err: errno code
+ *
+ * After performing any initialisation that could fail, and before starting
+ * normal work, each sunrpc svc_thread must call svc_thread_init_status()
+ * with an appropriate error, or zero.
+ *
+ * If zero is passed, the thread is ready and must continue until
+ * svc_thread_should_stop() returns true.  If a non-zero error is passed
+ * the call will not return - the thread will exit.
+ */
+static inline void svc_thread_init_status(struct svc_rqst *rqstp, int err)
+{
+	rqstp->rq_err = err;
+	/* memory barrier ensures assignment to error above is visible before
+	 * waitqueue_active() test below completes.
+	 */
+	smp_mb();
+	wake_up_var(&rqstp->rq_err);
+	if (err)
+		kthread_exit(1);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct svc_deferred_req {
 	u32			prot;	/* protocol (UDP or TCP) */
 	struct svc_xprt		*xprt;
@@ -329,10 +382,16 @@ struct svc_process_info {
 };
 
 /*
+<<<<<<< HEAD
  * List of RPC programs on the same transport endpoint
  */
 struct svc_program {
 	struct svc_program *	pg_next;	/* other programs (same xprt) */
+=======
+ * RPC program - an array of these can use the same transport endpoint
+ */
+struct svc_program {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32			pg_prog;	/* program number */
 	unsigned int		pg_lovers;	/* lowest version */
 	unsigned int		pg_hivers;	/* highest version */
@@ -401,11 +460,15 @@ struct svc_procedure {
  */
 int sunrpc_set_pool_mode(const char *val);
 int sunrpc_get_pool_mode(char *val, size_t size);
+<<<<<<< HEAD
 int svc_rpcb_setup(struct svc_serv *serv, struct net *net);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void svc_rpcb_cleanup(struct svc_serv *serv, struct net *net);
 int svc_bind(struct svc_serv *serv, struct net *net);
 struct svc_serv *svc_create(struct svc_program *, unsigned int,
 			    int (*threadfn)(void *data));
+<<<<<<< HEAD
 struct svc_rqst *svc_rqst_alloc(struct svc_serv *serv,
 					struct svc_pool *pool, int node);
 bool		   svc_rqst_replace_page(struct svc_rqst *rqstp,
@@ -414,6 +477,14 @@ void		   svc_rqst_release_pages(struct svc_rqst *rqstp);
 void		   svc_rqst_free(struct svc_rqst *);
 void		   svc_exit_thread(struct svc_rqst *);
 struct svc_serv *  svc_create_pooled(struct svc_program *prog,
+=======
+bool		   svc_rqst_replace_page(struct svc_rqst *rqstp,
+					 struct page *page);
+void		   svc_rqst_release_pages(struct svc_rqst *rqstp);
+void		   svc_exit_thread(struct svc_rqst *);
+struct svc_serv *  svc_create_pooled(struct svc_program *prog,
+				     unsigned int nprog,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				     struct svc_stat *stats,
 				     unsigned int bufsize,
 				     int (*threadfn)(void *data));
@@ -446,11 +517,14 @@ int		   svc_generic_rpcbind_set(struct net *net,
 					   u32 version, int family,
 					   unsigned short proto,
 					   unsigned short port);
+<<<<<<< HEAD
 int		   svc_rpcbind_set_version(struct net *net,
 					   const struct svc_program *progp,
 					   u32 version, int family,
 					   unsigned short proto,
 					   unsigned short port);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define	RPC_MAX_ADDRBUFLEN	(63U)
 

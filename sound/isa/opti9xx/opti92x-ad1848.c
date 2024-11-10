@@ -109,6 +109,10 @@ MODULE_PARM_DESC(dma2, "2nd dma # for opti9xx driver.");
 #endif /* OPTi93X */
 
 struct snd_opti9xx {
+<<<<<<< HEAD
+=======
+	struct snd_card *card;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned short hardware;
 	unsigned char password;
 	char name[7];
@@ -218,7 +222,11 @@ static int snd_opti9xx_init(struct snd_opti9xx *chip,
 #endif	/* OPTi93X */
 
 	default:
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "chip %d not supported\n", hardware);
+=======
+		dev_err(chip->card->dev, "chip %d not supported\n", hardware);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENODEV;
 	}
 	return 0;
@@ -261,7 +269,11 @@ static unsigned char snd_opti9xx_read(struct snd_opti9xx *chip,
 #endif	/* OPTi93X */
 
 	default:
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "chip %d not supported\n", chip->hardware);
+=======
+		dev_err(chip->card->dev, "chip %d not supported\n", chip->hardware);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	spin_unlock_irqrestore(&chip->lock, flags);
@@ -304,7 +316,11 @@ static void snd_opti9xx_write(struct snd_opti9xx *chip, unsigned char reg,
 #endif	/* OPTi93X */
 
 	default:
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "chip %d not supported\n", chip->hardware);
+=======
+		dev_err(chip->card->dev, "chip %d not supported\n", chip->hardware);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	spin_unlock_irqrestore(&chip->lock, flags);
@@ -400,7 +416,11 @@ static int snd_opti9xx_configure(struct snd_opti9xx *chip,
 #endif	/* OPTi93X */
 
 	default:
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "chip %d not supported\n", chip->hardware);
+=======
+		dev_err(chip->card->dev, "chip %d not supported\n", chip->hardware);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 
@@ -423,7 +443,11 @@ static int snd_opti9xx_configure(struct snd_opti9xx *chip,
 		wss_base_bits = 0x02;
 		break;
 	default:
+<<<<<<< HEAD
 		snd_printk(KERN_WARNING "WSS port 0x%lx not valid\n", port);
+=======
+		dev_warn(chip->card->dev, "WSS port 0x%lx not valid\n", port);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto __skip_base;
 	}
 	snd_opti9xx_write_mask(chip, OPTi9XX_MC_REG(1), wss_base_bits << 4, 0x30);
@@ -448,7 +472,11 @@ __skip_base:
 		irq_bits = 0x04;
 		break;
 	default:
+<<<<<<< HEAD
 		snd_printk(KERN_WARNING "WSS irq # %d not valid\n", irq);
+=======
+		dev_warn(chip->card->dev, "WSS irq # %d not valid\n", irq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto __skip_resources;
 	}
 
@@ -463,13 +491,21 @@ __skip_base:
 		dma_bits = 0x03;
 		break;
 	default:
+<<<<<<< HEAD
 		snd_printk(KERN_WARNING "WSS dma1 # %d not valid\n", dma1);
+=======
+		dev_warn(chip->card->dev, "WSS dma1 # %d not valid\n", dma1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto __skip_resources;
 	}
 
 #if defined(CS4231) || defined(OPTi93X)
 	if (dma1 == dma2) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "don't want to share dmas\n");
+=======
+		dev_err(chip->card->dev, "don't want to share dmas\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 	}
 
@@ -478,7 +514,11 @@ __skip_base:
 	case 1:
 		break;
 	default:
+<<<<<<< HEAD
 		snd_printk(KERN_WARNING "WSS dma2 # %d not valid\n", dma2);
+=======
+		dev_warn(chip->card->dev, "WSS dma2 # %d not valid\n", dma2);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto __skip_resources;
 	}
 	dma_bits |= 0x04;
@@ -509,8 +549,13 @@ __skip_resources:
 			mpu_port_bits = 0x00;
 			break;
 		default:
+<<<<<<< HEAD
 			snd_printk(KERN_WARNING
 				   "MPU-401 port 0x%lx not valid\n", mpu_port);
+=======
+			dev_warn(chip->card->dev,
+				 "MPU-401 port 0x%lx not valid\n", mpu_port);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto __skip_mpu;
 		}
 
@@ -528,8 +573,13 @@ __skip_resources:
 			mpu_irq_bits = 0x01;
 			break;
 		default:
+<<<<<<< HEAD
 			snd_printk(KERN_WARNING "MPU-401 irq # %d not valid\n",
 				mpu_irq);
+=======
+			dev_warn(chip->card->dev, "MPU-401 irq # %d not valid\n",
+				 mpu_irq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto __skip_mpu;
 		}
 
@@ -603,7 +653,11 @@ static int snd_opti93x_mixer(struct snd_wss *chip)
 	strcpy(id2.name, "CD Playback Switch");
 	err = snd_ctl_rename_id(card, &id1, &id2);
 	if (err < 0) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "Cannot rename opti93x control\n");
+=======
+		dev_err(card->dev, "Cannot rename opti93x control\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return err;
 	}
 	/* reassign AUX1 switch to FM */
@@ -611,7 +665,11 @@ static int snd_opti93x_mixer(struct snd_wss *chip)
 	strcpy(id2.name, "FM Playback Switch");
 	err = snd_ctl_rename_id(card, &id1, &id2);
 	if (err < 0) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "Cannot rename opti93x control\n");
+=======
+		dev_err(card->dev, "Cannot rename opti93x control\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return err;
 	}
 	/* remove AUX1 volume */
@@ -740,7 +798,11 @@ static int snd_card_opti9xx_pnp(struct snd_opti9xx *chip,
 
 	err = pnp_activate_dev(pdev);
 	if (err < 0) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "AUDIO pnp configure failure: %d\n", err);
+=======
+		dev_err(chip->card->dev, "AUDIO pnp configure failure: %d\n", err);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return err;
 	}
 
@@ -757,7 +819,11 @@ static int snd_card_opti9xx_pnp(struct snd_opti9xx *chip,
 
 	err = pnp_activate_dev(devmc);
 	if (err < 0) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "MC pnp configure failure: %d\n", err);
+=======
+		dev_err(chip->card->dev, "MC pnp configure failure: %d\n", err);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return err;
 	}
 
@@ -781,7 +847,11 @@ static int snd_card_opti9xx_pnp(struct snd_opti9xx *chip,
 	if (devmpu && mpu_port > 0) {
 		err = pnp_activate_dev(devmpu);
 		if (err < 0) {
+<<<<<<< HEAD
 			snd_printk(KERN_ERR "MPU401 pnp configure failure\n");
+=======
+			dev_err(chip->card->dev, "MPU401 pnp configure failure\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			mpu_port = -1;
 		} else {
 			mpu_port = pnp_port_start(devmpu, 0);
@@ -811,7 +881,11 @@ static int snd_opti9xx_probe(struct snd_card *card)
 	if (port == SNDRV_AUTO_PORT) {
 		port = snd_legacy_find_free_ioport(possible_ports, 4);
 		if (port < 0) {
+<<<<<<< HEAD
 			snd_printk(KERN_ERR "unable to find a free WSS port\n");
+=======
+			dev_err(card->dev, "unable to find a free WSS port\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EBUSY;
 		}
 	}
@@ -850,7 +924,11 @@ static int snd_opti9xx_probe(struct snd_card *card)
 	error = devm_request_irq(card->dev, irq, snd_opti93x_interrupt,
 				 0, DEV_NAME" - WSS", chip);
 	if (error < 0) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "opti9xx: can't grab IRQ %d\n", irq);
+=======
+		dev_err(card->dev, "opti9xx: can't grab IRQ %d\n", irq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return error;
 	}
 #endif
@@ -876,8 +954,13 @@ static int snd_opti9xx_probe(struct snd_card *card)
 		error = snd_mpu401_uart_new(card, 0, MPU401_HW_MPU401,
 				mpu_port, 0, mpu_irq, &rmidi);
 		if (error)
+<<<<<<< HEAD
 			snd_printk(KERN_WARNING "no MPU-401 device at 0x%lx?\n",
 				   mpu_port);
+=======
+			dev_warn(card->dev, "no MPU-401 device at 0x%lx?\n",
+				 mpu_port);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (fm_port > 0 && fm_port != SNDRV_AUTO_PORT) {
@@ -900,8 +983,13 @@ static int snd_opti9xx_probe(struct snd_card *card)
 #endif	/* !OPTi93X */
 		if (!opl3 && snd_opl3_create(card, fm_port, fm_port + 2,
 					     OPL3_HW_AUTO, 0, &opl3) < 0) {
+<<<<<<< HEAD
 			snd_printk(KERN_WARNING "no OPL device at 0x%lx-0x%lx\n",
 				   fm_port, fm_port + 4 - 1);
+=======
+			dev_warn(card->dev, "no OPL device at 0x%lx-0x%lx\n",
+				 fm_port, fm_port + 4 - 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		if (opl3) {
 			error = snd_opl3_hwdep_new(opl3, 0, 1, &synth);
@@ -958,28 +1046,44 @@ static int snd_opti9xx_isa_probe(struct device *devptr,
 	if (mpu_port == SNDRV_AUTO_PORT) {
 		mpu_port = snd_legacy_find_free_ioport(possible_mpu_ports, 2);
 		if (mpu_port < 0) {
+<<<<<<< HEAD
 			snd_printk(KERN_ERR "unable to find a free MPU401 port\n");
+=======
+			dev_err(devptr, "unable to find a free MPU401 port\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EBUSY;
 		}
 	}
 	if (irq == SNDRV_AUTO_IRQ) {
 		irq = snd_legacy_find_free_irq(possible_irqs);
 		if (irq < 0) {
+<<<<<<< HEAD
 			snd_printk(KERN_ERR "unable to find a free IRQ\n");
+=======
+			dev_err(devptr, "unable to find a free IRQ\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EBUSY;
 		}
 	}
 	if (mpu_irq == SNDRV_AUTO_IRQ) {
 		mpu_irq = snd_legacy_find_free_irq(possible_mpu_irqs);
 		if (mpu_irq < 0) {
+<<<<<<< HEAD
 			snd_printk(KERN_ERR "unable to find a free MPU401 IRQ\n");
+=======
+			dev_err(devptr, "unable to find a free MPU401 IRQ\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EBUSY;
 		}
 	}
 	if (dma1 == SNDRV_AUTO_DMA) {
 		dma1 = snd_legacy_find_free_dma(possible_dma1s);
 		if (dma1 < 0) {
+<<<<<<< HEAD
 			snd_printk(KERN_ERR "unable to find a free DMA1\n");
+=======
+			dev_err(devptr, "unable to find a free DMA1\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EBUSY;
 		}
 	}
@@ -987,7 +1091,11 @@ static int snd_opti9xx_isa_probe(struct device *devptr,
 	if (dma2 == SNDRV_AUTO_DMA) {
 		dma2 = snd_legacy_find_free_dma(possible_dma2s[dma1 % 4]);
 		if (dma2 < 0) {
+<<<<<<< HEAD
 			snd_printk(KERN_ERR "unable to find a free DMA2\n");
+=======
+			dev_err(devptr, "unable to find a free DMA2\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EBUSY;
 		}
 	}
@@ -1076,6 +1184,10 @@ static int snd_opti9xx_pnp_probe(struct pnp_card_link *pcard,
 	if (error < 0)
 		return error;
 	chip = card->private_data;
+<<<<<<< HEAD
+=======
+	chip->card = card;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	hw = snd_card_opti9xx_pnp(chip, pcard, pid);
 	switch (hw) {
@@ -1097,7 +1209,11 @@ static int snd_opti9xx_pnp_probe(struct pnp_card_link *pcard,
 		return error;
 	error = snd_opti9xx_read_check(card, chip);
 	if (error) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "OPTI chip not found\n");
+=======
+		dev_err(card->dev, "OPTI chip not found\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return error;
 	}
 	error = snd_opti9xx_probe(card);

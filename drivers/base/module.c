@@ -7,7 +7,10 @@
 #include <linux/errno.h>
 #include <linux/slab.h>
 #include <linux/string.h>
+<<<<<<< HEAD
 #include <linux/rcupdate.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "base.h"
 
 static char *make_driver_name(const struct device_driver *drv)
@@ -66,27 +69,51 @@ int module_add_driver(struct module *mod, const struct device_driver *drv)
 	driver_name = make_driver_name(drv);
 	if (!driver_name) {
 		ret = -ENOMEM;
+<<<<<<< HEAD
 		goto out;
+=======
+		goto out_remove_kobj;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	module_create_drivers_dir(mk);
 	if (!mk->drivers_dir) {
 		ret = -EINVAL;
+<<<<<<< HEAD
 		goto out;
+=======
+		goto out_free_driver_name;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	ret = sysfs_create_link(mk->drivers_dir, &drv->p->kobj, driver_name);
 	if (ret)
+<<<<<<< HEAD
 		goto out;
+=======
+		goto out_remove_drivers_dir;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	kfree(driver_name);
 
 	return 0;
+<<<<<<< HEAD
 out:
 	sysfs_remove_link(&drv->p->kobj, "module");
 	sysfs_remove_link(mk->drivers_dir, driver_name);
 	kfree(driver_name);
 
+=======
+
+out_remove_drivers_dir:
+	sysfs_remove_link(mk->drivers_dir, driver_name);
+
+out_free_driver_name:
+	kfree(driver_name);
+
+out_remove_kobj:
+	sysfs_remove_link(&drv->p->kobj, "module");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -98,9 +125,12 @@ void module_remove_driver(const struct device_driver *drv)
 	if (!drv)
 		return;
 
+<<<<<<< HEAD
 	/* Synchronize with dev_uevent() */
 	synchronize_rcu();
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sysfs_remove_link(&drv->p->kobj, "module");
 
 	if (drv->owner)

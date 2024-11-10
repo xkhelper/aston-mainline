@@ -1789,7 +1789,11 @@ static const struct dev_pm_ops s3cfb_pm_ops = {
 
 static struct platform_driver s3c_fb_driver = {
 	.probe		= s3c_fb_probe,
+<<<<<<< HEAD
 	.remove_new	= s3c_fb_remove,
+=======
+	.remove		= s3c_fb_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.id_table	= s3c_fb_driver_ids,
 	.driver		= {
 		.name	= "s3c-fb",

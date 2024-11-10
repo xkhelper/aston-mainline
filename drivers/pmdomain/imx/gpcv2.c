@@ -1458,7 +1458,11 @@ static int imx_gpcv2_probe(struct platform_device *pdev)
 		.max_register   = SZ_4K,
 	};
 	struct device *dev = &pdev->dev;
+<<<<<<< HEAD
 	struct device_node *pgc_np, *np;
+=======
+	struct device_node *pgc_np;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct regmap *regmap;
 	void __iomem *base;
 	int ret;
@@ -1480,7 +1484,11 @@ static int imx_gpcv2_probe(struct platform_device *pdev)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	for_each_child_of_node(pgc_np, np) {
+=======
+	for_each_child_of_node_scoped(pgc_np, np) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct platform_device *pd_pdev;
 		struct imx_pgc_domain *domain;
 		u32 domain_index;
@@ -1491,7 +1499,10 @@ static int imx_gpcv2_probe(struct platform_device *pdev)
 		ret = of_property_read_u32(np, "reg", &domain_index);
 		if (ret) {
 			dev_err(dev, "Failed to read 'reg' property\n");
+<<<<<<< HEAD
 			of_node_put(np);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return ret;
 		}
 
@@ -1506,7 +1517,10 @@ static int imx_gpcv2_probe(struct platform_device *pdev)
 						domain_index);
 		if (!pd_pdev) {
 			dev_err(dev, "Failed to allocate platform device\n");
+<<<<<<< HEAD
 			of_node_put(np);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -ENOMEM;
 		}
 
@@ -1515,7 +1529,10 @@ static int imx_gpcv2_probe(struct platform_device *pdev)
 					       sizeof(domain_data->domains[domain_index]));
 		if (ret) {
 			platform_device_put(pd_pdev);
+<<<<<<< HEAD
 			of_node_put(np);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return ret;
 		}
 
@@ -1532,7 +1549,10 @@ static int imx_gpcv2_probe(struct platform_device *pdev)
 		ret = platform_device_add(pd_pdev);
 		if (ret) {
 			platform_device_put(pd_pdev);
+<<<<<<< HEAD
 			of_node_put(np);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return ret;
 		}
 	}

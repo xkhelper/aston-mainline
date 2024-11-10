@@ -29,6 +29,10 @@
 
 	enet1: ethernet@e2000 {
 		pcsphy-handle = <&pcsphy1>, <&qsgmiib_pcs1>;
+<<<<<<< HEAD
+=======
+		pcs-handle = <&pcsphy1>, <&qsgmiib_pcs1>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pcs-handle-names = "sgmii", "qsgmii";
 	};
 
@@ -40,11 +44,19 @@
 
 	enet4: ethernet@e8000 {
 		pcsphy-handle = <&pcsphy4>, <&qsgmiib_pcs2>;
+<<<<<<< HEAD
+=======
+		pcs-handle = <&pcsphy4>, <&qsgmiib_pcs2>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pcs-handle-names = "sgmii", "qsgmii";
 	};
 
 	enet5: ethernet@ea000 {
 		pcsphy-handle = <&pcsphy5>, <&qsgmiib_pcs3>;
+<<<<<<< HEAD
+=======
+		pcs-handle = <&pcsphy5>, <&qsgmiib_pcs3>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pcs-handle-names = "sgmii", "qsgmii";
 	};
 

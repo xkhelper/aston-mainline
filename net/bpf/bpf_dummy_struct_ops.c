@@ -115,7 +115,11 @@ static int check_test_run_args(struct bpf_prog *prog, struct bpf_dummy_ops_test_
 
 		offset = btf_ctx_arg_offset(bpf_dummy_ops_btf, func_proto, arg_no);
 		info = find_ctx_arg_info(prog->aux, offset);
+<<<<<<< HEAD
 		if (info && (info->reg_type & PTR_MAYBE_NULL))
+=======
+		if (info && type_may_be_null(info->reg_type))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 
 		return -EINVAL;

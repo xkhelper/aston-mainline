@@ -13,6 +13,7 @@
 struct cma;
 struct iommu_ops;
 
+<<<<<<< HEAD
 /*
  * Values for struct dma_map_ops.flags:
  *
@@ -27,6 +28,9 @@ struct iommu_ops;
 struct dma_map_ops {
 	unsigned int flags;
 
+=======
+struct dma_map_ops {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void *(*alloc)(struct device *dev, size_t size,
 			dma_addr_t *dma_handle, gfp_t gfp,
 			unsigned long attrs);
@@ -37,11 +41,14 @@ struct dma_map_ops {
 			gfp_t gfp);
 	void (*free_pages)(struct device *dev, size_t size, struct page *vaddr,
 			dma_addr_t dma_handle, enum dma_data_direction dir);
+<<<<<<< HEAD
 	struct sg_table *(*alloc_noncontiguous)(struct device *dev, size_t size,
 			enum dma_data_direction dir, gfp_t gfp,
 			unsigned long attrs);
 	void (*free_noncontiguous)(struct device *dev, size_t size,
 			struct sg_table *sgt, enum dma_data_direction dir);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int (*mmap)(struct device *, struct vm_area_struct *,
 			void *, dma_addr_t, size_t, unsigned long attrs);
 
@@ -88,7 +95,11 @@ struct dma_map_ops {
 	unsigned long (*get_merge_boundary)(struct device *dev);
 };
 
+<<<<<<< HEAD
 #ifdef CONFIG_DMA_OPS
+=======
+#ifdef CONFIG_ARCH_HAS_DMA_OPS
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/dma-mapping.h>
 
 static inline const struct dma_map_ops *get_dma_ops(struct device *dev)
@@ -103,7 +114,11 @@ static inline void set_dma_ops(struct device *dev,
 {
 	dev->dma_ops = dma_ops;
 }
+<<<<<<< HEAD
 #else /* CONFIG_DMA_OPS */
+=======
+#else /* CONFIG_ARCH_HAS_DMA_OPS */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline const struct dma_map_ops *get_dma_ops(struct device *dev)
 {
 	return NULL;
@@ -112,7 +127,11 @@ static inline void set_dma_ops(struct device *dev,
 			       const struct dma_map_ops *dma_ops)
 {
 }
+<<<<<<< HEAD
 #endif /* CONFIG_DMA_OPS */
+=======
+#endif /* CONFIG_ARCH_HAS_DMA_OPS */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_DMA_CMA
 extern struct cma *dma_contiguous_default_area;
@@ -219,6 +238,7 @@ static inline int dma_mmap_from_global_coherent(struct vm_area_struct *vma,
 }
 #endif /* CONFIG_DMA_GLOBAL_POOL */
 
+<<<<<<< HEAD
 /*
  * This is the actual return value from the ->alloc_noncontiguous method.
  * The users of the DMA API should only care about the sg_table, but to make
@@ -233,6 +253,8 @@ struct dma_sgt_handle {
 #define sgt_handle(sgt) \
 	container_of((sgt), struct dma_sgt_handle, sgt)
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int dma_common_get_sgtable(struct device *dev, struct sg_table *sgt,
 		void *cpu_addr, dma_addr_t dma_addr, size_t size,
 		unsigned long attrs);

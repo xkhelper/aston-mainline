@@ -19,7 +19,10 @@ include $(src)/nvkm/engine/nvenc/Kbuild
 include $(src)/nvkm/engine/nvdec/Kbuild
 include $(src)/nvkm/engine/nvjpg/Kbuild
 include $(src)/nvkm/engine/ofa/Kbuild
+<<<<<<< HEAD
 include $(src)/nvkm/engine/pm/Kbuild
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 include $(src)/nvkm/engine/sec/Kbuild
 include $(src)/nvkm/engine/sec2/Kbuild
 include $(src)/nvkm/engine/sw/Kbuild

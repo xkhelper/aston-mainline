@@ -1684,7 +1684,11 @@ static const struct dev_pm_ops sun4i_i2s_pm_ops = {
 
 static struct platform_driver sun4i_i2s_driver = {
 	.probe	= sun4i_i2s_probe,
+<<<<<<< HEAD
 	.remove_new = sun4i_i2s_remove,
+=======
+	.remove = sun4i_i2s_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver	= {
 		.name		= "sun4i-i2s",
 		.of_match_table	= sun4i_i2s_match,

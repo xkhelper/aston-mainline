@@ -349,8 +349,11 @@ struct mcp3564_chip_info {
  * struct mcp3564_state - working data for a ADC device
  * @chip_info:		chip specific data
  * @spi:		SPI device structure
+<<<<<<< HEAD
  * @vref:		the regulator device used as a voltage reference in case
  *			external voltage reference is used
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @vref_mv:		voltage reference value in miliVolts
  * @lock:		synchronize access to driver's state members
  * @dev_addr:		hardware device address
@@ -369,7 +372,10 @@ struct mcp3564_chip_info {
 struct mcp3564_state {
 	const struct mcp3564_chip_info	*chip_info;
 	struct spi_device		*spi;
+<<<<<<< HEAD
 	struct regulator		*vref;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned short			vref_mv;
 	struct mutex			lock; /* Synchronize access to driver's state members */
 	u8				dev_addr;
@@ -1085,11 +1091,14 @@ static int mcp3564_parse_fw_children(struct iio_dev *indio_dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void mcp3564_disable_reg(void *reg)
 {
 	regulator_disable(reg);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void mcp3564_fill_scale_tbls(struct mcp3564_state *adc)
 {
 	unsigned int pow = adc->chip_info->resolution - 1;
@@ -1110,7 +1119,11 @@ static void mcp3564_fill_scale_tbls(struct mcp3564_state *adc)
 	}
 }
 
+<<<<<<< HEAD
 static int mcp3564_config(struct iio_dev *indio_dev)
+=======
+static int mcp3564_config(struct iio_dev *indio_dev, bool *use_internal_vref_attr)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct mcp3564_state *adc = iio_priv(indio_dev);
 	struct device *dev = &adc->spi->dev;
@@ -1119,6 +1132,10 @@ static int mcp3564_config(struct iio_dev *indio_dev)
 	enum mcp3564_ids ids;
 	int ret = 0;
 	unsigned int tmp = 0x01;
+<<<<<<< HEAD
+=======
+	bool internal_vref;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool err = false;
 
 	/*
@@ -1218,6 +1235,7 @@ static int mcp3564_config(struct iio_dev *indio_dev)
 
 	dev_dbg(dev, "Found %s chip\n", adc->chip_info->name);
 
+<<<<<<< HEAD
 	adc->vref = devm_regulator_get_optional(dev, "vref");
 	if (IS_ERR(adc->vref)) {
 		if (PTR_ERR(adc->vref) != -ENODEV)
@@ -1248,6 +1266,24 @@ static int mcp3564_config(struct iio_dev *indio_dev)
 					     "Failed to read vref regulator\n");
 
 		adc->vref_mv = ret / MILLI;
+=======
+	ret = devm_regulator_get_enable_read_voltage(dev, "vref");
+	if (ret < 0 && ret != -ENODEV)
+		return dev_err_probe(dev, ret, "Failed to get vref voltage\n");
+
+	internal_vref = ret == -ENODEV;
+	adc->vref_mv = internal_vref ? MCP3564R_INT_VREF_MV : ret / MILLI;
+	*use_internal_vref_attr = internal_vref;
+
+	if (internal_vref) {
+		/* Check if chip has internal vref */
+		if (!adc->have_vref)
+			return dev_err_probe(dev, -ENODEV, "Unknown Vref\n");
+
+		dev_dbg(dev, "%s: Using internal Vref\n", __func__);
+	} else {
+		dev_dbg(dev, "%s: Using External Vref\n", __func__);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	ret = mcp3564_parse_fw_children(indio_dev);
@@ -1350,10 +1386,15 @@ static int mcp3564_config(struct iio_dev *indio_dev)
 	tmp_reg |= FIELD_PREP(MCP3564_CONFIG0_CLK_SEL_MASK, MCP3564_CONFIG0_USE_INT_CLK);
 	tmp_reg |= MCP3456_CONFIG0_BIT6_DEFAULT;
 
+<<<<<<< HEAD
 	if (!adc->vref) {
 		tmp_reg |= FIELD_PREP(MCP3456_CONFIG0_VREF_MASK, 1);
 		adc->vref_mv = MCP3564R_INT_VREF_MV;
 	}
+=======
+	if (internal_vref)
+		tmp_reg |= FIELD_PREP(MCP3456_CONFIG0_VREF_MASK, 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = mcp3564_write_8bits(adc, MCP3564_CONFIG0_REG, tmp_reg);
 
@@ -1412,6 +1453,10 @@ static int mcp3564_probe(struct spi_device *spi)
 	int ret;
 	struct iio_dev *indio_dev;
 	struct mcp3564_state *adc;
+<<<<<<< HEAD
+=======
+	bool use_internal_vref_attr;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*adc));
 	if (!indio_dev)
@@ -1428,7 +1473,11 @@ static int mcp3564_probe(struct spi_device *spi)
 	 * enable/disable certain channels
 	 * change the sampling rate to the requested value
 	 */
+<<<<<<< HEAD
 	ret = mcp3564_config(indio_dev);
+=======
+	ret = mcp3564_config(indio_dev, &use_internal_vref_attr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return dev_err_probe(&spi->dev, ret,
 				     "Can't configure MCP356X device\n");
@@ -1440,7 +1489,11 @@ static int mcp3564_probe(struct spi_device *spi)
 	indio_dev->name = adc->chip_info->name;
 	indio_dev->modes = INDIO_DIRECT_MODE;
 
+<<<<<<< HEAD
 	if (!adc->vref)
+=======
+	if (use_internal_vref_attr)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		indio_dev->info = &mcp3564r_info;
 	else
 		indio_dev->info = &mcp3564_info;

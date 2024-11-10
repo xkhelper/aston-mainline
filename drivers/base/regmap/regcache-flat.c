@@ -27,7 +27,11 @@ static int regcache_flat_init(struct regmap *map)
 		return -EINVAL;
 
 	map->cache = kcalloc(regcache_flat_get_index(map, map->max_register)
+<<<<<<< HEAD
 			     + 1, sizeof(unsigned int), GFP_KERNEL);
+=======
+			     + 1, sizeof(unsigned int), map->alloc_flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!map->cache)
 		return -ENOMEM;
 

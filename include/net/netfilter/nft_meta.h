@@ -41,8 +41,12 @@ void nft_meta_set_destroy(const struct nft_ctx *ctx,
 			  const struct nft_expr *expr);
 
 int nft_meta_set_validate(const struct nft_ctx *ctx,
+<<<<<<< HEAD
 			  const struct nft_expr *expr,
 			  const struct nft_data **data);
+=======
+			  const struct nft_expr *expr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 bool nft_meta_get_reduce(struct nft_regs_track *track,
 			 const struct nft_expr *expr);

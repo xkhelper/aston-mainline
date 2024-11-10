@@ -435,6 +435,11 @@ struct folio *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 {
 	struct swap_info_struct *si;
 	struct folio *folio;
+<<<<<<< HEAD
+=======
+	struct folio *new_folio = NULL;
+	struct folio *result = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void *shadow = NULL;
 
 	*new_page_allocated = false;
@@ -463,6 +468,7 @@ struct folio *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 		 * else swap_off will be aborted if we return NULL.
 		 */
 		if (!swap_swapcount(si, entry) && swap_slot_cache_enabled)
+<<<<<<< HEAD
 			goto fail_put_swap;
 
 		/*
@@ -473,10 +479,26 @@ struct folio *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 		folio = folio_alloc_mpol(gfp_mask, 0, mpol, ilx, numa_node_id());
 		if (!folio)
                         goto fail_put_swap;
+=======
+			goto put_and_return;
+
+		/*
+		 * Get a new folio to read into from swap.  Allocate it now if
+		 * new_folio not exist, before marking swap_map SWAP_HAS_CACHE,
+		 * when -EEXIST will cause any racers to loop around until we
+		 * add it to cache.
+		 */
+		if (!new_folio) {
+			new_folio = folio_alloc_mpol(gfp_mask, 0, mpol, ilx, numa_node_id());
+			if (!new_folio)
+				goto put_and_return;
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * Swap entry may have been freed since our caller observed it.
 		 */
+<<<<<<< HEAD
 		err = swapcache_prepare(entry);
 		if (!err)
 			break;
@@ -484,6 +506,13 @@ struct folio *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 		folio_put(folio);
 		if (err != -EEXIST)
 			goto fail_put_swap;
+=======
+		err = swapcache_prepare(entry, 1);
+		if (!err)
+			break;
+		else if (err != -EEXIST)
+			goto put_and_return;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * Protect against a recursive call to __read_swap_cache_async()
@@ -494,7 +523,11 @@ struct folio *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 		 * __read_swap_cache_async() in the writeback path.
 		 */
 		if (skip_if_exists)
+<<<<<<< HEAD
 			goto fail_put_swap;
+=======
+			goto put_and_return;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * We might race against __delete_from_swap_cache(), and
@@ -509,6 +542,7 @@ struct folio *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 	/*
 	 * The swap entry is ours to swap in. Prepare the new folio.
 	 */
+<<<<<<< HEAD
 
 	__folio_set_locked(folio);
 	__folio_set_swapbacked(folio);
@@ -539,6 +573,39 @@ fail_unlock:
 fail_put_swap:
 	put_swap_device(si);
 	return NULL;
+=======
+	__folio_set_locked(new_folio);
+	__folio_set_swapbacked(new_folio);
+
+	if (mem_cgroup_swapin_charge_folio(new_folio, NULL, gfp_mask, entry))
+		goto fail_unlock;
+
+	/* May fail (-ENOMEM) if XArray node allocation failed. */
+	if (add_to_swap_cache(new_folio, entry, gfp_mask & GFP_RECLAIM_MASK, &shadow))
+		goto fail_unlock;
+
+	mem_cgroup_swapin_uncharge_swap(entry, 1);
+
+	if (shadow)
+		workingset_refault(new_folio, shadow);
+
+	/* Caller will initiate read into locked new_folio */
+	folio_add_lru(new_folio);
+	*new_page_allocated = true;
+	folio = new_folio;
+got_folio:
+	result = folio;
+	goto put_and_return;
+
+fail_unlock:
+	put_swap_folio(new_folio, entry);
+	folio_unlock(new_folio);
+put_and_return:
+	put_swap_device(si);
+	if (!(*new_page_allocated) && new_folio)
+		folio_put(new_folio);
+	return result;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -698,10 +765,15 @@ skip:
 	/* The page was likely read above, so no need for plugging here */
 	folio = __read_swap_cache_async(entry, gfp_mask, mpol, ilx,
 					&page_allocated, false);
+<<<<<<< HEAD
 	if (unlikely(page_allocated)) {
 		zswap_folio_swapin(folio);
 		swap_read_folio(folio, NULL);
 	}
+=======
+	if (unlikely(page_allocated))
+		swap_read_folio(folio, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return folio;
 }
 
@@ -850,10 +922,15 @@ skip:
 	/* The folio was likely read above, so no need for plugging here */
 	folio = __read_swap_cache_async(targ_entry, gfp_mask, mpol, targ_ilx,
 					&page_allocated, false);
+<<<<<<< HEAD
 	if (unlikely(page_allocated)) {
 		zswap_folio_swapin(folio);
 		swap_read_folio(folio, NULL);
 	}
+=======
+	if (unlikely(page_allocated))
+		swap_read_folio(folio, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return folio;
 }
 
@@ -863,13 +940,21 @@ skip:
  * @gfp_mask: memory allocation flags
  * @vmf: fault information
  *
+<<<<<<< HEAD
  * Returns the struct page for entry and addr, after queueing swapin.
+=======
+ * Returns the struct folio for entry and addr, after queueing swapin.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * It's a main entry function for swap readahead. By the configuration,
  * it will read ahead blocks by cluster-based(ie, physical disk based)
  * or vma-based(ie, virtual address based on faulty address) readahead.
  */
+<<<<<<< HEAD
 struct page *swapin_readahead(swp_entry_t entry, gfp_t gfp_mask,
+=======
+struct folio *swapin_readahead(swp_entry_t entry, gfp_t gfp_mask,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				struct vm_fault *vmf)
 {
 	struct mempolicy *mpol;
@@ -882,9 +967,13 @@ struct page *swapin_readahead(swp_entry_t entry, gfp_t gfp_mask,
 		swap_cluster_readahead(entry, gfp_mask, mpol, ilx);
 	mpol_cond_put(mpol);
 
+<<<<<<< HEAD
 	if (!folio)
 		return NULL;
 	return folio_file_page(folio, swp_offset(entry));
+=======
+	return folio;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #ifdef CONFIG_SYSFS

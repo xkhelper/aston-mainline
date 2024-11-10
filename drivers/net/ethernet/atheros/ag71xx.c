@@ -149,11 +149,19 @@
 #define FIFO_CFG4_MC		BIT(8)	/* Multicast Packet */
 #define FIFO_CFG4_BC		BIT(9)	/* Broadcast Packet */
 #define FIFO_CFG4_DR		BIT(10)	/* Dribble */
+<<<<<<< HEAD
 #define FIFO_CFG4_LE		BIT(11)	/* Long Event */
 #define FIFO_CFG4_CF		BIT(12)	/* Control Frame */
 #define FIFO_CFG4_PF		BIT(13)	/* Pause Frame */
 #define FIFO_CFG4_UO		BIT(14)	/* Unsupported Opcode */
 #define FIFO_CFG4_VT		BIT(15)	/* VLAN tag detected */
+=======
+#define FIFO_CFG4_CF		BIT(11)	/* Control Frame */
+#define FIFO_CFG4_PF		BIT(12)	/* Pause Frame */
+#define FIFO_CFG4_UO		BIT(13)	/* Unsupported Opcode */
+#define FIFO_CFG4_VT		BIT(14)	/* VLAN tag detected */
+#define FIFO_CFG4_LE		BIT(15)	/* Long Event */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define FIFO_CFG4_FT		BIT(16)	/* Frame Truncated */
 #define FIFO_CFG4_UC		BIT(17)	/* Unicast Packet */
 #define FIFO_CFG4_INIT	(FIFO_CFG4_DE | FIFO_CFG4_DV | FIFO_CFG4_FC | \
@@ -168,6 +176,7 @@
 #define FIFO_CFG5_DV		BIT(1)	/* RX_DV Event */
 #define FIFO_CFG5_FC		BIT(2)	/* False Carrier */
 #define FIFO_CFG5_CE		BIT(3)	/* Code Error */
+<<<<<<< HEAD
 #define FIFO_CFG5_LM		BIT(4)	/* Length Mismatch */
 #define FIFO_CFG5_LO		BIT(5)	/* Length Out of Range */
 #define FIFO_CFG5_OK		BIT(6)	/* Packet is OK */
@@ -190,6 +199,30 @@
 			 FIFO_CFG5_CF | FIFO_CFG5_PF | FIFO_CFG5_VT | \
 			 FIFO_CFG5_LE | FIFO_CFG5_FT | FIFO_CFG5_16 | \
 			 FIFO_CFG5_17 | FIFO_CFG5_SF)
+=======
+#define FIFO_CFG5_CR		BIT(4)  /* CRC error */
+#define FIFO_CFG5_LM		BIT(5)	/* Length Mismatch */
+#define FIFO_CFG5_LO		BIT(6)	/* Length Out of Range */
+#define FIFO_CFG5_OK		BIT(7)	/* Packet is OK */
+#define FIFO_CFG5_MC		BIT(8)	/* Multicast Packet */
+#define FIFO_CFG5_BC		BIT(9)	/* Broadcast Packet */
+#define FIFO_CFG5_DR		BIT(10)	/* Dribble */
+#define FIFO_CFG5_CF		BIT(11)	/* Control Frame */
+#define FIFO_CFG5_PF		BIT(12)	/* Pause Frame */
+#define FIFO_CFG5_UO		BIT(13)	/* Unsupported Opcode */
+#define FIFO_CFG5_VT		BIT(14)	/* VLAN tag detected */
+#define FIFO_CFG5_LE		BIT(15)	/* Long Event */
+#define FIFO_CFG5_FT		BIT(16)	/* Frame Truncated */
+#define FIFO_CFG5_UC		BIT(17)	/* Unicast Packet */
+#define FIFO_CFG5_SF		BIT(18)	/* Short Frame */
+#define FIFO_CFG5_BM		BIT(19)	/* Byte Mode */
+#define FIFO_CFG5_INIT	(FIFO_CFG5_DE | FIFO_CFG5_DV | FIFO_CFG5_FC | \
+			 FIFO_CFG5_CE | FIFO_CFG5_LM | FIFO_CFG5_LO | \
+			 FIFO_CFG5_OK | FIFO_CFG5_MC | FIFO_CFG5_BC | \
+			 FIFO_CFG5_DR | FIFO_CFG5_CF | FIFO_CFG5_UO | \
+			 FIFO_CFG5_VT | FIFO_CFG5_LE | FIFO_CFG5_FT | \
+			 FIFO_CFG5_UC | FIFO_CFG5_SF)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define AG71XX_REG_TX_CTRL	0x0180
 #define TX_CTRL_TXE		BIT(0)	/* Tx Enable */
@@ -379,10 +412,14 @@ struct ag71xx {
 	u32 fifodata[3];
 	int mac_idx;
 
+<<<<<<< HEAD
 	struct reset_control *mdio_reset;
 	struct mii_bus *mii_bus;
 	struct clk *clk_mdio;
 	struct clk *clk_eth;
+=======
+	struct clk *clk_mdio;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int ag71xx_desc_empty(struct ag71xx_desc *desc)
@@ -447,6 +484,16 @@ static void ag71xx_int_disable(struct ag71xx *ag, u32 ints)
 	ag71xx_cb(ag, AG71XX_REG_INT_ENABLE, ints);
 }
 
+<<<<<<< HEAD
+=======
+static int ag71xx_do_ioctl(struct net_device *ndev, struct ifreq *ifr, int cmd)
+{
+	struct ag71xx *ag = netdev_priv(ndev);
+
+	return phylink_mii_ioctl(ag->phylink, ifr, cmd);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void ag71xx_get_drvinfo(struct net_device *ndev,
 			       struct ethtool_drvinfo *info)
 {
@@ -504,8 +551,12 @@ static void ag71xx_ethtool_get_strings(struct net_device *netdev, u32 sset,
 	switch (sset) {
 	case ETH_SS_STATS:
 		for (i = 0; i < ARRAY_SIZE(ag71xx_statistics); i++)
+<<<<<<< HEAD
 			memcpy(data + i * ETH_GSTRING_LEN,
 			       ag71xx_statistics[i].name, ETH_GSTRING_LEN);
+=======
+			ethtool_puts(&data, ag71xx_statistics[i].name);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case ETH_SS_TEST:
 		net_selftest_get_strings(data);
@@ -685,19 +736,29 @@ static int ag71xx_mdio_probe(struct ag71xx *ag)
 {
 	struct device *dev = &ag->pdev->dev;
 	struct net_device *ndev = ag->ndev;
+<<<<<<< HEAD
+=======
+	struct reset_control *mdio_reset;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	static struct mii_bus *mii_bus;
 	struct device_node *np, *mnp;
 	int err;
 
 	np = dev->of_node;
+<<<<<<< HEAD
 	ag->mii_bus = NULL;
 
 	ag->clk_mdio = devm_clk_get(dev, "mdio");
+=======
+
+	ag->clk_mdio = devm_clk_get_enabled(dev, "mdio");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(ag->clk_mdio)) {
 		netif_err(ag, probe, ndev, "Failed to get mdio clk.\n");
 		return PTR_ERR(ag->clk_mdio);
 	}
 
+<<<<<<< HEAD
 	err = clk_prepare_enable(ag->clk_mdio);
 	if (err) {
 		netif_err(ag, probe, ndev, "Failed to enable mdio clk.\n");
@@ -715,6 +776,16 @@ static int ag71xx_mdio_probe(struct ag71xx *ag)
 		netif_err(ag, probe, ndev, "Failed to get reset mdio.\n");
 		err = PTR_ERR(ag->mdio_reset);
 		goto mdio_err_put_clk;
+=======
+	mii_bus = devm_mdiobus_alloc(dev);
+	if (!mii_bus)
+		return -ENOMEM;
+
+	mdio_reset = devm_reset_control_get_exclusive(dev, "mdio");
+	if (IS_ERR(mdio_reset)) {
+		netif_err(ag, probe, ndev, "Failed to get reset mdio.\n");
+		return PTR_ERR(mdio_reset);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	mii_bus->name = "ag71xx_mdio";
@@ -725,6 +796,7 @@ static int ag71xx_mdio_probe(struct ag71xx *ag)
 	mii_bus->parent = dev;
 	snprintf(mii_bus->id, MII_BUS_ID_SIZE, "%s.%d", np->name, ag->mac_idx);
 
+<<<<<<< HEAD
 	if (!IS_ERR(ag->mdio_reset)) {
 		reset_control_assert(ag->mdio_reset);
 		msleep(100);
@@ -752,6 +824,20 @@ static void ag71xx_mdio_remove(struct ag71xx *ag)
 	if (ag->mii_bus)
 		mdiobus_unregister(ag->mii_bus);
 	clk_disable_unprepare(ag->clk_mdio);
+=======
+	reset_control_assert(mdio_reset);
+	msleep(100);
+	reset_control_deassert(mdio_reset);
+	msleep(200);
+
+	mnp = of_get_child_by_name(np, "mdio");
+	err = devm_of_mdiobus_register(dev, mii_bus, mnp);
+	of_node_put(mnp);
+	if (err)
+		return err;
+
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void ag71xx_hw_stop(struct ag71xx *ag)
@@ -1637,7 +1723,10 @@ static int ag71xx_rx_packets(struct ag71xx *ag, int limit)
 		unsigned int i = ring->curr & ring_mask;
 		struct ag71xx_desc *desc = ag71xx_ring_desc(ring, i);
 		int pktlen;
+<<<<<<< HEAD
 		int err = 0;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (ag71xx_desc_empty(desc))
 			break;
@@ -1660,6 +1749,10 @@ static int ag71xx_rx_packets(struct ag71xx *ag, int limit)
 
 		skb = napi_build_skb(ring->buf[i].rx.rx_buf, ag71xx_buffer_size(ag));
 		if (!skb) {
+<<<<<<< HEAD
+=======
+			ndev->stats.rx_errors++;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			skb_free_frag(ring->buf[i].rx.rx_buf);
 			goto next;
 		}
@@ -1667,6 +1760,7 @@ static int ag71xx_rx_packets(struct ag71xx *ag, int limit)
 		skb_reserve(skb, offset);
 		skb_put(skb, pktlen);
 
+<<<<<<< HEAD
 		if (err) {
 			ndev->stats.rx_dropped++;
 			kfree_skb(skb);
@@ -1675,6 +1769,11 @@ static int ag71xx_rx_packets(struct ag71xx *ag, int limit)
 			skb->ip_summed = CHECKSUM_NONE;
 			list_add_tail(&skb->list, &rx_list);
 		}
+=======
+		skb->dev = ndev;
+		skb->ip_summed = CHECKSUM_NONE;
+		list_add_tail(&skb->list, &rx_list);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 next:
 		ring->buf[i].rx.rx_buf = NULL;
@@ -1799,7 +1898,11 @@ static const struct net_device_ops ag71xx_netdev_ops = {
 	.ndo_open		= ag71xx_open,
 	.ndo_stop		= ag71xx_stop,
 	.ndo_start_xmit		= ag71xx_hard_start_xmit,
+<<<<<<< HEAD
 	.ndo_eth_ioctl		= phy_do_ioctl,
+=======
+	.ndo_eth_ioctl		= ag71xx_do_ioctl,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.ndo_tx_timeout		= ag71xx_tx_timeout,
 	.ndo_change_mtu		= ag71xx_change_mtu,
 	.ndo_set_mac_address	= eth_mac_addr,
@@ -1816,6 +1919,10 @@ static int ag71xx_probe(struct platform_device *pdev)
 	const struct ag71xx_dcfg *dcfg;
 	struct net_device *ndev;
 	struct resource *res;
+<<<<<<< HEAD
+=======
+	struct clk *clk_eth;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int tx_size, err, i;
 	struct ag71xx *ag;
 
@@ -1846,10 +1953,17 @@ static int ag71xx_probe(struct platform_device *pdev)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	ag->clk_eth = devm_clk_get(&pdev->dev, "eth");
 	if (IS_ERR(ag->clk_eth)) {
 		netif_err(ag, probe, ndev, "Failed to get eth clk.\n");
 		return PTR_ERR(ag->clk_eth);
+=======
+	clk_eth = devm_clk_get_enabled(&pdev->dev, "eth");
+	if (IS_ERR(clk_eth)) {
+		netif_err(ag, probe, ndev, "Failed to get eth clk.\n");
+		return PTR_ERR(clk_eth);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	SET_NETDEV_DEV(ndev, &pdev->dev);
@@ -1870,6 +1984,15 @@ static int ag71xx_probe(struct platform_device *pdev)
 	if (!ag->mac_base)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	/* ensure that HW is in manual polling mode before interrupts are
+	 * activated. Otherwise ag71xx_interrupt might call napi_schedule
+	 * before it is initialized by netif_napi_add.
+	 */
+	ag71xx_int_disable(ag, AG71XX_INT_POLL);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ndev->irq = platform_get_irq(pdev, 0);
 	err = devm_request_irq(&pdev->dev, ndev->irq, ag71xx_interrupt,
 			       0x0, dev_name(&pdev->dev), ndev);
@@ -1912,6 +2035,11 @@ static int ag71xx_probe(struct platform_device *pdev)
 	ag->stop_desc->next = (u32)ag->stop_desc_dma;
 
 	err = of_get_ethdev_address(np, ndev);
+<<<<<<< HEAD
+=======
+	if (err == -EPROBE_DEFER)
+		return err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err) {
 		netif_err(ag, probe, ndev, "invalid MAC address, using random address\n");
 		eth_hw_addr_random(ndev);
@@ -1926,25 +2054,33 @@ static int ag71xx_probe(struct platform_device *pdev)
 	netif_napi_add_weight(ndev, &ag->napi, ag71xx_poll,
 			      AG71XX_NAPI_WEIGHT);
 
+<<<<<<< HEAD
 	err = clk_prepare_enable(ag->clk_eth);
 	if (err) {
 		netif_err(ag, probe, ndev, "Failed to enable eth clk.\n");
 		return err;
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ag71xx_wr(ag, AG71XX_REG_MAC_CFG1, 0);
 
 	ag71xx_hw_init(ag);
 
 	err = ag71xx_mdio_probe(ag);
 	if (err)
+<<<<<<< HEAD
 		goto err_put_clk;
+=======
+		return err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	platform_set_drvdata(pdev, ndev);
 
 	err = ag71xx_phylink_setup(ag);
 	if (err) {
 		netif_err(ag, probe, ndev, "failed to setup phylink (%d)\n", err);
+<<<<<<< HEAD
 		goto err_mdio_remove;
 	}
 
@@ -1953,6 +2089,16 @@ static int ag71xx_probe(struct platform_device *pdev)
 		netif_err(ag, probe, ndev, "unable to register net device\n");
 		platform_set_drvdata(pdev, NULL);
 		goto err_mdio_remove;
+=======
+		return err;
+	}
+
+	err = devm_register_netdev(&pdev->dev, ndev);
+	if (err) {
+		netif_err(ag, probe, ndev, "unable to register net device\n");
+		platform_set_drvdata(pdev, NULL);
+		return err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	netif_info(ag, probe, ndev, "Atheros AG71xx at 0x%08lx, irq %d, mode:%s\n",
@@ -1960,6 +2106,7 @@ static int ag71xx_probe(struct platform_device *pdev)
 		   phy_modes(ag->phy_if_mode));
 
 	return 0;
+<<<<<<< HEAD
 
 err_mdio_remove:
 	ag71xx_mdio_remove(ag);
@@ -1981,6 +2128,8 @@ static void ag71xx_remove(struct platform_device *pdev)
 	ag71xx_mdio_remove(ag);
 	clk_disable_unprepare(ag->clk_eth);
 	platform_set_drvdata(pdev, NULL);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const u32 ar71xx_fifo_ar7100[] = {
@@ -2064,10 +2213,17 @@ static const struct of_device_id ag71xx_match[] = {
 	{ .compatible = "qca,qca9560-eth", .data = &ag71xx_dcfg_qca9550 },
 	{}
 };
+<<<<<<< HEAD
 
 static struct platform_driver ag71xx_driver = {
 	.probe		= ag71xx_probe,
 	.remove_new	= ag71xx_remove,
+=======
+MODULE_DEVICE_TABLE(of, ag71xx_match);
+
+static struct platform_driver ag71xx_driver = {
+	.probe		= ag71xx_probe,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name	= "ag71xx",
 		.of_match_table = ag71xx_match,
@@ -2075,4 +2231,8 @@ static struct platform_driver ag71xx_driver = {
 };
 
 module_platform_driver(ag71xx_driver);
+<<<<<<< HEAD
+=======
+MODULE_DESCRIPTION("Atheros AR71xx built-in ethernet mac driver");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_LICENSE("GPL v2");

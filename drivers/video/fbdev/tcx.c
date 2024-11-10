@@ -236,7 +236,11 @@ tcx_blank(int blank, struct fb_info *info)
 	return 0;
 }
 
+<<<<<<< HEAD
 static struct sbus_mmap_map __tcx_mmap_map[TCX_MMAP_ENTRIES] = {
+=======
+static const struct sbus_mmap_map __tcx_mmap_map[TCX_MMAP_ENTRIES] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{
 		.voff	= TCX_RAM8BIT,
 		.size	= SBUS_MMAP_FBSIZE(1)
@@ -505,7 +509,11 @@ static struct platform_driver tcx_driver = {
 		.of_match_table = tcx_match,
 	},
 	.probe		= tcx_probe,
+<<<<<<< HEAD
 	.remove_new	= tcx_remove,
+=======
+	.remove		= tcx_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int __init tcx_init(void)

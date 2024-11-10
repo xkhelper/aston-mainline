@@ -20,7 +20,11 @@
  * it for entirely different regions. In that case the arch code needs to
  * override the variable below for dma-direct to work properly.
  */
+<<<<<<< HEAD
 unsigned int zone_dma_bits __ro_after_init = 24;
+=======
+u64 zone_dma_limit __ro_after_init = DMA_BIT_MASK(24);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline dma_addr_t phys_to_dma_direct(struct device *dev,
 		phys_addr_t phys)
@@ -59,7 +63,11 @@ static gfp_t dma_direct_optimal_gfp_mask(struct device *dev, u64 *phys_limit)
 	 * zones.
 	 */
 	*phys_limit = dma_to_phys(dev, dma_limit);
+<<<<<<< HEAD
 	if (*phys_limit <= DMA_BIT_MASK(zone_dma_bits))
+=======
+	if (*phys_limit <= zone_dma_limit)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return GFP_DMA;
 	if (*phys_limit <= DMA_BIT_MASK(32))
 		return GFP_DMA32;
@@ -140,7 +148,11 @@ again:
 	if (!page)
 		page = alloc_pages_node(node, gfp, get_order(size));
 	if (page && !dma_coherent_ok(dev, page_to_phys(page), size)) {
+<<<<<<< HEAD
 		dma_free_contiguous(dev, page, size);
+=======
+		__free_pages(page, get_order(size));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		page = NULL;
 
 		if (IS_ENABLED(CONFIG_ZONE_DMA32) &&
@@ -580,7 +592,11 @@ int dma_direct_supported(struct device *dev, u64 mask)
 	 * part of the check.
 	 */
 	if (IS_ENABLED(CONFIG_ZONE_DMA))
+<<<<<<< HEAD
 		min_mask = min_t(u64, min_mask, DMA_BIT_MASK(zone_dma_bits));
+=======
+		min_mask = min_t(u64, min_mask, zone_dma_limit);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return mask >= phys_to_dma_unencrypted(dev, min_mask);
 }
 

@@ -251,7 +251,11 @@ static int multi_cpu_stop(void *data)
 			 */
 			touch_nmi_watchdog();
 		}
+<<<<<<< HEAD
 		rcu_momentary_dyntick_idle();
+=======
+		rcu_momentary_eqs();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} while (curstate != MULTI_STOP_EXIT);
 
 	local_irq_restore(flags);

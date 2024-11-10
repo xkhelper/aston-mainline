@@ -9,6 +9,10 @@
  */
 
 #include <linux/auxiliary_bus.h>
+<<<<<<< HEAD
+=======
+#include <linux/intel_vsec.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/pci.h>
@@ -16,7 +20,10 @@
 #include <linux/uaccess.h>
 #include <linux/overflow.h>
 
+<<<<<<< HEAD
 #include "../vsec.h"
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "class.h"
 
 #define TELEM_SIZE_OFFSET	0x0
@@ -93,8 +100,13 @@ static int pmt_telem_header_decode(struct intel_pmt_entry *entry,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int pmt_telem_add_endpoint(struct intel_pmt_entry *entry,
 				  struct pci_dev *pdev)
+=======
+static int pmt_telem_add_endpoint(struct intel_vsec_device *ivdev,
+				  struct intel_pmt_entry *entry)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct telem_endpoint *ep;
 
@@ -104,13 +116,21 @@ static int pmt_telem_add_endpoint(struct intel_pmt_entry *entry,
 		return -ENOMEM;
 
 	ep = entry->ep;
+<<<<<<< HEAD
 	ep->pcidev = pdev;
+=======
+	ep->pcidev = ivdev->pcidev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ep->header.access_type = entry->header.access_type;
 	ep->header.guid = entry->header.guid;
 	ep->header.base_offset = entry->header.base_offset;
 	ep->header.size = entry->header.size;
 	ep->base = entry->base;
 	ep->present = true;
+<<<<<<< HEAD
+=======
+	ep->cb = ivdev->priv_data;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	kref_init(&ep->kref);
 
@@ -218,7 +238,12 @@ int pmt_telem_read(struct telem_endpoint *ep, u32 id, u64 *data, u32 count)
 	if (offset + NUM_BYTES_QWORD(count) > size)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	memcpy_fromio(data, ep->base + offset, NUM_BYTES_QWORD(count));
+=======
+	pmt_telem_read_mmio(ep->pcidev, ep->cb, ep->header.guid, data, ep->base + offset,
+			    NUM_BYTES_QWORD(count));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ep->present ? 0 : -EPIPE;
 }

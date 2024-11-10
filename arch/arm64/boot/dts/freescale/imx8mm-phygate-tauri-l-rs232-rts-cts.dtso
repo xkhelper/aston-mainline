@@ -14,12 +14,15 @@
 /dts-v1/;
 /plugin/;
 
+<<<<<<< HEAD
 
 &{/} {
 	compatible = "phytec,imx8mm-phygate-tauri-l";
 
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &uart2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart2>;

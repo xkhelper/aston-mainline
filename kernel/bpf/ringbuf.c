@@ -29,7 +29,11 @@ struct bpf_ringbuf {
 	u64 mask;
 	struct page **pages;
 	int nr_pages;
+<<<<<<< HEAD
 	spinlock_t spinlock ____cacheline_aligned_in_smp;
+=======
+	raw_spinlock_t spinlock ____cacheline_aligned_in_smp;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* For user-space producer ring buffers, an atomic_t busy bit is used
 	 * to synchronize access to the ring buffers in the kernel, rather than
 	 * the spinlock that is used for kernel-producer ring buffers. This is
@@ -173,7 +177,11 @@ static struct bpf_ringbuf *bpf_ringbuf_alloc(size_t data_sz, int numa_node)
 	if (!rb)
 		return NULL;
 
+<<<<<<< HEAD
 	spin_lock_init(&rb->spinlock);
+=======
+	raw_spin_lock_init(&rb->spinlock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	atomic_set(&rb->busy, 0);
 	init_waitqueue_head(&rb->waitq);
 	init_irq_work(&rb->work, bpf_ringbuf_notify);
@@ -421,10 +429,17 @@ static void *__bpf_ringbuf_reserve(struct bpf_ringbuf *rb, u64 size)
 	cons_pos = smp_load_acquire(&rb->consumer_pos);
 
 	if (in_nmi()) {
+<<<<<<< HEAD
 		if (!spin_trylock_irqsave(&rb->spinlock, flags))
 			return NULL;
 	} else {
 		spin_lock_irqsave(&rb->spinlock, flags);
+=======
+		if (!raw_spin_trylock_irqsave(&rb->spinlock, flags))
+			return NULL;
+	} else {
+		raw_spin_lock_irqsave(&rb->spinlock, flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	pend_pos = rb->pending_pos;
@@ -450,7 +465,11 @@ static void *__bpf_ringbuf_reserve(struct bpf_ringbuf *rb, u64 size)
 	 */
 	if (new_prod_pos - cons_pos > rb->mask ||
 	    new_prod_pos - pend_pos > rb->mask) {
+<<<<<<< HEAD
 		spin_unlock_irqrestore(&rb->spinlock, flags);
+=======
+		raw_spin_unlock_irqrestore(&rb->spinlock, flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return NULL;
 	}
 
@@ -462,7 +481,11 @@ static void *__bpf_ringbuf_reserve(struct bpf_ringbuf *rb, u64 size)
 	/* pairs with consumer's smp_load_acquire() */
 	smp_store_release(&rb->producer_pos, new_prod_pos);
 
+<<<<<<< HEAD
 	spin_unlock_irqrestore(&rb->spinlock, flags);
+=======
+	raw_spin_unlock_irqrestore(&rb->spinlock, flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return (void *)hdr + BPF_RINGBUF_HDR_SZ;
 }
@@ -632,7 +655,11 @@ const struct bpf_func_proto bpf_ringbuf_reserve_dynptr_proto = {
 	.arg1_type	= ARG_CONST_MAP_PTR,
 	.arg2_type	= ARG_ANYTHING,
 	.arg3_type	= ARG_ANYTHING,
+<<<<<<< HEAD
 	.arg4_type	= ARG_PTR_TO_DYNPTR | DYNPTR_TYPE_RINGBUF | MEM_UNINIT,
+=======
+	.arg4_type	= ARG_PTR_TO_DYNPTR | DYNPTR_TYPE_RINGBUF | MEM_UNINIT | MEM_WRITE,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 BPF_CALL_2(bpf_ringbuf_submit_dynptr, struct bpf_dynptr_kern *, ptr, u64, flags)

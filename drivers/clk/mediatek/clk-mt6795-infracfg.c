@@ -144,7 +144,11 @@ static struct platform_driver clk_mt6795_infracfg_drv = {
 		.of_match_table = of_match_clk_mt6795_infracfg,
 	},
 	.probe = clk_mt6795_infracfg_probe,
+<<<<<<< HEAD
 	.remove_new = clk_mt6795_infracfg_remove,
+=======
+	.remove = clk_mt6795_infracfg_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(clk_mt6795_infracfg_drv);
 

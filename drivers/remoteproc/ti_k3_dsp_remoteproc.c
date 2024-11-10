@@ -115,6 +115,13 @@ static void k3_dsp_rproc_mbox_callback(struct mbox_client *client, void *data)
 	const char *name = kproc->rproc->name;
 	u32 msg = omap_mbox_message(data);
 
+<<<<<<< HEAD
+=======
+	/* Do not forward messages from a detached core */
+	if (kproc->rproc->state == RPROC_DETACHED)
+		return;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev_dbg(dev, "mbox msg: 0x%x\n", msg);
 
 	switch (msg) {
@@ -155,6 +162,13 @@ static void k3_dsp_rproc_kick(struct rproc *rproc, int vqid)
 	mbox_msg_t msg = (mbox_msg_t)vqid;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	/* Do not forward messages to a detached core */
+	if (kproc->rproc->state == RPROC_DETACHED)
+		return;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* send the index of the triggered virtqueue in the mailbox payload */
 	ret = mbox_send_message(kproc->mbox, (void *)msg);
 	if (ret < 0)
@@ -230,12 +244,18 @@ static int k3_dsp_rproc_request_mbox(struct rproc *rproc)
 	client->knows_txdone = false;
 
 	kproc->mbox = mbox_request_channel(client, 0);
+<<<<<<< HEAD
 	if (IS_ERR(kproc->mbox)) {
 		ret = -EBUSY;
 		dev_err(dev, "mbox_request_channel failed: %ld\n",
 			PTR_ERR(kproc->mbox));
 		return ret;
 	}
+=======
+	if (IS_ERR(kproc->mbox))
+		return dev_err_probe(dev, PTR_ERR(kproc->mbox),
+				     "mbox_request_channel failed\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Ping the remote processor, this is only for sanity-sake for now;
@@ -315,21 +335,29 @@ static int k3_dsp_rproc_start(struct rproc *rproc)
 	u32 boot_addr;
 	int ret;
 
+<<<<<<< HEAD
 	ret = k3_dsp_rproc_request_mbox(rproc);
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	boot_addr = rproc->bootaddr;
 	if (boot_addr & (kproc->data->boot_align_addr - 1)) {
 		dev_err(dev, "invalid boot address 0x%x, must be aligned on a 0x%x boundary\n",
 			boot_addr, kproc->data->boot_align_addr);
+<<<<<<< HEAD
 		ret = -EINVAL;
 		goto put_mbox;
+=======
+		return -EINVAL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	dev_dbg(dev, "booting DSP core using boot addr = 0x%x\n", boot_addr);
 	ret = ti_sci_proc_set_config(kproc->tsp, boot_addr, 0, 0);
 	if (ret)
+<<<<<<< HEAD
 		goto put_mbox;
 
 	ret = k3_dsp_rproc_release(kproc);
@@ -341,6 +369,15 @@ static int k3_dsp_rproc_start(struct rproc *rproc)
 put_mbox:
 	mbox_free_channel(kproc->mbox);
 	return ret;
+=======
+		return ret;
+
+	ret = k3_dsp_rproc_release(kproc);
+	if (ret)
+		return ret;
+
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -353,8 +390,11 @@ static int k3_dsp_rproc_stop(struct rproc *rproc)
 {
 	struct k3_dsp_rproc *kproc = rproc->priv;
 
+<<<<<<< HEAD
 	mbox_free_channel(kproc->mbox);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	k3_dsp_rproc_reset(kproc);
 
 	return 0;
@@ -363,6 +403,7 @@ static int k3_dsp_rproc_stop(struct rproc *rproc)
 /*
  * Attach to a running DSP remote processor (IPC-only mode)
  *
+<<<<<<< HEAD
  * This rproc attach callback only needs to request the mailbox, the remote
  * processor is already booted, so there is no need to issue any TI-SCI
  * commands to boot the DSP core. This callback is invoked only in IPC-only
@@ -381,10 +422,20 @@ static int k3_dsp_rproc_attach(struct rproc *rproc)
 	dev_info(dev, "DSP initialized in IPC-only mode\n");
 	return 0;
 }
+=======
+ * This rproc attach callback is a NOP. The remote processor is already booted,
+ * and all required resources have been acquired during probe routine, so there
+ * is no need to issue any TI-SCI commands to boot the DSP core. This callback
+ * is invoked only in IPC-only mode and exists because rproc_validate() checks
+ * for its existence.
+ */
+static int k3_dsp_rproc_attach(struct rproc *rproc) { return 0; }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Detach from a running DSP remote processor (IPC-only mode)
  *
+<<<<<<< HEAD
  * This rproc detach callback performs the opposite operation to attach callback
  * and only needs to release the mailbox, the DSP core is not stopped and will
  * be left to continue to run its booted firmware. This callback is invoked only
@@ -399,6 +450,13 @@ static int k3_dsp_rproc_detach(struct rproc *rproc)
 	dev_info(dev, "DSP deinitialized in IPC-only mode\n");
 	return 0;
 }
+=======
+ * This rproc detach callback is a NOP. The DSP core is not stopped and will be
+ * left to continue to run its booted firmware. This callback is invoked only in
+ * IPC-only mode and exists for sanity sake.
+ */
+static int k3_dsp_rproc_detach(struct rproc *rproc) { return 0; }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * This function implements the .get_loaded_rsc_table() callback and is used
@@ -636,6 +694,7 @@ static void k3_dsp_release_tsp(void *data)
 	ti_sci_proc_release(tsp);
 }
 
+<<<<<<< HEAD
 static
 struct ti_sci_proc *k3_dsp_rproc_of_get_tsp(struct device *dev,
 					    const struct ti_sci_handle *sci)
@@ -662,6 +721,8 @@ struct ti_sci_proc *k3_dsp_rproc_of_get_tsp(struct device *dev,
 	return tsp;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int k3_dsp_rproc_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
@@ -697,6 +758,13 @@ static int k3_dsp_rproc_probe(struct platform_device *pdev)
 	kproc->dev = dev;
 	kproc->data = data;
 
+<<<<<<< HEAD
+=======
+	ret = k3_dsp_rproc_request_mbox(rproc);
+	if (ret)
+		return ret;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kproc->ti_sci = devm_ti_sci_get_by_phandle(dev, "ti,sci");
 	if (IS_ERR(kproc->ti_sci))
 		return dev_err_probe(dev, PTR_ERR(kproc->ti_sci),
@@ -711,7 +779,11 @@ static int k3_dsp_rproc_probe(struct platform_device *pdev)
 		return dev_err_probe(dev, PTR_ERR(kproc->reset),
 				     "failed to get reset\n");
 
+<<<<<<< HEAD
 	kproc->tsp = k3_dsp_rproc_of_get_tsp(dev, kproc->ti_sci);
+=======
+	kproc->tsp = ti_sci_proc_of_get_tsp(dev, kproc->ti_sci);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(kproc->tsp))
 		return dev_err_probe(dev, PTR_ERR(kproc->tsp),
 				     "failed to construct ti-sci proc control\n");
@@ -789,6 +861,11 @@ static void k3_dsp_rproc_remove(struct platform_device *pdev)
 		if (ret)
 			dev_err(dev, "failed to detach proc (%pe)\n", ERR_PTR(ret));
 	}
+<<<<<<< HEAD
+=======
+
+	mbox_free_channel(kproc->mbox);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct k3_dsp_mem_data c66_mems[] = {

@@ -311,7 +311,11 @@ MODULE_DEVICE_TABLE(acpi, goldfish_fb_acpi_match);
 
 static struct platform_driver goldfish_fb_driver = {
 	.probe		= goldfish_fb_probe,
+<<<<<<< HEAD
 	.remove_new	= goldfish_fb_remove,
+=======
+	.remove		= goldfish_fb_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "goldfish_fb",
 		.of_match_table = goldfish_fb_of_match,

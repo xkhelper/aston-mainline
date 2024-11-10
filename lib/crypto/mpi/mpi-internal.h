@@ -52,11 +52,20 @@
 typedef mpi_limb_t *mpi_ptr_t;	/* pointer to a limb */
 typedef int mpi_size_t;		/* (must be a signed type) */
 
+<<<<<<< HEAD
 #define RESIZE_IF_NEEDED(a, b)			\
 	do {					\
 		if ((a)->alloced < (b))		\
 			mpi_resize((a), (b));	\
 	} while (0)
+=======
+static inline int RESIZE_IF_NEEDED(MPI a, unsigned b)
+{
+	if (a->alloced < b)
+		return mpi_resize(a, b);
+	return 0;
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Copy N limbs from S to D.  */
 #define MPN_COPY(d, s, n) \
@@ -66,6 +75,7 @@ typedef int mpi_size_t;		/* (must be a signed type) */
 			(d)[_i] = (s)[_i];	\
 	} while (0)
 
+<<<<<<< HEAD
 #define MPN_COPY_INCR(d, s, n)		\
 	do {					\
 		mpi_size_t _i;			\
@@ -74,6 +84,8 @@ typedef int mpi_size_t;		/* (must be a signed type) */
 	} while (0)
 
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define MPN_COPY_DECR(d, s, n) \
 	do {					\
 		mpi_size_t _i;			\
@@ -181,8 +193,11 @@ int mpihelp_mul(mpi_ptr_t prodp, mpi_ptr_t up, mpi_size_t usize,
 void mpih_sqr_n_basecase(mpi_ptr_t prodp, mpi_ptr_t up, mpi_size_t size);
 void mpih_sqr_n(mpi_ptr_t prodp, mpi_ptr_t up, mpi_size_t size,
 		mpi_ptr_t tspace);
+<<<<<<< HEAD
 void mpihelp_mul_n(mpi_ptr_t prodp,
 		mpi_ptr_t up, mpi_ptr_t vp, mpi_size_t size);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int mpihelp_mul_karatsuba_case(mpi_ptr_t prodp,
 			       mpi_ptr_t up, mpi_size_t usize,

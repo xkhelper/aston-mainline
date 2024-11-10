@@ -11,6 +11,10 @@
 #include <linux/sched/smt.h>
 #include <linux/task_work.h>
 #include <linux/mmu_notifier.h>
+<<<<<<< HEAD
+=======
+#include <linux/mmu_context.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/tlbflush.h>
 #include <asm/mmu_context.h>
@@ -85,9 +89,12 @@
  *
  */
 
+<<<<<<< HEAD
 /* There are 12 bits of space for ASIDS in CR3 */
 #define CR3_HW_ASID_BITS		12
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * When enabled, MITIGATION_PAGE_TABLE_ISOLATION consumes a single bit for
  * user/kernel switches
@@ -160,7 +167,10 @@ static inline unsigned long build_cr3(pgd_t *pgd, u16 asid, unsigned long lam)
 	unsigned long cr3 = __sme_pa(pgd) | lam;
 
 	if (static_cpu_has(X86_FEATURE_PCID)) {
+<<<<<<< HEAD
 		VM_WARN_ON_ONCE(asid > MAX_ASID_AVAILABLE);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		cr3 |= kern_pcid(asid);
 	} else {
 		VM_WARN_ON_ONCE(asid != 0);
@@ -503,9 +513,15 @@ void switch_mm_irqs_off(struct mm_struct *unused, struct mm_struct *next,
 {
 	struct mm_struct *prev = this_cpu_read(cpu_tlbstate.loaded_mm);
 	u16 prev_asid = this_cpu_read(cpu_tlbstate.loaded_mm_asid);
+<<<<<<< HEAD
 	unsigned long new_lam = mm_lam_cr3_mask(next);
 	bool was_lazy = this_cpu_read(cpu_tlbstate_shared.is_lazy);
 	unsigned cpu = smp_processor_id();
+=======
+	bool was_lazy = this_cpu_read(cpu_tlbstate_shared.is_lazy);
+	unsigned cpu = smp_processor_id();
+	unsigned long new_lam;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 next_tlb_gen;
 	bool need_flush;
 	u16 new_asid;
@@ -619,9 +635,13 @@ void switch_mm_irqs_off(struct mm_struct *unused, struct mm_struct *next,
 			cpumask_clear_cpu(cpu, mm_cpumask(prev));
 		}
 
+<<<<<<< HEAD
 		/*
 		 * Start remote flushes and then read tlb_gen.
 		 */
+=======
+		/* Start receiving IPIs and then read tlb_gen (and LAM below) */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (next != &init_mm)
 			cpumask_set_cpu(cpu, mm_cpumask(next));
 		next_tlb_gen = atomic64_read(&next->context.tlb_gen);
@@ -633,7 +653,11 @@ void switch_mm_irqs_off(struct mm_struct *unused, struct mm_struct *next,
 		barrier();
 	}
 
+<<<<<<< HEAD
 	set_tlbstate_lam_mode(next);
+=======
+	new_lam = mm_lam_cr3_mask(next);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (need_flush) {
 		this_cpu_write(cpu_tlbstate.ctxs[new_asid].ctx_id, next->context.ctx_id);
 		this_cpu_write(cpu_tlbstate.ctxs[new_asid].tlb_gen, next_tlb_gen);
@@ -652,6 +676,10 @@ void switch_mm_irqs_off(struct mm_struct *unused, struct mm_struct *next,
 
 	this_cpu_write(cpu_tlbstate.loaded_mm, next);
 	this_cpu_write(cpu_tlbstate.loaded_mm_asid, new_asid);
+<<<<<<< HEAD
+=======
+	cpu_tlbstate_update_lam(new_lam, mm_untag_mask(next));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (next != prev) {
 		cr4_update_pce_mm(next);
@@ -698,6 +726,10 @@ void initialize_tlbstate_and_flush(void)
 	int i;
 	struct mm_struct *mm = this_cpu_read(cpu_tlbstate.loaded_mm);
 	u64 tlb_gen = atomic64_read(&init_mm.context.tlb_gen);
+<<<<<<< HEAD
+=======
+	unsigned long lam = mm_lam_cr3_mask(mm);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long cr3 = __read_cr3();
 
 	/* Assert that CR3 already references the right mm. */
@@ -705,7 +737,11 @@ void initialize_tlbstate_and_flush(void)
 
 	/* LAM expected to be disabled */
 	WARN_ON(cr3 & (X86_CR3_LAM_U48 | X86_CR3_LAM_U57));
+<<<<<<< HEAD
 	WARN_ON(mm_lam_cr3_mask(mm));
+=======
+	WARN_ON(lam);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Assert that CR4.PCIDE is set if needed.  (CR4.PCIDE initialization
@@ -724,7 +760,11 @@ void initialize_tlbstate_and_flush(void)
 	this_cpu_write(cpu_tlbstate.next_asid, 1);
 	this_cpu_write(cpu_tlbstate.ctxs[0].ctx_id, mm->context.ctx_id);
 	this_cpu_write(cpu_tlbstate.ctxs[0].tlb_gen, tlb_gen);
+<<<<<<< HEAD
 	set_tlbstate_lam_mode(mm);
+=======
+	cpu_tlbstate_update_lam(lam, mm_untag_mask(mm));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 1; i < TLB_NR_DYN_ASIDS; i++)
 		this_cpu_write(cpu_tlbstate.ctxs[i].ctx_id, 0);

@@ -20,7 +20,11 @@
 #include <linux/types.h>
 #include <linux/units.h>
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/iio/iio.h>
 #include <linux/iio/types.h>
@@ -1002,7 +1006,11 @@ static int rradc_probe(struct platform_device *pdev)
 static const struct of_device_id rradc_match_table[] = {
 	{ .compatible = "qcom,pm660-rradc" },
 	{ .compatible = "qcom,pmi8998-rradc" },
+<<<<<<< HEAD
 	{}
+=======
+	{ }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(of, rradc_match_table);
 

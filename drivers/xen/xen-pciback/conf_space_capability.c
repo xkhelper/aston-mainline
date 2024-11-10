@@ -122,7 +122,11 @@ static int pm_ctrl_write(struct pci_dev *dev, int offset, u16 new_value,
 	if (err)
 		goto out;
 
+<<<<<<< HEAD
 	new_state = (pci_power_t)(new_value & PCI_PM_CTRL_STATE_MASK);
+=======
+	new_state = (__force pci_power_t)(new_value & PCI_PM_CTRL_STATE_MASK);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	new_value &= PM_OK_BITS;
 	if ((old_value & PM_OK_BITS) != new_value) {

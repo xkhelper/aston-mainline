@@ -411,18 +411,32 @@ static void raid1_end_read_request(struct bio *bio)
 
 static void close_write(struct r1bio *r1_bio)
 {
+<<<<<<< HEAD
+=======
+	struct mddev *mddev = r1_bio->mddev;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* it really is the end of this request */
 	if (test_bit(R1BIO_BehindIO, &r1_bio->state)) {
 		bio_free_pages(r1_bio->behind_master_bio);
 		bio_put(r1_bio->behind_master_bio);
 		r1_bio->behind_master_bio = NULL;
 	}
+<<<<<<< HEAD
 	/* clear the bitmap if all writes complete successfully */
 	md_bitmap_endwrite(r1_bio->mddev->bitmap, r1_bio->sector,
 			   r1_bio->sectors,
 			   !test_bit(R1BIO_Degraded, &r1_bio->state),
 			   test_bit(R1BIO_BehindIO, &r1_bio->state));
 	md_write_end(r1_bio->mddev);
+=======
+
+	/* clear the bitmap if all writes complete successfully */
+	mddev->bitmap_ops->endwrite(mddev, r1_bio->sector, r1_bio->sectors,
+				    !test_bit(R1BIO_Degraded, &r1_bio->state),
+				    test_bit(R1BIO_BehindIO, &r1_bio->state));
+	md_write_end(mddev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void r1_bio_write_done(struct r1bio *r1_bio)
@@ -900,7 +914,11 @@ static void wake_up_barrier(struct r1conf *conf)
 static void flush_bio_list(struct r1conf *conf, struct bio *bio)
 {
 	/* flush any pending bitmap writes to disk before proceeding w/ I/O */
+<<<<<<< HEAD
 	raid1_prepare_flush_writes(conf->mddev->bitmap);
+=======
+	raid1_prepare_flush_writes(conf->mddev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	wake_up_barrier(conf);
 
 	while (bio) { /* submit pending writes */
@@ -1317,13 +1335,19 @@ static void raid1_read_request(struct mddev *mddev, struct bio *bio,
 	struct r1conf *conf = mddev->private;
 	struct raid1_info *mirror;
 	struct bio *read_bio;
+<<<<<<< HEAD
 	struct bitmap *bitmap = mddev->bitmap;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const enum req_op op = bio_op(bio);
 	const blk_opf_t do_sync = bio->bi_opf & REQ_SYNC;
 	int max_sectors;
 	int rdisk;
 	bool r1bio_existed = !!r1_bio;
+<<<<<<< HEAD
 	char b[BDEVNAME_SIZE];
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * If r1_bio is set, we are blocking the raid1d thread
@@ -1332,6 +1356,7 @@ static void raid1_read_request(struct mddev *mddev, struct bio *bio,
 	 */
 	gfp_t gfp = r1_bio ? (GFP_NOIO | __GFP_HIGH) : GFP_NOIO;
 
+<<<<<<< HEAD
 	if (r1bio_existed) {
 		/* Need to get the block device name carefully */
 		struct md_rdev *rdev = conf->mirrors[r1_bio->read_disk].rdev;
@@ -1342,6 +1367,8 @@ static void raid1_read_request(struct mddev *mddev, struct bio *bio,
 			strcpy(b, "???");
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Still need barrier for READ in case that whole
 	 * array is frozen.
@@ -1363,6 +1390,7 @@ static void raid1_read_request(struct mddev *mddev, struct bio *bio,
 	 * used and no empty request is available.
 	 */
 	rdisk = read_balance(conf, r1_bio, &max_sectors);
+<<<<<<< HEAD
 
 	if (rdisk < 0) {
 		/* couldn't find anywhere to read from */
@@ -1372,6 +1400,15 @@ static void raid1_read_request(struct mddev *mddev, struct bio *bio,
 					    b,
 					    (unsigned long long)r1_bio->sector);
 		}
+=======
+	if (rdisk < 0) {
+		/* couldn't find anywhere to read from */
+		if (r1bio_existed)
+			pr_crit_ratelimited("md/raid1:%s: %pg: unrecoverable I/O read error for block %llu\n",
+					    mdname(mddev),
+					    conf->mirrors[r1_bio->read_disk].rdev->bdev,
+					    r1_bio->sector);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		raid_end_bio_io(r1_bio);
 		return;
 	}
@@ -1383,15 +1420,23 @@ static void raid1_read_request(struct mddev *mddev, struct bio *bio,
 				    (unsigned long long)r1_bio->sector,
 				    mirror->rdev->bdev);
 
+<<<<<<< HEAD
 	if (test_bit(WriteMostly, &mirror->rdev->flags) &&
 	    bitmap) {
+=======
+	if (test_bit(WriteMostly, &mirror->rdev->flags)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * Reading from a write-mostly device must take care not to
 		 * over-take any writes that are 'behind'
 		 */
 		mddev_add_trace_msg(mddev, "raid1 wait behind writes");
+<<<<<<< HEAD
 		wait_event(bitmap->behind_wait,
 			   atomic_read(&bitmap->behind_writes) == 0);
+=======
+		mddev->bitmap_ops->wait_behind_writes(mddev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (max_sectors < bio_sectors(bio)) {
@@ -1432,7 +1477,10 @@ static void raid1_write_request(struct mddev *mddev, struct bio *bio,
 	struct r1conf *conf = mddev->private;
 	struct r1bio *r1_bio;
 	int i, disks;
+<<<<<<< HEAD
 	struct bitmap *bitmap = mddev->bitmap;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long flags;
 	struct md_rdev *blocked_rdev;
 	int first_clone;
@@ -1585,7 +1633,11 @@ static void raid1_write_request(struct mddev *mddev, struct bio *bio,
 	 * at a time and thus needs a new bio that can fit the whole payload
 	 * this bio in page sized chunks.
 	 */
+<<<<<<< HEAD
 	if (write_behind && bitmap)
+=======
+	if (write_behind && mddev->bitmap)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		max_sectors = min_t(int, max_sectors,
 				    BIO_MAX_VECS * (PAGE_SIZE >> 9));
 	if (max_sectors < bio_sectors(bio)) {
@@ -1612,10 +1664,19 @@ static void raid1_write_request(struct mddev *mddev, struct bio *bio,
 			continue;
 
 		if (first_clone) {
+<<<<<<< HEAD
+=======
+			unsigned long max_write_behind =
+				mddev->bitmap_info.max_write_behind;
+			struct md_bitmap_stats stats;
+			int err;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/* do behind I/O ?
 			 * Not if there are too many, or cannot
 			 * allocate memory, or a reader on WriteMostly
 			 * is waiting for behind writes to flush */
+<<<<<<< HEAD
 			if (bitmap && write_behind &&
 			    (atomic_read(&bitmap->behind_writes)
 			     < mddev->bitmap_info.max_write_behind) &&
@@ -1625,6 +1686,16 @@ static void raid1_write_request(struct mddev *mddev, struct bio *bio,
 
 			md_bitmap_startwrite(bitmap, r1_bio->sector, r1_bio->sectors,
 					     test_bit(R1BIO_BehindIO, &r1_bio->state));
+=======
+			err = mddev->bitmap_ops->get_stats(mddev->bitmap, &stats);
+			if (!err && write_behind && !stats.behind_wait &&
+			    stats.behind_writes < max_write_behind)
+				alloc_behind_master_bio(r1_bio, bio);
+
+			mddev->bitmap_ops->startwrite(
+				mddev, r1_bio->sector, r1_bio->sectors,
+				test_bit(R1BIO_BehindIO, &r1_bio->state));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			first_clone = 0;
 		}
 
@@ -2042,7 +2113,11 @@ static void abort_sync_write(struct mddev *mddev, struct r1bio *r1_bio)
 
 	/* make sure these bits don't get cleared. */
 	do {
+<<<<<<< HEAD
 		md_bitmap_end_sync(mddev->bitmap, s, &sync_blocks, 1);
+=======
+		mddev->bitmap_ops->end_sync(mddev, s, &sync_blocks);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		s += sync_blocks;
 		sectors_to_go -= sync_blocks;
 	} while (sectors_to_go > 0);
@@ -2771,7 +2846,11 @@ static sector_t raid1_sync_request(struct mddev *mddev, sector_t sector_nr,
 	int wonly = -1;
 	int write_targets = 0, read_targets = 0;
 	sector_t sync_blocks;
+<<<<<<< HEAD
 	int still_degraded = 0;
+=======
+	bool still_degraded = false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int good_sectors = RESYNC_SECTORS;
 	int min_bad = 0; /* number of sectors that are bad in all devices */
 	int idx = sector_to_idx(sector_nr);
@@ -2788,12 +2867,21 @@ static sector_t raid1_sync_request(struct mddev *mddev, sector_t sector_nr,
 		 * We can find the current addess in mddev->curr_resync
 		 */
 		if (mddev->curr_resync < max_sector) /* aborted */
+<<<<<<< HEAD
 			md_bitmap_end_sync(mddev->bitmap, mddev->curr_resync,
 					   &sync_blocks, 1);
 		else /* completed sync */
 			conf->fullsync = 0;
 
 		md_bitmap_close_sync(mddev->bitmap);
+=======
+			mddev->bitmap_ops->end_sync(mddev, mddev->curr_resync,
+						    &sync_blocks);
+		else /* completed sync */
+			conf->fullsync = 0;
+
+		mddev->bitmap_ops->close_sync(mddev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		close_sync(conf);
 
 		if (mddev_is_clustered(mddev)) {
@@ -2813,7 +2901,11 @@ static sector_t raid1_sync_request(struct mddev *mddev, sector_t sector_nr,
 	/* before building a request, check if we can skip these blocks..
 	 * This call the bitmap_start_sync doesn't actually record anything
 	 */
+<<<<<<< HEAD
 	if (!md_bitmap_start_sync(mddev->bitmap, sector_nr, &sync_blocks, 1) &&
+=======
+	if (!mddev->bitmap_ops->start_sync(mddev, sector_nr, &sync_blocks, true) &&
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    !conf->fullsync && !test_bit(MD_RECOVERY_REQUESTED, &mddev->recovery)) {
 		/* We can skip this block, and probably several more */
 		*skipped = 1;
@@ -2831,9 +2923,15 @@ static sector_t raid1_sync_request(struct mddev *mddev, sector_t sector_nr,
 	 * sector_nr + two times RESYNC_SECTORS
 	 */
 
+<<<<<<< HEAD
 	md_bitmap_cond_end_sync(mddev->bitmap, sector_nr,
 		mddev_is_clustered(mddev) && (sector_nr + 2 * RESYNC_SECTORS > conf->cluster_sync_high));
 
+=======
+	mddev->bitmap_ops->cond_end_sync(mddev, sector_nr,
+		mddev_is_clustered(mddev) &&
+		(sector_nr + 2 * RESYNC_SECTORS > conf->cluster_sync_high));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (raise_barrier(conf, sector_nr))
 		return 0;
@@ -2864,7 +2962,11 @@ static sector_t raid1_sync_request(struct mddev *mddev, sector_t sector_nr,
 		if (rdev == NULL ||
 		    test_bit(Faulty, &rdev->flags)) {
 			if (i < conf->raid_disks)
+<<<<<<< HEAD
 				still_degraded = 1;
+=======
+				still_degraded = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else if (!test_bit(In_sync, &rdev->flags)) {
 			bio->bi_opf = REQ_OP_WRITE;
 			bio->bi_end_io = end_sync_write;
@@ -2988,8 +3090,13 @@ static sector_t raid1_sync_request(struct mddev *mddev, sector_t sector_nr,
 		if (len == 0)
 			break;
 		if (sync_blocks == 0) {
+<<<<<<< HEAD
 			if (!md_bitmap_start_sync(mddev->bitmap, sector_nr,
 						  &sync_blocks, still_degraded) &&
+=======
+			if (!mddev->bitmap_ops->start_sync(mddev, sector_nr,
+						&sync_blocks, still_degraded) &&
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    !conf->fullsync &&
 			    !test_bit(MD_RECOVERY_REQUESTED, &mddev->recovery))
 				break;
@@ -3313,6 +3420,7 @@ static int raid1_resize(struct mddev *mddev, sector_t sectors)
 	 * worth it.
 	 */
 	sector_t newsize = raid1_size(mddev, sectors, 0);
+<<<<<<< HEAD
 	if (mddev->external_size &&
 	    mddev->array_sectors > newsize)
 		return -EINVAL;
@@ -3321,6 +3429,18 @@ static int raid1_resize(struct mddev *mddev, sector_t sectors)
 		if (ret)
 			return ret;
 	}
+=======
+	int ret;
+
+	if (mddev->external_size &&
+	    mddev->array_sectors > newsize)
+		return -EINVAL;
+
+	ret = mddev->bitmap_ops->resize(mddev, newsize, 0, false);
+	if (ret)
+		return ret;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	md_set_array_sectors(mddev, newsize);
 	if (sectors > mddev->dev_sectors &&
 	    mddev->recovery_cp > mddev->dev_sectors) {

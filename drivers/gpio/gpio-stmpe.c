@@ -5,6 +5,7 @@
  * Author: Rabin Vincent <rabin.vincent@stericsson.com> for ST-Ericsson
  */
 
+<<<<<<< HEAD
 #include <linux/cleanup.h>
 #include <linux/init.h>
 #include <linux/platform_device.h>
@@ -15,6 +16,18 @@
 #include <linux/mfd/stmpe.h>
 #include <linux/seq_file.h>
 #include <linux/bitops.h>
+=======
+#include <linux/bitops.h>
+#include <linux/cleanup.h>
+#include <linux/gpio/driver.h>
+#include <linux/init.h>
+#include <linux/interrupt.h>
+#include <linux/mfd/stmpe.h>
+#include <linux/property.h>
+#include <linux/platform_device.h>
+#include <linux/seq_file.h>
+#include <linux/slab.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * These registers are modified under the irq bus lock and cached to avoid
@@ -31,7 +44,10 @@ enum { LSB, CSB, MSB };
 struct stmpe_gpio {
 	struct gpio_chip chip;
 	struct stmpe *stmpe;
+<<<<<<< HEAD
 	struct device *dev;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct mutex irq_lock;
 	u32 norequest_mask;
 	/* Caches of interrupt control registers for bus_lock */
@@ -464,32 +480,53 @@ static void stmpe_gpio_disable(void *stmpe)
 
 static int stmpe_gpio_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct stmpe *stmpe = dev_get_drvdata(pdev->dev.parent);
 	struct device_node *np = pdev->dev.of_node;
+=======
+	struct device *dev = &pdev->dev;
+	struct stmpe *stmpe = dev_get_drvdata(dev->parent);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct stmpe_gpio *stmpe_gpio;
 	int ret, irq;
 
 	if (stmpe->num_gpios > MAX_GPIOS) {
+<<<<<<< HEAD
 		dev_err(&pdev->dev, "Need to increase maximum GPIO number\n");
 		return -EINVAL;
 	}
 
 	stmpe_gpio = devm_kzalloc(&pdev->dev, sizeof(*stmpe_gpio), GFP_KERNEL);
+=======
+		dev_err(dev, "Need to increase maximum GPIO number\n");
+		return -EINVAL;
+	}
+
+	stmpe_gpio = devm_kzalloc(dev, sizeof(*stmpe_gpio), GFP_KERNEL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!stmpe_gpio)
 		return -ENOMEM;
 
 	mutex_init(&stmpe_gpio->irq_lock);
 
+<<<<<<< HEAD
 	stmpe_gpio->dev = &pdev->dev;
 	stmpe_gpio->stmpe = stmpe;
 	stmpe_gpio->chip = template_chip;
 	stmpe_gpio->chip.ngpio = stmpe->num_gpios;
 	stmpe_gpio->chip.parent = &pdev->dev;
+=======
+	stmpe_gpio->stmpe = stmpe;
+	stmpe_gpio->chip = template_chip;
+	stmpe_gpio->chip.ngpio = stmpe->num_gpios;
+	stmpe_gpio->chip.parent = dev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	stmpe_gpio->chip.base = -1;
 
 	if (IS_ENABLED(CONFIG_DEBUG_FS))
                 stmpe_gpio->chip.dbg_show = stmpe_dbg_show;
 
+<<<<<<< HEAD
 	of_property_read_u32(np, "st,norequest-mask",
 			&stmpe_gpio->norequest_mask);
 
@@ -498,11 +535,15 @@ static int stmpe_gpio_probe(struct platform_device *pdev)
 		dev_info(&pdev->dev,
 			"device configured in no-irq mode: "
 			"irqs are not available\n");
+=======
+	device_property_read_u32(dev, "st,norequest-mask", &stmpe_gpio->norequest_mask);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = stmpe_enable(stmpe, STMPE_BLOCK_GPIO);
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ret = devm_add_action_or_reset(&pdev->dev, stmpe_gpio_disable, stmpe);
 	if (ret)
 		return ret;
@@ -517,6 +558,20 @@ static int stmpe_gpio_probe(struct platform_device *pdev)
 			dev_err(&pdev->dev, "unable to get irq: %d\n", ret);
 			return ret;
 		}
+=======
+	ret = devm_add_action_or_reset(dev, stmpe_gpio_disable, stmpe);
+	if (ret)
+		return ret;
+
+	irq = platform_get_irq(pdev, 0);
+	if (irq > 0) {
+		struct gpio_irq_chip *girq;
+
+		ret = devm_request_threaded_irq(dev, irq, NULL, stmpe_gpio_irq,
+						IRQF_ONESHOT, "stmpe-gpio", stmpe_gpio);
+		if (ret)
+			return dev_err_probe(dev, ret, "unable to register IRQ handler\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		girq = &stmpe_gpio->chip.irq;
 		gpio_irq_chip_set_chip(girq, &stmpe_gpio_irq_chip);
@@ -530,7 +585,11 @@ static int stmpe_gpio_probe(struct platform_device *pdev)
 		girq->init_valid_mask = stmpe_init_irq_valid_mask;
 	}
 
+<<<<<<< HEAD
 	return devm_gpiochip_add_data(&pdev->dev, &stmpe_gpio->chip, stmpe_gpio);
+=======
+	return devm_gpiochip_add_data(dev, &stmpe_gpio->chip, stmpe_gpio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct platform_driver stmpe_gpio_driver = {

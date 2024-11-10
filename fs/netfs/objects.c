@@ -36,7 +36,10 @@ struct netfs_io_request *netfs_alloc_request(struct address_space *mapping,
 	memset(rreq, 0, kmem_cache_size(cache));
 	rreq->start	= start;
 	rreq->len	= len;
+<<<<<<< HEAD
 	rreq->upper_len	= len;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rreq->origin	= origin;
 	rreq->netfs_ops	= ctx->ops;
 	rreq->mapping	= mapping;
@@ -44,13 +47,32 @@ struct netfs_io_request *netfs_alloc_request(struct address_space *mapping,
 	rreq->i_size	= i_size_read(inode);
 	rreq->debug_id	= atomic_inc_return(&debug_ids);
 	rreq->wsize	= INT_MAX;
+<<<<<<< HEAD
+=======
+	rreq->io_streams[0].sreq_max_len = ULONG_MAX;
+	rreq->io_streams[0].sreq_max_segs = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_lock_init(&rreq->lock);
 	INIT_LIST_HEAD(&rreq->io_streams[0].subrequests);
 	INIT_LIST_HEAD(&rreq->io_streams[1].subrequests);
 	INIT_LIST_HEAD(&rreq->subrequests);
+<<<<<<< HEAD
 	INIT_WORK(&rreq->work, NULL);
 	refcount_set(&rreq->ref, 1);
 
+=======
+	refcount_set(&rreq->ref, 1);
+
+	if (origin == NETFS_READAHEAD ||
+	    origin == NETFS_READPAGE ||
+	    origin == NETFS_READ_GAPS ||
+	    origin == NETFS_READ_FOR_WRITE ||
+	    origin == NETFS_DIO_READ)
+		INIT_WORK(&rreq->work, netfs_read_termination_worker);
+	else
+		INIT_WORK(&rreq->work, netfs_write_collection_worker);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__set_bit(NETFS_RREQ_IN_PROGRESS, &rreq->flags);
 	if (file && file->f_flags & O_NONBLOCK)
 		__set_bit(NETFS_RREQ_NONBLOCK, &rreq->flags);
@@ -134,6 +156,10 @@ static void netfs_free_request(struct work_struct *work)
 		}
 		kvfree(rreq->direct_bv);
 	}
+<<<<<<< HEAD
+=======
+	netfs_clear_buffer(rreq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (atomic_dec_and_test(&ictx->io_count))
 		wake_up_var(&ictx->io_count);
@@ -155,7 +181,11 @@ void netfs_put_request(struct netfs_io_request *rreq, bool was_async,
 			if (was_async) {
 				rreq->work.func = netfs_free_request;
 				if (!queue_work(system_unbound_wq, &rreq->work))
+<<<<<<< HEAD
 					BUG();
+=======
+					WARN_ON(1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			} else {
 				netfs_free_request(&rreq->work);
 			}

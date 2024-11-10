@@ -323,6 +323,10 @@ config IPV6_RPL_LWTUNNEL
 	bool "IPv6: RPL Source Routing Header support"
 	depends on IPV6
 	select LWTUNNEL
+<<<<<<< HEAD
+=======
+	select DST_CACHE
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  Support for RFC6554 RPL Source Routing Header using the lightweight
 	  tunnels mechanism.

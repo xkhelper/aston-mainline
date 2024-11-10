@@ -43,6 +43,7 @@ static int __init maxtcs(char *str)
 
 __setup("maxtcs=", maxtcs);
 
+<<<<<<< HEAD
 /*
  * Dump new MIPS MT state for the core. Does not leave TCs halted.
  * Takes an argument which taken to be a pre-call MVPControl value.
@@ -120,6 +121,8 @@ void mips_mt_regdump(unsigned long mvpctl)
 	local_irq_restore(flags);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int mt_opt_rpsctl = -1;
 static int mt_opt_nblsu = -1;
 static int mt_opt_forceconfig7;

@@ -230,9 +230,13 @@ void mmap__munmap(struct mmap *map)
 {
 	bitmap_free(map->affinity_mask.bits);
 
+<<<<<<< HEAD
 #ifndef PYTHON_PERF
 	zstd_fini(&map->zstd_data);
 #endif
+=======
+	zstd_fini(&map->zstd_data);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	perf_mmap__aio_munmap(map);
 	if (map->data != NULL) {
@@ -295,12 +299,18 @@ int mmap__mmap(struct mmap *map, struct mmap_params *mp, int fd, struct perf_cpu
 
 	map->core.flush = mp->flush;
 
+<<<<<<< HEAD
 #ifndef PYTHON_PERF
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (zstd_init(&map->zstd_data, mp->comp_level)) {
 		pr_debug2("failed to init mmap compressor, error %d\n", errno);
 		return -1;
 	}
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (mp->comp_level && !perf_mmap__aio_enabled(map)) {
 		map->data = mmap(NULL, mmap__mmap_len(map), PROT_READ|PROT_WRITE,

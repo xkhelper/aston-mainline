@@ -151,6 +151,23 @@ void __bch2_time_stats_update(struct bch2_time_stats *stats, u64 start, u64 end)
 	}
 }
 
+<<<<<<< HEAD
+=======
+void bch2_time_stats_reset(struct bch2_time_stats *stats)
+{
+	spin_lock_irq(&stats->lock);
+	unsigned offset = offsetof(struct bch2_time_stats, min_duration);
+	memset((void *) stats + offset, 0, sizeof(*stats) - offset);
+
+	if (stats->buffer) {
+		int cpu;
+		for_each_possible_cpu(cpu)
+			per_cpu_ptr(stats->buffer, cpu)->nr = 0;
+	}
+	spin_unlock_irq(&stats->lock);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void bch2_time_stats_exit(struct bch2_time_stats *stats)
 {
 	free_percpu(stats->buffer);

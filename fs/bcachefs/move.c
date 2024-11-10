@@ -266,7 +266,11 @@ int bch2_move_extent(struct moving_context *ctxt,
 	if (!data_opts.rewrite_ptrs &&
 	    !data_opts.extra_replicas) {
 		if (data_opts.kill_ptrs)
+<<<<<<< HEAD
 			return bch2_extent_drop_ptrs(trans, iter, k, data_opts);
+=======
+			return bch2_extent_drop_ptrs(trans, iter, k, &io_opts, &data_opts);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 
@@ -692,7 +696,11 @@ int bch2_evacuate_bucket(struct moving_context *ctxt,
 	a = bch2_alloc_to_v4(k, &a_convert);
 	dirty_sectors = bch2_bucket_sectors_dirty(*a);
 	bucket_size = ca->mi.bucket_size;
+<<<<<<< HEAD
 	fragmentation = a->fragmentation_lru;
+=======
+	fragmentation = alloc_lru_idx_fragmentation(*a, ca);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = bch2_btree_write_buffer_tryflush(trans);
 	bch_err_msg(c, ret, "flushing btree write buffer");

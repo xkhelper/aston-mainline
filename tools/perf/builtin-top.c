@@ -191,7 +191,11 @@ static void ui__warn_map_erange(struct map *map, struct symbol *sym, u64 ip)
 	if (use_browser <= 0)
 		sleep(5);
 
+<<<<<<< HEAD
 	map__set_erange_warned(map, true);
+=======
+	map__set_erange_warned(map);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void perf_top__record_precise_ip(struct perf_top *top,
@@ -735,12 +739,21 @@ static int hist_iter__top_callback(struct hist_entry_iter *iter,
 		perf_top__record_precise_ip(top, iter->he, iter->sample, evsel, al->addr);
 
 	hist__account_cycles(iter->sample->branch_stack, al, iter->sample,
+<<<<<<< HEAD
 		     !(top->record_opts.branch_stack & PERF_SAMPLE_BRANCH_ANY),
 		     NULL);
 	return 0;
 }
 
 static void perf_event__process_sample(struct perf_tool *tool,
+=======
+			     !(top->record_opts.branch_stack & PERF_SAMPLE_BRANCH_ANY),
+			     NULL, evsel);
+	return 0;
+}
+
+static void perf_event__process_sample(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       const union perf_event *event,
 				       struct evsel *evsel,
 				       struct perf_sample *sample,
@@ -1055,7 +1068,11 @@ try_again:
 		}
 	}
 
+<<<<<<< HEAD
 	if (evlist__apply_filters(evlist, &counter)) {
+=======
+	if (evlist__apply_filters(evlist, &counter, &opts->target)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pr_err("failed to set filter \"%s\" on event %s with %d (%s)\n",
 			counter->filter ?: "BPF", evsel__name(counter), errno,
 			str_error_r(errno, msg, sizeof(msg)));

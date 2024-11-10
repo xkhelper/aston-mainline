@@ -168,7 +168,11 @@ bool static_key_slow_inc_cpuslocked(struct static_key *key)
 		jump_label_update(key);
 		/*
 		 * Ensure that when static_key_fast_inc_not_disabled() or
+<<<<<<< HEAD
 		 * static_key_slow_try_dec() observe the positive value,
+=======
+		 * static_key_dec_not_one() observe the positive value,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 * they must also observe all the text changes.
 		 */
 		atomic_set_release(&key->enabled, 1);
@@ -250,7 +254,11 @@ void static_key_disable(struct static_key *key)
 }
 EXPORT_SYMBOL_GPL(static_key_disable);
 
+<<<<<<< HEAD
 static bool static_key_slow_try_dec(struct static_key *key)
+=======
+static bool static_key_dec_not_one(struct static_key *key)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int v;
 
@@ -274,6 +282,17 @@ static bool static_key_slow_try_dec(struct static_key *key)
 		 * enabled. This suggests an ordering problem on the user side.
 		 */
 		WARN_ON_ONCE(v < 0);
+<<<<<<< HEAD
+=======
+
+		/*
+		 * Warn about underflow, and lie about success in an attempt to
+		 * not make things worse.
+		 */
+		if (WARN_ON_ONCE(v == 0))
+			return true;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (v <= 1)
 			return false;
 	} while (!likely(atomic_try_cmpxchg(&key->enabled, &v, v - 1)));
@@ -284,6 +303,7 @@ static bool static_key_slow_try_dec(struct static_key *key)
 static void __static_key_slow_dec_cpuslocked(struct static_key *key)
 {
 	lockdep_assert_cpus_held();
+<<<<<<< HEAD
 
 	if (static_key_slow_try_dec(key))
 		return;
@@ -293,6 +313,29 @@ static void __static_key_slow_dec_cpuslocked(struct static_key *key)
 		jump_label_update(key);
 	else
 		WARN_ON_ONCE(!static_key_slow_try_dec(key));
+=======
+	int val;
+
+	if (static_key_dec_not_one(key))
+		return;
+
+	guard(mutex)(&jump_label_mutex);
+	val = atomic_read(&key->enabled);
+	/*
+	 * It should be impossible to observe -1 with jump_label_mutex held,
+	 * see static_key_slow_inc_cpuslocked().
+	 */
+	if (WARN_ON_ONCE(val == -1))
+		return;
+	/*
+	 * Cannot already be 0, something went sideways.
+	 */
+	if (WARN_ON_ONCE(val == 0))
+		return;
+
+	if (atomic_dec_and_test(&key->enabled))
+		jump_label_update(key);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void __static_key_slow_dec(struct static_key *key)
@@ -329,7 +372,11 @@ void __static_key_slow_dec_deferred(struct static_key *key,
 {
 	STATIC_KEY_CHECK_USE(key);
 
+<<<<<<< HEAD
 	if (static_key_slow_try_dec(key))
+=======
+	if (static_key_dec_not_one(key))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	schedule_delayed_work(work, timeout);

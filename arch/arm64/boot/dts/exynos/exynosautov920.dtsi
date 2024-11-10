@@ -6,6 +6,10 @@
  *
  */
 
+<<<<<<< HEAD
+=======
+#include <dt-bindings/clock/samsung,exynosautov920.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 #include <dt-bindings/soc/samsung,exynos-usi.h>
 
@@ -38,6 +42,7 @@
 		clock-output-names = "oscclk";
 	};
 
+<<<<<<< HEAD
 	/*
 	 * FIXME: Keep the stub clock for serial driver, until proper clock
 	 * driver is implemented.
@@ -49,6 +54,8 @@
 		clock-output-names = "usi";
 	};
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cpus: cpus {
 		#address-cells = <2>;
 		#size-cells = <0>;
@@ -192,6 +199,22 @@
 			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_HIGH>;
 		};
 
+<<<<<<< HEAD
+=======
+		cmu_peric0: clock-controller@10800000 {
+			compatible = "samsung,exynosautov920-cmu-peric0";
+			reg = <0x10800000 0x8000>;
+			#clock-cells = <1>;
+
+			clocks = <&xtcxo>,
+				 <&cmu_top DOUT_CLKCMU_PERIC0_NOC>,
+				 <&cmu_top DOUT_CLKCMU_PERIC0_IP>;
+			clock-names = "oscclk",
+				      "noc",
+				      "ip";
+		};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		syscon_peric0: syscon@10820000 {
 			compatible = "samsung,exynosautov920-peric0-sysreg",
 				     "syscon";
@@ -213,7 +236,12 @@
 			#address-cells = <1>;
 			#size-cells = <1>;
 			ranges;
+<<<<<<< HEAD
 			clocks = <&clock_usi>, <&clock_usi>;
+=======
+			clocks = <&cmu_peric0 CLK_MOUT_PERIC0_NOC_USER>,
+				 <&cmu_peric0 CLK_DOUT_PERIC0_USI00_USI>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			clock-names = "pclk", "ipclk";
 			status = "disabled";
 
@@ -224,7 +252,12 @@
 				interrupts = <GIC_SPI 764 IRQ_TYPE_LEVEL_HIGH>;
 				pinctrl-names = "default";
 				pinctrl-0 = <&uart0_bus>;
+<<<<<<< HEAD
 				clocks = <&clock_usi>, <&clock_usi>;
+=======
+				clocks = <&cmu_peric0 CLK_MOUT_PERIC0_NOC_USER>,
+					 <&cmu_peric0 CLK_DOUT_PERIC0_USI00_USI>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				clock-names = "uart", "clk_uart_baud0";
 				samsung,uart-fifosize = <256>;
 				status = "disabled";
@@ -254,6 +287,18 @@
 			interrupts = <GIC_SPI 781 IRQ_TYPE_LEVEL_HIGH>;
 		};
 
+<<<<<<< HEAD
+=======
+		cmu_top: clock-controller@11000000 {
+			compatible = "samsung,exynosautov920-cmu-top";
+			reg = <0x11000000 0x8000>;
+			#clock-cells = <1>;
+
+			clocks = <&xtcxo>;
+			clock-names = "oscclk";
+		};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pinctrl_alive: pinctrl@11850000 {
 			compatible = "samsung,exynosautov920-pinctrl";
 			reg = <0x11850000 0x10000>;

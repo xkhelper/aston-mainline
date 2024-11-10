@@ -417,7 +417,11 @@ static int jc42_detect(struct i2c_client *client, struct i2c_board_info *info)
 		return -ENODEV;
 
 	if ((devid & TSE2004_DEVID_MASK) == TSE2004_DEVID &&
+<<<<<<< HEAD
 	    (cap & 0x00e7) != 0x00e7)
+=======
+	    (cap & 0x0062) != 0x0062)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENODEV;
 
 	for (i = 0; i < ARRAY_SIZE(jc42_chips); i++) {

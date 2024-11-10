@@ -1,12 +1,21 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2021-2022, NVIDIA CORPORATION & AFFILIATES
  */
+<<<<<<< HEAD
 #include <linux/iommufd.h>
 #include <linux/slab.h>
 #include <linux/iommu.h>
 #include <uapi/linux/iommufd.h>
 #include "../iommu-priv.h"
 
+=======
+#include <linux/iommu.h>
+#include <linux/iommufd.h>
+#include <linux/slab.h>
+#include <uapi/linux/iommufd.h>
+
+#include "../iommu-priv.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "io_pagetable.h"
 #include "iommufd_private.h"
 
@@ -327,8 +336,14 @@ static int iommufd_group_setup_msi(struct iommufd_group *igroup,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int iommufd_hwpt_paging_attach(struct iommufd_hwpt_paging *hwpt_paging,
 				      struct iommufd_device *idev)
+=======
+static int
+iommufd_device_attach_reserved_iova(struct iommufd_device *idev,
+				    struct iommufd_hwpt_paging *hwpt_paging)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int rc;
 
@@ -354,6 +369,10 @@ static int iommufd_hwpt_paging_attach(struct iommufd_hwpt_paging *hwpt_paging,
 int iommufd_hw_pagetable_attach(struct iommufd_hw_pagetable *hwpt,
 				struct iommufd_device *idev)
 {
+<<<<<<< HEAD
+=======
+	struct iommufd_hwpt_paging *hwpt_paging = find_hwpt_paging(hwpt);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int rc;
 
 	mutex_lock(&idev->igroup->lock);
@@ -363,8 +382,13 @@ int iommufd_hw_pagetable_attach(struct iommufd_hw_pagetable *hwpt,
 		goto err_unlock;
 	}
 
+<<<<<<< HEAD
 	if (hwpt_is_paging(hwpt)) {
 		rc = iommufd_hwpt_paging_attach(to_hwpt_paging(hwpt), idev);
+=======
+	if (hwpt_paging) {
+		rc = iommufd_device_attach_reserved_iova(idev, hwpt_paging);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (rc)
 			goto err_unlock;
 	}
@@ -387,9 +411,14 @@ int iommufd_hw_pagetable_attach(struct iommufd_hw_pagetable *hwpt,
 	mutex_unlock(&idev->igroup->lock);
 	return 0;
 err_unresv:
+<<<<<<< HEAD
 	if (hwpt_is_paging(hwpt))
 		iopt_remove_reserved_iova(&to_hwpt_paging(hwpt)->ioas->iopt,
 					  idev->dev);
+=======
+	if (hwpt_paging)
+		iopt_remove_reserved_iova(&hwpt_paging->ioas->iopt, idev->dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_unlock:
 	mutex_unlock(&idev->igroup->lock);
 	return rc;
@@ -399,6 +428,10 @@ struct iommufd_hw_pagetable *
 iommufd_hw_pagetable_detach(struct iommufd_device *idev)
 {
 	struct iommufd_hw_pagetable *hwpt = idev->igroup->hwpt;
+<<<<<<< HEAD
+=======
+	struct iommufd_hwpt_paging *hwpt_paging = find_hwpt_paging(hwpt);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_lock(&idev->igroup->lock);
 	list_del(&idev->group_item);
@@ -406,9 +439,14 @@ iommufd_hw_pagetable_detach(struct iommufd_device *idev)
 		iommufd_hwpt_detach_device(hwpt, idev);
 		idev->igroup->hwpt = NULL;
 	}
+<<<<<<< HEAD
 	if (hwpt_is_paging(hwpt))
 		iopt_remove_reserved_iova(&to_hwpt_paging(hwpt)->ioas->iopt,
 					  idev->dev);
+=======
+	if (hwpt_paging)
+		iopt_remove_reserved_iova(&hwpt_paging->ioas->iopt, idev->dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_unlock(&idev->igroup->lock);
 
 	/* Caller must destroy hwpt */
@@ -440,17 +478,29 @@ iommufd_group_remove_reserved_iova(struct iommufd_group *igroup,
 }
 
 static int
+<<<<<<< HEAD
 iommufd_group_do_replace_paging(struct iommufd_group *igroup,
 				struct iommufd_hwpt_paging *hwpt_paging)
 {
 	struct iommufd_hw_pagetable *old_hwpt = igroup->hwpt;
+=======
+iommufd_group_do_replace_reserved_iova(struct iommufd_group *igroup,
+				       struct iommufd_hwpt_paging *hwpt_paging)
+{
+	struct iommufd_hwpt_paging *old_hwpt_paging;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct iommufd_device *cur;
 	int rc;
 
 	lockdep_assert_held(&igroup->lock);
 
+<<<<<<< HEAD
 	if (!hwpt_is_paging(old_hwpt) ||
 	    hwpt_paging->ioas != to_hwpt_paging(old_hwpt)->ioas) {
+=======
+	old_hwpt_paging = find_hwpt_paging(igroup->hwpt);
+	if (!old_hwpt_paging || hwpt_paging->ioas != old_hwpt_paging->ioas) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		list_for_each_entry(cur, &igroup->device_list, group_item) {
 			rc = iopt_table_enforce_dev_resv_regions(
 				&hwpt_paging->ioas->iopt, cur->dev, NULL);
@@ -473,6 +523,11 @@ static struct iommufd_hw_pagetable *
 iommufd_device_do_replace(struct iommufd_device *idev,
 			  struct iommufd_hw_pagetable *hwpt)
 {
+<<<<<<< HEAD
+=======
+	struct iommufd_hwpt_paging *hwpt_paging = find_hwpt_paging(hwpt);
+	struct iommufd_hwpt_paging *old_hwpt_paging;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct iommufd_group *igroup = idev->igroup;
 	struct iommufd_hw_pagetable *old_hwpt;
 	unsigned int num_devices;
@@ -491,9 +546,14 @@ iommufd_device_do_replace(struct iommufd_device *idev,
 	}
 
 	old_hwpt = igroup->hwpt;
+<<<<<<< HEAD
 	if (hwpt_is_paging(hwpt)) {
 		rc = iommufd_group_do_replace_paging(igroup,
 						     to_hwpt_paging(hwpt));
+=======
+	if (hwpt_paging) {
+		rc = iommufd_group_do_replace_reserved_iova(igroup, hwpt_paging);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (rc)
 			goto err_unlock;
 	}
@@ -502,11 +562,18 @@ iommufd_device_do_replace(struct iommufd_device *idev,
 	if (rc)
 		goto err_unresv;
 
+<<<<<<< HEAD
 	if (hwpt_is_paging(old_hwpt) &&
 	    (!hwpt_is_paging(hwpt) ||
 	     to_hwpt_paging(hwpt)->ioas != to_hwpt_paging(old_hwpt)->ioas))
 		iommufd_group_remove_reserved_iova(igroup,
 						   to_hwpt_paging(old_hwpt));
+=======
+	old_hwpt_paging = find_hwpt_paging(old_hwpt);
+	if (old_hwpt_paging &&
+	    (!hwpt_paging || hwpt_paging->ioas != old_hwpt_paging->ioas))
+		iommufd_group_remove_reserved_iova(igroup, old_hwpt_paging);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	igroup->hwpt = hwpt;
 
@@ -524,9 +591,14 @@ iommufd_device_do_replace(struct iommufd_device *idev,
 	/* Caller must destroy old_hwpt */
 	return old_hwpt;
 err_unresv:
+<<<<<<< HEAD
 	if (hwpt_is_paging(hwpt))
 		iommufd_group_remove_reserved_iova(igroup,
 						   to_hwpt_paging(hwpt));
+=======
+	if (hwpt_paging)
+		iommufd_group_remove_reserved_iova(igroup, hwpt_paging);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_unlock:
 	mutex_unlock(&idev->igroup->lock);
 	return ERR_PTR(rc);

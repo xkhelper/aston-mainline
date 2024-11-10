@@ -19,6 +19,10 @@ enum vdpa_command {
 	VDPA_CMD_DEV_GET,		/* can dump */
 	VDPA_CMD_DEV_CONFIG_GET,	/* can dump */
 	VDPA_CMD_DEV_VSTATS_GET,
+<<<<<<< HEAD
+=======
+	VDPA_CMD_DEV_ATTR_SET,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum vdpa_attr {

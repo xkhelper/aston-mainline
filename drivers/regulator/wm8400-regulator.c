@@ -112,7 +112,11 @@ static const struct regulator_ops wm8400_dcdc_ops = {
 	.get_optimum_mode = wm8400_dcdc_get_optimum_mode,
 };
 
+<<<<<<< HEAD
 static struct regulator_desc regulators[] = {
+=======
+static const struct regulator_desc regulators[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{
 		.name = "LDO1",
 		.id = WM8400_LDO1,

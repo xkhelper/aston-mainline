@@ -12,7 +12,11 @@ key_serial_t nvme_tls_psk_default(struct key *keyring,
 		const char *hostnqn, const char *subnqn);
 
 key_serial_t nvme_keyring_id(void);
+<<<<<<< HEAD
 
+=======
+struct key *nvme_tls_key_lookup(key_serial_t key_id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else
 
 static inline key_serial_t nvme_tls_psk_default(struct key *keyring,
@@ -24,5 +28,12 @@ static inline key_serial_t nvme_keyring_id(void)
 {
 	return 0;
 }
+<<<<<<< HEAD
+=======
+static inline struct key *nvme_tls_key_lookup(key_serial_t key_id)
+{
+	return ERR_PTR(-ENOTSUPP);
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* !CONFIG_NVME_KEYRING */
 #endif /* _NVME_KEYRING_H */

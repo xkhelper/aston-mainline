@@ -870,11 +870,14 @@
 		    <&pinctrl_lsirq_default>;
 };
 
+<<<<<<< HEAD
 &xdma {
 	status = "okay";
 	memory-region = <&vga_memory>;
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &kcs2 {
 	status = "okay";
 	aspeed,lpc-io-reg = <0xca8 0xcac>;

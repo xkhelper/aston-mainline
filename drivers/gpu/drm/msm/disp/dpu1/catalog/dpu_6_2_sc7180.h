@@ -12,7 +12,10 @@ static const struct dpu_caps sc7180_dpu_caps = {
 	.max_mixer_blendstages = 0x9,
 	.has_dim_layer = true,
 	.has_idle_pc = true,
+<<<<<<< HEAD
 	.has_active_ctls = true,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.max_linewidth = DEFAULT_DPU_OUTPUT_LINE_WIDTH,
 	.pixel_ram_size = DEFAULT_PIXEL_RAM_SIZE,
 };

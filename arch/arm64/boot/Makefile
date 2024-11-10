@@ -17,7 +17,11 @@
 OBJCOPYFLAGS_Image :=-O binary -R .note -R .note.gnu.build-id -R .comment -S
 
 targets := Image Image.bz2 Image.gz Image.lz4 Image.lzma Image.lzo \
+<<<<<<< HEAD
 	Image.zst image.fit
+=======
+	Image.zst Image.xz image.fit
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 $(obj)/Image: vmlinux FORCE
 	$(call if_changed,objcopy)
@@ -40,6 +44,12 @@ $(obj)/Image.lzo: $(obj)/Image FORCE
 $(obj)/Image.zst: $(obj)/Image FORCE
 	$(call if_changed,zstd)
 
+<<<<<<< HEAD
+=======
+$(obj)/Image.xz: $(obj)/Image FORCE
+	$(call if_changed,xzkern)
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 $(obj)/image.fit: $(obj)/Image $(obj)/dts/dtbs-list FORCE
 	$(call if_changed,fit)
 

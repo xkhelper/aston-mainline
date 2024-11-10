@@ -14,12 +14,15 @@
 #define NO_IRQ_IGNORE		((unsigned int)-1)
 
 /*
+<<<<<<< HEAD
  * Simple Mask Register Support
  */
 extern void make_maskreg_irq(unsigned int irq);
 extern unsigned short *irq_mask_register;
 
 /*
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * PINT IRQs
  */
 void make_imask_irq(unsigned int irq);

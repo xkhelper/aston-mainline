@@ -84,7 +84,11 @@ struct {
 
 int enabled = 0;
 
+<<<<<<< HEAD
 int has_cpu_filter = 0;
+=======
+const volatile int has_cpu_filter = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 __u64 from_timestamp = 0;
 __u64 to_timestamp = 0;

@@ -22,6 +22,12 @@ properties:
   interrupts:
     maxItems: 1
 
+<<<<<<< HEAD
+=======
+  "#clock-cells":
+    const: 0
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   trickle-resistor-ohms:
     enum:
       - 3000

@@ -36,6 +36,7 @@ properties:
 patternProperties:
   "^(hog-[0-9]+|.+-hog(-[0-9]+)?)$":
     type: object
+<<<<<<< HEAD
 
     properties:
       gpio-hog: true
@@ -49,6 +50,10 @@ patternProperties:
       - gpios
 
     additionalProperties: false
+=======
+    required:
+      - gpio-hog
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 required:
   - compatible

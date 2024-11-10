@@ -38,7 +38,11 @@
 #include <linux/utsname.h>
 #include <scsi/scsi_device.h>
 #include <scsi/scsi_transport_fc.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <scsi/fc/fc_els.h>
 #include <scsi/fc/fc_fs.h>
 #include <scsi/fc/fc_gs.h>

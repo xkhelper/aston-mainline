@@ -56,6 +56,7 @@ static const struct regmap_config ktz8866_regmap_config = {
 	.max_register = REG_MAX,
 };
 
+<<<<<<< HEAD
 struct ktz8866 *ktz_b;
 
 static int ktz8866_write(struct ktz8866 *ktz, unsigned int reg,
@@ -67,17 +68,27 @@ static int ktz8866_write(struct ktz8866 *ktz, unsigned int reg,
 		regmap_write(ktz_b->regmap, reg, val);
 
 	return 0;
+=======
+static int ktz8866_write(struct ktz8866 *ktz, unsigned int reg,
+			 unsigned int val)
+{
+	return regmap_write(ktz->regmap, reg, val);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int ktz8866_update_bits(struct ktz8866 *ktz, unsigned int reg,
 			       unsigned int mask, unsigned int val)
 {
+<<<<<<< HEAD
 	regmap_update_bits(ktz->regmap, reg, mask, val);
 
 	if (ktz_b)
 		regmap_update_bits(ktz_b->regmap, reg, mask, val);
 
 	return 0;
+=======
+	return regmap_update_bits(ktz->regmap, reg, mask, val);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int ktz8866_backlight_update_status(struct backlight_device *backlight_dev)
@@ -138,15 +149,21 @@ static void ktz8866_init(struct ktz8866 *ktz)
 
 static int ktz8866_probe(struct i2c_client *client)
 {
+<<<<<<< HEAD
 	const struct i2c_device_id *id = i2c_client_get_device_id(client);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct backlight_device *backlight_dev;
 	struct backlight_properties props;
 	struct ktz8866 *ktz;
 	int ret = 0;
 
+<<<<<<< HEAD
 	if (id->driver_data == 1 && !ktz_b)
 		return -EPROBE_DEFER;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ktz = devm_kzalloc(&client->dev, sizeof(*ktz), GFP_KERNEL);
 	if (!ktz)
 		return -ENOMEM;
@@ -163,11 +180,14 @@ static int ktz8866_probe(struct i2c_client *client)
 	if (ret)
 		return dev_err_probe(&client->dev, ret, "get regulator vddneg failed\n");
 
+<<<<<<< HEAD
 	if (id->driver_data == 2) {
 		ktz_b = ktz;
 		goto end;
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ktz->enable_gpio = devm_gpiod_get_optional(&client->dev, "enable", GPIOD_OUT_HIGH);
 	if (IS_ERR(ktz->enable_gpio))
 		return PTR_ERR(ktz->enable_gpio);
@@ -189,7 +209,10 @@ static int ktz8866_probe(struct i2c_client *client)
 	i2c_set_clientdata(client, backlight_dev);
 	backlight_update_status(backlight_dev);
 
+<<<<<<< HEAD
 end:
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -201,17 +224,27 @@ static void ktz8866_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id ktz8866_ids[] = {
+<<<<<<< HEAD
 	{ "ktz8866", 0},
 	{ "ktz8866a", 1 },
 	{ "ktz8866b", 2 },
+=======
+	{ "ktz8866" },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 MODULE_DEVICE_TABLE(i2c, ktz8866_ids);
 
 static const struct of_device_id ktz8866_match_table[] = {
+<<<<<<< HEAD
 	{ .compatible = "kinetic,ktz8866", },
 	{ .compatible = "kinetic,ktz8866a", },
 	{ .compatible = "kinetic,ktz8866b", },
+=======
+	{
+		.compatible = "kinetic,ktz8866",
+	},
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{},
 };
 

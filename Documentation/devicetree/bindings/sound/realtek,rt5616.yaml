@@ -30,6 +30,21 @@ properties:
   reg:
     maxItems: 1
 
+<<<<<<< HEAD
+=======
+  clocks:
+    items:
+      - description: Master clock to the CODEC
+
+  clock-names:
+    items:
+      - const: mclk
+
+  port:
+    $ref: audio-graph-port.yaml#
+    unevaluatedProperties: false
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 required:
   - compatible
   - reg

@@ -36,14 +36,22 @@ struct qcom_rng {
 	void __iomem *base;
 	struct clk *clk;
 	struct hwrng hwrng;
+<<<<<<< HEAD
 	struct qcom_rng_of_data *of_data;
+=======
+	struct qcom_rng_match_data *match_data;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct qcom_rng_ctx {
 	struct qcom_rng *rng;
 };
 
+<<<<<<< HEAD
 struct qcom_rng_of_data {
+=======
+struct qcom_rng_match_data {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool skip_init;
 	bool hwrng_support;
 };
@@ -155,7 +163,11 @@ static int qcom_rng_init(struct crypto_tfm *tfm)
 
 	ctx->rng = qcom_rng_dev;
 
+<<<<<<< HEAD
 	if (!ctx->rng->of_data->skip_init)
+=======
+	if (!ctx->rng->match_data->skip_init)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return qcom_rng_enable(ctx->rng);
 
 	return 0;
@@ -196,7 +208,11 @@ static int qcom_rng_probe(struct platform_device *pdev)
 	if (IS_ERR(rng->clk))
 		return PTR_ERR(rng->clk);
 
+<<<<<<< HEAD
 	rng->of_data = (struct qcom_rng_of_data *)of_device_get_match_data(&pdev->dev);
+=======
+	rng->match_data = (struct qcom_rng_match_data *)device_get_match_data(&pdev->dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	qcom_rng_dev = rng;
 	ret = crypto_register_rng(&qcom_rng_alg);
@@ -206,7 +222,11 @@ static int qcom_rng_probe(struct platform_device *pdev)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (rng->of_data->hwrng_support) {
+=======
+	if (rng->match_data->hwrng_support) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rng->hwrng.name = "qcom_hwrng";
 		rng->hwrng.read = qcom_hwrng_read;
 		rng->hwrng.quality = QCOM_TRNG_QUALITY;
@@ -231,31 +251,53 @@ static void qcom_rng_remove(struct platform_device *pdev)
 	qcom_rng_dev = NULL;
 }
 
+<<<<<<< HEAD
 static struct qcom_rng_of_data qcom_prng_of_data = {
+=======
+static struct qcom_rng_match_data qcom_prng_match_data = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.skip_init = false,
 	.hwrng_support = false,
 };
 
+<<<<<<< HEAD
 static struct qcom_rng_of_data qcom_prng_ee_of_data = {
+=======
+static struct qcom_rng_match_data qcom_prng_ee_match_data = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.skip_init = true,
 	.hwrng_support = false,
 };
 
+<<<<<<< HEAD
 static struct qcom_rng_of_data qcom_trng_of_data = {
+=======
+static struct qcom_rng_match_data qcom_trng_match_data = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.skip_init = true,
 	.hwrng_support = true,
 };
 
 static const struct acpi_device_id __maybe_unused qcom_rng_acpi_match[] = {
+<<<<<<< HEAD
 	{ .id = "QCOM8160", .driver_data = 1 },
+=======
+	{ .id = "QCOM8160", .driver_data = (kernel_ulong_t)&qcom_prng_ee_match_data },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 MODULE_DEVICE_TABLE(acpi, qcom_rng_acpi_match);
 
 static const struct of_device_id __maybe_unused qcom_rng_of_match[] = {
+<<<<<<< HEAD
 	{ .compatible = "qcom,prng", .data = &qcom_prng_of_data },
 	{ .compatible = "qcom,prng-ee", .data = &qcom_prng_ee_of_data },
 	{ .compatible = "qcom,trng", .data = &qcom_trng_of_data },
+=======
+	{ .compatible = "qcom,prng", .data = &qcom_prng_match_data },
+	{ .compatible = "qcom,prng-ee", .data = &qcom_prng_ee_match_data },
+	{ .compatible = "qcom,trng", .data = &qcom_trng_match_data },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 MODULE_DEVICE_TABLE(of, qcom_rng_of_match);

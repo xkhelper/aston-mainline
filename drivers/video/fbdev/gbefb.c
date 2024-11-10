@@ -1247,10 +1247,17 @@ static void gbefb_remove(struct platform_device* p_dev)
 
 static struct platform_driver gbefb_driver = {
 	.probe = gbefb_probe,
+<<<<<<< HEAD
 	.remove_new = gbefb_remove,
 	.driver	= {
 		.name = "gbefb",
 		.dev_groups	= gbefb_groups,
+=======
+	.remove = gbefb_remove,
+	.driver = {
+		.name = "gbefb",
+		.dev_groups = gbefb_groups,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 };
 

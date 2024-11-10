@@ -391,6 +391,7 @@ int kvm_riscv_vcpu_pmu_read_hpm(struct kvm_vcpu *vcpu, unsigned int csr_num,
 static void kvm_pmu_clear_snapshot_area(struct kvm_vcpu *vcpu)
 {
 	struct kvm_pmu *kvpmu = vcpu_to_pmu(vcpu);
+<<<<<<< HEAD
 	int snapshot_area_size = sizeof(struct riscv_pmu_snapshot_data);
 
 	if (kvpmu->sdata) {
@@ -404,6 +405,11 @@ static void kvm_pmu_clear_snapshot_area(struct kvm_vcpu *vcpu)
 		kfree(kvpmu->sdata);
 		kvpmu->sdata = NULL;
 	}
+=======
+
+	kfree(kvpmu->sdata);
+	kvpmu->sdata = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kvpmu->snapshot_addr = INVALID_GPA;
 }
 

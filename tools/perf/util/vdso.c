@@ -308,8 +308,15 @@ static struct dso *machine__find_vdso(struct machine *machine,
 		if (!dso) {
 			dso = dsos__find(&machine->dsos, DSO__NAME_VDSO,
 					 true);
+<<<<<<< HEAD
 			if (dso && dso_type != dso__type(dso, machine))
 				dso = NULL;
+=======
+			if (dso && dso_type != dso__type(dso, machine)) {
+				dso__put(dso);
+				dso = NULL;
+			}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		break;
 	case DSO__TYPE_X32BIT:

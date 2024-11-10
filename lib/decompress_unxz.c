@@ -1,10 +1,18 @@
+<<<<<<< HEAD
+=======
+// SPDX-License-Identifier: 0BSD
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Wrapper for decompressing XZ-compressed kernel, initramfs, and initrd
  *
  * Author: Lasse Collin <lasse.collin@tukaani.org>
+<<<<<<< HEAD
  *
  * This file has been put into the public domain.
  * You can do whatever you want with this file.
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 /*
@@ -103,12 +111,19 @@
 #ifdef STATIC
 #	define XZ_PREBOOT
 #else
+<<<<<<< HEAD
 #include <linux/decompress/unxz.h>
+=======
+#	include <linux/decompress/unxz.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 #ifdef __KERNEL__
 #	include <linux/decompress/mm.h>
 #endif
+<<<<<<< HEAD
 #define XZ_EXTERN STATIC
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifndef XZ_PREBOOT
 #	include <linux/slab.h>
@@ -127,11 +142,29 @@
 #ifdef CONFIG_X86
 #	define XZ_DEC_X86
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_PPC
 #	define XZ_DEC_POWERPC
 #endif
 #ifdef CONFIG_ARM
 #	define XZ_DEC_ARM
+=======
+#if defined(CONFIG_PPC) && defined(CONFIG_CPU_BIG_ENDIAN)
+#	define XZ_DEC_POWERPC
+#endif
+#ifdef CONFIG_ARM
+#	ifdef CONFIG_THUMB2_KERNEL
+#		define XZ_DEC_ARMTHUMB
+#	else
+#		define XZ_DEC_ARM
+#	endif
+#endif
+#ifdef CONFIG_ARM64
+#	define XZ_DEC_ARM64
+#endif
+#ifdef CONFIG_RISCV
+#	define XZ_DEC_RISCV
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 #ifdef CONFIG_SPARC
 #	define XZ_DEC_SPARC
@@ -220,7 +253,11 @@ void *memmove(void *dest, const void *src, size_t size)
 #endif
 
 /*
+<<<<<<< HEAD
  * Since we need memmove anyway, would use it as memcpy too.
+=======
+ * Since we need memmove anyway, we could use it as memcpy too.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Commented out for now to avoid breaking things.
  */
 /*
@@ -390,6 +427,7 @@ error_alloc_state:
 }
 
 /*
+<<<<<<< HEAD
  * This macro is used by architecture-specific files to decompress
  * the kernel image.
  */
@@ -402,5 +440,19 @@ STATIC int INIT __decompress(unsigned char *buf, long len,
 			   void (*error)(char *x))
 {
 	return unxz(buf, len, fill, flush, out_buf, pos, error);
+=======
+ * This function is used by architecture-specific files to decompress
+ * the kernel image.
+ */
+#ifdef XZ_PREBOOT
+STATIC int INIT __decompress(unsigned char *in, long in_size,
+			     long (*fill)(void *dest, unsigned long size),
+			     long (*flush)(void *src, unsigned long size),
+			     unsigned char *out, long out_size,
+			     long *in_used,
+			     void (*error)(char *x))
+{
+	return unxz(in, in_size, fill, flush, out, in_used, error);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 #endif

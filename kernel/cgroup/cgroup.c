@@ -1972,6 +1972,16 @@ static int cgroup2_parse_param(struct fs_context *fc, struct fs_parameter *param
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
+=======
+struct cgroup_of_peak *of_peak(struct kernfs_open_file *of)
+{
+	struct cgroup_file_ctx *ctx = of->priv;
+
+	return &ctx->peak;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void apply_cgroup_root_flags(unsigned int root_flags)
 {
 	if (current->nsproxy->cgroup_ns == &init_cgroup_ns) {
@@ -2331,7 +2341,11 @@ static struct file_system_type cgroup2_fs_type = {
 	.fs_flags		= FS_USERNS_MOUNT,
 };
 
+<<<<<<< HEAD
 #ifdef CONFIG_CPUSETS
+=======
+#ifdef CONFIG_CPUSETS_V1
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct fs_context_operations cpuset_fs_context_ops = {
 	.get_tree	= cgroup1_get_tree,
 	.free		= cgroup_fs_context_free,
@@ -3669,12 +3683,49 @@ static int cgroup_events_show(struct seq_file *seq, void *v)
 static int cgroup_stat_show(struct seq_file *seq, void *v)
 {
 	struct cgroup *cgroup = seq_css(seq)->cgroup;
+<<<<<<< HEAD
 
 	seq_printf(seq, "nr_descendants %d\n",
 		   cgroup->nr_descendants);
 	seq_printf(seq, "nr_dying_descendants %d\n",
 		   cgroup->nr_dying_descendants);
 
+=======
+	struct cgroup_subsys_state *css;
+	int dying_cnt[CGROUP_SUBSYS_COUNT];
+	int ssid;
+
+	seq_printf(seq, "nr_descendants %d\n",
+		   cgroup->nr_descendants);
+
+	/*
+	 * Show the number of live and dying csses associated with each of
+	 * non-inhibited cgroup subsystems that is bound to cgroup v2.
+	 *
+	 * Without proper lock protection, racing is possible. So the
+	 * numbers may not be consistent when that happens.
+	 */
+	rcu_read_lock();
+	for (ssid = 0; ssid < CGROUP_SUBSYS_COUNT; ssid++) {
+		dying_cnt[ssid] = -1;
+		if ((BIT(ssid) & cgrp_dfl_inhibit_ss_mask) ||
+		    (cgroup_subsys[ssid]->root !=  &cgrp_dfl_root))
+			continue;
+		css = rcu_dereference_raw(cgroup->subsys[ssid]);
+		dying_cnt[ssid] = cgroup->nr_dying_subsys[ssid];
+		seq_printf(seq, "nr_subsys_%s %d\n", cgroup_subsys[ssid]->name,
+			   css ? (css->nr_descendants + 1) : 0);
+	}
+
+	seq_printf(seq, "nr_dying_descendants %d\n",
+		   cgroup->nr_dying_descendants);
+	for (ssid = 0; ssid < CGROUP_SUBSYS_COUNT; ssid++) {
+		if (dying_cnt[ssid] >= 0)
+			seq_printf(seq, "nr_dying_subsys_%s %d\n",
+				   cgroup_subsys[ssid]->name, dying_cnt[ssid]);
+	}
+	rcu_read_unlock();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -4096,7 +4147,11 @@ static ssize_t cgroup_file_write(struct kernfs_open_file *of, char *buf,
 	 * If namespaces are delegation boundaries, disallow writes to
 	 * files in an non-init namespace root from inside the namespace
 	 * except for the files explicitly marked delegatable -
+<<<<<<< HEAD
 	 * cgroup.procs and cgroup.subtree_control.
+=======
+	 * eg. cgroup.procs, cgroup.threads and cgroup.subtree_control.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	if ((cgrp->root->flags & CGRP_ROOT_NS_DELEGATE) &&
 	    !(cft->flags & CFTYPE_NS_DELEGATABLE) &&
@@ -4595,8 +4650,14 @@ struct cgroup_subsys_state *css_next_child(struct cgroup_subsys_state *pos,
  *
  * While this function requires cgroup_mutex or RCU read locking, it
  * doesn't require the whole traversal to be contained in a single critical
+<<<<<<< HEAD
  * section.  This function will return the correct next descendant as long
  * as both @pos and @root are accessible and @pos is a descendant of @root.
+=======
+ * section. Additionally, it isn't necessary to hold onto a reference to @pos.
+ * This function will return the correct next descendant as long as both @pos
+ * and @root are accessible and @pos is a descendant of @root.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * If a subsystem synchronizes ->css_online() and the start of iteration, a
  * css which finished ->css_online() is guaranteed to be visible in the
@@ -4644,8 +4705,14 @@ EXPORT_SYMBOL_GPL(css_next_descendant_pre);
  *
  * While this function requires cgroup_mutex or RCU read locking, it
  * doesn't require the whole traversal to be contained in a single critical
+<<<<<<< HEAD
  * section.  This function will return the correct rightmost descendant as
  * long as @pos is accessible.
+=======
+ * section. Additionally, it isn't necessary to hold onto a reference to @pos.
+ * This function will return the correct rightmost descendant as long as @pos
+ * is accessible.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct cgroup_subsys_state *
 css_rightmost_descendant(struct cgroup_subsys_state *pos)
@@ -4689,9 +4756,15 @@ css_leftmost_descendant(struct cgroup_subsys_state *pos)
  *
  * While this function requires cgroup_mutex or RCU read locking, it
  * doesn't require the whole traversal to be contained in a single critical
+<<<<<<< HEAD
  * section.  This function will return the correct next descendant as long
  * as both @pos and @cgroup are accessible and @pos is a descendant of
  * @cgroup.
+=======
+ * section. Additionally, it isn't necessary to hold onto a reference to @pos.
+ * This function will return the correct next descendant as long as both @pos
+ * and @cgroup are accessible and @pos is a descendant of @cgroup.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * If a subsystem synchronizes ->css_online() and the start of iteration, a
  * css which finished ->css_online() is guaranteed to be visible in the
@@ -5424,6 +5497,11 @@ static void css_release_work_fn(struct work_struct *work)
 	list_del_rcu(&css->sibling);
 
 	if (ss) {
+<<<<<<< HEAD
+=======
+		struct cgroup *parent_cgrp;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* css release path */
 		if (!list_empty(&css->rstat_css_node)) {
 			cgroup_rstat_flush(cgrp);
@@ -5433,6 +5511,24 @@ static void css_release_work_fn(struct work_struct *work)
 		cgroup_idr_replace(&ss->css_idr, NULL, css->id);
 		if (ss->css_released)
 			ss->css_released(css);
+<<<<<<< HEAD
+=======
+
+		cgrp->nr_dying_subsys[ss->id]--;
+		/*
+		 * When a css is released and ready to be freed, its
+		 * nr_descendants must be zero. However, the corresponding
+		 * cgrp->nr_dying_subsys[ss->id] may not be 0 if a subsystem
+		 * is activated and deactivated multiple times with one or
+		 * more of its previous activation leaving behind dying csses.
+		 */
+		WARN_ON_ONCE(css->nr_descendants);
+		parent_cgrp = cgroup_parent(cgrp);
+		while (parent_cgrp) {
+			parent_cgrp->nr_dying_subsys[ss->id]--;
+			parent_cgrp = cgroup_parent(parent_cgrp);
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		struct cgroup *tcgrp;
 
@@ -5517,8 +5613,16 @@ static int online_css(struct cgroup_subsys_state *css)
 		rcu_assign_pointer(css->cgroup->subsys[ss->id], css);
 
 		atomic_inc(&css->online_cnt);
+<<<<<<< HEAD
 		if (css->parent)
 			atomic_inc(&css->parent->online_cnt);
+=======
+		if (css->parent) {
+			atomic_inc(&css->parent->online_cnt);
+			while ((css = css->parent))
+				css->nr_descendants++;
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return ret;
 }
@@ -5540,6 +5644,19 @@ static void offline_css(struct cgroup_subsys_state *css)
 	RCU_INIT_POINTER(css->cgroup->subsys[ss->id], NULL);
 
 	wake_up_all(&css->cgroup->offline_waitq);
+<<<<<<< HEAD
+=======
+
+	css->cgroup->nr_dying_subsys[ss->id]++;
+	/*
+	 * Parent css and cgroup cannot be freed until after the freeing
+	 * of child css, see css_free_rwork_fn().
+	 */
+	while ((css = css->parent)) {
+		css->nr_descendants--;
+		css->cgroup->nr_dying_subsys[ss->id]++;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -5722,7 +5839,11 @@ static bool cgroup_check_hierarchy_limits(struct cgroup *parent)
 {
 	struct cgroup *cgroup;
 	int ret = false;
+<<<<<<< HEAD
 	int level = 1;
+=======
+	int level = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	lockdep_assert_held(&cgroup_mutex);
 
@@ -5730,7 +5851,11 @@ static bool cgroup_check_hierarchy_limits(struct cgroup *parent)
 		if (cgroup->nr_descendants >= cgroup->max_descendants)
 			goto fail;
 
+<<<<<<< HEAD
 		if (level > cgroup->max_depth)
+=======
+		if (level >= cgroup->max_depth)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto fail;
 
 		level++;
@@ -6178,7 +6303,11 @@ int __init cgroup_init(void)
 	WARN_ON(register_filesystem(&cgroup_fs_type));
 	WARN_ON(register_filesystem(&cgroup2_fs_type));
 	WARN_ON(!proc_create_single("cgroups", 0, NULL, proc_cgroupstats_show));
+<<<<<<< HEAD
 #ifdef CONFIG_CPUSETS
+=======
+#ifdef CONFIG_CPUSETS_V1
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	WARN_ON(register_filesystem(&cpuset_fs_type));
 #endif
 
@@ -6901,10 +7030,17 @@ struct cgroup *cgroup_v1v2_get_from_fd(int fd)
 {
 	struct cgroup *cgrp;
 	struct fd f = fdget_raw(fd);
+<<<<<<< HEAD
 	if (!f.file)
 		return ERR_PTR(-EBADF);
 
 	cgrp = cgroup_v1v2_get_from_file(f.file);
+=======
+	if (!fd_file(f))
+		return ERR_PTR(-EBADF);
+
+	cgrp = cgroup_v1v2_get_from_file(fd_file(f));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fdput(f);
 	return cgrp;
 }

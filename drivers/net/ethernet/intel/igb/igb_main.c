@@ -907,7 +907,11 @@ static int igb_request_msix(struct igb_adapter *adapter)
 	int i, err = 0, vector = 0, free_vector = 0;
 
 	err = request_irq(adapter->msix_entries[vector].vector,
+<<<<<<< HEAD
 			  igb_msix_other, 0, netdev->name, adapter);
+=======
+			  igb_msix_other, IRQF_NO_THREAD, netdev->name, adapter);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err)
 		goto err_out;
 
@@ -9651,6 +9655,13 @@ static void igb_io_resume(struct pci_dev *pdev)
 	struct igb_adapter *adapter = netdev_priv(netdev);
 
 	if (netif_running(netdev)) {
+<<<<<<< HEAD
+=======
+		if (!test_bit(__IGB_DOWN, &adapter->state)) {
+			dev_dbg(&pdev->dev, "Resuming from non-fatal error, do nothing.\n");
+			return;
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (igb_up(adapter)) {
 			dev_err(&pdev->dev, "igb_up failed after reset\n");
 			return;

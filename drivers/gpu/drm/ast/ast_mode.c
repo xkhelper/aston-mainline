@@ -34,10 +34,15 @@
 
 #include <drm/drm_atomic.h>
 #include <drm/drm_atomic_helper.h>
+<<<<<<< HEAD
 #include <drm/drm_atomic_state_helper.h>
 #include <drm/drm_crtc.h>
 #include <drm/drm_damage_helper.h>
 #include <drm/drm_edid.h>
+=======
+#include <drm/drm_crtc.h>
+#include <drm/drm_damage_helper.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <drm/drm_format_helper.h>
 #include <drm/drm_fourcc.h>
 #include <drm/drm_gem_atomic_helper.h>
@@ -47,7 +52,10 @@
 #include <drm/drm_panic.h>
 #include <drm/drm_probe_helper.h>
 
+<<<<<<< HEAD
 #include "ast_ddc.h"
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "ast_drv.h"
 #include "ast_tables.h"
 
@@ -1311,6 +1319,7 @@ static int ast_crtc_init(struct drm_device *dev)
 }
 
 /*
+<<<<<<< HEAD
  * VGA Encoder
  */
 
@@ -1876,6 +1885,8 @@ static int ast_bmc_output_init(struct ast_device *ast,
 }
 
 /*
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Mode config
  */
 
@@ -1926,7 +1937,10 @@ static const struct drm_mode_config_funcs ast_mode_config_funcs = {
 int ast_mode_config_init(struct ast_device *ast)
 {
 	struct drm_device *dev = &ast->base;
+<<<<<<< HEAD
 	struct drm_connector *physical_connector = NULL;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	ret = drmm_mutex_init(dev, &ast->modeset_lock);
@@ -1971,29 +1985,42 @@ int ast_mode_config_init(struct ast_device *ast)
 		ret = ast_vga_output_init(ast);
 		if (ret)
 			return ret;
+<<<<<<< HEAD
 		physical_connector = &ast->output.vga.connector;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	if (ast->tx_chip_types & AST_TX_SIL164_BIT) {
 		ret = ast_sil164_output_init(ast);
 		if (ret)
 			return ret;
+<<<<<<< HEAD
 		physical_connector = &ast->output.sil164.connector;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	if (ast->tx_chip_types & AST_TX_DP501_BIT) {
 		ret = ast_dp501_output_init(ast);
 		if (ret)
 			return ret;
+<<<<<<< HEAD
 		physical_connector = &ast->output.dp501.connector;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	if (ast->tx_chip_types & AST_TX_ASTDP_BIT) {
 		ret = ast_astdp_output_init(ast);
 		if (ret)
 			return ret;
+<<<<<<< HEAD
 		physical_connector = &ast->output.astdp.connector;
 	}
 	ret = ast_bmc_output_init(ast, physical_connector);
 	if (ret)
 		return ret;
+=======
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	drm_mode_config_reset(dev);
 

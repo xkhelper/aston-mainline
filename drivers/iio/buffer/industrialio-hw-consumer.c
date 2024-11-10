@@ -52,6 +52,10 @@ static const struct iio_buffer_access_funcs iio_hw_buf_access = {
 static struct hw_consumer_buffer *iio_hw_consumer_get_buffer(
 	struct iio_hw_consumer *hwc, struct iio_dev *indio_dev)
 {
+<<<<<<< HEAD
+=======
+	unsigned int mask_longs = BITS_TO_LONGS(iio_get_masklength(indio_dev));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct hw_consumer_buffer *buf;
 
 	list_for_each_entry(buf, &hwc->buffers, head) {
@@ -59,8 +63,12 @@ static struct hw_consumer_buffer *iio_hw_consumer_get_buffer(
 			return buf;
 	}
 
+<<<<<<< HEAD
 	buf = kzalloc(struct_size(buf, scan_mask, BITS_TO_LONGS(indio_dev->masklength)),
 		      GFP_KERNEL);
+=======
+	buf = kzalloc(struct_size(buf, scan_mask, mask_longs), GFP_KERNEL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!buf)
 		return NULL;
 

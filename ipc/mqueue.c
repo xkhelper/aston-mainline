@@ -1085,20 +1085,35 @@ static int do_mq_timedsend(mqd_t mqdes, const char __user *u_msg_ptr,
 	audit_mq_sendrecv(mqdes, msg_len, msg_prio, ts);
 
 	f = fdget(mqdes);
+<<<<<<< HEAD
 	if (unlikely(!f.file)) {
+=======
+	if (unlikely(!fd_file(f))) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EBADF;
 		goto out;
 	}
 
+<<<<<<< HEAD
 	inode = file_inode(f.file);
 	if (unlikely(f.file->f_op != &mqueue_file_operations)) {
+=======
+	inode = file_inode(fd_file(f));
+	if (unlikely(fd_file(f)->f_op != &mqueue_file_operations)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EBADF;
 		goto out_fput;
 	}
 	info = MQUEUE_I(inode);
+<<<<<<< HEAD
 	audit_file(f.file);
 
 	if (unlikely(!(f.file->f_mode & FMODE_WRITE))) {
+=======
+	audit_file(fd_file(f));
+
+	if (unlikely(!(fd_file(f)->f_mode & FMODE_WRITE))) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EBADF;
 		goto out_fput;
 	}
@@ -1138,7 +1153,11 @@ static int do_mq_timedsend(mqd_t mqdes, const char __user *u_msg_ptr,
 	}
 
 	if (info->attr.mq_curmsgs == info->attr.mq_maxmsg) {
+<<<<<<< HEAD
 		if (f.file->f_flags & O_NONBLOCK) {
+=======
+		if (fd_file(f)->f_flags & O_NONBLOCK) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ret = -EAGAIN;
 		} else {
 			wait.task = current;
@@ -1199,20 +1218,35 @@ static int do_mq_timedreceive(mqd_t mqdes, char __user *u_msg_ptr,
 	audit_mq_sendrecv(mqdes, msg_len, 0, ts);
 
 	f = fdget(mqdes);
+<<<<<<< HEAD
 	if (unlikely(!f.file)) {
+=======
+	if (unlikely(!fd_file(f))) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EBADF;
 		goto out;
 	}
 
+<<<<<<< HEAD
 	inode = file_inode(f.file);
 	if (unlikely(f.file->f_op != &mqueue_file_operations)) {
+=======
+	inode = file_inode(fd_file(f));
+	if (unlikely(fd_file(f)->f_op != &mqueue_file_operations)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EBADF;
 		goto out_fput;
 	}
 	info = MQUEUE_I(inode);
+<<<<<<< HEAD
 	audit_file(f.file);
 
 	if (unlikely(!(f.file->f_mode & FMODE_READ))) {
+=======
+	audit_file(fd_file(f));
+
+	if (unlikely(!(fd_file(f)->f_mode & FMODE_READ))) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EBADF;
 		goto out_fput;
 	}
@@ -1242,7 +1276,11 @@ static int do_mq_timedreceive(mqd_t mqdes, char __user *u_msg_ptr,
 	}
 
 	if (info->attr.mq_curmsgs == 0) {
+<<<<<<< HEAD
 		if (f.file->f_flags & O_NONBLOCK) {
+=======
+		if (fd_file(f)->f_flags & O_NONBLOCK) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			spin_unlock(&info->lock);
 			ret = -EAGAIN;
 		} else {
@@ -1356,11 +1394,19 @@ static int do_mq_notify(mqd_t mqdes, const struct sigevent *notification)
 			/* and attach it to the socket */
 retry:
 			f = fdget(notification->sigev_signo);
+<<<<<<< HEAD
 			if (!f.file) {
 				ret = -EBADF;
 				goto out;
 			}
 			sock = netlink_getsockbyfilp(f.file);
+=======
+			if (!fd_file(f)) {
+				ret = -EBADF;
+				goto out;
+			}
+			sock = netlink_getsockbyfilp(fd_file(f));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			fdput(f);
 			if (IS_ERR(sock)) {
 				ret = PTR_ERR(sock);
@@ -1379,13 +1425,22 @@ retry:
 	}
 
 	f = fdget(mqdes);
+<<<<<<< HEAD
 	if (!f.file) {
+=======
+	if (!fd_file(f)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EBADF;
 		goto out;
 	}
 
+<<<<<<< HEAD
 	inode = file_inode(f.file);
 	if (unlikely(f.file->f_op != &mqueue_file_operations)) {
+=======
+	inode = file_inode(fd_file(f));
+	if (unlikely(fd_file(f)->f_op != &mqueue_file_operations)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EBADF;
 		goto out_fput;
 	}
@@ -1460,21 +1515,33 @@ static int do_mq_getsetattr(int mqdes, struct mq_attr *new, struct mq_attr *old)
 		return -EINVAL;
 
 	f = fdget(mqdes);
+<<<<<<< HEAD
 	if (!f.file)
 		return -EBADF;
 
 	if (unlikely(f.file->f_op != &mqueue_file_operations)) {
+=======
+	if (!fd_file(f))
+		return -EBADF;
+
+	if (unlikely(fd_file(f)->f_op != &mqueue_file_operations)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fdput(f);
 		return -EBADF;
 	}
 
+<<<<<<< HEAD
 	inode = file_inode(f.file);
+=======
+	inode = file_inode(fd_file(f));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	info = MQUEUE_I(inode);
 
 	spin_lock(&info->lock);
 
 	if (old) {
 		*old = info->attr;
+<<<<<<< HEAD
 		old->mq_flags = f.file->f_flags & O_NONBLOCK;
 	}
 	if (new) {
@@ -1485,6 +1552,18 @@ static int do_mq_getsetattr(int mqdes, struct mq_attr *new, struct mq_attr *old)
 		else
 			f.file->f_flags &= ~O_NONBLOCK;
 		spin_unlock(&f.file->f_lock);
+=======
+		old->mq_flags = fd_file(f)->f_flags & O_NONBLOCK;
+	}
+	if (new) {
+		audit_mq_getsetattr(mqdes, new);
+		spin_lock(&fd_file(f)->f_lock);
+		if (new->mq_flags & O_NONBLOCK)
+			fd_file(f)->f_flags |= O_NONBLOCK;
+		else
+			fd_file(f)->f_flags &= ~O_NONBLOCK;
+		spin_unlock(&fd_file(f)->f_lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		inode_set_atime_to_ts(inode, inode_set_ctime_current(inode));
 	}

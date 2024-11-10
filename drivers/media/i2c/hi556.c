@@ -1,7 +1,11 @@
 // SPDX-License-Identifier: GPL-2.0
 // Copyright (c) 2019 Intel Corporation.
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/acpi.h>
 #include <linux/clk.h>
 #include <linux/delay.h>

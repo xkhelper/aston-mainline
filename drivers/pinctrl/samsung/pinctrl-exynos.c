@@ -662,7 +662,11 @@ static void exynos_irq_demux_eint16_31(struct irq_desc *desc)
 __init int exynos_eint_wkup_init(struct samsung_pinctrl_drv_data *d)
 {
 	struct device *dev = d->dev;
+<<<<<<< HEAD
 	struct device_node *wkup_np = NULL;
+=======
+	struct device_node *wkup_np __free(device_node) = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct device_node *np;
 	struct samsung_pin_bank *bank;
 	struct exynos_weint_data *weint_data;
@@ -692,17 +696,25 @@ __init int exynos_eint_wkup_init(struct samsung_pinctrl_drv_data *d)
 
 		bank->irq_chip = devm_kmemdup(dev, irq_chip, sizeof(*irq_chip),
 					      GFP_KERNEL);
+<<<<<<< HEAD
 		if (!bank->irq_chip) {
 			of_node_put(wkup_np);
 			return -ENOMEM;
 		}
+=======
+		if (!bank->irq_chip)
+			return -ENOMEM;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		bank->irq_chip->chip.name = bank->name;
 
 		bank->irq_domain = irq_domain_create_linear(bank->fwnode,
 				bank->nr_pins, &exynos_eint_irqd_ops, bank);
 		if (!bank->irq_domain) {
 			dev_err(dev, "wkup irq domain add failed\n");
+<<<<<<< HEAD
 			of_node_put(wkup_np);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -ENXIO;
 		}
 
@@ -715,10 +727,15 @@ __init int exynos_eint_wkup_init(struct samsung_pinctrl_drv_data *d)
 		weint_data = devm_kcalloc(dev,
 					  bank->nr_pins, sizeof(*weint_data),
 					  GFP_KERNEL);
+<<<<<<< HEAD
 		if (!weint_data) {
 			of_node_put(wkup_np);
 			return -ENOMEM;
 		}
+=======
+		if (!weint_data)
+			return -ENOMEM;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		for (idx = 0; idx < bank->nr_pins; ++idx) {
 			irq = irq_of_parse_and_map(to_of_node(bank->fwnode), idx);
@@ -735,6 +752,7 @@ __init int exynos_eint_wkup_init(struct samsung_pinctrl_drv_data *d)
 		}
 	}
 
+<<<<<<< HEAD
 	if (!muxed_banks) {
 		of_node_put(wkup_np);
 		return 0;
@@ -742,6 +760,12 @@ __init int exynos_eint_wkup_init(struct samsung_pinctrl_drv_data *d)
 
 	irq = irq_of_parse_and_map(wkup_np, 0);
 	of_node_put(wkup_np);
+=======
+	if (!muxed_banks)
+		return 0;
+
+	irq = irq_of_parse_and_map(wkup_np, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!irq) {
 		dev_err(dev, "irq number for muxed EINTs not found\n");
 		return 0;

@@ -262,9 +262,15 @@ static struct clk_hw *visconti_register_pll(struct visconti_pll_provider *ctx,
 	for (len = 0; rate_table[len].rate != 0; )
 		len++;
 	pll->rate_count = len;
+<<<<<<< HEAD
 	pll->rate_table = kmemdup(rate_table,
 				  pll->rate_count * sizeof(struct visconti_pll_rate_table),
 				  GFP_KERNEL);
+=======
+	pll->rate_table = kmemdup_array(rate_table,
+					pll->rate_count, sizeof(*pll->rate_table),
+					GFP_KERNEL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	WARN(!pll->rate_table, "%s: could not allocate rate table for %s\n", __func__, name);
 
 	init.ops = &visconti_pll_ops;

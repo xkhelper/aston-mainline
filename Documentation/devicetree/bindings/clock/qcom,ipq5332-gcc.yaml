@@ -31,6 +31,11 @@ properties:
       - description: USB PCIE wrapper pipe clock source
 
   '#power-domain-cells': false
+<<<<<<< HEAD
+=======
+  '#interconnect-cells':
+    const: 1
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 required:
   - compatible

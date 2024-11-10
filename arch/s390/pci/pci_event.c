@@ -280,11 +280,24 @@ static void __zpci_event_error(struct zpci_ccdf_err *ccdf)
 		goto no_pdev;
 
 	switch (ccdf->pec) {
+<<<<<<< HEAD
 	case 0x003a: /* Service Action or Error Recovery Successful */
+=======
+	case 0x002a: /* Error event concerns FMB */
+	case 0x002b:
+	case 0x002c:
+		break;
+	case 0x0040: /* Service Action or Error Recovery Failed */
+	case 0x003b:
+		zpci_event_io_failure(pdev, pci_channel_io_perm_failure);
+		break;
+	default: /* PCI function left in the error state attempt to recover */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ers_res = zpci_event_attempt_error_recovery(pdev);
 		if (ers_res != PCI_ERS_RESULT_RECOVERED)
 			zpci_event_io_failure(pdev, pci_channel_io_perm_failure);
 		break;
+<<<<<<< HEAD
 	default:
 		/*
 		 * Mark as frozen not permanently failed because the device
@@ -292,6 +305,8 @@ static void __zpci_event_error(struct zpci_ccdf_err *ccdf)
 		 */
 		zpci_event_io_failure(pdev, pci_channel_io_frozen);
 		break;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	pci_dev_put(pdev);
 no_pdev:

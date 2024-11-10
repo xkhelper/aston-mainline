@@ -5,6 +5,7 @@
 #include <linux/types.h>
 #include <asm/numa.h>
 
+<<<<<<< HEAD
 struct numa_memblk {
 	u64			start;
 	u64			end;
@@ -31,4 +32,8 @@ static inline void numa_emulation(struct numa_meminfo *numa_meminfo,
 { }
 #endif
 
+=======
+void __init x86_numa_init(void);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif	/* __X86_MM_NUMA_INTERNAL_H */

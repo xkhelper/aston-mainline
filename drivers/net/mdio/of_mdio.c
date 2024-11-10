@@ -390,7 +390,11 @@ EXPORT_SYMBOL(of_phy_get_and_connect);
 bool of_phy_is_fixed_link(struct device_node *np)
 {
 	struct device_node *dn;
+<<<<<<< HEAD
 	int len, err;
+=======
+	int err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const char *managed;
 
 	/* New binding */
@@ -405,8 +409,12 @@ bool of_phy_is_fixed_link(struct device_node *np)
 		return true;
 
 	/* Old binding */
+<<<<<<< HEAD
 	if (of_get_property(np, "fixed-link", &len) &&
 	    len == (5 * sizeof(__be32)))
+=======
+	if (of_property_count_u32_elems(np, "fixed-link") == 5)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return true;
 
 	return false;

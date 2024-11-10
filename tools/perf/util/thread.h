@@ -26,6 +26,10 @@ struct lbr_stitch {
 	struct list_head		free_lists;
 	struct perf_sample		prev_sample;
 	struct callchain_cursor_node	*prev_lbr_cursor;
+<<<<<<< HEAD
+=======
+	unsigned int prev_lbr_cursor_size;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 DECLARE_RC_STRUCT(thread) {

@@ -285,7 +285,10 @@ static void ipw_close(struct usb_serial_port *port)
 
 static struct usb_serial_driver ipw_device = {
 	.driver = {
+<<<<<<< HEAD
 		.owner =	THIS_MODULE,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name =		"ipw",
 	},
 	.description =		"IPWireless converter",

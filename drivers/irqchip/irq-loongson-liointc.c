@@ -22,6 +22,11 @@
 #include <asm/loongson.h>
 #endif
 
+<<<<<<< HEAD
+=======
+#include "irq-loongson.h"
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define LIOINTC_CHIP_IRQ	32
 #define LIOINTC_NUM_PARENT	4
 #define LIOINTC_NUM_CORES	4

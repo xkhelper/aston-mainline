@@ -4,7 +4,11 @@
  * Copyright (c) 2018 Johannes Thumshirn, SUSE Linux GmbH
  */
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "trace.h"
 
 static const char *nvmet_trace_admin_identify(struct trace_seq *p, u8 *cdw10)

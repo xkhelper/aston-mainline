@@ -1,10 +1,18 @@
+<<<<<<< HEAD
+=======
+// SPDX-License-Identifier: 0BSD
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * .xz Stream decoder
  *
  * Author: Lasse Collin <lasse.collin@tukaani.org>
+<<<<<<< HEAD
  *
  * This file has been put into the public domain.
  * You can do whatever you want with this file.
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 #include "xz_private.h"
@@ -747,7 +755,11 @@ static enum xz_ret dec_main(struct xz_dec *s, struct xz_buf *b)
  * actually succeeds (that's the price to pay of using the output buffer as
  * the workspace).
  */
+<<<<<<< HEAD
 XZ_EXTERN enum xz_ret xz_dec_run(struct xz_dec *s, struct xz_buf *b)
+=======
+enum xz_ret xz_dec_run(struct xz_dec *s, struct xz_buf *b)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	size_t in_start;
 	size_t out_start;
@@ -783,7 +795,11 @@ XZ_EXTERN enum xz_ret xz_dec_run(struct xz_dec *s, struct xz_buf *b)
 	return ret;
 }
 
+<<<<<<< HEAD
 XZ_EXTERN struct xz_dec *xz_dec_init(enum xz_mode mode, uint32_t dict_max)
+=======
+struct xz_dec *xz_dec_init(enum xz_mode mode, uint32_t dict_max)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct xz_dec *s = kmalloc(sizeof(*s), GFP_KERNEL);
 	if (s == NULL)
@@ -813,7 +829,11 @@ error_bcj:
 	return NULL;
 }
 
+<<<<<<< HEAD
 XZ_EXTERN void xz_dec_reset(struct xz_dec *s)
+=======
+void xz_dec_reset(struct xz_dec *s)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	s->sequence = SEQ_STREAM_HEADER;
 	s->allow_buf_error = false;
@@ -825,7 +845,11 @@ XZ_EXTERN void xz_dec_reset(struct xz_dec *s)
 	s->temp.size = STREAM_HEADER_SIZE;
 }
 
+<<<<<<< HEAD
 XZ_EXTERN void xz_dec_end(struct xz_dec *s)
+=======
+void xz_dec_end(struct xz_dec *s)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (s != NULL) {
 		xz_dec_lzma2_end(s->lzma2);

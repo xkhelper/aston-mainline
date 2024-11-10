@@ -30,6 +30,11 @@ select:
           - marvell,armada-3700-ahci
           - marvell,armada-8k-ahci
           - marvell,berlin2q-ahci
+<<<<<<< HEAD
+=======
+          - qcom,apq8064-ahci
+          - qcom,ipq806x-ahci
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - socionext,uniphier-pro4-ahci
           - socionext,uniphier-pxs2-ahci
           - socionext,uniphier-pxs3-ahci
@@ -45,6 +50,11 @@ properties:
               - marvell,armada-8k-ahci
               - marvell,berlin2-ahci
               - marvell,berlin2q-ahci
+<<<<<<< HEAD
+=======
+              - qcom,apq8064-ahci
+              - qcom,ipq806x-ahci
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - socionext,uniphier-pro4-ahci
               - socionext,uniphier-pxs2-ahci
               - socionext,uniphier-pxs3-ahci
@@ -64,11 +74,19 @@ properties:
 
   clocks:
     minItems: 1
+<<<<<<< HEAD
     maxItems: 3
 
   clock-names:
     minItems: 1
     maxItems: 3
+=======
+    maxItems: 5
+
+  clock-names:
+    minItems: 1
+    maxItems: 5
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   interrupts:
     maxItems: 1
@@ -97,6 +115,34 @@ required:
 
 allOf:
   - $ref: ahci-common.yaml#
+<<<<<<< HEAD
+=======
+
+  - if:
+      properties:
+        compatible:
+          contains:
+            enum:
+              - qcom,apq8064-ahci
+              - qcom,ipq806x-ahci
+    then:
+      properties:
+        clocks:
+          minItems: 5
+        clock-names:
+          items:
+            - const: slave_iface
+            - const: iface
+            - const: core
+            - const: rxoob
+            - const: pmalive
+      required:
+        - phys
+        - phy-names
+        - clocks
+        - clock-names
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - if:
       properties:
         compatible:

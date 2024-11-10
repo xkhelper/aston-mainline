@@ -500,7 +500,10 @@ static void ssu100_process_read_urb(struct urb *urb)
 
 static struct usb_serial_driver ssu100_device = {
 	.driver = {
+<<<<<<< HEAD
 		.owner = THIS_MODULE,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name = "ssu100",
 	},
 	.description	     = DRIVER_DESC,

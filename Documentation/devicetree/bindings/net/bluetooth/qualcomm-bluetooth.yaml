@@ -72,7 +72,11 @@ properties:
     description: VDD_RFA_CMN supply regulator handle
 
   vddrfa0p8-supply:
+<<<<<<< HEAD
     description: VDD_RFA_0P8 suppply regulator handle
+=======
+    description: VDD_RFA_0P8 supply regulator handle
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   vddrfa1p7-supply:
     description: VDD_RFA_1P7 supply regulator handle
@@ -98,8 +102,12 @@ properties:
   vddwlmx-supply:
     description: VDD_WLMX supply regulator handle
 
+<<<<<<< HEAD
   max-speed:
     description: see Documentation/devicetree/bindings/serial/serial.yaml
+=======
+  max-speed: true
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   firmware-name:
     description: specify the name of nvm firmware to load
@@ -118,6 +126,10 @@ additionalProperties: false
 
 allOf:
   - $ref: bluetooth-controller.yaml#
+<<<<<<< HEAD
+=======
+  - $ref: /schemas/serial/serial-peripheral-props.yaml#
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - if:
       properties:
         compatible:
@@ -172,6 +184,7 @@ allOf:
               - qcom,wcn6855-bt
     then:
       required:
+<<<<<<< HEAD
         - enable-gpios
         - swctrl-gpios
         - vddio-supply
@@ -180,6 +193,16 @@ allOf:
         - vddrfa0p8-supply
         - vddrfa1p2-supply
         - vddrfa1p7-supply
+=======
+        - vddrfacmn-supply
+        - vddaon-supply
+        - vddwlcx-supply
+        - vddwlmx-supply
+        - vddbtcmx-supply
+        - vddrfa0p8-supply
+        - vddrfa1p2-supply
+        - vddrfa1p8-supply
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - if:
       properties:
         compatible:

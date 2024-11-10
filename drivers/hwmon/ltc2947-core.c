@@ -11,7 +11,12 @@
 #include <linux/hwmon.h>
 #include <linux/hwmon-sysfs.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/of.h>
+=======
+#include <linux/mod_devicetable.h>
+#include <linux/property.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/regmap.h>
 
 #include "ltc2947.h"
@@ -1034,9 +1039,14 @@ static int ltc2947_setup(struct ltc2947_data *st)
 		/* 19.89E-6 * 10E9 */
 		st->lsb_energy = 19890;
 	}
+<<<<<<< HEAD
 	ret = of_property_read_u32_array(st->dev->of_node,
 					 "adi,accumulator-ctl-pol", accum,
 					  ARRAY_SIZE(accum));
+=======
+	ret = device_property_read_u32_array(st->dev, "adi,accumulator-ctl-pol",
+					     accum, ARRAY_SIZE(accum));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ret) {
 		u32 accum_reg = LTC2947_ACCUM_POL_1(accum[0]) |
 				LTC2947_ACCUM_POL_2(accum[1]);
@@ -1045,9 +1055,15 @@ static int ltc2947_setup(struct ltc2947_data *st)
 		if (ret)
 			return ret;
 	}
+<<<<<<< HEAD
 	ret = of_property_read_u32(st->dev->of_node,
 				   "adi,accumulation-deadband-microamp",
 				   &deadband);
+=======
+	ret = device_property_read_u32(st->dev,
+				       "adi,accumulation-deadband-microamp",
+				       &deadband);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ret) {
 		/* the LSB is the same as the current, so 3mA */
 		ret = regmap_write(st->map, LTC2947_REG_ACCUM_DEADBAND,
@@ -1056,7 +1072,11 @@ static int ltc2947_setup(struct ltc2947_data *st)
 			return ret;
 	}
 	/* check gpio cfg */
+<<<<<<< HEAD
 	ret = of_property_read_u32(st->dev->of_node, "adi,gpio-out-pol", &pol);
+=======
+	ret = device_property_read_u32(st->dev, "adi,gpio-out-pol", &pol);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ret) {
 		/* setup GPIO as output */
 		u32 gpio_ctl = LTC2947_GPIO_EN(1) | LTC2947_GPIO_FAN_EN(1) |
@@ -1067,8 +1087,13 @@ static int ltc2947_setup(struct ltc2947_data *st)
 		if (ret)
 			return ret;
 	}
+<<<<<<< HEAD
 	ret = of_property_read_u32_array(st->dev->of_node, "adi,gpio-in-accum",
 					 accum, ARRAY_SIZE(accum));
+=======
+	ret = device_property_read_u32_array(st->dev, "adi,gpio-in-accum",
+					     accum, ARRAY_SIZE(accum));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ret) {
 		/*
 		 * Setup the accum options. The gpioctl is already defined as

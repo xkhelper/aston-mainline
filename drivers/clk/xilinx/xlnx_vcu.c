@@ -729,7 +729,11 @@ static struct platform_driver xvcu_driver = {
 		.of_match_table = xvcu_of_id_table,
 	},
 	.probe                  = xvcu_probe,
+<<<<<<< HEAD
 	.remove_new             = xvcu_remove,
+=======
+	.remove                 = xvcu_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(xvcu_driver);

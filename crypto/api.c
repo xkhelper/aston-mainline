@@ -37,6 +37,11 @@ DEFINE_STATIC_KEY_FALSE(__crypto_boot_test_finished);
 #endif
 
 static struct crypto_alg *crypto_larval_wait(struct crypto_alg *alg);
+<<<<<<< HEAD
+=======
+static struct crypto_alg *crypto_alg_lookup(const char *name, u32 type,
+					    u32 mask);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct crypto_alg *crypto_mod_get(struct crypto_alg *alg)
 {
@@ -68,11 +73,14 @@ static struct crypto_alg *__crypto_alg_lookup(const char *name, u32 type,
 		if ((q->cra_flags ^ type) & mask)
 			continue;
 
+<<<<<<< HEAD
 		if (crypto_is_larval(q) &&
 		    !crypto_is_test_larval((struct crypto_larval *)q) &&
 		    ((struct crypto_larval *)q)->mask != mask)
 			continue;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		exact = !strcmp(q->cra_driver_name, name);
 		fuzzy = !strcmp(q->cra_name, name);
 		if (!exact && !(fuzzy && q->cra_priority > best))
@@ -111,6 +119,11 @@ struct crypto_larval *crypto_larval_alloc(const char *name, u32 type, u32 mask)
 	if (!larval)
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
+=======
+	type &= ~CRYPTO_ALG_TYPE_MASK | (mask ?: CRYPTO_ALG_TYPE_MASK);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	larval->mask = mask;
 	larval->alg.cra_flags = CRYPTO_ALG_LARVAL | type;
 	larval->alg.cra_priority = -1;
@@ -152,6 +165,7 @@ static struct crypto_alg *crypto_larval_add(const char *name, u32 type,
 	return alg;
 }
 
+<<<<<<< HEAD
 void crypto_larval_kill(struct crypto_alg *alg)
 {
 	struct crypto_larval *larval = (void *)alg;
@@ -165,10 +179,31 @@ void crypto_larval_kill(struct crypto_alg *alg)
 EXPORT_SYMBOL_GPL(crypto_larval_kill);
 
 void crypto_wait_for_test(struct crypto_larval *larval)
+=======
+static void crypto_larval_kill(struct crypto_larval *larval)
+{
+	bool unlinked;
+
+	down_write(&crypto_alg_sem);
+	unlinked = list_empty(&larval->alg.cra_list);
+	if (!unlinked)
+		list_del_init(&larval->alg.cra_list);
+	up_write(&crypto_alg_sem);
+
+	if (unlinked)
+		return;
+
+	complete_all(&larval->completion);
+	crypto_alg_put(&larval->alg);
+}
+
+void crypto_schedule_test(struct crypto_larval *larval)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int err;
 
 	err = crypto_probing_notify(CRYPTO_MSG_ALG_REGISTER, larval->adult);
+<<<<<<< HEAD
 	if (WARN_ON_ONCE(err != NOTIFY_STOP))
 		goto out;
 
@@ -178,6 +213,11 @@ out:
 	crypto_larval_kill(&larval->alg);
 }
 EXPORT_SYMBOL_GPL(crypto_wait_for_test);
+=======
+	WARN_ON_ONCE(err != NOTIFY_STOP);
+}
+EXPORT_SYMBOL_GPL(crypto_schedule_test);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void crypto_start_test(struct crypto_larval *larval)
 {
@@ -196,14 +236,27 @@ static void crypto_start_test(struct crypto_larval *larval)
 	larval->test_started = true;
 	up_write(&crypto_alg_sem);
 
+<<<<<<< HEAD
 	crypto_wait_for_test(larval);
+=======
+	crypto_schedule_test(larval);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct crypto_alg *crypto_larval_wait(struct crypto_alg *alg)
 {
+<<<<<<< HEAD
 	struct crypto_larval *larval = (void *)alg;
 	long time_left;
 
+=======
+	struct crypto_larval *larval;
+	long time_left;
+
+again:
+	larval = container_of(alg, struct crypto_larval, alg);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!crypto_boot_test_finished())
 		crypto_start_test(larval);
 
@@ -213,11 +266,28 @@ static struct crypto_alg *crypto_larval_wait(struct crypto_alg *alg)
 	alg = larval->adult;
 	if (time_left < 0)
 		alg = ERR_PTR(-EINTR);
+<<<<<<< HEAD
 	else if (!time_left)
 		alg = ERR_PTR(-ETIMEDOUT);
 	else if (!alg)
 		alg = ERR_PTR(-ENOENT);
 	else if (IS_ERR(alg))
+=======
+	else if (!time_left) {
+		if (crypto_is_test_larval(larval))
+			crypto_larval_kill(larval);
+		alg = ERR_PTR(-ETIMEDOUT);
+	} else if (!alg) {
+		u32 type;
+		u32 mask;
+
+		alg = &larval->alg;
+		type = alg->cra_flags & ~(CRYPTO_ALG_LARVAL | CRYPTO_ALG_DEAD);
+		mask = larval->mask;
+		alg = crypto_alg_lookup(alg->cra_name, type, mask) ?:
+		      ERR_PTR(-EAGAIN);
+	} else if (IS_ERR(alg))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		;
 	else if (crypto_is_test_larval(larval) &&
 		 !(alg->cra_flags & CRYPTO_ALG_TESTED))
@@ -228,6 +298,12 @@ static struct crypto_alg *crypto_larval_wait(struct crypto_alg *alg)
 		alg = ERR_PTR(-EAGAIN);
 	crypto_mod_put(&larval->alg);
 
+<<<<<<< HEAD
+=======
+	if (!IS_ERR(alg) && crypto_is_larval(alg))
+		goto again;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return alg;
 }
 
@@ -292,8 +368,17 @@ static struct crypto_alg *crypto_larval_lookup(const char *name, u32 type,
 
 	if (!IS_ERR_OR_NULL(alg) && crypto_is_larval(alg))
 		alg = crypto_larval_wait(alg);
+<<<<<<< HEAD
 	else if (!alg)
 		alg = crypto_larval_add(name, type, mask);
+=======
+	else if (alg)
+		;
+	else if (!(mask & CRYPTO_ALG_TESTED))
+		alg = crypto_larval_add(name, type, mask);
+	else
+		alg = ERR_PTR(-ENOENT);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return alg;
 }
@@ -340,7 +425,11 @@ struct crypto_alg *crypto_alg_mod_lookup(const char *name, u32 type, u32 mask)
 		crypto_mod_put(larval);
 		alg = ERR_PTR(-ENOENT);
 	}
+<<<<<<< HEAD
 	crypto_larval_kill(larval);
+=======
+	crypto_larval_kill(container_of(larval, struct crypto_larval, alg));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return alg;
 }
 EXPORT_SYMBOL_GPL(crypto_alg_mod_lookup);

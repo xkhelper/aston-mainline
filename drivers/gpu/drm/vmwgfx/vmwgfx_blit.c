@@ -635,10 +635,15 @@ out:
 		kunmap_atomic(d.src_addr);
 	if (d.dst_addr)
 		kunmap_atomic(d.dst_addr);
+<<<<<<< HEAD
 	if (src_pages)
 		kvfree(src_pages);
 	if (dst_pages)
 		kvfree(dst_pages);
+=======
+	kvfree(src_pages);
+	kvfree(dst_pages);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }

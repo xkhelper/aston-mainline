@@ -1156,7 +1156,11 @@ static int owl_dma_probe(struct platform_device *pdev)
 	}
 
 	/*
+<<<<<<< HEAD
 	 * Eventhough the DMA controller is capable of generating 4
+=======
+	 * Even though the DMA controller is capable of generating 4
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * IRQ's for DMA priority feature, we only use 1 IRQ for
 	 * simplification.
 	 */

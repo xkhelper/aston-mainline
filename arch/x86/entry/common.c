@@ -150,7 +150,11 @@ early_param("ia32_emulation", ia32_emulation_override_cmdline);
 #endif
 
 /*
+<<<<<<< HEAD
  * Invoke a 32-bit syscall.  Called with IRQs on in CONTEXT_KERNEL.
+=======
+ * Invoke a 32-bit syscall.  Called with IRQs on in CT_STATE_KERNEL.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static __always_inline void do_syscall_32_irqs_on(struct pt_regs *regs, int nr)
 {

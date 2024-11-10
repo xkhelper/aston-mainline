@@ -30,6 +30,15 @@ struct btrfs_zoned_device_info;
 
 #define BTRFS_MAX_DATA_CHUNK_SIZE	(10ULL * SZ_1G)
 
+<<<<<<< HEAD
+=======
+/*
+ * Arbitratry maximum size of one discard request to limit potentially long time
+ * spent in blkdev_issue_discard().
+ */
+#define BTRFS_MAX_DISCARD_CHUNK_SIZE	(SZ_1G)
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern struct mutex uuid_mutex;
 
 #define BTRFS_STRIPE_LEN		SZ_64K
@@ -444,7 +453,11 @@ struct btrfs_io_stripe {
 	/* Block mapping. */
 	u64 physical;
 	u64 length;
+<<<<<<< HEAD
 	bool is_scrub;
+=======
+	bool rst_search_commit_root;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* For the endio handler. */
 	struct btrfs_io_context *bioc;
 };
@@ -725,8 +738,11 @@ int btrfs_recover_balance(struct btrfs_fs_info *fs_info);
 int btrfs_pause_balance(struct btrfs_fs_info *fs_info);
 int btrfs_relocate_chunk(struct btrfs_fs_info *fs_info, u64 chunk_offset);
 int btrfs_cancel_balance(struct btrfs_fs_info *fs_info);
+<<<<<<< HEAD
 int btrfs_create_uuid_tree(struct btrfs_fs_info *fs_info);
 int btrfs_uuid_scan_kthread(void *data);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool btrfs_chunk_writeable(struct btrfs_fs_info *fs_info, u64 chunk_offset);
 void btrfs_dev_stat_inc_and_print(struct btrfs_device *dev, int index);
 int btrfs_get_dev_stats(struct btrfs_fs_info *fs_info,

@@ -3,11 +3,20 @@
 #ifndef __CXL_MEM_H__
 #define __CXL_MEM_H__
 #include <uapi/linux/cxl_mem.h>
+<<<<<<< HEAD
 #include <linux/cdev.h>
 #include <linux/uuid.h>
 #include <linux/rcuwait.h>
 #include <linux/cxl-event.h>
 #include <linux/node.h>
+=======
+#include <linux/pci.h>
+#include <linux/cdev.h>
+#include <linux/uuid.h>
+#include <linux/node.h>
+#include <cxl/event.h>
+#include <cxl/mailbox.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "cxl.h"
 
 /* CXL 2.0 8.2.8.5.1.1 Memory Device Status Register */
@@ -397,11 +406,19 @@ enum cxl_devtype {
  * struct cxl_dpa_perf - DPA performance property entry
  * @dpa_range: range for DPA address
  * @coord: QoS performance data (i.e. latency, bandwidth)
+<<<<<<< HEAD
+=======
+ * @cdat_coord: raw QoS performance data from CDAT
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @qos_class: QoS Class cookies
  */
 struct cxl_dpa_perf {
 	struct range dpa_range;
 	struct access_coordinate coord[ACCESS_COORDINATE_MAX];
+<<<<<<< HEAD
+=======
+	struct access_coordinate cdat_coord[ACCESS_COORDINATE_MAX];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int qos_class;
 };
 
@@ -424,6 +441,10 @@ struct cxl_dpa_perf {
  * @ram_res: Active Volatile memory capacity configuration
  * @serial: PCIe Device Serial Number
  * @type: Generic Memory Class device or Vendor Specific Memory device
+<<<<<<< HEAD
+=======
+ * @cxl_mbox: CXL mailbox context
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct cxl_dev_state {
 	struct device *dev;
@@ -438,8 +459,19 @@ struct cxl_dev_state {
 	struct resource ram_res;
 	u64 serial;
 	enum cxl_devtype type;
+<<<<<<< HEAD
 };
 
+=======
+	struct cxl_mailbox cxl_mbox;
+};
+
+static inline struct cxl_dev_state *mbox_to_cxlds(struct cxl_mailbox *cxl_mbox)
+{
+	return dev_get_drvdata(cxl_mbox->host);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * struct cxl_memdev_state - Generic Type-3 Memory Device Class driver data
  *
@@ -448,11 +480,16 @@ struct cxl_dev_state {
  * the functionality related to that like Identify Memory Device and Get
  * Partition Info
  * @cxlds: Core driver state common across Type-2 and Type-3 devices
+<<<<<<< HEAD
  * @payload_size: Size of space for payload
  *                (CXL 2.0 8.2.8.4.3 Mailbox Capabilities Register)
  * @lsa_size: Size of Label Storage Area
  *                (CXL 2.0 8.2.9.5.1.1 Identify Memory Device)
  * @mbox_mutex: Mutex to synchronize mailbox access.
+=======
+ * @lsa_size: Size of Label Storage Area
+ *                (CXL 2.0 8.2.9.5.1.1 Identify Memory Device)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @firmware_version: Firmware version for the memory device.
  * @enabled_cmds: Hardware commands found enabled in CEL.
  * @exclusive_cmds: Commands that are kernel-internal only
@@ -470,17 +507,24 @@ struct cxl_dev_state {
  * @poison: poison driver state info
  * @security: security driver state info
  * @fw: firmware upload / activation state
+<<<<<<< HEAD
  * @mbox_wait: RCU wait for mbox send completely
  * @mbox_send: @dev specific transport for transmitting mailbox commands
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * See CXL 3.0 8.2.9.8.2 Capacity Configuration and Label Storage for
  * details on capacity parameters.
  */
 struct cxl_memdev_state {
 	struct cxl_dev_state cxlds;
+<<<<<<< HEAD
 	size_t payload_size;
 	size_t lsa_size;
 	struct mutex mbox_mutex; /* Protects device mailbox and firmware */
+=======
+	size_t lsa_size;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char firmware_version[0x10];
 	DECLARE_BITMAP(enabled_cmds, CXL_MEM_COMMAND_ID_MAX);
 	DECLARE_BITMAP(exclusive_cmds, CXL_MEM_COMMAND_ID_MAX);
@@ -500,10 +544,13 @@ struct cxl_memdev_state {
 	struct cxl_poison_state poison;
 	struct cxl_security_state security;
 	struct cxl_fw_state fw;
+<<<<<<< HEAD
 
 	struct rcuwait mbox_wait;
 	int (*mbox_send)(struct cxl_memdev_state *mds,
 			 struct cxl_mbox_cmd *cmd);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static inline struct cxl_memdev_state *
@@ -814,7 +861,11 @@ enum {
 	CXL_PMEM_SEC_PASS_USER,
 };
 
+<<<<<<< HEAD
 int cxl_internal_send_cmd(struct cxl_memdev_state *mds,
+=======
+int cxl_internal_send_cmd(struct cxl_mailbox *cxl_mbox,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			  struct cxl_mbox_cmd *cmd);
 int cxl_dev_state_identify(struct cxl_memdev_state *mds);
 int cxl_await_media_ready(struct cxl_dev_state *cxlds);

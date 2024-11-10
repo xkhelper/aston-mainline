@@ -2,6 +2,7 @@
 #ifndef __NVIF_CL0080_H__
 #define __NVIF_CL0080_H__
 
+<<<<<<< HEAD
 struct nv_device_v0 {
 	__u8  version;
 	__u8  priv;
@@ -9,6 +10,8 @@ struct nv_device_v0 {
 	__u64 device;	/* device identifier, ~0 for client default */
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define NV_DEVICE_V0_INFO                                                  0x00
 #define NV_DEVICE_V0_TIME                                                  0x01
 

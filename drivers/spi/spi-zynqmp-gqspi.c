@@ -1242,7 +1242,11 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
 	u32 num_cs;
 	const struct qspi_platform_data *p_data;
 
+<<<<<<< HEAD
 	ctlr = spi_alloc_host(&pdev->dev, sizeof(*xqspi));
+=======
+	ctlr = devm_spi_alloc_host(&pdev->dev, sizeof(*xqspi));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ctlr)
 		return -ENOMEM;
 
@@ -1256,6 +1260,7 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
 		xqspi->has_tapdelay = true;
 
 	xqspi->regs = devm_platform_ioremap_resource(pdev, 0);
+<<<<<<< HEAD
 	if (IS_ERR(xqspi->regs)) {
 		ret = PTR_ERR(xqspi->regs);
 		goto remove_ctlr;
@@ -1280,6 +1285,24 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
 		dev_err(dev, "Unable to enable APB clock.\n");
 		goto remove_ctlr;
 	}
+=======
+	if (IS_ERR(xqspi->regs))
+		return PTR_ERR(xqspi->regs);
+
+	xqspi->pclk = devm_clk_get(&pdev->dev, "pclk");
+	if (IS_ERR(xqspi->pclk))
+		return dev_err_probe(dev, PTR_ERR(xqspi->pclk),
+				     "pclk clock not found.\n");
+
+	xqspi->refclk = devm_clk_get(&pdev->dev, "ref_clk");
+	if (IS_ERR(xqspi->refclk))
+		return dev_err_probe(dev, PTR_ERR(xqspi->refclk),
+				     "ref_clk clock not found.\n");
+
+	ret = clk_prepare_enable(xqspi->pclk);
+	if (ret)
+		return dev_err_probe(dev, ret, "Unable to enable APB clock.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = clk_prepare_enable(xqspi->refclk);
 	if (ret) {
@@ -1364,8 +1387,11 @@ clk_dis_all:
 	clk_disable_unprepare(xqspi->refclk);
 clk_dis_pclk:
 	clk_disable_unprepare(xqspi->pclk);
+<<<<<<< HEAD
 remove_ctlr:
 	spi_controller_put(ctlr);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }

@@ -170,7 +170,11 @@ static void st_mmap_remove(struct platform_device *pdev)
 static struct platform_driver st_mmap_thermal_driver = {
 	.driver = {
 		.name	= "st_thermal_mmap",
+<<<<<<< HEAD
 		.pm     = &st_thermal_pm_ops,
+=======
+		.pm     = pm_sleep_ptr(&st_thermal_pm_ops),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.of_match_table = st_mmap_thermal_of_match,
 	},
 	.probe		= st_mmap_probe,

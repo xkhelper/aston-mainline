@@ -98,7 +98,15 @@ extern int mmap_rnd_compat_bits __read_mostly;
 #endif
 
 #ifndef PHYSMEM_END
+<<<<<<< HEAD
 # define PHYSMEM_END	((1ULL << MAX_PHYSMEM_BITS) - 1)
+=======
+# ifdef MAX_PHYSMEM_BITS
+# define PHYSMEM_END	((1ULL << MAX_PHYSMEM_BITS) - 1)
+# else
+# define PHYSMEM_END	(((phys_addr_t)-1)&~(1ULL<<63))
+# endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 #include <asm/page.h>
@@ -334,12 +342,25 @@ extern unsigned int kobjsize(const void *objp);
 #endif /* CONFIG_ARCH_USES_HIGH_VMA_FLAGS */
 
 #ifdef CONFIG_ARCH_HAS_PKEYS
+<<<<<<< HEAD
 # define VM_PKEY_SHIFT	VM_HIGH_ARCH_BIT_0
 # define VM_PKEY_BIT0	VM_HIGH_ARCH_0	/* A protection key is a 4-bit value */
 # define VM_PKEY_BIT1	VM_HIGH_ARCH_1	/* on x86 and 5-bit value on ppc64   */
 # define VM_PKEY_BIT2	VM_HIGH_ARCH_2
 # define VM_PKEY_BIT3	VM_HIGH_ARCH_3
 #ifdef CONFIG_PPC
+=======
+# define VM_PKEY_SHIFT VM_HIGH_ARCH_BIT_0
+# define VM_PKEY_BIT0  VM_HIGH_ARCH_0
+# define VM_PKEY_BIT1  VM_HIGH_ARCH_1
+# define VM_PKEY_BIT2  VM_HIGH_ARCH_2
+#if CONFIG_ARCH_PKEY_BITS > 3
+# define VM_PKEY_BIT3  VM_HIGH_ARCH_3
+#else
+# define VM_PKEY_BIT3  0
+#endif
+#if CONFIG_ARCH_PKEY_BITS > 4
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # define VM_PKEY_BIT4  VM_HIGH_ARCH_4
 #else
 # define VM_PKEY_BIT4  0
@@ -363,7 +384,11 @@ extern unsigned int kobjsize(const void *objp);
 
 #if defined(CONFIG_X86)
 # define VM_PAT		VM_ARCH_1	/* PAT reserves whole VMA at once (x86) */
+<<<<<<< HEAD
 #elif defined(CONFIG_PPC)
+=======
+#elif defined(CONFIG_PPC64)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # define VM_SAO		VM_ARCH_1	/* Strong Access Ordering (powerpc) */
 #elif defined(CONFIG_PARISC)
 # define VM_GROWSUP	VM_ARCH_1
@@ -378,8 +403,13 @@ extern unsigned int kobjsize(const void *objp);
 #endif
 
 #if defined(CONFIG_ARM64_MTE)
+<<<<<<< HEAD
 # define VM_MTE		VM_HIGH_ARCH_0	/* Use Tagged memory for access control */
 # define VM_MTE_ALLOWED	VM_HIGH_ARCH_1	/* Tagged memory permitted */
+=======
+# define VM_MTE		VM_HIGH_ARCH_4	/* Use Tagged memory for access control */
+# define VM_MTE_ALLOWED	VM_HIGH_ARCH_5	/* Tagged memory permitted */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else
 # define VM_MTE		VM_NONE
 # define VM_MTE_ALLOWED	VM_NONE
@@ -413,6 +443,11 @@ extern unsigned int kobjsize(const void *objp);
 #ifdef CONFIG_64BIT
 #define VM_DROPPABLE_BIT	40
 #define VM_DROPPABLE		BIT(VM_DROPPABLE_BIT)
+<<<<<<< HEAD
+=======
+#elif defined(CONFIG_PPC32)
+#define VM_DROPPABLE		VM_ARCH_1
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else
 #define VM_DROPPABLE		VM_NONE
 #endif
@@ -1009,6 +1044,7 @@ static inline struct vm_area_struct *vma_prev(struct vma_iterator *vmi)
 	return mas_prev(&vmi->mas, 0);
 }
 
+<<<<<<< HEAD
 static inline
 struct vm_area_struct *vma_iter_prev_range(struct vma_iterator *vmi)
 {
@@ -1030,6 +1066,8 @@ static inline int vma_iter_bulk_alloc(struct vma_iterator *vmi,
 	return mas_expected_entries(&vmi->mas, count);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int vma_iter_clear_gfp(struct vma_iterator *vmi,
 			unsigned long start, unsigned long end, gfp_t gfp)
 {
@@ -1253,8 +1291,12 @@ static inline int folio_mapcount(const struct folio *folio)
 
 	if (likely(!folio_test_large(folio))) {
 		mapcount = atomic_read(&folio->_mapcount) + 1;
+<<<<<<< HEAD
 		/* Handle page_has_type() pages */
 		if (mapcount < PAGE_MAPCOUNT_RESERVE + 1)
+=======
+		if (page_mapcount_is_type(mapcount))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			mapcount = 0;
 		return mapcount;
 	}
@@ -1601,6 +1643,10 @@ void unpin_user_pages_dirty_lock(struct page **pages, unsigned long npages,
 void unpin_user_page_range_dirty_lock(struct page *page, unsigned long npages,
 				      bool make_dirty);
 void unpin_user_pages(struct page **pages, unsigned long npages);
+<<<<<<< HEAD
+=======
+void unpin_user_folio(struct folio *folio, unsigned long npages);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void unpin_folios(struct folio **folios, unsigned long nfolios);
 
 static inline bool is_cow_mapping(vm_flags_t flags)
@@ -1749,6 +1795,11 @@ static inline void vma_set_access_pid_bit(struct vm_area_struct *vma)
 		__set_bit(pid_bit, &vma->numab_state->pids_active[1]);
 	}
 }
+<<<<<<< HEAD
+=======
+
+bool folio_use_access_time(struct folio *folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else /* !CONFIG_NUMA_BALANCING */
 static inline int folio_xchg_last_cpupid(struct folio *folio, int cpupid)
 {
@@ -1802,6 +1853,13 @@ static inline bool cpupid_match_pid(struct task_struct *task, int cpupid)
 static inline void vma_set_access_pid_bit(struct vm_area_struct *vma)
 {
 }
+<<<<<<< HEAD
+=======
+static inline bool folio_use_access_time(struct folio *folio)
+{
+	return false;
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* CONFIG_NUMA_BALANCING */
 
 #if defined(CONFIG_KASAN_SW_TAGS) || defined(CONFIG_KASAN_HW_TAGS)
@@ -2151,14 +2209,28 @@ static inline size_t folio_size(const struct folio *folio)
  * MM ("mapped shared"), or if the folio is only mapped into a single MM
  * ("mapped exclusively").
  *
+<<<<<<< HEAD
+=======
+ * For KSM folios, this function also returns "mapped shared" when a folio is
+ * mapped multiple times into the same MM, because the individual page mappings
+ * are independent.
+ *
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * As precise information is not easily available for all folios, this function
  * estimates the number of MMs ("sharers") that are currently mapping a folio
  * using the number of times the first page of the folio is currently mapped
  * into page tables.
  *
+<<<<<<< HEAD
  * For small anonymous folios (except KSM folios) and anonymous hugetlb folios,
  * the return value will be exactly correct, because they can only be mapped
  * at most once into an MM, and they cannot be partially mapped.
+=======
+ * For small anonymous folios and anonymous hugetlb folios, the return
+ * value will be exactly correct: non-KSM folios can only be mapped at most once
+ * into an MM, and they cannot be partially mapped. KSM folios are
+ * considered shared even if mapped multiple times into the same MM.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * For other folios, the result can be fuzzy:
  *    #. For partially-mappable large folios (THP), the return value can wrongly
@@ -2167,9 +2239,12 @@ static inline size_t folio_size(const struct folio *folio)
  *    #. For pagecache folios (including hugetlb), the return value can wrongly
  *       indicate "mapped shared" (false positive) when two VMAs in the same MM
  *       cover the same file range.
+<<<<<<< HEAD
  *    #. For (small) KSM folios, the return value can wrongly indicate "mapped
  *       shared" (false positive), when the folio is mapped multiple times into
  *       the same MM.
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Further, this function only considers current page table mappings that
  * are tracked using the folio mapcount(s).
@@ -2203,6 +2278,7 @@ static inline bool folio_likely_mapped_shared(struct folio *folio)
 	return atomic_read(&folio->_mapcount) > 0;
 }
 
+<<<<<<< HEAD
 #ifndef HAVE_ARCH_MAKE_PAGE_ACCESSIBLE
 static inline int arch_make_page_accessible(struct page *page)
 {
@@ -2223,6 +2299,12 @@ static inline int arch_make_folio_accessible(struct folio *folio)
 	}
 
 	return ret;
+=======
+#ifndef HAVE_ARCH_MAKE_FOLIO_ACCESSIBLE
+static inline int arch_make_folio_accessible(struct folio *folio)
+{
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 #endif
 
@@ -2402,11 +2484,48 @@ void free_pgd_range(struct mmu_gather *tlb, unsigned long addr,
 		unsigned long end, unsigned long floor, unsigned long ceiling);
 int
 copy_page_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma);
+<<<<<<< HEAD
 int follow_pte(struct vm_area_struct *vma, unsigned long address,
 	       pte_t **ptepp, spinlock_t **ptlp);
 int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
 			void *buf, int len, int write);
 
+=======
+int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
+			void *buf, int len, int write);
+
+struct follow_pfnmap_args {
+	/**
+	 * Inputs:
+	 * @vma: Pointer to @vm_area_struct struct
+	 * @address: the virtual address to walk
+	 */
+	struct vm_area_struct *vma;
+	unsigned long address;
+	/**
+	 * Internals:
+	 *
+	 * The caller shouldn't touch any of these.
+	 */
+	spinlock_t *lock;
+	pte_t *ptep;
+	/**
+	 * Outputs:
+	 *
+	 * @pfn: the PFN of the address
+	 * @pgprot: the pgprot_t of the mapping
+	 * @writable: whether the mapping is writable
+	 * @special: whether the mapping is a special mapping (real PFN maps)
+	 */
+	unsigned long pfn;
+	pgprot_t pgprot;
+	bool writable;
+	bool special;
+};
+int follow_pfnmap_start(struct follow_pfnmap_args *args);
+void follow_pfnmap_end(struct follow_pfnmap_args *args);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void truncate_pagecache(struct inode *inode, loff_t new);
 extern void truncate_setsize(struct inode *inode, loff_t newsize);
 void pagecache_isize_extended(struct inode *inode, loff_t from, loff_t to);
@@ -2534,11 +2653,14 @@ int set_page_dirty_lock(struct page *page);
 
 int get_cmdline(struct task_struct *task, char *buffer, int buflen);
 
+<<<<<<< HEAD
 extern unsigned long move_page_tables(struct vm_area_struct *vma,
 		unsigned long old_addr, struct vm_area_struct *new_vma,
 		unsigned long new_addr, unsigned long len,
 		bool need_rmap_locks, bool for_stack);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Flags used by change_protection().  For now we make it a bitmap so
  * that we can pass in multiple flags just like parameters.  However
@@ -2559,6 +2681,7 @@ extern unsigned long move_page_tables(struct vm_area_struct *vma,
 #define  MM_CP_UFFD_WP_ALL                 (MM_CP_UFFD_WP | \
 					    MM_CP_UFFD_WP_RESOLVE)
 
+<<<<<<< HEAD
 bool vma_needs_dirty_tracking(struct vm_area_struct *vma);
 bool vma_wants_writenotify(struct vm_area_struct *vma, pgprot_t vm_page_prot);
 static inline bool vma_wants_manual_pte_write_upgrade(struct vm_area_struct *vma)
@@ -2574,6 +2697,8 @@ static inline bool vma_wants_manual_pte_write_upgrade(struct vm_area_struct *vma
 	return !!(vma->vm_flags & VM_WRITE);
 
 }
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
 			     pte_t pte);
 extern long change_protection(struct mmu_gather *tlb,
@@ -2697,6 +2822,33 @@ static inline pte_t pte_mkspecial(pte_t pte)
 }
 #endif
 
+<<<<<<< HEAD
+=======
+#ifndef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
+static inline bool pmd_special(pmd_t pmd)
+{
+	return false;
+}
+
+static inline pmd_t pmd_mkspecial(pmd_t pmd)
+{
+	return pmd;
+}
+#endif	/* CONFIG_ARCH_SUPPORTS_PMD_PFNMAP */
+
+#ifndef CONFIG_ARCH_SUPPORTS_PUD_PFNMAP
+static inline bool pud_special(pud_t pud)
+{
+	return false;
+}
+
+static inline pud_t pud_mkspecial(pud_t pud)
+{
+	return pud;
+}
+#endif	/* CONFIG_ARCH_SUPPORTS_PUD_PFNMAP */
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifndef CONFIG_ARCH_HAS_PTE_DEVMAP
 static inline int pte_devmap(pte_t pte)
 {
@@ -2889,7 +3041,11 @@ static inline void pagetable_free(struct ptdesc *pt)
 	__free_pages(page, compound_order(page));
 }
 
+<<<<<<< HEAD
 #if USE_SPLIT_PTE_PTLOCKS
+=======
+#if defined(CONFIG_SPLIT_PTE_PTLOCKS)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if ALLOC_SPLIT_PTLOCKS
 void __init ptlock_cache_init(void);
 bool ptlock_alloc(struct ptdesc *ptdesc);
@@ -2947,7 +3103,11 @@ static inline bool ptlock_init(struct ptdesc *ptdesc)
 	return true;
 }
 
+<<<<<<< HEAD
 #else	/* !USE_SPLIT_PTE_PTLOCKS */
+=======
+#else	/* !defined(CONFIG_SPLIT_PTE_PTLOCKS) */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * We use mm->page_table_lock to guard all pagetable pages of the mm.
  */
@@ -2962,7 +3122,11 @@ static inline spinlock_t *ptep_lockptr(struct mm_struct *mm, pte_t *pte)
 static inline void ptlock_cache_init(void) {}
 static inline bool ptlock_init(struct ptdesc *ptdesc) { return true; }
 static inline void ptlock_free(struct ptdesc *ptdesc) {}
+<<<<<<< HEAD
 #endif /* USE_SPLIT_PTE_PTLOCKS */
+=======
+#endif /* defined(CONFIG_SPLIT_PTE_PTLOCKS) */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline bool pagetable_pte_ctor(struct ptdesc *ptdesc)
 {
@@ -3022,7 +3186,11 @@ pte_t *pte_offset_map_nolock(struct mm_struct *mm, pmd_t *pmd,
 	((unlikely(pmd_none(*(pmd))) && __pte_alloc_kernel(pmd))? \
 		NULL: pte_offset_kernel(pmd, address))
 
+<<<<<<< HEAD
 #if USE_SPLIT_PMD_PTLOCKS
+=======
+#if defined(CONFIG_SPLIT_PMD_PTLOCKS)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline struct page *pmd_pgtable_page(pmd_t *pmd)
 {
@@ -3281,6 +3449,7 @@ void anon_vma_interval_tree_verify(struct anon_vma_chain *node);
 
 /* mmap.c */
 extern int __vm_enough_memory(struct mm_struct *mm, long pages, int cap_sys_admin);
+<<<<<<< HEAD
 extern int vma_expand(struct vma_iterator *vmi, struct vm_area_struct *vma,
 		      unsigned long start, unsigned long end, pgoff_t pgoff,
 		      struct vm_area_struct *next);
@@ -3353,6 +3522,11 @@ static inline struct vm_area_struct
 	return vma_modify(vmi, prev, vma, start, end, new_flags,
 			  vma_policy(vma), new_ctx, anon_vma_name(vma));
 }
+=======
+extern int insert_vm_struct(struct mm_struct *, struct vm_area_struct *);
+extern void exit_mmap(struct mm_struct *);
+int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline int check_data_rlimit(unsigned long rlim,
 				    unsigned long new,
@@ -3385,10 +3559,13 @@ extern struct vm_area_struct *_install_special_mapping(struct mm_struct *mm,
 				   unsigned long addr, unsigned long len,
 				   unsigned long flags,
 				   const struct vm_special_mapping *spec);
+<<<<<<< HEAD
 /* This is an obsolete alternative to _install_special_mapping. */
 extern int install_special_mapping(struct mm_struct *mm,
 				   unsigned long addr, unsigned long len,
 				   unsigned long flags, struct page **pages);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 unsigned long randomize_stack_top(unsigned long stack_top);
 unsigned long randomize_page(unsigned long start, unsigned long range);
@@ -3414,14 +3591,23 @@ extern unsigned long do_mmap(struct file *file, unsigned long addr,
 extern int do_vmi_munmap(struct vma_iterator *vmi, struct mm_struct *mm,
 			 unsigned long start, size_t len, struct list_head *uf,
 			 bool unlock);
+<<<<<<< HEAD
+=======
+int do_vmi_align_munmap(struct vma_iterator *vmi, struct vm_area_struct *vma,
+		    struct mm_struct *mm, unsigned long start,
+		    unsigned long end, struct list_head *uf, bool unlock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern int do_munmap(struct mm_struct *, unsigned long, size_t,
 		     struct list_head *uf);
 extern int do_madvise(struct mm_struct *mm, unsigned long start, size_t len_in, int behavior);
 
 #ifdef CONFIG_MMU
+<<<<<<< HEAD
 extern int do_vma_munmap(struct vma_iterator *vmi, struct vm_area_struct *vma,
 			 unsigned long start, unsigned long end,
 			 struct list_head *uf, bool unlock);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern int __mm_populate(unsigned long addr, unsigned long len,
 			 int ignore_errors);
 static inline void mm_populate(unsigned long addr, unsigned long len)
@@ -3649,9 +3835,12 @@ static inline vm_fault_t vmf_fs_error(int err)
 	return VM_FAULT_SIGBUS;
 }
 
+<<<<<<< HEAD
 struct page *follow_page(struct vm_area_struct *vma, unsigned long address,
 			 unsigned int foll_flags);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int vm_fault_to_errno(vm_fault_t vm_fault, int foll_flags)
 {
 	if (vm_fault & VM_FAULT_OOM)
@@ -3880,8 +4069,14 @@ void *sparse_buffer_alloc(unsigned long size);
 struct page * __populate_section_memmap(unsigned long pfn,
 		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
 		struct dev_pagemap *pgmap);
+<<<<<<< HEAD
 void pmd_init(void *addr);
 void pud_init(void *addr);
+=======
+void pud_init(void *addr);
+void pmd_init(void *addr);
+void kernel_pte_init(void *addr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 pgd_t *vmemmap_pgd_populate(unsigned long addr, int node);
 p4d_t *vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node);
 pud_t *vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node);
@@ -4187,18 +4382,31 @@ madvise_set_anon_name(struct mm_struct *mm, unsigned long start,
 
 #ifdef CONFIG_UNACCEPTED_MEMORY
 
+<<<<<<< HEAD
 bool range_contains_unaccepted_memory(phys_addr_t start, phys_addr_t end);
 void accept_memory(phys_addr_t start, phys_addr_t end);
+=======
+bool range_contains_unaccepted_memory(phys_addr_t start, unsigned long size);
+void accept_memory(phys_addr_t start, unsigned long size);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #else
 
 static inline bool range_contains_unaccepted_memory(phys_addr_t start,
+<<<<<<< HEAD
 						    phys_addr_t end)
+=======
+						    unsigned long size)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return false;
 }
 
+<<<<<<< HEAD
 static inline void accept_memory(phys_addr_t start, phys_addr_t end)
+=======
+static inline void accept_memory(phys_addr_t start, unsigned long size)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 }
 
@@ -4206,9 +4414,13 @@ static inline void accept_memory(phys_addr_t start, phys_addr_t end)
 
 static inline bool pfn_is_unaccepted_memory(unsigned long pfn)
 {
+<<<<<<< HEAD
 	phys_addr_t paddr = pfn << PAGE_SHIFT;
 
 	return range_contains_unaccepted_memory(paddr, paddr + PAGE_SIZE);
+=======
+	return range_contains_unaccepted_memory(pfn << PAGE_SHIFT, PAGE_SIZE);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void vma_pgtable_walk_begin(struct vm_area_struct *vma);
@@ -4216,4 +4428,74 @@ void vma_pgtable_walk_end(struct vm_area_struct *vma);
 
 int reserve_mem_find_by_name(const char *name, phys_addr_t *start, phys_addr_t *size);
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_64BIT
+int do_mseal(unsigned long start, size_t len_in, unsigned long flags);
+#else
+static inline int do_mseal(unsigned long start, size_t len_in, unsigned long flags)
+{
+	/* noop on 32 bit */
+	return 0;
+}
+#endif
+
+#ifdef CONFIG_MEM_ALLOC_PROFILING
+static inline void pgalloc_tag_split(struct folio *folio, int old_order, int new_order)
+{
+	int i;
+	struct alloc_tag *tag;
+	unsigned int nr_pages = 1 << new_order;
+
+	if (!mem_alloc_profiling_enabled())
+		return;
+
+	tag = pgalloc_tag_get(&folio->page);
+	if (!tag)
+		return;
+
+	for (i = nr_pages; i < (1 << old_order); i += nr_pages) {
+		union codetag_ref *ref = get_page_tag_ref(folio_page(folio, i));
+
+		if (ref) {
+			/* Set new reference to point to the original tag */
+			alloc_tag_ref_set(ref, tag);
+			put_page_tag_ref(ref);
+		}
+	}
+}
+
+static inline void pgalloc_tag_copy(struct folio *new, struct folio *old)
+{
+	struct alloc_tag *tag;
+	union codetag_ref *ref;
+
+	tag = pgalloc_tag_get(&old->page);
+	if (!tag)
+		return;
+
+	ref = get_page_tag_ref(&new->page);
+	if (!ref)
+		return;
+
+	/* Clear the old ref to the original allocation tag. */
+	clear_page_tag_ref(&old->page);
+	/* Decrement the counters of the tag on get_new_folio. */
+	alloc_tag_sub(ref, folio_nr_pages(new));
+
+	__alloc_tag_ref_set(ref, tag);
+
+	put_page_tag_ref(ref);
+}
+#else /* !CONFIG_MEM_ALLOC_PROFILING */
+static inline void pgalloc_tag_split(struct folio *folio, int old_order, int new_order)
+{
+}
+
+static inline void pgalloc_tag_copy(struct folio *new, struct folio *old)
+{
+}
+#endif /* CONFIG_MEM_ALLOC_PROFILING */
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _LINUX_MM_H */

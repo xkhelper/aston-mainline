@@ -130,6 +130,10 @@ VERSION
 #if defined(CONFIG_PPC64) || !defined(CONFIG_SMP)
 		__kernel_getcpu;
 #endif
+<<<<<<< HEAD
+=======
+		__kernel_getrandom;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	local: *;
 	};

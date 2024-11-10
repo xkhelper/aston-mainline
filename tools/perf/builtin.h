@@ -2,6 +2,25 @@
 #ifndef BUILTIN_H
 #define BUILTIN_H
 
+<<<<<<< HEAD
+=======
+#include <stddef.h>
+#include <linux/compiler.h>
+#include <tools/config.h>
+
+struct feature_status {
+	const char *name;
+	const char *macro;
+	int is_builtin;
+};
+
+#define FEATURE_STATUS(name_, macro_) {    \
+	.name = name_,                     \
+	.macro = #macro_,                  \
+	.is_builtin = IS_BUILTIN(macro_) }
+
+extern struct feature_status supported_features[];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct cmdnames;
 
 void list_common_cmds_help(void);
@@ -11,6 +30,10 @@ int cmd_annotate(int argc, const char **argv);
 int cmd_bench(int argc, const char **argv);
 int cmd_buildid_cache(int argc, const char **argv);
 int cmd_buildid_list(int argc, const char **argv);
+<<<<<<< HEAD
+=======
+int cmd_check(int argc, const char **argv);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int cmd_config(int argc, const char **argv);
 int cmd_c2c(int argc, const char **argv);
 int cmd_diff(int argc, const char **argv);

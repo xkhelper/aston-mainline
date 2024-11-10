@@ -311,6 +311,10 @@ int rdma_nl_net_init(struct rdma_dev_net *rnet)
 	struct net *net = read_pnet(&rnet->net);
 	struct netlink_kernel_cfg cfg = {
 		.input	= rdma_nl_rcv,
+<<<<<<< HEAD
+=======
+		.flags = NL_CFG_F_NONROOT_RECV,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 	struct sock *nls;
 

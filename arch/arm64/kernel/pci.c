@@ -6,6 +6,7 @@
  * Copyright (C) 2014 ARM Ltd.
  */
 
+<<<<<<< HEAD
 #include <linux/acpi.h>
 #include <linux/init.h>
 #include <linux/io.h>
@@ -28,6 +29,9 @@ int pcibios_alloc_irq(struct pci_dev *dev)
 	return 0;
 }
 #endif
+=======
+#include <linux/pci.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * raw_pci_read/write - Platform-specific PCI config space access.
@@ -61,6 +65,7 @@ int pcibus_to_node(struct pci_bus *bus)
 EXPORT_SYMBOL(pcibus_to_node);
 
 #endif
+<<<<<<< HEAD
 
 #ifdef CONFIG_ACPI
 
@@ -231,3 +236,5 @@ void pcibios_remove_bus(struct pci_bus *bus)
 }
 
 #endif
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

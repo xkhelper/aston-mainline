@@ -349,7 +349,11 @@ static void __init efi_debugfs_init(void)
 	int i = 0;
 
 	efi_debugfs = debugfs_create_dir("efi", NULL);
+<<<<<<< HEAD
 	if (IS_ERR_OR_NULL(efi_debugfs))
+=======
+	if (IS_ERR(efi_debugfs))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	for_each_efi_memory_desc(md) {

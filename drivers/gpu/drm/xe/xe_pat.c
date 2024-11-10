@@ -5,7 +5,11 @@
 
 #include "xe_pat.h"
 
+<<<<<<< HEAD
 #include <drm/xe_drm.h>
+=======
+#include <uapi/drm/xe_drm.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <generated/xe_wa_oob.h>
 

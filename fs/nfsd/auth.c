@@ -5,26 +5,42 @@
 #include "nfsd.h"
 #include "auth.h"
 
+<<<<<<< HEAD
 int nfsexp_flags(struct svc_rqst *rqstp, struct svc_export *exp)
+=======
+int nfsexp_flags(struct svc_cred *cred, struct svc_export *exp)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct exp_flavor_info *f;
 	struct exp_flavor_info *end = exp->ex_flavors + exp->ex_nflavors;
 
 	for (f = exp->ex_flavors; f < end; f++) {
+<<<<<<< HEAD
 		if (f->pseudoflavor == rqstp->rq_cred.cr_flavor)
+=======
+		if (f->pseudoflavor == cred->cr_flavor)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return f->flags;
 	}
 	return exp->ex_flags;
 
 }
 
+<<<<<<< HEAD
 int nfsd_setuser(struct svc_rqst *rqstp, struct svc_export *exp)
+=======
+int nfsd_setuser(struct svc_cred *cred, struct svc_export *exp)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct group_info *rqgi;
 	struct group_info *gi;
 	struct cred *new;
 	int i;
+<<<<<<< HEAD
 	int flags = nfsexp_flags(rqstp, exp);
+=======
+	int flags = nfsexp_flags(cred, exp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* discard any old override before preparing the new set */
 	revert_creds(get_cred(current_real_cred()));
@@ -32,10 +48,17 @@ int nfsd_setuser(struct svc_rqst *rqstp, struct svc_export *exp)
 	if (!new)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	new->fsuid = rqstp->rq_cred.cr_uid;
 	new->fsgid = rqstp->rq_cred.cr_gid;
 
 	rqgi = rqstp->rq_cred.cr_group_info;
+=======
+	new->fsuid = cred->cr_uid;
+	new->fsgid = cred->cr_gid;
+
+	rqgi = cred->cr_group_info;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (flags & NFSEXP_ALLSQUASH) {
 		new->fsuid = exp->ex_anon_uid;

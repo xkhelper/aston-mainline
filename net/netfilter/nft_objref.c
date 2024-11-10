@@ -143,7 +143,11 @@ static int nft_objref_map_init(const struct nft_ctx *ctx,
 	if (!(set->flags & NFT_SET_OBJECT))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	err = nft_parse_register_load(tb[NFTA_OBJREF_SET_SREG], &priv->sreg,
+=======
+	err = nft_parse_register_load(ctx, tb[NFTA_OBJREF_SET_SREG], &priv->sreg,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      set->klen);
 	if (err < 0)
 		return err;

@@ -51,7 +51,11 @@ u8 shpchp_handle_attention_button(u8 hp_slot, struct controller *ctrl)
 	ctrl_dbg(ctrl, "Attention button interrupt received\n");
 
 	p_slot = shpchp_find_slot(ctrl, hp_slot + ctrl->slot_device_offset);
+<<<<<<< HEAD
 	p_slot->hpc_ops->get_adapter_status(p_slot, &(p_slot->presence_save));
+=======
+	shpchp_get_adapter_status(p_slot, &p_slot->presence_save);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 *  Button pressed - See if need to TAKE ACTION!!!
@@ -75,8 +79,13 @@ u8 shpchp_handle_switch_change(u8 hp_slot, struct controller *ctrl)
 	ctrl_dbg(ctrl, "Switch interrupt received\n");
 
 	p_slot = shpchp_find_slot(ctrl, hp_slot + ctrl->slot_device_offset);
+<<<<<<< HEAD
 	p_slot->hpc_ops->get_adapter_status(p_slot, &(p_slot->presence_save));
 	p_slot->hpc_ops->get_latch_status(p_slot, &getstatus);
+=======
+	shpchp_get_adapter_status(p_slot, &p_slot->presence_save);
+	shpchp_get_latch_status(p_slot, &getstatus);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ctrl_dbg(ctrl, "Card present %x Power status %x\n",
 		 p_slot->presence_save, p_slot->pwr_save);
 
@@ -116,7 +125,11 @@ u8 shpchp_handle_presence_change(u8 hp_slot, struct controller *ctrl)
 	/*
 	 * Save the presence state
 	 */
+<<<<<<< HEAD
 	p_slot->hpc_ops->get_adapter_status(p_slot, &(p_slot->presence_save));
+=======
+	shpchp_get_adapter_status(p_slot, &p_slot->presence_save);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (p_slot->presence_save) {
 		/*
 		 * Card Present
@@ -148,7 +161,11 @@ u8 shpchp_handle_power_fault(u8 hp_slot, struct controller *ctrl)
 
 	p_slot = shpchp_find_slot(ctrl, hp_slot + ctrl->slot_device_offset);
 
+<<<<<<< HEAD
 	if (!(p_slot->hpc_ops->query_power_fault(p_slot))) {
+=======
+	if (!(shpchp_query_power_fault(p_slot))) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * Power fault Cleared
 		 */
@@ -181,7 +198,11 @@ static int change_bus_speed(struct controller *ctrl, struct slot *p_slot,
 	int rc = 0;
 
 	ctrl_dbg(ctrl, "Change speed to %d\n", speed);
+<<<<<<< HEAD
 	rc = p_slot->hpc_ops->set_bus_speed_mode(p_slot, speed);
+=======
+	rc = shpchp_set_bus_speed_mode(p_slot, speed);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc) {
 		ctrl_err(ctrl, "%s: Issue of set bus speed mode command failed\n",
 			 __func__);
@@ -241,14 +262,22 @@ static int board_added(struct slot *p_slot)
 		 __func__, p_slot->device, ctrl->slot_device_offset, hp_slot);
 
 	/* Power on slot without connecting to bus */
+<<<<<<< HEAD
 	rc = p_slot->hpc_ops->power_on_slot(p_slot);
+=======
+	rc = shpchp_power_on_slot(p_slot);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc) {
 		ctrl_err(ctrl, "Failed to power on slot\n");
 		return -1;
 	}
 
 	if ((ctrl->pci_dev->vendor == 0x8086) && (ctrl->pci_dev->device == 0x0332)) {
+<<<<<<< HEAD
 		rc = p_slot->hpc_ops->set_bus_speed_mode(p_slot, PCI_SPEED_33MHz);
+=======
+		rc = shpchp_set_bus_speed_mode(p_slot, PCI_SPEED_33MHz);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (rc) {
 			ctrl_err(ctrl, "%s: Issue of set bus speed mode command failed\n",
 				 __func__);
@@ -256,14 +285,22 @@ static int board_added(struct slot *p_slot)
 		}
 
 		/* turn on board, blink green LED, turn off Amber LED */
+<<<<<<< HEAD
 		rc = p_slot->hpc_ops->slot_enable(p_slot);
+=======
+		rc = shpchp_slot_enable(p_slot);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (rc) {
 			ctrl_err(ctrl, "Issue of Slot Enable command failed\n");
 			return rc;
 		}
 	}
 
+<<<<<<< HEAD
 	rc = p_slot->hpc_ops->get_adapter_speed(p_slot, &asp);
+=======
+	rc = shpchp_get_adapter_speed(p_slot, &asp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc) {
 		ctrl_err(ctrl, "Can't get adapter speed or bus mode mismatch\n");
 		return WRONG_BUS_FREQUENCY;
@@ -285,7 +322,11 @@ static int board_added(struct slot *p_slot)
 		return rc;
 
 	/* turn on board, blink green LED, turn off Amber LED */
+<<<<<<< HEAD
 	rc = p_slot->hpc_ops->slot_enable(p_slot);
+=======
+	rc = shpchp_slot_enable(p_slot);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc) {
 		ctrl_err(ctrl, "Issue of Slot Enable command failed\n");
 		return rc;
@@ -313,13 +354,21 @@ static int board_added(struct slot *p_slot)
 	p_slot->is_a_board = 0x01;
 	p_slot->pwr_save = 1;
 
+<<<<<<< HEAD
 	p_slot->hpc_ops->green_led_on(p_slot);
+=======
+	shpchp_green_led_on(p_slot);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 
 err_exit:
 	/* turn off slot, turn on Amber LED, turn off Green LED */
+<<<<<<< HEAD
 	rc = p_slot->hpc_ops->slot_disable(p_slot);
+=======
+	rc = shpchp_slot_disable(p_slot);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc) {
 		ctrl_err(ctrl, "%s: Issue of Slot Disable command failed\n",
 			 __func__);
@@ -352,14 +401,22 @@ static int remove_board(struct slot *p_slot)
 		p_slot->status = 0x01;
 
 	/* turn off slot, turn on Amber LED, turn off Green LED */
+<<<<<<< HEAD
 	rc = p_slot->hpc_ops->slot_disable(p_slot);
+=======
+	rc = shpchp_slot_disable(p_slot);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc) {
 		ctrl_err(ctrl, "%s: Issue of Slot Disable command failed\n",
 			 __func__);
 		return rc;
 	}
 
+<<<<<<< HEAD
 	rc = p_slot->hpc_ops->set_attention_status(p_slot, 0);
+=======
+	rc = shpchp_set_attention_status(p_slot, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc) {
 		ctrl_err(ctrl, "Issue of Set Attention command failed\n");
 		return rc;
@@ -401,7 +458,11 @@ static void shpchp_pushbutton_thread(struct work_struct *work)
 	case POWERON_STATE:
 		mutex_unlock(&p_slot->lock);
 		if (shpchp_enable_slot(p_slot))
+<<<<<<< HEAD
 			p_slot->hpc_ops->green_led_off(p_slot);
+=======
+			shpchp_green_led_off(p_slot);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mutex_lock(&p_slot->lock);
 		p_slot->state = STATIC_STATE;
 		break;
@@ -446,10 +507,17 @@ void shpchp_queue_pushbutton_work(struct work_struct *work)
 
 static void update_slot_info(struct slot *slot)
 {
+<<<<<<< HEAD
 	slot->hpc_ops->get_power_status(slot, &slot->pwr_save);
 	slot->hpc_ops->get_attention_status(slot, &slot->attention_save);
 	slot->hpc_ops->get_latch_status(slot, &slot->latch_save);
 	slot->hpc_ops->get_adapter_status(slot, &slot->presence_save);
+=======
+	shpchp_get_power_status(slot, &slot->pwr_save);
+	shpchp_get_attention_status(slot, &slot->attention_save);
+	shpchp_get_latch_status(slot, &slot->latch_save);
+	shpchp_get_adapter_status(slot, &slot->presence_save);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -462,7 +530,11 @@ static void handle_button_press_event(struct slot *p_slot)
 
 	switch (p_slot->state) {
 	case STATIC_STATE:
+<<<<<<< HEAD
 		p_slot->hpc_ops->get_power_status(p_slot, &getstatus);
+=======
+		shpchp_get_power_status(p_slot, &getstatus);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (getstatus) {
 			p_slot->state = BLINKINGOFF_STATE;
 			ctrl_info(ctrl, "PCI slot #%s - powering off due to button press\n",
@@ -473,8 +545,13 @@ static void handle_button_press_event(struct slot *p_slot)
 				  slot_name(p_slot));
 		}
 		/* blink green LED and turn off amber */
+<<<<<<< HEAD
 		p_slot->hpc_ops->green_led_blink(p_slot);
 		p_slot->hpc_ops->set_attention_status(p_slot, 0);
+=======
+		shpchp_green_led_blink(p_slot);
+		shpchp_set_attention_status(p_slot, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		queue_delayed_work(p_slot->wq, &p_slot->work, 5*HZ);
 		break;
@@ -489,10 +566,17 @@ static void handle_button_press_event(struct slot *p_slot)
 			  slot_name(p_slot));
 		cancel_delayed_work(&p_slot->work);
 		if (p_slot->state == BLINKINGOFF_STATE)
+<<<<<<< HEAD
 			p_slot->hpc_ops->green_led_on(p_slot);
 		else
 			p_slot->hpc_ops->green_led_off(p_slot);
 		p_slot->hpc_ops->set_attention_status(p_slot, 0);
+=======
+			shpchp_green_led_on(p_slot);
+		else
+			shpchp_green_led_off(p_slot);
+		shpchp_set_attention_status(p_slot, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ctrl_info(ctrl, "PCI slot #%s - action canceled due to button press\n",
 			  slot_name(p_slot));
 		p_slot->state = STATIC_STATE;
@@ -526,8 +610,13 @@ static void interrupt_event_handler(struct work_struct *work)
 		break;
 	case INT_POWER_FAULT:
 		ctrl_dbg(p_slot->ctrl, "%s: Power fault\n", __func__);
+<<<<<<< HEAD
 		p_slot->hpc_ops->set_attention_status(p_slot, 1);
 		p_slot->hpc_ops->green_led_off(p_slot);
+=======
+		shpchp_set_attention_status(p_slot, 1);
+		shpchp_green_led_off(p_slot);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		update_slot_info(p_slot);
@@ -547,17 +636,29 @@ static int shpchp_enable_slot (struct slot *p_slot)
 
 	/* Check to see if (latch closed, card present, power off) */
 	mutex_lock(&p_slot->ctrl->crit_sect);
+<<<<<<< HEAD
 	rc = p_slot->hpc_ops->get_adapter_status(p_slot, &getstatus);
+=======
+	rc = shpchp_get_adapter_status(p_slot, &getstatus);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc || !getstatus) {
 		ctrl_info(ctrl, "No adapter on slot(%s)\n", slot_name(p_slot));
 		goto out;
 	}
+<<<<<<< HEAD
 	rc = p_slot->hpc_ops->get_latch_status(p_slot, &getstatus);
+=======
+	rc = shpchp_get_latch_status(p_slot, &getstatus);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc || getstatus) {
 		ctrl_info(ctrl, "Latch open on slot(%s)\n", slot_name(p_slot));
 		goto out;
 	}
+<<<<<<< HEAD
 	rc = p_slot->hpc_ops->get_power_status(p_slot, &getstatus);
+=======
+	rc = shpchp_get_power_status(p_slot, &getstatus);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc || getstatus) {
 		ctrl_info(ctrl, "Already enabled on slot(%s)\n",
 			  slot_name(p_slot));
@@ -567,10 +668,17 @@ static int shpchp_enable_slot (struct slot *p_slot)
 	p_slot->is_a_board = 1;
 
 	/* We have to save the presence info for these slots */
+<<<<<<< HEAD
 	p_slot->hpc_ops->get_adapter_status(p_slot, &(p_slot->presence_save));
 	p_slot->hpc_ops->get_power_status(p_slot, &(p_slot->pwr_save));
 	ctrl_dbg(ctrl, "%s: p_slot->pwr_save %x\n", __func__, p_slot->pwr_save);
 	p_slot->hpc_ops->get_latch_status(p_slot, &getstatus);
+=======
+	shpchp_get_adapter_status(p_slot, &p_slot->presence_save);
+	shpchp_get_power_status(p_slot, &p_slot->pwr_save);
+	ctrl_dbg(ctrl, "%s: p_slot->pwr_save %x\n", __func__, p_slot->pwr_save);
+	shpchp_get_latch_status(p_slot, &getstatus);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if ((p_slot->ctrl->pci_dev->vendor == PCI_VENDOR_ID_AMD &&
 	     p_slot->ctrl->pci_dev->device == PCI_DEVICE_ID_AMD_POGO_7458)
@@ -584,9 +692,14 @@ static int shpchp_enable_slot (struct slot *p_slot)
 		retval = board_added(p_slot);
 
 	if (retval) {
+<<<<<<< HEAD
 		p_slot->hpc_ops->get_adapter_status(p_slot,
 				&(p_slot->presence_save));
 		p_slot->hpc_ops->get_latch_status(p_slot, &getstatus);
+=======
+		shpchp_get_adapter_status(p_slot, &p_slot->presence_save);
+		shpchp_get_latch_status(p_slot, &getstatus);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	update_slot_info(p_slot);
@@ -608,17 +721,29 @@ static int shpchp_disable_slot (struct slot *p_slot)
 	/* Check to see if (latch closed, card present, power on) */
 	mutex_lock(&p_slot->ctrl->crit_sect);
 
+<<<<<<< HEAD
 	rc = p_slot->hpc_ops->get_adapter_status(p_slot, &getstatus);
+=======
+	rc = shpchp_get_adapter_status(p_slot, &getstatus);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc || !getstatus) {
 		ctrl_info(ctrl, "No adapter on slot(%s)\n", slot_name(p_slot));
 		goto out;
 	}
+<<<<<<< HEAD
 	rc = p_slot->hpc_ops->get_latch_status(p_slot, &getstatus);
+=======
+	rc = shpchp_get_latch_status(p_slot, &getstatus);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc || getstatus) {
 		ctrl_info(ctrl, "Latch open on slot(%s)\n", slot_name(p_slot));
 		goto out;
 	}
+<<<<<<< HEAD
 	rc = p_slot->hpc_ops->get_power_status(p_slot, &getstatus);
+=======
+	rc = shpchp_get_power_status(p_slot, &getstatus);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc || !getstatus) {
 		ctrl_info(ctrl, "Already disabled on slot(%s)\n",
 			  slot_name(p_slot));

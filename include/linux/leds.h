@@ -611,6 +611,11 @@ enum led_trigger_netdev_modes {
 	TRIGGER_NETDEV_FULL_DUPLEX,
 	TRIGGER_NETDEV_TX,
 	TRIGGER_NETDEV_RX,
+<<<<<<< HEAD
+=======
+	TRIGGER_NETDEV_TX_ERR,
+	TRIGGER_NETDEV_RX_ERR,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Keep last */
 	__TRIGGER_NETDEV_MAX,

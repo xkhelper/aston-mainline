@@ -615,13 +615,20 @@
 &saif0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&saif0_pins_b>;
+<<<<<<< HEAD
 	fsl,saif-master;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	status = "okay";
 };
 
 &saif1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&saif1_pins_a>;
+<<<<<<< HEAD
+=======
+	fsl,saif-master = <&saif0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	status = "okay";
 };
 

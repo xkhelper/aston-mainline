@@ -321,9 +321,15 @@ int hv_snp_boot_ap(u32 cpu, unsigned long start_ip)
 
 	vmsa->efer = native_read_msr(MSR_EFER);
 
+<<<<<<< HEAD
 	asm volatile("movq %%cr4, %%rax;" : "=a" (vmsa->cr4));
 	asm volatile("movq %%cr3, %%rax;" : "=a" (vmsa->cr3));
 	asm volatile("movq %%cr0, %%rax;" : "=a" (vmsa->cr0));
+=======
+	vmsa->cr4 = native_read_cr4();
+	vmsa->cr3 = __native_read_cr3();
+	vmsa->cr0 = native_read_cr0();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	vmsa->xcr0 = 1;
 	vmsa->g_pat = HV_AP_INIT_GPAT_DEFAULT;

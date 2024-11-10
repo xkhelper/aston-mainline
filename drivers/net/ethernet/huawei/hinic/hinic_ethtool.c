@@ -1471,7 +1471,10 @@ static void hinic_get_strings(struct net_device *netdev,
 			      u32 stringset, u8 *data)
 {
 	struct hinic_dev *nic_dev = netdev_priv(netdev);
+<<<<<<< HEAD
 	char *p = (char *)data;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u16 i, j;
 
 	switch (stringset) {
@@ -1479,6 +1482,7 @@ static void hinic_get_strings(struct net_device *netdev,
 		memcpy(data, *hinic_test_strings, sizeof(hinic_test_strings));
 		return;
 	case ETH_SS_STATS:
+<<<<<<< HEAD
 		for (i = 0; i < ARRAY_SIZE(hinic_function_stats); i++) {
 			memcpy(p, hinic_function_stats[i].name,
 			       ETH_GSTRING_LEN);
@@ -1504,6 +1508,21 @@ static void hinic_get_strings(struct net_device *netdev,
 				p += ETH_GSTRING_LEN;
 			}
 		}
+=======
+		for (i = 0; i < ARRAY_SIZE(hinic_function_stats); i++)
+			ethtool_puts(&data, hinic_function_stats[i].name);
+
+		for (i = 0; i < ARRAY_SIZE(hinic_port_stats); i++)
+			ethtool_puts(&data, hinic_port_stats[i].name);
+
+		for (i = 0; i < nic_dev->num_qps; i++)
+			for (j = 0; j < ARRAY_SIZE(hinic_tx_queue_stats); j++)
+				ethtool_sprintf(&data, hinic_tx_queue_stats[j].name, i);
+
+		for (i = 0; i < nic_dev->num_qps; i++)
+			for (j = 0; j < ARRAY_SIZE(hinic_rx_queue_stats); j++)
+				ethtool_sprintf(&data, hinic_rx_queue_stats[j].name, i);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		return;
 	default:

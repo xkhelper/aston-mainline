@@ -84,6 +84,23 @@ echo member > test/cpuset.cpus.partition
 echo "" > test/cpuset.cpus
 [[ $RESULT -eq 0 ]] && skip_test "Child cgroups are using cpuset!"
 
+<<<<<<< HEAD
+=======
+#
+# If isolated CPUs have been reserved at boot time (as shown in
+# cpuset.cpus.isolated), these isolated CPUs should be outside of CPUs 0-7
+# that will be used by this script for testing purpose. If not, some of
+# the tests may fail incorrectly. These isolated CPUs will also be removed
+# before being compared with the expected results.
+#
+BOOT_ISOLCPUS=$(cat $CGROUP2/cpuset.cpus.isolated)
+if [[ -n "$BOOT_ISOLCPUS" ]]
+then
+	[[ $(echo $BOOT_ISOLCPUS | sed -e "s/[,-].*//") -le 7 ]] &&
+		skip_test "Pre-isolated CPUs ($BOOT_ISOLCPUS) overlap CPUs to be tested"
+	echo "Pre-isolated CPUs: $BOOT_ISOLCPUS"
+fi
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 cleanup()
 {
 	online_cpus
@@ -321,7 +338,11 @@ TEST_MATRIX=(
 	#  old-A1 old-A2 old-A3 old-B1 new-A1 new-A2 new-A3 new-B1 fail ECPUs Pstate ISOLCPUS
 	#  ------ ------ ------ ------ ------ ------ ------ ------ ---- ----- ------ --------
 	#
+<<<<<<< HEAD
 	# Incorrect change to cpuset.cpus invalidates partition root
+=======
+	# Incorrect change to cpuset.cpus[.exclusive] invalidates partition root
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	#
 	# Adding CPUs to partition root that are not in parent's
 	# cpuset.cpus is allowed, but those extra CPUs are ignored.
@@ -365,6 +386,19 @@ TEST_MATRIX=(
 	# cpuset.cpus can overlap with sibling cpuset.cpus.exclusive but not subsumed by it
 	"   C0-3     .      .    C4-5     X5     .      .      .     0 A1:0-3,B1:4-5"
 
+<<<<<<< HEAD
+=======
+	# Child partition root that try to take all CPUs from parent partition
+	# with tasks will remain invalid.
+	" C1-4:P1:S+ P1     .      .       .     .      .      .     0 A1:1-4,A2:1-4 A1:P1,A2:P-1"
+	" C1-4:P1:S+ P1     .      .       .   C1-4     .      .     0 A1,A2:1-4 A1:P1,A2:P1"
+	" C1-4:P1:S+ P1     .      .       T   C1-4     .      .     0 A1:1-4,A2:1-4 A1:P1,A2:P-1"
+
+	# Clearing of cpuset.cpus with a preset cpuset.cpus.exclusive shouldn't
+	# affect cpuset.cpus.exclusive.effective.
+	" C1-4:X3:S+ C1:X3  .      .       .     C      .      .     0 A2:1-4,XA2:3"
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	#  old-A1 old-A2 old-A3 old-B1 new-A1 new-A2 new-A3 new-B1 fail ECPUs Pstate ISOLCPUS
 	#  ------ ------ ------ ------ ------ ------ ------ ------ ---- ----- ------ --------
 	# Failure cases:
@@ -632,7 +666,12 @@ check_cgroup_states()
 # Note that isolated CPUs from the sched/domains context include offline
 # CPUs as well as CPUs in non-isolated 1-CPU partition. Those CPUs may
 # not be included in the cpuset.cpus.isolated control file which contains
+<<<<<<< HEAD
 # only CPUs in isolated partitions.
+=======
+# only CPUs in isolated partitions as well as those that are isolated at
+# boot time.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #
 # $1 - expected isolated cpu list(s) <isolcpus1>{,<isolcpus2>}
 # <isolcpus1> - expected sched/domains value
@@ -659,6 +698,7 @@ check_isolcpus()
 	fi
 
 	#
+<<<<<<< HEAD
 	# Check the debug isolated cpumask, if present
 	#
 	[[ -f $ISCPUS ]] && {
@@ -671,6 +711,23 @@ check_isolcpus()
 		[[ "$EXPECT_VAL2" != "$ISOLCPUS" ]] && return 1
 		ISOLCPUS=
 	}
+=======
+	# Check cpuset.cpus.isolated cpumask
+	#
+	if [[ -z "$BOOT_ISOLCPUS" ]]
+	then
+		ISOLCPUS=$(cat $ISCPUS)
+	else
+		ISOLCPUS=$(cat $ISCPUS | sed -e "s/,*$BOOT_ISOLCPUS//")
+	fi
+	[[ "$EXPECT_VAL2" != "$ISOLCPUS" ]] && {
+		# Take a 50ms pause and try again
+		pause 0.05
+		ISOLCPUS=$(cat $ISCPUS)
+	}
+	[[ "$EXPECT_VAL2" != "$ISOLCPUS" ]] && return 1
+	ISOLCPUS=
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	#
 	# Use the sched domain in debugfs to check isolated CPUs, if available
@@ -703,6 +760,12 @@ check_isolcpus()
 		fi
 	done
 	[[ "$ISOLCPUS" = *- ]] && ISOLCPUS=${ISOLCPUS}$LASTISOLCPU
+<<<<<<< HEAD
+=======
+	[[ -n "BOOT_ISOLCPUS" ]] &&
+		ISOLCPUS=$(echo $ISOLCPUS | sed -e "s/,*$BOOT_ISOLCPUS//")
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	[[ "$EXPECT_VAL" = "$ISOLCPUS" ]]
 }
 
@@ -720,7 +783,12 @@ test_fail()
 }
 
 #
+<<<<<<< HEAD
 # Check to see if there are unexpected isolated CPUs left
+=======
+# Check to see if there are unexpected isolated CPUs left beyond the boot
+# time isolated ones.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #
 null_isolcpus_check()
 {

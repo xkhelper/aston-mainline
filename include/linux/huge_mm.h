@@ -76,9 +76,15 @@ extern struct kobj_attribute thpsize_shmem_enabled_attr;
 /*
  * Mask of all large folio orders supported for file THP. Folios in a DAX
  * file is never split and the MAX_PAGECACHE_ORDER limit does not apply to
+<<<<<<< HEAD
  * it.
  */
 #define THP_ORDERS_ALL_FILE_DAX		\
+=======
+ * it.  Same to PFNMAPs where there's neither page* nor pagecache.
+ */
+#define THP_ORDERS_ALL_SPECIAL		\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	(BIT(PMD_ORDER) | BIT(PUD_ORDER))
 #define THP_ORDERS_ALL_FILE_DEFAULT	\
 	((BIT(MAX_PAGECACHE_ORDER + 1) - 1) & ~BIT(0))
@@ -87,7 +93,11 @@ extern struct kobj_attribute thpsize_shmem_enabled_attr;
  * Mask of all large folio orders supported for THP.
  */
 #define THP_ORDERS_ALL	\
+<<<<<<< HEAD
 	(THP_ORDERS_ALL_ANON | THP_ORDERS_ALL_FILE_DAX | THP_ORDERS_ALL_FILE_DEFAULT)
+=======
+	(THP_ORDERS_ALL_ANON | THP_ORDERS_ALL_SPECIAL | THP_ORDERS_ALL_FILE_DEFAULT)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define TVA_SMAPS		(1 << 0)	/* Will be used for procfs */
 #define TVA_IN_PF		(1 << 1)	/* Page fault handler */
@@ -96,6 +106,11 @@ extern struct kobj_attribute thpsize_shmem_enabled_attr;
 #define thp_vma_allowable_order(vma, vm_flags, tva_flags, order) \
 	(!!thp_vma_allowable_orders(vma, vm_flags, tva_flags, BIT(order)))
 
+<<<<<<< HEAD
+=======
+#define split_folio(f) split_folio_to_list(f, NULL)
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_PGTABLE_HAS_HUGE_LEAVES
 #define HPAGE_PMD_SHIFT PMD_SHIFT
 #define HPAGE_PUD_SHIFT PUD_SHIFT
@@ -114,6 +129,56 @@ extern struct kobj_attribute thpsize_shmem_enabled_attr;
 #define HPAGE_PUD_MASK	(~(HPAGE_PUD_SIZE - 1))
 #define HPAGE_PUD_SIZE	((1UL) << HPAGE_PUD_SHIFT)
 
+<<<<<<< HEAD
+=======
+enum mthp_stat_item {
+	MTHP_STAT_ANON_FAULT_ALLOC,
+	MTHP_STAT_ANON_FAULT_FALLBACK,
+	MTHP_STAT_ANON_FAULT_FALLBACK_CHARGE,
+	MTHP_STAT_SWPOUT,
+	MTHP_STAT_SWPOUT_FALLBACK,
+	MTHP_STAT_SHMEM_ALLOC,
+	MTHP_STAT_SHMEM_FALLBACK,
+	MTHP_STAT_SHMEM_FALLBACK_CHARGE,
+	MTHP_STAT_SPLIT,
+	MTHP_STAT_SPLIT_FAILED,
+	MTHP_STAT_SPLIT_DEFERRED,
+	MTHP_STAT_NR_ANON,
+	MTHP_STAT_NR_ANON_PARTIALLY_MAPPED,
+	__MTHP_STAT_COUNT
+};
+
+#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && defined(CONFIG_SYSFS)
+struct mthp_stat {
+	unsigned long stats[ilog2(MAX_PTRS_PER_PTE) + 1][__MTHP_STAT_COUNT];
+};
+
+DECLARE_PER_CPU(struct mthp_stat, mthp_stats);
+
+static inline void mod_mthp_stat(int order, enum mthp_stat_item item, int delta)
+{
+	if (order <= 0 || order > PMD_ORDER)
+		return;
+
+	this_cpu_add(mthp_stats.stats[order][item], delta);
+}
+
+static inline void count_mthp_stat(int order, enum mthp_stat_item item)
+{
+	mod_mthp_stat(order, item, 1);
+}
+
+#else
+static inline void mod_mthp_stat(int order, enum mthp_stat_item item, int delta)
+{
+}
+
+static inline void count_mthp_stat(int order, enum mthp_stat_item item)
+{
+}
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
 
 extern unsigned long transparent_hugepage_flags;
@@ -269,6 +334,7 @@ struct thpsize {
 
 #define to_thpsize(kobj) container_of(kobj, struct thpsize, kobj)
 
+<<<<<<< HEAD
 enum mthp_stat_item {
 	MTHP_STAT_ANON_FAULT_ALLOC,
 	MTHP_STAT_ANON_FAULT_FALLBACK,
@@ -304,16 +370,40 @@ static inline void count_mthp_stat(int order, enum mthp_stat_item item)
 }
 #endif
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define transparent_hugepage_use_zero_page()				\
 	(transparent_hugepage_flags &					\
 	 (1<<TRANSPARENT_HUGEPAGE_USE_ZERO_PAGE_FLAG))
 
+<<<<<<< HEAD
+=======
+static inline bool vma_thp_disabled(struct vm_area_struct *vma,
+		unsigned long vm_flags)
+{
+	/*
+	 * Explicitly disabled through madvise or prctl, or some
+	 * architectures may disable THP for some mappings, for
+	 * example, s390 kvm.
+	 */
+	return (vm_flags & VM_NOHUGEPAGE) ||
+	       test_bit(MMF_DISABLE_THP, &vma->vm_mm->flags);
+}
+
+static inline bool thp_disabled_by_hw(void)
+{
+	/* If the hardware/firmware marked hugepage support disabled. */
+	return transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_UNSUPPORTED);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 unsigned long thp_get_unmapped_area(struct file *filp, unsigned long addr,
 		unsigned long len, unsigned long pgoff, unsigned long flags);
 unsigned long thp_get_unmapped_area_vmflags(struct file *filp, unsigned long addr,
 		unsigned long len, unsigned long pgoff, unsigned long flags,
 		vm_flags_t vm_flags);
 
+<<<<<<< HEAD
 bool can_split_folio(struct folio *folio, int *pextra_pins);
 int split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
 		unsigned int new_order);
@@ -322,6 +412,31 @@ static inline int split_huge_page(struct page *page)
 	return split_huge_page_to_list_to_order(page, NULL, 0);
 }
 void deferred_split_folio(struct folio *folio);
+=======
+bool can_split_folio(struct folio *folio, int caller_pins, int *pextra_pins);
+int split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
+		unsigned int new_order);
+int min_order_for_split(struct folio *folio);
+int split_folio_to_list(struct folio *folio, struct list_head *list);
+static inline int split_huge_page(struct page *page)
+{
+	struct folio *folio = page_folio(page);
+	int ret = min_order_for_split(folio);
+
+	if (ret < 0)
+		return ret;
+
+	/*
+	 * split_huge_page() locks the page before splitting and
+	 * expects the same page that has been split to be locked when
+	 * returned. split_folio(page_folio(page)) cannot be used here
+	 * because it converts the page to folio and passes the head
+	 * page to be split.
+	 */
+	return split_huge_page_to_list_to_order(page, NULL, ret);
+}
+void deferred_split_folio(struct folio *folio, bool partially_mapped);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
 		unsigned long address, bool freeze, struct folio *folio);
@@ -342,6 +457,20 @@ void split_huge_pmd_address(struct vm_area_struct *vma, unsigned long address,
 void __split_huge_pud(struct vm_area_struct *vma, pud_t *pud,
 		unsigned long address);
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+int change_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
+		    pud_t *pudp, unsigned long addr, pgprot_t newprot,
+		    unsigned long cp_flags);
+#else
+static inline int
+change_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
+		pud_t *pudp, unsigned long addr, pgprot_t newprot,
+		unsigned long cp_flags) { return 0; }
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define split_huge_pud(__vma, __pud, __address)				\
 	do {								\
 		pud_t *____pud = (__pud);				\
@@ -410,11 +539,14 @@ static inline bool is_huge_zero_pmd(pmd_t pmd)
 	return pmd_present(pmd) && READ_ONCE(huge_zero_pfn) == pmd_pfn(pmd);
 }
 
+<<<<<<< HEAD
 static inline bool is_huge_zero_pud(pud_t pud)
 {
 	return false;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct folio *mm_get_huge_zero_folio(struct mm_struct *mm);
 void mm_put_huge_zero_folio(struct mm_struct *mm);
 
@@ -470,7 +602,11 @@ thp_get_unmapped_area_vmflags(struct file *filp, unsigned long addr,
 }
 
 static inline bool
+<<<<<<< HEAD
 can_split_folio(struct folio *folio, int *pextra_pins)
+=======
+can_split_folio(struct folio *folio, int caller_pins, int *pextra_pins)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return false;
 }
@@ -484,7 +620,17 @@ static inline int split_huge_page(struct page *page)
 {
 	return 0;
 }
+<<<<<<< HEAD
 static inline void deferred_split_folio(struct folio *folio) {}
+=======
+
+static inline int split_folio_to_list(struct folio *folio, struct list_head *list)
+{
+	return 0;
+}
+
+static inline void deferred_split_folio(struct folio *folio, bool partially_mapped) {}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define split_huge_pmd(__vma, __pmd, __address)	\
 	do { } while (0)
 
@@ -555,11 +701,14 @@ static inline bool is_huge_zero_pmd(pmd_t pmd)
 	return false;
 }
 
+<<<<<<< HEAD
 static inline bool is_huge_zero_pud(pud_t pud)
 {
 	return false;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void mm_put_huge_zero_folio(struct mm_struct *mm)
 {
 	return;
@@ -585,6 +734,22 @@ static inline int next_order(unsigned long *orders, int prev)
 {
 	return 0;
 }
+<<<<<<< HEAD
+=======
+
+static inline void __split_huge_pud(struct vm_area_struct *vma, pud_t *pud,
+				    unsigned long address)
+{
+}
+
+static inline int change_huge_pud(struct mmu_gather *tlb,
+				  struct vm_area_struct *vma, pud_t *pudp,
+				  unsigned long addr, pgprot_t newprot,
+				  unsigned long cp_flags)
+{
+	return 0;
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
 
 static inline int split_folio_to_list_to_order(struct folio *folio,
@@ -598,7 +763,10 @@ static inline int split_folio_to_order(struct folio *folio, int new_order)
 	return split_folio_to_list_to_order(folio, NULL, new_order);
 }
 
+<<<<<<< HEAD
 #define split_folio_to_list(f, l) split_folio_to_list_to_order(f, l, 0)
 #define split_folio(f) split_folio_to_order(f, 0)
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _LINUX_HUGE_MM_H */

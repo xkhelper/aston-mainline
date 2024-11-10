@@ -1367,6 +1367,10 @@ static void sve_init_regs(void)
 	} else {
 		fpsimd_to_sve(current);
 		current->thread.fp_type = FP_STATE_SVE;
+<<<<<<< HEAD
+=======
+		fpsimd_flush_task_state(current);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 

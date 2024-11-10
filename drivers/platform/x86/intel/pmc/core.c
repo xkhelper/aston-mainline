@@ -714,6 +714,52 @@ static int pmc_core_s0ix_blocker_show(struct seq_file *s, void *unused)
 }
 DEFINE_SHOW_ATTRIBUTE(pmc_core_s0ix_blocker);
 
+<<<<<<< HEAD
+=======
+static void pmc_core_ltr_ignore_all(struct pmc_dev *pmcdev)
+{
+	unsigned int i;
+
+	for (i = 0; i < ARRAY_SIZE(pmcdev->pmcs); i++) {
+		struct pmc *pmc;
+		u32 ltr_ign;
+
+		pmc = pmcdev->pmcs[i];
+		if (!pmc)
+			continue;
+
+		guard(mutex)(&pmcdev->lock);
+		pmc->ltr_ign = pmc_core_reg_read(pmc, pmc->map->ltr_ignore_offset);
+
+		/* ltr_ignore_max is the max index value for LTR ignore register */
+		ltr_ign = pmc->ltr_ign | GENMASK(pmc->map->ltr_ignore_max, 0);
+		pmc_core_reg_write(pmc, pmc->map->ltr_ignore_offset, ltr_ign);
+	}
+
+	/*
+	 * Ignoring ME during suspend is blocking platforms with ADL PCH to get to
+	 * deeper S0ix substate.
+	 */
+	pmc_core_send_ltr_ignore(pmcdev, 6, 0);
+}
+
+static void pmc_core_ltr_restore_all(struct pmc_dev *pmcdev)
+{
+	unsigned int i;
+
+	for (i = 0; i < ARRAY_SIZE(pmcdev->pmcs); i++) {
+		struct pmc *pmc;
+
+		pmc = pmcdev->pmcs[i];
+		if (!pmc)
+			continue;
+
+		guard(mutex)(&pmcdev->lock);
+		pmc_core_reg_write(pmc, pmc->map->ltr_ignore_offset, pmc->ltr_ign);
+	}
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline u64 adjust_lpm_residency(struct pmc *pmc, u32 offset,
 				       const int lpm_adj_x2)
 {
@@ -728,12 +774,19 @@ static int pmc_core_substate_res_show(struct seq_file *s, void *unused)
 	struct pmc *pmc = pmcdev->pmcs[PMC_IDX_MAIN];
 	const int lpm_adj_x2 = pmc->map->lpm_res_counter_step_x2;
 	u32 offset = pmc->map->lpm_residency_offset;
+<<<<<<< HEAD
 	unsigned int i;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int mode;
 
 	seq_printf(s, "%-10s %-15s\n", "Substate", "Residency");
 
+<<<<<<< HEAD
 	pmc_for_each_mode(i, mode, pmcdev) {
+=======
+	pmc_for_each_mode(mode, pmcdev) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		seq_printf(s, "%-10s %-15llu\n", pmc_lpm_modes[mode],
 			   adjust_lpm_residency(pmc, offset + (4 * mode), lpm_adj_x2));
 	}
@@ -787,6 +840,7 @@ DEFINE_SHOW_ATTRIBUTE(pmc_core_substate_l_sts_regs);
 static void pmc_core_substate_req_header_show(struct seq_file *s, int pmc_index)
 {
 	struct pmc_dev *pmcdev = s->private;
+<<<<<<< HEAD
 	unsigned int i;
 	int mode;
 
@@ -795,12 +849,26 @@ static void pmc_core_substate_req_header_show(struct seq_file *s, int pmc_index)
 		seq_printf(s, " %9s |", pmc_lpm_modes[mode]);
 
 	seq_printf(s, " %9s |\n", "Status");
+=======
+	int mode;
+
+	seq_printf(s, "%30s |", "Element");
+	pmc_for_each_mode(mode, pmcdev)
+		seq_printf(s, " %9s |", pmc_lpm_modes[mode]);
+
+	seq_printf(s, " %9s |", "Status");
+	seq_printf(s, " %11s |\n", "Live Status");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int pmc_core_substate_req_regs_show(struct seq_file *s, void *unused)
 {
 	struct pmc_dev *pmcdev = s->private;
 	u32 sts_offset;
+<<<<<<< HEAD
+=======
+	u32 sts_offset_live;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 *lpm_req_regs;
 	unsigned int mp, pmc_index;
 	int num_maps;
@@ -815,6 +883,10 @@ static int pmc_core_substate_req_regs_show(struct seq_file *s, void *unused)
 		maps = pmc->map->lpm_sts;
 		num_maps = pmc->map->lpm_num_maps;
 		sts_offset = pmc->map->lpm_status_offset;
+<<<<<<< HEAD
+=======
+		sts_offset_live = pmc->map->lpm_live_status_offset;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		lpm_req_regs = pmc->lpm_req_regs;
 
 		/*
@@ -832,20 +904,36 @@ static int pmc_core_substate_req_regs_show(struct seq_file *s, void *unused)
 		for (mp = 0; mp < num_maps; mp++) {
 			u32 req_mask = 0;
 			u32 lpm_status;
+<<<<<<< HEAD
 			const struct pmc_bit_map *map;
 			int mode, idx, i, len = 32;
+=======
+			u32 lpm_status_live;
+			const struct pmc_bit_map *map;
+			int mode, i, len = 32;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			/*
 			 * Capture the requirements and create a mask so that we only
 			 * show an element if it's required for at least one of the
 			 * enabled low power modes
 			 */
+<<<<<<< HEAD
 			pmc_for_each_mode(idx, mode, pmcdev)
+=======
+			pmc_for_each_mode(mode, pmcdev)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				req_mask |= lpm_req_regs[mp + (mode * num_maps)];
 
 			/* Get the last latched status for this map */
 			lpm_status = pmc_core_reg_read(pmc, sts_offset + (mp * 4));
 
+<<<<<<< HEAD
+=======
+			/* Get the runtime status for this map */
+			lpm_status_live = pmc_core_reg_read(pmc, sts_offset_live + (mp * 4));
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/*  Loop over elements in this map */
 			map = maps[mp];
 			for (i = 0; map[i].name && i < len; i++) {
@@ -863,7 +951,11 @@ static int pmc_core_substate_req_regs_show(struct seq_file *s, void *unused)
 				seq_printf(s, "pmc%d: %26s |", pmc_index, map[i].name);
 
 				/* Loop over the enabled states and display if required */
+<<<<<<< HEAD
 				pmc_for_each_mode(idx, mode, pmcdev) {
+=======
+				pmc_for_each_mode(mode, pmcdev) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					bool required = lpm_req_regs[mp + (mode * num_maps)] &
 							bit_mask;
 					seq_printf(s, " %9s |", required ? "Required" : " ");
@@ -872,6 +964,12 @@ static int pmc_core_substate_req_regs_show(struct seq_file *s, void *unused)
 				/* In Status column, show the last captured state of this agent */
 				seq_printf(s, " %9s |", lpm_status & bit_mask ? "Yes" : " ");
 
+<<<<<<< HEAD
+=======
+				/* In Live status column, show the live state of this agent */
+				seq_printf(s, " %11s |", lpm_status_live & bit_mask ? "Yes" : " ");
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				seq_puts(s, "\n");
 			}
 		}
@@ -925,7 +1023,10 @@ static int pmc_core_lpm_latch_mode_show(struct seq_file *s, void *unused)
 {
 	struct pmc_dev *pmcdev = s->private;
 	struct pmc *pmc = pmcdev->pmcs[PMC_IDX_MAIN];
+<<<<<<< HEAD
 	unsigned int idx;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool c10;
 	u32 reg;
 	int mode;
@@ -939,7 +1040,11 @@ static int pmc_core_lpm_latch_mode_show(struct seq_file *s, void *unused)
 		c10 = true;
 	}
 
+<<<<<<< HEAD
 	pmc_for_each_mode(idx, mode, pmcdev) {
+=======
+	pmc_for_each_mode(mode, pmcdev) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if ((BIT(mode) & reg) && !c10)
 			seq_printf(s, " [%s]", pmc_lpm_modes[mode]);
 		else
@@ -960,7 +1065,10 @@ static ssize_t pmc_core_lpm_latch_mode_write(struct file *file,
 	struct pmc *pmc = pmcdev->pmcs[PMC_IDX_MAIN];
 	bool clear = false, c10 = false;
 	unsigned char buf[8];
+<<<<<<< HEAD
 	unsigned int idx;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int m, mode;
 	u32 reg;
 
@@ -979,7 +1087,11 @@ static ssize_t pmc_core_lpm_latch_mode_write(struct file *file,
 	mode = sysfs_match_string(pmc_lpm_modes, buf);
 
 	/* Check string matches enabled mode */
+<<<<<<< HEAD
 	pmc_for_each_mode(idx, m, pmcdev)
+=======
+	pmc_for_each_mode(m, pmcdev)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (mode == m)
 			break;
 
@@ -1208,7 +1320,10 @@ static bool pmc_core_is_pson_residency_enabled(struct pmc_dev *pmcdev)
 	return val == 1;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void pmc_core_dbgfs_unregister(struct pmc_dev *pmcdev)
 {
 	debugfs_remove_recursive(pmcdev->dbgfs_dir);
@@ -1479,6 +1594,13 @@ static bool warn_on_s0ix_failures;
 module_param(warn_on_s0ix_failures, bool, 0644);
 MODULE_PARM_DESC(warn_on_s0ix_failures, "Check and warn for S0ix failures");
 
+<<<<<<< HEAD
+=======
+static bool ltr_ignore_all_suspend = true;
+module_param(ltr_ignore_all_suspend, bool, 0644);
+MODULE_PARM_DESC(ltr_ignore_all_suspend, "Ignore all LTRs during suspend");
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static __maybe_unused int pmc_core_suspend(struct device *dev)
 {
 	struct pmc_dev *pmcdev = dev_get_drvdata(dev);
@@ -1488,6 +1610,12 @@ static __maybe_unused int pmc_core_suspend(struct device *dev)
 	if (pmcdev->suspend)
 		pmcdev->suspend(pmcdev);
 
+<<<<<<< HEAD
+=======
+	if (ltr_ignore_all_suspend)
+		pmc_core_ltr_ignore_all(pmcdev);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Check if the syspend will actually use S0ix */
 	if (pm_suspend_via_firmware())
 		return 0;
@@ -1594,6 +1722,12 @@ static __maybe_unused int pmc_core_resume(struct device *dev)
 {
 	struct pmc_dev *pmcdev = dev_get_drvdata(dev);
 
+<<<<<<< HEAD
+=======
+	if (ltr_ignore_all_suspend)
+		pmc_core_ltr_restore_all(pmcdev);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (pmcdev->resume)
 		return pmcdev->resume(pmcdev);
 

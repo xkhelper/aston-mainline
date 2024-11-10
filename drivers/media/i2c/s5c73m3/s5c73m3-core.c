@@ -1392,6 +1392,19 @@ err_reg_dis:
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * This function has been created just to avoid a smatch warning,
+ * please do not merge into __s5c73m3_power_off() until you have
+ * confirmed that it does not introduce a new warning.
+ */
+static void s5c73m3_enable_clk(struct s5c73m3 *state)
+{
+	clk_prepare_enable(state->clock);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int __s5c73m3_power_off(struct s5c73m3 *state)
 {
 	int i, ret;
@@ -1421,7 +1434,12 @@ err:
 				 state->supplies[i].supply, r);
 	}
 
+<<<<<<< HEAD
 	clk_prepare_enable(state->clock);
+=======
+	s5c73m3_enable_clk(state);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -1724,7 +1742,11 @@ static void s5c73m3_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id s5c73m3_id[] = {
+<<<<<<< HEAD
 	{ DRIVER_NAME, 0 },
+=======
+	{ DRIVER_NAME },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, s5c73m3_id);

@@ -25,6 +25,10 @@ obj-$(CONFIG_SECURITY_LOCKDOWN_LSM)	+= lockdown/
 obj-$(CONFIG_CGROUPS)			+= device_cgroup.o
 obj-$(CONFIG_BPF_LSM)			+= bpf/
 obj-$(CONFIG_SECURITY_LANDLOCK)		+= landlock/
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_SECURITY_IPE)		+= ipe/
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 # Object integrity file lists
 obj-$(CONFIG_INTEGRITY)			+= integrity/

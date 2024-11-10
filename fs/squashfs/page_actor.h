@@ -29,6 +29,7 @@ extern struct squashfs_page_actor *squashfs_page_actor_init(void **buffer,
 				int pages, int length);
 extern struct squashfs_page_actor *squashfs_page_actor_init_special(
 				struct squashfs_sb_info *msblk,
+<<<<<<< HEAD
 				struct page **page, int pages, int length);
 static inline struct page *squashfs_page_actor_free(struct squashfs_page_actor *actor)
 {
@@ -36,6 +37,17 @@ static inline struct page *squashfs_page_actor_free(struct squashfs_page_actor *
 
 	kfree(actor->tmp_buffer);
 	kfree(actor);
+=======
+				struct page **page, int pages, int length,
+				loff_t start_index);
+static inline struct page *squashfs_page_actor_free(struct squashfs_page_actor *actor)
+{
+	struct page *last_page = actor->next_page == actor->pages ? actor->last_page : ERR_PTR(-EIO);
+
+	kfree(actor->tmp_buffer);
+	kfree(actor);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return last_page;
 }
 static inline void *squashfs_first_page(struct squashfs_page_actor *actor)

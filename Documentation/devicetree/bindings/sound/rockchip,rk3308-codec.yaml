@@ -48,6 +48,13 @@ properties:
       - const: mclk_rx
       - const: hclk
 
+<<<<<<< HEAD
+=======
+  port:
+    $ref: audio-graph-port.yaml#
+    unevaluatedProperties: false
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   resets:
     maxItems: 1
 

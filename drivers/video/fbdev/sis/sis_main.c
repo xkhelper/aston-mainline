@@ -183,7 +183,11 @@ static void sisfb_search_mode(char *name, bool quiet)
 {
 	unsigned int j = 0, xres = 0, yres = 0, depth = 0, rate = 0;
 	int i = 0;
+<<<<<<< HEAD
 	char strbuf[16], strbuf1[20];
+=======
+	char strbuf[24], strbuf1[20];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char *nameptr = name;
 
 	/* We don't know the hardware specs yet and there is no ivideo */

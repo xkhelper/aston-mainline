@@ -639,7 +639,11 @@ static void atkbd_event_work(struct work_struct *work)
 {
 	struct atkbd *atkbd = container_of(work, struct atkbd, event_work.work);
 
+<<<<<<< HEAD
 	mutex_lock(&atkbd->mutex);
+=======
+	guard(mutex)(&atkbd->mutex);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!atkbd->enabled) {
 		/*
@@ -657,8 +661,11 @@ static void atkbd_event_work(struct work_struct *work)
 		if (test_and_clear_bit(ATKBD_REP_EVENT_BIT, &atkbd->event_mask))
 			atkbd_set_repeat_rate(atkbd);
 	}
+<<<<<<< HEAD
 
 	mutex_unlock(&atkbd->mutex);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1361,7 +1368,11 @@ static int atkbd_reconnect(struct serio *serio)
 {
 	struct atkbd *atkbd = atkbd_from_serio(serio);
 	struct serio_driver *drv = serio->drv;
+<<<<<<< HEAD
 	int retval = -1;
+=======
+	int error;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!atkbd || !drv) {
 		dev_dbg(&serio->dev,
@@ -1369,16 +1380,29 @@ static int atkbd_reconnect(struct serio *serio)
 		return -1;
 	}
 
+<<<<<<< HEAD
 	mutex_lock(&atkbd->mutex);
+=======
+	guard(mutex)(&atkbd->mutex);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	atkbd_disable(atkbd);
 
 	if (atkbd->write) {
+<<<<<<< HEAD
 		if (atkbd_probe(atkbd))
 			goto out;
 
 		if (atkbd->set != atkbd_select_set(atkbd, atkbd->set, atkbd->extra))
 			goto out;
+=======
+		error = atkbd_probe(atkbd);
+		if (error)
+			return error;
+
+		if (atkbd->set != atkbd_select_set(atkbd, atkbd->set, atkbd->extra))
+			return -EIO;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * Restore LED state and repeat rate. While input core
@@ -1404,11 +1428,15 @@ static int atkbd_reconnect(struct serio *serio)
 	if (atkbd->write)
 		atkbd_activate(atkbd);
 
+<<<<<<< HEAD
 	retval = 0;
 
  out:
 	mutex_unlock(&atkbd->mutex);
 	return retval;
+=======
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct serio_device_id atkbd_serio_ids[] = {
@@ -1465,6 +1493,7 @@ static ssize_t atkbd_attr_set_helper(struct device *dev, const char *buf, size_t
 	struct atkbd *atkbd = atkbd_from_serio(serio);
 	int retval;
 
+<<<<<<< HEAD
 	retval = mutex_lock_interruptible(&atkbd->mutex);
 	if (retval)
 		return retval;
@@ -1476,6 +1505,17 @@ static ssize_t atkbd_attr_set_helper(struct device *dev, const char *buf, size_t
 	mutex_unlock(&atkbd->mutex);
 
 	return retval;
+=======
+	scoped_guard(mutex_intr, &atkbd->mutex) {
+		atkbd_disable(atkbd);
+		retval = handler(atkbd, buf, count);
+		atkbd_enable(atkbd);
+
+		return retval;
+	}
+
+	return -EINTR;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static ssize_t atkbd_show_extra(struct atkbd *atkbd, char *buf)

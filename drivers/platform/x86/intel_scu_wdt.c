@@ -9,13 +9,21 @@
 #include <linux/init.h>
 #include <linux/interrupt.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/platform_data/intel-mid_wdt.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/cpu_device_id.h>
 #include <asm/intel-family.h>
 #include <asm/io_apic.h>
 #include <asm/hw_irq.h>
 
+<<<<<<< HEAD
+=======
+#include <linux/platform_data/x86/intel-mid_wdt.h>
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define TANGIER_EXT_TIMER0_MSI 12
 
 static struct platform_device wdt_dev = {

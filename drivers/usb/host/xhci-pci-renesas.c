@@ -6,7 +6,11 @@
 #include <linux/module.h>
 #include <linux/pci.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "xhci.h"
 #include "xhci-trace.h"
@@ -50,6 +54,11 @@
 #define RENESAS_RETRY	10000
 #define RENESAS_DELAY	10
 
+<<<<<<< HEAD
+=======
+#define RENESAS_FW_NAME	"renesas_usb_fw.mem"
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int renesas_fw_download_image(struct pci_dev *dev,
 				     const u32 *fw, size_t step, bool rom)
 {
@@ -573,12 +582,19 @@ exit:
 	return err;
 }
 
+<<<<<<< HEAD
 int renesas_xhci_check_request_fw(struct pci_dev *pdev,
 				  const struct pci_device_id *id)
 {
 	struct xhci_driver_data *driver_data =
 			(struct xhci_driver_data *)id->driver_data;
 	const char *fw_name = driver_data->firmware;
+=======
+static int renesas_xhci_check_request_fw(struct pci_dev *pdev,
+					 const struct pci_device_id *id)
+{
+	const char fw_name[] = RENESAS_FW_NAME;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct firmware *fw;
 	bool has_rom;
 	int err;
@@ -625,7 +641,47 @@ exit:
 	release_firmware(fw);
 	return err;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(renesas_xhci_check_request_fw);
 
 MODULE_DESCRIPTION("Support for Renesas xHCI controller with firmware");
+=======
+
+static int
+xhci_pci_renesas_probe(struct pci_dev *dev, const struct pci_device_id *id)
+{
+	int retval;
+
+	retval = renesas_xhci_check_request_fw(dev, id);
+	if (retval)
+		return retval;
+
+	return xhci_pci_common_probe(dev, id);
+}
+
+static const struct pci_device_id pci_ids[] = {
+	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, 0x0014) },
+	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, 0x0015) },
+	{ /* end: all zeroes */ }
+};
+MODULE_DEVICE_TABLE(pci, pci_ids);
+
+static struct pci_driver xhci_renesas_pci_driver = {
+	.name =		"xhci-pci-renesas",
+	.id_table =	pci_ids,
+
+	.probe =	xhci_pci_renesas_probe,
+	.remove =	xhci_pci_remove,
+
+	.shutdown = 	usb_hcd_pci_shutdown,
+	.driver = {
+		.pm = pm_ptr(&usb_hcd_pci_pm_ops),
+	},
+};
+module_pci_driver(xhci_renesas_pci_driver);
+
+MODULE_DESCRIPTION("Renesas xHCI PCI Host Controller Driver");
+MODULE_FIRMWARE(RENESAS_FW_NAME);
+MODULE_IMPORT_NS(xhci);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_LICENSE("GPL v2");

@@ -317,3 +317,10 @@ void intel_dpt_destroy(struct i915_address_space *vm)
 	i915_vm_put(&dpt->vm);
 }
 
+<<<<<<< HEAD
+=======
+u64 intel_dpt_offset(struct i915_vma *dpt_vma)
+{
+	return dpt_vma->node.start;
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

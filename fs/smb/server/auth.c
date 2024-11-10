@@ -512,6 +512,10 @@ int ksmbd_krb5_authenticate(struct ksmbd_session *sess, char *in_blob,
 			    int in_len, char *out_blob, int *out_len)
 {
 	struct ksmbd_spnego_authen_response *resp;
+<<<<<<< HEAD
+=======
+	struct ksmbd_login_response_ext *resp_ext = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ksmbd_user *user = NULL;
 	int retval;
 
@@ -540,7 +544,14 @@ int ksmbd_krb5_authenticate(struct ksmbd_session *sess, char *in_blob,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	user = ksmbd_alloc_user(&resp->login_response);
+=======
+	if (resp->login_response.status & KSMBD_USER_FLAG_EXTENSION)
+		resp_ext = ksmbd_ipc_login_request_ext(resp->login_response.account);
+
+	user = ksmbd_alloc_user(&resp->login_response, resp_ext);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!user) {
 		ksmbd_debug(AUTH, "login failure\n");
 		retval = -ENOMEM;

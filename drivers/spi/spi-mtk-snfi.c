@@ -1187,7 +1187,11 @@ cleanup:
 
 /**
  * mtk_snand_is_page_ops() - check if the op is a controller supported page op.
+<<<<<<< HEAD
  * @op spi-mem op to check
+=======
+ * @op: spi-mem op to check
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Check whether op can be executed with read_from_cache or program_load
  * mode in the controller.

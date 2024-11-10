@@ -6,7 +6,11 @@
  * Andrzej Hajda <a.hajda@samsung.com>
  */
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <drm/bridge/mhl.h>
 #include <drm/drm_bridge.h>

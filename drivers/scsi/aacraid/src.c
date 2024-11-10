@@ -410,7 +410,11 @@ static void aac_src_start_adapter(struct aac_dev *dev)
 			lower_32_bits(dev->init_pa),
 			upper_32_bits(dev->init_pa),
 			sizeof(struct _r8) +
+<<<<<<< HEAD
 			(AAC_MAX_HRRQ - 1) * sizeof(struct _rrq),
+=======
+			AAC_MAX_HRRQ * sizeof(struct _rrq),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			0, 0, 0, NULL, NULL, NULL, NULL, NULL);
 	} else {
 		init->r7.host_elapsed_seconds =

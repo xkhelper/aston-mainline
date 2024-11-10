@@ -52,7 +52,10 @@ struct davinci_soc_info {
 extern struct davinci_soc_info davinci_soc_info;
 
 extern void davinci_common_init(const struct davinci_soc_info *soc_info);
+<<<<<<< HEAD
 extern void davinci_init_ide(void);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void davinci_init_late(void);
 
 #ifdef CONFIG_SUSPEND

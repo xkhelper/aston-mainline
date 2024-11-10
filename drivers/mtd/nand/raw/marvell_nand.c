@@ -84,7 +84,11 @@
 #include <linux/slab.h>
 #include <linux/mfd/syscon.h>
 #include <linux/regmap.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/dmaengine.h>
 #include <linux/dma-mapping.h>
@@ -2771,7 +2775,10 @@ static void marvell_nand_chips_cleanup(struct marvell_nfc *nfc)
 static int marvell_nand_chips_init(struct device *dev, struct marvell_nfc *nfc)
 {
 	struct device_node *np = dev->of_node;
+<<<<<<< HEAD
 	struct device_node *nand_np;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int max_cs = nfc->caps->max_cs_nb;
 	int nchips;
 	int ret;
@@ -2798,20 +2805,31 @@ static int marvell_nand_chips_init(struct device *dev, struct marvell_nfc *nfc)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	for_each_child_of_node(np, nand_np) {
 		ret = marvell_nand_chip_init(dev, nfc, nand_np);
 		if (ret) {
 			of_node_put(nand_np);
 			goto cleanup_chips;
+=======
+	for_each_child_of_node_scoped(np, nand_np) {
+		ret = marvell_nand_chip_init(dev, nfc, nand_np);
+		if (ret) {
+			marvell_nand_chips_cleanup(nfc);
+			return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
 	return 0;
+<<<<<<< HEAD
 
 cleanup_chips:
 	marvell_nand_chips_cleanup(nfc);
 
 	return ret;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int marvell_nfc_init_dma(struct marvell_nfc *nfc)

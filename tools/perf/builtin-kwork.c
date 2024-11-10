@@ -958,7 +958,11 @@ static int top_sched_switch_event(struct perf_kwork *kwork,
 }
 
 static struct kwork_class kwork_irq;
+<<<<<<< HEAD
 static int process_irq_handler_entry_event(struct perf_tool *tool,
+=======
+static int process_irq_handler_entry_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					   struct evsel *evsel,
 					   struct perf_sample *sample,
 					   struct machine *machine)
@@ -971,7 +975,11 @@ static int process_irq_handler_entry_event(struct perf_tool *tool,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int process_irq_handler_exit_event(struct perf_tool *tool,
+=======
+static int process_irq_handler_exit_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					  struct evsel *evsel,
 					  struct perf_sample *sample,
 					  struct machine *machine)
@@ -1037,7 +1045,11 @@ static struct kwork_class kwork_irq = {
 };
 
 static struct kwork_class kwork_softirq;
+<<<<<<< HEAD
 static int process_softirq_raise_event(struct perf_tool *tool,
+=======
+static int process_softirq_raise_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       struct evsel *evsel,
 				       struct perf_sample *sample,
 				       struct machine *machine)
@@ -1051,7 +1063,11 @@ static int process_softirq_raise_event(struct perf_tool *tool,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int process_softirq_entry_event(struct perf_tool *tool,
+=======
+static int process_softirq_entry_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       struct evsel *evsel,
 				       struct perf_sample *sample,
 				       struct machine *machine)
@@ -1065,7 +1081,11 @@ static int process_softirq_entry_event(struct perf_tool *tool,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int process_softirq_exit_event(struct perf_tool *tool,
+=======
+static int process_softirq_exit_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      struct evsel *evsel,
 				      struct perf_sample *sample,
 				      struct machine *machine)
@@ -1167,7 +1187,11 @@ static struct kwork_class kwork_softirq = {
 };
 
 static struct kwork_class kwork_workqueue;
+<<<<<<< HEAD
 static int process_workqueue_activate_work_event(struct perf_tool *tool,
+=======
+static int process_workqueue_activate_work_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						 struct evsel *evsel,
 						 struct perf_sample *sample,
 						 struct machine *machine)
@@ -1181,7 +1205,11 @@ static int process_workqueue_activate_work_event(struct perf_tool *tool,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int process_workqueue_execute_start_event(struct perf_tool *tool,
+=======
+static int process_workqueue_execute_start_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						 struct evsel *evsel,
 						 struct perf_sample *sample,
 						 struct machine *machine)
@@ -1195,7 +1223,11 @@ static int process_workqueue_execute_start_event(struct perf_tool *tool,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int process_workqueue_execute_end_event(struct perf_tool *tool,
+=======
+static int process_workqueue_execute_end_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					       struct evsel *evsel,
 					       struct perf_sample *sample,
 					       struct machine *machine)
@@ -1266,7 +1298,11 @@ static struct kwork_class kwork_workqueue = {
 };
 
 static struct kwork_class kwork_sched;
+<<<<<<< HEAD
 static int process_sched_switch_event(struct perf_tool *tool,
+=======
+static int process_sched_switch_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      struct evsel *evsel,
 				      struct perf_sample *sample,
 				      struct machine *machine)
@@ -1945,12 +1981,20 @@ static int perf_kwork__report(struct perf_kwork *kwork)
 	return 0;
 }
 
+<<<<<<< HEAD
 typedef int (*tracepoint_handler)(struct perf_tool *tool,
+=======
+typedef int (*tracepoint_handler)(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				  struct evsel *evsel,
 				  struct perf_sample *sample,
 				  struct machine *machine);
 
+<<<<<<< HEAD
 static int perf_kwork__process_tracepoint_sample(struct perf_tool *tool,
+=======
+static int perf_kwork__process_tracepoint_sample(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						 union perf_event *event __maybe_unused,
 						 struct perf_sample *sample,
 						 struct evsel *evsel,
@@ -2322,12 +2366,15 @@ int cmd_kwork(int argc, const char **argv)
 {
 	static struct perf_kwork kwork = {
 		.class_list          = LIST_HEAD_INIT(kwork.class_list),
+<<<<<<< HEAD
 		.tool = {
 			.mmap		= perf_event__process_mmap,
 			.mmap2		= perf_event__process_mmap2,
 			.sample		= perf_kwork__process_tracepoint_sample,
 			.ordered_events = true,
 		},
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.atom_page_list      = LIST_HEAD_INIT(kwork.atom_page_list),
 		.sort_list           = LIST_HEAD_INIT(kwork.sort_list),
 		.cmp_id              = LIST_HEAD_INIT(kwork.cmp_id),
@@ -2462,6 +2509,14 @@ int cmd_kwork(int argc, const char **argv)
 		"record", "report", "latency", "timehist", "top", NULL
 	};
 
+<<<<<<< HEAD
+=======
+	perf_tool__init(&kwork.tool, /*ordered_events=*/true);
+	kwork.tool.mmap	  = perf_event__process_mmap;
+	kwork.tool.mmap2  = perf_event__process_mmap2;
+	kwork.tool.sample = perf_kwork__process_tracepoint_sample;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	argc = parse_options_subcommand(argc, argv, kwork_options,
 					kwork_subcommands, kwork_usage,
 					PARSE_OPT_STOP_AT_NON_OPTION);
@@ -2520,5 +2575,11 @@ int cmd_kwork(int argc, const char **argv)
 	} else
 		usage_with_options(kwork_usage, kwork_options);
 
+<<<<<<< HEAD
+=======
+	/* free usage string allocated by parse_options_subcommand */
+	free((void *)kwork_usage[0]);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }

@@ -7,6 +7,11 @@
 
 #include <kunit/test.h>
 
+<<<<<<< HEAD
+=======
+#include "of_private.h"
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Test that the root node "/" can be found by path.
  */
@@ -36,6 +41,10 @@ static struct kunit_case of_dtb_test_cases[] = {
 
 static int of_dtb_test_init(struct kunit *test)
 {
+<<<<<<< HEAD
+=======
+	of_root_kunit_skip(test);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!IS_ENABLED(CONFIG_OF_EARLY_FLATTREE))
 		kunit_skip(test, "requires CONFIG_OF_EARLY_FLATTREE");
 

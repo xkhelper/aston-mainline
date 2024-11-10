@@ -23,6 +23,10 @@
 #include <drm/drm_bridge.h>
 #include <drm/drm_edid.h>
 #include <drm/drm_mipi_dsi.h>
+<<<<<<< HEAD
+=======
+#include <drm/drm_of.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <drm/drm_print.h>
 #include <drm/drm_probe_helper.h>
 
@@ -34,7 +38,11 @@
 struct lt9611uxc {
 	struct device *dev;
 	struct drm_bridge bridge;
+<<<<<<< HEAD
 	struct drm_connector connector;
+=======
+	struct drm_bridge *next_bridge;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	struct regmap *regmap;
 	/* Protects all accesses to registers by stopping the on-chip MCU */
@@ -120,11 +128,14 @@ static struct lt9611uxc *bridge_to_lt9611uxc(struct drm_bridge *bridge)
 	return container_of(bridge, struct lt9611uxc, bridge);
 }
 
+<<<<<<< HEAD
 static struct lt9611uxc *connector_to_lt9611uxc(struct drm_connector *connector)
 {
 	return container_of(connector, struct lt9611uxc, connector);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void lt9611uxc_lock(struct lt9611uxc *lt9611uxc)
 {
 	mutex_lock(&lt9611uxc->ocm_lock);
@@ -171,6 +182,7 @@ static void lt9611uxc_hpd_work(struct work_struct *work)
 	struct lt9611uxc *lt9611uxc = container_of(work, struct lt9611uxc, work);
 	bool connected;
 
+<<<<<<< HEAD
 	if (lt9611uxc->connector.dev) {
 		if (lt9611uxc->connector.dev->mode_config.funcs)
 			drm_kms_helper_hotplug_event(lt9611uxc->connector.dev);
@@ -185,6 +197,16 @@ static void lt9611uxc_hpd_work(struct work_struct *work)
 				      connector_status_connected :
 				      connector_status_disconnected);
 	}
+=======
+	mutex_lock(&lt9611uxc->ocm_lock);
+	connected = lt9611uxc->hdmi_connected;
+	mutex_unlock(&lt9611uxc->ocm_lock);
+
+	drm_bridge_hpd_notify(&lt9611uxc->bridge,
+			      connected ?
+			      connector_status_connected :
+			      connector_status_disconnected);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void lt9611uxc_reset(struct lt9611uxc *lt9611uxc)
@@ -289,6 +311,7 @@ static struct mipi_dsi_device *lt9611uxc_attach_dsi(struct lt9611uxc *lt9611uxc,
 	return dsi;
 }
 
+<<<<<<< HEAD
 static int lt9611uxc_connector_get_modes(struct drm_connector *connector)
 {
 	struct lt9611uxc *lt9611uxc = connector_to_lt9611uxc(connector);
@@ -352,10 +375,13 @@ static int lt9611uxc_connector_init(struct drm_bridge *bridge, struct lt9611uxc 
 	return drm_connector_attach_encoder(&lt9611uxc->connector, bridge->encoder);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int lt9611uxc_bridge_attach(struct drm_bridge *bridge,
 				   enum drm_bridge_attach_flags flags)
 {
 	struct lt9611uxc *lt9611uxc = bridge_to_lt9611uxc(bridge);
+<<<<<<< HEAD
 	int ret;
 
 	if (!(flags & DRM_BRIDGE_ATTACH_NO_CONNECTOR)) {
@@ -365,6 +391,11 @@ static int lt9611uxc_bridge_attach(struct drm_bridge *bridge,
 	}
 
 	return 0;
+=======
+
+	return drm_bridge_attach(bridge->encoder, lt9611uxc->next_bridge,
+				 bridge, flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static enum drm_mode_status
@@ -525,7 +556,11 @@ static int lt9611uxc_parse_dt(struct device *dev,
 
 	lt9611uxc->dsi1_node = of_graph_get_remote_node(dev->of_node, 1, -1);
 
+<<<<<<< HEAD
 	return 0;
+=======
+	return drm_of_find_panel_or_bridge(dev->of_node, 2, -1, NULL, &lt9611uxc->next_bridge);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int lt9611uxc_gpio_init(struct lt9611uxc *lt9611uxc)

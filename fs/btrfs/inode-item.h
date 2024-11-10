@@ -109,11 +109,19 @@ struct btrfs_inode_extref *btrfs_lookup_inode_extref(
 			  u64 inode_objectid, u64 ref_objectid, int ins_len,
 			  int cow);
 
+<<<<<<< HEAD
 struct btrfs_inode_ref *btrfs_find_name_in_backref(struct extent_buffer *leaf,
 						   int slot,
 						   const struct fscrypt_str *name);
 struct btrfs_inode_extref *btrfs_find_name_in_ext_backref(
 		struct extent_buffer *leaf, int slot, u64 ref_objectid,
+=======
+struct btrfs_inode_ref *btrfs_find_name_in_backref(const struct extent_buffer *leaf,
+						   int slot,
+						   const struct fscrypt_str *name);
+struct btrfs_inode_extref *btrfs_find_name_in_ext_backref(
+		const struct extent_buffer *leaf, int slot, u64 ref_objectid,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		const struct fscrypt_str *name);
 
 #endif

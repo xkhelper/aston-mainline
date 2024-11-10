@@ -48,20 +48,33 @@
 /**
  * struct brcmf_ampdu_rx_reorder - AMPDU receive reorder info
  *
+<<<<<<< HEAD
  * @pktslots: dynamic allocated array for ordering AMPDU packets.
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @flow_id: AMPDU flow identifier.
  * @cur_idx: last AMPDU index from firmware.
  * @exp_idx: expected next AMPDU index.
  * @max_idx: maximum amount of packets per AMPDU.
  * @pend_pkts: number of packets currently in @pktslots.
+<<<<<<< HEAD
  */
 struct brcmf_ampdu_rx_reorder {
 	struct sk_buff **pktslots;
+=======
+ * @pktslots: array for ordering AMPDU packets.
+ */
+struct brcmf_ampdu_rx_reorder {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 flow_id;
 	u8 cur_idx;
 	u8 exp_idx;
 	u8 max_idx;
 	u8 pend_pkts;
+<<<<<<< HEAD
+=======
+	struct sk_buff *pktslots[];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* Forward decls for struct brcmf_pub (see below) */

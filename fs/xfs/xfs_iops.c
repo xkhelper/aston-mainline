@@ -567,7 +567,11 @@ xfs_stat_blksize(
 			return 1U << mp->m_allocsize_log;
 	}
 
+<<<<<<< HEAD
 	return PAGE_SIZE;
+=======
+	return max_t(uint32_t, PAGE_SIZE, mp->m_sb.sb_blocksize);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 STATIC int
@@ -870,6 +874,7 @@ xfs_setattr_size(
 		error = xfs_zero_range(ip, oldsize, newsize - oldsize,
 				&did_zeroing);
 	} else {
+<<<<<<< HEAD
 		/*
 		 * iomap won't detect a dirty page over an unwritten block (or a
 		 * cow block over a hole) and subsequently skips zeroing the
@@ -880,6 +885,8 @@ xfs_setattr_size(
 						     newsize);
 		if (error)
 			return error;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		error = xfs_truncate_page(ip, newsize, &did_zeroing);
 	}
 

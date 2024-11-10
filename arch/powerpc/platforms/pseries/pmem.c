@@ -121,7 +121,11 @@ int dlpar_hp_pmem(struct pseries_hp_errorlog *hp_elog)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	drc_index = hp_elog->_drc_u.drc_index;
+=======
+	drc_index = be32_to_cpu(hp_elog->_drc_u.drc_index);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	lock_device_hotplug();
 

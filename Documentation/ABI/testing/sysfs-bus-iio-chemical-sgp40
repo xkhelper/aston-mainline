@@ -15,6 +15,7 @@ Description:
 		Set the relative humidity. This value is sent to the sensor for
 		humidity compensation.
 		Default value: 50000 (50 % relative humidity)
+<<<<<<< HEAD
 
 What:		/sys/bus/iio/devices/iio:deviceX/in_resistance_calibbias
 Date:		August 2021
@@ -29,3 +30,5 @@ Description:
 		in_concentration_input = 500 / (1 + e^x)
 
 		Default value: 30000
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

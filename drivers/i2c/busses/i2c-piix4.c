@@ -146,7 +146,11 @@ static const struct dmi_system_id piix4_dmi_ibm[] = {
 		.ident = "IBM",
 		.matches = { DMI_MATCH(DMI_SYS_VENDOR, "IBM"), },
 	},
+<<<<<<< HEAD
 	{ },
+=======
+	{ }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*

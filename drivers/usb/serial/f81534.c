@@ -1538,7 +1538,10 @@ static int f81534_resume(struct usb_serial *serial)
 
 static struct usb_serial_driver f81534_device = {
 	.driver = {
+<<<<<<< HEAD
 		   .owner = THIS_MODULE,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		   .name = "f81534",
 	},
 	.description =		DRIVER_DESC,

@@ -107,7 +107,11 @@ static int ljca_i2c_start(struct ljca_i2c_dev *ljca_i2c, u8 target_addr,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void ljca_i2c_stop(struct ljca_i2c_dev *ljca_i2c, u8 target_addr)
+=======
+static void ljca_i2c_stop(struct ljca_i2c_dev *ljca_i2c)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ljca_i2c_rw_packet *w_packet =
 			(struct ljca_i2c_rw_packet *)ljca_i2c->obuf;
@@ -178,7 +182,11 @@ static int ljca_i2c_read(struct ljca_i2c_dev *ljca_i2c, u8 target_addr, u8 *data
 	if (!ret)
 		ret = ljca_i2c_pure_read(ljca_i2c, data, len);
 
+<<<<<<< HEAD
 	ljca_i2c_stop(ljca_i2c, target_addr);
+=======
+	ljca_i2c_stop(ljca_i2c);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }
@@ -222,7 +230,11 @@ static int ljca_i2c_write(struct ljca_i2c_dev *ljca_i2c, u8 target_addr,
 	if (!ret)
 		ret = ljca_i2c_pure_write(ljca_i2c, data, len);
 
+<<<<<<< HEAD
 	ljca_i2c_stop(ljca_i2c, target_addr);
+=======
+	ljca_i2c_stop(ljca_i2c);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }

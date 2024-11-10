@@ -1201,6 +1201,7 @@ void __init setup_arch(char **cmdline_p)
 		mdesc->init_early();
 }
 
+<<<<<<< HEAD
 
 static int __init topology_init(void)
 {
@@ -1215,6 +1216,12 @@ static int __init topology_init(void)
 	return 0;
 }
 subsys_initcall(topology_init);
+=======
+bool arch_cpu_is_hotpluggable(int num)
+{
+	return platform_can_hotplug_cpu(num);
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_HAVE_PROC_CPU
 static int __init proc_cpu_init(void)

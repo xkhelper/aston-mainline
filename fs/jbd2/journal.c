@@ -281,6 +281,19 @@ static void journal_kill_thread(journal_t *journal)
 	write_unlock(&journal->j_state_lock);
 }
 
+<<<<<<< HEAD
+=======
+static inline bool jbd2_data_needs_escaping(char *data)
+{
+	return *((__be32 *)data) == cpu_to_be32(JBD2_MAGIC_NUMBER);
+}
+
+static inline void jbd2_data_do_escape(char *data)
+{
+	*((unsigned int *)data) = 0;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * jbd2_journal_write_metadata_buffer: write a metadata buffer to the journal.
  *
@@ -318,9 +331,13 @@ int jbd2_journal_write_metadata_buffer(transaction_t *transaction,
 				  struct buffer_head **bh_out,
 				  sector_t blocknr)
 {
+<<<<<<< HEAD
 	int done_copy_out = 0;
 	int do_escape = 0;
 	char *mapped_data;
+=======
+	int do_escape = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct buffer_head *new_bh;
 	struct folio *new_folio;
 	unsigned int new_offset;
@@ -349,6 +366,7 @@ int jbd2_journal_write_metadata_buffer(transaction_t *transaction,
 	 * we use that version of the data for the commit.
 	 */
 	if (jh_in->b_frozen_data) {
+<<<<<<< HEAD
 		done_copy_out = 1;
 		new_folio = virt_to_folio(jh_in->b_frozen_data);
 		new_offset = offset_in_folio(new_folio, jh_in->b_frozen_data);
@@ -380,6 +398,35 @@ int jbd2_journal_write_metadata_buffer(transaction_t *transaction,
 	 */
 	if (do_escape && !done_copy_out) {
 		char *tmp;
+=======
+		new_folio = virt_to_folio(jh_in->b_frozen_data);
+		new_offset = offset_in_folio(new_folio, jh_in->b_frozen_data);
+		do_escape = jbd2_data_needs_escaping(jh_in->b_frozen_data);
+		if (do_escape)
+			jbd2_data_do_escape(jh_in->b_frozen_data);
+	} else {
+		char *tmp;
+		char *mapped_data;
+
+		new_folio = bh_in->b_folio;
+		new_offset = offset_in_folio(new_folio, bh_in->b_data);
+		mapped_data = kmap_local_folio(new_folio, new_offset);
+		/*
+		 * Fire data frozen trigger if data already wasn't frozen. Do
+		 * this before checking for escaping, as the trigger may modify
+		 * the magic offset.  If a copy-out happens afterwards, it will
+		 * have the correct data in the buffer.
+		 */
+		jbd2_buffer_frozen_trigger(jh_in, mapped_data,
+					   jh_in->b_triggers);
+		do_escape = jbd2_data_needs_escaping(mapped_data);
+		kunmap_local(mapped_data);
+		/*
+		 * Do we need to do a data copy?
+		 */
+		if (!do_escape)
+			goto escape_done;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		spin_unlock(&jh_in->b_state_lock);
 		tmp = jbd2_alloc(bh_in->b_size, GFP_NOFS);
@@ -406,6 +453,7 @@ int jbd2_journal_write_metadata_buffer(transaction_t *transaction,
 copy_done:
 		new_folio = virt_to_folio(jh_in->b_frozen_data);
 		new_offset = offset_in_folio(new_folio, jh_in->b_frozen_data);
+<<<<<<< HEAD
 		done_copy_out = 1;
 	}
 
@@ -418,6 +466,12 @@ copy_done:
 	if (do_escape)
 		*((unsigned int *)jh_in->b_frozen_data) = 0;
 
+=======
+		jbd2_data_do_escape(jh_in->b_frozen_data);
+	}
+
+escape_done:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	folio_set_bh(new_bh, new_folio, new_offset);
 	new_bh->b_size = bh_in->b_size;
 	new_bh->b_bdev = journal->j_dev;
@@ -710,7 +764,11 @@ int jbd2_fc_begin_commit(journal_t *journal, tid_t tid)
 		return -EINVAL;
 
 	write_lock(&journal->j_state_lock);
+<<<<<<< HEAD
 	if (tid <= journal->j_commit_sequence) {
+=======
+	if (tid_geq(journal->j_commit_sequence, tid)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		write_unlock(&journal->j_state_lock);
 		return -EALREADY;
 	}
@@ -740,9 +798,15 @@ EXPORT_SYMBOL(jbd2_fc_begin_commit);
  */
 static int __jbd2_fc_end_commit(journal_t *journal, tid_t tid, bool fallback)
 {
+<<<<<<< HEAD
 	jbd2_journal_unlock_updates(journal);
 	if (journal->j_fc_cleanup_callback)
 		journal->j_fc_cleanup_callback(journal, 0, tid);
+=======
+	if (journal->j_fc_cleanup_callback)
+		journal->j_fc_cleanup_callback(journal, 0, tid);
+	jbd2_journal_unlock_updates(journal);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	write_lock(&journal->j_state_lock);
 	journal->j_flags &= ~JBD2_FAST_COMMIT_ONGOING;
 	if (fallback)
@@ -841,6 +905,7 @@ int jbd2_fc_get_buf(journal_t *journal, struct buffer_head **bh_out)
 
 	*bh_out = NULL;
 
+<<<<<<< HEAD
 	if (journal->j_fc_off + journal->j_fc_first < journal->j_fc_last) {
 		fc_off = journal->j_fc_off;
 		blocknr = journal->j_fc_first + fc_off;
@@ -852,6 +917,14 @@ int jbd2_fc_get_buf(journal_t *journal, struct buffer_head **bh_out)
 	if (ret)
 		return ret;
 
+=======
+	if (journal->j_fc_off + journal->j_fc_first >= journal->j_fc_last)
+		return -EINVAL;
+
+	fc_off = journal->j_fc_off;
+	blocknr = journal->j_fc_first + fc_off;
+	journal->j_fc_off++;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = jbd2_journal_bmap(journal, blocknr, &pblock);
 	if (ret)
 		return ret;
@@ -860,7 +933,10 @@ int jbd2_fc_get_buf(journal_t *journal, struct buffer_head **bh_out)
 	if (!bh)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	journal->j_fc_wbuf[fc_off] = bh;
 
 	*bh_out = bh;
@@ -903,7 +979,11 @@ int jbd2_fc_wait_bufs(journal_t *journal, int num_blks)
 }
 EXPORT_SYMBOL(jbd2_fc_wait_bufs);
 
+<<<<<<< HEAD
 int jbd2_fc_release_bufs(journal_t *journal)
+=======
+void jbd2_fc_release_bufs(journal_t *journal)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct buffer_head *bh;
 	int i, j_fc_off;
@@ -917,8 +997,11 @@ int jbd2_fc_release_bufs(journal_t *journal)
 		put_bh(bh);
 		journal->j_fc_wbuf[i] = NULL;
 	}
+<<<<<<< HEAD
 
 	return 0;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(jbd2_fc_release_bufs);
 
@@ -1944,7 +2027,11 @@ static void jbd2_mark_journal_empty(journal_t *journal, blk_opf_t write_flags)
 	if (had_fast_commit)
 		jbd2_set_feature_fast_commit(journal);
 
+<<<<<<< HEAD
 	/* Log is no longer empty */
+=======
+	/* Log is empty */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	write_lock(&journal->j_state_lock);
 	journal->j_flags |= JBD2_FLUSHED;
 	write_unlock(&journal->j_state_lock);
@@ -2866,8 +2953,12 @@ static struct journal_head *journal_alloc_journal_head(void)
 		ret = kmem_cache_zalloc(jbd2_journal_head_cache,
 				GFP_NOFS | __GFP_NOFAIL);
 	}
+<<<<<<< HEAD
 	if (ret)
 		spin_lock_init(&ret->b_state_lock);
+=======
+	spin_lock_init(&ret->b_state_lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 

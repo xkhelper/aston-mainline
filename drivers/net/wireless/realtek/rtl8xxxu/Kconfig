@@ -20,9 +20,14 @@ config RTL8XXXU
 	  memory footprint than the vendor drivers and benefits
 	  from the in kernel mac80211 stack.
 
+<<<<<<< HEAD
 	  It can coexist with drivers from drivers/staging/rtl8723au,
 	  drivers/staging/rtl8192u, and drivers/net/wireless/rtlwifi,
 	  but you will need to control which module you wish to load.
+=======
+	  It can coexist with the rtlwifi driver but you will need
+	  to control which module you wish to load.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	  To compile this driver as a module, choose M here: the module will
 	  be called rtl8xxxu.  If unsure, say N.

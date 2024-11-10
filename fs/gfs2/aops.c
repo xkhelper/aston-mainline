@@ -139,6 +139,7 @@ static int __gfs2_jdata_write_folio(struct folio *folio,
 }
 
 /**
+<<<<<<< HEAD
  * gfs2_jdata_writepage - Write complete page
  * @page: Page to write
  * @wbc: The writeback control
@@ -168,6 +169,8 @@ out:
 }
 
 /**
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * gfs2_writepages - Write a bunch of dirty pages back to disk
  * @mapping: The mapping to write
  * @wbc: Write-back control
@@ -748,7 +751,10 @@ static const struct address_space_operations gfs2_aops = {
 };
 
 static const struct address_space_operations gfs2_jdata_aops = {
+<<<<<<< HEAD
 	.writepage = gfs2_jdata_writepage,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.writepages = gfs2_jdata_writepages,
 	.read_folio = gfs2_read_folio,
 	.readahead = gfs2_readahead,

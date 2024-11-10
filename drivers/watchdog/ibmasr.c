@@ -340,7 +340,10 @@ static int asr_release(struct inode *inode, struct file *file)
 
 static const struct file_operations asr_fops = {
 	.owner =		THIS_MODULE,
+<<<<<<< HEAD
 	.llseek =		no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.write =		asr_write,
 	.unlocked_ioctl =	asr_ioctl,
 	.compat_ioctl =		compat_ptr_ioctl,

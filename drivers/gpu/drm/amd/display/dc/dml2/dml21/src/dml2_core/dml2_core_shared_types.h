@@ -2,7 +2,10 @@
 //
 // Copyright 2024 Advanced Micro Devices, Inc.
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifndef __DML2_CORE_SHARED_TYPES_H__
 #define __DML2_CORE_SHARED_TYPES_H__
 
@@ -10,6 +13,18 @@
 #include "dml_top_display_cfg_types.h"
 #include "dml_top_types.h"
 
+<<<<<<< HEAD
+=======
+#define __DML_VBA_DEBUG__
+#define __DML2_CALCS_MAX_VRATIO_PRE_OTO__ 4.0 //<brief max vratio for one-to-one prefetch bw scheduling
+#define __DML2_CALCS_MAX_VRATIO_PRE_EQU__ 6.0 //<brief max vratio for equalized prefetch bw scheduling
+#define __DML2_CALCS_MAX_VRATIO_PRE__ 8.0 //<brief max prefetch vratio register limit
+
+#define __DML2_CALCS_DPP_INVALID__ 0
+#define __DML2_CALCS_DCFCLK_FACTOR__ 1.15 //<brief fudge factor for min dcfclk calclation
+#define __DML2_CALCS_PIPE_NO_PLANE__ 99
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct dml2_core_ip_params {
 	unsigned int vblank_nom_default_us;
 	unsigned int remote_iommu_outstanding_translations;
@@ -70,6 +85,10 @@ struct dml2_core_ip_params {
 	unsigned int words_per_channel;
 	bool imall_supported;
 	unsigned int max_flip_time_us;
+<<<<<<< HEAD
+=======
+	unsigned int max_flip_time_lines;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int subvp_swath_height_margin_lines;
 	unsigned int subvp_fw_processing_delay_us;
 	unsigned int subvp_pstate_allow_width_us;
@@ -782,6 +801,10 @@ struct dml2_core_internal_mode_program {
 	unsigned int VUpdateOffsetPix[DML2_MAX_PLANES];
 	unsigned int VUpdateWidthPix[DML2_MAX_PLANES];
 	unsigned int VReadyOffsetPix[DML2_MAX_PLANES];
+<<<<<<< HEAD
+=======
+	unsigned int pstate_keepout_dst_lines[DML2_MAX_PLANES];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	// Latency and Support
 	double MaxActiveFCLKChangeLatencySupported;
@@ -852,6 +875,12 @@ struct dml2_core_internal_SOCParametersList {
 	double USRRetrainingLatency;
 	double SMNLatency;
 	double g6_temp_read_blackout_us;
+<<<<<<< HEAD
+=======
+	double max_urgent_latency_us;
+	double df_response_time_us;
+	enum dml2_qos_param_type qos_type;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct dml2_core_calcs_mode_support_locals {
@@ -865,7 +894,11 @@ struct dml2_core_calcs_mode_support_locals {
 	unsigned int dpte_row_bytes_per_row_l[DML2_MAX_PLANES];
 	unsigned int dpte_row_bytes_per_row_c[DML2_MAX_PLANES];
 
+<<<<<<< HEAD
 	bool dummy_boolean[2];
+=======
+	bool dummy_boolean[3];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int dummy_integer[3];
 	unsigned int dummy_integer_array[36][DML2_MAX_PLANES];
 	enum dml2_odm_mode dummy_odm_mode[DML2_MAX_PLANES];
@@ -913,9 +946,13 @@ struct dml2_core_calcs_mode_support_locals {
 
 	double HostVMInefficiencyFactor;
 	double HostVMInefficiencyFactorPrefetch;
+<<<<<<< HEAD
 	unsigned int NextMaxVStartup;
 	unsigned int MaxVStartup;
 	bool AnyLinesForVMOrRowTooLarge;
+=======
+	unsigned int MaxVStartup;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	double PixelClockBackEndFactor;
 	unsigned int NumDSCUnitRequired;
 
@@ -975,7 +1012,11 @@ struct dml2_core_calcs_mode_programming_locals {
 
 	unsigned int DSCFormatFactor;
 	struct dml2_core_internal_DmlPipe SurfaceParameters[DML2_MAX_PLANES];
+<<<<<<< HEAD
 	unsigned int ReorderBytes;
+=======
+	unsigned int ReorderingBytes;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	double HostVMInefficiencyFactor;
 	double HostVMInefficiencyFactorPrefetch;
 	unsigned int TotalDCCActiveDPP;
@@ -1176,11 +1217,21 @@ struct dml2_core_calcs_CalculatePrefetchSchedule_locals {
 	double prefetch_bw_oto;
 	double Tvm_oto;
 	double Tr0_oto;
+<<<<<<< HEAD
+=======
+	double Tvm_no_trip_oto;
+	double Tr0_no_trip_oto;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	double Tvm_oto_lines;
 	double Tr0_oto_lines;
 	double dst_y_prefetch_oto;
 	double TimeForFetchingVM;
 	double TimeForFetchingRowInVBlank;
+<<<<<<< HEAD
+=======
+	double dst_y_per_vm_no_trip_vblank;
+	double dst_y_per_row_no_trip_vblank;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	double LinesToRequestPrefetchPixelData;
 	unsigned int HostVMDynamicLevelsTrips;
 	double trip_to_mem;
@@ -1188,6 +1239,10 @@ struct dml2_core_calcs_CalculatePrefetchSchedule_locals {
 	double Tr0_trips_rounded;
 	double max_Tsw;
 	double Lsw_oto;
+<<<<<<< HEAD
+=======
+	double Lsw_equ;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	double Tpre_rounded;
 	double prefetch_bw_equ;
 	double Tvm_equ;
@@ -1196,11 +1251,21 @@ struct dml2_core_calcs_CalculatePrefetchSchedule_locals {
 	double Tdmec;
 	double Tdmsks;
 	double prefetch_sw_bytes;
+<<<<<<< HEAD
+=======
+	double total_row_bytes;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	double prefetch_bw_pr;
 	double bytes_pp;
 	double dep_bytes;
 	double min_Lsw_oto;
+<<<<<<< HEAD
 	double Tsw_est1;
+=======
+	double min_Lsw_equ;
+	double Tsw_est1;
+	double Tsw_est2;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	double Tsw_est3;
 	double prefetch_bw1;
 	double prefetch_bw2;
@@ -1332,6 +1397,13 @@ struct dml2_core_shared_get_urgent_bandwidth_required_locals {
 	double tmp_nom_adj_factor_p1;
 	double tmp_pref_adj_factor_p0;
 	double tmp_pref_adj_factor_p1;
+<<<<<<< HEAD
+=======
+	double vm_row_bw;
+	double flip_and_active_bw;
+	double flip_and_prefetch_bw;
+	double active_and_excess_bw;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct dml2_core_shared_calculate_peak_bandwidth_required_locals {
@@ -1688,7 +1760,10 @@ struct dml2_core_calcs_CalculatePrefetchSchedule_params {
 	enum dml2_output_format_class OutputFormat;
 	unsigned int MaxInterDCNTileRepeaters;
 	unsigned int VStartup;
+<<<<<<< HEAD
 	unsigned int MaxVStartup;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int HostVMMinPageSize;
 	bool DynamicMetadataEnable;
 	bool DynamicMetadataVMEnabled;
@@ -2010,6 +2085,10 @@ struct dml2_core_internal_scratch {
 struct dml2_core_internal_display_mode_lib {
 	struct dml2_core_ip_params ip;
 	struct dml2_soc_bb soc;
+<<<<<<< HEAD
+=======
+	struct dml2_ip_capabilities ip_caps;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	//@brief Mode Support and Mode programming struct
 	// Used to hold input; intermediate and output of the calculations

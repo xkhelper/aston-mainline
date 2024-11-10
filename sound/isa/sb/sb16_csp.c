@@ -296,6 +296,10 @@ static int snd_sb_csp_riff_load(struct snd_sb_csp * p,
 				struct snd_sb_csp_microcode __user * mcode)
 {
 	struct snd_sb_csp_mc_header info;
+<<<<<<< HEAD
+=======
+	struct device *dev = p->chip->card->dev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	unsigned char __user *data_ptr;
 	unsigned char __user *data_end;
@@ -316,7 +320,11 @@ static int snd_sb_csp_riff_load(struct snd_sb_csp * p,
 		return -EFAULT;
 	if ((le32_to_cpu(file_h.name) != RIFF_HEADER) ||
 	    (le32_to_cpu(file_h.len) >= SNDRV_SB_CSP_MAX_MICROCODE_FILE_SIZE - sizeof(file_h))) {
+<<<<<<< HEAD
 		snd_printd("%s: Invalid RIFF header\n", __func__);
+=======
+		dev_dbg(dev, "%s: Invalid RIFF header\n", __func__);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 	data_ptr += sizeof(file_h);
@@ -325,7 +333,11 @@ static int snd_sb_csp_riff_load(struct snd_sb_csp * p,
 	if (copy_from_user(&item_type, data_ptr, sizeof(item_type)))
 		return -EFAULT;
 	if (le32_to_cpu(item_type) != CSP__HEADER) {
+<<<<<<< HEAD
 		snd_printd("%s: Invalid RIFF file type\n", __func__);
+=======
+		dev_dbg(dev, "%s: Invalid RIFF file type\n", __func__);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 	data_ptr += sizeof (item_type);
@@ -380,7 +392,11 @@ static int snd_sb_csp_riff_load(struct snd_sb_csp * p,
 				return -EFAULT;
 
 			if (le32_to_cpu(code_h.name) != MAIN_HEADER) {
+<<<<<<< HEAD
 				snd_printd("%s: Missing 'main' microcode\n", __func__);
+=======
+				dev_dbg(dev, "%s: Missing 'main' microcode\n", __func__);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				return -EINVAL;
 			}
 			data_ptr += sizeof(code_h);
@@ -423,9 +439,15 @@ static int snd_sb_csp_riff_load(struct snd_sb_csp * p,
 			default:	/* other codecs are unsupported */
 				p->acc_format = p->acc_width = p->acc_rates = 0;
 				p->mode = 0;
+<<<<<<< HEAD
 				snd_printd("%s: Unsupported CSP codec type: 0x%04x\n",
 					   __func__,
 					   le16_to_cpu(funcdesc_h.VOC_type));
+=======
+				dev_dbg(dev, "%s: Unsupported CSP codec type: 0x%04x\n",
+					__func__,
+					le16_to_cpu(funcdesc_h.VOC_type));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				return -EINVAL;
 			}
 			p->acc_channels = le16_to_cpu(funcdesc_h.flags_stereo_mono);
@@ -443,7 +465,11 @@ static int snd_sb_csp_riff_load(struct snd_sb_csp * p,
 			return 0;
 		}
 	}
+<<<<<<< HEAD
 	snd_printd("%s: Function #%d not found\n", __func__, info.func_req);
+=======
+	dev_dbg(dev, "%s: Function #%d not found\n", __func__, info.func_req);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return -EINVAL;
 }
 
@@ -597,7 +623,13 @@ static int get_version(struct snd_sb *chip)
 static int snd_sb_csp_check_version(struct snd_sb_csp * p)
 {
 	if (p->version < 0x10 || p->version > 0x1f) {
+<<<<<<< HEAD
 		snd_printd("%s: Invalid CSP version: 0x%x\n", __func__, p->version);
+=======
+		dev_dbg(p->chip->card->dev,
+			"%s: Invalid CSP version: 0x%x\n",
+			__func__, p->version);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 1;
 	}
 	return 0;
@@ -616,7 +648,11 @@ static int snd_sb_csp_load(struct snd_sb_csp * p, const unsigned char *buf, int 
 	spin_lock_irqsave(&p->chip->reg_lock, flags);
 	snd_sbdsp_command(p->chip, 0x01);	/* CSP download command */
 	if (snd_sbdsp_get_byte(p->chip)) {
+<<<<<<< HEAD
 		snd_printd("%s: Download command failed\n", __func__);
+=======
+		dev_dbg(p->chip->card->dev, "%s: Download command failed\n", __func__);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto __fail;
 	}
 	/* Send CSP low byte (size - 1) */
@@ -643,7 +679,13 @@ static int snd_sb_csp_load(struct snd_sb_csp * p, const unsigned char *buf, int 
 			udelay (10);
 		}
 		if (status != 0x55) {
+<<<<<<< HEAD
 			snd_printd("%s: Microcode initialization failed\n", __func__);
+=======
+			dev_dbg(p->chip->card->dev,
+				"%s: Microcode initialization failed\n",
+				__func__);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto __fail;
 		}
 	} else {
@@ -788,12 +830,17 @@ static int snd_sb_csp_autoload(struct snd_sb_csp * p, snd_pcm_format_t pcm_sfmt,
  */
 static int snd_sb_csp_start(struct snd_sb_csp * p, int sample_width, int channels)
 {
+<<<<<<< HEAD
+=======
+	struct device *dev = p->chip->card->dev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned char s_type;	/* sample type */
 	unsigned char mixL, mixR;
 	int result = -EIO;
 	unsigned long flags;
 
 	if (!(p->running & (SNDRV_SB_CSP_ST_LOADED | SNDRV_SB_CSP_ST_AUTO))) {
+<<<<<<< HEAD
 		snd_printd("%s: Microcode not loaded\n", __func__);
 		return -ENXIO;
 	}
@@ -807,6 +854,21 @@ static int snd_sb_csp_start(struct snd_sb_csp * p, int sample_width, int channel
 	}
 	if (!(channels & p->acc_channels)) {
 		snd_printd("%s: Invalid number of channels\n", __func__);
+=======
+		dev_dbg(dev, "%s: Microcode not loaded\n", __func__);
+		return -ENXIO;
+	}
+	if (p->running & SNDRV_SB_CSP_ST_RUNNING) {
+		dev_dbg(dev, "%s: CSP already running\n", __func__);
+		return -EBUSY;
+	}
+	if (!(sample_width & p->acc_width)) {
+		dev_dbg(dev, "%s: Unsupported PCM sample width\n", __func__);
+		return -EINVAL;
+	}
+	if (!(channels & p->acc_channels)) {
+		dev_dbg(dev, "%s: Invalid number of channels\n", __func__);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 
@@ -829,11 +891,19 @@ static int snd_sb_csp_start(struct snd_sb_csp * p, int sample_width, int channel
 		s_type |= 0x22;	/* 00dX 00dX    (d = 1 if 8 bit samples) */
 
 	if (set_codec_parameter(p->chip, 0x81, s_type)) {
+<<<<<<< HEAD
 		snd_printd("%s: Set sample type command failed\n", __func__);
 		goto __fail;
 	}
 	if (set_codec_parameter(p->chip, 0x80, 0x00)) {
 		snd_printd("%s: Codec start command failed\n", __func__);
+=======
+		dev_dbg(dev, "%s: Set sample type command failed\n", __func__);
+		goto __fail;
+	}
+	if (set_codec_parameter(p->chip, 0x80, 0x00)) {
+		dev_dbg(dev, "%s: Codec start command failed\n", __func__);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto __fail;
 	}
 	p->run_width = sample_width;

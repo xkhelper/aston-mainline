@@ -57,6 +57,11 @@ static struct sof_flag sof_flags[] = {
 	SOF_FLAG(SOF_TIMESTAMPING_SOFTWARE),
 	SOF_FLAG(SOF_TIMESTAMPING_RX_SOFTWARE),
 	SOF_FLAG(SOF_TIMESTAMPING_RX_HARDWARE),
+<<<<<<< HEAD
+=======
+	SOF_FLAG(SOF_TIMESTAMPING_OPT_RX_FILTER),
+	SOF_FLAG(SOF_TIMESTAMPING_RAW_HARDWARE),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct socket_type socket_types[] = {
@@ -98,6 +103,25 @@ static struct test_case test_cases[] = {
 		{}
 	},
 	{
+<<<<<<< HEAD
+=======
+		{ .so_timestamping = SOF_TIMESTAMPING_RAW_HARDWARE
+			| SOF_TIMESTAMPING_OPT_RX_FILTER },
+		{}
+	},
+	{
+		{ .so_timestamping = SOF_TIMESTAMPING_SOFTWARE
+			| SOF_TIMESTAMPING_OPT_RX_FILTER },
+		{}
+	},
+	{
+		{ .so_timestamping = SOF_TIMESTAMPING_SOFTWARE
+			| SOF_TIMESTAMPING_RX_SOFTWARE
+			| SOF_TIMESTAMPING_OPT_RX_FILTER },
+		{ .swtstamp = true }
+	},
+	{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		{ .so_timestamping = SOF_TIMESTAMPING_SOFTWARE
 			| SOF_TIMESTAMPING_RX_SOFTWARE },
 		{ .swtstamp = true }

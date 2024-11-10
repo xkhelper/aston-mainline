@@ -58,7 +58,10 @@ mandatory-y += tlbflush.h
 mandatory-y += topology.h
 mandatory-y += trace_clock.h
 mandatory-y += uaccess.h
+<<<<<<< HEAD
 mandatory-y += unaligned.h
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 mandatory-y += vermagic.h
 mandatory-y += vga.h
 mandatory-y += video.h

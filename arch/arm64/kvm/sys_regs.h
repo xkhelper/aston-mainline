@@ -95,9 +95,14 @@ struct sys_reg_desc {
 };
 
 #define REG_HIDDEN		(1 << 0) /* hidden from userspace and guest */
+<<<<<<< HEAD
 #define REG_HIDDEN_USER		(1 << 1) /* hidden from userspace only */
 #define REG_RAZ			(1 << 2) /* RAZ from userspace and guest */
 #define REG_USER_WI		(1 << 3) /* WI from userspace only */
+=======
+#define REG_RAZ			(1 << 1) /* RAZ from userspace and guest */
+#define REG_USER_WI		(1 << 2) /* WI from userspace only */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static __printf(2, 3)
 inline void print_sys_reg_msg(const struct sys_reg_params *p,
@@ -165,6 +170,7 @@ static inline bool sysreg_hidden(const struct kvm_vcpu *vcpu,
 	return sysreg_visibility(vcpu, r) & REG_HIDDEN;
 }
 
+<<<<<<< HEAD
 static inline bool sysreg_hidden_user(const struct kvm_vcpu *vcpu,
 				      const struct sys_reg_desc *r)
 {
@@ -174,6 +180,8 @@ static inline bool sysreg_hidden_user(const struct kvm_vcpu *vcpu,
 	return r->visibility(vcpu, r) & (REG_HIDDEN | REG_HIDDEN_USER);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline bool sysreg_visible_as_raz(const struct kvm_vcpu *vcpu,
 					 const struct sys_reg_desc *r)
 {
@@ -235,6 +243,11 @@ int kvm_sys_reg_set_user(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg,
 
 bool triage_sysreg_trap(struct kvm_vcpu *vcpu, int *sr_index);
 
+<<<<<<< HEAD
+=======
+int kvm_finalize_sys_regs(struct kvm_vcpu *vcpu);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define AA32(_x)	.aarch32_map = AA32_##_x
 #define Op0(_x) 	.Op0 = _x
 #define Op1(_x) 	.Op1 = _x
@@ -248,4 +261,14 @@ bool triage_sysreg_trap(struct kvm_vcpu *vcpu, int *sr_index);
 	CRn(sys_reg_CRn(reg)), CRm(sys_reg_CRm(reg)),	\
 	Op2(sys_reg_Op2(reg))
 
+<<<<<<< HEAD
+=======
+#define CP15_SYS_DESC(reg)				\
+	.name = #reg,					\
+	.aarch32_map = AA32_DIRECT,			\
+	Op0(0), Op1(sys_reg_Op1(reg)),			\
+	CRn(sys_reg_CRn(reg)), CRm(sys_reg_CRm(reg)),	\
+	Op2(sys_reg_Op2(reg))
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __ARM64_KVM_SYS_REGS_LOCAL_H__ */

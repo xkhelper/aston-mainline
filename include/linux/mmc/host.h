@@ -10,6 +10,10 @@
 #include <linux/sched.h>
 #include <linux/device.h>
 #include <linux/fault-inject.h>
+<<<<<<< HEAD
+=======
+#include <linux/debugfs.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/mmc/core.h>
 #include <linux/mmc/card.h>
@@ -264,6 +268,7 @@ struct mmc_cqe_ops {
 	void	(*cqe_recovery_finish)(struct mmc_host *host);
 };
 
+<<<<<<< HEAD
 struct mmc_async_req {
 	/* active mmc request */
 	struct mmc_request	*mrq;
@@ -274,6 +279,8 @@ struct mmc_async_req {
 	enum mmc_blk_status (*err_check)(struct mmc_card *, struct mmc_async_req *);
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * struct mmc_slot - MMC slot functions
  *
@@ -291,6 +298,7 @@ struct mmc_slot {
 	void *handler_priv;
 };
 
+<<<<<<< HEAD
 /**
  * mmc_context_info - synchronization details for mmc context
  * @is_done_rcv		wake up reason was done request
@@ -305,6 +313,8 @@ struct mmc_context_info {
 	wait_queue_head_t	wait;
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct regulator;
 struct mmc_pwrseq;
 
@@ -672,7 +682,12 @@ static inline void mmc_debugfs_err_stats_inc(struct mmc_host *host,
 	host->err_stats[stat] += 1;
 }
 
+<<<<<<< HEAD
 int mmc_sd_switch(struct mmc_card *card, int mode, int group, u8 value, u8 *resp);
+=======
+int mmc_sd_switch(struct mmc_card *card, bool mode, int group,
+		u8 value, u8 *resp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int mmc_send_status(struct mmc_card *card, u32 *status);
 int mmc_send_tuning(struct mmc_host *host, u32 opcode, int *cmd_error);
 int mmc_send_abort_tuning(struct mmc_host *host, u32 opcode);

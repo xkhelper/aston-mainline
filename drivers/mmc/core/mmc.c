@@ -51,6 +51,7 @@ static const unsigned int taac_mant[] = {
 	35,	40,	45,	50,	55,	60,	70,	80,
 };
 
+<<<<<<< HEAD
 #define UNSTUFF_BITS(resp,start,size)					\
 	({								\
 		const int __size = size;				\
@@ -65,6 +66,8 @@ static const unsigned int taac_mant[] = {
 		__res & __mask;						\
 	})
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Given the decoded CSD structure, decode the raw CID to our CID structure.
  */
@@ -85,6 +88,7 @@ static int mmc_decode_cid(struct mmc_card *card)
 	switch (card->csd.mmca_vsn) {
 	case 0: /* MMC v1.0 - v1.2 */
 	case 1: /* MMC v1.4 */
+<<<<<<< HEAD
 		card->cid.manfid	= UNSTUFF_BITS(resp, 104, 24);
 		card->cid.prod_name[0]	= UNSTUFF_BITS(resp, 96, 8);
 		card->cid.prod_name[1]	= UNSTUFF_BITS(resp, 88, 8);
@@ -98,11 +102,27 @@ static int mmc_decode_cid(struct mmc_card *card)
 		card->cid.serial	= UNSTUFF_BITS(resp, 16, 24);
 		card->cid.month		= UNSTUFF_BITS(resp, 12, 4);
 		card->cid.year		= UNSTUFF_BITS(resp, 8, 4) + 1997;
+=======
+		card->cid.manfid	= unstuff_bits(resp, 104, 24);
+		card->cid.prod_name[0]	= unstuff_bits(resp, 96, 8);
+		card->cid.prod_name[1]	= unstuff_bits(resp, 88, 8);
+		card->cid.prod_name[2]	= unstuff_bits(resp, 80, 8);
+		card->cid.prod_name[3]	= unstuff_bits(resp, 72, 8);
+		card->cid.prod_name[4]	= unstuff_bits(resp, 64, 8);
+		card->cid.prod_name[5]	= unstuff_bits(resp, 56, 8);
+		card->cid.prod_name[6]	= unstuff_bits(resp, 48, 8);
+		card->cid.hwrev		= unstuff_bits(resp, 44, 4);
+		card->cid.fwrev		= unstuff_bits(resp, 40, 4);
+		card->cid.serial	= unstuff_bits(resp, 16, 24);
+		card->cid.month		= unstuff_bits(resp, 12, 4);
+		card->cid.year		= unstuff_bits(resp, 8, 4) + 1997;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 
 	case 2: /* MMC v2.0 - v2.2 */
 	case 3: /* MMC v3.1 - v3.3 */
 	case 4: /* MMC v4 */
+<<<<<<< HEAD
 		card->cid.manfid	= UNSTUFF_BITS(resp, 120, 8);
 		card->cid.oemid		= UNSTUFF_BITS(resp, 104, 16);
 		card->cid.prod_name[0]	= UNSTUFF_BITS(resp, 96, 8);
@@ -115,6 +135,20 @@ static int mmc_decode_cid(struct mmc_card *card)
 		card->cid.serial	= UNSTUFF_BITS(resp, 16, 32);
 		card->cid.month		= UNSTUFF_BITS(resp, 12, 4);
 		card->cid.year		= UNSTUFF_BITS(resp, 8, 4) + 1997;
+=======
+		card->cid.manfid	= unstuff_bits(resp, 120, 8);
+		card->cid.oemid		= unstuff_bits(resp, 104, 16);
+		card->cid.prod_name[0]	= unstuff_bits(resp, 96, 8);
+		card->cid.prod_name[1]	= unstuff_bits(resp, 88, 8);
+		card->cid.prod_name[2]	= unstuff_bits(resp, 80, 8);
+		card->cid.prod_name[3]	= unstuff_bits(resp, 72, 8);
+		card->cid.prod_name[4]	= unstuff_bits(resp, 64, 8);
+		card->cid.prod_name[5]	= unstuff_bits(resp, 56, 8);
+		card->cid.prv		= unstuff_bits(resp, 48, 8);
+		card->cid.serial	= unstuff_bits(resp, 16, 32);
+		card->cid.month		= unstuff_bits(resp, 12, 4);
+		card->cid.year		= unstuff_bits(resp, 8, 4) + 1997;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 
 	default:
@@ -161,13 +195,18 @@ static int mmc_decode_csd(struct mmc_card *card)
 	 * v1.2 has extra information in bits 15, 11 and 10.
 	 * We also support eMMC v4.4 & v4.41.
 	 */
+<<<<<<< HEAD
 	csd->structure = UNSTUFF_BITS(resp, 126, 2);
+=======
+	csd->structure = unstuff_bits(resp, 126, 2);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (csd->structure == 0) {
 		pr_err("%s: unrecognised CSD structure version %d\n",
 			mmc_hostname(card->host), csd->structure);
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	csd->mmca_vsn	 = UNSTUFF_BITS(resp, 122, 4);
 	m = UNSTUFF_BITS(resp, 115, 4);
 	e = UNSTUFF_BITS(resp, 112, 3);
@@ -198,6 +237,38 @@ static int mmc_decode_csd(struct mmc_card *card)
 		csd->erase_size = (a + 1) * (b + 1);
 		csd->erase_size <<= csd->write_blkbits - 9;
 		csd->wp_grp_size = UNSTUFF_BITS(resp, 32, 5);
+=======
+	csd->mmca_vsn	 = unstuff_bits(resp, 122, 4);
+	m = unstuff_bits(resp, 115, 4);
+	e = unstuff_bits(resp, 112, 3);
+	csd->taac_ns	 = (taac_exp[e] * taac_mant[m] + 9) / 10;
+	csd->taac_clks	 = unstuff_bits(resp, 104, 8) * 100;
+
+	m = unstuff_bits(resp, 99, 4);
+	e = unstuff_bits(resp, 96, 3);
+	csd->max_dtr	  = tran_exp[e] * tran_mant[m];
+	csd->cmdclass	  = unstuff_bits(resp, 84, 12);
+
+	e = unstuff_bits(resp, 47, 3);
+	m = unstuff_bits(resp, 62, 12);
+	csd->capacity	  = (1 + m) << (e + 2);
+
+	csd->read_blkbits = unstuff_bits(resp, 80, 4);
+	csd->read_partial = unstuff_bits(resp, 79, 1);
+	csd->write_misalign = unstuff_bits(resp, 78, 1);
+	csd->read_misalign = unstuff_bits(resp, 77, 1);
+	csd->dsr_imp = unstuff_bits(resp, 76, 1);
+	csd->r2w_factor = unstuff_bits(resp, 26, 3);
+	csd->write_blkbits = unstuff_bits(resp, 22, 4);
+	csd->write_partial = unstuff_bits(resp, 21, 1);
+
+	if (csd->write_blkbits >= 9) {
+		a = unstuff_bits(resp, 42, 5);
+		b = unstuff_bits(resp, 37, 5);
+		csd->erase_size = (a + 1) * (b + 1);
+		csd->erase_size <<= csd->write_blkbits - 9;
+		csd->wp_grp_size = unstuff_bits(resp, 32, 5);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;

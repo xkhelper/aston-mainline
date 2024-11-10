@@ -529,9 +529,12 @@ static struct dm_buffer *list_to_buffer(struct list_head *l)
 {
 	struct lru_entry *le = list_entry(l, struct lru_entry, list);
 
+<<<<<<< HEAD
 	if (!le)
 		return NULL;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return le_to_buffer(le);
 }
 

@@ -42,7 +42,11 @@
 
 static bool no_buildid_cache;
 
+<<<<<<< HEAD
 int build_id__mark_dso_hit(struct perf_tool *tool __maybe_unused,
+=======
+int build_id__mark_dso_hit(const struct perf_tool *tool __maybe_unused,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			   union perf_event *event,
 			   struct perf_sample *sample,
 			   struct evsel *evsel __maybe_unused,
@@ -67,6 +71,7 @@ int build_id__mark_dso_hit(struct perf_tool *tool __maybe_unused,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int perf_event__exit_del_thread(struct perf_tool *tool __maybe_unused,
 				       union perf_event *event,
 				       struct perf_sample *sample
@@ -99,6 +104,8 @@ struct perf_tool build_id__mark_dso_hit_ops = {
 	.ordered_events	 = true,
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int build_id__sprintf(const struct build_id *build_id, char *bf)
 {
 	char *bid = bf;
@@ -309,8 +316,13 @@ static int write_buildid(const char *name, size_t name_len, struct build_id *bid
 	struct perf_record_header_build_id b;
 	size_t len;
 
+<<<<<<< HEAD
 	len = name_len + 1;
 	len = PERF_ALIGN(len, NAME_ALIGN);
+=======
+	len = sizeof(b) + name_len + 1;
+	len = PERF_ALIGN(len, sizeof(u64));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	memset(&b, 0, sizeof(b));
 	memcpy(&b.data, bid->data, bid->size);
@@ -318,7 +330,11 @@ static int write_buildid(const char *name, size_t name_len, struct build_id *bid
 	misc |= PERF_RECORD_MISC_BUILD_ID_SIZE;
 	b.pid = pid;
 	b.header.misc = misc;
+<<<<<<< HEAD
 	b.header.size = sizeof(b) + len;
+=======
+	b.header.size = len;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = do_write(fd, &b, sizeof(b));
 	if (err < 0)

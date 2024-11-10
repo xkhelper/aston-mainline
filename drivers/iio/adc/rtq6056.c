@@ -643,7 +643,11 @@ static irqreturn_t rtq6056_buffer_trigger_handler(int irq, void *p)
 
 	pm_runtime_get_sync(dev);
 
+<<<<<<< HEAD
 	for_each_set_bit(bit, indio_dev->active_scan_mask, indio_dev->masklength) {
+=======
+	iio_for_each_active_channel(indio_dev, bit) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		unsigned int addr = rtq6056_channels[bit].address;
 
 		ret = regmap_read(priv->regmap, addr, &raw);
@@ -865,7 +869,11 @@ static const struct richtek_dev_data rtq6059_devdata = {
 static const struct of_device_id rtq6056_device_match[] = {
 	{ .compatible = "richtek,rtq6056", .data = &rtq6056_devdata },
 	{ .compatible = "richtek,rtq6059", .data = &rtq6059_devdata },
+<<<<<<< HEAD
 	{}
+=======
+	{ }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(of, rtq6056_device_match);
 

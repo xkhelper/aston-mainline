@@ -29,7 +29,11 @@ mt7603_rx_loopback_skb(struct mt7603_dev *dev, struct sk_buff *skb)
 	struct ieee80211_sta *sta;
 	struct mt7603_sta *msta;
 	struct mt76_wcid *wcid;
+<<<<<<< HEAD
 	u8 tid = 0, hwq = 0;
+=======
+	u8 qid, tid = 0, hwq = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void *priv;
 	int idx;
 	u32 val;
@@ -57,7 +61,11 @@ mt7603_rx_loopback_skb(struct mt7603_dev *dev, struct sk_buff *skb)
 	if (ieee80211_is_data_qos(hdr->frame_control)) {
 		tid = *ieee80211_get_qos_ctl(hdr) &
 			 IEEE80211_QOS_CTL_TAG1D_MASK;
+<<<<<<< HEAD
 		u8 qid = tid_to_ac[tid];
+=======
+		qid = tid_to_ac[tid];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		hwq = wmm_queue_map[qid];
 		skb_set_queue_mapping(skb, qid);
 	} else if (ieee80211_is_data(hdr->frame_control)) {

@@ -7,9 +7,15 @@ kms_flip@flip-vs-suspend.*
 
 # Skip driver specific tests
 ^amdgpu.*
+<<<<<<< HEAD
 msm_.*
 nouveau_.*
 panfrost_.*
+=======
+^msm.*
+nouveau_.*
+^panfrost.*
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ^v3d.*
 ^vc4.*
 ^vmwgfx*
@@ -18,6 +24,10 @@ panfrost_.*
 gem_.*
 i915_.*
 xe_.*
+<<<<<<< HEAD
+=======
+tools_test.*
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 # Currently fails and causes coverage loss for other tests
 # since core_getversion also fails.

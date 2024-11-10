@@ -187,6 +187,10 @@ void ice_vsi_set_dcb_tc_cfg(struct ice_vsi *vsi)
 		vsi->tc_cfg.numtc = ice_dcb_get_num_tc(cfg);
 		break;
 	case ICE_VSI_CHNL:
+<<<<<<< HEAD
+=======
+	case ICE_VSI_SF:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		vsi->tc_cfg.ena_tc = BIT(ice_get_first_droptc(vsi));
 		vsi->tc_cfg.numtc = 1;
 		break;

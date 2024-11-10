@@ -25,7 +25,11 @@
 #include <linux/interrupt.h>
 #include <linux/export.h>
 #include <linux/delay.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/t10-pi.h>
 #include <linux/crc-t10dif.h>
 #include <linux/blk-cgroup.h>
@@ -4760,7 +4764,11 @@ static int lpfc_scsi_prep_cmnd_buf_s4(struct lpfc_vport *vport,
 
 	 /* Word 3 */
 	bf_set(payload_offset_len, &wqe->fcp_icmd,
+<<<<<<< HEAD
 	       sizeof(struct fcp_cmnd32) + sizeof(struct fcp_rsp));
+=======
+	       sizeof(struct fcp_cmnd) + sizeof(struct fcp_rsp));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Word 6 */
 	bf_set(wqe_ctxt_tag, &wqe->generic.wqe_com,
@@ -5555,11 +5563,28 @@ lpfc_abort_handler(struct scsi_cmnd *cmnd)
 
 	iocb = &lpfc_cmd->cur_iocbq;
 	if (phba->sli_rev == LPFC_SLI_REV4) {
+<<<<<<< HEAD
 		pring_s4 = phba->sli4_hba.hdwq[iocb->hba_wqidx].io_wq->pring;
 		if (!pring_s4) {
 			ret = FAILED;
 			goto out_unlock_hba;
 		}
+=======
+		/* if the io_wq & pring are gone, the port was reset. */
+		if (!phba->sli4_hba.hdwq[iocb->hba_wqidx].io_wq ||
+		    !phba->sli4_hba.hdwq[iocb->hba_wqidx].io_wq->pring) {
+			lpfc_printf_vlog(vport, KERN_WARNING, LOG_FCP,
+					 "2877 SCSI Layer I/O Abort Request "
+					 "IO CMPL Status x%x ID %d LUN %llu "
+					 "HBA_SETUP %d\n", FAILED,
+					 cmnd->device->id,
+					 (u64)cmnd->device->lun,
+					 test_bit(HBA_SETUP, &phba->hba_flag));
+			ret = FAILED;
+			goto out_unlock_hba;
+		}
+		pring_s4 = phba->sli4_hba.hdwq[iocb->hba_wqidx].io_wq->pring;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		spin_lock(&pring_s4->ring_lock);
 	}
 	/* the command is in process of being cancelled */

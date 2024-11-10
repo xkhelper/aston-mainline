@@ -122,12 +122,20 @@ int sas_register_ha(struct sas_ha_struct *sas_ha)
 
 	error = -ENOMEM;
 	snprintf(name, sizeof(name), "%s_event_q", dev_name(sas_ha->dev));
+<<<<<<< HEAD
 	sas_ha->event_q = create_singlethread_workqueue(name);
+=======
+	sas_ha->event_q = alloc_ordered_workqueue("%s", WQ_MEM_RECLAIM, name);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!sas_ha->event_q)
 		goto Undo_ports;
 
 	snprintf(name, sizeof(name), "%s_disco_q", dev_name(sas_ha->dev));
+<<<<<<< HEAD
 	sas_ha->disco_q = create_singlethread_workqueue(name);
+=======
+	sas_ha->disco_q = alloc_ordered_workqueue("%s", WQ_MEM_RECLAIM, name);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!sas_ha->disco_q)
 		goto Undo_event_q;
 

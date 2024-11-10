@@ -608,7 +608,11 @@ static const struct dev_pm_ops tegra30_ahub_pm_ops = {
 
 static struct platform_driver tegra30_ahub_driver = {
 	.probe = tegra30_ahub_probe,
+<<<<<<< HEAD
 	.remove_new = tegra30_ahub_remove,
+=======
+	.remove = tegra30_ahub_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = DRV_NAME,
 		.of_match_table = tegra30_ahub_of_match,

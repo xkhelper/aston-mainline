@@ -15,7 +15,11 @@
 #include <linux/input/touchscreen.h>
 #include <linux/module.h>
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define NVT_TS_TOUCH_START		0x00
 #define NVT_TS_TOUCH_SIZE		6

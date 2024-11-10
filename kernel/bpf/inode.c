@@ -709,10 +709,17 @@ static void seq_print_delegate_opts(struct seq_file *m,
 			msk = 1ULL << e->val;
 			if (delegate_msk & msk) {
 				/* emit lower-case name without prefix */
+<<<<<<< HEAD
 				seq_printf(m, "%c", first ? '=' : ':');
 				name += pfx_len;
 				while (*name) {
 					seq_printf(m, "%c", tolower(*name));
+=======
+				seq_putc(m, first ? '=' : ':');
+				name += pfx_len;
+				while (*name) {
+					seq_putc(m, tolower(*name));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					name++;
 				}
 
@@ -880,7 +887,11 @@ static int bpf_parse_param(struct fs_context *fc, struct fs_parameter *param)
 		const struct btf_type *enum_t;
 		const char *enum_pfx;
 		u64 *delegate_msk, msk = 0;
+<<<<<<< HEAD
 		char *p;
+=======
+		char *p, *str;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		int val;
 
 		/* ignore errors, fallback to hex */
@@ -911,7 +922,12 @@ static int bpf_parse_param(struct fs_context *fc, struct fs_parameter *param)
 			return -EINVAL;
 		}
 
+<<<<<<< HEAD
 		while ((p = strsep(&param->string, ":"))) {
+=======
+		str = param->string;
+		while ((p = strsep(&str, ":"))) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (strcmp(p, "any") == 0) {
 				msk |= ~0ULL;
 			} else if (find_btf_enum_const(info.btf, enum_t, enum_pfx, p, &val)) {

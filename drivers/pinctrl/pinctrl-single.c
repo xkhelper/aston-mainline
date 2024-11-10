@@ -1913,7 +1913,12 @@ static int pcs_probe(struct platform_device *pdev)
 
 	dev_info(pcs->dev, "%i pins, size %u\n", pcs->desc.npins, pcs->size);
 
+<<<<<<< HEAD
 	if (pinctrl_enable(pcs->pctl))
+=======
+	ret = pinctrl_enable(pcs->pctl);
+	if (ret)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto free;
 
 	return 0;

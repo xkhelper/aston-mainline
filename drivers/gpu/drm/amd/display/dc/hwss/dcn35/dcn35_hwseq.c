@@ -147,6 +147,7 @@ void dcn35_init_hw(struct dc *dc)
 		hws->funcs.bios_golden_init(dc);
 	}
 
+<<<<<<< HEAD
 	if (!dc->debug.disable_clock_gate) {
 		REG_WRITE(DCCG_GATE_DISABLE_CNTL, 0);
 		REG_WRITE(DCCG_GATE_DISABLE_CNTL2,  0);
@@ -178,6 +179,8 @@ void dcn35_init_hw(struct dc *dc)
 
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	// Initialize the dccg
 	if (res_pool->dccg->funcs->dccg_init)
 		res_pool->dccg->funcs->dccg_init(res_pool->dccg);
@@ -235,7 +238,11 @@ void dcn35_init_hw(struct dc *dc)
 	if (hws->funcs.enable_power_gating_plane)
 		hws->funcs.enable_power_gating_plane(dc->hwseq, true);
 */
+<<<<<<< HEAD
 	if (res_pool->hubbub->funcs->dchubbub_init)
+=======
+	if (res_pool->hubbub && res_pool->hubbub->funcs->dchubbub_init)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		res_pool->hubbub->funcs->dchubbub_init(dc->res_pool->hubbub);
 	/* If taking control over from VBIOS, we may want to optimize our first
 	 * mode set, so we need to skip powering down pipes until we know which
@@ -271,6 +278,13 @@ void dcn35_init_hw(struct dc *dc)
 			dc->res_pool->hubbub->funcs->allow_self_refresh_control(dc->res_pool->hubbub,
 					!dc->res_pool->hubbub->ctx->dc->debug.disable_stutter);
 	}
+<<<<<<< HEAD
+=======
+	if (res_pool->dccg->funcs->dccg_root_gate_disable_control) {
+		for (i = 0; i < res_pool->pipe_count; i++)
+			res_pool->dccg->funcs->dccg_root_gate_disable_control(res_pool->dccg, i, 0);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 0; i < res_pool->audio_count; i++) {
 		struct audio *audio = res_pool->audios[i];
@@ -305,6 +319,7 @@ void dcn35_init_hw(struct dc *dc)
 
 	if (!dc->debug.disable_clock_gate) {
 		/* enable all DCN clock gating */
+<<<<<<< HEAD
 		REG_WRITE(DCCG_GATE_DISABLE_CNTL, 0);
 
 		REG_UPDATE_5(DCCG_GATE_DISABLE_CNTL2, SYMCLKA_FE_GATE_DISABLE, 0,
@@ -319,6 +334,8 @@ void dcn35_init_hw(struct dc *dc)
 				SYMCLKD_GATE_DISABLE, 0,
 				SYMCLKE_GATE_DISABLE, 0);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		REG_UPDATE(DCFCLK_CNTL, DCFCLK_GATE_DIS, 0);
 	}
 
@@ -328,10 +345,17 @@ void dcn35_init_hw(struct dc *dc)
 	if (!dcb->funcs->is_accelerated_mode(dcb) && dc->res_pool->hubbub->funcs->init_watermarks)
 		dc->res_pool->hubbub->funcs->init_watermarks(dc->res_pool->hubbub);
 
+<<<<<<< HEAD
 	if (dc->clk_mgr->funcs->notify_wm_ranges)
 		dc->clk_mgr->funcs->notify_wm_ranges(dc->clk_mgr);
 
 	if (dc->clk_mgr->funcs->set_hard_max_memclk && !dc->clk_mgr->dc_mode_softmax_enabled)
+=======
+	if (dc->clk_mgr && dc->clk_mgr->funcs->notify_wm_ranges)
+		dc->clk_mgr->funcs->notify_wm_ranges(dc->clk_mgr);
+
+	if (dc->clk_mgr && dc->clk_mgr->funcs->set_hard_max_memclk && !dc->clk_mgr->dc_mode_softmax_enabled)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dc->clk_mgr->funcs->set_hard_max_memclk(dc->clk_mgr);
 
 
@@ -375,7 +399,24 @@ static void update_dsc_on_stream(struct pipe_ctx *pipe_ctx, bool enable)
 		struct dsc_config dsc_cfg;
 		struct dsc_optc_config dsc_optc_cfg = {0};
 		enum optc_dsc_mode optc_dsc_mode;
+<<<<<<< HEAD
 
+=======
+		struct dcn_dsc_state dsc_state = {0};
+
+		if (!dsc) {
+			DC_LOG_DSC("DSC is NULL for tg instance %d:", pipe_ctx->stream_res.tg->inst);
+			return;
+		}
+
+		if (dsc->funcs->dsc_read_state) {
+			dsc->funcs->dsc_read_state(dsc, &dsc_state);
+			if (!dsc_state.dsc_fw_en) {
+				DC_LOG_DSC("DSC has been disabled for tg instance %d:", pipe_ctx->stream_res.tg->inst);
+				return;
+			}
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Enable DSC hw block */
 		dsc_cfg.pic_width = (stream->timing.h_addressable + stream->timing.h_border_left + stream->timing.h_border_right) / opp_cnt;
 		dsc_cfg.pic_height = stream->timing.v_addressable + stream->timing.v_border_top + stream->timing.v_border_bottom;
@@ -629,10 +670,17 @@ void dcn35_power_down_on_boot(struct dc *dc)
 	if (edp_link && edp_link->link_enc->funcs->is_dig_enabled &&
 			edp_link->link_enc->funcs->is_dig_enabled(edp_link->link_enc) &&
 			dc->hwseq->funcs.edp_backlight_control &&
+<<<<<<< HEAD
 			dc->hwss.power_down &&
 			dc->hwss.edp_power_control) {
 		dc->hwseq->funcs.edp_backlight_control(edp_link, false);
 		dc->hwss.power_down(dc);
+=======
+			dc->hwseq->funcs.power_down &&
+			dc->hwss.edp_power_control) {
+		dc->hwseq->funcs.edp_backlight_control(edp_link, false);
+		dc->hwseq->funcs.power_down(dc);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dc->hwss.edp_power_control(edp_link, false);
 	} else {
 		for (i = 0; i < dc->link_count; i++) {
@@ -640,8 +688,13 @@ void dcn35_power_down_on_boot(struct dc *dc)
 
 			if (link->link_enc && link->link_enc->funcs->is_dig_enabled &&
 					link->link_enc->funcs->is_dig_enabled(link->link_enc) &&
+<<<<<<< HEAD
 					dc->hwss.power_down) {
 				dc->hwss.power_down(dc);
+=======
+					dc->hwseq->funcs.power_down) {
+				dc->hwseq->funcs.power_down(dc);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				break;
 			}
 
@@ -1024,9 +1077,12 @@ void dcn35_calc_blocks_to_gate(struct dc *dc, struct dc_state *context,
 	if (!hpo_frl_stream_enc_acquired && !hpo_dp_stream_enc_acquired)
 		update_state->pg_res_update[PG_HPO] = true;
 
+<<<<<<< HEAD
 	if (hpo_frl_stream_enc_acquired)
 		update_state->pg_pipe_res_update[PG_HDMISTREAM][0] = true;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	update_state->pg_res_update[PG_DWB] = true;
 
 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
@@ -1041,7 +1097,11 @@ void dcn35_calc_blocks_to_gate(struct dc *dc, struct dc_state *context,
 		if (pipe_ctx->plane_res.hubp)
 			update_state->pg_pipe_res_update[PG_HUBP][pipe_ctx->plane_res.hubp->inst] = false;
 
+<<<<<<< HEAD
 		if (pipe_ctx->plane_res.dpp)
+=======
+		if (pipe_ctx->plane_res.dpp && pipe_ctx->plane_res.hubp)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			update_state->pg_pipe_res_update[PG_DPP][pipe_ctx->plane_res.hubp->inst] = false;
 
 		if (pipe_ctx->plane_res.dpp || pipe_ctx->stream_res.opp)
@@ -1469,10 +1529,16 @@ void dcn35_set_drr(struct pipe_ctx **pipe_ctx,
 		struct timing_generator *tg = pipe_ctx[i]->stream_res.tg;
 
 		if ((tg != NULL) && tg->funcs) {
+<<<<<<< HEAD
 			struct dc_crtc_timing *timing = &pipe_ctx[i]->stream->timing;
 			struct dc *dc = pipe_ctx[i]->stream->ctx->dc;
 
 			if (dc->debug.static_screen_wait_frames) {
+=======
+			if (pipe_ctx[i]->stream && pipe_ctx[i]->stream->ctx->dc->debug.static_screen_wait_frames) {
+				struct dc_crtc_timing *timing = &pipe_ctx[i]->stream->timing;
+				struct dc *dc = pipe_ctx[i]->stream->ctx->dc;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				unsigned int frame_rate = timing->pix_clk_100hz / (timing->h_total * timing->v_total);
 
 				if (frame_rate >= 120 && dc->caps.ips_support &&

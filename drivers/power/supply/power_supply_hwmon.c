@@ -318,7 +318,12 @@ static const struct hwmon_channel_info * const power_supply_hwmon_info[] = {
 			   HWMON_T_INPUT     |
 			   HWMON_T_MAX       |
 			   HWMON_T_MIN       |
+<<<<<<< HEAD
 			   HWMON_T_MIN_ALARM,
+=======
+			   HWMON_T_MIN_ALARM |
+			   HWMON_T_MAX_ALARM,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			   HWMON_T_LABEL     |
 			   HWMON_T_INPUT     |

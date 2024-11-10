@@ -108,6 +108,17 @@ static int reset_pending_show(struct seq_file *s, void *v)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int firewall_irq_counter_show(struct seq_file *s, void *v)
+{
+	struct ivpu_device *vdev = seq_to_ivpu(s);
+
+	seq_printf(s, "%d\n", atomic_read(&vdev->hw->firewall_irq_counter));
+	return 0;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct drm_debugfs_info vdev_debugfs_list[] = {
 	{"bo_list", bo_list_show, 0},
 	{"fw_name", fw_name_show, 0},
@@ -116,6 +127,10 @@ static const struct drm_debugfs_info vdev_debugfs_list[] = {
 	{"last_bootmode", last_bootmode_show, 0},
 	{"reset_counter", reset_counter_show, 0},
 	{"reset_pending", reset_pending_show, 0},
+<<<<<<< HEAD
+=======
+	{"firewall_irq_counter", firewall_irq_counter_show, 0},
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static ssize_t

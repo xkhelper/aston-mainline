@@ -52,7 +52,11 @@ driver generally needs to perform the following initialization:
   - Enable DMA/processing engines
 
 When done using the device, and perhaps the module needs to be unloaded,
+<<<<<<< HEAD
 the driver needs to take the follow steps:
+=======
+the driver needs to take the following steps:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   - Disable the device from generating IRQs
   - Release the IRQ (free_irq())

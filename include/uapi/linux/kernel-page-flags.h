@@ -7,7 +7,11 @@
  */
 
 #define KPF_LOCKED		0
+<<<<<<< HEAD
 #define KPF_ERROR		1
+=======
+#define KPF_ERROR		1	/* Now unused */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define KPF_REFERENCED		2
 #define KPF_UPTODATE		3
 #define KPF_DIRTY		4

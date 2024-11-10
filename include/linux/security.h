@@ -83,6 +83,21 @@ enum lsm_event {
 	LSM_POLICY_CHANGE,
 };
 
+<<<<<<< HEAD
+=======
+struct dm_verity_digest {
+	const char *alg;
+	const u8 *digest;
+	size_t digest_len;
+};
+
+enum lsm_integrity_type {
+	LSM_INT_DMVERITY_SIG_VALID,
+	LSM_INT_DMVERITY_ROOTHASH,
+	LSM_INT_FSVERITY_BUILTINSIG_VALID,
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * These are reasons that can be passed to the security_locked_down()
  * LSM hook. Lockdown reasons that protect kernel integrity (ie, the
@@ -336,7 +351,11 @@ int security_dentry_create_files_as(struct dentry *dentry, int mode,
 					struct cred *new);
 int security_path_notify(const struct path *path, u64 mask,
 					unsigned int obj_type);
+<<<<<<< HEAD
 int security_inode_alloc(struct inode *inode);
+=======
+int security_inode_alloc(struct inode *inode, gfp_t gfp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void security_inode_free(struct inode *inode);
 int security_inode_init_security(struct inode *inode, struct inode *dir,
 				 const struct qstr *qstr,
@@ -399,6 +418,12 @@ int security_inode_listsecurity(struct inode *inode, char *buffer, size_t buffer
 void security_inode_getsecid(struct inode *inode, u32 *secid);
 int security_inode_copy_up(struct dentry *src, struct cred **new);
 int security_inode_copy_up_xattr(struct dentry *src, const char *name);
+<<<<<<< HEAD
+=======
+int security_inode_setintegrity(const struct inode *inode,
+				enum lsm_integrity_type type, const void *value,
+				size_t size);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int security_kernfs_init_security(struct kernfs_node *kn_dir,
 				  struct kernfs_node *kn);
 int security_file_permission(struct file *file, int mask);
@@ -509,6 +534,14 @@ int security_inode_getsecctx(struct inode *inode, void **ctx, u32 *ctxlen);
 int security_locked_down(enum lockdown_reason what);
 int lsm_fill_user_ctx(struct lsm_ctx __user *uctx, u32 *uctx_len,
 		      void *val, size_t val_len, u64 id, u64 flags);
+<<<<<<< HEAD
+=======
+int security_bdev_alloc(struct block_device *bdev);
+void security_bdev_free(struct block_device *bdev);
+int security_bdev_setintegrity(struct block_device *bdev,
+			       enum lsm_integrity_type type, const void *value,
+			       size_t size);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else /* CONFIG_SECURITY */
 
 static inline int call_blocking_lsm_notifier(enum lsm_event event, void *data)
@@ -634,7 +667,11 @@ static inline int security_settime64(const struct timespec64 *ts,
 
 static inline int security_vm_enough_memory_mm(struct mm_struct *mm, long pages)
 {
+<<<<<<< HEAD
 	return __vm_enough_memory(mm, pages, cap_vm_enough_memory(mm, pages));
+=======
+	return __vm_enough_memory(mm, pages, !cap_vm_enough_memory(mm, pages));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline int security_bprm_creds_for_exec(struct linux_binprm *bprm)
@@ -769,7 +806,11 @@ static inline int security_path_notify(const struct path *path, u64 mask,
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline int security_inode_alloc(struct inode *inode)
+=======
+static inline int security_inode_alloc(struct inode *inode, gfp_t gfp)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return 0;
 }
@@ -1010,6 +1051,16 @@ static inline int security_inode_copy_up(struct dentry *src, struct cred **new)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static inline int security_inode_setintegrity(const struct inode *inode,
+					      enum lsm_integrity_type type,
+					      const void *value, size_t size)
+{
+	return 0;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int security_kernfs_init_security(struct kernfs_node *kn_dir,
 						struct kernfs_node *kn)
 {
@@ -1483,6 +1534,26 @@ static inline int lsm_fill_user_ctx(struct lsm_ctx __user *uctx,
 {
 	return -EOPNOTSUPP;
 }
+<<<<<<< HEAD
+=======
+
+static inline int security_bdev_alloc(struct block_device *bdev)
+{
+	return 0;
+}
+
+static inline void security_bdev_free(struct block_device *bdev)
+{
+}
+
+static inline int security_bdev_setintegrity(struct block_device *bdev,
+					     enum lsm_integrity_type type,
+					     const void *value, size_t size)
+{
+	return 0;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif	/* CONFIG_SECURITY */
 
 #if defined(CONFIG_SECURITY) && defined(CONFIG_WATCH_QUEUE)
@@ -2090,6 +2161,10 @@ struct dentry *securityfs_create_symlink(const char *name,
 					 const char *target,
 					 const struct inode_operations *iops);
 extern void securityfs_remove(struct dentry *dentry);
+<<<<<<< HEAD
+=======
+extern void securityfs_recursive_remove(struct dentry *dentry);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #else /* CONFIG_SECURITYFS */
 
@@ -2137,7 +2212,11 @@ extern int security_bpf_prog_load(struct bpf_prog *prog, union bpf_attr *attr,
 				  struct bpf_token *token);
 extern void security_bpf_prog_free(struct bpf_prog *prog);
 extern int security_bpf_token_create(struct bpf_token *token, union bpf_attr *attr,
+<<<<<<< HEAD
 				     struct path *path);
+=======
+				     const struct path *path);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void security_bpf_token_free(struct bpf_token *token);
 extern int security_bpf_token_cmd(const struct bpf_token *token, enum bpf_cmd cmd);
 extern int security_bpf_token_capable(const struct bpf_token *token, int cap);
@@ -2177,7 +2256,11 @@ static inline void security_bpf_prog_free(struct bpf_prog *prog)
 { }
 
 static inline int security_bpf_token_create(struct bpf_token *token, union bpf_attr *attr,
+<<<<<<< HEAD
 				     struct path *path)
+=======
+					    const struct path *path)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return 0;
 }
@@ -2256,4 +2339,15 @@ static inline int security_uring_cmd(struct io_uring_cmd *ioucmd)
 #endif /* CONFIG_SECURITY */
 #endif /* CONFIG_IO_URING */
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SECURITY
+extern void security_initramfs_populated(void);
+#else
+static inline void security_initramfs_populated(void)
+{
+}
+#endif /* CONFIG_SECURITY */
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* ! __LINUX_SECURITY_H */

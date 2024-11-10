@@ -115,7 +115,11 @@ int bch2_bkey_pick_read_device(struct bch_fs *c, struct bkey_s_c k,
 	int ret = 0;
 
 	if (k.k->type == KEY_TYPE_error)
+<<<<<<< HEAD
 		return -EIO;
+=======
+		return -BCH_ERR_key_type_error;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rcu_read_lock();
 	bkey_for_each_ptr_decode(k.k, ptrs, p, entry) {
@@ -133,7 +137,11 @@ int bch2_bkey_pick_read_device(struct bch_fs *c, struct bkey_s_c k,
 		 * read:
 		 */
 		if (!ret && !p.ptr.cached)
+<<<<<<< HEAD
 			ret = -EIO;
+=======
+			ret = -BCH_ERR_no_device_to_read_from;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		struct bch_dev *ca = bch2_dev_rcu(c, p.ptr.dev);
 
@@ -146,16 +154,24 @@ int bch2_bkey_pick_read_device(struct bch_fs *c, struct bkey_s_c k,
 				? f->idx
 				: f->idx + 1;
 
+<<<<<<< HEAD
 		if (!p.idx && !ca)
+=======
+		if (!p.idx && (!ca || !bch2_dev_is_readable(ca)))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			p.idx++;
 
 		if (!p.idx && p.has_ec && bch2_force_reconstruct_read)
 			p.idx++;
 
+<<<<<<< HEAD
 		if (!p.idx && !bch2_dev_is_readable(ca))
 			p.idx++;
 
 		if (p.idx >= (unsigned) p.has_ec + 1)
+=======
+		if (p.idx > (unsigned) p.has_ec)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 
 		if (ret > 0 && !ptr_better(c, p, *pick))
@@ -821,6 +837,21 @@ void bch2_bkey_drop_ptr_noerror(struct bkey_s k, struct bch_extent_ptr *ptr)
 
 void bch2_bkey_drop_ptr(struct bkey_s k, struct bch_extent_ptr *ptr)
 {
+<<<<<<< HEAD
+=======
+	if (k.k->type != KEY_TYPE_stripe) {
+		struct bkey_ptrs_c ptrs = bch2_bkey_ptrs_c(k.s_c);
+		const union bch_extent_entry *entry;
+		struct extent_ptr_decoded p;
+
+		bkey_for_each_ptr_decode(k.k, ptrs, p, entry)
+			if (p.ptr.dev == ptr->dev && p.has_ec) {
+				ptr->dev = BCH_SB_MEMBER_INVALID;
+				return;
+			}
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool have_dirty = bch2_bkey_dirty_devs(k.s_c).nr;
 
 	bch2_bkey_drop_ptr_noerror(k, ptr);
@@ -848,10 +879,14 @@ void bch2_bkey_drop_device(struct bkey_s k, unsigned dev)
 
 void bch2_bkey_drop_device_noerror(struct bkey_s k, unsigned dev)
 {
+<<<<<<< HEAD
 	struct bch_extent_ptr *ptr = bch2_bkey_has_device(k, dev);
 
 	if (ptr)
 		bch2_bkey_drop_ptr_noerror(k, ptr);
+=======
+	bch2_bkey_drop_ptrs_noerror(k, ptr, ptr->dev == dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 const struct bch_extent_ptr *bch2_bkey_has_device_c(struct bkey_s_c k, unsigned dev)
@@ -972,6 +1007,7 @@ bch2_extent_has_ptr(struct bkey_s_c k1, struct extent_ptr_decoded p1, struct bke
 	return NULL;
 }
 
+<<<<<<< HEAD
 void bch2_extent_ptr_set_cached(struct bkey_s k, struct bch_extent_ptr *ptr)
 {
 	struct bkey_ptrs ptrs = bch2_bkey_ptrs(k);
@@ -997,6 +1033,56 @@ void bch2_extent_ptr_set_cached(struct bkey_s k, struct bch_extent_ptr *ptr)
 
 /*
  * bch_extent_normalize - clean up an extent, dropping stale pointers etc.
+=======
+static bool want_cached_ptr(struct bch_fs *c, struct bch_io_opts *opts,
+			    struct bch_extent_ptr *ptr)
+{
+	if (!opts->promote_target ||
+	    !bch2_dev_in_target(c, ptr->dev, opts->promote_target))
+		return false;
+
+	struct bch_dev *ca = bch2_dev_rcu_noerror(c, ptr->dev);
+
+	return ca && bch2_dev_is_readable(ca) && !dev_ptr_stale_rcu(ca, ptr);
+}
+
+void bch2_extent_ptr_set_cached(struct bch_fs *c,
+				struct bch_io_opts *opts,
+				struct bkey_s k,
+				struct bch_extent_ptr *ptr)
+{
+	struct bkey_ptrs ptrs = bch2_bkey_ptrs(k);
+	union bch_extent_entry *entry;
+	struct extent_ptr_decoded p;
+
+	rcu_read_lock();
+	if (!want_cached_ptr(c, opts, ptr)) {
+		bch2_bkey_drop_ptr_noerror(k, ptr);
+		goto out;
+	}
+
+	/*
+	 * Stripes can't contain cached data, for - reasons.
+	 *
+	 * Possibly something we can fix in the future?
+	 */
+	bkey_for_each_ptr_decode(k.k, ptrs, p, entry)
+		if (&entry->ptr == ptr) {
+			if (p.has_ec)
+				bch2_bkey_drop_ptr_noerror(k, ptr);
+			else
+				ptr->cached = true;
+			goto out;
+		}
+
+	BUG();
+out:
+	rcu_read_unlock();
+}
+
+/*
+ * bch2_extent_normalize - clean up an extent, dropping stale pointers etc.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Returns true if @k should be dropped entirely
  *
@@ -1010,8 +1096,44 @@ bool bch2_extent_normalize(struct bch_fs *c, struct bkey_s k)
 	rcu_read_lock();
 	bch2_bkey_drop_ptrs(k, ptr,
 		ptr->cached &&
+<<<<<<< HEAD
 		(ca = bch2_dev_rcu(c, ptr->dev)) &&
 		dev_ptr_stale_rcu(ca, ptr) > 0);
+=======
+		(!(ca = bch2_dev_rcu(c, ptr->dev)) ||
+		 dev_ptr_stale_rcu(ca, ptr) > 0));
+	rcu_read_unlock();
+
+	return bkey_deleted(k.k);
+}
+
+/*
+ * bch2_extent_normalize_by_opts - clean up an extent, dropping stale pointers etc.
+ *
+ * Like bch2_extent_normalize(), but also only keeps a single cached pointer on
+ * the promote target.
+ */
+bool bch2_extent_normalize_by_opts(struct bch_fs *c,
+				   struct bch_io_opts *opts,
+				   struct bkey_s k)
+{
+	struct bkey_ptrs ptrs;
+	bool have_cached_ptr;
+
+	rcu_read_lock();
+restart_drop_ptrs:
+	ptrs = bch2_bkey_ptrs(k);
+	have_cached_ptr = false;
+
+	bkey_for_each_ptr(ptrs, ptr)
+		if (ptr->cached) {
+			if (have_cached_ptr || !want_cached_ptr(c, opts, ptr)) {
+				bch2_bkey_drop_ptr(k, ptr);
+				goto restart_drop_ptrs;
+			}
+			have_cached_ptr = true;
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rcu_read_unlock();
 
 	return bkey_deleted(k.k);
@@ -1021,7 +1143,11 @@ void bch2_extent_ptr_to_text(struct printbuf *out, struct bch_fs *c, const struc
 {
 	out->atomic++;
 	rcu_read_lock();
+<<<<<<< HEAD
 	struct bch_dev *ca = bch2_dev_rcu(c, ptr->dev);
+=======
+	struct bch_dev *ca = bch2_dev_rcu_noerror(c, ptr->dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ca) {
 		prt_printf(out, "ptr: %u:%llu gen %u%s", ptr->dev,
 			   (u64) ptr->offset, ptr->gen,
@@ -1125,8 +1251,14 @@ static int extent_ptr_validate(struct bch_fs *c,
 {
 	int ret = 0;
 
+<<<<<<< HEAD
 	rcu_read_lock();
 	struct bch_dev *ca = bch2_dev_rcu(c, ptr->dev);
+=======
+	/* bad pointers are repaired by check_fix_ptrs(): */
+	rcu_read_lock();
+	struct bch_dev *ca = bch2_dev_rcu_noerror(c, ptr->dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ca) {
 		rcu_read_unlock();
 		return 0;

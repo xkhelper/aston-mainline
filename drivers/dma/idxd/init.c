@@ -69,9 +69,21 @@ static struct idxd_driver_data idxd_driver_data[] = {
 static struct pci_device_id idxd_pci_tbl[] = {
 	/* DSA ver 1.0 platforms */
 	{ PCI_DEVICE_DATA(INTEL, DSA_SPR0, &idxd_driver_data[IDXD_TYPE_DSA]) },
+<<<<<<< HEAD
 
 	/* IAX ver 1.0 platforms */
 	{ PCI_DEVICE_DATA(INTEL, IAX_SPR0, &idxd_driver_data[IDXD_TYPE_IAX]) },
+=======
+	/* DSA on GNR-D platforms */
+	{ PCI_DEVICE_DATA(INTEL, DSA_GNRD, &idxd_driver_data[IDXD_TYPE_DSA]) },
+	/* DSA on DMR platforms */
+	{ PCI_DEVICE_DATA(INTEL, DSA_DMR, &idxd_driver_data[IDXD_TYPE_DSA]) },
+
+	/* IAX ver 1.0 platforms */
+	{ PCI_DEVICE_DATA(INTEL, IAX_SPR0, &idxd_driver_data[IDXD_TYPE_IAX]) },
+	/* IAA on DMR platforms */
+	{ PCI_DEVICE_DATA(INTEL, IAA_DMR, &idxd_driver_data[IDXD_TYPE_IAX]) },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ 0, }
 };
 MODULE_DEVICE_TABLE(pci, idxd_pci_tbl);
@@ -878,8 +890,11 @@ static int __init idxd_init_module(void)
 	else
 		support_enqcmd = true;
 
+<<<<<<< HEAD
 	perfmon_init();
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	err = idxd_driver_register(&idxd_drv);
 	if (err < 0)
 		goto err_idxd_driver_register;
@@ -928,7 +943,10 @@ static void __exit idxd_exit_module(void)
 	idxd_driver_unregister(&idxd_drv);
 	pci_unregister_driver(&idxd_pci_driver);
 	idxd_cdev_remove();
+<<<<<<< HEAD
 	perfmon_exit();
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	idxd_remove_debugfs();
 }
 module_exit(idxd_exit_module);

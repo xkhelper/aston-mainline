@@ -140,7 +140,11 @@ static void acpi_ut_delete_internal_obj(union acpi_operand_object *object)
 			(void)
 			    acpi_os_delete_semaphore
 			    (acpi_gbl_global_lock_semaphore);
+<<<<<<< HEAD
 			acpi_gbl_global_lock_semaphore = NULL;
+=======
+			acpi_gbl_global_lock_semaphore = ACPI_SEMAPHORE_NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			acpi_os_delete_mutex(object->mutex.os_mutex);
 			acpi_gbl_global_lock_mutex = NULL;
@@ -157,7 +161,11 @@ static void acpi_ut_delete_internal_obj(union acpi_operand_object *object)
 				  object, object->event.os_semaphore));
 
 		(void)acpi_os_delete_semaphore(object->event.os_semaphore);
+<<<<<<< HEAD
 		object->event.os_semaphore = NULL;
+=======
+		object->event.os_semaphore = ACPI_SEMAPHORE_NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 
 	case ACPI_TYPE_METHOD:

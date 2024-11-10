@@ -15,24 +15,42 @@ description: |
   single, dual, quad or octal wire transmission modes for
   read/write access to slaves such as SPI-NOR flash.
 
+<<<<<<< HEAD
 allOf:
   - $ref: spi-controller.yaml#
 
 properties:
   compatible:
     const: cdns,xspi-nor
+=======
+properties:
+  compatible:
+    enum:
+      - cdns,xspi-nor
+      - marvell,cn10-xspi-nor
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   reg:
     items:
       - description: address and length of the controller register set
       - description: address and length of the Slave DMA data port
       - description: address and length of the auxiliary registers
+<<<<<<< HEAD
+=======
+      - description: address and length of the xfer registers
+    minItems: 3
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   reg-names:
     items:
       - const: io
       - const: sdma
       - const: aux
+<<<<<<< HEAD
+=======
+      - const: xfer
+    minItems: 3
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   interrupts:
     maxItems: 1
@@ -42,6 +60,30 @@ required:
   - reg
   - interrupts
 
+<<<<<<< HEAD
+=======
+allOf:
+  - $ref: spi-controller.yaml#
+  - if:
+      properties:
+        compatible:
+          contains:
+            enum:
+              - marvell,cn10-xspi-nor
+    then:
+      properties:
+        reg:
+          minItems: 4
+        reg-names:
+          minItems: 4
+    else:
+      properties:
+        reg:
+          maxItems: 3
+        reg-names:
+          maxItems: 3
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 unevaluatedProperties: false
 
 examples:

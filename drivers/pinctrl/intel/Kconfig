@@ -46,6 +46,10 @@ config PINCTRL_INTEL_PLATFORM
 	  of Intel PCH pins and using them as GPIOs. Currently the following
 	  Intel SoCs / platforms require this to be functional:
 	  - Lunar Lake
+<<<<<<< HEAD
+=======
+	  - Panther Lake
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 config PINCTRL_ALDERLAKE
 	tristate "Intel Alder Lake pinctrl and GPIO driver"

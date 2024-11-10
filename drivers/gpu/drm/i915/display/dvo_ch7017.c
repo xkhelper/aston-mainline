@@ -170,13 +170,21 @@ static bool ch7017_read(struct intel_dvo_device *dvo, u8 addr, u8 *val)
 {
 	struct i2c_msg msgs[] = {
 		{
+<<<<<<< HEAD
 			.addr = dvo->slave_addr,
+=======
+			.addr = dvo->target_addr,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			.flags = 0,
 			.len = 1,
 			.buf = &addr,
 		},
 		{
+<<<<<<< HEAD
 			.addr = dvo->slave_addr,
+=======
+			.addr = dvo->target_addr,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			.flags = I2C_M_RD,
 			.len = 1,
 			.buf = val,
@@ -189,7 +197,11 @@ static bool ch7017_write(struct intel_dvo_device *dvo, u8 addr, u8 val)
 {
 	u8 buf[2] = { addr, val };
 	struct i2c_msg msg = {
+<<<<<<< HEAD
 		.addr = dvo->slave_addr,
+=======
+		.addr = dvo->target_addr,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.flags = 0,
 		.len = 2,
 		.buf = buf,
@@ -197,7 +209,11 @@ static bool ch7017_write(struct intel_dvo_device *dvo, u8 addr, u8 val)
 	return i2c_transfer(dvo->i2c_bus, &msg, 1) == 1;
 }
 
+<<<<<<< HEAD
 /** Probes for a CH7017 on the given bus and slave address. */
+=======
+/** Probes for a CH7017 on the given bus and target address. */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool ch7017_init(struct intel_dvo_device *dvo,
 			struct i2c_adapter *adapter)
 {
@@ -227,13 +243,22 @@ static bool ch7017_init(struct intel_dvo_device *dvo,
 		break;
 	default:
 		DRM_DEBUG_KMS("ch701x not detected, got %d: from %s "
+<<<<<<< HEAD
 			      "slave %d.\n",
 			      val, adapter->name, dvo->slave_addr);
+=======
+			      "target %d.\n",
+			      val, adapter->name, dvo->target_addr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto fail;
 	}
 
 	DRM_DEBUG_KMS("%s detected on %s, addr %d\n",
+<<<<<<< HEAD
 		      str, adapter->name, dvo->slave_addr);
+=======
+		      str, adapter->name, dvo->target_addr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return true;
 
 fail:

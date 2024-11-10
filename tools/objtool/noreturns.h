@@ -39,6 +39,11 @@ NORETURN(panic)
 NORETURN(panic_smp_self_stop)
 NORETURN(rest_init)
 NORETURN(rewind_stack_and_make_dead)
+<<<<<<< HEAD
+=======
+NORETURN(rust_begin_unwind)
+NORETURN(rust_helper_BUG)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 NORETURN(sev_es_terminate)
 NORETURN(snp_abort)
 NORETURN(start_kernel)

@@ -76,6 +76,7 @@ static int pagecache_write(struct inode *inode, const void *buf, size_t count,
 	while (count) {
 		size_t n = min_t(size_t, count,
 				 PAGE_SIZE - offset_in_page(pos));
+<<<<<<< HEAD
 		struct page *page;
 		void *fsdata = NULL;
 		int res;
@@ -87,6 +88,19 @@ static int pagecache_write(struct inode *inode, const void *buf, size_t count,
 		memcpy_to_page(page, offset_in_page(pos), buf, n);
 
 		res = aops->write_end(NULL, mapping, pos, n, n, page, fsdata);
+=======
+		struct folio *folio;
+		void *fsdata = NULL;
+		int res;
+
+		res = aops->write_begin(NULL, mapping, pos, n, &folio, &fsdata);
+		if (res)
+			return res;
+
+		memcpy_to_folio(folio, offset_in_folio(folio, pos), buf, n);
+
+		res = aops->write_end(NULL, mapping, pos, n, n, folio, fsdata);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (res < 0)
 			return res;
 		if (res != n)

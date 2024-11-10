@@ -382,9 +382,15 @@ static void sdi_remove(struct platform_device *pdev)
 
 static struct platform_driver omap_sdi_driver = {
 	.probe		= sdi_probe,
+<<<<<<< HEAD
 	.remove_new     = sdi_remove,
 	.driver         = {
 		.name   = "omapdss_sdi",
+=======
+	.remove		= sdi_remove,
+	.driver		= {
+		.name	= "omapdss_sdi",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.suppress_bind_attrs = true,
 	},
 };

@@ -231,7 +231,11 @@ struct dpu_crtc_state {
 	container_of(x, struct dpu_crtc_state, base)
 
 /**
+<<<<<<< HEAD
  * dpu_crtc_frame_pending - retun the number of pending frames
+=======
+ * dpu_crtc_frame_pending - return the number of pending frames
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @crtc: Pointer to drm crtc object
  */
 static inline int dpu_crtc_frame_pending(struct drm_crtc *crtc)

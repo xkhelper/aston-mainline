@@ -61,12 +61,18 @@ properties:
       GPIO connection to R/B signal from NAND chip
     maxItems: 1
 
+<<<<<<< HEAD
 patternProperties:
   "@[0-9a-f]+$":
     $ref: /schemas/mtd/partitions/partition.yaml
 
 allOf:
   - $ref: /schemas/memory-controllers/ti,gpmc-child.yaml
+=======
+allOf:
+  - $ref: /schemas/memory-controllers/ti,gpmc-child.yaml
+  - $ref: mtd.yaml#
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 required:
   - compatible

@@ -411,7 +411,11 @@ nilfs_mdt_write_page(struct page *page, struct writeback_control *wbc)
 		 * have dirty folios that try to be flushed in background.
 		 * So, here we simply discard this dirty folio.
 		 */
+<<<<<<< HEAD
 		nilfs_clear_folio_dirty(folio, false);
+=======
+		nilfs_clear_folio_dirty(folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		folio_unlock(folio);
 		return -EROFS;
 	}
@@ -638,10 +642,17 @@ void nilfs_mdt_restore_from_shadow_map(struct inode *inode)
 	if (mi->mi_palloc_cache)
 		nilfs_palloc_clear_cache(inode);
 
+<<<<<<< HEAD
 	nilfs_clear_dirty_pages(inode->i_mapping, true);
 	nilfs_copy_back_pages(inode->i_mapping, shadow->inode->i_mapping);
 
 	nilfs_clear_dirty_pages(ii->i_assoc_inode->i_mapping, true);
+=======
+	nilfs_clear_dirty_pages(inode->i_mapping);
+	nilfs_copy_back_pages(inode->i_mapping, shadow->inode->i_mapping);
+
+	nilfs_clear_dirty_pages(ii->i_assoc_inode->i_mapping);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	nilfs_copy_back_pages(ii->i_assoc_inode->i_mapping,
 			      NILFS_I(shadow->inode)->i_assoc_inode->i_mapping);
 

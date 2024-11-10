@@ -16,7 +16,11 @@
 #include <linux/decompress/mm.h>
 #include <linux/compiler.h>
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Note: Uncompressed chunk size is used in the compressor side

@@ -693,7 +693,11 @@ unlock:
 	return ret ? -EAGAIN : 0;
 }
 
+<<<<<<< HEAD
 static int __maybe_unused imx8mq_mipi_csi_suspend(struct device *dev)
+=======
+static int imx8mq_mipi_csi_suspend(struct device *dev)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
 	struct csi_state *state = mipi_sd_to_csi2_state(sd);
@@ -705,7 +709,11 @@ static int __maybe_unused imx8mq_mipi_csi_suspend(struct device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int __maybe_unused imx8mq_mipi_csi_resume(struct device *dev)
+=======
+static int imx8mq_mipi_csi_resume(struct device *dev)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
 	struct csi_state *state = mipi_sd_to_csi2_state(sd);
@@ -716,7 +724,11 @@ static int __maybe_unused imx8mq_mipi_csi_resume(struct device *dev)
 	return imx8mq_mipi_csi_pm_resume(dev);
 }
 
+<<<<<<< HEAD
 static int __maybe_unused imx8mq_mipi_csi_runtime_suspend(struct device *dev)
+=======
+static int imx8mq_mipi_csi_runtime_suspend(struct device *dev)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
 	struct csi_state *state = mipi_sd_to_csi2_state(sd);
@@ -731,7 +743,11 @@ static int __maybe_unused imx8mq_mipi_csi_runtime_suspend(struct device *dev)
 	return ret;
 }
 
+<<<<<<< HEAD
 static int __maybe_unused imx8mq_mipi_csi_runtime_resume(struct device *dev)
+=======
+static int imx8mq_mipi_csi_runtime_resume(struct device *dev)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
 	struct csi_state *state = mipi_sd_to_csi2_state(sd);
@@ -747,10 +763,16 @@ static int __maybe_unused imx8mq_mipi_csi_runtime_resume(struct device *dev)
 }
 
 static const struct dev_pm_ops imx8mq_mipi_csi_pm_ops = {
+<<<<<<< HEAD
 	SET_RUNTIME_PM_OPS(imx8mq_mipi_csi_runtime_suspend,
 			   imx8mq_mipi_csi_runtime_resume,
 			   NULL)
 	SET_SYSTEM_SLEEP_PM_OPS(imx8mq_mipi_csi_suspend, imx8mq_mipi_csi_resume)
+=======
+	RUNTIME_PM_OPS(imx8mq_mipi_csi_runtime_suspend,
+		       imx8mq_mipi_csi_runtime_resume, NULL)
+	SYSTEM_SLEEP_PM_OPS(imx8mq_mipi_csi_suspend, imx8mq_mipi_csi_resume)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* -----------------------------------------------------------------------------
@@ -958,7 +980,11 @@ static struct platform_driver imx8mq_mipi_csi_driver = {
 	.driver		= {
 		.of_match_table = imx8mq_mipi_csi_of_match,
 		.name		= MIPI_CSI2_DRIVER_NAME,
+<<<<<<< HEAD
 		.pm		= &imx8mq_mipi_csi_pm_ops,
+=======
+		.pm		= pm_ptr(&imx8mq_mipi_csi_pm_ops),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 };
 

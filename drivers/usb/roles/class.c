@@ -11,6 +11,10 @@
 #include <linux/usb/role.h>
 #include <linux/property.h>
 #include <linux/device.h>
+<<<<<<< HEAD
+=======
+#include <linux/lockdep.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/module.h>
 #include <linux/mutex.h>
 #include <linux/slab.h>
@@ -21,6 +25,10 @@ static const struct class role_class = {
 
 struct usb_role_switch {
 	struct device dev;
+<<<<<<< HEAD
+=======
+	struct lock_class_key key;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct mutex lock; /* device lock*/
 	struct module *module; /* the module this device depends on */
 	enum usb_role role;
@@ -326,6 +334,11 @@ static void usb_role_switch_release(struct device *dev)
 {
 	struct usb_role_switch *sw = to_role_switch(dev);
 
+<<<<<<< HEAD
+=======
+	mutex_destroy(&sw->lock);
+	lockdep_unregister_key(&sw->key);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(sw);
 }
 
@@ -364,7 +377,12 @@ usb_role_switch_register(struct device *parent,
 	if (!sw)
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
 	mutex_init(&sw->lock);
+=======
+	lockdep_register_key(&sw->key);
+	mutex_init_with_key(&sw->lock, &sw->key);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	sw->allow_userspace_control = desc->allow_userspace_control;
 	sw->usb2_port = desc->usb2_port;

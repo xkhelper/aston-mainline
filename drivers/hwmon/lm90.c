@@ -2674,19 +2674,31 @@ static int lm90_parse_dt_channel_info(struct i2c_client *client,
 				      struct lm90_data *data)
 {
 	int err;
+<<<<<<< HEAD
 	struct device_node *child;
 	struct device *dev = &client->dev;
 	const struct device_node *np = dev->of_node;
 
 	for_each_child_of_node(np, child) {
+=======
+	struct device *dev = &client->dev;
+	const struct device_node *np = dev->of_node;
+
+	for_each_child_of_node_scoped(np, child) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (strcmp(child->name, "channel"))
 			continue;
 
 		err = lm90_probe_channel_from_dt(client, child, data);
+<<<<<<< HEAD
 		if (err) {
 			of_node_put(child);
 			return err;
 		}
+=======
+		if (err)
+			return err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;

@@ -8,6 +8,10 @@
 
 #include <linux/types.h>
 
+<<<<<<< HEAD
+=======
+struct drm_printer;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct xe_gsc;
 struct xe_gt;
 struct xe_hw_engine;
@@ -21,4 +25,9 @@ void xe_gsc_hwe_irq_handler(struct xe_hw_engine *hwe, u16 intr_vec);
 
 void xe_gsc_wa_14015076503(struct xe_gt *gt, bool prep);
 
+<<<<<<< HEAD
+=======
+void xe_gsc_print_info(struct xe_gsc *gsc, struct drm_printer *p);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

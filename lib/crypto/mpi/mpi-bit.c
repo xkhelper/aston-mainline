@@ -32,7 +32,10 @@ void mpi_normalize(MPI a)
 	for (; a->nlimbs && !a->d[a->nlimbs - 1]; a->nlimbs--)
 		;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(mpi_normalize);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /****************
  * Return the number of bits in A.
@@ -77,9 +80,16 @@ EXPORT_SYMBOL_GPL(mpi_test_bit);
 /****************
  * Set bit N of A.
  */
+<<<<<<< HEAD
 void mpi_set_bit(MPI a, unsigned int n)
 {
 	unsigned int i, limbno, bitno;
+=======
+int mpi_set_bit(MPI a, unsigned int n)
+{
+	unsigned int i, limbno, bitno;
+	int err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	limbno = n / BITS_PER_MPI_LIMB;
 	bitno  = n % BITS_PER_MPI_LIMB;
@@ -87,6 +97,7 @@ void mpi_set_bit(MPI a, unsigned int n)
 	if (limbno >= a->nlimbs) {
 		for (i = a->nlimbs; i < a->alloced; i++)
 			a->d[i] = 0;
+<<<<<<< HEAD
 		mpi_resize(a, limbno+1);
 		a->nlimbs = limbno+1;
 	}
@@ -170,23 +181,44 @@ void mpi_rshift_limbs(MPI a, unsigned int count)
 		ap[i] = ap[i+count];
 	ap[i] = 0;
 	a->nlimbs -= count;
+=======
+		err = mpi_resize(a, limbno+1);
+		if (err)
+			return err;
+		a->nlimbs = limbno+1;
+	}
+	a->d[limbno] |= (A_LIMB_1<<bitno);
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
  * Shift A by N bits to the right.
  */
+<<<<<<< HEAD
 void mpi_rshift(MPI x, MPI a, unsigned int n)
+=======
+int mpi_rshift(MPI x, MPI a, unsigned int n)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	mpi_size_t xsize;
 	unsigned int i;
 	unsigned int nlimbs = (n/BITS_PER_MPI_LIMB);
 	unsigned int nbits = (n%BITS_PER_MPI_LIMB);
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (x == a) {
 		/* In-place operation.  */
 		if (nlimbs >= x->nlimbs) {
 			x->nlimbs = 0;
+<<<<<<< HEAD
 			return;
+=======
+			return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		if (nlimbs) {
@@ -201,7 +233,13 @@ void mpi_rshift(MPI x, MPI a, unsigned int n)
 		/* Copy and shift by more or equal bits than in a limb. */
 		xsize = a->nlimbs;
 		x->sign = a->sign;
+<<<<<<< HEAD
 		RESIZE_IF_NEEDED(x, xsize);
+=======
+		err = RESIZE_IF_NEEDED(x, xsize);
+		if (err)
+			return err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		x->nlimbs = xsize;
 		for (i = 0; i < a->nlimbs; i++)
 			x->d[i] = a->d[i];
@@ -209,7 +247,11 @@ void mpi_rshift(MPI x, MPI a, unsigned int n)
 
 		if (nlimbs >= x->nlimbs) {
 			x->nlimbs = 0;
+<<<<<<< HEAD
 			return;
+=======
+			return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		for (i = 0; i < x->nlimbs - nlimbs; i++)
@@ -223,7 +265,13 @@ void mpi_rshift(MPI x, MPI a, unsigned int n)
 		/* Copy and shift by less than bits in a limb.  */
 		xsize = a->nlimbs;
 		x->sign = a->sign;
+<<<<<<< HEAD
 		RESIZE_IF_NEEDED(x, xsize);
+=======
+		err = RESIZE_IF_NEEDED(x, xsize);
+		if (err)
+			return err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		x->nlimbs = xsize;
 
 		if (xsize) {
@@ -239,6 +287,7 @@ void mpi_rshift(MPI x, MPI a, unsigned int n)
 		}
 	}
 	MPN_NORMALIZE(x->d, x->nlimbs);
+<<<<<<< HEAD
 }
 EXPORT_SYMBOL_GPL(mpi_rshift);
 
@@ -304,3 +353,9 @@ void mpi_lshift(MPI x, MPI a, unsigned int n)
 
 	MPN_NORMALIZE(x->d, x->nlimbs);
 }
+=======
+
+	return 0;
+}
+EXPORT_SYMBOL_GPL(mpi_rshift);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

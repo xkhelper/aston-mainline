@@ -216,17 +216,38 @@ static void devinet_sysctl_unregister(struct in_device *idev)
 
 /* Locks all the inet devices. */
 
+<<<<<<< HEAD
 static struct in_ifaddr *inet_alloc_ifa(void)
 {
 	return kzalloc(sizeof(struct in_ifaddr), GFP_KERNEL_ACCOUNT);
+=======
+static struct in_ifaddr *inet_alloc_ifa(struct in_device *in_dev)
+{
+	struct in_ifaddr *ifa;
+
+	ifa = kzalloc(sizeof(*ifa), GFP_KERNEL_ACCOUNT);
+	if (!ifa)
+		return NULL;
+
+	in_dev_hold(in_dev);
+	ifa->ifa_dev = in_dev;
+
+	INIT_HLIST_NODE(&ifa->hash);
+
+	return ifa;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void inet_rcu_free_ifa(struct rcu_head *head)
 {
 	struct in_ifaddr *ifa = container_of(head, struct in_ifaddr, rcu_head);
 
+<<<<<<< HEAD
 	if (ifa->ifa_dev)
 		in_dev_put(ifa->ifa_dev);
+=======
+	in_dev_put(ifa->ifa_dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(ifa);
 }
 
@@ -288,6 +309,7 @@ static struct in_device *inetdev_init(struct net_device *dev)
 	/* Account for reference dev->ip_ptr (below) */
 	refcount_set(&in_dev->refcnt, 1);
 
+<<<<<<< HEAD
 	err = devinet_sysctl_register(in_dev);
 	if (err) {
 		in_dev->dead = 1;
@@ -299,6 +321,21 @@ static struct in_device *inetdev_init(struct net_device *dev)
 	ip_mc_init_dev(in_dev);
 	if (dev->flags & IFF_UP)
 		ip_mc_up(in_dev);
+=======
+	if (dev != blackhole_netdev) {
+		err = devinet_sysctl_register(in_dev);
+		if (err) {
+			in_dev->dead = 1;
+			neigh_parms_release(&arp_tbl, in_dev->arp_parms);
+			in_dev_put(in_dev);
+			in_dev = NULL;
+			goto out;
+		}
+		ip_mc_init_dev(in_dev);
+		if (dev->flags & IFF_UP)
+			ip_mc_up(in_dev);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* we can receive as soon as ip_ptr is set -- do this last */
 	rcu_assign_pointer(dev->ip_ptr, in_dev);
@@ -337,6 +374,22 @@ static void inetdev_destroy(struct in_device *in_dev)
 	in_dev_put(in_dev);
 }
 
+<<<<<<< HEAD
+=======
+static int __init inet_blackhole_dev_init(void)
+{
+	int err = 0;
+
+	rtnl_lock();
+	if (!inetdev_init(blackhole_netdev))
+		err = -ENOMEM;
+	rtnl_unlock();
+
+	return err;
+}
+late_initcall(inet_blackhole_dev_init);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int inet_addr_onlink(struct in_device *in_dev, __be32 a, __be32 b)
 {
 	const struct in_ifaddr *ifa;
@@ -574,6 +627,7 @@ static int inet_set_ifa(struct net_device *dev, struct in_ifaddr *ifa)
 
 	ASSERT_RTNL();
 
+<<<<<<< HEAD
 	if (!in_dev) {
 		inet_free_ifa(ifa);
 		return -ENOBUFS;
@@ -585,6 +639,11 @@ static int inet_set_ifa(struct net_device *dev, struct in_ifaddr *ifa)
 		in_dev_hold(in_dev);
 		ifa->ifa_dev = in_dev;
 	}
+=======
+	ipv4_devconf_setall(in_dev);
+	neigh_parms_data_state_setall(in_dev->arp_parms);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ipv4_is_loopback(ifa->ifa_local))
 		ifa->ifa_scope = RT_SCOPE_HOST;
 	return inet_insert_ifa(ifa);
@@ -701,8 +760,11 @@ errout:
 	return err;
 }
 
+<<<<<<< HEAD
 #define INFINITY_LIFE_TIME	0xFFFFFFFF
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void check_lifetime(struct work_struct *work)
 {
 	unsigned long now, next, next_sec, next_sched;
@@ -875,7 +937,11 @@ static struct in_ifaddr *rtm_to_ifaddr(struct net *net, struct nlmsghdr *nlh,
 	if (!in_dev)
 		goto errout;
 
+<<<<<<< HEAD
 	ifa = inet_alloc_ifa();
+=======
+	ifa = inet_alloc_ifa(in_dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ifa)
 		/*
 		 * A potential indev allocation can be left alive, it stays
@@ -885,19 +951,28 @@ static struct in_ifaddr *rtm_to_ifaddr(struct net *net, struct nlmsghdr *nlh,
 
 	ipv4_devconf_setall(in_dev);
 	neigh_parms_data_state_setall(in_dev->arp_parms);
+<<<<<<< HEAD
 	in_dev_hold(in_dev);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!tb[IFA_ADDRESS])
 		tb[IFA_ADDRESS] = tb[IFA_LOCAL];
 
+<<<<<<< HEAD
 	INIT_HLIST_NODE(&ifa->hash);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ifa->ifa_prefixlen = ifm->ifa_prefixlen;
 	ifa->ifa_mask = inet_make_mask(ifm->ifa_prefixlen);
 	ifa->ifa_flags = tb[IFA_FLAGS] ? nla_get_u32(tb[IFA_FLAGS]) :
 					 ifm->ifa_flags;
 	ifa->ifa_scope = ifm->ifa_scope;
+<<<<<<< HEAD
 	ifa->ifa_dev = in_dev;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ifa->ifa_local = nla_get_in_addr(tb[IFA_LOCAL]);
 	ifa->ifa_address = nla_get_in_addr(tb[IFA_ADDRESS]);
 
@@ -1184,10 +1259,19 @@ int devinet_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr)
 
 		if (!ifa) {
 			ret = -ENOBUFS;
+<<<<<<< HEAD
 			ifa = inet_alloc_ifa();
 			if (!ifa)
 				break;
 			INIT_HLIST_NODE(&ifa->hash);
+=======
+			if (!in_dev)
+				break;
+			ifa = inet_alloc_ifa(in_dev);
+			if (!ifa)
+				break;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (colon)
 				memcpy(ifa->ifa_label, ifr->ifr_name, IFNAMSIZ);
 			else
@@ -1586,16 +1670,25 @@ static int inetdev_event(struct notifier_block *this, unsigned long event,
 		if (!inetdev_valid_mtu(dev->mtu))
 			break;
 		if (dev->flags & IFF_LOOPBACK) {
+<<<<<<< HEAD
 			struct in_ifaddr *ifa = inet_alloc_ifa();
 
 			if (ifa) {
 				INIT_HLIST_NODE(&ifa->hash);
+=======
+			struct in_ifaddr *ifa = inet_alloc_ifa(in_dev);
+
+			if (ifa) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				ifa->ifa_local =
 				  ifa->ifa_address = htonl(INADDR_LOOPBACK);
 				ifa->ifa_prefixlen = 8;
 				ifa->ifa_mask = inet_make_mask(8);
+<<<<<<< HEAD
 				in_dev_hold(in_dev);
 				ifa->ifa_dev = in_dev;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				ifa->ifa_scope = RT_SCOPE_HOST;
 				memcpy(ifa->ifa_label, dev->name, IFNAMSIZ);
 				set_ifa_lifetime(ifa, INFINITY_LIFE_TIME,
@@ -1948,8 +2041,12 @@ static void rtmsg_ifa(int event, struct in_ifaddr *ifa, struct nlmsghdr *nlh,
 	rtnl_notify(skb, net, portid, RTNLGRP_IPV4_IFADDR, nlh, GFP_KERNEL);
 	return;
 errout:
+<<<<<<< HEAD
 	if (err < 0)
 		rtnl_set_sk_err(net, RTNLGRP_IPV4_IFADDR, err);
+=======
+	rtnl_set_sk_err(net, RTNLGRP_IPV4_IFADDR, err);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static size_t inet_get_link_af_size(const struct net_device *dev,
@@ -2145,8 +2242,12 @@ void inet_netconf_notify_devconf(struct net *net, int event, int type,
 	rtnl_notify(skb, net, 0, RTNLGRP_IPV4_NETCONF, NULL, GFP_KERNEL);
 	return;
 errout:
+<<<<<<< HEAD
 	if (err < 0)
 		rtnl_set_sk_err(net, RTNLGRP_IPV4_NETCONF, err);
+=======
+	rtnl_set_sk_err(net, RTNLGRP_IPV4_NETCONF, err);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct nla_policy devconf_ipv4_policy[NETCONFA_MAX+1] = {

@@ -554,16 +554,28 @@ void hfsplus_file_truncate(struct inode *inode)
 
 	if (inode->i_size > hip->phys_size) {
 		struct address_space *mapping = inode->i_mapping;
+<<<<<<< HEAD
 		struct page *page;
+=======
+		struct folio *folio;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		void *fsdata = NULL;
 		loff_t size = inode->i_size;
 
 		res = hfsplus_write_begin(NULL, mapping, size, 0,
+<<<<<<< HEAD
 					  &page, &fsdata);
 		if (res)
 			return;
 		res = generic_write_end(NULL, mapping, size, 0, 0,
 					page, fsdata);
+=======
+					  &folio, &fsdata);
+		if (res)
+			return;
+		res = generic_write_end(NULL, mapping, size, 0, 0,
+					folio, fsdata);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (res < 0)
 			return;
 		mark_inode_dirty(inode);

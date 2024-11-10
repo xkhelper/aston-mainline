@@ -231,6 +231,7 @@ static void lx_message_dump(struct lx_rmh *rmh)
 	u8 idx = rmh->cmd_idx;
 	int i;
 
+<<<<<<< HEAD
 	snd_printk(LXRMH "command %s\n", dsp_commands[idx].dcOpName);
 
 	for (i = 0; i != rmh->cmd_len; ++i)
@@ -239,6 +240,16 @@ static void lx_message_dump(struct lx_rmh *rmh)
 	for (i = 0; i != rmh->stat_len; ++i)
 		snd_printk(LXRMH "\tstat[%d]: %08x\n", i, rmh->stat[i]);
 	snd_printk("\n");
+=======
+	pr_debug(LXRMH "command %s\n", dsp_commands[idx].dcOpName);
+
+	for (i = 0; i != rmh->cmd_len; ++i)
+		pr_debug(LXRMH "\tcmd[%d] %08x\n", i, rmh->cmd[i]);
+
+	for (i = 0; i != rmh->stat_len; ++i)
+		pr_debug(LXRMH "\tstat[%d]: %08x\n", i, rmh->stat[i]);
+	pr_debug("\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 #else
 static inline void lx_message_dump(struct lx_rmh *rmh)

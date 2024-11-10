@@ -52,6 +52,10 @@ properties:
           - qcom,sm8550-dwc3
           - qcom,sm8650-dwc3
           - qcom,x1e80100-dwc3
+<<<<<<< HEAD
+=======
+          - qcom,x1e80100-dwc3-mp
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       - const: qcom,dwc3
 
   reg:
@@ -164,6 +168,10 @@ allOf:
           contains:
             enum:
               - qcom,ipq4019-dwc3
+<<<<<<< HEAD
+=======
+              - qcom,ipq5332-dwc3
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     then:
       properties:
         clocks:
@@ -267,7 +275,10 @@ allOf:
           contains:
             enum:
               - qcom,ipq5018-dwc3
+<<<<<<< HEAD
               - qcom,ipq5332-dwc3
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - qcom,msm8994-dwc3
               - qcom,qcs404-dwc3
     then:
@@ -289,6 +300,10 @@ allOf:
               - qcom,sc8280xp-dwc3
               - qcom,sc8280xp-dwc3-mp
               - qcom,x1e80100-dwc3
+<<<<<<< HEAD
+=======
+              - qcom,x1e80100-dwc3-mp
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     then:
       properties:
         clocks:
@@ -428,6 +443,24 @@ allOf:
           contains:
             enum:
               - qcom,ipq5332-dwc3
+<<<<<<< HEAD
+=======
+    then:
+      properties:
+        interrupts:
+          maxItems: 3
+        interrupt-names:
+          items:
+            - const: pwr_event
+            - const: dp_hs_phy_irq
+            - const: dm_hs_phy_irq
+
+  - if:
+      properties:
+        compatible:
+          contains:
+            enum:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - qcom,x1e80100-dwc3
     then:
       properties:
@@ -486,6 +519,10 @@ allOf:
           contains:
             enum:
               - qcom,sc8180x-dwc3-mp
+<<<<<<< HEAD
+=======
+              - qcom,x1e80100-dwc3-mp
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     then:
       properties:
         interrupts:

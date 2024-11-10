@@ -5,8 +5,13 @@
  */
 
 /dts-v1/;
+<<<<<<< HEAD
 #include "rk3399-rock-pi-4.dtsi"
 #include "rk3399-t-opp.dtsi"
+=======
+#include "rk3399-t.dtsi"
+#include "rk3399-rock-pi-4.dtsi"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 / {
 	model = "Radxa ROCK 4SE";
@@ -17,6 +22,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &pinctrl {
 	usb2 {
 		vcc5v0_host_en: vcc5v0-host-en {
@@ -25,6 +31,8 @@
 	};
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &sdio0 {
 	status = "okay";
 
@@ -56,6 +64,7 @@
 		vddio-supply = <&vcc_1v8>;
 	};
 };
+<<<<<<< HEAD
 
 &vcc5v0_host {
 	enable-active-high;
@@ -63,3 +72,5 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&vcc5v0_host_en>;
 };
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

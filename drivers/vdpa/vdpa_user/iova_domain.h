@@ -21,6 +21,10 @@
 
 struct vduse_bounce_map {
 	struct page *bounce_page;
+<<<<<<< HEAD
+=======
+	struct page *user_bounce_page;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 orig_phys;
 };
 

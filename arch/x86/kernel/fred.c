@@ -21,17 +21,62 @@
 
 #define FRED_STKLVL(vector, lvl)	((lvl) << (2 * (vector)))
 
+<<<<<<< HEAD
+=======
+DEFINE_PER_CPU(unsigned long, fred_rsp0);
+EXPORT_PER_CPU_SYMBOL(fred_rsp0);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void cpu_init_fred_exceptions(void)
 {
 	/* When FRED is enabled by default, remove this log message */
 	pr_info("Initialize FRED on CPU%d\n", smp_processor_id());
 
+<<<<<<< HEAD
+=======
+	/*
+	 * If a kernel event is delivered before a CPU goes to user level for
+	 * the first time, its SS is NULL thus NULL is pushed into the SS field
+	 * of the FRED stack frame.  But before ERETS is executed, the CPU may
+	 * context switch to another task and go to user level.  Then when the
+	 * CPU comes back to kernel mode, SS is changed to __KERNEL_DS.  Later
+	 * when ERETS is executed to return from the kernel event handler, a #GP
+	 * fault is generated because SS doesn't match the SS saved in the FRED
+	 * stack frame.
+	 *
+	 * Initialize SS to __KERNEL_DS when enabling FRED to avoid such #GPs.
+	 */
+	loadsegment(ss, __KERNEL_DS);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	wrmsrl(MSR_IA32_FRED_CONFIG,
 	       /* Reserve for CALL emulation */
 	       FRED_CONFIG_REDZONE |
 	       FRED_CONFIG_INT_STKLVL(0) |
 	       FRED_CONFIG_ENTRYPOINT(asm_fred_entrypoint_user));
 
+<<<<<<< HEAD
+=======
+	wrmsrl(MSR_IA32_FRED_STKLVLS, 0);
+	wrmsrl(MSR_IA32_FRED_RSP0, 0);
+	wrmsrl(MSR_IA32_FRED_RSP1, 0);
+	wrmsrl(MSR_IA32_FRED_RSP2, 0);
+	wrmsrl(MSR_IA32_FRED_RSP3, 0);
+
+	/* Enable FRED */
+	cr4_set_bits(X86_CR4_FRED);
+	/* Any further IDT use is a bug */
+	idt_invalidate();
+
+	/* Use int $0x80 for 32-bit system calls in FRED mode */
+	setup_clear_cpu_cap(X86_FEATURE_SYSENTER32);
+	setup_clear_cpu_cap(X86_FEATURE_SYSCALL32);
+}
+
+/* Must be called after setup_cpu_entry_areas() */
+void cpu_init_fred_rsps(void)
+{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * The purpose of separate stacks for NMI, #DB and #MC *in the kernel*
 	 * (remember that user space faults are always taken on stack level 0)
@@ -47,6 +92,7 @@ void cpu_init_fred_exceptions(void)
 	wrmsrl(MSR_IA32_FRED_RSP1, __this_cpu_ist_top_va(DB));
 	wrmsrl(MSR_IA32_FRED_RSP2, __this_cpu_ist_top_va(NMI));
 	wrmsrl(MSR_IA32_FRED_RSP3, __this_cpu_ist_top_va(DF));
+<<<<<<< HEAD
 
 	/* Enable FRED */
 	cr4_set_bits(X86_CR4_FRED);
@@ -56,4 +102,6 @@ void cpu_init_fred_exceptions(void)
 	/* Use int $0x80 for 32-bit system calls in FRED mode */
 	setup_clear_cpu_cap(X86_FEATURE_SYSENTER32);
 	setup_clear_cpu_cap(X86_FEATURE_SYSCALL32);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

@@ -13,9 +13,17 @@
  * more details.
  */
 
+<<<<<<< HEAD
 #include "ia_css_bayer_io.host.h"
 #include "dma.h"
 #include "math_support.h"
+=======
+#include <linux/bitops.h>
+#include <linux/math.h>
+
+#include "ia_css_bayer_io.host.h"
+#include "dma.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifndef IA_CSS_NO_DEBUG
 #include "ia_css_debug.h"
 #endif
@@ -29,9 +37,14 @@ int ia_css_bayer_io_config(const struct ia_css_binary      *binary,
 	const struct ia_css_frame **out_frames = (const struct ia_css_frame **)
 		&args->out_frame;
 	const struct ia_css_frame_info *in_frame_info = ia_css_frame_get_info(in_frame);
+<<<<<<< HEAD
 	const unsigned int ddr_bits_per_element = sizeof(short) * 8;
 	const unsigned int ddr_elems_per_word = ceil_div(HIVE_ISP_DDR_WORD_BITS,
 						ddr_bits_per_element);
+=======
+	const unsigned int ddr_elems_per_word =
+		DIV_ROUND_UP(HIVE_ISP_DDR_WORD_BITS, BITS_PER_TYPE(short));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int size_get = 0, size_put = 0;
 	unsigned int offset = 0;
 	int ret;

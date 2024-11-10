@@ -38,7 +38,11 @@ struct rt_firmware {
 
 /* This structure must be carefully byte-ordered. */
 struct rt_firmware_hdr {
+<<<<<<< HEAD
 	/*  8-byte alinment required */
+=======
+	/*  8-byte alignment required */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*  LONG WORD 0 ---- */
 	__le16 signature;  /* 92C0: test chip; 92C, 88C0: test chip;

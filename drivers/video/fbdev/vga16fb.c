@@ -1417,7 +1417,11 @@ MODULE_DEVICE_TABLE(platform, vga16fb_driver_id_table);
 
 static struct platform_driver vga16fb_driver = {
 	.probe = vga16fb_probe,
+<<<<<<< HEAD
 	.remove_new = vga16fb_remove,
+=======
+	.remove = vga16fb_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "vga16fb",
 	},

@@ -733,7 +733,10 @@ out:
 static const struct file_operations dlm_rawmsg_fops = {
 	.open	= simple_open,
 	.write	= dlm_rawmsg_write,
+<<<<<<< HEAD
 	.llseek	= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 void *dlm_create_debug_comms_file(int nodeid, void *data)

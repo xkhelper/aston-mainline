@@ -17,9 +17,16 @@
  * released when done.
  *
  * In order to ensure that a consistent cpu / ID matching is maintained
+<<<<<<< HEAD
  * throughout a perf cs_etm event session - a session in progress flag will
  * be maintained, and released IDs not cleared until the perf session is
  * complete. This allows the same CPU to be re-allocated its prior ID.
+=======
+ * throughout a perf cs_etm event session - a session in progress flag will be
+ * maintained for each sink, and IDs are cleared when all the perf sessions
+ * complete. This allows the same CPU to be re-allocated its prior ID when
+ * events are scheduled in and out.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  *
  * Trace ID maps will be created and initialised to prevent architecturally
@@ -32,10 +39,13 @@
 #include <linux/bitops.h>
 #include <linux/types.h>
 
+<<<<<<< HEAD
 
 /* architecturally we have 128 IDs some of which are reserved */
 #define CORESIGHT_TRACE_IDS_MAX 128
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* ID 0 is reserved */
 #define CORESIGHT_TRACE_ID_RES_0 0
 
@@ -47,6 +57,7 @@
 	((id > CORESIGHT_TRACE_ID_RES_0) && (id < CORESIGHT_TRACE_ID_RES_TOP))
 
 /**
+<<<<<<< HEAD
  * Trace ID map.
  *
  * @used_ids:	Bitmap to register available (bit = 0) and in use (bit = 1) IDs.
@@ -64,6 +75,8 @@ struct coresight_trace_id_map {
 /* Allocate and release IDs for a single default trace ID map */
 
 /**
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Read and optionally allocate a CoreSight trace ID and associate with a CPU.
  *
  * Function will read the current trace ID for the associated CPU,
@@ -79,6 +92,7 @@ struct coresight_trace_id_map {
 int coresight_trace_id_get_cpu_id(int cpu);
 
 /**
+<<<<<<< HEAD
  * Release an allocated trace ID associated with the CPU.
  *
  * This will release the CoreSight trace ID associated with the CPU,
@@ -86,12 +100,32 @@ int coresight_trace_id_get_cpu_id(int cpu);
  *
  * If a perf session is in operation then the ID will be marked as pending
  * release.
+=======
+ * Version of coresight_trace_id_get_cpu_id() that allows the ID map to operate
+ * on to be provided.
+ */
+int coresight_trace_id_get_cpu_id_map(int cpu, struct coresight_trace_id_map *id_map);
+
+/**
+ * Release an allocated trace ID associated with the CPU.
+ *
+ * This will release the CoreSight trace ID associated with the CPU.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * @cpu: The CPU index to release the associated trace ID.
  */
 void coresight_trace_id_put_cpu_id(int cpu);
 
 /**
+<<<<<<< HEAD
+=======
+ * Version of coresight_trace_id_put_cpu_id() that allows the ID map to operate
+ * on to be provided.
+ */
+void coresight_trace_id_put_cpu_id_map(int cpu, struct coresight_trace_id_map *id_map);
+
+/**
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Read the current allocated CoreSight Trace ID value for the CPU.
  *
  * Fast read of the current value that does not allocate if no ID allocated
@@ -112,6 +146,15 @@ void coresight_trace_id_put_cpu_id(int cpu);
 int coresight_trace_id_read_cpu_id(int cpu);
 
 /**
+<<<<<<< HEAD
+=======
+ * Version of coresight_trace_id_read_cpu_id() that allows the ID map to operate
+ * on to be provided.
+ */
+int coresight_trace_id_read_cpu_id_map(int cpu, struct coresight_trace_id_map *id_map);
+
+/**
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Allocate a CoreSight trace ID for a system component.
  *
  * Unconditionally allocates a Trace ID, without associating the ID with a CPU.
@@ -136,6 +179,7 @@ void coresight_trace_id_put_system_id(int id);
 /**
  * Notify the Trace ID allocator that a perf session is starting.
  *
+<<<<<<< HEAD
  * Increase the perf session reference count - called by perf when setting up
  * a trace event.
  *
@@ -143,14 +187,31 @@ void coresight_trace_id_put_system_id(int id);
  * associated with a CPU cannot change or be released during a perf session.
  */
 void coresight_trace_id_perf_start(void);
+=======
+ * Increase the perf session reference count - called by perf when setting up a
+ * trace event.
+ *
+ * Perf sessions never free trace IDs to ensure that the ID associated with a
+ * CPU cannot change during their and other's concurrent sessions. Instead,
+ * this refcount is used so that the last event to finish always frees all IDs.
+ */
+void coresight_trace_id_perf_start(struct coresight_trace_id_map *id_map);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * Notify the ID allocator that a perf session is stopping.
  *
+<<<<<<< HEAD
  * Decrease the perf session reference count.
  * if this causes the count to go to zero, then all Trace IDs marked as pending
  * release, will be released.
  */
 void coresight_trace_id_perf_stop(void);
+=======
+ * Decrease the perf session reference count. If this causes the count to go to
+ * zero, then all Trace IDs will be released.
+ */
+void coresight_trace_id_perf_stop(struct coresight_trace_id_map *id_map);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* _CORESIGHT_TRACE_ID_H */

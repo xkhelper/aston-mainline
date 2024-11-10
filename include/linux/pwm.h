@@ -394,9 +394,12 @@ static inline bool pwm_might_sleep(struct pwm_device *pwm)
 }
 
 /* PWM provider APIs */
+<<<<<<< HEAD
 int pwm_capture(struct pwm_device *pwm, struct pwm_capture *result,
 		unsigned long timeout);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void pwmchip_put(struct pwm_chip *chip);
 struct pwm_chip *pwmchip_alloc(struct device *parent, unsigned int npwm, size_t sizeof_priv);
 struct pwm_chip *devm_pwmchip_alloc(struct device *parent, unsigned int npwm, size_t sizeof_priv);
@@ -462,6 +465,7 @@ static inline void pwm_disable(struct pwm_device *pwm)
 	might_sleep();
 }
 
+<<<<<<< HEAD
 static inline int pwm_capture(struct pwm_device *pwm,
 			      struct pwm_capture *result,
 			      unsigned long timeout)
@@ -469,6 +473,8 @@ static inline int pwm_capture(struct pwm_device *pwm,
 	return -EINVAL;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void pwmchip_put(struct pwm_chip *chip)
 {
 }

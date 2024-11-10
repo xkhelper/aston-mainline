@@ -276,7 +276,11 @@ static void help(void)
 	fprintf(stderr, "Usage: <test> [--help]"
 		" [--host-affinity H]"
 		" [--guest-affinity G]"
+<<<<<<< HEAD
 		" [--ring-size R (default: %d)]"
+=======
+		" [--ring-size R (default: %u)]"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		" [--run-cycles C (default: %d)]"
 		" [--batch b]"
 		" [--outstanding o]"

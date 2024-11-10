@@ -700,7 +700,11 @@ static void __init dns323_init(void)
 		if (gpio_request(DNS323_GPIO_POWER_OFF, "POWEROFF") != 0 ||
 		    gpio_direction_output(DNS323_GPIO_POWER_OFF, 0) != 0)
 			pr_err("DNS-323: failed to setup power-off GPIO\n");
+<<<<<<< HEAD
 		pm_power_off = dns323a_power_off;
+=======
+		register_platform_power_off(dns323a_power_off);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case DNS323_REV_B1:
 		/* 5182 built-in SATA init */
@@ -717,7 +721,11 @@ static void __init dns323_init(void)
 		if (gpio_request(DNS323_GPIO_POWER_OFF, "POWEROFF") != 0 ||
 		    gpio_direction_output(DNS323_GPIO_POWER_OFF, 0) != 0)
 			pr_err("DNS-323: failed to setup power-off GPIO\n");
+<<<<<<< HEAD
 		pm_power_off = dns323b_power_off;
+=======
+		register_platform_power_off(dns323b_power_off);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case DNS323_REV_C1:
 		/* 5182 built-in SATA init */
@@ -727,7 +735,11 @@ static void __init dns323_init(void)
 		if (gpio_request(DNS323C_GPIO_POWER_OFF, "POWEROFF") != 0 ||
 		    gpio_direction_output(DNS323C_GPIO_POWER_OFF, 0) != 0)
 			pr_err("DNS-323: failed to setup power-off GPIO\n");
+<<<<<<< HEAD
 		pm_power_off = dns323c_power_off;
+=======
+		register_platform_power_off(dns323c_power_off);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* Now, -this- should theoretically be done by the sata_mv driver
 		 * once I figure out what's going on there. Maybe the behaviour

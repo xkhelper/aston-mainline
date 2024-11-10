@@ -15,6 +15,11 @@ int bpf_iter_bits_new(struct bpf_iter_bits *it, const u64 *unsafe_ptr__ign,
 int *bpf_iter_bits_next(struct bpf_iter_bits *it) __ksym __weak;
 void bpf_iter_bits_destroy(struct bpf_iter_bits *it) __ksym __weak;
 
+<<<<<<< HEAD
+=======
+u64 bits_array[511] = {};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 SEC("iter.s/cgroup")
 __description("bits iter without destroy")
 __failure __msg("Unreleased reference")
@@ -87,7 +92,11 @@ int bits_memalloc(void)
 	int *bit;
 
 	__builtin_memset(&data, 0xf0, sizeof(data)); /* 4 * 16 */
+<<<<<<< HEAD
 	bpf_for_each(bits, bit, &data[0], sizeof(data) / sizeof(u64))
+=======
+	bpf_for_each(bits, bit, &data[0], ARRAY_SIZE(data))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		nr++;
 	return nr;
 }
@@ -110,16 +119,26 @@ int bit_index(void)
 }
 
 SEC("syscall")
+<<<<<<< HEAD
 __description("bits nomem")
 __success __retval(0)
 int bits_nomem(void)
+=======
+__description("bits too big")
+__success __retval(0)
+int bits_too_big(void)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u64 data[4];
 	int nr = 0;
 	int *bit;
 
 	__builtin_memset(&data, 0xff, sizeof(data));
+<<<<<<< HEAD
 	bpf_for_each(bits, bit, &data[0], 513) /* Be greater than 512 */
+=======
+	bpf_for_each(bits, bit, &data[0], 512) /* Be greater than 511 */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		nr++;
 	return nr;
 }
@@ -151,3 +170,59 @@ int zero_words(void)
 		nr++;
 	return nr;
 }
+<<<<<<< HEAD
+=======
+
+SEC("syscall")
+__description("huge words")
+__success __retval(0)
+int huge_words(void)
+{
+	u64 data[8] = {0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1};
+	int nr = 0;
+	int *bit;
+
+	bpf_for_each(bits, bit, &data[0], 67108865)
+		nr++;
+	return nr;
+}
+
+SEC("syscall")
+__description("max words")
+__success __retval(4)
+int max_words(void)
+{
+	volatile int nr = 0;
+	int *bit;
+
+	bits_array[0] = (1ULL << 63) | 1U;
+	bits_array[510] = (1ULL << 33) | (1ULL << 32);
+
+	bpf_for_each(bits, bit, bits_array, 511) {
+		if (nr == 0 && *bit != 0)
+			break;
+		if (nr == 2 && *bit != 32672)
+			break;
+		nr++;
+	}
+	return nr;
+}
+
+SEC("syscall")
+__description("bad words")
+__success __retval(0)
+int bad_words(void)
+{
+	void *bad_addr = (void *)(3UL << 30);
+	int nr = 0;
+	int *bit;
+
+	bpf_for_each(bits, bit, bad_addr, 1)
+		nr++;
+
+	bpf_for_each(bits, bit, bad_addr, 4)
+		nr++;
+
+	return nr;
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -715,16 +715,27 @@ static int drm_syncobj_fd_to_handle(struct drm_file *file_private,
 	struct fd f = fdget(fd);
 	int ret;
 
+<<<<<<< HEAD
 	if (!f.file)
 		return -EINVAL;
 
 	if (f.file->f_op != &drm_syncobj_file_fops) {
+=======
+	if (!fd_file(f))
+		return -EINVAL;
+
+	if (fd_file(f)->f_op != &drm_syncobj_file_fops) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fdput(f);
 		return -EINVAL;
 	}
 
 	/* take a reference to put in the idr */
+<<<<<<< HEAD
 	syncobj = f.file->private_data;
+=======
+	syncobj = fd_file(f)->private_data;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	drm_syncobj_get(syncobj);
 
 	idr_preload(GFP_KERNEL);

@@ -198,7 +198,11 @@
 	clock-frequency = <100000>;
 	status = "okay";
 	lm75@48 {
+<<<<<<< HEAD
 		compatible = "lm75";
+=======
+		compatible = "national,lm75";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		reg = <0x48>;
 		status = "okay";
 	};
@@ -208,8 +212,13 @@
 &i2c1 {
 	clock-frequency = <100000>;
 	status = "okay";
+<<<<<<< HEAD
 	lm75@48 {
 		compatible = "lm75";
+=======
+	temperature-sensor@48 {
+		compatible = "national,lm75";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		reg = <0x48>;
 		status = "okay";
 	};

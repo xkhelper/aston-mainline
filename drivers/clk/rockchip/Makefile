@@ -28,4 +28,8 @@ obj-$(CONFIG_CLK_RK3328)        += clk-rk3328.o
 obj-$(CONFIG_CLK_RK3368)        += clk-rk3368.o
 obj-$(CONFIG_CLK_RK3399)        += clk-rk3399.o
 obj-$(CONFIG_CLK_RK3568)	+= clk-rk3568.o
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_CLK_RK3576)	+= clk-rk3576.o rst-rk3576.o
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 obj-$(CONFIG_CLK_RK3588)	+= clk-rk3588.o rst-rk3588.o

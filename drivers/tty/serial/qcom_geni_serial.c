@@ -124,13 +124,21 @@ struct qcom_geni_serial_port {
 	dma_addr_t tx_dma_addr;
 	dma_addr_t rx_dma_addr;
 	bool setup;
+<<<<<<< HEAD
 	unsigned int baud;
+=======
+	unsigned long poll_timeout_us;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long clk_rate;
 	void *rx_buf;
 	u32 loopback;
 	bool brk;
 
 	unsigned int tx_remaining;
+<<<<<<< HEAD
+=======
+	unsigned int tx_queued;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int wakeup_irq;
 	bool rx_tx_swap;
 	bool cts_rts_swap;
@@ -144,6 +152,13 @@ static const struct uart_ops qcom_geni_uart_pops;
 static struct uart_driver qcom_geni_console_driver;
 static struct uart_driver qcom_geni_uart_driver;
 
+<<<<<<< HEAD
+=======
+static void __qcom_geni_serial_cancel_tx_cmd(struct uart_port *uport);
+static void qcom_geni_serial_cancel_tx_cmd(struct uart_port *uport);
+static int qcom_geni_serial_port_setup(struct uart_port *uport);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline struct qcom_geni_serial_port *to_dev_port(struct uart_port *uport)
 {
 	return container_of(uport, struct qcom_geni_serial_port, uport);
@@ -265,6 +280,7 @@ static bool qcom_geni_serial_secondary_active(struct uart_port *uport)
 	return readl(uport->membase + SE_GENI_STATUS) & S_GENI_CMD_ACTIVE;
 }
 
+<<<<<<< HEAD
 static bool qcom_geni_serial_poll_bit(struct uart_port *uport,
 				int offset, int field, bool set)
 {
@@ -272,11 +288,19 @@ static bool qcom_geni_serial_poll_bit(struct uart_port *uport,
 	struct qcom_geni_serial_port *port;
 	unsigned int baud;
 	unsigned int fifo_bits;
+=======
+static bool qcom_geni_serial_poll_bitfield(struct uart_port *uport,
+					   unsigned int offset, u32 field, u32 val)
+{
+	u32 reg;
+	struct qcom_geni_serial_port *port;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long timeout_us = 20000;
 	struct qcom_geni_private_data *private_data = uport->private_data;
 
 	if (private_data->drv) {
 		port = to_dev_port(uport);
+<<<<<<< HEAD
 		baud = port->baud;
 		if (!baud)
 			baud = 115200;
@@ -286,6 +310,10 @@ static bool qcom_geni_serial_poll_bit(struct uart_port *uport,
 		 * sent at current baud. Add a little fluff to the wait.
 		 */
 		timeout_us = ((fifo_bits * USEC_PER_SEC) / baud) + 500;
+=======
+		if (port->poll_timeout_us)
+			timeout_us = port->poll_timeout_us;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/*
@@ -295,7 +323,11 @@ static bool qcom_geni_serial_poll_bit(struct uart_port *uport,
 	timeout_us = DIV_ROUND_UP(timeout_us, 10) * 10;
 	while (timeout_us) {
 		reg = readl(uport->membase + offset);
+<<<<<<< HEAD
 		if ((bool)(reg & field) == set)
+=======
+		if ((reg & field) == val)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return true;
 		udelay(10);
 		timeout_us -= 10;
@@ -303,6 +335,15 @@ static bool qcom_geni_serial_poll_bit(struct uart_port *uport,
 	return false;
 }
 
+<<<<<<< HEAD
+=======
+static bool qcom_geni_serial_poll_bit(struct uart_port *uport,
+				      unsigned int offset, u32 field, bool set)
+{
+	return qcom_geni_serial_poll_bitfield(uport, offset, field, set ? field : 0);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void qcom_geni_serial_setup_tx(struct uart_port *uport, u32 xmit_size)
 {
 	u32 m_cmd;
@@ -315,18 +356,28 @@ static void qcom_geni_serial_setup_tx(struct uart_port *uport, u32 xmit_size)
 static void qcom_geni_serial_poll_tx_done(struct uart_port *uport)
 {
 	int done;
+<<<<<<< HEAD
 	u32 irq_clear = M_CMD_DONE_EN;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	done = qcom_geni_serial_poll_bit(uport, SE_GENI_M_IRQ_STATUS,
 						M_CMD_DONE_EN, true);
 	if (!done) {
 		writel(M_GENI_CMD_ABORT, uport->membase +
 						SE_GENI_M_CMD_CTRL_REG);
+<<<<<<< HEAD
 		irq_clear |= M_CMD_ABORT_EN;
 		qcom_geni_serial_poll_bit(uport, SE_GENI_M_IRQ_STATUS,
 							M_CMD_ABORT_EN, true);
 	}
 	writel(irq_clear, uport->membase + SE_GENI_M_IRQ_CLEAR);
+=======
+		qcom_geni_serial_poll_bit(uport, SE_GENI_M_IRQ_STATUS,
+							M_CMD_ABORT_EN, true);
+		writel(M_CMD_ABORT_EN, uport->membase + SE_GENI_M_IRQ_CLEAR);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void qcom_geni_serial_abort_rx(struct uart_port *uport)
@@ -386,6 +437,7 @@ static int qcom_geni_serial_get_char(struct uart_port *uport)
 static void qcom_geni_serial_poll_put_char(struct uart_port *uport,
 							unsigned char c)
 {
+<<<<<<< HEAD
 	writel(DEF_TX_WM, uport->membase + SE_GENI_TX_WATERMARK_REG);
 	qcom_geni_serial_setup_tx(uport, 1);
 	WARN_ON(!qcom_geni_serial_poll_bit(uport, SE_GENI_M_IRQ_STATUS,
@@ -397,6 +449,46 @@ static void qcom_geni_serial_poll_put_char(struct uart_port *uport,
 #endif
 
 #ifdef CONFIG_SERIAL_QCOM_GENI_CONSOLE
+=======
+	if (qcom_geni_serial_main_active(uport)) {
+		qcom_geni_serial_poll_tx_done(uport);
+		__qcom_geni_serial_cancel_tx_cmd(uport);
+	}
+
+	writel(M_CMD_DONE_EN, uport->membase + SE_GENI_M_IRQ_CLEAR);
+	qcom_geni_serial_setup_tx(uport, 1);
+	writel(c, uport->membase + SE_GENI_TX_FIFOn);
+	qcom_geni_serial_poll_tx_done(uport);
+}
+
+static int qcom_geni_serial_poll_init(struct uart_port *uport)
+{
+	struct qcom_geni_serial_port *port = to_dev_port(uport);
+	int ret;
+
+	if (!port->setup) {
+		ret = qcom_geni_serial_port_setup(uport);
+		if (ret)
+			return ret;
+	}
+
+	if (!qcom_geni_serial_secondary_active(uport))
+		geni_se_setup_s_cmd(&port->se, UART_START_READ, 0);
+
+	return 0;
+}
+#endif
+
+#ifdef CONFIG_SERIAL_QCOM_GENI_CONSOLE
+static void qcom_geni_serial_drain_fifo(struct uart_port *uport)
+{
+	struct qcom_geni_serial_port *port = to_dev_port(uport);
+
+	qcom_geni_serial_poll_bitfield(uport, SE_GENI_M_GP_LENGTH, GP_LENGTH,
+			port->tx_queued);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void qcom_geni_serial_wr_char(struct uart_port *uport, unsigned char ch)
 {
 	struct qcom_geni_private_data *private_data = uport->private_data;
@@ -431,6 +523,10 @@ __qcom_geni_serial_console_write(struct uart_port *uport, const char *s,
 	}
 
 	writel(DEF_TX_WM, uport->membase + SE_GENI_TX_WATERMARK_REG);
+<<<<<<< HEAD
+=======
+	writel(M_CMD_DONE_EN, uport->membase + SE_GENI_M_IRQ_CLEAR);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	qcom_geni_serial_setup_tx(uport, bytes_to_send);
 	for (i = 0; i < count; ) {
 		size_t chars_to_write = 0;
@@ -469,10 +565,16 @@ static void qcom_geni_serial_console_write(struct console *co, const char *s,
 {
 	struct uart_port *uport;
 	struct qcom_geni_serial_port *port;
+<<<<<<< HEAD
 	bool locked = true;
 	unsigned long flags;
 	u32 geni_status;
 	u32 irq_en;
+=======
+	u32 m_irq_en, s_irq_en;
+	bool locked = true;
+	unsigned long flags;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	WARN_ON(co->index < 0 || co->index >= GENI_UART_CONS_PORTS);
 
@@ -486,6 +588,7 @@ static void qcom_geni_serial_console_write(struct console *co, const char *s,
 	else
 		uart_port_lock_irqsave(uport, &flags);
 
+<<<<<<< HEAD
 	geni_status = readl(uport->membase + SE_GENI_STATUS);
 
 	if (!locked) {
@@ -510,16 +613,39 @@ static void qcom_geni_serial_console_write(struct console *co, const char *s,
 			writel(irq_en | M_TX_FIFO_WATERMARK_EN,
 					uport->membase + SE_GENI_M_IRQ_EN);
 		}
+=======
+	m_irq_en = readl(uport->membase + SE_GENI_M_IRQ_EN);
+	s_irq_en = readl(uport->membase + SE_GENI_S_IRQ_EN);
+	writel(0, uport->membase + SE_GENI_M_IRQ_EN);
+	writel(0, uport->membase + SE_GENI_S_IRQ_EN);
+
+	if (qcom_geni_serial_main_active(uport)) {
+		/* Wait for completion or drain FIFO */
+		if (!locked || port->tx_remaining == 0)
+			qcom_geni_serial_poll_tx_done(uport);
+		else
+			qcom_geni_serial_drain_fifo(uport);
+
+		qcom_geni_serial_cancel_tx_cmd(uport);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	__qcom_geni_serial_console_write(uport, s, count);
 
+<<<<<<< HEAD
 
 	if (locked) {
 		if (port->tx_remaining)
 			qcom_geni_serial_setup_tx(uport, port->tx_remaining);
 		uart_port_unlock_irqrestore(uport, flags);
 	}
+=======
+	writel(m_irq_en, uport->membase + SE_GENI_M_IRQ_EN);
+	writel(s_irq_en, uport->membase + SE_GENI_S_IRQ_EN);
+
+	if (locked)
+		uart_port_unlock_irqrestore(uport, flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void handle_rx_console(struct uart_port *uport, u32 bytes, bool drop)
@@ -565,7 +691,11 @@ static void handle_rx_console(struct uart_port *uport, u32 bytes, bool drop)
 }
 #endif /* CONFIG_SERIAL_QCOM_GENI_CONSOLE */
 
+<<<<<<< HEAD
 static void handle_rx_uart(struct uart_port *uport, u32 bytes, bool drop)
+=======
+static void handle_rx_uart(struct uart_port *uport, u32 bytes)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct qcom_geni_serial_port *port = to_dev_port(uport);
 	struct tty_port *tport = &uport->state->port;
@@ -573,9 +703,14 @@ static void handle_rx_uart(struct uart_port *uport, u32 bytes, bool drop)
 
 	ret = tty_insert_flip_string(tport, port->rx_buf, bytes);
 	if (ret != bytes) {
+<<<<<<< HEAD
 		dev_err(uport->dev, "%s:Unable to push data ret %d_bytes %d\n",
 				__func__, ret, bytes);
 		WARN_ON_ONCE(1);
+=======
+		dev_err_ratelimited(uport->dev, "failed to push data (%d < %u)\n",
+				ret, bytes);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	uport->icount.rx += ret;
 	tty_flip_buffer_push(tport);
@@ -682,6 +817,7 @@ static void qcom_geni_serial_stop_tx_fifo(struct uart_port *uport)
 	writel(irq_en, uport->membase + SE_GENI_M_IRQ_EN);
 }
 
+<<<<<<< HEAD
 static void qcom_geni_serial_cancel_tx_cmd(struct uart_port *uport)
 {
 	struct qcom_geni_serial_port *port = to_dev_port(uport);
@@ -689,6 +825,12 @@ static void qcom_geni_serial_cancel_tx_cmd(struct uart_port *uport)
 	if (!qcom_geni_serial_main_active(uport))
 		return;
 
+=======
+static void __qcom_geni_serial_cancel_tx_cmd(struct uart_port *uport)
+{
+	struct qcom_geni_serial_port *port = to_dev_port(uport);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	geni_se_cancel_m_cmd(&port->se);
 	if (!qcom_geni_serial_poll_bit(uport, SE_GENI_M_IRQ_STATUS,
 						M_CMD_CANCEL_EN, true)) {
@@ -698,8 +840,24 @@ static void qcom_geni_serial_cancel_tx_cmd(struct uart_port *uport)
 		writel(M_CMD_ABORT_EN, uport->membase + SE_GENI_M_IRQ_CLEAR);
 	}
 	writel(M_CMD_CANCEL_EN, uport->membase + SE_GENI_M_IRQ_CLEAR);
+<<<<<<< HEAD
 
 	port->tx_remaining = 0;
+=======
+}
+
+static void qcom_geni_serial_cancel_tx_cmd(struct uart_port *uport)
+{
+	struct qcom_geni_serial_port *port = to_dev_port(uport);
+
+	if (!qcom_geni_serial_main_active(uport))
+		return;
+
+	__qcom_geni_serial_cancel_tx_cmd(uport);
+
+	port->tx_remaining = 0;
+	port->tx_queued = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void qcom_geni_serial_handle_rx_fifo(struct uart_port *uport, bool drop)
@@ -782,17 +940,39 @@ static void qcom_geni_serial_start_rx_fifo(struct uart_port *uport)
 static void qcom_geni_serial_stop_rx_dma(struct uart_port *uport)
 {
 	struct qcom_geni_serial_port *port = to_dev_port(uport);
+<<<<<<< HEAD
+=======
+	bool done;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!qcom_geni_serial_secondary_active(uport))
 		return;
 
 	geni_se_cancel_s_cmd(&port->se);
+<<<<<<< HEAD
 	qcom_geni_serial_poll_bit(uport, SE_GENI_S_IRQ_STATUS,
 				  S_CMD_CANCEL_EN, true);
 
 	if (qcom_geni_serial_secondary_active(uport))
 		qcom_geni_serial_abort_rx(uport);
 
+=======
+	done = qcom_geni_serial_poll_bit(uport, SE_DMA_RX_IRQ_STAT,
+			RX_EOT, true);
+	if (done) {
+		writel(RX_EOT | RX_DMA_DONE,
+				uport->membase + SE_DMA_RX_IRQ_CLR);
+	} else {
+		qcom_geni_serial_abort_rx(uport);
+
+		writel(1, uport->membase + SE_DMA_RX_FSM_RST);
+		qcom_geni_serial_poll_bit(uport, SE_DMA_RX_IRQ_STAT,
+				RX_RESET_DONE, true);
+		writel(RX_RESET_DONE | RX_DMA_DONE,
+				uport->membase + SE_DMA_RX_IRQ_CLR);
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (port->rx_dma_addr) {
 		geni_se_rx_dma_unprep(&port->se, port->rx_dma_addr,
 				      DMA_RX_BUF_SIZE);
@@ -841,7 +1021,11 @@ static void qcom_geni_serial_handle_rx_dma(struct uart_port *uport, bool drop)
 	}
 
 	if (!drop)
+<<<<<<< HEAD
 		handle_rx_uart(uport, rx_in, drop);
+=======
+		handle_rx_uart(uport, rx_in);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = geni_se_rx_dma_prep(&port->se, port->rx_buf,
 				  DMA_RX_BUF_SIZE,
@@ -923,9 +1107,16 @@ static void qcom_geni_serial_handle_tx_fifo(struct uart_port *uport,
 	if (!chunk)
 		goto out_write_wakeup;
 
+<<<<<<< HEAD
 	if (!port->tx_remaining) {
 		qcom_geni_serial_setup_tx(uport, pending);
 		port->tx_remaining = pending;
+=======
+	if (!active) {
+		qcom_geni_serial_setup_tx(uport, pending);
+		port->tx_remaining = pending;
+		port->tx_queued = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		irq_en = readl(uport->membase + SE_GENI_M_IRQ_EN);
 		if (!(irq_en & M_TX_FIFO_WATERMARK_EN))
@@ -934,6 +1125,10 @@ static void qcom_geni_serial_handle_tx_fifo(struct uart_port *uport,
 	}
 
 	qcom_geni_serial_send_chunk_fifo(uport, chunk);
+<<<<<<< HEAD
+=======
+	port->tx_queued += chunk;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * The tx fifo watermark is level triggered and latched. Though we had
@@ -1089,10 +1284,18 @@ static void qcom_geni_serial_shutdown(struct uart_port *uport)
 {
 	disable_irq(uport->irq);
 
+<<<<<<< HEAD
+=======
+	uart_port_lock_irq(uport);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	qcom_geni_serial_stop_tx(uport);
 	qcom_geni_serial_stop_rx(uport);
 
 	qcom_geni_serial_cancel_tx_cmd(uport);
+<<<<<<< HEAD
+=======
+	uart_port_unlock_irq(uport);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void qcom_geni_serial_flush_buffer(struct uart_port *uport)
@@ -1145,7 +1348,10 @@ static int qcom_geni_serial_port_setup(struct uart_port *uport)
 			       false, true, true);
 	geni_se_init(&port->se, UART_RX_WM, port->rx_fifo_depth - 2);
 	geni_se_select_mode(&port->se, port->dev_data->mode);
+<<<<<<< HEAD
 	qcom_geni_serial_start_rx(uport);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	port->setup = true;
 
 	return 0;
@@ -1161,6 +1367,14 @@ static int qcom_geni_serial_startup(struct uart_port *uport)
 		if (ret)
 			return ret;
 	}
+<<<<<<< HEAD
+=======
+
+	uart_port_lock_irq(uport);
+	qcom_geni_serial_start_rx(uport);
+	uart_port_unlock_irq(uport);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	enable_irq(uport->irq);
 
 	return 0;
@@ -1244,11 +1458,18 @@ static void qcom_geni_serial_set_termios(struct uart_port *uport,
 	unsigned long clk_rate;
 	u32 ver, sampling_rate;
 	unsigned int avg_bw_core;
+<<<<<<< HEAD
 
 	qcom_geni_serial_stop_rx(uport);
 	/* baud rate */
 	baud = uart_get_baud_rate(uport, termios, old, 300, 4000000);
 	port->baud = baud;
+=======
+	unsigned long timeout;
+
+	/* baud rate */
+	baud = uart_get_baud_rate(uport, termios, old, 300, 4000000);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	sampling_rate = UART_OVERSAMPLING;
 	/* Sampling rate is halved for IP versions >= 2.5 */
@@ -1262,7 +1483,11 @@ static void qcom_geni_serial_set_termios(struct uart_port *uport,
 		dev_err(port->se.dev,
 			"Couldn't find suitable clock rate for %u\n",
 			baud * sampling_rate);
+<<<<<<< HEAD
 		goto out_restart_rx;
+=======
+		return;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	dev_dbg(port->se.dev, "desired_rate = %u, clk_rate = %lu, clk_div = %u\n",
@@ -1326,9 +1551,27 @@ static void qcom_geni_serial_set_termios(struct uart_port *uport,
 	else
 		tx_trans_cfg |= UART_CTS_MASK;
 
+<<<<<<< HEAD
 	if (baud)
 		uart_update_timeout(uport, termios->c_cflag, baud);
 
+=======
+	if (baud) {
+		uart_update_timeout(uport, termios->c_cflag, baud);
+
+		/*
+		 * Make sure that qcom_geni_serial_poll_bitfield() waits for
+		 * the FIFO, two-word intermediate transfer register and shift
+		 * register to clear.
+		 *
+		 * Note that uart_fifo_timeout() also adds a 20 ms margin.
+		 */
+		timeout = jiffies_to_usecs(uart_fifo_timeout(uport));
+		timeout += 3 * timeout / port->tx_fifo_depth;
+		WRITE_ONCE(port->poll_timeout_us, timeout);
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!uart_console(uport))
 		writel(port->loopback,
 				uport->membase + SE_UART_LOOPBACK_CFG);
@@ -1341,8 +1584,11 @@ static void qcom_geni_serial_set_termios(struct uart_port *uport,
 	writel(stop_bit_len, uport->membase + SE_UART_TX_STOP_BIT_LEN);
 	writel(ser_clk_cfg, uport->membase + GENI_SER_M_CLK_CFG);
 	writel(ser_clk_cfg, uport->membase + GENI_SER_S_CLK_CFG);
+<<<<<<< HEAD
 out_restart_rx:
 	qcom_geni_serial_start_rx(uport);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #ifdef CONFIG_SERIAL_QCOM_GENI_CONSOLE
@@ -1563,7 +1809,11 @@ static const struct uart_ops qcom_geni_console_pops = {
 #ifdef CONFIG_CONSOLE_POLL
 	.poll_get_char	= qcom_geni_serial_get_char,
 	.poll_put_char	= qcom_geni_serial_poll_put_char,
+<<<<<<< HEAD
 	.poll_init = qcom_geni_serial_port_setup,
+=======
+	.poll_init = qcom_geni_serial_poll_init,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	.pm = qcom_geni_serial_pm,
 };
@@ -1730,7 +1980,11 @@ static void qcom_geni_serial_remove(struct platform_device *pdev)
 	uart_remove_one_port(drv, &port->uport);
 }
 
+<<<<<<< HEAD
 static int qcom_geni_serial_sys_suspend(struct device *dev)
+=======
+static int qcom_geni_serial_suspend(struct device *dev)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct qcom_geni_serial_port *port = dev_get_drvdata(dev);
 	struct uart_port *uport = &port->uport;
@@ -1747,7 +2001,11 @@ static int qcom_geni_serial_sys_suspend(struct device *dev)
 	return uart_suspend_port(private_data->drv, uport);
 }
 
+<<<<<<< HEAD
 static int qcom_geni_serial_sys_resume(struct device *dev)
+=======
+static int qcom_geni_serial_resume(struct device *dev)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int ret;
 	struct qcom_geni_serial_port *port = dev_get_drvdata(dev);
@@ -1762,6 +2020,7 @@ static int qcom_geni_serial_sys_resume(struct device *dev)
 	return ret;
 }
 
+<<<<<<< HEAD
 static int qcom_geni_serial_sys_hib_resume(struct device *dev)
 {
 	int ret = 0;
@@ -1794,6 +2053,8 @@ static int qcom_geni_serial_sys_hib_resume(struct device *dev)
 	return ret;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct qcom_geni_device_data qcom_geni_console_data = {
 	.console = true,
 	.mode = GENI_SE_FIFO,
@@ -1805,12 +2066,16 @@ static const struct qcom_geni_device_data qcom_geni_uart_data = {
 };
 
 static const struct dev_pm_ops qcom_geni_serial_pm_ops = {
+<<<<<<< HEAD
 	.suspend = pm_sleep_ptr(qcom_geni_serial_sys_suspend),
 	.resume = pm_sleep_ptr(qcom_geni_serial_sys_resume),
 	.freeze = pm_sleep_ptr(qcom_geni_serial_sys_suspend),
 	.poweroff = pm_sleep_ptr(qcom_geni_serial_sys_suspend),
 	.restore = pm_sleep_ptr(qcom_geni_serial_sys_hib_resume),
 	.thaw = pm_sleep_ptr(qcom_geni_serial_sys_hib_resume),
+=======
+	SYSTEM_SLEEP_PM_OPS(qcom_geni_serial_suspend, qcom_geni_serial_resume)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct of_device_id qcom_geni_serial_match_table[] = {

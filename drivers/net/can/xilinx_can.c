@@ -2103,7 +2103,11 @@ static void xcan_remove(struct platform_device *pdev)
 
 static struct platform_driver xcan_driver = {
 	.probe = xcan_probe,
+<<<<<<< HEAD
 	.remove_new = xcan_remove,
+=======
+	.remove = xcan_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver	= {
 		.name = DRIVER_NAME,
 		.pm = &xcan_dev_pm_ops,

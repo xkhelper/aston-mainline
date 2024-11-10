@@ -104,7 +104,11 @@ static int orion_mdio_wait_ready(const struct orion_mdio_ops *ops,
 			return 0;
 	} else {
 		/* wait_event_timeout does not guarantee a delay of at
+<<<<<<< HEAD
 		 * least one whole jiffie, so timeout must be no less
+=======
+		 * least one whole jiffy, so timeout must be no less
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 * than two.
 		 */
 		timeout = max(usecs_to_jiffies(MVMDIO_SMI_TIMEOUT), 2);

@@ -7,6 +7,10 @@
 #include <errno.h>
 #include <bpf/bpf.h>
 #include <bpf/libbpf.h>
+<<<<<<< HEAD
+=======
+#include "disasm.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "test_progs.h"
 #include "testing_helpers.h"
 #include <linux/membarrier.h>
@@ -220,13 +224,21 @@ int parse_test_list(const char *s,
 		    bool is_glob_pattern)
 {
 	char *input, *state = NULL, *test_spec;
+<<<<<<< HEAD
 	int err = 0;
+=======
+	int err = 0, cnt = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	input = strdup(s);
 	if (!input)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	while ((test_spec = strtok_r(state ? NULL : input, ",", &state))) {
+=======
+	while ((test_spec = strtok_r(cnt++ ? NULL : input, ",", &state))) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = insert_test(set, test_spec, is_glob_pattern);
 		if (err)
 			break;
@@ -366,7 +378,11 @@ int delete_module(const char *name, int flags)
 	return syscall(__NR_delete_module, name, flags);
 }
 
+<<<<<<< HEAD
 int unload_bpf_testmod(bool verbose)
+=======
+int unload_module(const char *name, bool verbose)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int ret, cnt = 0;
 
@@ -374,11 +390,19 @@ int unload_bpf_testmod(bool verbose)
 		fprintf(stdout, "Failed to trigger kernel-side RCU sync!\n");
 
 	for (;;) {
+<<<<<<< HEAD
 		ret = delete_module("bpf_testmod", 0);
 		if (!ret || errno != EAGAIN)
 			break;
 		if (++cnt > 10000) {
 			fprintf(stdout, "Unload of bpf_testmod timed out\n");
+=======
+		ret = delete_module(name, 0);
+		if (!ret || errno != EAGAIN)
+			break;
+		if (++cnt > 10000) {
+			fprintf(stdout, "Unload of %s timed out\n", name);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		}
 		usleep(100);
@@ -387,6 +411,7 @@ int unload_bpf_testmod(bool verbose)
 	if (ret) {
 		if (errno == ENOENT) {
 			if (verbose)
+<<<<<<< HEAD
 				fprintf(stdout, "bpf_testmod.ko is already unloaded.\n");
 			return -1;
 		}
@@ -399,10 +424,25 @@ int unload_bpf_testmod(bool verbose)
 }
 
 int load_bpf_testmod(bool verbose)
+=======
+				fprintf(stdout, "%s.ko is already unloaded.\n", name);
+			return -1;
+		}
+		fprintf(stdout, "Failed to unload %s.ko from kernel: %d\n", name, -errno);
+		return -1;
+	}
+	if (verbose)
+		fprintf(stdout, "Successfully unloaded %s.ko.\n", name);
+	return 0;
+}
+
+int load_module(const char *path, bool verbose)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int fd;
 
 	if (verbose)
+<<<<<<< HEAD
 		fprintf(stdout, "Loading bpf_testmod.ko...\n");
 
 	fd = open("bpf_testmod.ko", O_RDONLY);
@@ -412,16 +452,44 @@ int load_bpf_testmod(bool verbose)
 	}
 	if (finit_module(fd, "", 0)) {
 		fprintf(stdout, "Failed to load bpf_testmod.ko into the kernel: %d\n", -errno);
+=======
+		fprintf(stdout, "Loading %s...\n", path);
+
+	fd = open(path, O_RDONLY);
+	if (fd < 0) {
+		fprintf(stdout, "Can't find %s kernel module: %d\n", path, -errno);
+		return -ENOENT;
+	}
+	if (finit_module(fd, "", 0)) {
+		fprintf(stdout, "Failed to load %s into the kernel: %d\n", path, -errno);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		close(fd);
 		return -EINVAL;
 	}
 	close(fd);
 
 	if (verbose)
+<<<<<<< HEAD
 		fprintf(stdout, "Successfully loaded bpf_testmod.ko.\n");
 	return 0;
 }
 
+=======
+		fprintf(stdout, "Successfully loaded %s.\n", path);
+	return 0;
+}
+
+int unload_bpf_testmod(bool verbose)
+{
+	return unload_module("bpf_testmod", verbose);
+}
+
+int load_bpf_testmod(bool verbose)
+{
+	return load_module("bpf_testmod.ko", verbose);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Trigger synchronize_rcu() in kernel.
  */
@@ -451,7 +519,11 @@ int get_xlated_program(int fd_prog, struct bpf_insn **buf, __u32 *cnt)
 
 	*cnt = xlated_prog_len / buf_element_size;
 	*buf = calloc(*cnt, buf_element_size);
+<<<<<<< HEAD
 	if (!buf) {
+=======
+	if (!*buf) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		perror("can't allocate xlated program buffer");
 		return -ENOMEM;
 	}

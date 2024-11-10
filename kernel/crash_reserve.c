@@ -335,6 +335,12 @@ int __init parse_crashkernel(char *cmdline,
 	if (!*crash_size)
 		ret = -EINVAL;
 
+<<<<<<< HEAD
+=======
+	if (*crash_size >= system_ram)
+		ret = -EINVAL;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 

@@ -36,8 +36,11 @@
 #include <sys/wait.h>
 #include "../kselftest.h"
 
+<<<<<<< HEAD
 #define NSEC_PER_SEC 1000000000LL
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int main(int argc, char **argv)
 {
 	struct timex tx;

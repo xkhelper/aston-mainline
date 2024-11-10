@@ -33,10 +33,18 @@ static const char * const thp_defrag_strings[] = {
 };
 
 static const char * const shmem_enabled_strings[] = {
+<<<<<<< HEAD
 	"always",
 	"within_size",
 	"advise",
 	"never",
+=======
+	"never",
+	"always",
+	"within_size",
+	"advise",
+	"inherit",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	"deny",
 	"force",
 	NULL
@@ -200,6 +208,10 @@ void thp_write_num(const char *name, unsigned long num)
 void thp_read_settings(struct thp_settings *settings)
 {
 	unsigned long orders = thp_supported_orders();
+<<<<<<< HEAD
+=======
+	unsigned long shmem_orders = thp_shmem_supported_orders();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char path[PATH_MAX];
 	int i;
 
@@ -234,12 +246,30 @@ void thp_read_settings(struct thp_settings *settings)
 		settings->hugepages[i].enabled =
 			thp_read_string(path, thp_enabled_strings);
 	}
+<<<<<<< HEAD
+=======
+
+	for (i = 0; i < NR_ORDERS; i++) {
+		if (!((1 << i) & shmem_orders)) {
+			settings->shmem_hugepages[i].enabled = SHMEM_NEVER;
+			continue;
+		}
+		snprintf(path, PATH_MAX, "hugepages-%ukB/shmem_enabled",
+			(getpagesize() >> 10) << i);
+		settings->shmem_hugepages[i].enabled =
+			thp_read_string(path, shmem_enabled_strings);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void thp_write_settings(struct thp_settings *settings)
 {
 	struct khugepaged_settings *khugepaged = &settings->khugepaged;
 	unsigned long orders = thp_supported_orders();
+<<<<<<< HEAD
+=======
+	unsigned long shmem_orders = thp_shmem_supported_orders();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char path[PATH_MAX];
 	int enabled;
 	int i;
@@ -271,6 +301,18 @@ void thp_write_settings(struct thp_settings *settings)
 		enabled = settings->hugepages[i].enabled;
 		thp_write_string(path, thp_enabled_strings[enabled]);
 	}
+<<<<<<< HEAD
+=======
+
+	for (i = 0; i < NR_ORDERS; i++) {
+		if (!((1 << i) & shmem_orders))
+			continue;
+		snprintf(path, PATH_MAX, "hugepages-%ukB/shmem_enabled",
+			(getpagesize() >> 10) << i);
+		enabled = settings->shmem_hugepages[i].enabled;
+		thp_write_string(path, shmem_enabled_strings[enabled]);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 struct thp_settings *thp_current_settings(void)
@@ -324,17 +366,31 @@ void thp_set_read_ahead_path(char *path)
 	dev_queue_read_ahead_path[sizeof(dev_queue_read_ahead_path) - 1] = '\0';
 }
 
+<<<<<<< HEAD
 unsigned long thp_supported_orders(void)
+=======
+static unsigned long __thp_supported_orders(bool is_shmem)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned long orders = 0;
 	char path[PATH_MAX];
 	char buf[256];
+<<<<<<< HEAD
 	int ret;
 	int i;
 
 	for (i = 0; i < NR_ORDERS; i++) {
 		ret = snprintf(path, PATH_MAX, THP_SYSFS "hugepages-%ukB/enabled",
 			(getpagesize() >> 10) << i);
+=======
+	int ret, i;
+	char anon_dir[] = "enabled";
+	char shmem_dir[] = "shmem_enabled";
+
+	for (i = 0; i < NR_ORDERS; i++) {
+		ret = snprintf(path, PATH_MAX, THP_SYSFS "hugepages-%ukB/%s",
+			       (getpagesize() >> 10) << i, is_shmem ? shmem_dir : anon_dir);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret >= PATH_MAX) {
 			printf("%s: Pathname is too long\n", __func__);
 			exit(EXIT_FAILURE);
@@ -347,3 +403,16 @@ unsigned long thp_supported_orders(void)
 
 	return orders;
 }
+<<<<<<< HEAD
+=======
+
+unsigned long thp_supported_orders(void)
+{
+	return __thp_supported_orders(false);
+}
+
+unsigned long thp_shmem_supported_orders(void)
+{
+	return __thp_supported_orders(true);
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -34,7 +34,11 @@
 static int
 nvc0_fence_emit32(struct nouveau_channel *chan, u64 virtual, u32 sequence)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = chan->chan.push;
+=======
+	struct nvif_push *push = &chan->chan.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret = PUSH_WAIT(push, 6);
 	if (ret == 0) {
 		PUSH_MTHD(push, NV906F, SEMAPHOREA,
@@ -57,7 +61,11 @@ nvc0_fence_emit32(struct nouveau_channel *chan, u64 virtual, u32 sequence)
 static int
 nvc0_fence_sync32(struct nouveau_channel *chan, u64 virtual, u32 sequence)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = chan->chan.push;
+=======
+	struct nvif_push *push = &chan->chan.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret = PUSH_WAIT(push, 5);
 	if (ret == 0) {
 		PUSH_MTHD(push, NV906F, SEMAPHOREA,

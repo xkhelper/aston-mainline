@@ -282,12 +282,19 @@ static void mt7615_remove_interface(struct ieee80211_hw *hw,
 	mt76_wcid_cleanup(&dev->mt76, &mvif->sta.wcid);
 }
 
+<<<<<<< HEAD
 int mt7615_set_channel(struct mt7615_phy *phy)
 {
+=======
+int mt7615_set_channel(struct mt76_phy *mphy)
+{
+	struct mt7615_phy *phy = mphy->priv;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct mt7615_dev *dev = phy->dev;
 	bool ext_phy = phy != &dev->phy;
 	int ret;
 
+<<<<<<< HEAD
 	cancel_delayed_work_sync(&phy->mt76->mac_work);
 
 	mt7615_mutex_acquire(dev);
@@ -295,6 +302,9 @@ int mt7615_set_channel(struct mt7615_phy *phy)
 	set_bit(MT76_RESET, &phy->mt76->state);
 
 	mt76_set_channel(phy->mt76);
+=======
+	mt76_connac_pm_wake(mphy, &dev->pm);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (is_mt7615(&dev->mt76) && dev->flash_eeprom) {
 		ret = mt7615_mcu_apply_rx_dcoc(phy);
@@ -325,11 +335,16 @@ int mt7615_set_channel(struct mt7615_phy *phy)
 	phy->chfreq = mt76_rr(dev, MT_CHFREQ(ext_phy));
 
 out:
+<<<<<<< HEAD
 	clear_bit(MT76_RESET, &phy->mt76->state);
 
 	mt7615_mutex_release(dev);
 
 	mt76_worker_schedule(&dev->mt76.tx_worker);
+=======
+	mt76_connac_power_save_sched(mphy, &dev->pm);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!mt76_testmode_enabled(phy->mt76)) {
 		unsigned long timeout = mt7615_get_macwork_timeout(dev);
 
@@ -339,6 +354,10 @@ out:
 
 	return ret;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_GPL(mt7615_set_channel);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int mt7615_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
 			  struct ieee80211_vif *vif, struct ieee80211_sta *sta,
@@ -425,11 +444,15 @@ static int mt7615_set_sar_specs(struct ieee80211_hw *hw,
 	if (mt7615_firmware_offload(phy->dev))
 		return mt76_connac_mcu_set_rate_txpower(phy->mt76);
 
+<<<<<<< HEAD
 	ieee80211_stop_queues(hw);
 	err = mt7615_set_channel(phy);
 	ieee80211_wake_queues(hw);
 
 	return err;
+=======
+	return mt76_update_channel(phy->mt76);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int mt7615_config(struct ieee80211_hw *hw, u32 changed)
@@ -448,9 +471,13 @@ static int mt7615_config(struct ieee80211_hw *hw, u32 changed)
 			mt7615_mutex_release(dev);
 		}
 #endif
+<<<<<<< HEAD
 		ieee80211_stop_queues(hw);
 		ret = mt7615_set_channel(phy);
 		ieee80211_wake_queues(hw);
+=======
+		ret = mt76_update_channel(phy->mt76);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	mt7615_mutex_acquire(dev);

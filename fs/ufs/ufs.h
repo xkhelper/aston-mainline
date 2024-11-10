@@ -99,6 +99,7 @@ extern void ufs_put_cylinder (struct super_block *, unsigned);
 
 /* dir.c */
 extern const struct inode_operations ufs_dir_inode_operations;
+<<<<<<< HEAD
 extern int ufs_add_link (struct dentry *, struct inode *);
 extern ino_t ufs_inode_by_name(struct inode *, const struct qstr *);
 extern int ufs_make_empty(struct inode *, struct inode *);
@@ -108,6 +109,19 @@ extern int ufs_empty_dir (struct inode *);
 extern struct ufs_dir_entry *ufs_dotdot(struct inode *, struct page **);
 extern void ufs_set_link(struct inode *dir, struct ufs_dir_entry *de,
 			 struct page *page, struct inode *inode, bool update_times);
+=======
+
+int ufs_add_link(struct dentry *, struct inode *);
+ino_t ufs_inode_by_name(struct inode *, const struct qstr *);
+int ufs_make_empty(struct inode *, struct inode *);
+struct ufs_dir_entry *ufs_find_entry(struct inode *, const struct qstr *,
+		struct folio **);
+int ufs_delete_entry(struct inode *, struct ufs_dir_entry *, struct folio *);
+int ufs_empty_dir(struct inode *);
+struct ufs_dir_entry *ufs_dotdot(struct inode *, struct folio **);
+void ufs_set_link(struct inode *dir, struct ufs_dir_entry *de,
+		struct folio *folio, struct inode *inode, bool update_times);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* file.c */
 extern const struct inode_operations ufs_file_inode_operations;

@@ -18,6 +18,10 @@ properties:
           - renesas,sdhi-r7s9210 # SH-Mobile AG5
           - renesas,sdhi-r8a73a4 # R-Mobile APE6
           - renesas,sdhi-r8a7740 # R-Mobile A1
+<<<<<<< HEAD
+=======
+          - renesas,sdhi-r9a09g057 # RZ/V2H(P)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - renesas,sdhi-sh73a0  # R-Mobile APE6
       - items:
           - enum:
@@ -75,9 +79,19 @@ properties:
     minItems: 1
     maxItems: 3
 
+<<<<<<< HEAD
   clocks: true
 
   clock-names: true
+=======
+  clocks:
+    minItems: 1
+    maxItems: 4
+
+  clock-names:
+    minItems: 1
+    maxItems: 4
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   dmas:
     minItems: 4
@@ -118,7 +132,13 @@ allOf:
       properties:
         compatible:
           contains:
+<<<<<<< HEAD
             const: renesas,rzg2l-sdhi
+=======
+            enum:
+              - renesas,sdhi-r9a09g057
+              - renesas,rzg2l-sdhi
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     then:
       properties:
         clocks:

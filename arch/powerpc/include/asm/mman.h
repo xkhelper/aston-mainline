@@ -6,7 +6,11 @@
 
 #include <uapi/asm/mman.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_PPC64
+=======
+#if defined(CONFIG_PPC64) && !defined(BUILD_VDSO)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/cputable.h>
 #include <linux/mm.h>

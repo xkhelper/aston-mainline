@@ -196,7 +196,12 @@ void vx_set_internal_clock(struct vx_core *chip, unsigned int freq)
 
 	/* Get real clock value */
 	clock = vx_calc_clock_from_freq(chip, freq);
+<<<<<<< HEAD
 	snd_printdd(KERN_DEBUG "set internal clock to 0x%x from freq %d\n", clock, freq);
+=======
+	dev_dbg(chip->card->dev,
+		"set internal clock to 0x%x from freq %d\n", clock, freq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_lock(&chip->lock);
 	if (vx_is_pcmcia(chip)) {
 		vx_outb(chip, HIFREQ, (clock >> 8) & 0x0f);

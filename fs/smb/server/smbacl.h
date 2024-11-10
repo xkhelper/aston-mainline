@@ -8,6 +8,10 @@
 #ifndef _SMBACL_H
 #define _SMBACL_H
 
+<<<<<<< HEAD
+=======
+#include "../common/smbacl.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/fs.h>
 #include <linux/namei.h>
 #include <linux/posix_acl.h>
@@ -15,6 +19,7 @@
 
 #include "mgmt/tree_connect.h"
 
+<<<<<<< HEAD
 #define NUM_AUTHS (6)	/* number of authority fields */
 #define SID_MAX_SUB_AUTHORITIES (15) /* max number of sub authority fields */
 
@@ -41,6 +46,8 @@ enum {
 	SIDNFS_MODE,
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Revision for ACLs */
 #define SD_REVISION	1
 
@@ -62,6 +69,7 @@ enum {
 #define RM_CONTROL_VALID	0x4000
 #define SELF_RELATIVE		0x8000
 
+<<<<<<< HEAD
 /* ACE types - see MS-DTYP 2.4.4.1 */
 #define ACCESS_ALLOWED_ACE_TYPE 0x00
 #define ACCESS_DENIED_ACE_TYPE  0x01
@@ -148,6 +156,10 @@ struct smb_ace {
 	struct smb_sid sid; /* ie UUID of user or group who gets these perms */
 } __packed;
 
+=======
+struct ksmbd_conn;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct smb_fattr {
 	kuid_t	cf_uid;
 	kgid_t	cf_gid;

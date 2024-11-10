@@ -562,12 +562,17 @@ static int ines_ts_info(struct mii_timestamper *mii_ts,
 		SOF_TIMESTAMPING_TX_HARDWARE |
 		SOF_TIMESTAMPING_TX_SOFTWARE |
 		SOF_TIMESTAMPING_RX_HARDWARE |
+<<<<<<< HEAD
 		SOF_TIMESTAMPING_RX_SOFTWARE |
 		SOF_TIMESTAMPING_SOFTWARE |
 		SOF_TIMESTAMPING_RAW_HARDWARE;
 
 	info->phc_index = -1;
 
+=======
+		SOF_TIMESTAMPING_RAW_HARDWARE;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	info->tx_types =
 		(1 << HWTSTAMP_TX_OFF) |
 		(1 << HWTSTAMP_TX_ON) |

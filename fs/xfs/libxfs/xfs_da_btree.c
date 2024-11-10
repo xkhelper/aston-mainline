@@ -593,9 +593,14 @@ xfs_da3_split(
 		switch (oldblk->magic) {
 		case XFS_ATTR_LEAF_MAGIC:
 			error = xfs_attr3_leaf_split(state, oldblk, newblk);
+<<<<<<< HEAD
 			if ((error != 0) && (error != -ENOSPC)) {
 				return error;	/* GROT: attr is inconsistent */
 			}
+=======
+			if (error < 0)
+				return error;	/* GROT: attr is inconsistent */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (!error) {
 				addblk = newblk;
 				break;
@@ -617,6 +622,11 @@ xfs_da3_split(
 				error = xfs_attr3_leaf_split(state, newblk,
 							    &state->extrablk);
 			}
+<<<<<<< HEAD
+=======
+			if (error == 1)
+				return -ENOSPC;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (error)
 				return error;	/* GROT: attr inconsistent */
 			addblk = newblk;

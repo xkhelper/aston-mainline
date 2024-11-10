@@ -20,5 +20,9 @@ int goodix_berlin_probe(struct device *dev, int irq, const struct input_id *id,
 			struct regmap *regmap);
 
 extern const struct dev_pm_ops goodix_berlin_pm_ops;
+<<<<<<< HEAD
+=======
+extern const struct attribute_group *goodix_berlin_groups[];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif

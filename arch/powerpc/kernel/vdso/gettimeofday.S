@@ -38,11 +38,15 @@
 	.else
 	addi		r4, r5, VDSO_DATA_OFFSET
 	.endif
+<<<<<<< HEAD
 #ifdef __powerpc64__
 	bl		CFUNC(DOTSYM(\funct))
 #else
 	bl		\funct
 #endif
+=======
+	bl		CFUNC(DOTSYM(\funct))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	PPC_LL		r0, PPC_MIN_STKFRM + PPC_LR_STKOFF(r1)
 #ifdef __powerpc64__
 	PPC_LL		r2, PPC_MIN_STKFRM + STK_GOT(r1)
@@ -118,6 +122,7 @@ V_FUNCTION_END(__kernel_clock_getres)
 V_FUNCTION_BEGIN(__kernel_time)
 	cvdso_call __c_kernel_time call_time=1
 V_FUNCTION_END(__kernel_time)
+<<<<<<< HEAD
 
 /* Routines for restoring integer registers, called by the compiler.  */
 /* Called with r11 pointing to the stack header word of the caller of the */
@@ -131,3 +136,5 @@ _GLOBAL(_rest32gpr_31_x)
 	mr	r1,r11
 	blr
 #endif
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

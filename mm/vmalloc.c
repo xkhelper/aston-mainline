@@ -105,7 +105,11 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
 	if (!pte)
 		return -ENOMEM;
 	do {
+<<<<<<< HEAD
 		if (!pte_none(ptep_get(pte))) {
+=======
+		if (unlikely(!pte_none(ptep_get(pte)))) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (pfn_valid(pfn)) {
 				page = pfn_to_page(pfn);
 				dump_page(page, "remapping already mapped page");
@@ -1940,7 +1944,11 @@ static inline void setup_vmalloc_vm(struct vm_struct *vm,
 {
 	vm->flags = flags;
 	vm->addr = (void *)va->va_start;
+<<<<<<< HEAD
 	vm->size = va->va_end - va->va_start;
+=======
+	vm->size = va_size(va);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	vm->caller = caller;
 	va->vm = vm;
 }
@@ -2018,7 +2026,11 @@ retry:
 
 	if (vm) {
 		vm->addr = (void *)va->va_start;
+<<<<<<< HEAD
 		vm->size = va->va_end - va->va_start;
+=======
+		vm->size = va_size(va);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		va->vm = vm;
 	}
 
@@ -2131,6 +2143,7 @@ reclaim_list_global(struct list_head *head)
 static void
 decay_va_pool_node(struct vmap_node *vn, bool full_decay)
 {
+<<<<<<< HEAD
 	struct vmap_area *va, *nva;
 	struct list_head decay_list;
 	struct rb_root decay_root;
@@ -2142,12 +2155,25 @@ decay_va_pool_node(struct vmap_node *vn, bool full_decay)
 
 	for (i = 0; i < MAX_VA_SIZE_PAGES; i++) {
 		struct list_head tmp_list;
+=======
+	LIST_HEAD(decay_list);
+	struct rb_root decay_root = RB_ROOT;
+	struct vmap_area *va, *nva;
+	unsigned long n_decay;
+	int i;
+
+	for (i = 0; i < MAX_VA_SIZE_PAGES; i++) {
+		LIST_HEAD(tmp_list);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (list_empty(&vn->pool[i].head))
 			continue;
 
+<<<<<<< HEAD
 		INIT_LIST_HEAD(&tmp_list);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Detach the pool, so no-one can access it. */
 		spin_lock(&vn->pool_lock);
 		list_replace_init(&vn->pool[i].head, &tmp_list);
@@ -2198,7 +2224,11 @@ static void purge_vmap_node(struct work_struct *work)
 	vn->nr_purged = 0;
 
 	list_for_each_entry_safe(va, n_va, &vn->purge_list, list) {
+<<<<<<< HEAD
 		unsigned long nr = (va->va_end - va->va_start) >> PAGE_SHIFT;
+=======
+		unsigned long nr = va_size(va) >> PAGE_SHIFT;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		unsigned long orig_start = va->va_start;
 		unsigned long orig_end = va->va_end;
 		unsigned int vn_id = decode_vn_id(va->flags);
@@ -2344,8 +2374,13 @@ static void free_vmap_area_noflush(struct vmap_area *va)
 	if (WARN_ON_ONCE(!list_empty(&va->list)))
 		return;
 
+<<<<<<< HEAD
 	nr_lazy = atomic_long_add_return((va->va_end - va->va_start) >>
 				PAGE_SHIFT, &vmap_lazy_nr);
+=======
+	nr_lazy = atomic_long_add_return(va_size(va) >> PAGE_SHIFT,
+					 &vmap_lazy_nr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * If it was request by a certain node we would like to
@@ -2941,8 +2976,12 @@ void vm_unmap_ram(const void *mem, unsigned int count)
 	if (WARN_ON_ONCE(!va))
 		return;
 
+<<<<<<< HEAD
 	debug_check_no_locks_freed((void *)va->va_start,
 				    (va->va_end - va->va_start));
+=======
+	debug_check_no_locks_freed((void *)va->va_start, va_size(va));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	free_unmap_vmap_area(va);
 }
 EXPORT_SYMBOL(vm_unmap_ram);
@@ -3518,8 +3557,11 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
 		unsigned int order, unsigned int nr_pages, struct page **pages)
 {
 	unsigned int nr_allocated = 0;
+<<<<<<< HEAD
 	gfp_t alloc_gfp = gfp;
 	bool nofail = gfp & __GFP_NOFAIL;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct page *page;
 	int i;
 
@@ -3530,9 +3572,12 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
 	 * more permissive.
 	 */
 	if (!order) {
+<<<<<<< HEAD
 		/* bulk allocator doesn't support nofail req. officially */
 		gfp_t bulk_gfp = gfp & ~__GFP_NOFAIL;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		while (nr_allocated < nr_pages) {
 			unsigned int nr, nr_pages_request;
 
@@ -3550,12 +3595,20 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
 			 * but mempolicy wants to alloc memory by interleaving.
 			 */
 			if (IS_ENABLED(CONFIG_NUMA) && nid == NUMA_NO_NODE)
+<<<<<<< HEAD
 				nr = alloc_pages_bulk_array_mempolicy_noprof(bulk_gfp,
 							nr_pages_request,
 							pages + nr_allocated);
 
 			else
 				nr = alloc_pages_bulk_array_node_noprof(bulk_gfp, nid,
+=======
+				nr = alloc_pages_bulk_array_mempolicy_noprof(gfp,
+							nr_pages_request,
+							pages + nr_allocated);
+			else
+				nr = alloc_pages_bulk_array_node_noprof(gfp, nid,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 							nr_pages_request,
 							pages + nr_allocated);
 
@@ -3569,6 +3622,7 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
 			if (nr != nr_pages_request)
 				break;
 		}
+<<<<<<< HEAD
 	} else if (gfp & __GFP_NOFAIL) {
 		/*
 		 * Higher order nofail allocations are really expensive and
@@ -3576,10 +3630,13 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
 		 * and compaction etc.
 		 */
 		alloc_gfp &= ~__GFP_NOFAIL;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* High-order pages or fallback path if "bulk" fails. */
 	while (nr_allocated < nr_pages) {
+<<<<<<< HEAD
 		if (!nofail && fatal_signal_pending(current))
 			break;
 
@@ -3587,12 +3644,27 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
 			page = alloc_pages_noprof(alloc_gfp, order);
 		else
 			page = alloc_pages_node_noprof(nid, alloc_gfp, order);
+=======
+		if (!(gfp & __GFP_NOFAIL) && fatal_signal_pending(current))
+			break;
+
+		if (nid == NUMA_NO_NODE)
+			page = alloc_pages_noprof(gfp, order);
+		else
+			page = alloc_pages_node_noprof(nid, gfp, order);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (unlikely(!page))
 			break;
 
 		/*
+<<<<<<< HEAD
 		 * Higher order allocations must be able to be treated as
 		 * indepdenent small pages by callers (as they can with
+=======
+		 * High-order allocations must be able to be treated as
+		 * independent small pages by callers (as they can with
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 * small-page vmallocs). Some drivers do their own refcounting
 		 * on vmalloc_to_page() pages, some use page->mapping,
 		 * page->lru, etc.
@@ -3653,7 +3725,20 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
 	set_vm_area_page_order(area, page_shift - PAGE_SHIFT);
 	page_order = vm_area_page_order(area);
 
+<<<<<<< HEAD
 	area->nr_pages = vm_area_alloc_pages(gfp_mask | __GFP_NOWARN,
+=======
+	/*
+	 * High-order nofail allocations are really expensive and
+	 * potentially dangerous (pre-mature OOM, disruptive reclaim
+	 * and compaction etc.
+	 *
+	 * Please note, the __vmalloc_node_range_noprof() falls-back
+	 * to order-0 pages if high-order attempt is unsuccessful.
+	 */
+	area->nr_pages = vm_area_alloc_pages((page_order ?
+		gfp_mask & ~__GFP_NOFAIL : gfp_mask) | __GFP_NOWARN,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		node, page_order, nr_small_pages, area->pages);
 
 	atomic_long_add(area->nr_pages, &nr_vmalloc_pages);
@@ -4033,6 +4118,79 @@ void *vzalloc_node_noprof(unsigned long size, int node)
 }
 EXPORT_SYMBOL(vzalloc_node_noprof);
 
+<<<<<<< HEAD
+=======
+/**
+ * vrealloc - reallocate virtually contiguous memory; contents remain unchanged
+ * @p: object to reallocate memory for
+ * @size: the size to reallocate
+ * @flags: the flags for the page level allocator
+ *
+ * If @p is %NULL, vrealloc() behaves exactly like vmalloc(). If @size is 0 and
+ * @p is not a %NULL pointer, the object pointed to is freed.
+ *
+ * If __GFP_ZERO logic is requested, callers must ensure that, starting with the
+ * initial memory allocation, every subsequent call to this API for the same
+ * memory allocation is flagged with __GFP_ZERO. Otherwise, it is possible that
+ * __GFP_ZERO is not fully honored by this API.
+ *
+ * In any case, the contents of the object pointed to are preserved up to the
+ * lesser of the new and old sizes.
+ *
+ * This function must not be called concurrently with itself or vfree() for the
+ * same memory allocation.
+ *
+ * Return: pointer to the allocated memory; %NULL if @size is zero or in case of
+ *         failure
+ */
+void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+{
+	size_t old_size = 0;
+	void *n;
+
+	if (!size) {
+		vfree(p);
+		return NULL;
+	}
+
+	if (p) {
+		struct vm_struct *vm;
+
+		vm = find_vm_area(p);
+		if (unlikely(!vm)) {
+			WARN(1, "Trying to vrealloc() nonexistent vm area (%p)\n", p);
+			return NULL;
+		}
+
+		old_size = get_vm_area_size(vm);
+	}
+
+	/*
+	 * TODO: Shrink the vm_area, i.e. unmap and free unused pages. What
+	 * would be a good heuristic for when to shrink the vm_area?
+	 */
+	if (size <= old_size) {
+		/* Zero out spare memory. */
+		if (want_init_on_alloc(flags))
+			memset((void *)p + size, 0, old_size - size);
+
+		return (void *)p;
+	}
+
+	/* TODO: Grow the vm_area, i.e. allocate and map additional pages. */
+	n = __vmalloc_noprof(size, flags);
+	if (!n)
+		return NULL;
+
+	if (p) {
+		memcpy(n, p, old_size);
+		vfree(p);
+	}
+
+	return n;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if defined(CONFIG_64BIT) && defined(CONFIG_ZONE_DMA32)
 #define GFP_VMALLOC32 (GFP_DMA32 | GFP_KERNEL)
 #elif defined(CONFIG_64BIT) && defined(CONFIG_ZONE_DMA)
@@ -4873,7 +5031,11 @@ static void show_purge_info(struct seq_file *m)
 		list_for_each_entry(va, &vn->lazy.head, list) {
 			seq_printf(m, "0x%pK-0x%pK %7ld unpurged vm_area\n",
 				(void *)va->va_start, (void *)va->va_end,
+<<<<<<< HEAD
 				va->va_end - va->va_start);
+=======
+				va_size(va));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		spin_unlock(&vn->lazy.lock);
 	}
@@ -4895,7 +5057,11 @@ static int vmalloc_info_show(struct seq_file *m, void *p)
 				if (va->flags & VMAP_RAM)
 					seq_printf(m, "0x%pK-0x%pK %7ld vm_map_ram\n",
 						(void *)va->va_start, (void *)va->va_end,
+<<<<<<< HEAD
 						va->va_end - va->va_start);
+=======
+						va_size(va));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 				continue;
 			}

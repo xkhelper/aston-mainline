@@ -540,7 +540,11 @@ static struct platform_driver grvga_driver = {
 		.of_match_table = svgactrl_of_match,
 	},
 	.probe		= grvga_probe,
+<<<<<<< HEAD
 	.remove_new	= grvga_remove,
+=======
+	.remove		= grvga_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(grvga_driver);

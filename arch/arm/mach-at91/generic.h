@@ -12,6 +12,10 @@
 extern void __init at91rm9200_pm_init(void);
 extern void __init at91sam9_pm_init(void);
 extern void __init sam9x60_pm_init(void);
+<<<<<<< HEAD
+=======
+extern void __init sam9x7_pm_init(void);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void __init sama5_pm_init(void);
 extern void __init sama5d2_pm_init(void);
 extern void __init sama7_pm_init(void);
@@ -19,6 +23,10 @@ extern void __init sama7_pm_init(void);
 static inline void __init at91rm9200_pm_init(void) { }
 static inline void __init at91sam9_pm_init(void) { }
 static inline void __init sam9x60_pm_init(void) { }
+<<<<<<< HEAD
+=======
+static inline void __init sam9x7_pm_init(void) { }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void __init sama5_pm_init(void) { }
 static inline void __init sama5d2_pm_init(void) { }
 static inline void __init sama7_pm_init(void) { }

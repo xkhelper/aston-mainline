@@ -27,9 +27,16 @@
 #include <asm/intel-mid.h>
 #include <asm/io.h>
 #include <asm/i8259.h>
+<<<<<<< HEAD
 #include <asm/intel_scu_ipc.h>
 #include <asm/reboot.h>
 
+=======
+#include <asm/reboot.h>
+
+#include <linux/platform_data/x86/intel_scu_ipc.h>
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define IPCMSG_COLD_OFF		0x80	/* Only for Tangier */
 #define IPCMSG_COLD_RESET	0xF1
 

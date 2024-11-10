@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+// SPDX-License-Identifier: GPL-2.0-only
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Ethernet on Serial Communications Controller (SCC) driver for Motorola MPC8xx and MPC82xx.
  *
@@ -6,10 +10,13 @@
  *
  * 2005 (c) MontaVista Software, Inc.
  * Vitaly Bordug <vbordug@ru.mvista.com>
+<<<<<<< HEAD
  *
  * This file is licensed under the terms of the GNU General Public License
  * version 2. This program is licensed "as is" without any warranty of any
  * kind, whether express or implied.
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 #include <linux/module.h>
@@ -25,7 +32,10 @@
 #include <linux/etherdevice.h>
 #include <linux/skbuff.h>
 #include <linux/spinlock.h>
+<<<<<<< HEAD
 #include <linux/mii.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/ethtool.h>
 #include <linux/bitops.h>
 #include <linux/fs.h>
@@ -131,6 +141,7 @@ static int setup_data(struct net_device *dev)
 static int allocate_bd(struct net_device *dev)
 {
 	struct fs_enet_private *fep = netdev_priv(dev);
+<<<<<<< HEAD
 	const struct fs_platform_info *fpi = fep->fpi;
 
 	fep->ring_mem_addr = cpm_muram_alloc((fpi->tx_ring + fpi->rx_ring) *
@@ -140,6 +151,16 @@ static int allocate_bd(struct net_device *dev)
 
 	fep->ring_base = (void __iomem __force*)
 		cpm_muram_addr(fep->ring_mem_addr);
+=======
+	struct fs_platform_info *fpi = fep->fpi;
+
+	fpi->dpram_offset = cpm_muram_alloc((fpi->tx_ring + fpi->rx_ring) *
+					    sizeof(cbd_t), 8);
+	if (IS_ERR_VALUE(fpi->dpram_offset))
+		return -ENOMEM;
+
+	fep->ring_base = cpm_muram_addr(fpi->dpram_offset);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -147,9 +168,16 @@ static int allocate_bd(struct net_device *dev)
 static void free_bd(struct net_device *dev)
 {
 	struct fs_enet_private *fep = netdev_priv(dev);
+<<<<<<< HEAD
 
 	if (fep->ring_base)
 		cpm_muram_free(fep->ring_mem_addr);
+=======
+	const struct fs_platform_info *fpi = fep->fpi;
+
+	if (fep->ring_base)
+		cpm_muram_free(fpi->dpram_offset);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void cleanup_data(struct net_device *dev)
@@ -230,7 +258,12 @@ static void set_multicast_list(struct net_device *dev)
  * change.  This only happens when switching between half and full
  * duplex.
  */
+<<<<<<< HEAD
 static void restart(struct net_device *dev)
+=======
+static void restart(struct net_device *dev, phy_interface_t interface,
+		    int speed, int duplex)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct fs_enet_private *fep = netdev_priv(dev);
 	scc_t __iomem *sccp = fep->scc.sccp;
@@ -247,9 +280,15 @@ static void restart(struct net_device *dev)
 		__fs_out8((u8 __iomem *)ep + i, 0);
 
 	/* point to bds */
+<<<<<<< HEAD
 	W16(ep, sen_genscc.scc_rbase, fep->ring_mem_addr);
 	W16(ep, sen_genscc.scc_tbase,
 	    fep->ring_mem_addr + sizeof(cbd_t) * fpi->rx_ring);
+=======
+	W16(ep, sen_genscc.scc_rbase, fpi->dpram_offset);
+	W16(ep, sen_genscc.scc_tbase,
+	    fpi->dpram_offset + sizeof(cbd_t) * fpi->rx_ring);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Initialize function code registers for big-endian.
 	 */
@@ -341,7 +380,11 @@ static void restart(struct net_device *dev)
 	W16(sccp, scc_psmr, SCC_PSMR_ENCRC | SCC_PSMR_NIB22);
 
 	/* Set full duplex mode if needed */
+<<<<<<< HEAD
 	if (dev->phydev->duplex)
+=======
+	if (duplex == DUPLEX_FULL)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		S16(sccp, scc_psmr, SCC_PSMR_LPB | SCC_PSMR_FDE);
 
 	/* Restore multicast and promiscuous settings */

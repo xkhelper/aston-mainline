@@ -13,7 +13,10 @@
 #include <linux/firewire-constants.h>
 #include <linux/fs.h>
 #include <linux/init.h>
+<<<<<<< HEAD
 #include <linux/idr.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/jiffies.h>
 #include <linux/kernel.h>
 #include <linux/list.h>
@@ -49,6 +52,7 @@ static int close_transaction(struct fw_transaction *transaction, struct fw_card 
 			     u32 response_tstamp)
 {
 	struct fw_transaction *t = NULL, *iter;
+<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock_irqsave(&card->lock, flags);
@@ -78,6 +82,33 @@ static int close_transaction(struct fw_transaction *transaction, struct fw_card 
 
  timed_out:
 	return -ENOENT;
+=======
+
+	scoped_guard(spinlock_irqsave, &card->lock) {
+		list_for_each_entry(iter, &card->transaction_list, link) {
+			if (iter == transaction) {
+				if (try_cancel_split_timeout(iter)) {
+					list_del_init(&iter->link);
+					card->tlabel_mask &= ~(1ULL << iter->tlabel);
+					t = iter;
+				}
+				break;
+			}
+		}
+	}
+
+	if (!t)
+		return -ENOENT;
+
+	if (!t->with_tstamp) {
+		t->callback.without_tstamp(card, rcode, NULL, 0, t->callback_data);
+	} else {
+		t->callback.with_tstamp(card, rcode, t->packet.timestamp, response_tstamp, NULL, 0,
+					t->callback_data);
+	}
+
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -121,6 +152,7 @@ static void split_transaction_timeout_callback(struct timer_list *timer)
 {
 	struct fw_transaction *t = from_timer(t, timer, split_timeout_timer);
 	struct fw_card *card = t->card;
+<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock_irqsave(&card->lock, flags);
@@ -131,6 +163,15 @@ static void split_transaction_timeout_callback(struct timer_list *timer)
 	list_del(&t->link);
 	card->tlabel_mask &= ~(1ULL << t->tlabel);
 	spin_unlock_irqrestore(&card->lock, flags);
+=======
+
+	scoped_guard(spinlock_irqsave, &card->lock) {
+		if (list_empty(&t->link))
+			return;
+		list_del(&t->link);
+		card->tlabel_mask &= ~(1ULL << t->tlabel);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!t->with_tstamp) {
 		t->callback.without_tstamp(card, RCODE_CANCELLED, NULL, 0, t->callback_data);
@@ -143,6 +184,7 @@ static void split_transaction_timeout_callback(struct timer_list *timer)
 static void start_split_transaction_timeout(struct fw_transaction *t,
 					    struct fw_card *card)
 {
+<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock_irqsave(&card->lock, flags);
@@ -151,12 +193,21 @@ static void start_split_transaction_timeout(struct fw_transaction *t,
 		spin_unlock_irqrestore(&card->lock, flags);
 		return;
 	}
+=======
+	guard(spinlock_irqsave)(&card->lock);
+
+	if (list_empty(&t->link) || WARN_ON(t->is_split_transaction))
+		return;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	t->is_split_transaction = true;
 	mod_timer(&t->split_timeout_timer,
 		  jiffies + card->split_timeout_jiffies);
+<<<<<<< HEAD
 
 	spin_unlock_irqrestore(&card->lock, flags);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static u32 compute_split_timeout_timestamp(struct fw_card *card, u32 request_timestamp);
@@ -464,7 +515,10 @@ static void transmit_phy_packet_callback(struct fw_packet *packet,
 
 static struct fw_packet phy_config_packet = {
 	.header_length	= 12,
+<<<<<<< HEAD
 	.header[0]	= TCODE_LINK_INTERNAL << 4,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.payload_length	= 0,
 	.speed		= SCODE_100,
 	.callback	= transmit_phy_packet_callback,
@@ -495,8 +549,14 @@ void fw_send_phy_config(struct fw_card *card,
 	phy_packet_phy_config_set_gap_count(&data, gap_count);
 	phy_packet_phy_config_set_gap_count_optimization(&data, true);
 
+<<<<<<< HEAD
 	mutex_lock(&phy_config_mutex);
 
+=======
+	guard(mutex)(&phy_config_mutex);
+
+	async_header_set_tcode(phy_config_packet.header, TCODE_LINK_INTERNAL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	phy_config_packet.header[1] = data;
 	phy_config_packet.header[2] = ~data;
 	phy_config_packet.generation = generation;
@@ -508,8 +568,11 @@ void fw_send_phy_config(struct fw_card *card,
 
 	card->driver->send_request(card, &phy_config_packet);
 	wait_for_completion_timeout(&phy_config_done, timeout);
+<<<<<<< HEAD
 
 	mutex_unlock(&phy_config_mutex);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct fw_address_handler *lookup_overlapping_address_handler(
@@ -598,7 +661,11 @@ int fw_core_add_address_handler(struct fw_address_handler *handler,
 	    handler->length == 0)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	spin_lock(&address_handler_list_lock);
+=======
+	guard(spinlock)(&address_handler_list_lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	handler->offset = region->start;
 	while (handler->offset + handler->length <= region->end) {
@@ -617,8 +684,11 @@ int fw_core_add_address_handler(struct fw_address_handler *handler,
 		}
 	}
 
+<<<<<<< HEAD
 	spin_unlock(&address_handler_list_lock);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 EXPORT_SYMBOL(fw_core_add_address_handler);
@@ -634,9 +704,15 @@ EXPORT_SYMBOL(fw_core_add_address_handler);
  */
 void fw_core_remove_address_handler(struct fw_address_handler *handler)
 {
+<<<<<<< HEAD
 	spin_lock(&address_handler_list_lock);
 	list_del_rcu(&handler->link);
 	spin_unlock(&address_handler_list_lock);
+=======
+	scoped_guard(spinlock, &address_handler_list_lock)
+		list_del_rcu(&handler->link);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	synchronize_rcu();
 }
 EXPORT_SYMBOL(fw_core_remove_address_handler);
@@ -927,6 +1003,7 @@ static void handle_exclusive_region_request(struct fw_card *card,
 	if (tcode == TCODE_LOCK_REQUEST)
 		tcode = 0x10 + async_header_get_extended_tcode(p->header);
 
+<<<<<<< HEAD
 	rcu_read_lock();
 	handler = lookup_enclosing_address_handler(&address_handler_list,
 						   offset, request->length);
@@ -937,6 +1014,16 @@ static void handle_exclusive_region_request(struct fw_card *card,
 					  request->data, request->length,
 					  handler->callback_data);
 	rcu_read_unlock();
+=======
+	scoped_guard(rcu) {
+		handler = lookup_enclosing_address_handler(&address_handler_list, offset,
+							   request->length);
+		if (handler)
+			handler->address_callback(card, request, tcode, destination, source,
+						  p->generation, offset, request->data,
+						  request->length, handler->callback_data);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!handler)
 		fw_send_response(card, request, RCODE_ADDRESS_ERROR);
@@ -969,6 +1056,7 @@ static void handle_fcp_region_request(struct fw_card *card,
 		return;
 	}
 
+<<<<<<< HEAD
 	rcu_read_lock();
 	list_for_each_entry_rcu(handler, &address_handler_list, link) {
 		if (is_enclosing_handler(handler, offset, request->length))
@@ -980,6 +1068,16 @@ static void handle_fcp_region_request(struct fw_card *card,
 						  handler->callback_data);
 	}
 	rcu_read_unlock();
+=======
+	scoped_guard(rcu) {
+		list_for_each_entry_rcu(handler, &address_handler_list, link) {
+			if (is_enclosing_handler(handler, offset, request->length))
+				handler->address_callback(card, request, tcode, destination, source,
+							  p->generation, offset, request->data,
+							  request->length, handler->callback_data);
+		}
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	fw_send_response(card, request, RCODE_COMPLETE);
 }
@@ -1024,7 +1122,10 @@ EXPORT_SYMBOL(fw_core_handle_request);
 void fw_core_handle_response(struct fw_card *card, struct fw_packet *p)
 {
 	struct fw_transaction *t = NULL, *iter;
+<<<<<<< HEAD
 	unsigned long flags;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 *data;
 	size_t data_length;
 	int tcode, tlabel, source, rcode;
@@ -1063,6 +1164,7 @@ void fw_core_handle_response(struct fw_card *card, struct fw_packet *p)
 		break;
 	}
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&card->lock, flags);
 	list_for_each_entry(iter, &card->transaction_list, link) {
 		if (iter->node_id == source && iter->tlabel == tlabel) {
@@ -1077,12 +1179,29 @@ void fw_core_handle_response(struct fw_card *card, struct fw_packet *p)
 		}
 	}
 	spin_unlock_irqrestore(&card->lock, flags);
+=======
+	scoped_guard(spinlock_irqsave, &card->lock) {
+		list_for_each_entry(iter, &card->transaction_list, link) {
+			if (iter->node_id == source && iter->tlabel == tlabel) {
+				if (try_cancel_split_timeout(iter)) {
+					list_del_init(&iter->link);
+					card->tlabel_mask &= ~(1ULL << iter->tlabel);
+					t = iter;
+				}
+				break;
+			}
+		}
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	trace_async_response_inbound((uintptr_t)t, card->index, p->generation, p->speed, p->ack,
 				     p->timestamp, p->header, data, data_length / 4);
 
 	if (!t) {
+<<<<<<< HEAD
  timed_out:
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fw_notice(card, "unsolicited response (source %x, tlabel %x)\n",
 			  source, tlabel);
 		return;
@@ -1186,7 +1305,10 @@ static void handle_registers(struct fw_card *card, struct fw_request *request,
 	int reg = offset & ~CSR_REGISTER_BASE;
 	__be32 *data = payload;
 	int rcode = RCODE_COMPLETE;
+<<<<<<< HEAD
 	unsigned long flags;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	switch (reg) {
 	case CSR_PRIORITY_BUDGET:
@@ -1228,10 +1350,17 @@ static void handle_registers(struct fw_card *card, struct fw_request *request,
 		if (tcode == TCODE_READ_QUADLET_REQUEST) {
 			*data = cpu_to_be32(card->split_timeout_hi);
 		} else if (tcode == TCODE_WRITE_QUADLET_REQUEST) {
+<<<<<<< HEAD
 			spin_lock_irqsave(&card->lock, flags);
 			card->split_timeout_hi = be32_to_cpu(*data) & 7;
 			update_split_timeout(card);
 			spin_unlock_irqrestore(&card->lock, flags);
+=======
+			guard(spinlock_irqsave)(&card->lock);
+
+			card->split_timeout_hi = be32_to_cpu(*data) & 7;
+			update_split_timeout(card);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			rcode = RCODE_TYPE_ERROR;
 		}
@@ -1241,11 +1370,18 @@ static void handle_registers(struct fw_card *card, struct fw_request *request,
 		if (tcode == TCODE_READ_QUADLET_REQUEST) {
 			*data = cpu_to_be32(card->split_timeout_lo);
 		} else if (tcode == TCODE_WRITE_QUADLET_REQUEST) {
+<<<<<<< HEAD
 			spin_lock_irqsave(&card->lock, flags);
 			card->split_timeout_lo =
 					be32_to_cpu(*data) & 0xfff80000;
 			update_split_timeout(card);
 			spin_unlock_irqrestore(&card->lock, flags);
+=======
+			guard(spinlock_irqsave)(&card->lock);
+
+			card->split_timeout_lo = be32_to_cpu(*data) & 0xfff80000;
+			update_split_timeout(card);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			rcode = RCODE_TYPE_ERROR;
 		}
@@ -1387,7 +1523,11 @@ static void __exit fw_core_cleanup(void)
 	unregister_chrdev(fw_cdev_major, "firewire");
 	bus_unregister(&fw_bus_type);
 	destroy_workqueue(fw_workqueue);
+<<<<<<< HEAD
 	idr_destroy(&fw_device_idr);
+=======
+	xa_destroy(&fw_device_xa);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 module_init(fw_core_init);

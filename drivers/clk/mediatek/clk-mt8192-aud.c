@@ -111,7 +111,11 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8192_aud);
 
 static struct platform_driver clk_mt8192_aud_drv = {
 	.probe = clk_mt8192_aud_probe,
+<<<<<<< HEAD
 	.remove_new = clk_mt8192_aud_remove,
+=======
+	.remove = clk_mt8192_aud_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "clk-mt8192-aud",
 		.of_match_table = of_match_clk_mt8192_aud,

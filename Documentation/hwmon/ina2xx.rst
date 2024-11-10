@@ -99,6 +99,13 @@ Sysfs entries for ina226, ina230 and ina231 only
 ------------------------------------------------
 
 ======================= ====================================================
+<<<<<<< HEAD
+=======
+curr1_lcrit		Critical low current
+curr1_crit		Critical high current
+curr1_lcrit_alarm	Current critical low alarm
+curr1_crit_alarm	Current critical high alarm
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 in0_lcrit		Critical low shunt voltage
 in0_crit		Critical high shunt voltage
 in0_lcrit_alarm		Shunt voltage critical low alarm

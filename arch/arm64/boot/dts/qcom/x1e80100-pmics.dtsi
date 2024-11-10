@@ -249,6 +249,17 @@
 			interrupt-controller;
 			#interrupt-cells = <2>;
 		};
+<<<<<<< HEAD
+=======
+
+		pmk8550_pwm: pwm {
+			compatible = "qcom,pmk8550-pwm";
+
+			#pwm-cells = <2>;
+
+			status = "disabled";
+		};
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	/* PMC8380C */
@@ -509,6 +520,11 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
+<<<<<<< HEAD
+=======
+		status = "disabled";
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		smb2360_2_eusb2_repeater: phy@fd00 {
 			compatible = "qcom,smb2360-eusb2-repeater";
 			reg = <0xfd00>;

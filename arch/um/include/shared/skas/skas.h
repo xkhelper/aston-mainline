@@ -10,10 +10,15 @@
 
 extern int userspace_pid[];
 
+<<<<<<< HEAD
 extern int user_thread(unsigned long stack, int flags);
 extern void new_thread_handler(void);
 extern void handle_syscall(struct uml_pt_regs *regs);
 extern long execute_syscall_skas(void *r);
+=======
+extern void new_thread_handler(void);
+extern void handle_syscall(struct uml_pt_regs *regs);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern unsigned long current_stub_stack(void);
 extern struct mm_id *current_mm_id(void);
 extern void current_mm_sync(void);

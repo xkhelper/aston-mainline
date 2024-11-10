@@ -786,7 +786,10 @@ static const struct class ppdev_class = {
 
 static const struct file_operations pp_fops = {
 	.owner		= THIS_MODULE,
+<<<<<<< HEAD
 	.llseek		= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.read		= pp_read,
 	.write		= pp_write,
 	.poll		= pp_poll,

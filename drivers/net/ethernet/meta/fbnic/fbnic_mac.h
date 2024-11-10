@@ -78,6 +78,12 @@ struct fbnic_mac {
 	bool (*pcs_get_link)(struct fbnic_dev *fbd);
 	int (*pcs_get_link_event)(struct fbnic_dev *fbd);
 
+<<<<<<< HEAD
+=======
+	void (*get_eth_mac_stats)(struct fbnic_dev *fbd, bool reset,
+				  struct fbnic_eth_mac_stats *mac_stats);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void (*link_down)(struct fbnic_dev *fbd);
 	void (*link_up)(struct fbnic_dev *fbd, bool tx_pause, bool rx_pause);
 };

@@ -83,7 +83,11 @@ struct nfs4_minor_version_ops {
 #define NFS_SEQID_CONFIRMED 1
 struct nfs_seqid_counter {
 	ktime_t create_time;
+<<<<<<< HEAD
 	int owner_id;
+=======
+	u64 owner_id;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int flags;
 	u32 counter;
 	spinlock_t lock;		/* Protects the list */

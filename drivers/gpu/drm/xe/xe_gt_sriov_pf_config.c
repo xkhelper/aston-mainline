@@ -29,6 +29,10 @@
 #include "xe_guc_submit.h"
 #include "xe_lmtt.h"
 #include "xe_map.h"
+<<<<<<< HEAD
+=======
+#include "xe_migrate.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "xe_sriov.h"
 #include "xe_ttm_vram_mgr.h"
 #include "xe_wopcm.h"
@@ -232,6 +236,7 @@ static u32 encode_config_ggtt(u32 *cfg, const struct xe_gt_sriov_config *config)
 {
 	u32 n = 0;
 
+<<<<<<< HEAD
 	if (drm_mm_node_allocated(&config->ggtt_region)) {
 		cfg[n++] = PREP_GUC_KLV_TAG(VF_CFG_GGTT_START);
 		cfg[n++] = lower_32_bits(config->ggtt_region.start);
@@ -240,6 +245,16 @@ static u32 encode_config_ggtt(u32 *cfg, const struct xe_gt_sriov_config *config)
 		cfg[n++] = PREP_GUC_KLV_TAG(VF_CFG_GGTT_SIZE);
 		cfg[n++] = lower_32_bits(config->ggtt_region.size);
 		cfg[n++] = upper_32_bits(config->ggtt_region.size);
+=======
+	if (xe_ggtt_node_allocated(config->ggtt_region)) {
+		cfg[n++] = PREP_GUC_KLV_TAG(VF_CFG_GGTT_START);
+		cfg[n++] = lower_32_bits(config->ggtt_region->base.start);
+		cfg[n++] = upper_32_bits(config->ggtt_region->base.start);
+
+		cfg[n++] = PREP_GUC_KLV_TAG(VF_CFG_GGTT_SIZE);
+		cfg[n++] = lower_32_bits(config->ggtt_region->base.size);
+		cfg[n++] = upper_32_bits(config->ggtt_region->base.size);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return n;
@@ -276,6 +291,17 @@ static u32 encode_config(u32 *cfg, const struct xe_gt_sriov_config *config)
 	cfg[n++] = PREP_GUC_KLV_TAG(VF_CFG_PREEMPT_TIMEOUT);
 	cfg[n++] = config->preempt_timeout;
 
+<<<<<<< HEAD
+=======
+#define encode_threshold_config(TAG, ...) ({					\
+	cfg[n++] = PREP_GUC_KLV_TAG(VF_CFG_THRESHOLD_##TAG);			\
+	cfg[n++] = config->thresholds[MAKE_XE_GUC_KLV_THRESHOLD_INDEX(TAG)];	\
+});
+
+	MAKE_XE_GUC_KLV_THRESHOLDS_SET(encode_threshold_config);
+#undef encode_threshold_config
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return n;
 }
 
@@ -369,29 +395,50 @@ static int pf_distribute_config_ggtt(struct xe_tile *tile, unsigned int vfid, u6
 	return err ?: err2;
 }
 
+<<<<<<< HEAD
 static void pf_release_ggtt(struct xe_tile *tile, struct drm_mm_node *node)
 {
 	struct xe_ggtt *ggtt = tile->mem.ggtt;
 
 	if (drm_mm_node_allocated(node)) {
+=======
+static void pf_release_ggtt(struct xe_tile *tile, struct xe_ggtt_node *node)
+{
+	if (xe_ggtt_node_allocated(node)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * explicit GGTT PTE assignment to the PF using xe_ggtt_assign()
 		 * is redundant, as PTE will be implicitly re-assigned to PF by
 		 * the xe_ggtt_clear() called by below xe_ggtt_remove_node().
 		 */
+<<<<<<< HEAD
 		xe_ggtt_remove_node(ggtt, node, false);
+=======
+		xe_ggtt_node_remove(node, false);
+	} else {
+		xe_ggtt_node_fini(node);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
 static void pf_release_vf_config_ggtt(struct xe_gt *gt, struct xe_gt_sriov_config *config)
 {
+<<<<<<< HEAD
 	pf_release_ggtt(gt_to_tile(gt), &config->ggtt_region);
+=======
+	pf_release_ggtt(gt_to_tile(gt), config->ggtt_region);
+	config->ggtt_region = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int pf_provision_vf_ggtt(struct xe_gt *gt, unsigned int vfid, u64 size)
 {
 	struct xe_gt_sriov_config *config = pf_pick_vf_config(gt, vfid);
+<<<<<<< HEAD
 	struct drm_mm_node *node = &config->ggtt_region;
+=======
+	struct xe_ggtt_node *node;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct xe_tile *tile = gt_to_tile(gt);
 	struct xe_ggtt *ggtt = tile->mem.ggtt;
 	u64 alignment = pf_get_ggtt_alignment(gt);
@@ -403,18 +450,29 @@ static int pf_provision_vf_ggtt(struct xe_gt *gt, unsigned int vfid, u64 size)
 
 	size = round_up(size, alignment);
 
+<<<<<<< HEAD
 	if (drm_mm_node_allocated(node)) {
+=======
+	if (xe_ggtt_node_allocated(config->ggtt_region)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = pf_distribute_config_ggtt(tile, vfid, 0, 0);
 		if (unlikely(err))
 			return err;
 
+<<<<<<< HEAD
 		pf_release_ggtt(tile, node);
 	}
 	xe_gt_assert(gt, !drm_mm_node_allocated(node));
+=======
+		pf_release_vf_config_ggtt(gt, config);
+	}
+	xe_gt_assert(gt, !xe_ggtt_node_allocated(config->ggtt_region));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!size)
 		return 0;
 
+<<<<<<< HEAD
 	err = xe_ggtt_insert_special_node(ggtt, node, size, alignment);
 	if (unlikely(err))
 		return err;
@@ -428,15 +486,45 @@ static int pf_provision_vf_ggtt(struct xe_gt *gt, unsigned int vfid, u64 size)
 		return err;
 
 	return 0;
+=======
+	node = xe_ggtt_node_init(ggtt);
+	if (IS_ERR(node))
+		return PTR_ERR(node);
+
+	err = xe_ggtt_node_insert(node, size, alignment);
+	if (unlikely(err))
+		goto err;
+
+	xe_ggtt_assign(node, vfid);
+	xe_gt_sriov_dbg_verbose(gt, "VF%u assigned GGTT %llx-%llx\n",
+				vfid, node->base.start, node->base.start + node->base.size - 1);
+
+	err = pf_distribute_config_ggtt(gt->tile, vfid, node->base.start, node->base.size);
+	if (unlikely(err))
+		goto err;
+
+	config->ggtt_region = node;
+	return 0;
+err:
+	pf_release_ggtt(tile, node);
+	return err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static u64 pf_get_vf_config_ggtt(struct xe_gt *gt, unsigned int vfid)
 {
 	struct xe_gt_sriov_config *config = pf_pick_vf_config(gt, vfid);
+<<<<<<< HEAD
 	struct drm_mm_node *node = &config->ggtt_region;
 
 	xe_gt_assert(gt, !xe_gt_is_media_type(gt));
 	return drm_mm_node_allocated(node) ? node->size : 0;
+=======
+	struct xe_ggtt_node *node = config->ggtt_region;
+
+	xe_gt_assert(gt, !xe_gt_is_media_type(gt));
+	return xe_ggtt_node_allocated(node) ? node->base.size : 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -587,6 +675,7 @@ int xe_gt_sriov_pf_config_bulk_set_ggtt(struct xe_gt *gt, unsigned int vfid,
 static u64 pf_get_max_ggtt(struct xe_gt *gt)
 {
 	struct xe_ggtt *ggtt = gt_to_tile(gt)->mem.ggtt;
+<<<<<<< HEAD
 	const struct drm_mm *mm = &ggtt->mm;
 	const struct drm_mm_node *entry;
 	u64 alignment = pf_get_ggtt_alignment(gt);
@@ -611,6 +700,13 @@ static u64 pf_get_max_ggtt(struct xe_gt *gt)
 	}
 
 	mutex_unlock(&ggtt->lock);
+=======
+	u64 alignment = pf_get_ggtt_alignment(gt);
+	u64 spare = pf_get_spare_ggtt(gt);
+	u64 max_hole;
+
+	max_hole = xe_ggtt_largest_hole(ggtt, alignment, &spare);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	xe_gt_sriov_dbg_verbose(gt, "HOLE max %lluK reserved %lluK\n",
 				max_hole / SZ_1K, spare / SZ_1K);
@@ -1401,6 +1497,10 @@ static int pf_provision_vf_lmem(struct xe_gt *gt, unsigned int vfid, u64 size)
 				  ALIGN(size, PAGE_SIZE),
 				  ttm_bo_type_kernel,
 				  XE_BO_FLAG_VRAM_IF_DGFX(tile) |
+<<<<<<< HEAD
+=======
+				  XE_BO_FLAG_NEEDS_2M |
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				  XE_BO_FLAG_PINNED);
 	if (IS_ERR(bo))
 		return PTR_ERR(bo);
@@ -1844,6 +1944,21 @@ u32 xe_gt_sriov_pf_config_get_threshold(struct xe_gt *gt, unsigned int vfid,
 	return value;
 }
 
+<<<<<<< HEAD
+=======
+static void pf_reset_config_thresholds(struct xe_gt *gt, struct xe_gt_sriov_config *config)
+{
+	lockdep_assert_held(xe_gt_sriov_pf_master_mutex(gt));
+
+#define reset_threshold_config(TAG, ...) ({				\
+	config->thresholds[MAKE_XE_GUC_KLV_THRESHOLD_INDEX(TAG)] = 0;	\
+});
+
+	MAKE_XE_GUC_KLV_THRESHOLDS_SET(reset_threshold_config);
+#undef reset_threshold_config
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void pf_release_vf_config(struct xe_gt *gt, unsigned int vfid)
 {
 	struct xe_gt_sriov_config *config = pf_pick_vf_config(gt, vfid);
@@ -1859,6 +1974,10 @@ static void pf_release_vf_config(struct xe_gt *gt, unsigned int vfid)
 	pf_release_config_ctxs(gt, config);
 	pf_release_config_dbs(gt, config);
 	pf_reset_config_sched(gt, config);
+<<<<<<< HEAD
+=======
+	pf_reset_config_thresholds(gt, config);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -1892,6 +2011,90 @@ int xe_gt_sriov_pf_config_release(struct xe_gt *gt, unsigned int vfid, bool forc
 	return force ? 0 : err;
 }
 
+<<<<<<< HEAD
+=======
+static void pf_sanitize_ggtt(struct xe_ggtt_node *ggtt_region, unsigned int vfid)
+{
+	if (xe_ggtt_node_allocated(ggtt_region))
+		xe_ggtt_assign(ggtt_region, vfid);
+}
+
+static int pf_sanitize_lmem(struct xe_tile *tile, struct xe_bo *bo, long timeout)
+{
+	struct xe_migrate *m = tile->migrate;
+	struct dma_fence *fence;
+	int err;
+
+	if (!bo)
+		return 0;
+
+	xe_bo_lock(bo, false);
+	fence = xe_migrate_clear(m, bo, bo->ttm.resource, XE_MIGRATE_CLEAR_FLAG_FULL);
+	if (IS_ERR(fence)) {
+		err = PTR_ERR(fence);
+	} else if (!fence) {
+		err = -ENOMEM;
+	} else {
+		long ret = dma_fence_wait_timeout(fence, false, timeout);
+
+		err = ret > 0 ? 0 : ret < 0 ? ret : -ETIMEDOUT;
+		dma_fence_put(fence);
+		if (!err)
+			xe_gt_sriov_dbg_verbose(tile->primary_gt, "LMEM cleared in %dms\n",
+						jiffies_to_msecs(timeout - ret));
+	}
+	xe_bo_unlock(bo);
+
+	return err;
+}
+
+static int pf_sanitize_vf_resources(struct xe_gt *gt, u32 vfid, long timeout)
+{
+	struct xe_gt_sriov_config *config = pf_pick_vf_config(gt, vfid);
+	struct xe_tile *tile = gt_to_tile(gt);
+	struct xe_device *xe = gt_to_xe(gt);
+	int err = 0;
+
+	/*
+	 * Only GGTT and LMEM requires to be cleared by the PF.
+	 * GuC doorbell IDs and context IDs do not need any clearing.
+	 */
+	if (!xe_gt_is_media_type(gt)) {
+		pf_sanitize_ggtt(config->ggtt_region, vfid);
+		if (IS_DGFX(xe))
+			err = pf_sanitize_lmem(tile, config->lmem_obj, timeout);
+	}
+
+	return err;
+}
+
+/**
+ * xe_gt_sriov_pf_config_sanitize() - Sanitize VF's resources.
+ * @gt: the &xe_gt
+ * @vfid: the VF identifier (can't be PF)
+ * @timeout: maximum timeout to wait for completion in jiffies
+ *
+ * This function can only be called on PF.
+ *
+ * Return: 0 on success or a negative error code on failure.
+ */
+int xe_gt_sriov_pf_config_sanitize(struct xe_gt *gt, unsigned int vfid, long timeout)
+{
+	int err;
+
+	xe_gt_assert(gt, vfid != PFID);
+
+	mutex_lock(xe_gt_sriov_pf_master_mutex(gt));
+	err = pf_sanitize_vf_resources(gt, vfid, timeout);
+	mutex_unlock(xe_gt_sriov_pf_master_mutex(gt));
+
+	if (unlikely(err))
+		xe_gt_sriov_notice(gt, "VF%u resource sanitizing failed (%pe)\n",
+				   vfid, ERR_PTR(err));
+	return err;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * xe_gt_sriov_pf_config_push - Reprovision VF's configuration.
  * @gt: the &xe_gt
@@ -2024,6 +2227,7 @@ int xe_gt_sriov_pf_config_print_ggtt(struct xe_gt *gt, struct drm_printer *p)
 
 	for (n = 1; n <= total_vfs; n++) {
 		config = &gt->sriov.pf.vfs[n].config;
+<<<<<<< HEAD
 		if (!drm_mm_node_allocated(&config->ggtt_region))
 			continue;
 
@@ -2031,6 +2235,17 @@ int xe_gt_sriov_pf_config_print_ggtt(struct xe_gt *gt, struct drm_printer *p)
 		drm_printf(p, "VF%u:\t%#0llx-%#llx\t(%s)\n",
 			   n, config->ggtt_region.start,
 			   config->ggtt_region.start + config->ggtt_region.size - 1, buf);
+=======
+		if (!xe_ggtt_node_allocated(config->ggtt_region))
+			continue;
+
+		string_get_size(config->ggtt_region->base.size, 1, STRING_UNITS_2,
+				buf, sizeof(buf));
+		drm_printf(p, "VF%u:\t%#0llx-%#llx\t(%s)\n",
+			   n, config->ggtt_region->base.start,
+			   config->ggtt_region->base.start + config->ggtt_region->base.size - 1,
+			   buf);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
@@ -2118,12 +2333,17 @@ int xe_gt_sriov_pf_config_print_dbs(struct xe_gt *gt, struct drm_printer *p)
 int xe_gt_sriov_pf_config_print_available_ggtt(struct xe_gt *gt, struct drm_printer *p)
 {
 	struct xe_ggtt *ggtt = gt_to_tile(gt)->mem.ggtt;
+<<<<<<< HEAD
 	const struct drm_mm *mm = &ggtt->mm;
 	const struct drm_mm_node *entry;
 	u64 alignment = pf_get_ggtt_alignment(gt);
 	u64 hole_min_start = xe_wopcm_size(gt_to_xe(gt));
 	u64 hole_start, hole_end, hole_size;
 	u64 spare, avail, total = 0;
+=======
+	u64 alignment = pf_get_ggtt_alignment(gt);
+	u64 spare, avail, total;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char buf[10];
 
 	xe_gt_assert(gt, IS_SRIOV_PF(gt_to_xe(gt)));
@@ -2131,6 +2351,7 @@ int xe_gt_sriov_pf_config_print_available_ggtt(struct xe_gt *gt, struct drm_prin
 	mutex_lock(xe_gt_sriov_pf_master_mutex(gt));
 
 	spare = pf_get_spare_ggtt(gt);
+<<<<<<< HEAD
 
 	mutex_lock(&ggtt->lock);
 
@@ -2149,6 +2370,10 @@ int xe_gt_sriov_pf_config_print_available_ggtt(struct xe_gt *gt, struct drm_prin
 	}
 
 	mutex_unlock(&ggtt->lock);
+=======
+	total = xe_ggtt_print_holes(ggtt, alignment, p);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_unlock(xe_gt_sriov_pf_master_mutex(gt));
 
 	string_get_size(total, 1, STRING_UNITS_2, buf, sizeof(buf));

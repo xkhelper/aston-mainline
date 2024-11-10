@@ -1657,7 +1657,11 @@ TEST_F(hmm2, double_map)
 
 	buffer->fd = -1;
 	buffer->size = size;
+<<<<<<< HEAD
 	buffer->mirror = malloc(npages);
+=======
+	buffer->mirror = malloc(size);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ASSERT_NE(buffer->mirror, NULL);
 
 	/* Reserve a range of addresses. */

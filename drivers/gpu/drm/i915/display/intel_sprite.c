@@ -48,9 +48,15 @@
 #include "intel_sprite.h"
 #include "intel_sprite_regs.h"
 
+<<<<<<< HEAD
 static char sprite_name(struct drm_i915_private *i915, enum pipe pipe, int sprite)
 {
 	return pipe * DISPLAY_RUNTIME_INFO(i915)->num_sprites[pipe] + sprite + 'A';
+=======
+static char sprite_name(struct intel_display *display, enum pipe pipe, int sprite)
+{
+	return pipe * DISPLAY_RUNTIME_INFO(display)->num_sprites[pipe] + sprite + 'A';
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void i9xx_plane_linear_gamma(u16 gamma[8])
@@ -67,7 +73,11 @@ static void
 chv_sprite_update_csc(const struct intel_plane_state *plane_state)
 {
 	struct intel_plane *plane = to_intel_plane(plane_state->uapi.plane);
+<<<<<<< HEAD
 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
+=======
+	struct intel_display *display = to_intel_display(plane->base.dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct drm_framebuffer *fb = plane_state->hw.fb;
 	enum plane_id plane_id = plane->id;
 	/*
@@ -100,6 +110,7 @@ chv_sprite_update_csc(const struct intel_plane_state *plane_state)
 	if (!fb->format->is_yuv)
 		return;
 
+<<<<<<< HEAD
 	intel_de_write_fw(dev_priv, SPCSCYGOFF(plane_id),
 			  SPCSC_OOFF(0) | SPCSC_IOFF(0));
 	intel_de_write_fw(dev_priv, SPCSCCBOFF(plane_id),
@@ -129,6 +140,37 @@ chv_sprite_update_csc(const struct intel_plane_state *plane_state)
 	intel_de_write_fw(dev_priv, SPCSCCBOCLAMP(plane_id),
 			  SPCSC_OMAX(1023) | SPCSC_OMIN(0));
 	intel_de_write_fw(dev_priv, SPCSCCROCLAMP(plane_id),
+=======
+	intel_de_write_fw(display, SPCSCYGOFF(plane_id),
+			  SPCSC_OOFF(0) | SPCSC_IOFF(0));
+	intel_de_write_fw(display, SPCSCCBOFF(plane_id),
+			  SPCSC_OOFF(0) | SPCSC_IOFF(0));
+	intel_de_write_fw(display, SPCSCCROFF(plane_id),
+			  SPCSC_OOFF(0) | SPCSC_IOFF(0));
+
+	intel_de_write_fw(display, SPCSCC01(plane_id),
+			  SPCSC_C1(csc[1]) | SPCSC_C0(csc[0]));
+	intel_de_write_fw(display, SPCSCC23(plane_id),
+			  SPCSC_C1(csc[3]) | SPCSC_C0(csc[2]));
+	intel_de_write_fw(display, SPCSCC45(plane_id),
+			  SPCSC_C1(csc[5]) | SPCSC_C0(csc[4]));
+	intel_de_write_fw(display, SPCSCC67(plane_id),
+			  SPCSC_C1(csc[7]) | SPCSC_C0(csc[6]));
+	intel_de_write_fw(display, SPCSCC8(plane_id), SPCSC_C0(csc[8]));
+
+	intel_de_write_fw(display, SPCSCYGICLAMP(plane_id),
+			  SPCSC_IMAX(1023) | SPCSC_IMIN(0));
+	intel_de_write_fw(display, SPCSCCBICLAMP(plane_id),
+			  SPCSC_IMAX(512) | SPCSC_IMIN(-512));
+	intel_de_write_fw(display, SPCSCCRICLAMP(plane_id),
+			  SPCSC_IMAX(512) | SPCSC_IMIN(-512));
+
+	intel_de_write_fw(display, SPCSCYGOCLAMP(plane_id),
+			  SPCSC_OMAX(1023) | SPCSC_OMIN(0));
+	intel_de_write_fw(display, SPCSCCBOCLAMP(plane_id),
+			  SPCSC_OMAX(1023) | SPCSC_OMIN(0));
+	intel_de_write_fw(display, SPCSCCROCLAMP(plane_id),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			  SPCSC_OMAX(1023) | SPCSC_OMIN(0));
 }
 
@@ -139,7 +181,11 @@ static void
 vlv_sprite_update_clrc(const struct intel_plane_state *plane_state)
 {
 	struct intel_plane *plane = to_intel_plane(plane_state->uapi.plane);
+<<<<<<< HEAD
 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
+=======
+	struct intel_display *display = to_intel_display(plane->base.dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct drm_framebuffer *fb = plane_state->hw.fb;
 	enum pipe pipe = plane->pipe;
 	enum plane_id plane_id = plane->id;
@@ -168,9 +214,15 @@ vlv_sprite_update_clrc(const struct intel_plane_state *plane_state)
 	}
 
 	/* FIXME these register are single buffered :( */
+<<<<<<< HEAD
 	intel_de_write_fw(dev_priv, SPCLRC0(pipe, plane_id),
 			  SP_CONTRAST(contrast) | SP_BRIGHTNESS(brightness));
 	intel_de_write_fw(dev_priv, SPCLRC1(pipe, plane_id),
+=======
+	intel_de_write_fw(display, SPCLRC0(pipe, plane_id),
+			  SP_CONTRAST(contrast) | SP_BRIGHTNESS(brightness));
+	intel_de_write_fw(display, SPCLRC1(pipe, plane_id),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			  SP_SH_SIN(sh_sin) | SP_SH_COS(sh_cos));
 }
 
@@ -357,7 +409,11 @@ static u32 vlv_sprite_ctl(const struct intel_crtc_state *crtc_state,
 static void vlv_sprite_update_gamma(const struct intel_plane_state *plane_state)
 {
 	struct intel_plane *plane = to_intel_plane(plane_state->uapi.plane);
+<<<<<<< HEAD
 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
+=======
+	struct intel_display *display = to_intel_display(plane->base.dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct drm_framebuffer *fb = plane_state->hw.fb;
 	enum pipe pipe = plane->pipe;
 	enum plane_id plane_id = plane->id;
@@ -373,7 +429,11 @@ static void vlv_sprite_update_gamma(const struct intel_plane_state *plane_state)
 	/* FIXME these register are single buffered :( */
 	/* The two end points are implicit (0.0 and 1.0) */
 	for (i = 1; i < 8 - 1; i++)
+<<<<<<< HEAD
 		intel_de_write_fw(dev_priv, SPGAMC(pipe, plane_id, i - 1),
+=======
+		intel_de_write_fw(display, SPGAMC(pipe, plane_id, i - 1),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				  gamma[i] << 16 | gamma[i] << 8 | gamma[i]);
 }
 
@@ -382,7 +442,11 @@ vlv_sprite_update_noarm(struct intel_plane *plane,
 			const struct intel_crtc_state *crtc_state,
 			const struct intel_plane_state *plane_state)
 {
+<<<<<<< HEAD
 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
+=======
+	struct intel_display *display = to_intel_display(plane->base.dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	enum pipe pipe = plane->pipe;
 	enum plane_id plane_id = plane->id;
 	int crtc_x = plane_state->uapi.dst.x1;
@@ -390,11 +454,19 @@ vlv_sprite_update_noarm(struct intel_plane *plane,
 	u32 crtc_w = drm_rect_width(&plane_state->uapi.dst);
 	u32 crtc_h = drm_rect_height(&plane_state->uapi.dst);
 
+<<<<<<< HEAD
 	intel_de_write_fw(dev_priv, SPSTRIDE(pipe, plane_id),
 			  plane_state->view.color_plane[0].mapping_stride);
 	intel_de_write_fw(dev_priv, SPPOS(pipe, plane_id),
 			  SP_POS_Y(crtc_y) | SP_POS_X(crtc_x));
 	intel_de_write_fw(dev_priv, SPSIZE(pipe, plane_id),
+=======
+	intel_de_write_fw(display, SPSTRIDE(pipe, plane_id),
+			  plane_state->view.color_plane[0].mapping_stride);
+	intel_de_write_fw(display, SPPOS(pipe, plane_id),
+			  SP_POS_Y(crtc_y) | SP_POS_X(crtc_x));
+	intel_de_write_fw(display, SPSIZE(pipe, plane_id),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			  SP_HEIGHT(crtc_h - 1) | SP_WIDTH(crtc_w - 1));
 }
 
@@ -403,6 +475,10 @@ vlv_sprite_update_arm(struct intel_plane *plane,
 		      const struct intel_crtc_state *crtc_state,
 		      const struct intel_plane_state *plane_state)
 {
+<<<<<<< HEAD
+=======
+	struct intel_display *display = to_intel_display(plane->base.dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
 	enum pipe pipe = plane->pipe;
 	enum plane_id plane_id = plane->id;
@@ -420,6 +496,7 @@ vlv_sprite_update_arm(struct intel_plane *plane,
 		chv_sprite_update_csc(plane_state);
 
 	if (key->flags) {
+<<<<<<< HEAD
 		intel_de_write_fw(dev_priv, SPKEYMINVAL(pipe, plane_id),
 				  key->min_value);
 		intel_de_write_fw(dev_priv, SPKEYMSK(pipe, plane_id),
@@ -432,6 +509,20 @@ vlv_sprite_update_arm(struct intel_plane *plane,
 
 	intel_de_write_fw(dev_priv, SPLINOFF(pipe, plane_id), linear_offset);
 	intel_de_write_fw(dev_priv, SPTILEOFF(pipe, plane_id),
+=======
+		intel_de_write_fw(display, SPKEYMINVAL(pipe, plane_id),
+				  key->min_value);
+		intel_de_write_fw(display, SPKEYMSK(pipe, plane_id),
+				  key->channel_mask);
+		intel_de_write_fw(display, SPKEYMAXVAL(pipe, plane_id),
+				  key->max_value);
+	}
+
+	intel_de_write_fw(display, SPCONSTALPHA(pipe, plane_id), 0);
+
+	intel_de_write_fw(display, SPLINOFF(pipe, plane_id), linear_offset);
+	intel_de_write_fw(display, SPTILEOFF(pipe, plane_id),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			  SP_OFFSET_Y(y) | SP_OFFSET_X(x));
 
 	/*
@@ -439,8 +530,13 @@ vlv_sprite_update_arm(struct intel_plane *plane,
 	 * disabled. Try to make the plane enable atomic by writing
 	 * the control register just before the surface register.
 	 */
+<<<<<<< HEAD
 	intel_de_write_fw(dev_priv, SPCNTR(pipe, plane_id), sprctl);
 	intel_de_write_fw(dev_priv, SPSURF(pipe, plane_id),
+=======
+	intel_de_write_fw(display, SPCNTR(pipe, plane_id), sprctl);
+	intel_de_write_fw(display, SPSURF(pipe, plane_id),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			  intel_plane_ggtt_offset(plane_state) + sprsurf_offset);
 
 	vlv_sprite_update_clrc(plane_state);
@@ -451,18 +547,31 @@ static void
 vlv_sprite_disable_arm(struct intel_plane *plane,
 		       const struct intel_crtc_state *crtc_state)
 {
+<<<<<<< HEAD
 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
 	enum pipe pipe = plane->pipe;
 	enum plane_id plane_id = plane->id;
 
 	intel_de_write_fw(dev_priv, SPCNTR(pipe, plane_id), 0);
 	intel_de_write_fw(dev_priv, SPSURF(pipe, plane_id), 0);
+=======
+	struct intel_display *display = to_intel_display(plane->base.dev);
+	enum pipe pipe = plane->pipe;
+	enum plane_id plane_id = plane->id;
+
+	intel_de_write_fw(display, SPCNTR(pipe, plane_id), 0);
+	intel_de_write_fw(display, SPSURF(pipe, plane_id), 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static bool
 vlv_sprite_get_hw_state(struct intel_plane *plane,
 			enum pipe *pipe)
 {
+<<<<<<< HEAD
+=======
+	struct intel_display *display = to_intel_display(plane->base.dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
 	enum intel_display_power_domain power_domain;
 	enum plane_id plane_id = plane->id;
@@ -474,7 +583,11 @@ vlv_sprite_get_hw_state(struct intel_plane *plane,
 	if (!wakeref)
 		return false;
 
+<<<<<<< HEAD
 	ret = intel_de_read(dev_priv, SPCNTR(plane->pipe, plane_id)) & SP_ENABLE;
+=======
+	ret = intel_de_read(display, SPCNTR(plane->pipe, plane_id)) & SP_ENABLE;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	*pipe = plane->pipe;
 
@@ -766,7 +879,11 @@ static void ivb_sprite_linear_gamma(const struct intel_plane_state *plane_state,
 static void ivb_sprite_update_gamma(const struct intel_plane_state *plane_state)
 {
 	struct intel_plane *plane = to_intel_plane(plane_state->uapi.plane);
+<<<<<<< HEAD
 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
+=======
+	struct intel_display *display = to_intel_display(plane->base.dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	enum pipe pipe = plane->pipe;
 	u16 gamma[18];
 	int i;
@@ -778,6 +895,7 @@ static void ivb_sprite_update_gamma(const struct intel_plane_state *plane_state)
 
 	/* FIXME these register are single buffered :( */
 	for (i = 0; i < 16; i++)
+<<<<<<< HEAD
 		intel_de_write_fw(dev_priv, SPRGAMC(pipe, i),
 				  gamma[i] << 20 | gamma[i] << 10 | gamma[i]);
 
@@ -789,6 +907,19 @@ static void ivb_sprite_update_gamma(const struct intel_plane_state *plane_state)
 	intel_de_write_fw(dev_priv, SPRGAMC17(pipe, 0), gamma[i]);
 	intel_de_write_fw(dev_priv, SPRGAMC17(pipe, 1), gamma[i]);
 	intel_de_write_fw(dev_priv, SPRGAMC17(pipe, 2), gamma[i]);
+=======
+		intel_de_write_fw(display, SPRGAMC(pipe, i),
+				  gamma[i] << 20 | gamma[i] << 10 | gamma[i]);
+
+	intel_de_write_fw(display, SPRGAMC16(pipe, 0), gamma[i]);
+	intel_de_write_fw(display, SPRGAMC16(pipe, 1), gamma[i]);
+	intel_de_write_fw(display, SPRGAMC16(pipe, 2), gamma[i]);
+	i++;
+
+	intel_de_write_fw(display, SPRGAMC17(pipe, 0), gamma[i]);
+	intel_de_write_fw(display, SPRGAMC17(pipe, 1), gamma[i]);
+	intel_de_write_fw(display, SPRGAMC17(pipe, 2), gamma[i]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	i++;
 }
 
@@ -797,6 +928,10 @@ ivb_sprite_update_noarm(struct intel_plane *plane,
 			const struct intel_crtc_state *crtc_state,
 			const struct intel_plane_state *plane_state)
 {
+<<<<<<< HEAD
+=======
+	struct intel_display *display = to_intel_display(plane->base.dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
 	enum pipe pipe = plane->pipe;
 	int crtc_x = plane_state->uapi.dst.x1;
@@ -812,6 +947,7 @@ ivb_sprite_update_noarm(struct intel_plane *plane,
 			SPRITE_SRC_WIDTH(src_w - 1) |
 			SPRITE_SRC_HEIGHT(src_h - 1);
 
+<<<<<<< HEAD
 	intel_de_write_fw(dev_priv, SPRSTRIDE(pipe),
 			  plane_state->view.color_plane[0].mapping_stride);
 	intel_de_write_fw(dev_priv, SPRPOS(pipe),
@@ -820,6 +956,16 @@ ivb_sprite_update_noarm(struct intel_plane *plane,
 			  SPRITE_HEIGHT(crtc_h - 1) | SPRITE_WIDTH(crtc_w - 1));
 	if (IS_IVYBRIDGE(dev_priv))
 		intel_de_write_fw(dev_priv, SPRSCALE(pipe), sprscale);
+=======
+	intel_de_write_fw(display, SPRSTRIDE(pipe),
+			  plane_state->view.color_plane[0].mapping_stride);
+	intel_de_write_fw(display, SPRPOS(pipe),
+			  SPRITE_POS_Y(crtc_y) | SPRITE_POS_X(crtc_x));
+	intel_de_write_fw(display, SPRSIZE(pipe),
+			  SPRITE_HEIGHT(crtc_h - 1) | SPRITE_WIDTH(crtc_w - 1));
+	if (IS_IVYBRIDGE(dev_priv))
+		intel_de_write_fw(display, SPRSCALE(pipe), sprscale);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void
@@ -827,6 +973,10 @@ ivb_sprite_update_arm(struct intel_plane *plane,
 		      const struct intel_crtc_state *crtc_state,
 		      const struct intel_plane_state *plane_state)
 {
+<<<<<<< HEAD
+=======
+	struct intel_display *display = to_intel_display(plane->base.dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
 	enum pipe pipe = plane->pipe;
 	const struct drm_intel_sprite_colorkey *key = &plane_state->ckey;
@@ -840,20 +990,35 @@ ivb_sprite_update_arm(struct intel_plane *plane,
 	linear_offset = intel_fb_xy_to_linear(x, y, plane_state, 0);
 
 	if (key->flags) {
+<<<<<<< HEAD
 		intel_de_write_fw(dev_priv, SPRKEYVAL(pipe), key->min_value);
 		intel_de_write_fw(dev_priv, SPRKEYMSK(pipe),
 				  key->channel_mask);
 		intel_de_write_fw(dev_priv, SPRKEYMAX(pipe), key->max_value);
+=======
+		intel_de_write_fw(display, SPRKEYVAL(pipe), key->min_value);
+		intel_de_write_fw(display, SPRKEYMSK(pipe),
+				  key->channel_mask);
+		intel_de_write_fw(display, SPRKEYMAX(pipe), key->max_value);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* HSW consolidates SPRTILEOFF and SPRLINOFF into a single SPROFFSET
 	 * register */
 	if (IS_HASWELL(dev_priv) || IS_BROADWELL(dev_priv)) {
+<<<<<<< HEAD
 		intel_de_write_fw(dev_priv, SPROFFSET(pipe),
 				  SPRITE_OFFSET_Y(y) | SPRITE_OFFSET_X(x));
 	} else {
 		intel_de_write_fw(dev_priv, SPRLINOFF(pipe), linear_offset);
 		intel_de_write_fw(dev_priv, SPRTILEOFF(pipe),
+=======
+		intel_de_write_fw(display, SPROFFSET(pipe),
+				  SPRITE_OFFSET_Y(y) | SPRITE_OFFSET_X(x));
+	} else {
+		intel_de_write_fw(display, SPRLINOFF(pipe), linear_offset);
+		intel_de_write_fw(display, SPRTILEOFF(pipe),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				  SPRITE_OFFSET_Y(y) | SPRITE_OFFSET_X(x));
 	}
 
@@ -862,8 +1027,13 @@ ivb_sprite_update_arm(struct intel_plane *plane,
 	 * disabled. Try to make the plane enable atomic by writing
 	 * the control register just before the surface register.
 	 */
+<<<<<<< HEAD
 	intel_de_write_fw(dev_priv, SPRCTL(pipe), sprctl);
 	intel_de_write_fw(dev_priv, SPRSURF(pipe),
+=======
+	intel_de_write_fw(display, SPRCTL(pipe), sprctl);
+	intel_de_write_fw(display, SPRSURF(pipe),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			  intel_plane_ggtt_offset(plane_state) + sprsurf_offset);
 
 	ivb_sprite_update_gamma(plane_state);
@@ -873,6 +1043,7 @@ static void
 ivb_sprite_disable_arm(struct intel_plane *plane,
 		       const struct intel_crtc_state *crtc_state)
 {
+<<<<<<< HEAD
 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
 	enum pipe pipe = plane->pipe;
 
@@ -881,12 +1052,27 @@ ivb_sprite_disable_arm(struct intel_plane *plane,
 	if (IS_IVYBRIDGE(dev_priv))
 		intel_de_write_fw(dev_priv, SPRSCALE(pipe), 0);
 	intel_de_write_fw(dev_priv, SPRSURF(pipe), 0);
+=======
+	struct intel_display *display = to_intel_display(plane->base.dev);
+	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
+	enum pipe pipe = plane->pipe;
+
+	intel_de_write_fw(display, SPRCTL(pipe), 0);
+	/* Disable the scaler */
+	if (IS_IVYBRIDGE(dev_priv))
+		intel_de_write_fw(display, SPRSCALE(pipe), 0);
+	intel_de_write_fw(display, SPRSURF(pipe), 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static bool
 ivb_sprite_get_hw_state(struct intel_plane *plane,
 			enum pipe *pipe)
 {
+<<<<<<< HEAD
+=======
+	struct intel_display *display = to_intel_display(plane->base.dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
 	enum intel_display_power_domain power_domain;
 	intel_wakeref_t wakeref;
@@ -897,7 +1083,11 @@ ivb_sprite_get_hw_state(struct intel_plane *plane,
 	if (!wakeref)
 		return false;
 
+<<<<<<< HEAD
 	ret =  intel_de_read(dev_priv, SPRCTL(plane->pipe)) & SPRITE_ENABLE;
+=======
+	ret =  intel_de_read(display, SPRCTL(plane->pipe)) & SPRITE_ENABLE;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	*pipe = plane->pipe;
 
@@ -1073,7 +1263,11 @@ static u32 g4x_sprite_ctl(const struct intel_crtc_state *crtc_state,
 static void g4x_sprite_update_gamma(const struct intel_plane_state *plane_state)
 {
 	struct intel_plane *plane = to_intel_plane(plane_state->uapi.plane);
+<<<<<<< HEAD
 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
+=======
+	struct intel_display *display = to_intel_display(plane->base.dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct drm_framebuffer *fb = plane_state->hw.fb;
 	enum pipe pipe = plane->pipe;
 	u16 gamma[8];
@@ -1088,7 +1282,11 @@ static void g4x_sprite_update_gamma(const struct intel_plane_state *plane_state)
 	/* FIXME these register are single buffered :( */
 	/* The two end points are implicit (0.0 and 1.0) */
 	for (i = 1; i < 8 - 1; i++)
+<<<<<<< HEAD
 		intel_de_write_fw(dev_priv, DVSGAMC_G4X(pipe, i - 1),
+=======
+		intel_de_write_fw(display, DVSGAMC_G4X(pipe, i - 1),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				  gamma[i] << 16 | gamma[i] << 8 | gamma[i]);
 }
 
@@ -1103,7 +1301,11 @@ static void ilk_sprite_linear_gamma(u16 gamma[17])
 static void ilk_sprite_update_gamma(const struct intel_plane_state *plane_state)
 {
 	struct intel_plane *plane = to_intel_plane(plane_state->uapi.plane);
+<<<<<<< HEAD
 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
+=======
+	struct intel_display *display = to_intel_display(plane->base.dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct drm_framebuffer *fb = plane_state->hw.fb;
 	enum pipe pipe = plane->pipe;
 	u16 gamma[17];
@@ -1117,12 +1319,21 @@ static void ilk_sprite_update_gamma(const struct intel_plane_state *plane_state)
 
 	/* FIXME these register are single buffered :( */
 	for (i = 0; i < 16; i++)
+<<<<<<< HEAD
 		intel_de_write_fw(dev_priv, DVSGAMC_ILK(pipe, i),
 				  gamma[i] << 20 | gamma[i] << 10 | gamma[i]);
 
 	intel_de_write_fw(dev_priv, DVSGAMCMAX_ILK(pipe, 0), gamma[i]);
 	intel_de_write_fw(dev_priv, DVSGAMCMAX_ILK(pipe, 1), gamma[i]);
 	intel_de_write_fw(dev_priv, DVSGAMCMAX_ILK(pipe, 2), gamma[i]);
+=======
+		intel_de_write_fw(display, DVSGAMC_ILK(pipe, i),
+				  gamma[i] << 20 | gamma[i] << 10 | gamma[i]);
+
+	intel_de_write_fw(display, DVSGAMCMAX_ILK(pipe, 0), gamma[i]);
+	intel_de_write_fw(display, DVSGAMCMAX_ILK(pipe, 1), gamma[i]);
+	intel_de_write_fw(display, DVSGAMCMAX_ILK(pipe, 2), gamma[i]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	i++;
 }
 
@@ -1131,7 +1342,11 @@ g4x_sprite_update_noarm(struct intel_plane *plane,
 			const struct intel_crtc_state *crtc_state,
 			const struct intel_plane_state *plane_state)
 {
+<<<<<<< HEAD
 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
+=======
+	struct intel_display *display = to_intel_display(plane->base.dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	enum pipe pipe = plane->pipe;
 	int crtc_x = plane_state->uapi.dst.x1;
 	int crtc_y = plane_state->uapi.dst.y1;
@@ -1146,6 +1361,7 @@ g4x_sprite_update_noarm(struct intel_plane *plane,
 			DVS_SRC_WIDTH(src_w - 1) |
 			DVS_SRC_HEIGHT(src_h - 1);
 
+<<<<<<< HEAD
 	intel_de_write_fw(dev_priv, DVSSTRIDE(pipe),
 			  plane_state->view.color_plane[0].mapping_stride);
 	intel_de_write_fw(dev_priv, DVSPOS(pipe),
@@ -1153,6 +1369,15 @@ g4x_sprite_update_noarm(struct intel_plane *plane,
 	intel_de_write_fw(dev_priv, DVSSIZE(pipe),
 			  DVS_HEIGHT(crtc_h - 1) | DVS_WIDTH(crtc_w - 1));
 	intel_de_write_fw(dev_priv, DVSSCALE(pipe), dvsscale);
+=======
+	intel_de_write_fw(display, DVSSTRIDE(pipe),
+			  plane_state->view.color_plane[0].mapping_stride);
+	intel_de_write_fw(display, DVSPOS(pipe),
+			  DVS_POS_Y(crtc_y) | DVS_POS_X(crtc_x));
+	intel_de_write_fw(display, DVSSIZE(pipe),
+			  DVS_HEIGHT(crtc_h - 1) | DVS_WIDTH(crtc_w - 1));
+	intel_de_write_fw(display, DVSSCALE(pipe), dvsscale);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void
@@ -1160,6 +1385,10 @@ g4x_sprite_update_arm(struct intel_plane *plane,
 		      const struct intel_crtc_state *crtc_state,
 		      const struct intel_plane_state *plane_state)
 {
+<<<<<<< HEAD
+=======
+	struct intel_display *display = to_intel_display(plane->base.dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
 	enum pipe pipe = plane->pipe;
 	const struct drm_intel_sprite_colorkey *key = &plane_state->ckey;
@@ -1173,6 +1402,7 @@ g4x_sprite_update_arm(struct intel_plane *plane,
 	linear_offset = intel_fb_xy_to_linear(x, y, plane_state, 0);
 
 	if (key->flags) {
+<<<<<<< HEAD
 		intel_de_write_fw(dev_priv, DVSKEYVAL(pipe), key->min_value);
 		intel_de_write_fw(dev_priv, DVSKEYMSK(pipe),
 				  key->channel_mask);
@@ -1181,6 +1411,16 @@ g4x_sprite_update_arm(struct intel_plane *plane,
 
 	intel_de_write_fw(dev_priv, DVSLINOFF(pipe), linear_offset);
 	intel_de_write_fw(dev_priv, DVSTILEOFF(pipe),
+=======
+		intel_de_write_fw(display, DVSKEYVAL(pipe), key->min_value);
+		intel_de_write_fw(display, DVSKEYMSK(pipe),
+				  key->channel_mask);
+		intel_de_write_fw(display, DVSKEYMAX(pipe), key->max_value);
+	}
+
+	intel_de_write_fw(display, DVSLINOFF(pipe), linear_offset);
+	intel_de_write_fw(display, DVSTILEOFF(pipe),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			  DVS_OFFSET_Y(y) | DVS_OFFSET_X(x));
 
 	/*
@@ -1188,8 +1428,13 @@ g4x_sprite_update_arm(struct intel_plane *plane,
 	 * disabled. Try to make the plane enable atomic by writing
 	 * the control register just before the surface register.
 	 */
+<<<<<<< HEAD
 	intel_de_write_fw(dev_priv, DVSCNTR(pipe), dvscntr);
 	intel_de_write_fw(dev_priv, DVSSURF(pipe),
+=======
+	intel_de_write_fw(display, DVSCNTR(pipe), dvscntr);
+	intel_de_write_fw(display, DVSSURF(pipe),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			  intel_plane_ggtt_offset(plane_state) + dvssurf_offset);
 
 	if (IS_G4X(dev_priv))
@@ -1202,6 +1447,7 @@ static void
 g4x_sprite_disable_arm(struct intel_plane *plane,
 		       const struct intel_crtc_state *crtc_state)
 {
+<<<<<<< HEAD
 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
 	enum pipe pipe = plane->pipe;
 
@@ -1209,12 +1455,25 @@ g4x_sprite_disable_arm(struct intel_plane *plane,
 	/* Disable the scaler */
 	intel_de_write_fw(dev_priv, DVSSCALE(pipe), 0);
 	intel_de_write_fw(dev_priv, DVSSURF(pipe), 0);
+=======
+	struct intel_display *display = to_intel_display(plane->base.dev);
+	enum pipe pipe = plane->pipe;
+
+	intel_de_write_fw(display, DVSCNTR(pipe), 0);
+	/* Disable the scaler */
+	intel_de_write_fw(display, DVSSCALE(pipe), 0);
+	intel_de_write_fw(display, DVSSURF(pipe), 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static bool
 g4x_sprite_get_hw_state(struct intel_plane *plane,
 			enum pipe *pipe)
 {
+<<<<<<< HEAD
+=======
+	struct intel_display *display = to_intel_display(plane->base.dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
 	enum intel_display_power_domain power_domain;
 	intel_wakeref_t wakeref;
@@ -1225,7 +1484,11 @@ g4x_sprite_get_hw_state(struct intel_plane *plane,
 	if (!wakeref)
 		return false;
 
+<<<<<<< HEAD
 	ret = intel_de_read(dev_priv, DVSCNTR(plane->pipe)) & DVS_ENABLE;
+=======
+	ret = intel_de_read(display, DVSCNTR(plane->pipe)) & DVS_ENABLE;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	*pipe = plane->pipe;
 
@@ -1255,7 +1518,11 @@ static int
 g4x_sprite_check_scaling(struct intel_crtc_state *crtc_state,
 			 struct intel_plane_state *plane_state)
 {
+<<<<<<< HEAD
 	struct drm_i915_private *i915 = to_i915(plane_state->uapi.plane->dev);
+=======
+	struct intel_display *display = to_intel_display(crtc_state);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct drm_framebuffer *fb = plane_state->hw.fb;
 	const struct drm_rect *src = &plane_state->uapi.src;
 	const struct drm_rect *dst = &plane_state->uapi.dst;
@@ -1281,7 +1548,12 @@ g4x_sprite_check_scaling(struct intel_crtc_state *crtc_state,
 
 	if (adjusted_mode->flags & DRM_MODE_FLAG_INTERLACE) {
 		if (src_h & 1) {
+<<<<<<< HEAD
 			drm_dbg_kms(&i915->drm, "Source height must be even with interlaced modes\n");
+=======
+			drm_dbg_kms(display->drm,
+				    "Source height must be even with interlaced modes\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EINVAL;
 		}
 		min_height = 6;
@@ -1293,19 +1565,34 @@ g4x_sprite_check_scaling(struct intel_crtc_state *crtc_state,
 
 	if (src_w < min_width || src_h < min_height ||
 	    src_w > 2048 || src_h > 2048) {
+<<<<<<< HEAD
 		drm_dbg_kms(&i915->drm, "Source dimensions (%dx%d) exceed hardware limits (%dx%d - %dx%d)\n",
+=======
+		drm_dbg_kms(display->drm,
+			    "Source dimensions (%dx%d) exceed hardware limits (%dx%d - %dx%d)\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    src_w, src_h, min_width, min_height, 2048, 2048);
 		return -EINVAL;
 	}
 
 	if (width_bytes > 4096) {
+<<<<<<< HEAD
 		drm_dbg_kms(&i915->drm, "Fetch width (%d) exceeds hardware max with scaling (%u)\n",
+=======
+		drm_dbg_kms(display->drm,
+			    "Fetch width (%d) exceeds hardware max with scaling (%u)\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    width_bytes, 4096);
 		return -EINVAL;
 	}
 
 	if (stride > 4096) {
+<<<<<<< HEAD
 		drm_dbg_kms(&i915->drm, "Stride (%u) exceeds hardware max with scaling (%u)\n",
+=======
+		drm_dbg_kms(display->drm,
+			    "Stride (%u) exceeds hardware max with scaling (%u)\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    stride, 4096);
 		return -EINVAL;
 	}
@@ -1317,6 +1604,10 @@ static int
 g4x_sprite_check(struct intel_crtc_state *crtc_state,
 		 struct intel_plane_state *plane_state)
 {
+<<<<<<< HEAD
+=======
+	struct intel_display *display = to_intel_display(crtc_state);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_plane *plane = to_intel_plane(plane_state->uapi.plane);
 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
 	int min_scale = DRM_PLANE_NO_SCALING;
@@ -1324,7 +1615,11 @@ g4x_sprite_check(struct intel_crtc_state *crtc_state,
 	int ret;
 
 	if (g4x_fb_scalable(plane_state->hw.fb)) {
+<<<<<<< HEAD
 		if (DISPLAY_VER(dev_priv) < 7) {
+=======
+		if (DISPLAY_VER(display) < 7) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			min_scale = 1;
 			max_scale = 16 << 16;
 		} else if (IS_IVYBRIDGE(dev_priv)) {
@@ -1353,7 +1648,11 @@ g4x_sprite_check(struct intel_crtc_state *crtc_state,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (DISPLAY_VER(dev_priv) >= 7)
+=======
+	if (DISPLAY_VER(display) >= 7)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		plane_state->ctl = ivb_sprite_ctl(crtc_state, plane_state);
 	else
 		plane_state->ctl = g4x_sprite_ctl(crtc_state, plane_state);
@@ -1364,6 +1663,10 @@ g4x_sprite_check(struct intel_crtc_state *crtc_state,
 int chv_plane_check_rotation(const struct intel_plane_state *plane_state)
 {
 	struct intel_plane *plane = to_intel_plane(plane_state->uapi.plane);
+<<<<<<< HEAD
+=======
+	struct intel_display *display = to_intel_display(plane->base.dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
 	unsigned int rotation = plane_state->hw.rotation;
 
@@ -1371,7 +1674,11 @@ int chv_plane_check_rotation(const struct intel_plane_state *plane_state)
 	if (IS_CHERRYVIEW(dev_priv) &&
 	    rotation & DRM_MODE_ROTATE_180 &&
 	    rotation & DRM_MODE_REFLECT_X) {
+<<<<<<< HEAD
 		drm_dbg_kms(&dev_priv->drm,
+=======
+		drm_dbg_kms(display->drm,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    "Cannot rotate and reflect at the same time\n");
 		return -EINVAL;
 	}
@@ -1573,6 +1880,10 @@ struct intel_plane *
 intel_sprite_plane_create(struct drm_i915_private *dev_priv,
 			  enum pipe pipe, int sprite)
 {
+<<<<<<< HEAD
+=======
+	struct intel_display *display = &dev_priv->display;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_plane *plane;
 	const struct drm_plane_funcs *plane_funcs;
 	unsigned int supported_rotations;
@@ -1604,7 +1915,11 @@ intel_sprite_plane_create(struct drm_i915_private *dev_priv,
 		}
 
 		plane_funcs = &vlv_sprite_funcs;
+<<<<<<< HEAD
 	} else if (DISPLAY_VER(dev_priv) >= 7) {
+=======
+	} else if (DISPLAY_VER(display) >= 7) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		plane->update_noarm = ivb_sprite_update_noarm;
 		plane->update_arm = ivb_sprite_update_arm;
 		plane->disable_arm = ivb_sprite_disable_arm;
@@ -1663,11 +1978,19 @@ intel_sprite_plane_create(struct drm_i915_private *dev_priv,
 
 	modifiers = intel_fb_plane_get_modifiers(dev_priv, INTEL_PLANE_CAP_TILING_X);
 
+<<<<<<< HEAD
 	ret = drm_universal_plane_init(&dev_priv->drm, &plane->base,
 				       0, plane_funcs,
 				       formats, num_formats, modifiers,
 				       DRM_PLANE_TYPE_OVERLAY,
 				       "sprite %c", sprite_name(dev_priv, pipe, sprite));
+=======
+	ret = drm_universal_plane_init(display->drm, &plane->base,
+				       0, plane_funcs,
+				       formats, num_formats, modifiers,
+				       DRM_PLANE_TYPE_OVERLAY,
+				       "sprite %c", sprite_name(display, pipe, sprite));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(modifiers);
 
 	if (ret)

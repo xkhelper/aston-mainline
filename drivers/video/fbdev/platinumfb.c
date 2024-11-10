@@ -668,7 +668,11 @@ static struct platform_driver platinum_driver =
 		.of_match_table = platinumfb_match,
 	},
 	.probe		= platinumfb_probe,
+<<<<<<< HEAD
 	.remove_new	= platinumfb_remove,
+=======
+	.remove		= platinumfb_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int __init platinumfb_init(void)

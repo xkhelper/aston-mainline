@@ -27,6 +27,10 @@ source "drivers/net/wireless/broadcom/brcm80211/brcmfmac/Kconfig"
 config BRCM_TRACING
 	bool "Broadcom device tracing"
 	depends on BRCMSMAC || BRCMFMAC
+<<<<<<< HEAD
+=======
+	depends on TRACING
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  If you say Y here, the Broadcom wireless drivers will register
 	  with ftrace to dump event information into the trace ringbuffer.

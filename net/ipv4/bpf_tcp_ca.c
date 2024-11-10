@@ -14,10 +14,13 @@
 /* "extern" is to avoid sparse warning.  It is only used in bpf_struct_ops.c. */
 static struct bpf_struct_ops bpf_tcp_congestion_ops;
 
+<<<<<<< HEAD
 static u32 unsupported_ops[] = {
 	offsetof(struct tcp_congestion_ops, get_info),
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct btf_type *tcp_sock_type;
 static u32 tcp_sock_id, sock_id;
 static const struct btf_type *tcp_congestion_ops_type;
@@ -45,6 +48,7 @@ static int bpf_tcp_ca_init(struct btf *btf)
 	return 0;
 }
 
+<<<<<<< HEAD
 static bool is_unsupported(u32 member_offset)
 {
 	unsigned int i;
@@ -57,6 +61,8 @@ static bool is_unsupported(u32 member_offset)
 	return false;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool bpf_tcp_ca_is_valid_access(int off, int size,
 				       enum bpf_access_type type,
 				       const struct bpf_prog *prog,
@@ -251,6 +257,7 @@ static int bpf_tcp_ca_init_member(const struct btf_type *t,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int bpf_tcp_ca_check_member(const struct btf_type *t,
 				   const struct btf_member *member,
 				   const struct bpf_prog *prog)
@@ -260,6 +267,8 @@ static int bpf_tcp_ca_check_member(const struct btf_type *t,
 	return 0;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int bpf_tcp_ca_reg(void *kdata, struct bpf_link *link)
 {
 	return tcp_register_congestion_control(kdata);
@@ -354,7 +363,10 @@ static struct bpf_struct_ops bpf_tcp_congestion_ops = {
 	.reg = bpf_tcp_ca_reg,
 	.unreg = bpf_tcp_ca_unreg,
 	.update = bpf_tcp_ca_update,
+<<<<<<< HEAD
 	.check_member = bpf_tcp_ca_check_member,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.init_member = bpf_tcp_ca_init_member,
 	.init = bpf_tcp_ca_init,
 	.validate = bpf_tcp_ca_validate,

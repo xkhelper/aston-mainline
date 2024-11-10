@@ -66,7 +66,11 @@ struct zoneref *__next_zones_zonelist(struct zoneref *z,
 			z++;
 	else
 		while (zonelist_zone_idx(z) > highest_zoneidx ||
+<<<<<<< HEAD
 				(z->zone && !zref_in_nodemask(z, nodes)))
+=======
+				(zonelist_zone(z) && !zref_in_nodemask(z, nodes)))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			z++;
 
 	return z;

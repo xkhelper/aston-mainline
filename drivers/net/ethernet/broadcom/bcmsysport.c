@@ -1359,6 +1359,10 @@ static netdev_tx_t bcm_sysport_xmit(struct sk_buff *skb,
 		netif_err(priv, tx_err, dev, "DMA map failed at %p (len=%d)\n",
 			  skb->data, skb_len);
 		ret = NETDEV_TX_OK;
+<<<<<<< HEAD
+=======
+		dev_kfree_skb_any(skb);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 	}
 

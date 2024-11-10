@@ -39,7 +39,11 @@ static void __lpc3xxx_find_clkdiv(u32 *clkx, u32 *clky, int freq, int xbytes, u3
 {
 	u32 i2srate;
 	u32 idxx, idyy;
+<<<<<<< HEAD
 	u32 savedbitclkrate, diff, trate, baseclk;
+=======
+	u32 diff, trate, baseclk;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Adjust rate for sample size (bits) and 2 channels and offset for
 	 * divider in clock output
@@ -53,14 +57,20 @@ static void __lpc3xxx_find_clkdiv(u32 *clkx, u32 *clky, int freq, int xbytes, u3
 
 	/* Find the best divider */
 	*clkx = *clky = 0;
+<<<<<<< HEAD
 	savedbitclkrate = 0;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	diff = ~0;
 	for (idxx = 1; idxx < 0xFF; idxx++) {
 		for (idyy = 1; idyy < 0xFF; idyy++) {
 			trate = (baseclk * idxx) / idyy;
 			if (abs(trate - i2srate) < diff) {
 				diff = abs(trate - i2srate);
+<<<<<<< HEAD
 				savedbitclkrate = trate;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				*clkx = idxx;
 				*clky = idyy;
 			}
@@ -190,8 +200,12 @@ static int lpc3xxx_i2s_hw_params(struct snd_pcm_substream *substream,
 
 	__lpc3xxx_find_clkdiv(&clkx, &clky, i2s_info_p->freq, xfersize, i2s_info_p->clkrate);
 
+<<<<<<< HEAD
 	dev_dbg(dev, "Stream                : %s\n",
 		substream->stream == SNDRV_PCM_STREAM_PLAYBACK ? "playback" : "capture");
+=======
+	dev_dbg(dev, "Stream                : %s\n", snd_pcm_direction_name(substream->stream));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev_dbg(dev, "Desired clock rate    : %d\n", i2s_info_p->freq);
 	dev_dbg(dev, "Base clock rate       : %d\n", i2s_info_p->clkrate);
 	dev_dbg(dev, "Transfer size (bytes) : %d\n", xfersize);
@@ -260,7 +274,11 @@ static int lpc3xxx_i2s_dai_probe(struct snd_soc_dai *dai)
 	return 0;
 }
 
+<<<<<<< HEAD
 const struct snd_soc_dai_ops lpc3xxx_i2s_dai_ops = {
+=======
+static const struct snd_soc_dai_ops lpc3xxx_i2s_dai_ops = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.probe	= lpc3xxx_i2s_dai_probe,
 	.startup = lpc3xxx_i2s_startup,
 	.shutdown = lpc3xxx_i2s_shutdown,
@@ -270,7 +288,11 @@ const struct snd_soc_dai_ops lpc3xxx_i2s_dai_ops = {
 	.set_fmt = lpc3xxx_i2s_set_dai_fmt,
 };
 
+<<<<<<< HEAD
 struct snd_soc_dai_driver lpc3xxx_i2s_dai_driver = {
+=======
+static struct snd_soc_dai_driver lpc3xxx_i2s_dai_driver = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.playback = {
 		.channels_min = 1,
 		.channels_max = 2,

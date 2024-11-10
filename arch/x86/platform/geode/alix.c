@@ -18,15 +18,23 @@
 #include <linux/io.h>
 #include <linux/string.h>
 #include <linux/moduleparam.h>
+<<<<<<< HEAD
 #include <linux/leds.h>
 #include <linux/platform_device.h>
 #include <linux/input.h>
 #include <linux/gpio_keys.h>
 #include <linux/gpio/machine.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/dmi.h>
 
 #include <asm/geode.h>
 
+<<<<<<< HEAD
+=======
+#include "geode-common.h"
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define BIOS_SIGNATURE_TINYBIOS		0xf0000
 #define BIOS_SIGNATURE_COREBOOT		0x500
 #define BIOS_REGION_SIZE		0x10000
@@ -41,6 +49,7 @@ module_param(force, bool, 0444);
 /* FIXME: Award bios is not automatically detected as Alix platform */
 MODULE_PARM_DESC(force, "Force detection as ALIX.2/ALIX.3 platform");
 
+<<<<<<< HEAD
 static struct gpio_keys_button alix_gpio_buttons[] = {
 	{
 		.code			= KEY_RESTART,
@@ -107,13 +116,24 @@ static struct platform_device alix_leds_dev = {
 static struct platform_device *alix_devs[] __initdata = {
 	&alix_buttons_dev,
 	&alix_leds_dev,
+=======
+static const struct geode_led alix_leds[] __initconst = {
+	{ 6, true },
+	{ 25, false },
+	{ 27, false },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void __init register_alix(void)
 {
+<<<<<<< HEAD
 	/* Setup LED control through leds-gpio driver */
 	gpiod_add_lookup_table(&alix_leds_gpio_table);
 	platform_add_devices(alix_devs, ARRAY_SIZE(alix_devs));
+=======
+	geode_create_restart_key(24);
+	geode_create_leds("alix", alix_leds, ARRAY_SIZE(alix_leds));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static bool __init alix_present(unsigned long bios_phys,

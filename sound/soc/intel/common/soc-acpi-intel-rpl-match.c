@@ -198,6 +198,10 @@ static const struct snd_soc_acpi_link_adr rpl_cs42l43_l0[] = {
 		.num_adr = ARRAY_SIZE(cs42l43_0_adr),
 		.adr_d = cs42l43_0_adr,
 	},
+<<<<<<< HEAD
+=======
+	{}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct snd_soc_acpi_link_adr rpl_sdca_3_in_1[] = {

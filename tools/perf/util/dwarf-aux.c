@@ -267,7 +267,11 @@ Dwarf_Die *die_get_type(Dwarf_Die *vr_die, Dwarf_Die *die_mem)
 }
 
 /* Get a type die, but skip qualifiers */
+<<<<<<< HEAD
 static Dwarf_Die *__die_get_real_type(Dwarf_Die *vr_die, Dwarf_Die *die_mem)
+=======
+Dwarf_Die *__die_get_real_type(Dwarf_Die *vr_die, Dwarf_Die *die_mem)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int tag;
 
@@ -1444,7 +1448,11 @@ static int __die_find_var_reg_cb(Dwarf_Die *die_mem, void *arg)
 
 	while ((off = dwarf_getlocations(&attr, off, &base, &start, &end, &ops, &nops)) > 0) {
 		/* Assuming the location list is sorted by address */
+<<<<<<< HEAD
 		if (end < data->pc)
+=======
+		if (end <= data->pc)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 		if (start > data->pc)
 			break;
@@ -1598,6 +1606,12 @@ static int __die_collect_vars_cb(Dwarf_Die *die_mem, void *arg)
 	if (dwarf_getlocations(&attr, 0, &base, &start, &end, &ops, &nops) <= 0)
 		return DIE_FIND_CB_SIBLING;
 
+<<<<<<< HEAD
+=======
+	if (!check_allowed_ops(ops, nops))
+		return DIE_FIND_CB_SIBLING;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (die_get_real_type(die_mem, &type_die) == NULL)
 		return DIE_FIND_CB_SIBLING;
 
@@ -1974,8 +1988,20 @@ static int __die_find_member_offset_cb(Dwarf_Die *die_mem, void *arg)
 		return DIE_FIND_CB_SIBLING;
 
 	/* Unions might not have location */
+<<<<<<< HEAD
 	if (die_get_data_member_location(die_mem, &loc) < 0)
 		loc = 0;
+=======
+	if (die_get_data_member_location(die_mem, &loc) < 0) {
+		Dwarf_Attribute attr;
+
+		if (dwarf_attr_integrate(die_mem, DW_AT_data_bit_offset, &attr) &&
+		    dwarf_formudata(&attr, &loc) == 0)
+			loc /= 8;
+		else
+			loc = 0;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (offset == loc)
 		return DIE_FIND_CB_END;

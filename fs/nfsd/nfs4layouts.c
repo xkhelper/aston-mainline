@@ -740,6 +740,10 @@ static const struct nfsd4_callback_ops nfsd4_cb_layout_ops = {
 	.prepare	= nfsd4_cb_layout_prepare,
 	.done		= nfsd4_cb_layout_done,
 	.release	= nfsd4_cb_layout_release,
+<<<<<<< HEAD
+=======
+	.opcode		= OP_CB_LAYOUTRECALL,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static bool

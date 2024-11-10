@@ -9,7 +9,10 @@
 #include "xe_bo.h"
 #include "xe_device.h"
 #include "xe_device_types.h"
+<<<<<<< HEAD
 #include "xe_gt.h"
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 u32 intel_dsb_buffer_ggtt_offset(struct intel_dsb_buffer *dsb_buf)
 {

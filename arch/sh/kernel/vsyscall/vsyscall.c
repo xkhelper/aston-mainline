@@ -36,6 +36,13 @@ __setup("vdso=", vdso_setup);
  */
 extern const char vsyscall_trapa_start, vsyscall_trapa_end;
 static struct page *syscall_pages[1];
+<<<<<<< HEAD
+=======
+static struct vm_special_mapping vdso_mapping = {
+	.name = "[vdso]",
+	.pages = syscall_pages,
+};
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int __init vsyscall_init(void)
 {
@@ -58,6 +65,10 @@ int __init vsyscall_init(void)
 int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
 {
 	struct mm_struct *mm = current->mm;
+<<<<<<< HEAD
+=======
+	struct vm_area_struct *vma;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long addr;
 	int ret;
 
@@ -70,6 +81,7 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
 		goto up_fail;
 	}
 
+<<<<<<< HEAD
 	ret = install_special_mapping(mm, addr, PAGE_SIZE,
 				      VM_READ | VM_EXEC |
 				      VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC,
@@ -78,6 +90,19 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
 		goto up_fail;
 
 	current->mm->context.vdso = (void *)addr;
+=======
+	vdso_mapping.pages = syscall_pages;
+	vma = _install_special_mapping(mm, addr, PAGE_SIZE,
+				      VM_READ | VM_EXEC |
+				      VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC,
+				      &vdso_mapping);
+	ret = PTR_ERR(vma);
+	if (IS_ERR(vma))
+		goto up_fail;
+
+	current->mm->context.vdso = (void *)addr;
+	ret = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 up_fail:
 	mmap_write_unlock(mm);

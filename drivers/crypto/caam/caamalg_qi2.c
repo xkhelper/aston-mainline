@@ -22,7 +22,11 @@
 #include <soc/fsl/dpaa2-io.h>
 #include <soc/fsl/dpaa2-fd.h>
 #include <crypto/xts.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define CAAM_CRA_PRIORITY	2000
 
@@ -5006,10 +5010,21 @@ static int __cold dpaa2_dpseci_setup(struct fsl_mc_device *ls_dev)
 	struct device *dev = &ls_dev->dev;
 	struct dpaa2_caam_priv *priv;
 	struct dpaa2_caam_priv_per_cpu *ppriv;
+<<<<<<< HEAD
 	cpumask_t clean_mask;
 	int err, cpu;
 	u8 i;
 
+=======
+	cpumask_var_t clean_mask;
+	int err, cpu;
+	u8 i;
+
+	err = -ENOMEM;
+	if (!zalloc_cpumask_var(&clean_mask, GFP_KERNEL))
+		goto err_cpumask;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	priv = dev_get_drvdata(dev);
 
 	priv->dev = dev;
@@ -5085,7 +5100,10 @@ static int __cold dpaa2_dpseci_setup(struct fsl_mc_device *ls_dev)
 		}
 	}
 
+<<<<<<< HEAD
 	cpumask_clear(&clean_mask);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	i = 0;
 	for_each_online_cpu(cpu) {
 		u8 j;
@@ -5114,7 +5132,11 @@ static int __cold dpaa2_dpseci_setup(struct fsl_mc_device *ls_dev)
 			err = -ENOMEM;
 			goto err_alloc_netdev;
 		}
+<<<<<<< HEAD
 		cpumask_set_cpu(cpu, &clean_mask);
+=======
+		cpumask_set_cpu(cpu, clean_mask);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ppriv->net_dev->dev = *dev;
 
 		netif_napi_add_tx_weight(ppriv->net_dev, &ppriv->napi,
@@ -5122,15 +5144,29 @@ static int __cold dpaa2_dpseci_setup(struct fsl_mc_device *ls_dev)
 					 DPAA2_CAAM_NAPI_WEIGHT);
 	}
 
+<<<<<<< HEAD
 	return 0;
 
 err_alloc_netdev:
 	free_dpaa2_pcpu_netdev(priv, &clean_mask);
+=======
+	err = 0;
+	goto free_cpumask;
+
+err_alloc_netdev:
+	free_dpaa2_pcpu_netdev(priv, clean_mask);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_get_rx_queue:
 	dpaa2_dpseci_congestion_free(priv);
 err_get_vers:
 	dpseci_close(priv->mc_io, 0, ls_dev->mc_handle);
 err_open:
+<<<<<<< HEAD
+=======
+free_cpumask:
+	free_cpumask_var(clean_mask);
+err_cpumask:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 

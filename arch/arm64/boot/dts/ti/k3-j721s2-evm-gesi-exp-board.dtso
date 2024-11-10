@@ -48,7 +48,11 @@
 };
 
 &exp1 {
+<<<<<<< HEAD
 	p15 {
+=======
+	p15-hog {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* P15 - EXP_MUX2 */
 		gpio-hog;
 		gpios = <13 GPIO_ACTIVE_HIGH>;

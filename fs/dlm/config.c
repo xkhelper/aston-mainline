@@ -928,7 +928,11 @@ int dlm_comm_seq(int nodeid, uint32_t *seq)
 
 int dlm_our_nodeid(void)
 {
+<<<<<<< HEAD
 	return local_comm ? local_comm->nodeid : 0;
+=======
+	return local_comm->nodeid;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* num 0 is first addr, num 1 is second addr */

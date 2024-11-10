@@ -5,6 +5,10 @@
 
 #include <linux/spinlock.h>
 #include <linux/atomic.h>
+<<<<<<< HEAD
+=======
+#include <linux/sizes.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct address_space;
 struct folio;
@@ -18,6 +22,7 @@ struct btrfs_fs_info;
  *
  * This structure records how they are organized in the bitmap:
  *
+<<<<<<< HEAD
  * /- uptodate_offset	/- dirty_offset	/- ordered_offset
  * |			|		|
  * v			v		v
@@ -51,6 +56,25 @@ struct btrfs_subpage_info {
 	 *   end_page_read().
 	 */
 	unsigned int locked_offset;
+=======
+ * /- uptodate          /- dirty        /- ordered
+ * |			|		|
+ * v			v		v
+ * |u|u|u|u|........|u|u|d|d|.......|d|d|o|o|.......|o|o|
+ * |< sectors_per_page >|
+ *
+ * Unlike regular macro-like enums, here we do not go upper-case names, as
+ * these names will be utilized in various macros to define function names.
+ */
+enum {
+	btrfs_bitmap_nr_uptodate = 0,
+	btrfs_bitmap_nr_dirty,
+	btrfs_bitmap_nr_writeback,
+	btrfs_bitmap_nr_ordered,
+	btrfs_bitmap_nr_checked,
+	btrfs_bitmap_nr_locked,
+	btrfs_bitmap_nr_max
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
@@ -88,9 +112,22 @@ enum btrfs_subpage_type {
 	BTRFS_SUBPAGE_DATA,
 };
 
+<<<<<<< HEAD
 bool btrfs_is_subpage(const struct btrfs_fs_info *fs_info, struct address_space *mapping);
 
 void btrfs_init_subpage_info(struct btrfs_subpage_info *subpage_info, u32 sectorsize);
+=======
+#if PAGE_SIZE > SZ_4K
+bool btrfs_is_subpage(const struct btrfs_fs_info *fs_info, struct address_space *mapping);
+#else
+static inline bool btrfs_is_subpage(const struct btrfs_fs_info *fs_info,
+				    struct address_space *mapping)
+{
+	return false;
+}
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int btrfs_attach_subpage(const struct btrfs_fs_info *fs_info,
 			 struct folio *folio, enum btrfs_subpage_type type);
 void btrfs_detach_subpage(const struct btrfs_fs_info *fs_info, struct folio *folio);
@@ -114,10 +151,18 @@ void btrfs_folio_end_writer_lock(const struct btrfs_fs_info *fs_info,
 				 struct folio *folio, u64 start, u32 len);
 void btrfs_folio_set_writer_lock(const struct btrfs_fs_info *fs_info,
 				 struct folio *folio, u64 start, u32 len);
+<<<<<<< HEAD
 bool btrfs_subpage_find_writer_locked(const struct btrfs_fs_info *fs_info,
 				      struct folio *folio, u64 search_start,
 				      u64 *found_start_ret, u32 *found_len_ret);
 void btrfs_folio_end_all_writers(const struct btrfs_fs_info *fs_info, struct folio *folio);
+=======
+void btrfs_folio_end_writer_lock_bitmap(const struct btrfs_fs_info *fs_info,
+					struct folio *folio, unsigned long bitmap);
+bool btrfs_subpage_find_writer_locked(const struct btrfs_fs_info *fs_info,
+				      struct folio *folio, u64 search_start,
+				      u64 *found_start_ret, u32 *found_len_ret);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Template for subpage related operations.
@@ -164,8 +209,14 @@ bool btrfs_subpage_clear_and_test_dirty(const struct btrfs_fs_info *fs_info,
 
 void btrfs_folio_assert_not_dirty(const struct btrfs_fs_info *fs_info,
 				  struct folio *folio, u64 start, u32 len);
+<<<<<<< HEAD
 void btrfs_folio_unlock_writer(struct btrfs_fs_info *fs_info,
 			       struct folio *folio, u64 start, u32 len);
+=======
+void btrfs_get_subpage_dirty_bitmap(struct btrfs_fs_info *fs_info,
+				    struct folio *folio,
+				    unsigned long *ret_bitmap);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void __cold btrfs_subpage_dump_bitmap(const struct btrfs_fs_info *fs_info,
 				      struct folio *folio, u64 start, u32 len);
 

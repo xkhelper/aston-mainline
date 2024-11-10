@@ -529,10 +529,16 @@ static int mt7986_afe_pcm_dev_probe(struct platform_device *pdev)
 
 	/* request irq */
 	irq_id = platform_get_irq(pdev, 0);
+<<<<<<< HEAD
 	if (irq_id < 0) {
 		ret = irq_id;
 		return dev_err_probe(dev, ret, "No irq found\n");
 	}
+=======
+	if (irq_id < 0)
+		return irq_id;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = devm_request_irq(dev, irq_id, mt7986_afe_irq_handler,
 			       IRQF_TRIGGER_NONE, "asys-isr", (void *)afe);
 	if (ret)
@@ -601,7 +607,11 @@ static struct platform_driver mt7986_afe_pcm_driver = {
 		   .pm = &mt7986_afe_pm_ops,
 	},
 	.probe = mt7986_afe_pcm_dev_probe,
+<<<<<<< HEAD
 	.remove_new = mt7986_afe_pcm_dev_remove,
+=======
+	.remove = mt7986_afe_pcm_dev_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(mt7986_afe_pcm_driver);
 

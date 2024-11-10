@@ -224,6 +224,7 @@ static void ttm_bo_flush_all_fences(struct ttm_buffer_object *bo)
 	dma_resv_iter_end(&cursor);
 }
 
+<<<<<<< HEAD
 /**
  * ttm_bo_cleanup_refs
  * If bo idle, remove from lru lists, and unref.
@@ -298,6 +299,8 @@ static int ttm_bo_cleanup_refs(struct ttm_buffer_object *bo,
 	return 0;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Block for the dma_resv object to become idle, lock the buffer and clean up
  * the resource and tt object.
@@ -506,6 +509,7 @@ bool ttm_bo_eviction_valuable(struct ttm_buffer_object *bo,
 }
 EXPORT_SYMBOL(ttm_bo_eviction_valuable);
 
+<<<<<<< HEAD
 /*
  * Check the target bo is allowable to be evicted or swapout, including cases:
  *
@@ -553,10 +557,63 @@ static bool ttm_bo_evict_swapout_allowable(struct ttm_buffer_object *bo,
 		}
 	}
 
+=======
+/**
+ * ttm_bo_evict_first() - Evict the first bo on the manager's LRU list.
+ * @bdev: The ttm device.
+ * @man: The manager whose bo to evict.
+ * @ctx: The TTM operation ctx governing the eviction.
+ *
+ * Return: 0 if successful or the resource disappeared. Negative error code on error.
+ */
+int ttm_bo_evict_first(struct ttm_device *bdev, struct ttm_resource_manager *man,
+		       struct ttm_operation_ctx *ctx)
+{
+	struct ttm_resource_cursor cursor;
+	struct ttm_buffer_object *bo;
+	struct ttm_resource *res;
+	unsigned int mem_type;
+	int ret = 0;
+
+	spin_lock(&bdev->lru_lock);
+	res = ttm_resource_manager_first(man, &cursor);
+	ttm_resource_cursor_fini(&cursor);
+	if (!res) {
+		ret = -ENOENT;
+		goto out_no_ref;
+	}
+	bo = res->bo;
+	if (!ttm_bo_get_unless_zero(bo))
+		goto out_no_ref;
+	mem_type = res->mem_type;
+	spin_unlock(&bdev->lru_lock);
+	ret = ttm_bo_reserve(bo, ctx->interruptible, ctx->no_wait_gpu, NULL);
+	if (ret)
+		goto out_no_lock;
+	if (!bo->resource || bo->resource->mem_type != mem_type)
+		goto out_bo_moved;
+
+	if (bo->deleted) {
+		ret = ttm_bo_wait_ctx(bo, ctx);
+		if (!ret)
+			ttm_bo_cleanup_memtype_use(bo);
+	} else {
+		ret = ttm_bo_evict(bo, ctx);
+	}
+out_bo_moved:
+	dma_resv_unlock(bo->base.resv);
+out_no_lock:
+	ttm_bo_put(bo);
+	return ret;
+
+out_no_ref:
+	spin_unlock(&bdev->lru_lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
 /**
+<<<<<<< HEAD
  * ttm_mem_evict_wait_busy - wait for a busy BO to become available
  *
  * @busy_bo: BO which couldn't be locked with trylock
@@ -650,6 +707,100 @@ int ttm_mem_evict_first(struct ttm_device *bdev,
 
 	ttm_bo_put(bo);
 	return ret;
+=======
+ * struct ttm_bo_evict_walk - Parameters for the evict walk.
+ */
+struct ttm_bo_evict_walk {
+	/** @walk: The walk base parameters. */
+	struct ttm_lru_walk walk;
+	/** @place: The place passed to the resource allocation. */
+	const struct ttm_place *place;
+	/** @evictor: The buffer object we're trying to make room for. */
+	struct ttm_buffer_object *evictor;
+	/** @res: The allocated resource if any. */
+	struct ttm_resource **res;
+	/** @evicted: Number of successful evictions. */
+	unsigned long evicted;
+};
+
+static s64 ttm_bo_evict_cb(struct ttm_lru_walk *walk, struct ttm_buffer_object *bo)
+{
+	struct ttm_bo_evict_walk *evict_walk =
+		container_of(walk, typeof(*evict_walk), walk);
+	s64 lret;
+
+	if (bo->pin_count || !bo->bdev->funcs->eviction_valuable(bo, evict_walk->place))
+		return 0;
+
+	if (bo->deleted) {
+		lret = ttm_bo_wait_ctx(bo, walk->ctx);
+		if (!lret)
+			ttm_bo_cleanup_memtype_use(bo);
+	} else {
+		lret = ttm_bo_evict(bo, walk->ctx);
+	}
+
+	if (lret)
+		goto out;
+
+	evict_walk->evicted++;
+	if (evict_walk->res)
+		lret = ttm_resource_alloc(evict_walk->evictor, evict_walk->place,
+					  evict_walk->res);
+	if (lret == 0)
+		return 1;
+out:
+	/* Errors that should terminate the walk. */
+	if (lret == -ENOSPC)
+		return -EBUSY;
+
+	return lret;
+}
+
+static const struct ttm_lru_walk_ops ttm_evict_walk_ops = {
+	.process_bo = ttm_bo_evict_cb,
+};
+
+static int ttm_bo_evict_alloc(struct ttm_device *bdev,
+			      struct ttm_resource_manager *man,
+			      const struct ttm_place *place,
+			      struct ttm_buffer_object *evictor,
+			      struct ttm_operation_ctx *ctx,
+			      struct ww_acquire_ctx *ticket,
+			      struct ttm_resource **res)
+{
+	struct ttm_bo_evict_walk evict_walk = {
+		.walk = {
+			.ops = &ttm_evict_walk_ops,
+			.ctx = ctx,
+			.ticket = ticket,
+		},
+		.place = place,
+		.evictor = evictor,
+		.res = res,
+	};
+	s64 lret;
+
+	evict_walk.walk.trylock_only = true;
+	lret = ttm_lru_walk_for_evict(&evict_walk.walk, bdev, man, 1);
+	if (lret || !ticket)
+		goto out;
+
+	/* If ticket-locking, repeat while making progress. */
+	evict_walk.walk.trylock_only = false;
+	do {
+		/* The walk may clear the evict_walk.walk.ticket field */
+		evict_walk.walk.ticket = ticket;
+		evict_walk.evicted = 0;
+		lret = ttm_lru_walk_for_evict(&evict_walk.walk, bdev, man, 1);
+	} while (!lret && evict_walk.evicted);
+out:
+	if (lret < 0)
+		return lret;
+	if (lret == 0)
+		return -EBUSY;
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -760,6 +911,10 @@ static int ttm_bo_alloc_resource(struct ttm_buffer_object *bo,
 	for (i = 0; i < placement->num_placement; ++i) {
 		const struct ttm_place *place = &placement->placement[i];
 		struct ttm_resource_manager *man;
+<<<<<<< HEAD
+=======
+		bool may_evict;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		man = ttm_manager_type(bdev, place->mem_type);
 		if (!man || !ttm_resource_manager_used(man))
@@ -769,6 +924,7 @@ static int ttm_bo_alloc_resource(struct ttm_buffer_object *bo,
 				    TTM_PL_FLAG_FALLBACK))
 			continue;
 
+<<<<<<< HEAD
 		do {
 			ret = ttm_resource_alloc(bo, place, res);
 			if (unlikely(ret && ret != -ENOSPC))
@@ -785,6 +941,23 @@ static int ttm_bo_alloc_resource(struct ttm_buffer_object *bo,
 		} while (1);
 		if (ret)
 			continue;
+=======
+		may_evict = (force_space && place->mem_type != TTM_PL_SYSTEM);
+		ret = ttm_resource_alloc(bo, place, res);
+		if (ret) {
+			if (ret != -ENOSPC)
+				return ret;
+			if (!may_evict)
+				continue;
+
+			ret = ttm_bo_evict_alloc(bdev, man, place, bo, ctx,
+						 ticket, res);
+			if (ret == -EBUSY)
+				continue;
+			if (ret)
+				return ret;
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		ret = ttm_bo_add_move_fence(bo, man, ctx->no_wait_gpu);
 		if (unlikely(ret)) {
@@ -1118,12 +1291,33 @@ int ttm_bo_wait_ctx(struct ttm_buffer_object *bo, struct ttm_operation_ctx *ctx)
 }
 EXPORT_SYMBOL(ttm_bo_wait_ctx);
 
+<<<<<<< HEAD
 int ttm_bo_swapout(struct ttm_buffer_object *bo, struct ttm_operation_ctx *ctx,
 		   gfp_t gfp_flags)
 {
 	struct ttm_place place;
 	bool locked;
 	long ret;
+=======
+/**
+ * struct ttm_bo_swapout_walk - Parameters for the swapout walk
+ */
+struct ttm_bo_swapout_walk {
+	/** @walk: The walk base parameters. */
+	struct ttm_lru_walk walk;
+	/** @gfp_flags: The gfp flags to use for ttm_tt_swapout() */
+	gfp_t gfp_flags;
+};
+
+static s64
+ttm_bo_swapout_cb(struct ttm_lru_walk *walk, struct ttm_buffer_object *bo)
+{
+	struct ttm_place place = {.mem_type = bo->resource->mem_type};
+	struct ttm_bo_swapout_walk *swapout_walk =
+		container_of(walk, typeof(*swapout_walk), walk);
+	struct ttm_operation_ctx *ctx = walk->ctx;
+	s64 ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * While the bo may already reside in SYSTEM placement, set
@@ -1131,6 +1325,7 @@ int ttm_bo_swapout(struct ttm_buffer_object *bo, struct ttm_operation_ctx *ctx,
 	 * The driver may use the fact that we're moving from SYSTEM
 	 * as an indication that we're about to swap out.
 	 */
+<<<<<<< HEAD
 	memset(&place, 0, sizeof(place));
 	place.mem_type = bo->resource->mem_type;
 	if (!ttm_bo_evict_swapout_allowable(bo, ctx, &place, &locked, NULL))
@@ -1153,6 +1348,31 @@ int ttm_bo_swapout(struct ttm_buffer_object *bo, struct ttm_operation_ctx *ctx,
 
 	/* TODO: Cleanup the locking */
 	spin_unlock(&bo->bdev->lru_lock);
+=======
+	if (bo->pin_count || !bo->bdev->funcs->eviction_valuable(bo, &place)) {
+		ret = -EBUSY;
+		goto out;
+	}
+
+	if (!bo->ttm || !ttm_tt_is_populated(bo->ttm) ||
+	    bo->ttm->page_flags & TTM_TT_FLAG_EXTERNAL ||
+	    bo->ttm->page_flags & TTM_TT_FLAG_SWAPPED) {
+		ret = -EBUSY;
+		goto out;
+	}
+
+	if (bo->deleted) {
+		pgoff_t num_pages = bo->ttm->num_pages;
+
+		ret = ttm_bo_wait_ctx(bo, ctx);
+		if (ret)
+			goto out;
+
+		ttm_bo_cleanup_memtype_use(bo);
+		ret = num_pages;
+		goto out;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Move to system cached
@@ -1164,12 +1384,22 @@ int ttm_bo_swapout(struct ttm_buffer_object *bo, struct ttm_operation_ctx *ctx,
 		memset(&hop, 0, sizeof(hop));
 		place.mem_type = TTM_PL_SYSTEM;
 		ret = ttm_resource_alloc(bo, &place, &evict_mem);
+<<<<<<< HEAD
 		if (unlikely(ret))
 			goto out;
 
 		ret = ttm_bo_handle_move_mem(bo, evict_mem, true, ctx, &hop);
 		if (unlikely(ret != 0)) {
 			WARN(ret == -EMULTIHOP, "Unexpected multihop in swaput - likely driver bug.\n");
+=======
+		if (ret)
+			goto out;
+
+		ret = ttm_bo_handle_move_mem(bo, evict_mem, true, ctx, &hop);
+		if (ret) {
+			WARN(ret == -EMULTIHOP,
+			     "Unexpected multihop in swapout - likely driver bug.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ttm_resource_free(bo, &evict_mem);
 			goto out;
 		}
@@ -1179,6 +1409,7 @@ int ttm_bo_swapout(struct ttm_buffer_object *bo, struct ttm_operation_ctx *ctx,
 	 * Make sure BO is idle.
 	 */
 	ret = ttm_bo_wait_ctx(bo, ctx);
+<<<<<<< HEAD
 	if (unlikely(ret != 0))
 		goto out;
 
@@ -1188,10 +1419,17 @@ int ttm_bo_swapout(struct ttm_buffer_object *bo, struct ttm_operation_ctx *ctx,
 	 * Swap out. Buffer will be swapped in again as soon as
 	 * anyone tries to access a ttm page.
 	 */
+=======
+	if (ret)
+		goto out;
+
+	ttm_bo_unmap_virtual(bo);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (bo->bdev->funcs->swap_notify)
 		bo->bdev->funcs->swap_notify(bo);
 
 	if (ttm_tt_is_populated(bo->ttm))
+<<<<<<< HEAD
 		ret = ttm_tt_swapout(bo->bdev, bo->ttm, gfp_flags);
 out:
 
@@ -1203,6 +1441,48 @@ out:
 		dma_resv_unlock(bo->base.resv);
 	ttm_bo_put(bo);
 	return ret == -EBUSY ? -ENOSPC : ret;
+=======
+		ret = ttm_tt_swapout(bo->bdev, bo->ttm, swapout_walk->gfp_flags);
+
+out:
+	/* Consider -ENOMEM and -ENOSPC non-fatal. */
+	if (ret == -ENOMEM || ret == -ENOSPC)
+		ret = -EBUSY;
+
+	return ret;
+}
+
+const struct ttm_lru_walk_ops ttm_swap_ops = {
+	.process_bo = ttm_bo_swapout_cb,
+};
+
+/**
+ * ttm_bo_swapout() - Swap out buffer objects on the LRU list to shmem.
+ * @bdev: The ttm device.
+ * @ctx: The ttm_operation_ctx governing the swapout operation.
+ * @man: The resource manager whose resources / buffer objects are
+ * goint to be swapped out.
+ * @gfp_flags: The gfp flags used for shmem page allocations.
+ * @target: The desired number of bytes to swap out.
+ *
+ * Return: The number of bytes actually swapped out, or negative error code
+ * on error.
+ */
+s64 ttm_bo_swapout(struct ttm_device *bdev, struct ttm_operation_ctx *ctx,
+		   struct ttm_resource_manager *man, gfp_t gfp_flags,
+		   s64 target)
+{
+	struct ttm_bo_swapout_walk swapout_walk = {
+		.walk = {
+			.ops = &ttm_swap_ops,
+			.ctx = ctx,
+			.trylock_only = true,
+		},
+		.gfp_flags = gfp_flags,
+	};
+
+	return ttm_lru_walk_for_evict(&swapout_walk.walk, bdev, man, target);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void ttm_bo_tt_destroy(struct ttm_buffer_object *bo)

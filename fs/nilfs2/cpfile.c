@@ -125,10 +125,24 @@ static void nilfs_cpfile_block_init(struct inode *cpfile,
 	}
 }
 
+<<<<<<< HEAD
 static inline int nilfs_cpfile_get_header_block(struct inode *cpfile,
 						struct buffer_head **bhp)
 {
 	return nilfs_mdt_get_block(cpfile, 0, 0, NULL, bhp);
+=======
+static int nilfs_cpfile_get_header_block(struct inode *cpfile,
+					 struct buffer_head **bhp)
+{
+	int err = nilfs_mdt_get_block(cpfile, 0, 0, NULL, bhp);
+
+	if (unlikely(err == -ENOENT)) {
+		nilfs_error(cpfile->i_sb,
+			    "missing header block in checkpoint metadata");
+		err = -EIO;
+	}
+	return err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline int nilfs_cpfile_get_checkpoint_block(struct inode *cpfile,
@@ -283,6 +297,7 @@ int nilfs_cpfile_create_checkpoint(struct inode *cpfile, __u64 cno)
 
 	down_write(&NILFS_MDT(cpfile)->mi_sem);
 	ret = nilfs_cpfile_get_header_block(cpfile, &header_bh);
+<<<<<<< HEAD
 	if (unlikely(ret < 0)) {
 		if (ret == -ENOENT) {
 			nilfs_error(cpfile->i_sb,
@@ -291,6 +306,11 @@ int nilfs_cpfile_create_checkpoint(struct inode *cpfile, __u64 cno)
 		}
 		goto out_sem;
 	}
+=======
+	if (unlikely(ret < 0))
+		goto out_sem;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = nilfs_cpfile_get_checkpoint_block(cpfile, cno, 1, &cp_bh);
 	if (unlikely(ret < 0))
 		goto out_header;
@@ -704,9 +724,21 @@ ssize_t nilfs_cpfile_get_cpinfo(struct inode *cpfile, __u64 *cnop, int mode,
 }
 
 /**
+<<<<<<< HEAD
  * nilfs_cpfile_delete_checkpoint -
  * @cpfile:
  * @cno:
+=======
+ * nilfs_cpfile_delete_checkpoint - delete a checkpoint
+ * @cpfile: checkpoint file inode
+ * @cno:    checkpoint number to delete
+ *
+ * Return: 0 on success, or the following negative error code on failure.
+ * * %-EBUSY	- Checkpoint in use (snapshot specified).
+ * * %-EIO	- I/O error (including metadata corruption).
+ * * %-ENOENT	- No valid checkpoint found.
+ * * %-ENOMEM	- Insufficient memory available.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int nilfs_cpfile_delete_checkpoint(struct inode *cpfile, __u64 cno)
 {
@@ -968,6 +1000,7 @@ static int nilfs_cpfile_clear_snapshot(struct inode *cpfile, __u64 cno)
 }
 
 /**
+<<<<<<< HEAD
  * nilfs_cpfile_is_snapshot -
  * @cpfile: inode of checkpoint file
  * @cno: checkpoint number
@@ -983,6 +1016,17 @@ static int nilfs_cpfile_clear_snapshot(struct inode *cpfile, __u64 cno)
  * %-ENOMEM - Insufficient amount of memory available.
  *
  * %-ENOENT - No such checkpoint.
+=======
+ * nilfs_cpfile_is_snapshot - determine if checkpoint is a snapshot
+ * @cpfile: inode of checkpoint file
+ * @cno:    checkpoint number
+ *
+ * Return: 1 if the checkpoint specified by @cno is a snapshot, 0 if not, or
+ * the following negative error code on failure.
+ * * %-EIO	- I/O error (including metadata corruption).
+ * * %-ENOENT	- No such checkpoint.
+ * * %-ENOMEM	- Insufficient memory available.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int nilfs_cpfile_is_snapshot(struct inode *cpfile, __u64 cno)
 {

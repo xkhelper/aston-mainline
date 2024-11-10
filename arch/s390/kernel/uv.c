@@ -14,6 +14,10 @@
 #include <linux/memblock.h>
 #include <linux/pagemap.h>
 #include <linux/swap.h>
+<<<<<<< HEAD
+=======
+#include <linux/pagewalk.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/facility.h>
 #include <asm/sections.h>
 #include <asm/uv.h>
@@ -462,9 +466,15 @@ EXPORT_SYMBOL_GPL(gmap_convert_to_secure);
 int gmap_destroy_page(struct gmap *gmap, unsigned long gaddr)
 {
 	struct vm_area_struct *vma;
+<<<<<<< HEAD
 	unsigned long uaddr;
 	struct folio *folio;
 	struct page *page;
+=======
+	struct folio_walk fw;
+	unsigned long uaddr;
+	struct folio *folio;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int rc;
 
 	rc = -EFAULT;
@@ -483,11 +493,23 @@ int gmap_destroy_page(struct gmap *gmap, unsigned long gaddr)
 		goto out;
 
 	rc = 0;
+<<<<<<< HEAD
 	/* we take an extra reference here */
 	page = follow_page(vma, uaddr, FOLL_WRITE | FOLL_GET);
 	if (IS_ERR_OR_NULL(page))
 		goto out;
 	folio = page_folio(page);
+=======
+	folio = folio_walk_start(&fw, vma, uaddr, 0);
+	if (!folio)
+		goto out;
+	/*
+	 * See gmap_make_secure(): large folios cannot be secure. Small
+	 * folio implies FW_LEVEL_PTE.
+	 */
+	if (folio_test_large(folio) || !pte_write(fw.pte))
+		goto out_walk_end;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rc = uv_destroy_folio(folio);
 	/*
 	 * Fault handlers can race; it is possible that two CPUs will fault
@@ -500,7 +522,12 @@ int gmap_destroy_page(struct gmap *gmap, unsigned long gaddr)
 	 */
 	if (rc)
 		rc = uv_convert_from_secure_folio(folio);
+<<<<<<< HEAD
 	folio_put(folio);
+=======
+out_walk_end:
+	folio_walk_end(&fw, vma);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out:
 	mmap_read_unlock(gmap->mm);
 	return rc;
@@ -548,11 +575,14 @@ int arch_make_folio_accessible(struct folio *folio)
 }
 EXPORT_SYMBOL_GPL(arch_make_folio_accessible);
 
+<<<<<<< HEAD
 int arch_make_page_accessible(struct page *page)
 {
 	return arch_make_folio_accessible(page_folio(page));
 }
 EXPORT_SYMBOL_GPL(arch_make_page_accessible);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static ssize_t uv_query_facilities(struct kobject *kobj,
 				   struct kobj_attribute *attr, char *buf)
 {

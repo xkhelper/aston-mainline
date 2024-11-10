@@ -148,6 +148,10 @@ int coresight_make_links(struct coresight_device *orig,
 			 struct coresight_device *target);
 void coresight_remove_links(struct coresight_device *orig,
 			    struct coresight_connection *conn);
+<<<<<<< HEAD
+=======
+u32 coresight_get_sink_id(struct coresight_device *csdev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #if IS_ENABLED(CONFIG_CORESIGHT_SOURCE_ETM3X)
 extern int etm_readl_cp14(u32 off, unsigned int *val);

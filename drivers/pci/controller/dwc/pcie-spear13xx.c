@@ -233,7 +233,11 @@ static int spear13xx_pcie_probe(struct platform_device *pdev)
 	}
 
 	if (of_property_read_bool(np, "st,pcie-is-gen1"))
+<<<<<<< HEAD
 		pci->link_gen = 1;
+=======
+		pci->max_link_speed = 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	platform_set_drvdata(pdev, spear13xx_pcie);
 

@@ -38,11 +38,20 @@ pub mod init;
 pub mod ioctl;
 #[cfg(CONFIG_KUNIT)]
 pub mod kunit;
+<<<<<<< HEAD
+=======
+pub mod list;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #[cfg(CONFIG_NET)]
 pub mod net;
 pub mod page;
 pub mod prelude;
 pub mod print;
+<<<<<<< HEAD
+=======
+pub mod rbtree;
+pub mod sizes;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 mod static_assert;
 #[doc(hidden)]
 pub mod std_vendor;

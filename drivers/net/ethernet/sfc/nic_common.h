@@ -21,6 +21,10 @@ enum {
 	 */
 	EFX_REV_HUNT_A0 = 4,
 	EFX_REV_EF100 = 5,
+<<<<<<< HEAD
+=======
+	EFX_REV_X4 = 6,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static inline int efx_nic_rev(struct efx_nic *efx)

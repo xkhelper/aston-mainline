@@ -8,6 +8,7 @@
  */
 #define pr_fmt(fmt) "iommufd: " fmt
 
+<<<<<<< HEAD
 #include <linux/file.h>
 #include <linux/fs.h>
 #include <linux/module.h>
@@ -17,6 +18,17 @@
 #include <linux/bug.h>
 #include <uapi/linux/iommufd.h>
 #include <linux/iommufd.h>
+=======
+#include <linux/bug.h>
+#include <linux/file.h>
+#include <linux/fs.h>
+#include <linux/iommufd.h>
+#include <linux/miscdevice.h>
+#include <linux/module.h>
+#include <linux/mutex.h>
+#include <linux/slab.h>
+#include <uapi/linux/iommufd.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "io_pagetable.h"
 #include "iommufd_private.h"

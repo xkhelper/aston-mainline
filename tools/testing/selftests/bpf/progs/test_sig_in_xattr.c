@@ -6,6 +6,10 @@
 #include <bpf/bpf_helpers.h>
 #include <bpf/bpf_tracing.h>
 #include "bpf_kfuncs.h"
+<<<<<<< HEAD
+=======
+#include "err.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 char _license[] SEC("license") = "GPL";
 
@@ -79,5 +83,11 @@ int BPF_PROG(test_file_open, struct file *f)
 	ret = bpf_verify_pkcs7_signature(&digest_ptr, &sig_ptr, trusted_keyring);
 
 	bpf_key_put(trusted_keyring);
+<<<<<<< HEAD
+=======
+
+	set_if_not_errno_or_zero(ret, -EFAULT);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }

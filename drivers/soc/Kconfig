@@ -7,6 +7,10 @@ source "drivers/soc/aspeed/Kconfig"
 source "drivers/soc/atmel/Kconfig"
 source "drivers/soc/bcm/Kconfig"
 source "drivers/soc/canaan/Kconfig"
+<<<<<<< HEAD
+=======
+source "drivers/soc/cirrus/Kconfig"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 source "drivers/soc/fsl/Kconfig"
 source "drivers/soc/fujitsu/Kconfig"
 source "drivers/soc/hisilicon/Kconfig"

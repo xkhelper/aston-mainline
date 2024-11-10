@@ -471,6 +471,7 @@ void _drbd_thread_stop(struct drbd_thread *thi, int restart, int wait)
 		wait_for_completion(&thi->stop);
 }
 
+<<<<<<< HEAD
 int conn_lowest_minor(struct drbd_connection *connection)
 {
 	struct drbd_peer_device *peer_device;
@@ -485,6 +486,8 @@ int conn_lowest_minor(struct drbd_connection *connection)
 	return minor;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_SMP
 /*
  * drbd_calc_cpu_mask() - Generate CPU masks, spread over all CPUs
@@ -1550,7 +1553,11 @@ static int _drbd_send_page(struct drbd_peer_device *peer_device, struct page *pa
 	 * put_page(); and would cause either a VM_BUG directly, or
 	 * __page_cache_release a page that would actually still be referenced
 	 * by someone, leading to some obscure delayed Oops somewhere else. */
+<<<<<<< HEAD
 	if (!drbd_disable_sendpage && sendpage_ok(page))
+=======
+	if (!drbd_disable_sendpage && sendpages_ok(page, len, offset))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		msg.msg_flags |= MSG_NOSIGNAL | MSG_SPLICE_PAGES;
 
 	drbd_update_congested(peer_device->connection);
@@ -3399,10 +3406,19 @@ void drbd_uuid_new_current(struct drbd_device *device) __must_hold(local)
 void drbd_uuid_set_bm(struct drbd_device *device, u64 val) __must_hold(local)
 {
 	unsigned long flags;
+<<<<<<< HEAD
 	if (device->ldev->md.uuid[UI_BITMAP] == 0 && val == 0)
 		return;
 
 	spin_lock_irqsave(&device->ldev->md.uuid_lock, flags);
+=======
+	spin_lock_irqsave(&device->ldev->md.uuid_lock, flags);
+	if (device->ldev->md.uuid[UI_BITMAP] == 0 && val == 0) {
+		spin_unlock_irqrestore(&device->ldev->md.uuid_lock, flags);
+		return;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (val == 0) {
 		drbd_uuid_move_history(device);
 		device->ldev->md.uuid[UI_HISTORY_START] = device->ldev->md.uuid[UI_BITMAP];

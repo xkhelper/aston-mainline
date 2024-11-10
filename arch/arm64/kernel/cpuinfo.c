@@ -143,6 +143,10 @@ static const char *const hwcap_str[] = {
 	[KERNEL_HWCAP_SME_SF8FMA]	= "smesf8fma",
 	[KERNEL_HWCAP_SME_SF8DP4]	= "smesf8dp4",
 	[KERNEL_HWCAP_SME_SF8DP2]	= "smesf8dp2",
+<<<<<<< HEAD
+=======
+	[KERNEL_HWCAP_POE]		= "poe",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #ifdef CONFIG_COMPAT
@@ -280,7 +284,11 @@ const struct seq_operations cpuinfo_op = {
 };
 
 
+<<<<<<< HEAD
 static struct kobj_type cpuregs_kobj_type = {
+=======
+static const struct kobj_type cpuregs_kobj_type = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sysfs_ops = &kobj_sysfs_ops,
 };
 

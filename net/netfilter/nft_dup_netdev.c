@@ -40,7 +40,11 @@ static int nft_dup_netdev_init(const struct nft_ctx *ctx,
 	if (tb[NFTA_DUP_SREG_DEV] == NULL)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	return nft_parse_register_load(tb[NFTA_DUP_SREG_DEV], &priv->sreg_dev,
+=======
+	return nft_parse_register_load(ctx, tb[NFTA_DUP_SREG_DEV], &priv->sreg_dev,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       sizeof(int));
 }
 

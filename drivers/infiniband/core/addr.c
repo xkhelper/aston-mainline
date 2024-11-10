@@ -269,6 +269,11 @@ rdma_find_ndev_for_src_ip_rcu(struct net *net, const struct sockaddr *src_in)
 		break;
 #endif
 	}
+<<<<<<< HEAD
+=======
+	if (!ret && dev && is_vlan_dev(dev))
+		dev = vlan_dev_real_dev(dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret ? ERR_PTR(ret) : dev;
 }
 

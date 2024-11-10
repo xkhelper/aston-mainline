@@ -5,6 +5,7 @@
  * This file is part of Libgcrypt.
  */
 
+<<<<<<< HEAD
 
 #include "mpi-internal.h"
 #include "longlong.h"
@@ -154,4 +155,11 @@ void mpi_mul_barrett(MPI w, MPI u, MPI v, mpi_barrett_t ctx)
 {
 	mpi_mul(w, u, v);
 	mpi_mod_barrett(w, w, ctx);
+=======
+#include "mpi-internal.h"
+
+int mpi_mod(MPI rem, MPI dividend, MPI divisor)
+{
+	return mpi_fdiv_r(rem, dividend, divisor);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

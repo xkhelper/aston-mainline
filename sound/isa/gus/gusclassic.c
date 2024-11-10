@@ -115,7 +115,11 @@ static int snd_gusclassic_detect(struct snd_gus_card *gus)
 	snd_gf1_i_write8(gus, SNDRV_GF1_GB_RESET, 0);	/* reset GF1 */
 	d = snd_gf1_i_look8(gus, SNDRV_GF1_GB_RESET);
 	if ((d & 0x07) != 0) {
+<<<<<<< HEAD
 		snd_printdd("[0x%lx] check 1 failed - 0x%x\n", gus->gf1.port, d);
+=======
+		dev_dbg(gus->card->dev, "[0x%lx] check 1 failed - 0x%x\n", gus->gf1.port, d);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENODEV;
 	}
 	udelay(160);
@@ -123,7 +127,11 @@ static int snd_gusclassic_detect(struct snd_gus_card *gus)
 	udelay(160);
 	d = snd_gf1_i_look8(gus, SNDRV_GF1_GB_RESET);
 	if ((d & 0x07) != 1) {
+<<<<<<< HEAD
 		snd_printdd("[0x%lx] check 2 failed - 0x%x\n", gus->gf1.port, d);
+=======
+		dev_dbg(gus->card->dev, "[0x%lx] check 2 failed - 0x%x\n", gus->gf1.port, d);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENODEV;
 	}
 	return 0;

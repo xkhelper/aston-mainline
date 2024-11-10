@@ -81,6 +81,11 @@ struct cgroup_file_ctx {
 	struct {
 		struct cgroup_pidlist	*pidlist;
 	} procs1;
+<<<<<<< HEAD
+=======
+
+	struct cgroup_of_peak peak;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*

@@ -64,7 +64,11 @@ static int bch2_pow(u64 n, u64 p, u64 *res)
 	*res = 1;
 
 	while (p--) {
+<<<<<<< HEAD
 		if (*res > div_u64(U64_MAX, n))
+=======
+		if (*res > div64_u64(U64_MAX, n))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -ERANGE;
 		*res *= n;
 	}
@@ -140,6 +144,7 @@ static int __bch2_strtou64_h(const char *cp, u64 *res)
 
 	parse_or_ret(cp, parse_unit_suffix(cp, &b));
 
+<<<<<<< HEAD
 	if (v > div_u64(U64_MAX, b))
 		return -ERANGE;
 	v *= b;
@@ -148,6 +153,16 @@ static int __bch2_strtou64_h(const char *cp, u64 *res)
 		return -ERANGE;
 
 	f_n = div_u64(f_n * b, f_d);
+=======
+	if (v > div64_u64(U64_MAX, b))
+		return -ERANGE;
+	v *= b;
+
+	if (f_n > div64_u64(U64_MAX, b))
+		return -ERANGE;
+
+	f_n = div64_u64(f_n * b, f_d);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (v + f_n < v)
 		return -ERANGE;
 	v += f_n;
@@ -204,7 +219,11 @@ STRTO_H(strtoll, long long)
 STRTO_H(strtoull, unsigned long long)
 STRTO_H(strtou64, u64)
 
+<<<<<<< HEAD
 u64 bch2_read_flag_list(char *opt, const char * const list[])
+=======
+u64 bch2_read_flag_list(const char *opt, const char * const list[])
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u64 ret = 0;
 	char *p, *s, *d = kstrdup(opt, GFP_KERNEL);
@@ -214,7 +233,11 @@ u64 bch2_read_flag_list(char *opt, const char * const list[])
 
 	s = strim(d);
 
+<<<<<<< HEAD
 	while ((p = strsep(&s, ","))) {
+=======
+	while ((p = strsep(&s, ",;"))) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		int flag = match_string(list, -1, p);
 
 		if (flag < 0) {
@@ -222,7 +245,11 @@ u64 bch2_read_flag_list(char *opt, const char * const list[])
 			break;
 		}
 
+<<<<<<< HEAD
 		ret |= 1 << flag;
+=======
+		ret |= BIT_ULL(flag);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	kfree(d);
@@ -360,7 +387,11 @@ void bch2_pr_time_units(struct printbuf *out, u64 ns)
 {
 	const struct time_unit *u = bch2_pick_time_units(ns);
 
+<<<<<<< HEAD
 	prt_printf(out, "%llu %s", div_u64(ns, u->nsecs), u->name);
+=======
+	prt_printf(out, "%llu %s", div64_u64(ns, u->nsecs), u->name);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void bch2_pr_time_units_aligned(struct printbuf *out, u64 ns)
@@ -477,7 +508,11 @@ void bch2_time_stats_to_text(struct printbuf *out, struct bch2_time_stats *stats
 			bool is_last = eytzinger0_next(i, NR_QUANTILES) == -1;
 
 			u64 q = max(quantiles->entries[i].m, last_q);
+<<<<<<< HEAD
 			prt_printf(out, "%llu ", div_u64(q, u->nsecs));
+=======
+			prt_printf(out, "%llu ", div64_u64(q, u->nsecs));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (is_last)
 				prt_newline(out);
 			last_q = q;

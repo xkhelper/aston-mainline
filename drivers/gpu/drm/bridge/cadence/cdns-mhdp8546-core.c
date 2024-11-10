@@ -47,7 +47,11 @@
 #include <drm/drm_print.h>
 #include <drm/drm_probe_helper.h>
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "cdns-mhdp8546-core.h"
 #include "cdns-mhdp8546-hdcp.h"

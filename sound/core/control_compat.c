@@ -79,6 +79,10 @@ struct snd_ctl_elem_info32 {
 static int snd_ctl_elem_info_compat(struct snd_ctl_file *ctl,
 				    struct snd_ctl_elem_info32 __user *data32)
 {
+<<<<<<< HEAD
+=======
+	struct snd_card *card = ctl->card;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct snd_ctl_elem_info *data __free(kfree) = NULL;
 	int err;
 
@@ -95,7 +99,15 @@ static int snd_ctl_elem_info_compat(struct snd_ctl_file *ctl,
 	if (get_user(data->value.enumerated.item, &data32->value.enumerated.item))
 		return -EFAULT;
 
+<<<<<<< HEAD
 	err = snd_ctl_elem_info(ctl, data);
+=======
+	err = snd_power_ref_and_wait(card);
+	if (err < 0)
+		return err;
+	err = snd_ctl_elem_info(ctl, data);
+	snd_power_unref(card);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err < 0)
 		return err;
 	/* restore info to 32bit */
@@ -168,17 +180,25 @@ static int get_ctl_type(struct snd_card *card, struct snd_ctl_elem_id *id,
 	int err;
 
 	guard(rwsem_read)(&card->controls_rwsem);
+<<<<<<< HEAD
 	kctl = snd_ctl_find_id_locked(card, id);
+=======
+	kctl = snd_ctl_find_id(card, id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!kctl)
 		return -ENOENT;
 	info = kzalloc(sizeof(*info), GFP_KERNEL);
 	if (info == NULL)
 		return -ENOMEM;
 	info->id = *id;
+<<<<<<< HEAD
 	err = snd_power_ref_and_wait(card);
 	if (!err)
 		err = kctl->info(kctl, info);
 	snd_power_unref(card);
+=======
+	err = kctl->info(kctl, info);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err >= 0) {
 		err = info->type;
 		*countp = info->count;
@@ -275,8 +295,13 @@ static int copy_ctl_value_to_user(void __user *userdata,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int ctl_elem_read_user(struct snd_card *card,
 			      void __user *userdata, void __user *valuep)
+=======
+static int __ctl_elem_read_user(struct snd_card *card,
+				void __user *userdata, void __user *valuep)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct snd_ctl_elem_value *data __free(kfree) = NULL;
 	int err, type, count;
@@ -296,8 +321,26 @@ static int ctl_elem_read_user(struct snd_card *card,
 	return copy_ctl_value_to_user(userdata, valuep, data, type, count);
 }
 
+<<<<<<< HEAD
 static int ctl_elem_write_user(struct snd_ctl_file *file,
 			       void __user *userdata, void __user *valuep)
+=======
+static int ctl_elem_read_user(struct snd_card *card,
+			      void __user *userdata, void __user *valuep)
+{
+	int err;
+
+	err = snd_power_ref_and_wait(card);
+	if (err < 0)
+		return err;
+	err = __ctl_elem_read_user(card, userdata, valuep);
+	snd_power_unref(card);
+	return err;
+}
+
+static int __ctl_elem_write_user(struct snd_ctl_file *file,
+				 void __user *userdata, void __user *valuep)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct snd_ctl_elem_value *data __free(kfree) = NULL;
 	struct snd_card *card = file->card;
@@ -318,6 +361,23 @@ static int ctl_elem_write_user(struct snd_ctl_file *file,
 	return copy_ctl_value_to_user(userdata, valuep, data, type, count);
 }
 
+<<<<<<< HEAD
+=======
+static int ctl_elem_write_user(struct snd_ctl_file *file,
+			       void __user *userdata, void __user *valuep)
+{
+	struct snd_card *card = file->card;
+	int err;
+
+	err = snd_power_ref_and_wait(card);
+	if (err < 0)
+		return err;
+	err = __ctl_elem_write_user(file, userdata, valuep);
+	snd_power_unref(card);
+	return err;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int snd_ctl_elem_read_user_compat(struct snd_card *card,
 					 struct snd_ctl_elem_value32 __user *data32)
 {

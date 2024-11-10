@@ -210,7 +210,11 @@ static struct attribute *dump_default_attrs[] = {
 };
 ATTRIBUTE_GROUPS(dump_default);
 
+<<<<<<< HEAD
 static struct kobj_type dump_ktype = {
+=======
+static const struct kobj_type dump_ktype = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sysfs_ops = &dump_sysfs_ops,
 	.release = &dump_release,
 	.default_groups = dump_default_groups,

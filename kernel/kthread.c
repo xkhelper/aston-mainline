@@ -623,6 +623,11 @@ void kthread_unpark(struct task_struct *k)
 {
 	struct kthread *kthread = to_kthread(k);
 
+<<<<<<< HEAD
+=======
+	if (!test_bit(KTHREAD_SHOULD_PARK, &kthread->flags))
+		return;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Newly created kthread was parked when the CPU was offline.
 	 * The binding was lost and we need to set it again.
@@ -845,8 +850,21 @@ repeat:
 		 * event only cares about the address.
 		 */
 		trace_sched_kthread_work_execute_end(work, func);
+<<<<<<< HEAD
 	} else if (!freezing(current))
 		schedule();
+=======
+	} else if (!freezing(current)) {
+		schedule();
+	} else {
+		/*
+		 * Handle the case where the current remains
+		 * TASK_INTERRUPTIBLE. try_to_freeze() expects
+		 * the current to be TASK_RUNNING.
+		 */
+		__set_current_state(TASK_RUNNING);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	try_to_freeze();
 	cond_resched();

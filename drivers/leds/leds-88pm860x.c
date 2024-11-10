@@ -115,7 +115,11 @@ static int pm860x_led_set(struct led_classdev *cdev,
 static int pm860x_led_dt_init(struct platform_device *pdev,
 			      struct pm860x_led *data)
 {
+<<<<<<< HEAD
 	struct device_node *nproot, *np;
+=======
+	struct device_node *nproot;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int iset = 0;
 
 	if (!dev_of_node(pdev->dev.parent))
@@ -125,12 +129,19 @@ static int pm860x_led_dt_init(struct platform_device *pdev,
 		dev_err(&pdev->dev, "failed to find leds node\n");
 		return -ENODEV;
 	}
+<<<<<<< HEAD
 	for_each_available_child_of_node(nproot, np) {
+=======
+	for_each_available_child_of_node_scoped(nproot, np) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (of_node_name_eq(np, data->name)) {
 			of_property_read_u32(np, "marvell,88pm860x-iset",
 					     &iset);
 			data->iset = PM8606_LED_CURRENT(iset);
+<<<<<<< HEAD
 			of_node_put(np);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		}
 	}

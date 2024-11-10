@@ -357,12 +357,18 @@ void msm_debugfs_init(struct drm_minor *minor)
 	if (priv->kms && priv->kms->funcs->debugfs_init)
 		priv->kms->funcs->debugfs_init(priv->kms, minor);
 
+<<<<<<< HEAD
 #ifdef CONFIG_FAULT_INJECTION
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fault_create_debugfs_attr("fail_gem_alloc", minor->debugfs_root,
 				  &fail_gem_alloc);
 	fault_create_debugfs_attr("fail_gem_iova", minor->debugfs_root,
 				  &fail_gem_iova);
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 #endif
 

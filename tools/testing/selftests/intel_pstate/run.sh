@@ -44,6 +44,14 @@ if [ $UID != 0 ] && [ $EVALUATE_ONLY == 0 ]; then
     exit $ksft_skip
 fi
 
+<<<<<<< HEAD
+=======
+if ! command -v cpupower &> /dev/null; then
+	echo $msg cpupower could not be found, please install it >&2
+	exit $ksft_skip
+fi
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 max_cpus=$(($(nproc)-1))
 
 function run_test () {
@@ -87,9 +95,15 @@ mkt_freq=${_mkt_freq}0
 
 # Get the ranges from cpupower
 _min_freq=$(cpupower frequency-info -l | tail -1 | awk ' { print $1 } ')
+<<<<<<< HEAD
 min_freq=$(($_min_freq / 1000))
 _max_freq=$(cpupower frequency-info -l | tail -1 | awk ' { print $2 } ')
 max_freq=$(($_max_freq / 1000))
+=======
+min_freq=$((_min_freq / 1000))
+_max_freq=$(cpupower frequency-info -l | tail -1 | awk ' { print $2 } ')
+max_freq=$((_max_freq / 1000))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 
 [ $EVALUATE_ONLY -eq 0 ] && for freq in `seq $max_freq -100 $min_freq`

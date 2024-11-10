@@ -49,6 +49,7 @@ properties:
 patternProperties:
   "^.+-hog(-[0-9]+)?$":
     type: object
+<<<<<<< HEAD
 
     additionalProperties: false
 
@@ -63,6 +64,10 @@ patternProperties:
     required:
       - gpio-hog
       - gpios
+=======
+    required:
+      - gpio-hog
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 allOf:
   - if:

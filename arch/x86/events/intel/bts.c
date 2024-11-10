@@ -557,9 +557,12 @@ static int bts_event_init(struct perf_event *event)
 	 * disabled, so disallow intel_bts driver for unprivileged
 	 * users on paranoid systems since it provides trace data
 	 * to the user in a zero-copy fashion.
+<<<<<<< HEAD
 	 *
 	 * Note that the default paranoia setting permits unprivileged
 	 * users to profile the kernel.
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	if (event->attr.exclude_kernel) {
 		ret = perf_allow_kernel(&event->attr);

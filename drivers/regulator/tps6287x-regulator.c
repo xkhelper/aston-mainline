@@ -103,7 +103,11 @@ static const struct regulator_ops tps6287x_regulator_ops = {
 	.set_ramp_delay = regulator_set_ramp_delay_regmap,
 };
 
+<<<<<<< HEAD
 static struct regulator_desc tps6287x_reg = {
+=======
+static const struct regulator_desc tps6287x_reg = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name = "tps6287x",
 	.owner = THIS_MODULE,
 	.ops = &tps6287x_regulator_ops,

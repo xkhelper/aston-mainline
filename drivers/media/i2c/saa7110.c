@@ -439,7 +439,11 @@ static void saa7110_remove(struct i2c_client *client)
 /* ----------------------------------------------------------------------- */
 
 static const struct i2c_device_id saa7110_id[] = {
+<<<<<<< HEAD
 	{ "saa7110", 0 },
+=======
+	{ "saa7110" },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, saa7110_id);

@@ -76,6 +76,12 @@ struct amdgpu_job {
 	/* job_run_counter >= 1 means a resubmit job */
 	uint32_t		job_run_counter;
 
+<<<<<<< HEAD
+=======
+	/* enforce isolation */
+	bool			enforce_isolation;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	uint32_t		num_ibs;
 	struct amdgpu_ib	ibs[];
 };

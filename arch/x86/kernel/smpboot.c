@@ -60,6 +60,10 @@
 #include <linux/stackprotector.h>
 #include <linux/cpuhotplug.h>
 #include <linux/mc146818rtc.h>
+<<<<<<< HEAD
+=======
+#include <linux/acpi.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/acpi.h>
 #include <asm/cacheinfo.h>
@@ -246,7 +250,11 @@ static void notrace start_secondary(void *unused)
 		__flush_tlb_all();
 	}
 
+<<<<<<< HEAD
 	cpu_init_exception_handling();
+=======
+	cpu_init_exception_handling(false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Load the microcode before reaching the AP alive synchronization

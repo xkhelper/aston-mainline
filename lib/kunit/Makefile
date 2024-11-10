@@ -9,7 +9,12 @@ kunit-objs +=				test.o \
 					try-catch.o \
 					executor.o \
 					attributes.o \
+<<<<<<< HEAD
 					device.o
+=======
+					device.o \
+					platform.o
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 ifeq ($(CONFIG_KUNIT_DEBUGFS),y)
 kunit-objs +=				debugfs.o
@@ -19,6 +24,10 @@ endif
 obj-y +=				hooks.o
 
 obj-$(CONFIG_KUNIT_TEST) +=		kunit-test.o
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_KUNIT_TEST) +=		platform-test.o
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 # string-stream-test compiles built-in only.
 ifeq ($(CONFIG_KUNIT_TEST),y)

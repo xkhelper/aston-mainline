@@ -575,7 +575,13 @@ static int hpre_send(struct hpre_ctx *ctx, struct hpre_sqe *msg)
 
 	do {
 		atomic64_inc(&dfx[HPRE_SEND_CNT].value);
+<<<<<<< HEAD
 		ret = hisi_qp_send(ctx->qp, msg);
+=======
+		spin_lock_bh(&ctx->req_lock);
+		ret = hisi_qp_send(ctx->qp, msg);
+		spin_unlock_bh(&ctx->req_lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret != -EBUSY)
 			break;
 		atomic64_inc(&dfx[HPRE_SEND_BUSY_CNT].value);

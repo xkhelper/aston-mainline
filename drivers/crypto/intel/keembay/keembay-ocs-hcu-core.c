@@ -1150,6 +1150,10 @@ static const struct of_device_id kmb_ocs_hcu_of_match[] = {
 	},
 	{}
 };
+<<<<<<< HEAD
+=======
+MODULE_DEVICE_TABLE(of, kmb_ocs_hcu_of_match);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void kmb_ocs_hcu_remove(struct platform_device *pdev)
 {

@@ -237,14 +237,26 @@ static int pop_vlan(struct sk_buff *skb, struct sw_flow_key *key)
 static int push_vlan(struct sk_buff *skb, struct sw_flow_key *key,
 		     const struct ovs_action_push_vlan *vlan)
 {
+<<<<<<< HEAD
+=======
+	int err;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (skb_vlan_tag_present(skb)) {
 		invalidate_flow_key(key);
 	} else {
 		key->eth.vlan.tci = vlan->vlan_tci;
 		key->eth.vlan.tpid = vlan->vlan_tpid;
 	}
+<<<<<<< HEAD
 	return skb_vlan_push(skb, vlan->vlan_tpid,
 			     ntohs(vlan->vlan_tci) & ~VLAN_CFI_MASK);
+=======
+	err = skb_vlan_push(skb, vlan->vlan_tpid,
+			    ntohs(vlan->vlan_tci) & ~VLAN_CFI_MASK);
+	skb_reset_mac_len(skb);
+	return err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* 'src' is already properly masked. */

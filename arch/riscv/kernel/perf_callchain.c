@@ -6,6 +6,7 @@
 
 #include <asm/stacktrace.h>
 
+<<<<<<< HEAD
 /*
  * Get the return address for a single stackframe and return a pointer to the
  * next frame tail.
@@ -37,6 +38,11 @@ static unsigned long user_backtrace(struct perf_callchain_entry_ctx *entry,
 		return 0;
 
 	return fp;
+=======
+static bool fill_callchain(void *entry, unsigned long pc)
+{
+	return perf_callchain_store(entry, pc) == 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -56,6 +62,7 @@ static unsigned long user_backtrace(struct perf_callchain_entry_ctx *entry,
 void perf_callchain_user(struct perf_callchain_entry_ctx *entry,
 			 struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	unsigned long fp = 0;
 
 	fp = regs->s0;
@@ -69,6 +76,9 @@ void perf_callchain_user(struct perf_callchain_entry_ctx *entry,
 static bool fill_callchain(void *entry, unsigned long pc)
 {
 	return perf_callchain_store(entry, pc) == 0;
+=======
+	arch_stack_walk_user(fill_callchain, entry, regs);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void perf_callchain_kernel(struct perf_callchain_entry_ctx *entry,

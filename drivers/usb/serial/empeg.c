@@ -43,7 +43,10 @@ MODULE_DEVICE_TABLE(usb, id_table);
 
 static struct usb_serial_driver empeg_device = {
 	.driver = {
+<<<<<<< HEAD
 		.owner =	THIS_MODULE,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name =		"empeg",
 	},
 	.id_table =		id_table,

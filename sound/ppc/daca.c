@@ -69,7 +69,11 @@ static int daca_set_volume(struct pmac_daca *mix)
 	data[1] |= mix->deemphasis ? 0x40 : 0;
 	if (i2c_smbus_write_block_data(mix->i2c.client, DACA_REG_AVOL,
 				       2, data) < 0) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "failed to set volume \n");
+=======
+		dev_err(&mix->i2c.client->dev, "failed to set volume\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 	return 0;

@@ -25,6 +25,7 @@
 	clock-frequency = <32768>;
 };
 
+<<<<<<< HEAD
 &apb_clk {
 	clock-frequency = <62500000>;
 };
@@ -37,6 +38,8 @@
 	clock-frequency = <100000000>;
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &dmac0 {
 	status = "okay";
 };

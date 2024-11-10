@@ -204,19 +204,36 @@ static void pqm_clean_queue_resource(struct process_queue_manager *pqm,
 	}
 
 	if (dev->kfd->shared_resources.enable_mes) {
+<<<<<<< HEAD
 		amdgpu_amdkfd_free_gtt_mem(dev->adev, pqn->q->gang_ctx_bo);
 		if (pqn->q->wptr_bo)
 			amdgpu_amdkfd_free_gtt_mem(dev->adev, pqn->q->wptr_bo);
+=======
+		amdgpu_amdkfd_free_gtt_mem(dev->adev, &pqn->q->gang_ctx_bo);
+		amdgpu_amdkfd_free_gtt_mem(dev->adev, (void **)&pqn->q->wptr_bo_gart);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
 void pqm_uninit(struct process_queue_manager *pqm)
 {
 	struct process_queue_node *pqn, *next;
+<<<<<<< HEAD
 
 	list_for_each_entry_safe(pqn, next, &pqm->queues, process_queue_list) {
 		if (pqn->q)
 			pqm_clean_queue_resource(pqm, pqn);
+=======
+	struct kfd_process_device *pdd;
+
+	list_for_each_entry_safe(pqn, next, &pqm->queues, process_queue_list) {
+		if (pqn->q) {
+			pdd = kfd_get_process_device_data(pqn->q->device, pqm->process);
+			kfd_queue_unref_bo_vas(pdd, &pqn->q->properties);
+			kfd_queue_release_buffers(pdd, &pqn->q->properties);
+			pqm_clean_queue_resource(pqm, pqn);
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		kfd_procfs_del_queue(pqn->q);
 		uninit_queue(pqn->q);
@@ -231,8 +248,12 @@ void pqm_uninit(struct process_queue_manager *pqm)
 static int init_user_queue(struct process_queue_manager *pqm,
 				struct kfd_node *dev, struct queue **q,
 				struct queue_properties *q_properties,
+<<<<<<< HEAD
 				struct file *f, struct amdgpu_bo *wptr_bo,
 				unsigned int qid)
+=======
+				struct file *f, unsigned int qid)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int retval;
 
@@ -263,12 +284,39 @@ static int init_user_queue(struct process_queue_manager *pqm,
 			goto cleanup;
 		}
 		memset((*q)->gang_ctx_cpu_ptr, 0, AMDGPU_MES_GANG_CTX_SIZE);
+<<<<<<< HEAD
 		(*q)->wptr_bo = wptr_bo;
+=======
+
+		/* Starting with GFX11, wptr BOs must be mapped to GART for MES to determine work
+		 * on unmapped queues for usermode queue oversubscription (no aggregated doorbell)
+		 */
+		if (((dev->adev->mes.sched_version & AMDGPU_MES_API_VERSION_MASK)
+		    >> AMDGPU_MES_API_VERSION_SHIFT) >= 2) {
+			if (dev->adev != amdgpu_ttm_adev(q_properties->wptr_bo->tbo.bdev)) {
+				pr_err("Queue memory allocated to wrong device\n");
+				retval = -EINVAL;
+				goto free_gang_ctx_bo;
+			}
+
+			retval = amdgpu_amdkfd_map_gtt_bo_to_gart(q_properties->wptr_bo,
+								  &(*q)->wptr_bo_gart);
+			if (retval) {
+				pr_err("Failed to map wptr bo to GART\n");
+				goto free_gang_ctx_bo;
+			}
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	pr_debug("PQM After init queue");
 	return 0;
 
+<<<<<<< HEAD
+=======
+free_gang_ctx_bo:
+	amdgpu_amdkfd_free_gtt_mem(dev->adev, (*q)->gang_ctx_bo);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 cleanup:
 	uninit_queue(*q);
 	*q = NULL;
@@ -280,7 +328,10 @@ int pqm_create_queue(struct process_queue_manager *pqm,
 			    struct file *f,
 			    struct queue_properties *properties,
 			    unsigned int *qid,
+<<<<<<< HEAD
 			    struct amdgpu_bo *wptr_bo,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    const struct kfd_criu_queue_priv_data *q_data,
 			    const void *restore_mqd,
 			    const void *restore_ctl_stack,
@@ -345,13 +396,21 @@ int pqm_create_queue(struct process_queue_manager *pqm,
 	switch (type) {
 	case KFD_QUEUE_TYPE_SDMA:
 	case KFD_QUEUE_TYPE_SDMA_XGMI:
+<<<<<<< HEAD
+=======
+	case KFD_QUEUE_TYPE_SDMA_BY_ENG_ID:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* SDMA queues are always allocated statically no matter
 		 * which scheduler mode is used. We also do not need to
 		 * check whether a SDMA queue can be allocated here, because
 		 * allocate_sdma_queue() in create_queue() has the
 		 * corresponding check logic.
 		 */
+<<<<<<< HEAD
 		retval = init_user_queue(pqm, dev, &q, properties, f, wptr_bo, *qid);
+=======
+		retval = init_user_queue(pqm, dev, &q, properties, f, *qid);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (retval != 0)
 			goto err_create_queue;
 		pqn->q = q;
@@ -372,7 +431,11 @@ int pqm_create_queue(struct process_queue_manager *pqm,
 			goto err_create_queue;
 		}
 
+<<<<<<< HEAD
 		retval = init_user_queue(pqm, dev, &q, properties, f, wptr_bo, *qid);
+=======
+		retval = init_user_queue(pqm, dev, &q, properties, f, *qid);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (retval != 0)
 			goto err_create_queue;
 		pqn->q = q;
@@ -490,7 +553,14 @@ int pqm_destroy_queue(struct process_queue_manager *pqm, unsigned int qid)
 	}
 
 	if (pqn->q) {
+<<<<<<< HEAD
 		kfd_procfs_del_queue(pqn->q);
+=======
+		retval = kfd_queue_unref_bo_vas(pdd, &pqn->q->properties);
+		if (retval)
+			goto err_destroy_queue;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dqm = pqn->q->device->dqm;
 		retval = dqm->ops.destroy_queue(dqm, &pdd->qpd, pqn->q);
 		if (retval) {
@@ -500,7 +570,12 @@ int pqm_destroy_queue(struct process_queue_manager *pqm, unsigned int qid)
 			if (retval != -ETIME)
 				goto err_destroy_queue;
 		}
+<<<<<<< HEAD
 
+=======
+		kfd_procfs_del_queue(pqn->q);
+		kfd_queue_release_buffers(pdd, &pqn->q->properties);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pqm_clean_queue_resource(pqm, pqn);
 		uninit_queue(pqn->q);
 	}
@@ -524,11 +599,49 @@ int pqm_update_queue_properties(struct process_queue_manager *pqm,
 	struct process_queue_node *pqn;
 
 	pqn = get_queue_by_qid(pqm, qid);
+<<<<<<< HEAD
 	if (!pqn) {
+=======
+	if (!pqn || !pqn->q) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pr_debug("No queue %d exists for update operation\n", qid);
 		return -EFAULT;
 	}
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Update with NULL ring address is used to disable the queue
+	 */
+	if (p->queue_address && p->queue_size) {
+		struct kfd_process_device *pdd;
+		struct amdgpu_vm *vm;
+		struct queue *q = pqn->q;
+		int err;
+
+		pdd = kfd_get_process_device_data(q->device, q->process);
+		if (!pdd)
+			return -ENODEV;
+		vm = drm_priv_to_vm(pdd->drm_priv);
+		err = amdgpu_bo_reserve(vm->root.bo, false);
+		if (err)
+			return err;
+
+		if (kfd_queue_buffer_get(vm, (void *)p->queue_address, &p->ring_bo,
+					 p->queue_size)) {
+			pr_debug("ring buf 0x%llx size 0x%llx not mapped on GPU\n",
+				 p->queue_address, p->queue_size);
+			return -EFAULT;
+		}
+
+		kfd_queue_unref_bo_va(vm, &pqn->q->properties.ring_bo);
+		kfd_queue_buffer_put(&pqn->q->properties.ring_bo);
+		amdgpu_bo_unreserve(vm->root.bo);
+
+		pqn->q->properties.ring_bo = p->ring_bo;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pqn->q->properties.queue_address = p->queue_address;
 	pqn->q->properties.queue_size = p->queue_size;
 	pqn->q->properties.queue_percent = p->queue_percent;
@@ -971,7 +1084,11 @@ int kfd_criu_restore_queue(struct kfd_process *p,
 
 	print_queue_properties(&qp);
 
+<<<<<<< HEAD
 	ret = pqm_create_queue(&p->pqm, pdd->dev, NULL, &qp, &queue_id, NULL, q_data, mqd, ctl_stack,
+=======
+	ret = pqm_create_queue(&p->pqm, pdd->dev, NULL, &qp, &queue_id, q_data, mqd, ctl_stack,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				NULL);
 	if (ret) {
 		pr_err("Failed to create new queue err:%d\n", ret);
@@ -988,6 +1105,10 @@ exit:
 		pr_debug("Queue id %d was restored successfully\n", queue_id);
 
 	kfree(q_data);
+<<<<<<< HEAD
+=======
+	kfree(q_extra_data);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }

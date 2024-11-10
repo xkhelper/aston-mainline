@@ -75,3 +75,7 @@ obj-$(CONFIG_SND_SOC)	+= uniphier/
 obj-$(CONFIG_SND_SOC)	+= ux500/
 obj-$(CONFIG_SND_SOC)	+= xilinx/
 obj-$(CONFIG_SND_SOC)	+= xtensa/
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_SND_SOC)	+= sdw_utils/
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

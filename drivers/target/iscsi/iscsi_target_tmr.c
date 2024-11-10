@@ -8,7 +8,11 @@
  *
  ******************************************************************************/
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <scsi/scsi_proto.h>
 #include <scsi/iscsi_proto.h>
 #include <target/target_core_base.h>

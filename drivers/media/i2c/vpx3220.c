@@ -535,9 +535,15 @@ static void vpx3220_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id vpx3220_id[] = {
+<<<<<<< HEAD
 	{ "vpx3220a", 0 },
 	{ "vpx3216b", 0 },
 	{ "vpx3214c", 0 },
+=======
+	{ "vpx3220a" },
+	{ "vpx3216b" },
+	{ "vpx3214c" },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, vpx3220_id);

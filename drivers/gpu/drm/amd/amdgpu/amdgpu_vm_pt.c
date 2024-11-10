@@ -383,6 +383,7 @@ int amdgpu_vm_pt_clear(struct amdgpu_device *adev, struct amdgpu_vm *vm,
 	if (r)
 		return r;
 
+<<<<<<< HEAD
 	if (vmbo->shadow) {
 		struct amdgpu_bo *shadow = vmbo->shadow;
 
@@ -391,6 +392,8 @@ int amdgpu_vm_pt_clear(struct amdgpu_device *adev, struct amdgpu_vm *vm,
 			return r;
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!drm_dev_enter(adev_to_drm(adev), &idx))
 		return -ENODEV;
 
@@ -403,7 +406,11 @@ int amdgpu_vm_pt_clear(struct amdgpu_device *adev, struct amdgpu_vm *vm,
 	params.vm = vm;
 	params.immediate = immediate;
 
+<<<<<<< HEAD
 	r = vm->update_funcs->prepare(&params, NULL, AMDGPU_SYNC_EXPLICIT);
+=======
+	r = vm->update_funcs->prepare(&params, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (r)
 		goto exit;
 
@@ -448,10 +455,14 @@ int amdgpu_vm_pt_create(struct amdgpu_device *adev, struct amdgpu_vm *vm,
 			int32_t xcp_id)
 {
 	struct amdgpu_bo_param bp;
+<<<<<<< HEAD
 	struct amdgpu_bo *bo;
 	struct dma_resv *resv;
 	unsigned int num_entries;
 	int r;
+=======
+	unsigned int num_entries;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	memset(&bp, 0, sizeof(bp));
 
@@ -484,6 +495,7 @@ int amdgpu_vm_pt_create(struct amdgpu_device *adev, struct amdgpu_vm *vm,
 	if (vm->root.bo)
 		bp.resv = vm->root.bo->tbo.base.resv;
 
+<<<<<<< HEAD
 	r = amdgpu_bo_create_vm(adev, &bp, vmbo);
 	if (r)
 		return r;
@@ -520,6 +532,9 @@ int amdgpu_vm_pt_create(struct amdgpu_device *adev, struct amdgpu_vm *vm,
 	amdgpu_bo_add_to_shadow_list(*vmbo);
 
 	return 0;
+=======
+	return amdgpu_bo_create_vm(adev, &bp, vmbo);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -569,7 +584,10 @@ static int amdgpu_vm_pt_alloc(struct amdgpu_device *adev,
 	return 0;
 
 error_free_pt:
+<<<<<<< HEAD
 	amdgpu_bo_unref(&pt->shadow);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	amdgpu_bo_unref(&pt_bo);
 	return r;
 }
@@ -581,17 +599,23 @@ error_free_pt:
  */
 static void amdgpu_vm_pt_free(struct amdgpu_vm_bo_base *entry)
 {
+<<<<<<< HEAD
 	struct amdgpu_bo *shadow;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!entry->bo)
 		return;
 
 	entry->bo->vm_bo = NULL;
+<<<<<<< HEAD
 	shadow = amdgpu_bo_shadowed(entry->bo);
 	if (shadow) {
 		ttm_bo_set_bulk_move(&shadow->tbo, NULL);
 		amdgpu_bo_unref(&shadow);
 	}
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ttm_bo_set_bulk_move(&entry->bo->tbo, NULL);
 
 	spin_lock(&entry->vm->status_lock);

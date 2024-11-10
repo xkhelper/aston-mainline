@@ -22,6 +22,11 @@
 #define CREATE_TRACE_POINTS
 #include <trace/events/dlm.h>
 
+<<<<<<< HEAD
+=======
+struct workqueue_struct *dlm_wq;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int __init init_dlm(void)
 {
 	int error;
@@ -50,10 +55,24 @@ static int __init init_dlm(void)
 	if (error)
 		goto out_user;
 
+<<<<<<< HEAD
+=======
+	dlm_wq = alloc_workqueue("dlm_wq", 0, 0);
+	if (!dlm_wq) {
+		error = -ENOMEM;
+		goto out_plock;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	printk("DLM installed\n");
 
 	return 0;
 
+<<<<<<< HEAD
+=======
+ out_plock:
+	dlm_plock_exit();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  out_user:
 	dlm_user_exit();
  out_debug:
@@ -70,6 +89,11 @@ static int __init init_dlm(void)
 
 static void __exit exit_dlm(void)
 {
+<<<<<<< HEAD
+=======
+	/* be sure every pending work e.g. freeing is done */
+	destroy_workqueue(dlm_wq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dlm_plock_exit();
 	dlm_user_exit();
 	dlm_config_exit();

@@ -44,6 +44,19 @@ struct mgr_ctx {
 	struct mgr_stats stats;
 };
 
+<<<<<<< HEAD
+=======
+/*
+ * Wrappers to avoid cast warnings when passing action functions directly
+ * to kunit_add_action().
+ */
+KUNIT_DEFINE_ACTION_WRAPPER(sg_free_table_wrapper, sg_free_table,
+			    struct sg_table *);
+
+KUNIT_DEFINE_ACTION_WRAPPER(fpga_image_info_free_wrapper, fpga_image_info_free,
+			    struct fpga_image_info *);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * init_test_buffer() - Allocate and initialize a test image in a buffer.
  * @test: KUnit test context object.
@@ -257,6 +270,12 @@ static void fpga_mgr_test_img_load_sgt(struct kunit *test)
 	KUNIT_ASSERT_EQ(test, ret, 0);
 	sg_init_one(sgt->sgl, img_buf, IMAGE_SIZE);
 
+<<<<<<< HEAD
+=======
+	ret = kunit_add_action_or_reset(test, sg_free_table_wrapper, sgt);
+	KUNIT_ASSERT_EQ(test, ret, 0);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ctx->img_info->sgt = sgt;
 
 	ret = fpga_mgr_load(ctx->mgr, ctx->img_info);
@@ -273,13 +292,20 @@ static void fpga_mgr_test_img_load_sgt(struct kunit *test)
 	KUNIT_EXPECT_EQ(test, ctx->stats.op_write_init_seq, ctx->stats.op_parse_header_seq + 1);
 	KUNIT_EXPECT_EQ(test, ctx->stats.op_write_sg_seq, ctx->stats.op_parse_header_seq + 2);
 	KUNIT_EXPECT_EQ(test, ctx->stats.op_write_complete_seq, ctx->stats.op_parse_header_seq + 3);
+<<<<<<< HEAD
 
 	sg_free_table(ctx->img_info->sgt);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int fpga_mgr_test_init(struct kunit *test)
 {
 	struct mgr_ctx *ctx;
+<<<<<<< HEAD
+=======
+	int ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ctx = kunit_kzalloc(test, sizeof(*ctx), GFP_KERNEL);
 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
@@ -294,11 +320,18 @@ static int fpga_mgr_test_init(struct kunit *test)
 	ctx->img_info = fpga_image_info_alloc(ctx->dev);
 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx->img_info);
 
+<<<<<<< HEAD
+=======
+	ret = kunit_add_action_or_reset(test, fpga_image_info_free_wrapper, ctx->img_info);
+	KUNIT_ASSERT_EQ(test, ret, 0);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	test->priv = ctx;
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static void fpga_mgr_test_exit(struct kunit *test)
 {
 	struct mgr_ctx *ctx = test->priv;
@@ -307,6 +340,8 @@ static void fpga_mgr_test_exit(struct kunit *test)
 	kunit_device_unregister(test, ctx->dev);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct kunit_case fpga_mgr_test_cases[] = {
 	KUNIT_CASE(fpga_mgr_test_get),
 	KUNIT_CASE(fpga_mgr_test_lock),
@@ -318,7 +353,10 @@ static struct kunit_case fpga_mgr_test_cases[] = {
 static struct kunit_suite fpga_mgr_suite = {
 	.name = "fpga_mgr",
 	.init = fpga_mgr_test_init,
+<<<<<<< HEAD
 	.exit = fpga_mgr_test_exit,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.test_cases = fpga_mgr_test_cases,
 };
 

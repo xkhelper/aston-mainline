@@ -187,7 +187,10 @@ static int regs_dbg_release(struct inode *inode, struct file *file)
 static const struct file_operations queue_dbg_fops = {
 	.owner		= THIS_MODULE,
 	.open		= queue_dbg_open,
+<<<<<<< HEAD
 	.llseek		= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.read		= queue_dbg_read,
 	.release	= queue_dbg_release,
 };

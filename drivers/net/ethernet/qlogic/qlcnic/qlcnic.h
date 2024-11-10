@@ -1608,7 +1608,10 @@ void qlcnic_release_tx_buffers(struct qlcnic_adapter *,
 			       struct qlcnic_host_tx_ring *);
 
 int qlcnic_check_fw_status(struct qlcnic_adapter *adapter);
+<<<<<<< HEAD
 void qlcnic_watchdog_task(struct work_struct *work);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void qlcnic_post_rx_buffers(struct qlcnic_adapter *adapter,
 		struct qlcnic_host_rds_ring *rds_ring, u8 ring_id);
 void qlcnic_set_multi(struct net_device *netdev);

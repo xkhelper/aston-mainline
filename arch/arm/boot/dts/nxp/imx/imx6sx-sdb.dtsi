@@ -183,12 +183,25 @@
 		};
 	};
 
+<<<<<<< HEAD
+=======
+	spdif_out: spdif-out {
+		compatible = "linux,spdif-dit";
+		#sound-dai-cells = <0>;
+	};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sound-spdif {
 		compatible = "fsl,imx6sx-sdb-spdif",
 			     "fsl,imx-audio-spdif";
 		model = "imx-spdif";
+<<<<<<< HEAD
 		spdif-controller = <&spdif>;
 		spdif-out;
+=======
+		audio-cpu = <&spdif>;
+		audio-codec = <&spdif_out>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 };

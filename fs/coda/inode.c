@@ -119,6 +119,7 @@ static const struct fs_parameter_spec coda_param_specs[] = {
 	{}
 };
 
+<<<<<<< HEAD
 static int coda_parse_fd(struct fs_context *fc, int fd)
 {
 	struct coda_fs_context *ctx = fc->fs_private;
@@ -138,12 +139,48 @@ static int coda_parse_fd(struct fs_context *fc, int fd)
 	idx = iminor(inode);
 	fdput(f);
 
+=======
+static int coda_set_idx(struct fs_context *fc, struct file *file)
+{
+	struct coda_fs_context *ctx = fc->fs_private;
+	struct inode *inode;
+	int idx;
+
+	inode = file_inode(file);
+	if (!S_ISCHR(inode->i_mode) || imajor(inode) != CODA_PSDEV_MAJOR) {
+		return invalf(fc, "coda: Not coda psdev");
+	}
+	idx = iminor(inode);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (idx < 0 || idx >= MAX_CODADEVS)
 		return invalf(fc, "coda: Bad minor number");
 	ctx->idx = idx;
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int coda_parse_fd(struct fs_context *fc, struct fs_parameter *param,
+			 struct fs_parse_result *result)
+{
+	struct file *file;
+	int err;
+
+	if (param->type == fs_value_is_file) {
+		file = param->file;
+		param->file = NULL;
+	} else {
+		file = fget(result->uint_32);
+	}
+	if (!file)
+		return -EBADF;
+
+	err = coda_set_idx(fc, file);
+	fput(file);
+	return err;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int coda_parse_param(struct fs_context *fc, struct fs_parameter *param)
 {
 	struct fs_parse_result result;
@@ -155,7 +192,11 @@ static int coda_parse_param(struct fs_context *fc, struct fs_parameter *param)
 
 	switch (opt) {
 	case Opt_fd:
+<<<<<<< HEAD
 		return coda_parse_fd(fc, result.uint_32);
+=======
+		return coda_parse_fd(fc, param, &result);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
@@ -167,6 +208,10 @@ static int coda_parse_param(struct fs_context *fc, struct fs_parameter *param)
  */
 static int coda_parse_monolithic(struct fs_context *fc, void *_data)
 {
+<<<<<<< HEAD
+=======
+	struct file *file;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct coda_mount_data *data = _data;
 
 	if (!data)
@@ -175,7 +220,15 @@ static int coda_parse_monolithic(struct fs_context *fc, void *_data)
 	if (data->version != CODA_MOUNT_VERSION)
 		return invalf(fc, "coda: Bad mount version");
 
+<<<<<<< HEAD
 	coda_parse_fd(fc, data->fd);
+=======
+	file = fget(data->fd);
+	if (file) {
+		coda_set_idx(fc, file);
+		fput(file);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 

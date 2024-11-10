@@ -327,7 +327,11 @@ MODULE_DEVICE_TABLE(of, psc_ac97_match);
 
 static struct platform_driver psc_ac97_driver = {
 	.probe = psc_ac97_of_probe,
+<<<<<<< HEAD
 	.remove_new = psc_ac97_of_remove,
+=======
+	.remove = psc_ac97_of_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "mpc5200-psc-ac97",
 		.of_match_table = psc_ac97_match,

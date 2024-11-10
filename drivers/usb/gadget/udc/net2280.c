@@ -56,7 +56,11 @@
 
 #include <asm/byteorder.h>
 #include <asm/irq.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define	DRIVER_DESC		"PLX NET228x/USB338x USB Peripheral Controller"
 #define	DRIVER_VERSION		"2005 Sept 27/v3.0"

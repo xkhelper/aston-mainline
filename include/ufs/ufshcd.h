@@ -17,6 +17,10 @@
 #include <linux/blk-mq.h>
 #include <linux/devfreq.h>
 #include <linux/fault-inject.h>
+<<<<<<< HEAD
+=======
+#include <linux/debugfs.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/msi.h>
 #include <linux/pm_runtime.h>
 #include <linux/dma-direction.h>

@@ -89,7 +89,11 @@ void btrfs_release_global_block_rsv(struct btrfs_fs_info *fs_info);
 struct btrfs_block_rsv *btrfs_use_block_rsv(struct btrfs_trans_handle *trans,
 					    struct btrfs_root *root,
 					    u32 blocksize);
+<<<<<<< HEAD
 int btrfs_check_trunc_cache_free_space(struct btrfs_fs_info *fs_info,
+=======
+int btrfs_check_trunc_cache_free_space(const struct btrfs_fs_info *fs_info,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       struct btrfs_block_rsv *rsv);
 static inline void btrfs_unuse_block_rsv(struct btrfs_fs_info *fs_info,
 					 struct btrfs_block_rsv *block_rsv,

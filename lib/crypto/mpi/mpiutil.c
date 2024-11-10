@@ -20,6 +20,7 @@
 
 #include "mpi-internal.h"
 
+<<<<<<< HEAD
 /* Constants allocated right away at startup.  */
 static MPI constants[MPI_NUMBER_OF_CONSTANTS];
 
@@ -77,6 +78,8 @@ MPI mpi_const(enum gcry_mpi_constants no)
 }
 EXPORT_SYMBOL_GPL(mpi_const);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /****************
  * Note:  It was a bad idea to use the number of limbs to allocate
  *	  because on a alpha the limbs are large but we normally need
@@ -163,6 +166,7 @@ int mpi_resize(MPI a, unsigned nlimbs)
 	return 0;
 }
 
+<<<<<<< HEAD
 void mpi_clear(MPI a)
 {
 	if (!a)
@@ -172,6 +176,8 @@ void mpi_clear(MPI a)
 }
 EXPORT_SYMBOL_GPL(mpi_clear);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void mpi_free(MPI a)
 {
 	if (!a)
@@ -199,6 +205,11 @@ MPI mpi_copy(MPI a)
 
 	if (a) {
 		b = mpi_alloc(a->nlimbs);
+<<<<<<< HEAD
+=======
+		if (!b)
+			return NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		b->nlimbs = a->nlimbs;
 		b->sign = a->sign;
 		b->flags = a->flags;
@@ -210,6 +221,7 @@ MPI mpi_copy(MPI a)
 	return b;
 }
 
+<<<<<<< HEAD
 /****************
  * This function allocates an MPI which is optimized to hold
  * a value as large as the one given in the argument and allocates it
@@ -326,5 +338,7 @@ void mpi_swap_cond(MPI a, MPI b, unsigned long swap)
 	b->sign = b->sign ^ x;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_DESCRIPTION("Multiprecision maths library");
 MODULE_LICENSE("GPL");

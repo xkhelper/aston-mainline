@@ -325,6 +325,7 @@ EXPORT_SYMBOL_GPL(pwm_adjust_config);
  *
  * Returns: 0 on success or a negative error code on failure.
  */
+<<<<<<< HEAD
 int pwm_capture(struct pwm_device *pwm, struct pwm_capture *result,
 		unsigned long timeout)
 {
@@ -332,13 +333,27 @@ int pwm_capture(struct pwm_device *pwm, struct pwm_capture *result,
 		return -EINVAL;
 
 	if (!pwm->chip->ops->capture)
+=======
+static int pwm_capture(struct pwm_device *pwm, struct pwm_capture *result,
+		       unsigned long timeout)
+{
+	struct pwm_chip *chip = pwm->chip;
+	const struct pwm_ops *ops = chip->ops;
+
+	if (!ops->capture)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENOSYS;
 
 	guard(mutex)(&pwm_lock);
 
+<<<<<<< HEAD
 	return pwm->chip->ops->capture(pwm->chip, pwm, result, timeout);
 }
 EXPORT_SYMBOL_GPL(pwm_capture);
+=======
+	return ops->capture(chip, pwm, result, timeout);
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct pwm_chip *pwmchip_find_by_name(const char *name)
 {

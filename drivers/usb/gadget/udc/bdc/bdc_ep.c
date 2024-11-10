@@ -30,7 +30,11 @@
 #include <linux/pm.h>
 #include <linux/io.h>
 #include <linux/irq.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/platform_device.h>
 #include <linux/usb/composite.h>
 

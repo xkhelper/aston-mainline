@@ -63,8 +63,11 @@ struct amdgpu_mmhub_funcs {
 				uint64_t page_table_base);
 	void (*update_power_gating)(struct amdgpu_device *adev,
                                 bool enable);
+<<<<<<< HEAD
 	bool (*query_utcl2_poison_status)(struct amdgpu_device *adev,
 				int hub_inst);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct amdgpu_mmhub {

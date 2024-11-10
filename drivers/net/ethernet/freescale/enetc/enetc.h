@@ -184,10 +184,16 @@ static inline union enetc_rx_bd *enetc_rxbd(struct enetc_bdr *rx_ring, int i)
 {
 	int hw_idx = i;
 
+<<<<<<< HEAD
 #ifdef CONFIG_FSL_ENETC_PTP_CLOCK
 	if (rx_ring->ext_en)
 		hw_idx = 2 * i;
 #endif
+=======
+	if (IS_ENABLED(CONFIG_FSL_ENETC_PTP_CLOCK) && rx_ring->ext_en)
+		hw_idx = 2 * i;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return &(((union enetc_rx_bd *)rx_ring->bd_base)[hw_idx]);
 }
 
@@ -199,10 +205,15 @@ static inline void enetc_rxbd_next(struct enetc_bdr *rx_ring,
 
 	new_rxbd++;
 
+<<<<<<< HEAD
 #ifdef CONFIG_FSL_ENETC_PTP_CLOCK
 	if (rx_ring->ext_en)
 		new_rxbd++;
 #endif
+=======
+	if (IS_ENABLED(CONFIG_FSL_ENETC_PTP_CLOCK) && rx_ring->ext_en)
+		new_rxbd++;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (unlikely(++new_index == rx_ring->bd_count)) {
 		new_rxbd = rx_ring->bd_base;
@@ -328,6 +339,10 @@ enum enetc_active_offloads {
 
 enum enetc_flags_bit {
 	ENETC_TX_ONESTEP_TSTAMP_IN_PROGRESS = 0,
+<<<<<<< HEAD
+=======
+	ENETC_TX_DOWN,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* interrupt coalescing modes */

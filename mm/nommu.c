@@ -126,6 +126,14 @@ void *__vmalloc_noprof(unsigned long size, gfp_t gfp_mask)
 }
 EXPORT_SYMBOL(__vmalloc_noprof);
 
+<<<<<<< HEAD
+=======
+void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+{
+	return krealloc_noprof(p, size, (flags | __GFP_COMP) & ~__GFP_HIGHMEM);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
 		unsigned long start, unsigned long end, gfp_t gfp_mask,
 		pgprot_t prot, unsigned long vm_flags, int node,
@@ -584,8 +592,12 @@ static int delete_vma_from_mm(struct vm_area_struct *vma)
  */
 static void delete_vma(struct mm_struct *mm, struct vm_area_struct *vma)
 {
+<<<<<<< HEAD
 	if (vma->vm_ops && vma->vm_ops->close)
 		vma->vm_ops->close(vma);
+=======
+	vma_close(vma);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (vma->vm_file)
 		fput(vma->vm_file);
 	put_nommu_region(vma->vm_region);
@@ -838,7 +850,11 @@ static unsigned long determine_vm_flags(struct file *file,
 {
 	unsigned long vm_flags;
 
+<<<<<<< HEAD
 	vm_flags = calc_vm_prot_bits(prot, 0) | calc_vm_flag_bits(flags);
+=======
+	vm_flags = calc_vm_prot_bits(prot, 0) | calc_vm_flag_bits(file, flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!file) {
 		/*
@@ -880,7 +896,11 @@ static int do_mmap_shared_file(struct vm_area_struct *vma)
 {
 	int ret;
 
+<<<<<<< HEAD
 	ret = call_mmap(vma->vm_file, vma);
+=======
+	ret = mmap_file(vma->vm_file, vma);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret == 0) {
 		vma->vm_region->vm_top = vma->vm_region->vm_end;
 		return 0;
@@ -913,7 +933,11 @@ static int do_mmap_private(struct vm_area_struct *vma,
 	 * happy.
 	 */
 	if (capabilities & NOMMU_MAP_DIRECT) {
+<<<<<<< HEAD
 		ret = call_mmap(vma->vm_file, vma);
+=======
+		ret = mmap_file(vma->vm_file, vma);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* shouldn't return success if we're not sharing */
 		if (WARN_ON_ONCE(!is_nommu_shared_mapping(vma->vm_flags)))
 			ret = -ENOSYS;
@@ -1573,12 +1597,15 @@ SYSCALL_DEFINE5(mremap, unsigned long, addr, unsigned long, old_len,
 	return ret;
 }
 
+<<<<<<< HEAD
 struct page *follow_page(struct vm_area_struct *vma, unsigned long address,
 			 unsigned int foll_flags)
 {
 	return NULL;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
 		unsigned long pfn, unsigned long size, pgprot_t prot)
 {

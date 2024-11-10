@@ -37,7 +37,11 @@
 #define NO_TAIL_CALL_BARRIER __asm__ __volatile__("" : : : "memory");
 #endif
 
+<<<<<<< HEAD
 static int mmap_handler(struct perf_tool *tool __maybe_unused,
+=======
+static int mmap_handler(const struct perf_tool *tool __maybe_unused,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			union perf_event *event,
 			struct perf_sample *sample,
 			struct machine *machine)

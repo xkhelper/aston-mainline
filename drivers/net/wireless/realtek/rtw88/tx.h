@@ -27,6 +27,10 @@ struct rtw_tx_desc {
 #define RTW_TX_DESC_W0_BMC BIT(24)
 #define RTW_TX_DESC_W0_LS BIT(26)
 #define RTW_TX_DESC_W0_DISQSELSEQ BIT(31)
+<<<<<<< HEAD
+=======
+#define RTW_TX_DESC_W1_MACID GENMASK(7, 0)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define RTW_TX_DESC_W1_QSEL GENMASK(12, 8)
 #define RTW_TX_DESC_W1_RATE_ID GENMASK(20, 16)
 #define RTW_TX_DESC_W1_SEC_TYPE GENMASK(23, 22)

@@ -158,32 +158,52 @@ int snd_gus_create(struct snd_card *card,
 	/* allocate resources */
 	gus->gf1.res_port1 = request_region(port, 16, "GUS GF1 (Adlib/SB)");
 	if (!gus->gf1.res_port1) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "gus: can't grab SB port 0x%lx\n", port);
+=======
+		dev_err(card->dev, "gus: can't grab SB port 0x%lx\n", port);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		snd_gus_free(gus);
 		return -EBUSY;
 	}
 	gus->gf1.res_port2 = request_region(port + 0x100, 12, "GUS GF1 (Synth)");
 	if (!gus->gf1.res_port2) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "gus: can't grab synth port 0x%lx\n", port + 0x100);
+=======
+		dev_err(card->dev, "gus: can't grab synth port 0x%lx\n", port + 0x100);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		snd_gus_free(gus);
 		return -EBUSY;
 	}
 	if (irq >= 0 && request_irq(irq, snd_gus_interrupt, 0, "GUS GF1", (void *) gus)) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "gus: can't grab irq %d\n", irq);
+=======
+		dev_err(card->dev, "gus: can't grab irq %d\n", irq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		snd_gus_free(gus);
 		return -EBUSY;
 	}
 	gus->gf1.irq = irq;
 	card->sync_irq = irq;
 	if (request_dma(dma1, "GUS - 1")) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "gus: can't grab DMA1 %d\n", dma1);
+=======
+		dev_err(card->dev, "gus: can't grab DMA1 %d\n", dma1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		snd_gus_free(gus);
 		return -EBUSY;
 	}
 	gus->gf1.dma1 = dma1;
 	if (dma2 >= 0 && dma1 != dma2) {
 		if (request_dma(dma2, "GUS - 2")) {
+<<<<<<< HEAD
 			snd_printk(KERN_ERR "gus: can't grab DMA2 %d\n", dma2);
+=======
+			dev_err(card->dev, "gus: can't grab DMA2 %d\n", dma2);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			snd_gus_free(gus);
 			return -EBUSY;
 		}
@@ -229,7 +249,13 @@ static int snd_gus_detect_memory(struct snd_gus_card * gus)
 	snd_gf1_poke(gus, 0L, 0xaa);
 	snd_gf1_poke(gus, 1L, 0x55);
 	if (snd_gf1_peek(gus, 0L) != 0xaa || snd_gf1_peek(gus, 1L) != 0x55) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "plain GF1 card at 0x%lx without onboard DRAM?\n", gus->gf1.port);
+=======
+		dev_err(gus->card->dev,
+			"plain GF1 card at 0x%lx without onboard DRAM?\n",
+			gus->gf1.port);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENOMEM;
 	}
 	for (idx = 1, d = 0xab; idx < 4; idx++, d++) {
@@ -287,14 +313,22 @@ static int snd_gus_init_dma_irq(struct snd_gus_card * gus, int latches)
 	dma1 |= gus->equal_dma ? 0x40 : (dma2 << 3);
 
 	if ((dma1 & 7) == 0 || (dma2 & 7) == 0) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "Error! DMA isn't defined.\n");
+=======
+		dev_err(gus->card->dev, "Error! DMA isn't defined.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 	irq = gus->gf1.irq;
 	irq = abs(irq);
 	irq = irqs[irq & 0x0f];
 	if (irq == 0) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "Error! IRQ isn't defined.\n");
+=======
+		dev_err(gus->card->dev, "Error! IRQ isn't defined.\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 	irq |= 0x40;
@@ -357,7 +391,11 @@ static int snd_gus_check_version(struct snd_gus_card * gus)
 	val = inb(GUSP(gus, REGCNTRLS));
 	rev = inb(GUSP(gus, BOARDVERSION));
 	spin_unlock_irqrestore(&gus->reg_lock, flags);
+<<<<<<< HEAD
 	snd_printdd("GF1 [0x%lx] init - val = 0x%x, rev = 0x%x\n", gus->gf1.port, val, rev);
+=======
+	dev_dbg(card->dev, "GF1 [0x%lx] init - val = 0x%x, rev = 0x%x\n", gus->gf1.port, val, rev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	strcpy(card->driver, "GUS");
 	strcpy(card->longname, "Gravis UltraSound Classic (2.4)");
 	if ((val != 255 && (val & 0x06)) || (rev >= 5 && rev != 255)) {
@@ -382,8 +420,16 @@ static int snd_gus_check_version(struct snd_gus_card * gus)
 				strcpy(card->longname, "Gravis UltraSound Extreme");
 				gus->ess_flag = 1;
 			} else {
+<<<<<<< HEAD
 				snd_printk(KERN_ERR "unknown GF1 revision number at 0x%lx - 0x%x (0x%x)\n", gus->gf1.port, rev, val);
 				snd_printk(KERN_ERR "  please - report to <perex@perex.cz>\n");
+=======
+				dev_err(card->dev,
+					"unknown GF1 revision number at 0x%lx - 0x%x (0x%x)\n",
+					gus->gf1.port, rev, val);
+				dev_err(card->dev,
+					"  please - report to <perex@perex.cz>\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 		}
 	}
@@ -400,7 +446,11 @@ int snd_gus_initialize(struct snd_gus_card *gus)
 	if (!gus->interwave) {
 		err = snd_gus_check_version(gus);
 		if (err < 0) {
+<<<<<<< HEAD
 			snd_printk(KERN_ERR "version check failed\n");
+=======
+			dev_err(gus->card->dev, "version check failed\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return err;
 		}
 		err = snd_gus_detect_memory(gus);

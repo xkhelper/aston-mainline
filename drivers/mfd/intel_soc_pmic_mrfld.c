@@ -12,11 +12,18 @@
 #include <linux/mfd/intel_soc_pmic.h>
 #include <linux/mfd/intel_soc_pmic_mrfld.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/platform_device.h>
 #include <linux/regmap.h>
 
 #include <asm/intel_scu_ipc.h>
 
+=======
+#include <linux/platform_data/x86/intel_scu_ipc.h>
+#include <linux/platform_device.h>
+#include <linux/regmap.h>
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Level 2 IRQs
  *

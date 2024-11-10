@@ -174,7 +174,10 @@ struct auxtrace_record *hisi_ptt_recording_init(int *err,
 	}
 
 	pttr->hisi_ptt_pmu = hisi_ptt_pmu;
+<<<<<<< HEAD
 	pttr->itr.pmu = hisi_ptt_pmu;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pttr->itr.recording_options = hisi_ptt_recording_options;
 	pttr->itr.info_priv_size = hisi_ptt_info_priv_size;
 	pttr->itr.info_fill = hisi_ptt_info_fill;

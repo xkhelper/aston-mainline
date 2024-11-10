@@ -5,7 +5,11 @@
  * Copyright (C) 2014 Philipp Zabel, Pengutronix
  */
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/irqreturn.h>
 #include <linux/kernel.h>
 #include <linux/ktime.h>

@@ -35,11 +35,14 @@ struct tegra186_emc {
 	struct icc_provider provider;
 };
 
+<<<<<<< HEAD
 static inline struct tegra186_emc *to_tegra186_emc(struct icc_provider *provider)
 {
 	return container_of(provider, struct tegra186_emc, provider);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * debugfs interface
  *

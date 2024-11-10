@@ -46,10 +46,18 @@
 #define SVWKS_CSB5_REVISION_NEW	0x92 /* min PCI_REVISION_ID for UDMA5 (A2.0) */
 #define SVWKS_CSB6_REVISION	0xa0 /* min PCI_REVISION_ID for UDMA4 (A1.0) */
 
+<<<<<<< HEAD
 /* Seagate Barracuda ATA IV Family drives in UDMA mode 5
  * can overrun their FIFOs when used with the CSB5 */
 
 static const char *csb_bad_ata100[] = {
+=======
+/*
+ * Seagate Barracuda ATA IV Family drives in UDMA mode 5
+ * can overrun their FIFOs when used with the CSB5.
+ */
+static const char * const csb_bad_ata100[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	"ST320011A",
 	"ST340016A",
 	"ST360021A",
@@ -163,10 +171,18 @@ static unsigned int serverworks_osb4_filter(struct ata_device *adev, unsigned in
  *	@adev: ATA device
  *	@mask: Mask of proposed modes
  *
+<<<<<<< HEAD
  *	Check the blacklist and disable UDMA5 if matched
  */
 
 static unsigned int serverworks_csb_filter(struct ata_device *adev, unsigned int mask)
+=======
+ *	Check the list of devices with broken UDMA5 and
+ *	disable UDMA5 if matched.
+ */
+static unsigned int serverworks_csb_filter(struct ata_device *adev,
+					   unsigned int mask)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	const char *p;
 	char model_num[ATA_ID_PROD_LEN + 1];

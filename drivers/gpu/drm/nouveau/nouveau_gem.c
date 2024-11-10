@@ -567,10 +567,18 @@ retry:
 }
 
 static int
+<<<<<<< HEAD
 validate_list(struct nouveau_channel *chan, struct nouveau_cli *cli,
 	      struct list_head *list, struct drm_nouveau_gem_pushbuf_bo *pbbo)
 {
 	struct nouveau_drm *drm = chan->drm;
+=======
+validate_list(struct nouveau_channel *chan,
+	      struct list_head *list, struct drm_nouveau_gem_pushbuf_bo *pbbo)
+{
+	struct nouveau_cli *cli = chan->cli;
+	struct nouveau_drm *drm = cli->drm;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct nouveau_bo *nvbo;
 	int ret, relocs = 0;
 
@@ -642,7 +650,11 @@ nouveau_gem_pushbuf_validate(struct nouveau_channel *chan,
 		return ret;
 	}
 
+<<<<<<< HEAD
 	ret = validate_list(chan, cli, &op->list, pbbo);
+=======
+	ret = validate_list(chan, &op->list, pbbo);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (unlikely(ret < 0)) {
 		if (ret != -ERESTARTSYS)
 			NV_PRINTK(err, cli, "validating bo list\n");
@@ -870,7 +882,11 @@ revalidate:
 		}
 	} else
 	if (drm->client.device.info.chipset >= 0x25) {
+<<<<<<< HEAD
 		ret = PUSH_WAIT(chan->chan.push, req->nr_push * 2);
+=======
+		ret = PUSH_WAIT(&chan->chan.push, req->nr_push * 2);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret) {
 			NV_PRINTK(err, cli, "cal_space: %d\n", ret);
 			goto out;
@@ -880,11 +896,19 @@ revalidate:
 			struct nouveau_bo *nvbo = (void *)(unsigned long)
 				bo[push[i].bo_index].user_priv;
 
+<<<<<<< HEAD
 			PUSH_CALL(chan->chan.push, nvbo->offset + push[i].offset);
 			PUSH_DATA(chan->chan.push, 0);
 		}
 	} else {
 		ret = PUSH_WAIT(chan->chan.push, req->nr_push * (2 + NOUVEAU_DMA_SKIPS));
+=======
+			PUSH_CALL(&chan->chan.push, nvbo->offset + push[i].offset);
+			PUSH_DATA(&chan->chan.push, 0);
+		}
+	} else {
+		ret = PUSH_WAIT(&chan->chan.push, req->nr_push * (2 + NOUVEAU_DMA_SKIPS));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret) {
 			NV_PRINTK(err, cli, "jmp_space: %d\n", ret);
 			goto out;
@@ -913,10 +937,17 @@ revalidate:
 						push[i].length - 8) / 4, cmd);
 			}
 
+<<<<<<< HEAD
 			PUSH_JUMP(chan->chan.push, nvbo->offset + push[i].offset);
 			PUSH_DATA(chan->chan.push, 0);
 			for (j = 0; j < NOUVEAU_DMA_SKIPS; j++)
 				PUSH_DATA(chan->chan.push, 0);
+=======
+			PUSH_JUMP(&chan->chan.push, nvbo->offset + push[i].offset);
+			PUSH_DATA(&chan->chan.push, 0);
+			for (j = 0; j < NOUVEAU_DMA_SKIPS; j++)
+				PUSH_DATA(&chan->chan.push, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 

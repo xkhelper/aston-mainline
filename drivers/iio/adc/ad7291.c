@@ -537,14 +537,22 @@ static int ad7291_probe(struct i2c_client *client)
 
 static const struct i2c_device_id ad7291_id[] = {
 	{ "ad7291" },
+<<<<<<< HEAD
 	{}
+=======
+	{ }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 MODULE_DEVICE_TABLE(i2c, ad7291_id);
 
 static const struct of_device_id ad7291_of_match[] = {
 	{ .compatible = "adi,ad7291" },
+<<<<<<< HEAD
 	{}
+=======
+	{ }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(of, ad7291_of_match);
 

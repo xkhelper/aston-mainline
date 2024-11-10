@@ -8531,6 +8531,10 @@ static int sctp_listen_start(struct sock *sk, int backlog)
 	struct sctp_endpoint *ep = sp->ep;
 	struct crypto_shash *tfm = NULL;
 	char alg[32];
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Allocate HMAC for generating cookie. */
 	if (!sp->hmac && sp->sctp_hmac_alg) {
@@ -8557,17 +8561,39 @@ static int sctp_listen_start(struct sock *sk, int backlog)
 	 */
 	inet_sk_set_state(sk, SCTP_SS_LISTENING);
 	if (!ep->base.bind_addr.port) {
+<<<<<<< HEAD
 		if (sctp_autobind(sk))
 			return -EAGAIN;
 	} else {
 		if (sctp_get_port(sk, inet_sk(sk)->inet_num)) {
 			inet_sk_set_state(sk, SCTP_SS_CLOSED);
 			return -EADDRINUSE;
+=======
+		if (sctp_autobind(sk)) {
+			err = -EAGAIN;
+			goto err;
+		}
+	} else {
+		if (sctp_get_port(sk, inet_sk(sk)->inet_num)) {
+			err = -EADDRINUSE;
+			goto err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
 	WRITE_ONCE(sk->sk_max_ack_backlog, backlog);
+<<<<<<< HEAD
 	return sctp_hash_endpoint(ep);
+=======
+	err = sctp_hash_endpoint(ep);
+	if (err)
+		goto err;
+
+	return 0;
+err:
+	inet_sk_set_state(sk, SCTP_SS_CLOSED);
+	return err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*

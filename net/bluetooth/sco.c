@@ -76,6 +76,19 @@ struct sco_pinfo {
 #define SCO_CONN_TIMEOUT	(HZ * 40)
 #define SCO_DISCONN_TIMEOUT	(HZ * 2)
 
+<<<<<<< HEAD
+=======
+static struct sock *sco_sock_hold(struct sco_conn *conn)
+{
+	if (!conn || !bt_sock_linked(&sco_sk_list, conn->sk))
+		return NULL;
+
+	sock_hold(conn->sk);
+
+	return conn->sk;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void sco_sock_timeout(struct work_struct *work)
 {
 	struct sco_conn *conn = container_of(work, struct sco_conn,
@@ -87,9 +100,13 @@ static void sco_sock_timeout(struct work_struct *work)
 		sco_conn_unlock(conn);
 		return;
 	}
+<<<<<<< HEAD
 	sk = conn->sk;
 	if (sk)
 		sock_hold(sk);
+=======
+	sk = sco_sock_hold(conn);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sco_conn_unlock(conn);
 
 	if (!sk)
@@ -194,9 +211,13 @@ static void sco_conn_del(struct hci_conn *hcon, int err)
 
 	/* Kill socket */
 	sco_conn_lock(conn);
+<<<<<<< HEAD
 	sk = conn->sk;
 	if (sk)
 		sock_hold(sk);
+=======
+	sk = sco_sock_hold(conn);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sco_conn_unlock(conn);
 
 	if (sk) {

@@ -32,6 +32,10 @@
 #ifdef CONFIG_SYSFS
 static const char fmt_hex[] = "%#x\n";
 static const char fmt_dec[] = "%d\n";
+<<<<<<< HEAD
+=======
+static const char fmt_uint[] = "%u\n";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const char fmt_ulong[] = "%lu\n";
 static const char fmt_u64[] = "%llu\n";
 
@@ -425,6 +429,12 @@ NETDEVICE_SHOW_RW(gro_flush_timeout, fmt_ulong);
 
 static int change_napi_defer_hard_irqs(struct net_device *dev, unsigned long val)
 {
+<<<<<<< HEAD
+=======
+	if (val > S32_MAX)
+		return -ERANGE;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	WRITE_ONCE(dev->napi_defer_hard_irqs, val);
 	return 0;
 }
@@ -438,7 +448,11 @@ static ssize_t napi_defer_hard_irqs_store(struct device *dev,
 
 	return netdev_store(dev, attr, buf, len, change_napi_defer_hard_irqs);
 }
+<<<<<<< HEAD
 NETDEVICE_SHOW_RW(napi_defer_hard_irqs, fmt_dec);
+=======
+NETDEVICE_SHOW_RW(napi_defer_hard_irqs, fmt_uint);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static ssize_t ifalias_store(struct device *dev, struct device_attribute *attr,
 			     const char *buf, size_t len)
@@ -1056,7 +1070,11 @@ static const void *rx_queue_namespace(const struct kobject *kobj)
 	struct device *dev = &queue->dev->dev;
 	const void *ns = NULL;
 
+<<<<<<< HEAD
 	if (dev->class && dev->class->ns_type)
+=======
+	if (dev->class && dev->class->namespace)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ns = dev->class->namespace(dev);
 
 	return ns;
@@ -1740,7 +1758,11 @@ static const void *netdev_queue_namespace(const struct kobject *kobj)
 	struct device *dev = &queue->dev->dev;
 	const void *ns = NULL;
 
+<<<<<<< HEAD
 	if (dev->class && dev->class->ns_type)
+=======
+	if (dev->class && dev->class->namespace)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ns = dev->class->namespace(dev);
 
 	return ns;
@@ -1764,8 +1786,12 @@ static const struct kobj_type netdev_queue_ktype = {
 
 static bool netdev_uses_bql(const struct net_device *dev)
 {
+<<<<<<< HEAD
 	if (dev->features & NETIF_F_LLTX ||
 	    dev->priv_flags & IFF_NO_QUEUE)
+=======
+	if (dev->lltx || (dev->priv_flags & IFF_NO_QUEUE))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return false;
 
 	return IS_ENABLED(CONFIG_BQL);

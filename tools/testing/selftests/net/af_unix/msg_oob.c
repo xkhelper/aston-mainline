@@ -525,6 +525,32 @@ TEST_F(msg_oob, ex_oob_drop_2)
 	}
 }
 
+<<<<<<< HEAD
+=======
+TEST_F(msg_oob, ex_oob_oob)
+{
+	sendpair("x", 1, MSG_OOB);
+	epollpair(true);
+	siocatmarkpair(true);
+
+	recvpair("x", 1, 1, MSG_OOB);
+	epollpair(false);
+	siocatmarkpair(true);
+
+	sendpair("y", 1, MSG_OOB);
+	epollpair(true);
+	siocatmarkpair(true);
+
+	recvpair("", -EAGAIN, 1, 0);
+	epollpair(false);
+	siocatmarkpair(false);
+
+	recvpair("", -EINVAL, 1, MSG_OOB);
+	epollpair(false);
+	siocatmarkpair(false);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 TEST_F(msg_oob, ex_oob_ahead_break)
 {
 	sendpair("hello", 5, MSG_OOB);

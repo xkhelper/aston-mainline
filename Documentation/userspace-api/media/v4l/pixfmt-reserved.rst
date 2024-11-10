@@ -275,6 +275,7 @@ please make a proposal on the linux-media mailing list.
 
         Decoder's implementation can be found here,
         `aspeed_codec <https://github.com/AspeedTech-BMC/aspeed_codec/>`__
+<<<<<<< HEAD
     * .. _V4L2-PIX-FMT-MT2110T:
 
       - ``V4L2_PIX_FMT_MT2110T``
@@ -288,6 +289,8 @@ please make a proposal on the linux-media mailing list.
       - 'MT2110R'
       - This format is two-planar 10-Bit raster mode and having similitude with
         ``V4L2_PIX_FMT_MM21`` in term of alignment and tiling. Used for AVC.
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     * .. _V4L2-PIX-FMT-HEXTILE:
 
       - ``V4L2_PIX_FMT_HEXTILE``

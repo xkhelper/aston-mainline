@@ -1794,7 +1794,11 @@ static void uvesafb_remove(struct platform_device *dev)
 
 static struct platform_driver uvesafb_driver = {
 	.probe  = uvesafb_probe,
+<<<<<<< HEAD
 	.remove_new = uvesafb_remove,
+=======
+	.remove = uvesafb_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "uvesafb",
 	},

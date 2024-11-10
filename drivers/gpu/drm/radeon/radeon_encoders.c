@@ -43,7 +43,11 @@ static uint32_t radeon_encoder_clones(struct drm_encoder *encoder)
 	struct radeon_device *rdev = dev->dev_private;
 	struct radeon_encoder *radeon_encoder = to_radeon_encoder(encoder);
 	struct drm_encoder *clone_encoder;
+<<<<<<< HEAD
 	uint32_t index_mask = 0;
+=======
+	uint32_t index_mask = drm_encoder_mask(encoder);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int count;
 
 	/* DIG routing gets problematic */

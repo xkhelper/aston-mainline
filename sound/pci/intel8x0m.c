@@ -423,7 +423,10 @@ static inline void snd_intel8x0m_update(struct intel8x0m *chip, struct ichdev *i
 
 	civ = igetbyte(chip, port + ICH_REG_OFF_CIV);
 	if (civ == ichdev->civ) {
+<<<<<<< HEAD
 		// snd_printd("civ same %d\n", civ);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		step = 1;
 		ichdev->civ++;
 		ichdev->civ &= ICH_REG_LVI_MASK;
@@ -431,8 +434,11 @@ static inline void snd_intel8x0m_update(struct intel8x0m *chip, struct ichdev *i
 		step = civ - ichdev->civ;
 		if (step < 0)
 			step += ICH_REG_LVI_MASK + 1;
+<<<<<<< HEAD
 		// if (step != 1)
 		//	snd_printd("step = %d, %d -> %d\n", step, ichdev->civ, civ);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ichdev->civ = civ;
 	}
 

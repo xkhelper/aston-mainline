@@ -519,6 +519,10 @@ static void typec_altmode_release(struct device *dev)
 		typec_altmode_put_partner(alt);
 
 	altmode_id_remove(alt->adev.dev.parent, alt->id);
+<<<<<<< HEAD
+=======
+	put_device(alt->adev.dev.parent);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(alt);
 }
 
@@ -568,6 +572,11 @@ typec_register_altmode(struct device *parent,
 	alt->adev.dev.type = &typec_altmode_dev_type;
 	dev_set_name(&alt->adev.dev, "%s.%u", dev_name(parent), id);
 
+<<<<<<< HEAD
+=======
+	get_device(alt->adev.dev.parent);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Link partners and plugs with the ports */
 	if (!is_port)
 		typec_altmode_set_partner(alt);
@@ -2290,7 +2299,11 @@ void typec_port_register_altmodes(struct typec_port *port,
 	const struct typec_altmode_ops *ops, void *drvdata,
 	struct typec_altmode **altmodes, size_t n)
 {
+<<<<<<< HEAD
 	struct fwnode_handle *altmodes_node, *child;
+=======
+	struct fwnode_handle *child;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct typec_altmode_desc desc;
 	struct typec_altmode *alt;
 	size_t index = 0;
@@ -2298,7 +2311,13 @@ void typec_port_register_altmodes(struct typec_port *port,
 	u32 vdo;
 	int ret;
 
+<<<<<<< HEAD
 	altmodes_node = device_get_named_child_node(&port->dev, "altmodes");
+=======
+	struct fwnode_handle *altmodes_node  __free(fwnode_handle) =
+		device_get_named_child_node(&port->dev, "altmodes");
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!altmodes_node)
 		return; /* No altmodes specified */
 

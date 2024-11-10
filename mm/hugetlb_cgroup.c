@@ -114,10 +114,17 @@ static void hugetlb_cgroup_init(struct hugetlb_cgroup *h_cgroup,
 		}
 		page_counter_init(hugetlb_cgroup_counter_from_cgroup(h_cgroup,
 								     idx),
+<<<<<<< HEAD
 				  fault_parent);
 		page_counter_init(
 			hugetlb_cgroup_counter_from_cgroup_rsvd(h_cgroup, idx),
 			rsvd_parent);
+=======
+				  fault_parent, false);
+		page_counter_init(
+			hugetlb_cgroup_counter_from_cgroup_rsvd(h_cgroup, idx),
+			rsvd_parent, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		limit = round_down(PAGE_COUNTER_MAX,
 				   pages_per_huge_page(&hstates[idx]));

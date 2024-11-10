@@ -145,7 +145,11 @@ efi_status_t efi_handle_cmdline(efi_loaded_image_t *image, char **cmdline_ptr)
 		}
 	}
 
+<<<<<<< HEAD
 	*cmdline_ptr = CONFIG_CMDLINE;
+=======
+	*cmdline_ptr = cmdline;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return EFI_SUCCESS;
 
 fail_free_cmdline:

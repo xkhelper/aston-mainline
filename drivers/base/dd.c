@@ -248,7 +248,11 @@ static int deferred_devs_show(struct seq_file *s, void *data)
 
 	list_for_each_entry(curr, &deferred_probe_pending_list, deferred_probe)
 		seq_printf(s, "%s\t%s", dev_name(curr->device),
+<<<<<<< HEAD
 			   curr->device->p->deferred_probe_reason ?: "\n");
+=======
+			   curr->deferred_probe_reason ?: "\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_unlock(&deferred_probe_mutex);
 
@@ -393,6 +397,10 @@ bool device_is_bound(struct device *dev)
 {
 	return dev->p && klist_node_attached(&dev->p->knode_driver);
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_GPL(device_is_bound);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void driver_bound(struct device *dev)
 {

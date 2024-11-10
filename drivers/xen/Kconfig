@@ -177,8 +177,13 @@ config XEN_GRANT_DMA_ALLOC
 
 config SWIOTLB_XEN
 	def_bool y
+<<<<<<< HEAD
 	depends on XEN_PV || ARM || ARM64
 	select DMA_OPS
+=======
+	depends on ARCH_HAS_DMA_OPS
+	depends on XEN_PV || ARM || ARM64
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select SWIOTLB
 
 config XEN_PCI_STUB
@@ -348,10 +353,17 @@ config XEN_GRANT_DMA_IOMMU
 
 config XEN_GRANT_DMA_OPS
 	bool
+<<<<<<< HEAD
 	select DMA_OPS
 
 config XEN_VIRTIO
 	bool "Xen virtio support"
+=======
+
+config XEN_VIRTIO
+	bool "Xen virtio support"
+	depends on ARCH_HAS_DMA_OPS
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	depends on VIRTIO
 	select XEN_GRANT_DMA_OPS
 	select XEN_GRANT_DMA_IOMMU if OF

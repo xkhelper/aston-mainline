@@ -33,6 +33,7 @@ static int
 nvkm_ioctl_nop(struct nvkm_client *client,
 	       struct nvkm_object *object, void *data, u32 size)
 {
+<<<<<<< HEAD
 	union {
 		struct nvif_ioctl_nop_v0 v0;
 	} *args = data;
@@ -45,6 +46,9 @@ nvkm_ioctl_nop(struct nvkm_client *client,
 	}
 
 	return ret;
+=======
+	return -ENOSYS;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #include <nvif/class.h>
@@ -112,10 +116,16 @@ nvkm_ioctl_new(struct nvkm_client *client,
 
 	nvif_ioctl(parent, "new size %d\n", size);
 	if (!(ret = nvif_unpack(ret, &data, &size, args->v0, 0, 0, true))) {
+<<<<<<< HEAD
 		nvif_ioctl(parent, "new vers %d handle %08x class %08x "
 				   "route %02x token %llx object %016llx\n",
 			   args->v0.version, args->v0.handle, args->v0.oclass,
 			   args->v0.route, args->v0.token, args->v0.object);
+=======
+		nvif_ioctl(parent, "new vers %d handle %08x class %08x object %016llx\n",
+			   args->v0.version, args->v0.handle, args->v0.oclass,
+			   args->v0.object);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else
 		return ret;
 
@@ -127,8 +137,11 @@ nvkm_ioctl_new(struct nvkm_client *client,
 	do {
 		memset(&oclass, 0x00, sizeof(oclass));
 		oclass.handle = args->v0.handle;
+<<<<<<< HEAD
 		oclass.route  = args->v0.route;
 		oclass.token  = args->v0.token;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		oclass.object = args->v0.object;
 		oclass.client = client;
 		oclass.parent = parent;
@@ -205,6 +218,7 @@ static int
 nvkm_ioctl_rd(struct nvkm_client *client,
 	      struct nvkm_object *object, void *data, u32 size)
 {
+<<<<<<< HEAD
 	union {
 		struct nvif_ioctl_rd_v0 v0;
 	} *args = data;
@@ -239,12 +253,16 @@ nvkm_ioctl_rd(struct nvkm_client *client,
 	}
 
 	return ret;
+=======
+	return -ENOSYS;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int
 nvkm_ioctl_wr(struct nvkm_client *client,
 	      struct nvkm_object *object, void *data, u32 size)
 {
+<<<<<<< HEAD
 	union {
 		struct nvif_ioctl_wr_v0 v0;
 	} *args = data;
@@ -268,6 +286,9 @@ nvkm_ioctl_wr(struct nvkm_client *client,
 	}
 
 	return -EINVAL;
+=======
+	return -ENOSYS;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int
@@ -331,7 +352,11 @@ nvkm_ioctl_v0[] = {
 
 static int
 nvkm_ioctl_path(struct nvkm_client *client, u64 handle, u32 type,
+<<<<<<< HEAD
 		void *data, u32 size, u8 owner, u8 *route, u64 *token)
+=======
+		void *data, u32 size)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct nvkm_object *object;
 	int ret;
@@ -342,6 +367,7 @@ nvkm_ioctl_path(struct nvkm_client *client, u64 handle, u32 type,
 		return PTR_ERR(object);
 	}
 
+<<<<<<< HEAD
 	if (owner != NVIF_IOCTL_V0_OWNER_ANY && owner != object->route) {
 		nvif_ioctl(&client->object, "route != owner\n");
 		return -EACCES;
@@ -349,6 +375,8 @@ nvkm_ioctl_path(struct nvkm_client *client, u64 handle, u32 type,
 	*route = object->route;
 	*token = object->token;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret = -EINVAL, type < ARRAY_SIZE(nvkm_ioctl_v0)) {
 		if (nvkm_ioctl_v0[type].version == 0)
 			ret = nvkm_ioctl_v0[type].func(client, object, data, size);
@@ -374,8 +402,12 @@ nvkm_ioctl(struct nvkm_client *client, void *data, u32 size, void **hack)
 			   args->v0.version, args->v0.type, args->v0.object,
 			   args->v0.owner);
 		ret = nvkm_ioctl_path(client, args->v0.object, args->v0.type,
+<<<<<<< HEAD
 				      data, size, args->v0.owner,
 				      &args->v0.route, &args->v0.token);
+=======
+				      data, size);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (ret != 1) {

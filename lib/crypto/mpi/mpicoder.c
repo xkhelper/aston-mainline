@@ -25,7 +25,10 @@
 #include <linux/string.h>
 #include "mpi-internal.h"
 
+<<<<<<< HEAD
 #define MAX_EXTERN_SCAN_BYTES (16*1024*1024)
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define MAX_EXTERN_MPI_BITS 16384
 
 /**
@@ -110,6 +113,7 @@ MPI mpi_read_from_buffer(const void *xbuffer, unsigned *ret_nread)
 }
 EXPORT_SYMBOL_GPL(mpi_read_from_buffer);
 
+<<<<<<< HEAD
 /****************
  * Fill the mpi VAL from the hex string in STR.
  */
@@ -216,6 +220,8 @@ MPI mpi_scanval(const char *string)
 }
 EXPORT_SYMBOL_GPL(mpi_scanval);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int count_lzeros(MPI a)
 {
 	mpi_limb_t alimb;
@@ -521,6 +527,7 @@ MPI mpi_read_raw_from_sgl(struct scatterlist *sgl, unsigned int nbytes)
 	return val;
 }
 EXPORT_SYMBOL_GPL(mpi_read_raw_from_sgl);
+<<<<<<< HEAD
 
 /* Perform a two's complement operation on buffer P of size N bytes.  */
 static void twocompl(unsigned char *p, unsigned int n)
@@ -750,3 +757,5 @@ int mpi_print(enum gcry_mpi_format format, unsigned char *buffer,
 		return -EINVAL;
 }
 EXPORT_SYMBOL_GPL(mpi_print);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

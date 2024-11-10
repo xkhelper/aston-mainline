@@ -351,9 +351,13 @@ static int brcms_c_ffpld_check_txfunfl(struct brcms_c_info *wlc, int fid)
 {
 	struct ampdu_info *ampdu = wlc->ampdu;
 	u32 phy_rate = mcs_2_rate(FFPLD_MAX_MCS, true, false);
+<<<<<<< HEAD
 	u32 txunfl_ratio;
 	u8 max_mpdu;
 	u32 current_ampdu_cnt = 0;
+=======
+	u8 max_mpdu;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u16 max_pld_size;
 	u32 new_txunfl;
 	struct brcms_fifo_info *fifo = (ampdu->fifo_tb + fid);
@@ -389,6 +393,7 @@ static int brcms_c_ffpld_check_txfunfl(struct brcms_c_info *wlc, int fid)
 	if (fifo->accum_txfunfl < 10)
 		return 0;
 
+<<<<<<< HEAD
 	brcms_dbg_ht(wlc->hw->d11core, "ampdu_count %d  tx_underflows %d\n",
 		     current_ampdu_cnt, fifo->accum_txfunfl);
 
@@ -409,6 +414,10 @@ static int brcms_c_ffpld_check_txfunfl(struct brcms_c_info *wlc, int fid)
 
 		return 0;
 	}
+=======
+	brcms_dbg_ht(wlc->hw->d11core, "tx_underflows %d\n", fifo->accum_txfunfl);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	max_mpdu = min_t(u8, fifo->mcs2ampdu_table[FFPLD_MAX_MCS],
 			 AMPDU_NUM_MPDU_LEGACY);
 

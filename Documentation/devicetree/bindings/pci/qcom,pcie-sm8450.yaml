@@ -55,8 +55,13 @@ properties:
       - const: aggre1 # Aggre NoC PCIe1 AXI clock
 
   interrupts:
+<<<<<<< HEAD
     minItems: 8
     maxItems: 8
+=======
+    minItems: 9
+    maxItems: 9
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   interrupt-names:
     items:
@@ -68,6 +73,10 @@ properties:
       - const: msi5
       - const: msi6
       - const: msi7
+<<<<<<< HEAD
+=======
+      - const: global
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   operating-points-v2: true
   opp-table:
@@ -149,9 +158,16 @@ examples:
                          <GIC_SPI 145 IRQ_TYPE_LEVEL_HIGH>,
                          <GIC_SPI 146 IRQ_TYPE_LEVEL_HIGH>,
                          <GIC_SPI 147 IRQ_TYPE_LEVEL_HIGH>,
+<<<<<<< HEAD
                          <GIC_SPI 148 IRQ_TYPE_LEVEL_HIGH>;
             interrupt-names = "msi0", "msi1", "msi2", "msi3",
                               "msi4", "msi5", "msi6", "msi7";
+=======
+                         <GIC_SPI 148 IRQ_TYPE_LEVEL_HIGH>,
+                         <GIC_SPI 140 IRQ_TYPE_LEVEL_HIGH>;
+            interrupt-names = "msi0", "msi1", "msi2", "msi3",
+                              "msi4", "msi5", "msi6", "msi7", "global";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
             #interrupt-cells = <1>;
             interrupt-map-mask = <0 0 0 0x7>;
             interrupt-map = <0 0 0 1 &intc 0 0 0 149 IRQ_TYPE_LEVEL_HIGH>, /* int_a */

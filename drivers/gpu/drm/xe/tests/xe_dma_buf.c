@@ -3,12 +3,20 @@
  * Copyright © 2022 Intel Corporation
  */
 
+<<<<<<< HEAD
 #include <drm/xe_drm.h>
+=======
+#include <uapi/drm/xe_drm.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <kunit/test.h>
 #include <kunit/visibility.h>
 
+<<<<<<< HEAD
 #include "tests/xe_dma_buf_test.h"
+=======
+#include "tests/xe_kunit_helpers.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "tests/xe_pci_test.h"
 
 #include "xe_pci.h"
@@ -107,7 +115,11 @@ static void check_residency(struct kunit *test, struct xe_bo *exported,
 
 static void xe_test_dmabuf_import_same_driver(struct xe_device *xe)
 {
+<<<<<<< HEAD
 	struct kunit *test = xe_cur_kunit();
+=======
+	struct kunit *test = kunit_get_current_test();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct dma_buf_test_params *params = to_dma_buf_test_params(test->priv);
 	struct drm_gem_object *import;
 	struct dma_buf *dmabuf;
@@ -126,7 +138,11 @@ static void xe_test_dmabuf_import_same_driver(struct xe_device *xe)
 
 	kunit_info(test, "running %s\n", __func__);
 	bo = xe_bo_create_user(xe, NULL, NULL, size, DRM_XE_GEM_CPU_CACHING_WC,
+<<<<<<< HEAD
 			       ttm_bo_type_device, params->mem_mask);
+=======
+			       params->mem_mask);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(bo)) {
 		KUNIT_FAIL(test, "xe_bo_create() failed with err=%ld\n",
 			   PTR_ERR(bo));
@@ -258,7 +274,11 @@ static const struct dma_buf_test_params test_params[] = {
 static int dma_buf_run_device(struct xe_device *xe)
 {
 	const struct dma_buf_test_params *params;
+<<<<<<< HEAD
 	struct kunit *test = xe_cur_kunit();
+=======
+	struct kunit *test = kunit_get_current_test();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	xe_pm_runtime_get(xe);
 	for (params = test_params; params->mem_mask; ++params) {
@@ -274,8 +294,30 @@ static int dma_buf_run_device(struct xe_device *xe)
 	return 0;
 }
 
+<<<<<<< HEAD
 void xe_dma_buf_kunit(struct kunit *test)
 {
 	xe_call_for_each_device(dma_buf_run_device);
 }
 EXPORT_SYMBOL_IF_KUNIT(xe_dma_buf_kunit);
+=======
+static void xe_dma_buf_kunit(struct kunit *test)
+{
+	struct xe_device *xe = test->priv;
+
+	dma_buf_run_device(xe);
+}
+
+static struct kunit_case xe_dma_buf_tests[] = {
+	KUNIT_CASE_PARAM(xe_dma_buf_kunit, xe_pci_live_device_gen_param),
+	{}
+};
+
+VISIBLE_IF_KUNIT
+struct kunit_suite xe_dma_buf_test_suite = {
+	.name = "xe_dma_buf",
+	.test_cases = xe_dma_buf_tests,
+	.init = xe_kunit_helper_xe_device_live_test_init,
+};
+EXPORT_SYMBOL_IF_KUNIT(xe_dma_buf_test_suite);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

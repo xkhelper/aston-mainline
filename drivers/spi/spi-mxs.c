@@ -477,7 +477,11 @@ static int mxs_spi_runtime_resume(struct device *dev)
 	return ret;
 }
 
+<<<<<<< HEAD
 static int __maybe_unused mxs_spi_suspend(struct device *dev)
+=======
+static int mxs_spi_suspend(struct device *dev)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct spi_controller *host = dev_get_drvdata(dev);
 	int ret;
@@ -492,7 +496,11 @@ static int __maybe_unused mxs_spi_suspend(struct device *dev)
 		return 0;
 }
 
+<<<<<<< HEAD
 static int __maybe_unused mxs_spi_resume(struct device *dev)
+=======
+static int mxs_spi_resume(struct device *dev)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct spi_controller *host = dev_get_drvdata(dev);
 	int ret;
@@ -512,9 +520,14 @@ static int __maybe_unused mxs_spi_resume(struct device *dev)
 }
 
 static const struct dev_pm_ops mxs_spi_pm = {
+<<<<<<< HEAD
 	SET_RUNTIME_PM_OPS(mxs_spi_runtime_suspend,
 			   mxs_spi_runtime_resume, NULL)
 	SET_SYSTEM_SLEEP_PM_OPS(mxs_spi_suspend, mxs_spi_resume)
+=======
+	RUNTIME_PM_OPS(mxs_spi_runtime_suspend, mxs_spi_runtime_resume, NULL)
+	SYSTEM_SLEEP_PM_OPS(mxs_spi_suspend, mxs_spi_resume)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct of_device_id mxs_spi_dt_ids[] = {
@@ -662,7 +675,11 @@ static struct platform_driver mxs_spi_driver = {
 	.driver	= {
 		.name	= DRIVER_NAME,
 		.of_match_table = mxs_spi_dt_ids,
+<<<<<<< HEAD
 		.pm = &mxs_spi_pm,
+=======
+		.pm = pm_ptr(&mxs_spi_pm),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 };
 

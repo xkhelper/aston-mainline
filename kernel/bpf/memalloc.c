@@ -35,6 +35,11 @@
  */
 #define LLIST_NODE_SZ sizeof(struct llist_node)
 
+<<<<<<< HEAD
+=======
+#define BPF_MEM_ALLOC_SIZE_MAX 4096
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* similar to kmalloc, but sizeof == 8 bucket is gone */
 static u8 size_index[24] __ro_after_init = {
 	3,	/* 8 */
@@ -65,7 +70,11 @@ static u8 size_index[24] __ro_after_init = {
 
 static int bpf_mem_cache_idx(size_t size)
 {
+<<<<<<< HEAD
 	if (!size || size > 4096)
+=======
+	if (!size || size > BPF_MEM_ALLOC_SIZE_MAX)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -1;
 
 	if (size <= 192)
@@ -138,8 +147,13 @@ static struct llist_node notrace *__llist_del_first(struct llist_head *head)
 static void *__alloc(struct bpf_mem_cache *c, int node, gfp_t flags)
 {
 	if (c->percpu_size) {
+<<<<<<< HEAD
 		void **obj = kmalloc_node(c->percpu_size, flags, node);
 		void *pptr = __alloc_percpu_gfp(c->unit_size, 8, flags);
+=======
+		void __percpu **obj = kmalloc_node(c->percpu_size, flags, node);
+		void __percpu *pptr = __alloc_percpu_gfp(c->unit_size, 8, flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (!obj || !pptr) {
 			free_percpu(pptr);
@@ -253,7 +267,11 @@ static void alloc_bulk(struct bpf_mem_cache *c, int cnt, int node, bool atomic)
 static void free_one(void *obj, bool percpu)
 {
 	if (percpu) {
+<<<<<<< HEAD
 		free_percpu(((void **)obj)[1]);
+=======
+		free_percpu(((void __percpu **)obj)[1]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		kfree(obj);
 		return;
 	}
@@ -509,8 +527,13 @@ static void prefill_mem_cache(struct bpf_mem_cache *c, int cpu)
  */
 int bpf_mem_alloc_init(struct bpf_mem_alloc *ma, int size, bool percpu)
 {
+<<<<<<< HEAD
 	struct bpf_mem_caches *cc, __percpu *pcc;
 	struct bpf_mem_cache *c, __percpu *pc;
+=======
+	struct bpf_mem_caches *cc; struct bpf_mem_caches __percpu *pcc;
+	struct bpf_mem_cache *c; struct bpf_mem_cache __percpu *pc;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct obj_cgroup *objcg = NULL;
 	int cpu, i, unit_size, percpu_size = 0;
 
@@ -591,7 +614,11 @@ int bpf_mem_alloc_percpu_init(struct bpf_mem_alloc *ma, struct obj_cgroup *objcg
 
 int bpf_mem_alloc_percpu_unit_init(struct bpf_mem_alloc *ma, int size)
 {
+<<<<<<< HEAD
 	struct bpf_mem_caches *cc, __percpu *pcc;
+=======
+	struct bpf_mem_caches *cc; struct bpf_mem_caches __percpu *pcc;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int cpu, i, unit_size, percpu_size;
 	struct obj_cgroup *objcg;
 	struct bpf_mem_cache *c;
@@ -1005,3 +1032,16 @@ void notrace *bpf_mem_cache_alloc_flags(struct bpf_mem_alloc *ma, gfp_t flags)
 
 	return !ret ? NULL : ret + LLIST_NODE_SZ;
 }
+<<<<<<< HEAD
+=======
+
+int bpf_mem_alloc_check_size(bool percpu, size_t size)
+{
+	/* The size of percpu allocation doesn't have LLIST_NODE_SZ overhead */
+	if ((percpu && size > BPF_MEM_ALLOC_SIZE_MAX) ||
+	    (!percpu && size > BPF_MEM_ALLOC_SIZE_MAX - LLIST_NODE_SZ))
+		return -E2BIG;
+
+	return 0;
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

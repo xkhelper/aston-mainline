@@ -272,7 +272,11 @@ int ap_test_config_usage_domain(unsigned int domain);
 int ap_test_config_ctrl_domain(unsigned int domain);
 
 void ap_queue_init_reply(struct ap_queue *aq, struct ap_message *ap_msg);
+<<<<<<< HEAD
 struct ap_queue *ap_queue_create(ap_qid_t qid, int device_type);
+=======
+struct ap_queue *ap_queue_create(ap_qid_t qid, struct ap_card *ac);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void ap_queue_prepare_remove(struct ap_queue *aq);
 void ap_queue_remove(struct ap_queue *aq);
 void ap_queue_init_state(struct ap_queue *aq);

@@ -10,6 +10,10 @@
 #include <linux/list.h>
 #include <linux/spinlock.h>
 #include <linux/mutex.h>
+<<<<<<< HEAD
+=======
+#include <linux/freezer.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "fs.h"
 
 struct inode;
@@ -56,6 +60,14 @@ static inline bool btrfs_free_space_trimming_bitmap(
 	return (info->trim_state == BTRFS_TRIM_STATE_TRIMMING);
 }
 
+<<<<<<< HEAD
+=======
+static inline bool btrfs_trim_interrupted(void)
+{
+	return fatal_signal_pending(current) || freezing(current);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Deltas are an effective way to populate global statistics.  Give macro names
  * to make it clear what we're doing.  An example is discard_extents in

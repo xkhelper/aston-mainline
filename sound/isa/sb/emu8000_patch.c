@@ -157,7 +157,10 @@ snd_emu8000_sample_new(struct snd_emux *rec, struct snd_sf_sample *sp,
 
 	sp->block = snd_util_mem_alloc(hdr, truesize * 2);
 	if (sp->block == NULL) {
+<<<<<<< HEAD
 		/*snd_printd("EMU8000: out of memory\n");*/
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* not ENOMEM (for compatibility) */
 		return -ENOSPC;
 	}

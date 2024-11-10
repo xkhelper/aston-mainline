@@ -161,7 +161,11 @@ enum intel_display_subplatform {
 #define SUPPORTS_TV(i915)		(DISPLAY_INFO(i915)->supports_tv)
 
 /* Check that device has a display IP version within the specific range. */
+<<<<<<< HEAD
 #define IS_DISPLAY_IP_RANGE(__i915, from, until) ( \
+=======
+#define IS_DISPLAY_VER_FULL(__i915, from, until) ( \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	BUILD_BUG_ON_ZERO((from) < IP_VER(2, 0)) + \
 	(DISPLAY_VER_FULL(__i915) >= (from) && \
 	 DISPLAY_VER_FULL(__i915) <= (until)))
@@ -175,14 +179,24 @@ enum intel_display_subplatform {
  * hardware fix is present and the software workaround is no longer necessary.
  * E.g.,
  *
+<<<<<<< HEAD
  *    IS_DISPLAY_IP_STEP(i915, IP_VER(14, 0), STEP_A0, STEP_B2)
  *    IS_DISPLAY_IP_STEP(i915, IP_VER(14, 0), STEP_C0, STEP_FOREVER)
+=======
+ *    IS_DISPLAY_VER_STEP(i915, IP_VER(14, 0), STEP_A0, STEP_B2)
+ *    IS_DISPLAY_VER_STEP(i915, IP_VER(14, 0), STEP_C0, STEP_FOREVER)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * "STEP_FOREVER" can be passed as "until" for workarounds that have no upper
  * stepping bound for the specified IP version.
  */
+<<<<<<< HEAD
 #define IS_DISPLAY_IP_STEP(__i915, ipver, from, until) \
 	(IS_DISPLAY_IP_RANGE((__i915), (ipver), (ipver)) && \
+=======
+#define IS_DISPLAY_VER_STEP(__i915, ipver, from, until) \
+	(IS_DISPLAY_VER_FULL((__i915), (ipver), (ipver)) && \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 IS_DISPLAY_STEP((__i915), (from), (until)))
 
 #define DISPLAY_INFO(i915)		(__to_intel_display(i915)->info.__device_info)
@@ -194,6 +208,15 @@ enum intel_display_subplatform {
 #define IS_DISPLAY_VER(i915, from, until) \
 	(DISPLAY_VER(i915) >= (from) && DISPLAY_VER(i915) <= (until))
 
+<<<<<<< HEAD
+=======
+#define INTEL_DISPLAY_STEP(__i915) (DISPLAY_RUNTIME_INFO(__i915)->step)
+
+#define IS_DISPLAY_STEP(__i915, since, until) \
+	(drm_WARN_ON(__to_intel_display(__i915)->drm, INTEL_DISPLAY_STEP(__i915) == STEP_NONE), \
+	 INTEL_DISPLAY_STEP(__i915) >= (since) && INTEL_DISPLAY_STEP(__i915) < (until))
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct intel_display_runtime_info {
 	enum intel_display_platform platform;
 	enum intel_display_subplatform subplatform;
@@ -201,8 +224,16 @@ struct intel_display_runtime_info {
 	struct intel_display_ip_ver {
 		u16 ver;
 		u16 rel;
+<<<<<<< HEAD
 		u16 step;
 	} ip;
+=======
+		u16 step; /* hardware */
+	} ip;
+	int step; /* symbolic */
+
+	u32 rawclk_freq;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	u8 pipe_mask;
 	u8 cpu_transcoder_mask;

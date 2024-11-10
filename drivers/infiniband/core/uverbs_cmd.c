@@ -572,7 +572,11 @@ static int ib_uverbs_open_xrcd(struct uverbs_attr_bundle *attrs)
 	struct inode                   *inode = NULL;
 	int				new_xrcd = 0;
 	struct ib_device *ib_dev;
+<<<<<<< HEAD
 	struct fd f = {};
+=======
+	struct fd f = EMPTY_FD;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	ret = uverbs_request(attrs, &cmd, sizeof(cmd));
@@ -584,12 +588,20 @@ static int ib_uverbs_open_xrcd(struct uverbs_attr_bundle *attrs)
 	if (cmd.fd != -1) {
 		/* search for file descriptor */
 		f = fdget(cmd.fd);
+<<<<<<< HEAD
 		if (!f.file) {
+=======
+		if (!fd_file(f)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ret = -EBADF;
 			goto err_tree_mutex_unlock;
 		}
 
+<<<<<<< HEAD
 		inode = file_inode(f.file);
+=======
+		inode = file_inode(fd_file(f));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		xrcd = find_xrcd(ibudev, inode);
 		if (!xrcd && !(cmd.oflags & O_CREAT)) {
 			/* no file descriptor. Need CREATE flag */
@@ -632,7 +644,11 @@ static int ib_uverbs_open_xrcd(struct uverbs_attr_bundle *attrs)
 		atomic_inc(&xrcd->usecnt);
 	}
 
+<<<<<<< HEAD
 	if (f.file)
+=======
+	if (fd_file(f))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fdput(f);
 
 	mutex_unlock(&ibudev->xrcd_tree_mutex);
@@ -648,7 +664,11 @@ err:
 	uobj_alloc_abort(&obj->uobject, attrs);
 
 err_tree_mutex_unlock:
+<<<<<<< HEAD
 	if (f.file)
+=======
+	if (fd_file(f))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fdput(f);
 
 	mutex_unlock(&ibudev->xrcd_tree_mutex);

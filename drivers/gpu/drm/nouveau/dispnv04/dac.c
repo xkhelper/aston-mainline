@@ -237,7 +237,11 @@ uint32_t nv17_dac_sample_load(struct drm_encoder *encoder)
 	struct drm_device *dev = encoder->dev;
 	struct nouveau_drm *drm = nouveau_drm(dev);
 	struct nvif_object *device = &nouveau_drm(dev)->client.device.object;
+<<<<<<< HEAD
 	struct nvkm_gpio *gpio = nvxx_gpio(&drm->client.device);
+=======
+	struct nvkm_gpio *gpio = nvxx_gpio(drm);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct dcb_output *dcb = nouveau_encoder(encoder)->dcb;
 	uint32_t sample, testval, regoffset = nv04_dac_output_offset(encoder);
 	uint32_t saved_powerctrl_2 = 0, saved_powerctrl_4 = 0, saved_routput,

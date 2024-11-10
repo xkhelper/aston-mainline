@@ -197,6 +197,10 @@ enum rockchip_pinctrl_type {
 	RK3368,
 	RK3399,
 	RK3568,
+<<<<<<< HEAD
+=======
+	RK3576,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	RK3588,
 };
 

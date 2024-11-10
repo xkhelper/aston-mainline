@@ -981,7 +981,11 @@ static u32 nested_vmx_load_msr(struct kvm_vcpu *vcpu, u64 gpa, u32 count)
 				__func__, i, e.index, e.reserved);
 			goto fail;
 		}
+<<<<<<< HEAD
 		if (kvm_set_msr(vcpu, e.index, e.value)) {
+=======
+		if (kvm_set_msr_with_filter(vcpu, e.index, e.value)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			pr_debug_ratelimited(
 				"%s cannot write MSR (%u, 0x%x, 0x%llx)\n",
 				__func__, i, e.index, e.value);
@@ -1017,7 +1021,11 @@ static bool nested_vmx_get_vmexit_msr_value(struct kvm_vcpu *vcpu,
 		}
 	}
 
+<<<<<<< HEAD
 	if (kvm_get_msr(vcpu, msr_index, data)) {
+=======
+	if (kvm_get_msr_with_filter(vcpu, msr_index, data)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pr_debug_ratelimited("%s cannot read MSR (0x%x)\n", __func__,
 			msr_index);
 		return false;
@@ -1112,9 +1120,15 @@ static void prepare_vmx_msr_autostore_list(struct kvm_vcpu *vcpu,
 			/*
 			 * Emulated VMEntry does not fail here.  Instead a less
 			 * accurate value will be returned by
+<<<<<<< HEAD
 			 * nested_vmx_get_vmexit_msr_value() using kvm_get_msr()
 			 * instead of reading the value from the vmcs02 VMExit
 			 * MSR-store area.
+=======
+			 * nested_vmx_get_vmexit_msr_value() by reading KVM's
+			 * internal MSR state instead of reading the value from
+			 * the vmcs02 VMExit MSR-store area.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			 */
 			pr_warn_ratelimited(
 				"Not enough msr entries in msr_autostore.  Can't add msr %x\n",
@@ -1251,6 +1265,7 @@ static bool is_bitwise_subset(u64 superset, u64 subset, u64 mask)
 
 static int vmx_restore_vmx_basic(struct vcpu_vmx *vmx, u64 data)
 {
+<<<<<<< HEAD
 	const u64 feature_and_reserved =
 		/* feature (except bit 48; see below) */
 		BIT_ULL(49) | BIT_ULL(54) | BIT_ULL(55) |
@@ -1259,13 +1274,38 @@ static int vmx_restore_vmx_basic(struct vcpu_vmx *vmx, u64 data)
 	u64 vmx_basic = vmcs_config.nested.basic;
 
 	if (!is_bitwise_subset(vmx_basic, data, feature_and_reserved))
+=======
+	const u64 feature_bits = VMX_BASIC_DUAL_MONITOR_TREATMENT |
+				 VMX_BASIC_INOUT |
+				 VMX_BASIC_TRUE_CTLS;
+
+	const u64 reserved_bits = GENMASK_ULL(63, 56) |
+				  GENMASK_ULL(47, 45) |
+				  BIT_ULL(31);
+
+	u64 vmx_basic = vmcs_config.nested.basic;
+
+	BUILD_BUG_ON(feature_bits & reserved_bits);
+
+	/*
+	 * Except for 32BIT_PHYS_ADDR_ONLY, which is an anti-feature bit (has
+	 * inverted polarity), the incoming value must not set feature bits or
+	 * reserved bits that aren't allowed/supported by KVM.  Fields, i.e.
+	 * multi-bit values, are explicitly checked below.
+	 */
+	if (!is_bitwise_subset(vmx_basic, data, feature_bits | reserved_bits))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	/*
 	 * KVM does not emulate a version of VMX that constrains physical
 	 * addresses of VMX structures (e.g. VMCS) to 32-bits.
 	 */
+<<<<<<< HEAD
 	if (data & BIT_ULL(48))
+=======
+	if (data & VMX_BASIC_32BIT_PHYS_ADDR_ONLY)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	if (vmx_basic_vmcs_revision_id(vmx_basic) !=
@@ -1334,6 +1374,7 @@ vmx_restore_control_msr(struct vcpu_vmx *vmx, u32 msr_index, u64 data)
 
 static int vmx_restore_vmx_misc(struct vcpu_vmx *vmx, u64 data)
 {
+<<<<<<< HEAD
 	const u64 feature_and_reserved_bits =
 		/* feature */
 		BIT_ULL(5) | GENMASK_ULL(8, 6) | BIT_ULL(14) | BIT_ULL(15) |
@@ -1344,6 +1385,31 @@ static int vmx_restore_vmx_misc(struct vcpu_vmx *vmx, u64 data)
 				       vmcs_config.nested.misc_high);
 
 	if (!is_bitwise_subset(vmx_misc, data, feature_and_reserved_bits))
+=======
+	const u64 feature_bits = VMX_MISC_SAVE_EFER_LMA |
+				 VMX_MISC_ACTIVITY_HLT |
+				 VMX_MISC_ACTIVITY_SHUTDOWN |
+				 VMX_MISC_ACTIVITY_WAIT_SIPI |
+				 VMX_MISC_INTEL_PT |
+				 VMX_MISC_RDMSR_IN_SMM |
+				 VMX_MISC_VMWRITE_SHADOW_RO_FIELDS |
+				 VMX_MISC_VMXOFF_BLOCK_SMI |
+				 VMX_MISC_ZERO_LEN_INS;
+
+	const u64 reserved_bits = BIT_ULL(31) | GENMASK_ULL(13, 9);
+
+	u64 vmx_misc = vmx_control_msr(vmcs_config.nested.misc_low,
+				       vmcs_config.nested.misc_high);
+
+	BUILD_BUG_ON(feature_bits & reserved_bits);
+
+	/*
+	 * The incoming value must not set feature bits or reserved bits that
+	 * aren't allowed/supported by KVM.  Fields, i.e. multi-bit values, are
+	 * explicitly checked below.
+	 */
+	if (!is_bitwise_subset(vmx_misc, data, feature_bits | reserved_bits))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	if ((vmx->nested.msrs.pinbased_ctls_high &
@@ -2317,10 +2383,19 @@ static void prepare_vmcs02_early(struct vcpu_vmx *vmx, struct loaded_vmcs *vmcs0
 
 	/* Posted interrupts setting is only taken from vmcs12.  */
 	vmx->nested.pi_pending = false;
+<<<<<<< HEAD
 	if (nested_cpu_has_posted_intr(vmcs12))
 		vmx->nested.posted_intr_nv = vmcs12->posted_intr_nv;
 	else
 		exec_control &= ~PIN_BASED_POSTED_INTR;
+=======
+	if (nested_cpu_has_posted_intr(vmcs12)) {
+		vmx->nested.posted_intr_nv = vmcs12->posted_intr_nv;
+	} else {
+		vmx->nested.posted_intr_nv = -1;
+		exec_control &= ~PIN_BASED_POSTED_INTR;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pin_controls_set(vmx, exec_control);
 
 	/*
@@ -2470,6 +2545,10 @@ static void prepare_vmcs02_rare(struct vcpu_vmx *vmx, struct vmcs12 *vmcs12)
 
 	if (!hv_evmcs || !(hv_evmcs->hv_clean_fields &
 			   HV_VMX_ENLIGHTENED_CLEAN_FIELD_GUEST_GRP2)) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		vmcs_write16(GUEST_ES_SELECTOR, vmcs12->guest_es_selector);
 		vmcs_write16(GUEST_CS_SELECTOR, vmcs12->guest_cs_selector);
 		vmcs_write16(GUEST_SS_SELECTOR, vmcs12->guest_ss_selector);
@@ -2507,7 +2586,11 @@ static void prepare_vmcs02_rare(struct vcpu_vmx *vmx, struct vmcs12 *vmcs12)
 		vmcs_writel(GUEST_GDTR_BASE, vmcs12->guest_gdtr_base);
 		vmcs_writel(GUEST_IDTR_BASE, vmcs12->guest_idtr_base);
 
+<<<<<<< HEAD
 		vmx->segment_cache.bitmask = 0;
+=======
+		vmx_segment_cache_clear(vmx);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (!hv_evmcs || !(hv_evmcs->hv_clean_fields &
@@ -4284,11 +4367,59 @@ static int vmx_check_nested_events(struct kvm_vcpu *vcpu)
 	}
 
 	if (kvm_cpu_has_interrupt(vcpu) && !vmx_interrupt_blocked(vcpu)) {
+<<<<<<< HEAD
+=======
+		int irq;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (block_nested_events)
 			return -EBUSY;
 		if (!nested_exit_on_intr(vcpu))
 			goto no_vmexit;
+<<<<<<< HEAD
 		nested_vmx_vmexit(vcpu, EXIT_REASON_EXTERNAL_INTERRUPT, 0, 0);
+=======
+
+		if (!nested_exit_intr_ack_set(vcpu)) {
+			nested_vmx_vmexit(vcpu, EXIT_REASON_EXTERNAL_INTERRUPT, 0, 0);
+			return 0;
+		}
+
+		irq = kvm_cpu_get_extint(vcpu);
+		if (irq != -1) {
+			nested_vmx_vmexit(vcpu, EXIT_REASON_EXTERNAL_INTERRUPT,
+					  INTR_INFO_VALID_MASK | INTR_TYPE_EXT_INTR | irq, 0);
+			return 0;
+		}
+
+		irq = kvm_apic_has_interrupt(vcpu);
+		if (WARN_ON_ONCE(irq < 0))
+			goto no_vmexit;
+
+		/*
+		 * If the IRQ is L2's PI notification vector, process posted
+		 * interrupts for L2 instead of injecting VM-Exit, as the
+		 * detection/morphing architecturally occurs when the IRQ is
+		 * delivered to the CPU.  Note, only interrupts that are routed
+		 * through the local APIC trigger posted interrupt processing,
+		 * and enabling posted interrupts requires ACK-on-exit.
+		 */
+		if (irq == vmx->nested.posted_intr_nv) {
+			vmx->nested.pi_pending = true;
+			kvm_apic_clear_irr(vcpu, irq);
+			goto no_vmexit;
+		}
+
+		nested_vmx_vmexit(vcpu, EXIT_REASON_EXTERNAL_INTERRUPT,
+				  INTR_INFO_VALID_MASK | INTR_TYPE_EXT_INTR | irq, 0);
+
+		/*
+		 * ACK the interrupt _after_ emulating VM-Exit, as the IRQ must
+		 * be marked as in-service in vmcs01.GUEST_INTERRUPT_STATUS.SVI
+		 * if APICv is active.
+		 */
+		kvm_apic_ack_interrupt(vcpu, irq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 
@@ -4806,7 +4937,11 @@ static void nested_vmx_restore_host_state(struct kvm_vcpu *vcpu)
 				goto vmabort;
 			}
 
+<<<<<<< HEAD
 			if (kvm_set_msr(vcpu, h.index, h.value)) {
+=======
+			if (kvm_set_msr_with_filter(vcpu, h.index, h.value)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				pr_debug_ratelimited(
 					"%s WRMSR failed (%u, 0x%x, 0x%llx)\n",
 					__func__, j, h.index, h.value);
@@ -4969,6 +5104,7 @@ void nested_vmx_vmexit(struct kvm_vcpu *vcpu, u32 vm_exit_reason,
 	vcpu->arch.mp_state = KVM_MP_STATE_RUNNABLE;
 
 	if (likely(!vmx->fail)) {
+<<<<<<< HEAD
 		if ((u16)vm_exit_reason == EXIT_REASON_EXTERNAL_INTERRUPT &&
 		    nested_exit_intr_ack_set(vcpu)) {
 			int irq = kvm_cpu_get_interrupt(vcpu);
@@ -4977,6 +5113,8 @@ void nested_vmx_vmexit(struct kvm_vcpu *vcpu, u32 vm_exit_reason,
 				INTR_INFO_VALID_MASK | INTR_TYPE_EXT_INTR;
 		}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (vm_exit_reason != -1)
 			trace_kvm_nested_vmexit_inject(vmcs12->vm_exit_reason,
 						       vmcs12->exit_qualification,
@@ -7051,7 +7189,11 @@ static void nested_vmx_setup_misc_data(struct vmcs_config *vmcs_conf,
 {
 	msrs->misc_low = (u32)vmcs_conf->misc & VMX_MISC_SAVE_EFER_LMA;
 	msrs->misc_low |=
+<<<<<<< HEAD
 		MSR_IA32_VMX_MISC_VMWRITE_SHADOW_RO_FIELDS |
+=======
+		VMX_MISC_VMWRITE_SHADOW_RO_FIELDS |
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		VMX_MISC_EMULATED_PREEMPTION_TIMER_RATE |
 		VMX_MISC_ACTIVITY_HLT |
 		VMX_MISC_ACTIVITY_WAIT_SIPI;
@@ -7066,12 +7208,19 @@ static void nested_vmx_setup_basic(struct nested_vmx_msrs *msrs)
 	 * guest, and the VMCS structure we give it - not about the
 	 * VMX support of the underlying hardware.
 	 */
+<<<<<<< HEAD
 	msrs->basic =
 		VMCS12_REVISION |
 		VMX_BASIC_TRUE_CTLS |
 		((u64)VMCS12_SIZE << VMX_BASIC_VMCS_SIZE_SHIFT) |
 		(VMX_BASIC_MEM_TYPE_WB << VMX_BASIC_MEM_TYPE_SHIFT);
 
+=======
+	msrs->basic = vmx_basic_encode_vmcs_info(VMCS12_REVISION, VMCS12_SIZE,
+						 X86_MEMTYPE_WB);
+
+	msrs->basic |= VMX_BASIC_TRUE_CTLS;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (cpu_has_vmx_basic_inout())
 		msrs->basic |= VMX_BASIC_INOUT;
 }

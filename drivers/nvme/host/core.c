@@ -4,6 +4,10 @@
  * Copyright (c) 2011-2014, Intel Corporation.
  */
 
+<<<<<<< HEAD
+=======
+#include <linux/async.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/blkdev.h>
 #include <linux/blk-mq.h>
 #include <linux/blk-integrity.h>
@@ -21,7 +25,11 @@
 #include <linux/nvme_ioctl.h>
 #include <linux/pm_qos.h>
 #include <linux/ratelimit.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "nvme.h"
 #include "fabrics.h"
@@ -91,6 +99,20 @@ MODULE_PARM_DESC(apst_secondary_latency_tol_us,
 	"secondary APST latency tolerance in us");
 
 /*
+<<<<<<< HEAD
+=======
+ * Older kernels didn't enable protection information if it was at an offset.
+ * Newer kernels do, so it breaks reads on the upgrade if such formats were
+ * used in prior kernels since the metadata written did not contain a valid
+ * checksum.
+ */
+static bool disable_pi_offsets = false;
+module_param(disable_pi_offsets, bool, 0444);
+MODULE_PARM_DESC(disable_pi_offsets,
+	"disable protection information if it has an offset");
+
+/*
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * nvme_wq - hosts nvme related works that are not reset or delete
  * nvme_reset_wq - hosts nvme reset works
  * nvme_delete_wq - hosts nvme delete works
@@ -987,8 +1009,13 @@ static inline blk_status_t nvme_setup_rw(struct nvme_ns *ns,
 	cmnd->rw.length =
 		cpu_to_le16((blk_rq_bytes(req) >> ns->head->lba_shift) - 1);
 	cmnd->rw.reftag = 0;
+<<<<<<< HEAD
 	cmnd->rw.apptag = 0;
 	cmnd->rw.appmask = 0;
+=======
+	cmnd->rw.lbat = 0;
+	cmnd->rw.lbatm = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (ns->head->ms) {
 		/*
@@ -1291,6 +1318,7 @@ static void nvme_queue_keep_alive_work(struct nvme_ctrl *ctrl)
 	queue_delayed_work(nvme_wq, &ctrl->ka_work, delay);
 }
 
+<<<<<<< HEAD
 static enum rq_end_io_ret nvme_keep_alive_end_io(struct request *rq,
 						 blk_status_t status)
 {
@@ -1299,6 +1327,14 @@ static enum rq_end_io_ret nvme_keep_alive_end_io(struct request *rq,
 	bool startka = false;
 	unsigned long rtt = jiffies - (rq->deadline - rq->timeout);
 	unsigned long delay = nvme_keep_alive_work_period(ctrl);
+=======
+static void nvme_keep_alive_finish(struct request *rq,
+		blk_status_t status, struct nvme_ctrl *ctrl)
+{
+	unsigned long rtt = jiffies - (rq->deadline - rq->timeout);
+	unsigned long delay = nvme_keep_alive_work_period(ctrl);
+	enum nvme_ctrl_state state = nvme_ctrl_state(ctrl);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Subtract off the keepalive RTT so nvme_keep_alive_work runs
@@ -1312,17 +1348,25 @@ static enum rq_end_io_ret nvme_keep_alive_end_io(struct request *rq,
 		delay = 0;
 	}
 
+<<<<<<< HEAD
 	blk_mq_free_request(rq);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (status) {
 		dev_err(ctrl->device,
 			"failed nvme_keep_alive_end_io error=%d\n",
 				status);
+<<<<<<< HEAD
 		return RQ_END_IO_NONE;
+=======
+		return;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	ctrl->ka_last_check_time = jiffies;
 	ctrl->comp_seen = false;
+<<<<<<< HEAD
 	spin_lock_irqsave(&ctrl->lock, flags);
 	if (ctrl->state == NVME_CTRL_LIVE ||
 	    ctrl->state == NVME_CTRL_CONNECTING)
@@ -1331,6 +1375,10 @@ static enum rq_end_io_ret nvme_keep_alive_end_io(struct request *rq,
 	if (startka)
 		queue_delayed_work(nvme_wq, &ctrl->ka_work, delay);
 	return RQ_END_IO_NONE;
+=======
+	if (state == NVME_CTRL_LIVE || state == NVME_CTRL_CONNECTING)
+		queue_delayed_work(nvme_wq, &ctrl->ka_work, delay);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void nvme_keep_alive_work(struct work_struct *work)
@@ -1339,6 +1387,10 @@ static void nvme_keep_alive_work(struct work_struct *work)
 			struct nvme_ctrl, ka_work);
 	bool comp_seen = ctrl->comp_seen;
 	struct request *rq;
+<<<<<<< HEAD
+=======
+	blk_status_t status;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ctrl->ka_last_check_time = jiffies;
 
@@ -1361,9 +1413,15 @@ static void nvme_keep_alive_work(struct work_struct *work)
 	nvme_init_request(rq, &ctrl->ka_cmd);
 
 	rq->timeout = ctrl->kato * HZ;
+<<<<<<< HEAD
 	rq->end_io = nvme_keep_alive_end_io;
 	rq->end_io_data = ctrl;
 	blk_execute_rq_nowait(rq, false);
+=======
+	status = blk_execute_rq(rq, false);
+	nvme_keep_alive_finish(rq, status, ctrl);
+	blk_mq_free_request(rq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void nvme_start_keep_alive(struct nvme_ctrl *ctrl)
@@ -1398,6 +1456,7 @@ static void nvme_update_keep_alive(struct nvme_ctrl *ctrl,
 	nvme_start_keep_alive(ctrl);
 }
 
+<<<<<<< HEAD
 /*
  * In NVMe 1.0 the CNS field was just a binary controller or namespace
  * flag, thus sending any new CNS opcodes has a big chance of not working.
@@ -1409,6 +1468,32 @@ static bool nvme_ctrl_limited_cns(struct nvme_ctrl *ctrl)
 	if (ctrl->quirks & NVME_QUIRK_IDENTIFY_CNS)
 		return ctrl->vs < NVME_VS(1, 2, 0);
 	return ctrl->vs < NVME_VS(1, 1, 0);
+=======
+static bool nvme_id_cns_ok(struct nvme_ctrl *ctrl, u8 cns)
+{
+	/*
+	 * The CNS field occupies a full byte starting with NVMe 1.2
+	 */
+	if (ctrl->vs >= NVME_VS(1, 2, 0))
+		return true;
+
+	/*
+	 * NVMe 1.1 expanded the CNS value to two bits, which means values
+	 * larger than that could get truncated and treated as an incorrect
+	 * value.
+	 *
+	 * Qemu implemented 1.0 behavior for controllers claiming 1.1
+	 * compliance, so they need to be quirked here.
+	 */
+	if (ctrl->vs >= NVME_VS(1, 1, 0) &&
+	    !(ctrl->quirks & NVME_QUIRK_IDENTIFY_CNS))
+		return cns <= 3;
+
+	/*
+	 * NVMe 1.0 used a single bit for the CNS value.
+	 */
+	return cns <= 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int nvme_identify_ctrl(struct nvme_ctrl *dev, struct nvme_id_ctrl **id)
@@ -1921,8 +2006,17 @@ static void nvme_configure_metadata(struct nvme_ctrl *ctrl,
 
 	if (head->pi_size && head->ms >= head->pi_size)
 		head->pi_type = id->dps & NVME_NS_DPS_PI_MASK;
+<<<<<<< HEAD
 	if (!(id->dps & NVME_NS_DPS_PI_FIRST))
 		info->pi_offset = head->ms - head->pi_size;
+=======
+	if (!(id->dps & NVME_NS_DPS_PI_FIRST)) {
+		if (disable_pi_offsets)
+			head->pi_type = 0;
+		else
+			info->pi_offset = head->ms - head->pi_size;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (ctrl->ops->flags & NVME_F_FABRICS) {
 		/*
@@ -2457,8 +2551,18 @@ int nvme_enable_ctrl(struct nvme_ctrl *ctrl)
 	else
 		ctrl->ctrl_config = NVME_CC_CSS_NVM;
 
+<<<<<<< HEAD
 	if (ctrl->cap & NVME_CAP_CRMS_CRWMS && ctrl->cap & NVME_CAP_CRMS_CRIMS)
 		ctrl->ctrl_config |= NVME_CC_CRIME;
+=======
+	/*
+	 * Setting CRIME results in CSTS.RDY before the media is ready. This
+	 * makes it possible for media related commands to return the error
+	 * NVME_SC_ADMIN_COMMAND_MEDIA_NOT_READY. Until the driver is
+	 * restructured to handle retries, disable CC.CRIME.
+	 */
+	ctrl->ctrl_config &= ~NVME_CC_CRIME;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ctrl->ctrl_config |= (NVME_CTRL_PAGE_SHIFT - 12) << NVME_CC_MPS_SHIFT;
 	ctrl->ctrl_config |= NVME_CC_AMS_RR | NVME_CC_SHN_NONE;
@@ -2467,11 +2571,14 @@ int nvme_enable_ctrl(struct nvme_ctrl *ctrl)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	/* Flush write to device (required if transport is PCI) */
 	ret = ctrl->ops->reg_read32(ctrl, NVME_REG_CC, &ctrl->ctrl_config);
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* CAP value may change after initial CC write */
 	ret = ctrl->ops->reg_read64(ctrl, NVME_REG_CAP, &ctrl->cap);
 	if (ret)
@@ -2493,10 +2600,14 @@ int nvme_enable_ctrl(struct nvme_ctrl *ctrl)
 		 * devices are known to get this wrong. Use the larger of the
 		 * two values.
 		 */
+<<<<<<< HEAD
 		if (ctrl->ctrl_config & NVME_CC_CRIME)
 			ready_timeout = NVME_CRTO_CRIMT(crto);
 		else
 			ready_timeout = NVME_CRTO_CRWMT(crto);
+=======
+		ready_timeout = NVME_CRTO_CRWMT(crto);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (ready_timeout < timeout)
 			dev_warn_once(ctrl->device, "bad crto:%x cap:%llx\n",
@@ -3115,7 +3226,11 @@ static int nvme_init_non_mdts_limits(struct nvme_ctrl *ctrl)
 		ctrl->max_zeroes_sectors = 0;
 
 	if (ctrl->subsys->subtype != NVME_NQN_NVME ||
+<<<<<<< HEAD
 	    nvme_ctrl_limited_cns(ctrl) ||
+=======
+	    !nvme_id_cns_ok(ctrl, NVME_ID_CNS_CS_CTRL) ||
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    test_bit(NVME_CTRL_SKIP_ID_CNS_CS, &ctrl->flags))
 		return 0;
 
@@ -3778,7 +3893,12 @@ struct nvme_ns *nvme_find_get_ns(struct nvme_ctrl *ctrl, unsigned nsid)
 	int srcu_idx;
 
 	srcu_idx = srcu_read_lock(&ctrl->srcu);
+<<<<<<< HEAD
 	list_for_each_entry_rcu(ns, &ctrl->namespaces, list) {
+=======
+	list_for_each_entry_srcu(ns, &ctrl->namespaces, list,
+				 srcu_read_lock_held(&ctrl->srcu)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ns->head->ns_id == nsid) {
 			if (!nvme_get_ns(ns))
 				continue;
@@ -4040,6 +4160,38 @@ static void nvme_scan_ns(struct nvme_ctrl *ctrl, unsigned nsid)
 	}
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * struct async_scan_info - keeps track of controller & NSIDs to scan
+ * @ctrl:	Controller on which namespaces are being scanned
+ * @next_nsid:	Index of next NSID to scan in ns_list
+ * @ns_list:	Pointer to list of NSIDs to scan
+ *
+ * Note: There is a single async_scan_info structure shared by all instances
+ * of nvme_scan_ns_async() scanning a given controller, so the atomic
+ * operations on next_nsid are critical to ensure each instance scans a unique
+ * NSID.
+ */
+struct async_scan_info {
+	struct nvme_ctrl *ctrl;
+	atomic_t next_nsid;
+	__le32 *ns_list;
+};
+
+static void nvme_scan_ns_async(void *data, async_cookie_t cookie)
+{
+	struct async_scan_info *scan_info = data;
+	int idx;
+	u32 nsid;
+
+	idx = (u32)atomic_fetch_inc(&scan_info->next_nsid);
+	nsid = le32_to_cpu(scan_info->ns_list[idx]);
+
+	nvme_scan_ns(scan_info->ctrl, nsid);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void nvme_remove_invalid_namespaces(struct nvme_ctrl *ctrl,
 					unsigned nsid)
 {
@@ -4066,11 +4218,21 @@ static int nvme_scan_ns_list(struct nvme_ctrl *ctrl)
 	__le32 *ns_list;
 	u32 prev = 0;
 	int ret = 0, i;
+<<<<<<< HEAD
+=======
+	ASYNC_DOMAIN(domain);
+	struct async_scan_info scan_info;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ns_list = kzalloc(NVME_IDENTIFY_DATA_SIZE, GFP_KERNEL);
 	if (!ns_list)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	scan_info.ctrl = ctrl;
+	scan_info.ns_list = ns_list;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (;;) {
 		struct nvme_command cmd = {
 			.identify.opcode	= nvme_admin_identify,
@@ -4086,19 +4248,36 @@ static int nvme_scan_ns_list(struct nvme_ctrl *ctrl)
 			goto free;
 		}
 
+<<<<<<< HEAD
+=======
+		atomic_set(&scan_info.next_nsid, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		for (i = 0; i < nr_entries; i++) {
 			u32 nsid = le32_to_cpu(ns_list[i]);
 
 			if (!nsid)	/* end of the list? */
 				goto out;
+<<<<<<< HEAD
 			nvme_scan_ns(ctrl, nsid);
 			while (++prev < nsid)
 				nvme_ns_remove_by_nsid(ctrl, prev);
 		}
+=======
+			async_schedule_domain(nvme_scan_ns_async, &scan_info,
+						&domain);
+			while (++prev < nsid)
+				nvme_ns_remove_by_nsid(ctrl, prev);
+		}
+		async_synchronize_full_domain(&domain);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
  out:
 	nvme_remove_invalid_namespaces(ctrl, prev);
  free:
+<<<<<<< HEAD
+=======
+	async_synchronize_full_domain(&domain);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(ns_list);
 	return ret;
 }
@@ -4174,7 +4353,11 @@ static void nvme_scan_work(struct work_struct *work)
 	}
 
 	mutex_lock(&ctrl->scan_lock);
+<<<<<<< HEAD
 	if (nvme_ctrl_limited_cns(ctrl)) {
+=======
+	if (!nvme_id_cns_ok(ctrl, NVME_ID_CNS_NS_ACTIVE_LIST)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		nvme_scan_ns_sequential(ctrl);
 	} else {
 		/*
@@ -4568,7 +4751,11 @@ int nvme_alloc_io_tag_set(struct nvme_ctrl *ctrl, struct blk_mq_tag_set *set,
 	set->flags = BLK_MQ_F_SHOULD_MERGE;
 	if (ctrl->ops->flags & NVME_F_BLOCKING)
 		set->flags |= BLK_MQ_F_BLOCKING;
+<<<<<<< HEAD
 	set->cmd_size = cmd_size,
+=======
+	set->cmd_size = cmd_size;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	set->driver_data = ctrl;
 	set->nr_hw_queues = ctrl->queue_count - 1;
 	set->timeout = NVME_IO_TIMEOUT;
@@ -4678,7 +4865,10 @@ static void nvme_free_ctrl(struct device *dev)
 
 	if (!subsys || ctrl->instance != subsys->instance)
 		ida_free(&nvme_instance_ida, ctrl->instance);
+<<<<<<< HEAD
 	key_put(ctrl->tls_key);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	nvme_free_cels(ctrl);
 	nvme_mpath_uninit(ctrl);
 	cleanup_srcu_struct(&ctrl->srcu);
@@ -4826,7 +5016,12 @@ void nvme_mark_namespaces_dead(struct nvme_ctrl *ctrl)
 	int srcu_idx;
 
 	srcu_idx = srcu_read_lock(&ctrl->srcu);
+<<<<<<< HEAD
 	list_for_each_entry_rcu(ns, &ctrl->namespaces, list)
+=======
+	list_for_each_entry_srcu(ns, &ctrl->namespaces, list,
+				 srcu_read_lock_held(&ctrl->srcu))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		blk_mark_disk_dead(ns->disk);
 	srcu_read_unlock(&ctrl->srcu, srcu_idx);
 }
@@ -4838,7 +5033,12 @@ void nvme_unfreeze(struct nvme_ctrl *ctrl)
 	int srcu_idx;
 
 	srcu_idx = srcu_read_lock(&ctrl->srcu);
+<<<<<<< HEAD
 	list_for_each_entry_rcu(ns, &ctrl->namespaces, list)
+=======
+	list_for_each_entry_srcu(ns, &ctrl->namespaces, list,
+				 srcu_read_lock_held(&ctrl->srcu))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		blk_mq_unfreeze_queue(ns->queue);
 	srcu_read_unlock(&ctrl->srcu, srcu_idx);
 	clear_bit(NVME_CTRL_FROZEN, &ctrl->flags);
@@ -4851,7 +5051,12 @@ int nvme_wait_freeze_timeout(struct nvme_ctrl *ctrl, long timeout)
 	int srcu_idx;
 
 	srcu_idx = srcu_read_lock(&ctrl->srcu);
+<<<<<<< HEAD
 	list_for_each_entry_rcu(ns, &ctrl->namespaces, list) {
+=======
+	list_for_each_entry_srcu(ns, &ctrl->namespaces, list,
+				 srcu_read_lock_held(&ctrl->srcu)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		timeout = blk_mq_freeze_queue_wait_timeout(ns->queue, timeout);
 		if (timeout <= 0)
 			break;
@@ -4867,7 +5072,12 @@ void nvme_wait_freeze(struct nvme_ctrl *ctrl)
 	int srcu_idx;
 
 	srcu_idx = srcu_read_lock(&ctrl->srcu);
+<<<<<<< HEAD
 	list_for_each_entry_rcu(ns, &ctrl->namespaces, list)
+=======
+	list_for_each_entry_srcu(ns, &ctrl->namespaces, list,
+				 srcu_read_lock_held(&ctrl->srcu))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		blk_mq_freeze_queue_wait(ns->queue);
 	srcu_read_unlock(&ctrl->srcu, srcu_idx);
 }
@@ -4880,7 +5090,12 @@ void nvme_start_freeze(struct nvme_ctrl *ctrl)
 
 	set_bit(NVME_CTRL_FROZEN, &ctrl->flags);
 	srcu_idx = srcu_read_lock(&ctrl->srcu);
+<<<<<<< HEAD
 	list_for_each_entry_rcu(ns, &ctrl->namespaces, list)
+=======
+	list_for_each_entry_srcu(ns, &ctrl->namespaces, list,
+				 srcu_read_lock_held(&ctrl->srcu))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		blk_freeze_queue_start(ns->queue);
 	srcu_read_unlock(&ctrl->srcu, srcu_idx);
 }
@@ -4928,7 +5143,12 @@ void nvme_sync_io_queues(struct nvme_ctrl *ctrl)
 	int srcu_idx;
 
 	srcu_idx = srcu_read_lock(&ctrl->srcu);
+<<<<<<< HEAD
 	list_for_each_entry_rcu(ns, &ctrl->namespaces, list)
+=======
+	list_for_each_entry_srcu(ns, &ctrl->namespaces, list,
+				 srcu_read_lock_held(&ctrl->srcu))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		blk_sync_queue(ns->queue);
 	srcu_read_unlock(&ctrl->srcu, srcu_idx);
 }

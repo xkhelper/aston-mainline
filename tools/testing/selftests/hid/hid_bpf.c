@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
+<<<<<<< HEAD
 /* Copyright (c) 2022 Red Hat */
 #include "hid.skel.h"
 
@@ -88,6 +89,12 @@ static unsigned char rdesc[] = {
 };
 
 static __u8 feature_data[] = { 1, 2 };
+=======
+/* Copyright (c) 2022-2024 Red Hat */
+#include "hid.skel.h"
+#include "hid_common.h"
+#include <bpf/bpf.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct attach_prog_args {
 	int prog_fd;
@@ -105,6 +112,7 @@ struct hid_hw_request_syscall_args {
 	__u8 request_type;
 };
 
+<<<<<<< HEAD
 #define ASSERT_OK(data) ASSERT_FALSE(data)
 #define ASSERT_OK_PTR(ptr) ASSERT_NE(NULL, ptr)
 
@@ -453,6 +461,8 @@ static int open_hidraw(int dev_id)
 	return open(hidraw_path, O_RDWR | O_NONBLOCK);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 FIXTURE(hid_bpf) {
 	int dev_id;
 	int uhid_fd;
@@ -1357,12 +1367,15 @@ static int libbpf_print_fn(enum libbpf_print_level level,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void __attribute__((constructor)) __constructor_order_last(void)
 {
 	if (!__constructor_order)
 		__constructor_order = _CONSTRUCTOR_ORDER_BACKWARD;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int main(int argc, char **argv)
 {
 	/* Use libbpf 1.0 API mode */

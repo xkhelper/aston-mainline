@@ -100,7 +100,10 @@ FEATURE_TESTS_EXTRA :=                  \
          libunwind-debug-frame-aarch64  \
          cxx                            \
          llvm                           \
+<<<<<<< HEAD
          llvm-version                   \
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
          clang                          \
          libbpf                         \
          libbpf-btf__load_from_kernel_by_id \
@@ -136,6 +139,10 @@ FEATURE_DISPLAY ?=              \
          libunwind              \
          libdw-dwarf-unwind     \
          libcapstone            \
+<<<<<<< HEAD
+=======
+         llvm-perf              \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
          zlib                   \
          lzma                   \
          get_cpuid              \

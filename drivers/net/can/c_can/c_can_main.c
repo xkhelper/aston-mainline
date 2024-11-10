@@ -1011,7 +1011,10 @@ static int c_can_handle_bus_err(struct net_device *dev,
 
 	/* common for all type of bus errors */
 	priv->can.can_stats.bus_error++;
+<<<<<<< HEAD
 	stats->rx_errors++;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* propagate the error condition to the CAN stack */
 	skb = alloc_can_err_skb(dev, &cf);
@@ -1027,26 +1030,50 @@ static int c_can_handle_bus_err(struct net_device *dev,
 	case LEC_STUFF_ERROR:
 		netdev_dbg(dev, "stuff error\n");
 		cf->data[2] |= CAN_ERR_PROT_STUFF;
+<<<<<<< HEAD
+=======
+		stats->rx_errors++;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case LEC_FORM_ERROR:
 		netdev_dbg(dev, "form error\n");
 		cf->data[2] |= CAN_ERR_PROT_FORM;
+<<<<<<< HEAD
+=======
+		stats->rx_errors++;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case LEC_ACK_ERROR:
 		netdev_dbg(dev, "ack error\n");
 		cf->data[3] = CAN_ERR_PROT_LOC_ACK;
+<<<<<<< HEAD
+=======
+		stats->tx_errors++;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case LEC_BIT1_ERROR:
 		netdev_dbg(dev, "bit1 error\n");
 		cf->data[2] |= CAN_ERR_PROT_BIT1;
+<<<<<<< HEAD
+=======
+		stats->tx_errors++;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case LEC_BIT0_ERROR:
 		netdev_dbg(dev, "bit0 error\n");
 		cf->data[2] |= CAN_ERR_PROT_BIT0;
+<<<<<<< HEAD
+=======
+		stats->tx_errors++;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case LEC_CRC_ERROR:
 		netdev_dbg(dev, "CRC error\n");
 		cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
+<<<<<<< HEAD
+=======
+		stats->rx_errors++;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		break;

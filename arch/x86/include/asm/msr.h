@@ -99,6 +99,7 @@ static __always_inline void __wrmsr(unsigned int msr, u32 low, u32 high)
 		     : : "c" (msr), "a"(low), "d" (high) : "memory");
 }
 
+<<<<<<< HEAD
 /*
  * WRMSRNS behaves exactly like WRMSR with the only difference being
  * that it is not a serializing instruction by default.
@@ -112,6 +113,8 @@ static __always_inline void __wrmsrns(u32 msr, u32 low, u32 high)
 		     : : "c" (msr), "a"(low), "d" (high));
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define native_rdmsr(msr, val1, val2)			\
 do {							\
 	u64 __val = __rdmsr((msr));			\
@@ -312,9 +315,25 @@ do {							\
 
 #endif	/* !CONFIG_PARAVIRT_XXL */
 
+<<<<<<< HEAD
 static __always_inline void wrmsrns(u32 msr, u64 val)
 {
 	__wrmsrns(msr, val, val >> 32);
+=======
+/* Instruction opcode for WRMSRNS supported in binutils >= 2.40 */
+#define WRMSRNS _ASM_BYTES(0x0f,0x01,0xc6)
+
+/* Non-serializing WRMSR, when available.  Falls back to a serializing WRMSR. */
+static __always_inline void wrmsrns(u32 msr, u64 val)
+{
+	/*
+	 * WRMSR is 2 bytes.  WRMSRNS is 3 bytes.  Pad WRMSR with a redundant
+	 * DS prefix to avoid a trailing NOP.
+	 */
+	asm volatile("1: " ALTERNATIVE("ds wrmsr", WRMSRNS, X86_FEATURE_WRMSRNS)
+		     "2: " _ASM_EXTABLE_TYPE(1b, 2b, EX_TYPE_WRMSR)
+		     : : "c" (msr), "a" ((u32)val), "d" ((u32)(val >> 32)));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*

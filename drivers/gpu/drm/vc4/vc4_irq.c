@@ -76,7 +76,11 @@ vc4_overflow_mem_work(struct work_struct *work)
 
 	bin_bo_slot = vc4_v3d_get_bin_slot(vc4);
 	if (bin_bo_slot < 0) {
+<<<<<<< HEAD
 		DRM_ERROR("Couldn't allocate binner overflow mem\n");
+=======
+		drm_err(&vc4->base, "Couldn't allocate binner overflow mem\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto complete;
 	}
 

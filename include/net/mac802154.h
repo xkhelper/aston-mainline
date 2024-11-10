@@ -7,7 +7,11 @@
 #ifndef NET_MAC802154_H
 #define NET_MAC802154_H
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <net/af_ieee802154.h>
 #include <linux/ieee802154.h>
 #include <linux/skbuff.h>
@@ -140,7 +144,11 @@ enum ieee802154_hw_flags {
  *
  * xmit_sync:
  *	  Handler that 802.15.4 module calls for each transmitted frame.
+<<<<<<< HEAD
  *	  skb cntains the buffer starting from the IEEE 802.15.4 header.
+=======
+ *	  skb contains the buffer starting from the IEEE 802.15.4 header.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *	  The low-level driver should send the frame based on available
  *	  configuration. This is called by a workqueue and useful for
  *	  synchronous 802.15.4 drivers.
@@ -152,7 +160,11 @@ enum ieee802154_hw_flags {
  *
  * xmit_async:
  *	  Handler that 802.15.4 module calls for each transmitted frame.
+<<<<<<< HEAD
  *	  skb cntains the buffer starting from the IEEE 802.15.4 header.
+=======
+ *	  skb contains the buffer starting from the IEEE 802.15.4 header.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *	  The low-level driver should send the frame based on available
  *	  configuration.
  *	  This function should return zero or negative errno.

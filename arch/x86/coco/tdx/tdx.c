@@ -16,6 +16,10 @@
 #include <asm/insn-eval.h>
 #include <asm/pgtable.h>
 #include <asm/set_memory.h>
+<<<<<<< HEAD
+=======
+#include <asm/traps.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* MMIO direction */
 #define EPT_READ	0
@@ -433,6 +437,14 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
 			return -EINVAL;
 	}
 
+<<<<<<< HEAD
+=======
+	if (!fault_in_kernel_space(ve->gla)) {
+		WARN_ONCE(1, "Access to userspace address is not supported");
+		return -EINVAL;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Reject EPT violation #VEs that split pages.
 	 *

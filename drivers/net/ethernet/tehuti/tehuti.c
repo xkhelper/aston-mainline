@@ -1671,7 +1671,11 @@ static netdev_tx_t bdx_tx_transmit(struct sk_buff *skb,
 
 #endif
 #ifdef BDX_LLTX
+<<<<<<< HEAD
 	netif_trans_update(ndev); /* NETIF_F_LLTX driver :( */
+=======
+	netif_trans_update(ndev); /* dev->lltx driver :( */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	ndev->stats.tx_packets++;
 	ndev->stats.tx_bytes += skb->len;
@@ -2019,7 +2023,11 @@ bdx_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 		 * set multicast list callback has to use priv->tx_lock.
 		 */
 #ifdef BDX_LLTX
+<<<<<<< HEAD
 		ndev->features |= NETIF_F_LLTX;
+=======
+		ndev->lltx = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 		/* MTU range: 60 - 16384 */
 		ndev->min_mtu = ETH_ZLEN;

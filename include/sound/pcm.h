@@ -123,6 +123,13 @@ struct snd_pcm_ops {
 #define SNDRV_PCM_RATE_384000		(1U<<14)	/* 384000Hz */
 #define SNDRV_PCM_RATE_705600		(1U<<15)	/* 705600Hz */
 #define SNDRV_PCM_RATE_768000		(1U<<16)	/* 768000Hz */
+<<<<<<< HEAD
+=======
+/* extended rates since 6.12 */
+#define SNDRV_PCM_RATE_12000		(1U<<17)	/* 12000Hz */
+#define SNDRV_PCM_RATE_24000		(1U<<18)	/* 24000Hz */
+#define SNDRV_PCM_RATE_128000		(1U<<19)	/* 128000Hz */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define SNDRV_PCM_RATE_CONTINUOUS	(1U<<30)	/* continuous range */
 #define SNDRV_PCM_RATE_KNOT		(1U<<31)	/* supports more non-continuous rates */
@@ -498,6 +505,12 @@ struct snd_pcm_substream {
 	/* misc flags */
 	unsigned int hw_opened: 1;
 	unsigned int managed_buffer_alloc:1;
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SND_PCM_XRUN_DEBUG
+	unsigned int xrun_counter; /* number of times xrun happens */
+#endif /* CONFIG_SND_PCM_XRUN_DEBUG */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define SUBSTREAM_BUSY(substream) ((substream)->ref_count > 0)
@@ -1355,6 +1368,7 @@ snd_pcm_set_fixed_buffer_all(struct snd_pcm *pcm, int type,
 	return snd_pcm_set_managed_buffer_all(pcm, type, data, size, 0);
 }
 
+<<<<<<< HEAD
 int _snd_pcm_lib_alloc_vmalloc_buffer(struct snd_pcm_substream *substream,
 				      size_t size, gfp_t gfp_flags);
 int snd_pcm_lib_free_vmalloc_buffer(struct snd_pcm_substream *substream);
@@ -1397,6 +1411,8 @@ static inline int snd_pcm_lib_alloc_vmalloc_32_buffer
 						 GFP_KERNEL | GFP_DMA32 | __GFP_ZERO);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define snd_pcm_get_dma_buf(substream) ((substream)->runtime->dma_buffer_p)
 
 /**

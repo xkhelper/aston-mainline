@@ -218,7 +218,11 @@ static int pm8916_wdt_probe(struct platform_device *pdev)
 		return err;
 	}
 
+<<<<<<< HEAD
 	wdt->wdev.ops = &pm8916_wdt_ops,
+=======
+	wdt->wdev.ops = &pm8916_wdt_ops;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	wdt->wdev.parent = dev;
 	wdt->wdev.min_timeout = PM8916_WDT_MIN_TIMEOUT;
 	wdt->wdev.max_timeout = PM8916_WDT_MAX_TIMEOUT;

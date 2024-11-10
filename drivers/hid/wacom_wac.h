@@ -312,6 +312,11 @@ struct hid_data {
 	int width;
 	int height;
 	int id;
+<<<<<<< HEAD
+=======
+	int ring_value;
+	int ring2_value;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int cc_report;
 	int cc_index;
 	int cc_value_index;
@@ -324,7 +329,11 @@ struct hid_data {
 	int bat_connected;
 	int ps_connected;
 	bool pad_input_event_flag;
+<<<<<<< HEAD
 	unsigned short sequence_number;
+=======
+	int sequence_number;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ktime_t time_delayed;
 };
 
@@ -355,6 +364,11 @@ struct wacom_wac {
 	int num_contacts_left;
 	u8 bt_features;
 	u8 bt_high_speed;
+<<<<<<< HEAD
+=======
+	u8 absring_count;
+	u8 relring_count;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int mode_report;
 	int mode_value;
 	struct hid_data hid_data;

@@ -419,7 +419,11 @@ static int dwc3_octeon_probe(struct platform_device *pdev)
 	int ref_clk_sel, ref_clk_fsel, mpll_mul;
 	int power_active_low, power_gpio;
 	int err, len;
+<<<<<<< HEAD
 	u32 clock_rate;
+=======
+	u32 clock_rate, gpio_pwr[3];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (of_property_read_u32(node, "refclk-frequency", &clock_rate)) {
 		dev_err(dev, "No UCTL \"refclk-frequency\"\n");
@@ -476,6 +480,7 @@ static int dwc3_octeon_probe(struct platform_device *pdev)
 
 	power_gpio = DWC3_GPIO_POWER_NONE;
 	power_active_low = 0;
+<<<<<<< HEAD
 	if (of_find_property(node, "power", &len)) {
 		u32 gpio_pwr[3];
 
@@ -491,6 +496,12 @@ static int dwc3_octeon_probe(struct platform_device *pdev)
 			dev_err(dev, "invalid power configuration\n");
 			return -EINVAL;
 		}
+=======
+	len = of_property_read_variable_u32_array(node, "power", gpio_pwr, 2, 3);
+	if (len > 0) {
+		if (len == 3)
+			power_active_low = gpio_pwr[2] & 0x01;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		power_gpio = gpio_pwr[1];
 	}
 

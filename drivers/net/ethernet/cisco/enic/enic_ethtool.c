@@ -32,6 +32,44 @@ struct enic_stat {
 	.index = offsetof(struct vnic_gen_stats, stat) / sizeof(u64)\
 }
 
+<<<<<<< HEAD
+=======
+#define ENIC_PER_RQ_STAT(stat) { \
+	.name = "rq[%d]_"#stat, \
+	.index = offsetof(struct enic_rq_stats, stat) / sizeof(u64) \
+}
+
+#define ENIC_PER_WQ_STAT(stat) { \
+	.name = "wq[%d]_"#stat, \
+	.index = offsetof(struct enic_wq_stats, stat) / sizeof(u64) \
+}
+
+static const struct enic_stat enic_per_rq_stats[] = {
+	ENIC_PER_RQ_STAT(l4_rss_hash),
+	ENIC_PER_RQ_STAT(l3_rss_hash),
+	ENIC_PER_RQ_STAT(csum_unnecessary_encap),
+	ENIC_PER_RQ_STAT(vlan_stripped),
+	ENIC_PER_RQ_STAT(napi_complete),
+	ENIC_PER_RQ_STAT(napi_repoll),
+	ENIC_PER_RQ_STAT(no_skb),
+	ENIC_PER_RQ_STAT(desc_skip),
+};
+
+#define NUM_ENIC_PER_RQ_STATS   ARRAY_SIZE(enic_per_rq_stats)
+
+static const struct enic_stat enic_per_wq_stats[] = {
+	ENIC_PER_WQ_STAT(encap_tso),
+	ENIC_PER_WQ_STAT(encap_csum),
+	ENIC_PER_WQ_STAT(add_vlan),
+	ENIC_PER_WQ_STAT(cq_work),
+	ENIC_PER_WQ_STAT(cq_bytes),
+	ENIC_PER_WQ_STAT(null_pkt),
+	ENIC_PER_WQ_STAT(skb_linear_fail),
+	ENIC_PER_WQ_STAT(desc_full_awake),
+};
+
+#define NUM_ENIC_PER_WQ_STATS   ARRAY_SIZE(enic_per_wq_stats)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct enic_stat enic_tx_stats[] = {
 	ENIC_TX_STAT(tx_frames_ok),
 	ENIC_TX_STAT(tx_unicast_frames_ok),
@@ -46,6 +84,11 @@ static const struct enic_stat enic_tx_stats[] = {
 	ENIC_TX_STAT(tx_tso),
 };
 
+<<<<<<< HEAD
+=======
+#define NUM_ENIC_TX_STATS	ARRAY_SIZE(enic_tx_stats)
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct enic_stat enic_rx_stats[] = {
 	ENIC_RX_STAT(rx_frames_ok),
 	ENIC_RX_STAT(rx_frames_total),
@@ -70,13 +113,22 @@ static const struct enic_stat enic_rx_stats[] = {
 	ENIC_RX_STAT(rx_frames_to_max),
 };
 
+<<<<<<< HEAD
+=======
+#define NUM_ENIC_RX_STATS	ARRAY_SIZE(enic_rx_stats)
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct enic_stat enic_gen_stats[] = {
 	ENIC_GEN_STAT(dma_map_error),
 };
 
+<<<<<<< HEAD
 static const unsigned int enic_n_tx_stats = ARRAY_SIZE(enic_tx_stats);
 static const unsigned int enic_n_rx_stats = ARRAY_SIZE(enic_rx_stats);
 static const unsigned int enic_n_gen_stats = ARRAY_SIZE(enic_gen_stats);
+=======
+#define NUM_ENIC_GEN_STATS	ARRAY_SIZE(enic_gen_stats)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void enic_intr_coal_set_rx(struct enic *enic, u32 timer)
 {
@@ -141,6 +193,7 @@ static void enic_get_drvinfo(struct net_device *netdev,
 static void enic_get_strings(struct net_device *netdev, u32 stringset,
 	u8 *data)
 {
+<<<<<<< HEAD
 	unsigned int i;
 
 	switch (stringset) {
@@ -157,6 +210,40 @@ static void enic_get_strings(struct net_device *netdev, u32 stringset,
 			memcpy(data, enic_gen_stats[i].name, ETH_GSTRING_LEN);
 			data += ETH_GSTRING_LEN;
 		}
+=======
+	struct enic *enic = netdev_priv(netdev);
+	unsigned int i;
+	unsigned int j;
+
+	switch (stringset) {
+	case ETH_SS_STATS:
+		for (i = 0; i < NUM_ENIC_TX_STATS; i++) {
+			memcpy(data, enic_tx_stats[i].name, ETH_GSTRING_LEN);
+			data += ETH_GSTRING_LEN;
+		}
+		for (i = 0; i < NUM_ENIC_RX_STATS; i++) {
+			memcpy(data, enic_rx_stats[i].name, ETH_GSTRING_LEN);
+			data += ETH_GSTRING_LEN;
+		}
+		for (i = 0; i < NUM_ENIC_GEN_STATS; i++) {
+			memcpy(data, enic_gen_stats[i].name, ETH_GSTRING_LEN);
+			data += ETH_GSTRING_LEN;
+		}
+		for (i = 0; i < enic->rq_count; i++) {
+			for (j = 0; j < NUM_ENIC_PER_RQ_STATS; j++) {
+				snprintf(data, ETH_GSTRING_LEN,
+					 enic_per_rq_stats[j].name, i);
+				data += ETH_GSTRING_LEN;
+			}
+		}
+		for (i = 0; i < enic->wq_count; i++) {
+			for (j = 0; j < NUM_ENIC_PER_WQ_STATS; j++) {
+				snprintf(data, ETH_GSTRING_LEN,
+					 enic_per_wq_stats[j].name, i);
+				data += ETH_GSTRING_LEN;
+			}
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	}
 }
@@ -242,9 +329,25 @@ err_out:
 
 static int enic_get_sset_count(struct net_device *netdev, int sset)
 {
+<<<<<<< HEAD
 	switch (sset) {
 	case ETH_SS_STATS:
 		return enic_n_tx_stats + enic_n_rx_stats + enic_n_gen_stats;
+=======
+	struct enic *enic = netdev_priv(netdev);
+	unsigned int n_per_rq_stats;
+	unsigned int n_per_wq_stats;
+	unsigned int n_stats;
+
+	switch (sset) {
+	case ETH_SS_STATS:
+		n_per_rq_stats = NUM_ENIC_PER_RQ_STATS * enic->rq_count;
+		n_per_wq_stats = NUM_ENIC_PER_WQ_STATS * enic->wq_count;
+		n_stats = NUM_ENIC_TX_STATS + NUM_ENIC_RX_STATS +
+			NUM_ENIC_GEN_STATS +
+			n_per_rq_stats + n_per_wq_stats;
+		return n_stats;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		return -EOPNOTSUPP;
 	}
@@ -256,6 +359,10 @@ static void enic_get_ethtool_stats(struct net_device *netdev,
 	struct enic *enic = netdev_priv(netdev);
 	struct vnic_stats *vstats;
 	unsigned int i;
+<<<<<<< HEAD
+=======
+	unsigned int j;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 
 	err = enic_dev_stats_dump(enic, &vstats);
@@ -266,12 +373,39 @@ static void enic_get_ethtool_stats(struct net_device *netdev,
 	if (err == -ENOMEM)
 		return;
 
+<<<<<<< HEAD
 	for (i = 0; i < enic_n_tx_stats; i++)
 		*(data++) = ((u64 *)&vstats->tx)[enic_tx_stats[i].index];
 	for (i = 0; i < enic_n_rx_stats; i++)
 		*(data++) = ((u64 *)&vstats->rx)[enic_rx_stats[i].index];
 	for (i = 0; i < enic_n_gen_stats; i++)
 		*(data++) = ((u64 *)&enic->gen_stats)[enic_gen_stats[i].index];
+=======
+	for (i = 0; i < NUM_ENIC_TX_STATS; i++)
+		*(data++) = ((u64 *)&vstats->tx)[enic_tx_stats[i].index];
+	for (i = 0; i < NUM_ENIC_RX_STATS; i++)
+		*(data++) = ((u64 *)&vstats->rx)[enic_rx_stats[i].index];
+	for (i = 0; i < NUM_ENIC_GEN_STATS; i++)
+		*(data++) = ((u64 *)&enic->gen_stats)[enic_gen_stats[i].index];
+	for (i = 0; i < enic->rq_count; i++) {
+		struct enic_rq_stats *rqstats = &enic->rq_stats[i];
+		int index;
+
+		for (j = 0; j < NUM_ENIC_PER_RQ_STATS; j++) {
+			index = enic_per_rq_stats[j].index;
+			*(data++) = ((u64 *)rqstats)[index];
+		}
+	}
+	for (i = 0; i < enic->wq_count; i++) {
+		struct enic_wq_stats *wqstats = &enic->wq_stats[i];
+		int index;
+
+		for (j = 0; j < NUM_ENIC_PER_WQ_STATS; j++) {
+			index = enic_per_wq_stats[j].index;
+			*(data++) = ((u64 *)wqstats)[index];
+		}
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static u32 enic_get_msglevel(struct net_device *netdev)
@@ -601,9 +735,13 @@ static int enic_set_rxfh(struct net_device *netdev,
 static int enic_get_ts_info(struct net_device *netdev,
 			    struct kernel_ethtool_ts_info *info)
 {
+<<<<<<< HEAD
 	info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE |
 				SOF_TIMESTAMPING_RX_SOFTWARE |
 				SOF_TIMESTAMPING_SOFTWARE;
+=======
+	info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

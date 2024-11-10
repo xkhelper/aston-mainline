@@ -580,7 +580,11 @@ static int cec_open(struct inode *inode, struct file *filp)
 	fh->mode_initiator = CEC_MODE_INITIATOR;
 	fh->adap = adap;
 
+<<<<<<< HEAD
 	err = cec_get_device(devnode);
+=======
+	err = cec_get_device(adap);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err) {
 		kfree(fh);
 		return err;
@@ -686,7 +690,11 @@ static int cec_release(struct inode *inode, struct file *filp)
 	mutex_unlock(&fh->lock);
 	kfree(fh);
 
+<<<<<<< HEAD
 	cec_put_device(devnode);
+=======
+	cec_put_device(adap);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	filp->private_data = NULL;
 	return 0;
 }
@@ -698,5 +706,8 @@ const struct file_operations cec_devnode_fops = {
 	.compat_ioctl = cec_ioctl,
 	.release = cec_release,
 	.poll = cec_poll,
+<<<<<<< HEAD
 	.llseek = no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };

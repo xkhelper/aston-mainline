@@ -26,7 +26,11 @@ static bool before(__u32 seq1, __u32 seq2)
 
 char _license[] SEC("license") = "GPL";
 
+<<<<<<< HEAD
 volatile const char fallback[TCP_CA_NAME_MAX];
+=======
+volatile const char fallback_cc[TCP_CA_NAME_MAX];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const char bpf_dctcp[] = "bpf_dctcp";
 const char tcp_cdg[] = "cdg";
 char cc_res[TCP_CA_NAME_MAX];
@@ -71,10 +75,17 @@ void BPF_PROG(bpf_dctcp_init, struct sock *sk)
 	struct bpf_dctcp *ca = inet_csk_ca(sk);
 	int *stg;
 
+<<<<<<< HEAD
 	if (!(tp->ecn_flags & TCP_ECN_OK) && fallback[0]) {
 		/* Switch to fallback */
 		if (bpf_setsockopt(sk, SOL_TCP, TCP_CONGESTION,
 				   (void *)fallback, sizeof(fallback)) == -EBUSY)
+=======
+	if (!(tp->ecn_flags & TCP_ECN_OK) && fallback_cc[0]) {
+		/* Switch to fallback */
+		if (bpf_setsockopt(sk, SOL_TCP, TCP_CONGESTION,
+				   (void *)fallback_cc, sizeof(fallback_cc)) == -EBUSY)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ebusy_cnt++;
 
 		/* Switch back to myself and the recurred bpf_dctcp_init()
@@ -87,7 +98,11 @@ void BPF_PROG(bpf_dctcp_init, struct sock *sk)
 
 		/* Switch back to fallback */
 		if (bpf_setsockopt(sk, SOL_TCP, TCP_CONGESTION,
+<<<<<<< HEAD
 				   (void *)fallback, sizeof(fallback)) == -EBUSY)
+=======
+				   (void *)fallback_cc, sizeof(fallback_cc)) == -EBUSY)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ebusy_cnt++;
 
 		/* Expecting -ENOTSUPP for tcp_cdg_res */

@@ -530,7 +530,11 @@ static inline void kb_wait(void)
 
 static inline void nmi_shootdown_cpus_on_restart(void);
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_KVM_INTEL) || IS_ENABLED(CONFIG_KVM_AMD)
+=======
+#if IS_ENABLED(CONFIG_KVM_X86)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* RCU-protected callback to disable virtualization prior to reboot. */
 static cpu_emergency_virt_cb __rcu *cpu_emergency_virt_callback;
 
@@ -600,7 +604,11 @@ static void emergency_reboot_disable_virtualization(void)
 }
 #else
 static void emergency_reboot_disable_virtualization(void) { }
+<<<<<<< HEAD
 #endif /* CONFIG_KVM_INTEL || CONFIG_KVM_AMD */
+=======
+#endif /* CONFIG_KVM_X86 */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void __attribute__((weak)) mach_reboot_fixups(void)
 {

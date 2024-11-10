@@ -15,8 +15,11 @@ struct nvkm_object {
 
 	struct list_head head;
 	struct list_head tree;
+<<<<<<< HEAD
 	u8  route;
 	u64 token;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 object;
 	struct rb_node node;
 };
@@ -35,12 +38,15 @@ struct nvkm_object_func {
 	int (*map)(struct nvkm_object *, void *argv, u32 argc,
 		   enum nvkm_object_map *, u64 *addr, u64 *size);
 	int (*unmap)(struct nvkm_object *);
+<<<<<<< HEAD
 	int (*rd08)(struct nvkm_object *, u64 addr, u8 *data);
 	int (*rd16)(struct nvkm_object *, u64 addr, u16 *data);
 	int (*rd32)(struct nvkm_object *, u64 addr, u32 *data);
 	int (*wr08)(struct nvkm_object *, u64 addr, u8 data);
 	int (*wr16)(struct nvkm_object *, u64 addr, u16 data);
 	int (*wr32)(struct nvkm_object *, u64 addr, u32 data);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int (*bind)(struct nvkm_object *, struct nvkm_gpuobj *, int align,
 		    struct nvkm_gpuobj **);
 	int (*sclass)(struct nvkm_object *, int index, struct nvkm_oclass *);
@@ -63,12 +69,15 @@ int nvkm_object_ntfy(struct nvkm_object *, u32 mthd, struct nvkm_event **);
 int nvkm_object_map(struct nvkm_object *, void *argv, u32 argc,
 		    enum nvkm_object_map *, u64 *addr, u64 *size);
 int nvkm_object_unmap(struct nvkm_object *);
+<<<<<<< HEAD
 int nvkm_object_rd08(struct nvkm_object *, u64 addr, u8  *data);
 int nvkm_object_rd16(struct nvkm_object *, u64 addr, u16 *data);
 int nvkm_object_rd32(struct nvkm_object *, u64 addr, u32 *data);
 int nvkm_object_wr08(struct nvkm_object *, u64 addr, u8   data);
 int nvkm_object_wr16(struct nvkm_object *, u64 addr, u16  data);
 int nvkm_object_wr32(struct nvkm_object *, u64 addr, u32  data);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int nvkm_object_bind(struct nvkm_object *, struct nvkm_gpuobj *, int align,
 		     struct nvkm_gpuobj **);
 

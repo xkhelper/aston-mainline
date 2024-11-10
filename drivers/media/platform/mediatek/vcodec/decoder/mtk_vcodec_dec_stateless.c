@@ -854,7 +854,11 @@ static int vb2ops_vdec_out_buf_validate(struct vb2_buffer *vb)
 	return 0;
 }
 
+<<<<<<< HEAD
 static struct vb2_ops mtk_vdec_request_vb2_ops = {
+=======
+static const struct vb2_ops mtk_vdec_request_vb2_ops = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.queue_setup	= vb2ops_vdec_queue_setup,
 	.wait_prepare	= vb2_ops_wait_prepare,
 	.wait_finish	= vb2_ops_wait_finish,

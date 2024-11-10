@@ -884,7 +884,11 @@ static int qrtr_bcast_enqueue(struct qrtr_node *node, struct sk_buff *skb,
 
 	mutex_lock(&qrtr_node_lock);
 	list_for_each_entry(node, &qrtr_all_nodes, item) {
+<<<<<<< HEAD
 		skbn = skb_clone(skb, GFP_KERNEL);
+=======
+		skbn = pskb_copy(skb, GFP_KERNEL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!skbn)
 			break;
 		skb_set_owner_w(skbn, skb->sk);

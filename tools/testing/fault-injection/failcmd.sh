@@ -64,6 +64,17 @@ ENVIRONMENT
 EOF
 }
 
+<<<<<<< HEAD
+=======
+exit_if_not_hex() {
+    local value="$1"
+    if ! [[ $value =~ ^0x[0-9a-fA-F]+$ ]]; then
+        echo "Error: The provided value '$value' is not a valid hexadecimal number." >&2
+        exit 1
+    fi
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 if [ $UID != 0 ]; then
 	echo must be run as root >&2
 	exit 1
@@ -160,18 +171,34 @@ while true; do
 		shift 2
 		;;
 	--require-start)
+<<<<<<< HEAD
+=======
+		exit_if_not_hex "$2"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		echo $2 > $FAULTATTR/require-start
 		shift 2
 		;;
 	--require-end)
+<<<<<<< HEAD
+=======
+		exit_if_not_hex "$2"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		echo $2 > $FAULTATTR/require-end
 		shift 2
 		;;
 	--reject-start)
+<<<<<<< HEAD
+=======
+		exit_if_not_hex "$2"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		echo $2 > $FAULTATTR/reject-start
 		shift 2
 		;;
 	--reject-end)
+<<<<<<< HEAD
+=======
+		exit_if_not_hex "$2"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		echo $2 > $FAULTATTR/reject-end
 		shift 2
 		;;

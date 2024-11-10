@@ -48,6 +48,10 @@ struct bit_entry {
 
 int bit_table(struct drm_device *, u8 id, struct bit_entry *);
 
+<<<<<<< HEAD
+=======
+#include <subdev/bios.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <subdev/bios/dcb.h>
 #include <subdev/bios/conn.h>
 

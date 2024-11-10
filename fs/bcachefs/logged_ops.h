@@ -15,6 +15,10 @@ static inline int bch2_logged_op_update(struct btree_trans *trans, struct bkey_i
 
 int bch2_resume_logged_ops(struct bch_fs *);
 int bch2_logged_op_start(struct btree_trans *, struct bkey_i *);
+<<<<<<< HEAD
 void bch2_logged_op_finish(struct btree_trans *, struct bkey_i *);
+=======
+int bch2_logged_op_finish(struct btree_trans *, struct bkey_i *);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* _BCACHEFS_LOGGED_OPS_H */

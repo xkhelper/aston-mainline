@@ -94,7 +94,11 @@ hrt_data csi_rx_fe_ctrl_reg_load(
     const hrt_address reg);
 /**
  * @brief Store a value to the register.
+<<<<<<< HEAD
  * Store a value to the registe of the csi rx fe.
+=======
+ * Store a value to the register of the csi rx fe.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * @param[in]	ID		The global unique ID for the ibuf-controller instance.
  * @param[in]	reg		The offset address of the register.
@@ -119,7 +123,11 @@ hrt_data csi_rx_be_ctrl_reg_load(
     const hrt_address reg);
 /**
  * @brief Store a value to the register.
+<<<<<<< HEAD
  * Store a value to the registe of the csi rx be.
+=======
+ * Store a value to the register of the csi rx be.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * @param[in]	ID		The global unique ID for the ibuf-controller instance.
  * @param[in]	reg		The offset address of the register.

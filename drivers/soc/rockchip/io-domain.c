@@ -39,6 +39,13 @@
 #define RK3288_SOC_CON2_FLASH0		BIT(7)
 #define RK3288_SOC_FLASH_SUPPLY_NUM	2
 
+<<<<<<< HEAD
+=======
+#define RK3308_SOC_CON0			0x300
+#define RK3308_SOC_CON0_VCCIO3		BIT(8)
+#define RK3308_SOC_VCCIO3_SUPPLY_NUM	3
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define RK3328_SOC_CON4			0x410
 #define RK3328_SOC_CON4_VCCIO2		BIT(7)
 #define RK3328_SOC_VCCIO2_SUPPLY_NUM	1
@@ -229,6 +236,28 @@ static void rk3288_iodomain_init(struct rockchip_iodomain *iod)
 		dev_warn(iod->dev, "couldn't update flash0 ctrl\n");
 }
 
+<<<<<<< HEAD
+=======
+static void rk3308_iodomain_init(struct rockchip_iodomain *iod)
+{
+	int ret;
+	u32 val;
+
+	/* if no vccio3 supply we should leave things alone */
+	if (!iod->supplies[RK3308_SOC_VCCIO3_SUPPLY_NUM].reg)
+		return;
+
+	/*
+	 * set vccio3 iodomain to also use this framework
+	 * instead of a special gpio.
+	 */
+	val = RK3308_SOC_CON0_VCCIO3 | (RK3308_SOC_CON0_VCCIO3 << 16);
+	ret = regmap_write(iod->grf, RK3308_SOC_CON0, val);
+	if (ret < 0)
+		dev_warn(iod->dev, "couldn't update vccio3 vsel ctrl\n");
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void rk3328_iodomain_init(struct rockchip_iodomain *iod)
 {
 	int ret;
@@ -376,6 +405,22 @@ static const struct rockchip_iodomain_soc_data soc_data_rk3288 = {
 	.init = rk3288_iodomain_init,
 };
 
+<<<<<<< HEAD
+=======
+static const struct rockchip_iodomain_soc_data soc_data_rk3308 = {
+	.grf_offset = 0x300,
+	.supply_names = {
+		"vccio0",
+		"vccio1",
+		"vccio2",
+		"vccio3",
+		"vccio4",
+		"vccio5",
+	},
+	.init = rk3308_iodomain_init,
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct rockchip_iodomain_soc_data soc_data_rk3328 = {
 	.grf_offset = 0x410,
 	.supply_names = {
@@ -529,6 +574,13 @@ static const struct of_device_id rockchip_iodomain_match[] = {
 		.data = &soc_data_rk3288
 	},
 	{
+<<<<<<< HEAD
+=======
+		.compatible = "rockchip,rk3308-io-voltage-domain",
+		.data = &soc_data_rk3308
+	},
+	{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.compatible = "rockchip,rk3328-io-voltage-domain",
 		.data = &soc_data_rk3328
 	},

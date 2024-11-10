@@ -3,6 +3,7 @@
  *
  * Kernel side components to support tools/testing/selftests/iommu
  */
+<<<<<<< HEAD
 #include <linux/slab.h>
 #include <linux/iommu.h>
 #include <linux/xarray.h>
@@ -10,6 +11,16 @@
 #include <linux/anon_inodes.h>
 #include <linux/fault-inject.h>
 #include <linux/platform_device.h>
+=======
+#include <linux/anon_inodes.h>
+#include <linux/debugfs.h>
+#include <linux/fault-inject.h>
+#include <linux/file.h>
+#include <linux/iommu.h>
+#include <linux/platform_device.h>
+#include <linux/slab.h>
+#include <linux/xarray.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <uapi/linux/iommufd.h>
 
 #include "../iommu-priv.h"
@@ -1342,7 +1353,11 @@ static int iommufd_test_dirty(struct iommufd_ucmd *ucmd, unsigned int mockpt_id,
 			      unsigned long page_size, void __user *uptr,
 			      u32 flags)
 {
+<<<<<<< HEAD
 	unsigned long bitmap_size, i, max;
+=======
+	unsigned long i, max;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct iommu_test_cmd *cmd = ucmd->cmd;
 	struct iommufd_hw_pagetable *hwpt;
 	struct mock_iommu_domain *mock;
@@ -1363,15 +1378,24 @@ static int iommufd_test_dirty(struct iommufd_ucmd *ucmd, unsigned int mockpt_id,
 	}
 
 	max = length / page_size;
+<<<<<<< HEAD
 	bitmap_size = DIV_ROUND_UP(max, BITS_PER_BYTE);
 
 	tmp = kvzalloc(bitmap_size, GFP_KERNEL_ACCOUNT);
+=======
+	tmp = kvzalloc(DIV_ROUND_UP(max, BITS_PER_LONG) * sizeof(unsigned long),
+		       GFP_KERNEL_ACCOUNT);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!tmp) {
 		rc = -ENOMEM;
 		goto out_put;
 	}
 
+<<<<<<< HEAD
 	if (copy_from_user(tmp, uptr, bitmap_size)) {
+=======
+	if (copy_from_user(tmp, uptr,DIV_ROUND_UP(max, BITS_PER_BYTE))) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rc = -EFAULT;
 		goto out_free;
 	}

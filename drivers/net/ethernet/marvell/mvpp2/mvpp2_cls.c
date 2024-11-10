@@ -1522,15 +1522,23 @@ static int mvpp22_rss_context_create(struct mvpp2_port *port, u32 *rss_ctx)
 	return 0;
 }
 
+<<<<<<< HEAD
 int mvpp22_port_rss_ctx_create(struct mvpp2_port *port, u32 *port_ctx)
 {
 	u32 rss_ctx;
 	int ret, i;
+=======
+int mvpp22_port_rss_ctx_create(struct mvpp2_port *port, u32 port_ctx)
+{
+	u32 rss_ctx;
+	int ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = mvpp22_rss_context_create(port, &rss_ctx);
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	/* Find the first available context number in the port, starting from 1.
 	 * Context 0 on each port is reserved for the default context.
 	 */
@@ -1545,6 +1553,12 @@ int mvpp22_port_rss_ctx_create(struct mvpp2_port *port, u32 *port_ctx)
 	port->rss_ctx[i] = rss_ctx;
 	*port_ctx = i;
 
+=======
+	if (WARN_ON_ONCE(port->rss_ctx[port_ctx] >= 0))
+		return -EINVAL;
+
+	port->rss_ctx[port_ctx] = rss_ctx;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 

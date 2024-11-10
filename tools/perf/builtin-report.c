@@ -263,7 +263,11 @@ static int process_feature_event(struct perf_session *session,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int process_sample_event(struct perf_tool *tool,
+=======
+static int process_sample_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				union perf_event *event,
 				struct perf_sample *sample,
 				struct evsel *evsel,
@@ -328,7 +332,11 @@ static int process_sample_event(struct perf_tool *tool,
 	if (ui__has_annotation() || rep->symbol_ipc || rep->total_cycles_mode) {
 		hist__account_cycles(sample->branch_stack, &al, sample,
 				     rep->nonany_branch_mode,
+<<<<<<< HEAD
 				     &rep->total_cycles);
+=======
+				     &rep->total_cycles, evsel);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	ret = hist_entry_iter__add(&iter, &al, rep->max_stack, rep);
@@ -339,7 +347,11 @@ out_put:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int process_read_event(struct perf_tool *tool,
+=======
+static int process_read_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      union perf_event *event,
 			      struct perf_sample *sample __maybe_unused,
 			      struct evsel *evsel,
@@ -565,6 +577,10 @@ static int evlist__tty_browse_hists(struct evlist *evlist, struct report *rep, c
 		struct hists *hists = evsel__hists(pos);
 		const char *evname = evsel__name(pos);
 
+<<<<<<< HEAD
+=======
+		i++;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (symbol_conf.event_group && !evsel__is_group_leader(pos))
 			continue;
 
@@ -574,7 +590,18 @@ static int evlist__tty_browse_hists(struct evlist *evlist, struct report *rep, c
 		hists__fprintf_nr_sample_events(hists, rep, evname, stdout);
 
 		if (rep->total_cycles_mode) {
+<<<<<<< HEAD
 			report__browse_block_hists(&rep->block_reports[i++].hist,
+=======
+			char *buf;
+
+			if (!annotation_br_cntr_abbr_list(&buf, pos, true)) {
+				fprintf(stdout, "%s", buf);
+				fprintf(stdout, "#\n");
+				free(buf);
+			}
+			report__browse_block_hists(&rep->block_reports[i - 1].hist,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						   rep->min_percent, pos, NULL);
 			continue;
 		}
@@ -765,7 +792,11 @@ static void report__output_resort(struct report *rep)
 	ui_progress__finish();
 }
 
+<<<<<<< HEAD
 static int count_sample_event(struct perf_tool *tool __maybe_unused,
+=======
+static int count_sample_event(const struct perf_tool *tool __maybe_unused,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      union perf_event *event __maybe_unused,
 			      struct perf_sample *sample __maybe_unused,
 			      struct evsel *evsel,
@@ -777,7 +808,11 @@ static int count_sample_event(struct perf_tool *tool __maybe_unused,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int count_lost_samples_event(struct perf_tool *tool,
+=======
+static int count_lost_samples_event(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    union perf_event *event,
 				    struct perf_sample *sample,
 				    struct machine *machine __maybe_unused)
@@ -787,22 +822,44 @@ static int count_lost_samples_event(struct perf_tool *tool,
 
 	evsel = evlist__id2evsel(rep->session->evlist, sample->id);
 	if (evsel) {
+<<<<<<< HEAD
 		hists__inc_nr_lost_samples(evsel__hists(evsel),
 					   event->lost_samples.lost);
+=======
+		struct hists *hists = evsel__hists(evsel);
+		u32 count = event->lost_samples.lost;
+
+		if (event->header.misc & PERF_RECORD_MISC_LOST_SAMPLES_BPF)
+			hists__inc_nr_dropped_samples(hists, count);
+		else
+			hists__inc_nr_lost_samples(hists, count);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return 0;
 }
 
+<<<<<<< HEAD
 static int process_attr(struct perf_tool *tool __maybe_unused,
+=======
+static int process_attr(const struct perf_tool *tool __maybe_unused,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			union perf_event *event,
 			struct evlist **pevlist);
 
 static void stats_setup(struct report *rep)
 {
+<<<<<<< HEAD
 	memset(&rep->tool, 0, sizeof(rep->tool));
 	rep->tool.attr = process_attr;
 	rep->tool.sample = count_sample_event;
 	rep->tool.lost_samples = count_lost_samples_event;
+=======
+	perf_tool__init(&rep->tool, /*ordered_events=*/false);
+	rep->tool.attr = process_attr;
+	rep->tool.sample = count_sample_event;
+	rep->tool.lost_samples = count_lost_samples_event;
+	rep->tool.event_update = perf_event__process_event_update;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rep->tool.no_warn = true;
 }
 
@@ -817,8 +874,12 @@ static int stats_print(struct report *rep)
 
 static void tasks_setup(struct report *rep)
 {
+<<<<<<< HEAD
 	memset(&rep->tool, 0, sizeof(rep->tool));
 	rep->tool.ordered_events = true;
+=======
+	perf_tool__init(&rep->tool, /*ordered_events=*/true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rep->mmaps_mode) {
 		rep->tool.mmap = perf_event__process_mmap;
 		rep->tool.mmap2 = perf_event__process_mmap2;
@@ -1119,11 +1180,17 @@ static int __cmd_report(struct report *rep)
 	report__output_resort(rep);
 
 	if (rep->total_cycles_mode) {
+<<<<<<< HEAD
 		int block_hpps[6] = {
+=======
+		int nr_hpps = 4;
+		int block_hpps[PERF_HPP_REPORT__BLOCK_MAX_INDEX] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			PERF_HPP_REPORT__BLOCK_TOTAL_CYCLES_PCT,
 			PERF_HPP_REPORT__BLOCK_LBR_CYCLES,
 			PERF_HPP_REPORT__BLOCK_CYCLES_PCT,
 			PERF_HPP_REPORT__BLOCK_AVG_CYCLES,
+<<<<<<< HEAD
 			PERF_HPP_REPORT__BLOCK_RANGE,
 			PERF_HPP_REPORT__BLOCK_DSO,
 		};
@@ -1131,6 +1198,19 @@ static int __cmd_report(struct report *rep)
 		rep->block_reports = block_info__create_report(session->evlist,
 							       rep->total_cycles,
 							       block_hpps, 6,
+=======
+		};
+
+		if (session->evlist->nr_br_cntr > 0)
+			block_hpps[nr_hpps++] = PERF_HPP_REPORT__BLOCK_BRANCH_COUNTER;
+
+		block_hpps[nr_hpps++] = PERF_HPP_REPORT__BLOCK_RANGE;
+		block_hpps[nr_hpps++] = PERF_HPP_REPORT__BLOCK_DSO;
+
+		rep->block_reports = block_info__create_report(session->evlist,
+							       rep->total_cycles,
+							       block_hpps, nr_hpps,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 							       &rep->nr_block_reports);
 		if (!rep->block_reports)
 			return -1;
@@ -1233,7 +1313,11 @@ parse_percent_limit(const struct option *opt, const char *str,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int process_attr(struct perf_tool *tool __maybe_unused,
+=======
+static int process_attr(const struct perf_tool *tool __maybe_unused,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			union perf_event *event,
 			struct evlist **pevlist)
 {
@@ -1272,6 +1356,7 @@ int cmd_report(int argc, const char **argv)
 		NULL
 	};
 	struct report report = {
+<<<<<<< HEAD
 		.tool = {
 			.sample		 = process_sample_event,
 			.mmap		 = perf_event__process_mmap,
@@ -1296,13 +1381,20 @@ int cmd_report(int argc, const char **argv)
 			.ordered_events	 = true,
 			.ordering_requires_timestamps = true,
 		},
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.max_stack		 = PERF_MAX_STACK_DEPTH,
 		.pretty_printing_style	 = "normal",
 		.socket_filter		 = -1,
 		.skip_empty		 = true,
 	};
+<<<<<<< HEAD
 	char *sort_order_help = sort_help("sort by key(s):");
 	char *field_order_help = sort_help("output field(s): overhead period sample ");
+=======
+	char *sort_order_help = sort_help("sort by key(s):", SORT_MODE__NORMAL);
+	char *field_order_help = sort_help("output field(s):", SORT_MODE__NORMAL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const char *disassembler_style = NULL, *objdump_path = NULL, *addr2line_path = NULL;
 	const struct option options[] = {
 	OPT_STRING('i', "input", &input_name, "file",
@@ -1477,6 +1569,10 @@ int cmd_report(int argc, const char **argv)
 	};
 	int ret = hists__init();
 	char sort_tmp[128];
+<<<<<<< HEAD
+=======
+	bool ordered_events = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (ret < 0)
 		goto exit;
@@ -1531,7 +1627,11 @@ int cmd_report(int argc, const char **argv)
 		report.tasks_mode = true;
 
 	if (dump_trace && report.disable_order)
+<<<<<<< HEAD
 		report.tool.ordered_events = false;
+=======
+		ordered_events = false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (quiet)
 		perf_quiet_option();
@@ -1562,6 +1662,32 @@ int cmd_report(int argc, const char **argv)
 	symbol_conf.skip_empty = report.skip_empty;
 
 repeat:
+<<<<<<< HEAD
+=======
+	perf_tool__init(&report.tool, ordered_events);
+	report.tool.sample		 = process_sample_event;
+	report.tool.mmap		 = perf_event__process_mmap;
+	report.tool.mmap2		 = perf_event__process_mmap2;
+	report.tool.comm		 = perf_event__process_comm;
+	report.tool.namespaces		 = perf_event__process_namespaces;
+	report.tool.cgroup		 = perf_event__process_cgroup;
+	report.tool.exit		 = perf_event__process_exit;
+	report.tool.fork		 = perf_event__process_fork;
+	report.tool.lost		 = perf_event__process_lost;
+	report.tool.read		 = process_read_event;
+	report.tool.attr		 = process_attr;
+#ifdef HAVE_LIBTRACEEVENT
+	report.tool.tracing_data	 = perf_event__process_tracing_data;
+#endif
+	report.tool.build_id		 = perf_event__process_build_id;
+	report.tool.id_index		 = perf_event__process_id_index;
+	report.tool.auxtrace_info	 = perf_event__process_auxtrace_info;
+	report.tool.auxtrace		 = perf_event__process_auxtrace;
+	report.tool.event_update	 = perf_event__process_event_update;
+	report.tool.feature		 = process_feature_event;
+	report.tool.ordering_requires_timestamps = true;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	session = perf_session__new(&data, &report.tool);
 	if (IS_ERR(session)) {
 		ret = PTR_ERR(session);

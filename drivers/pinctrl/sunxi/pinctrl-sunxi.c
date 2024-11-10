@@ -1603,30 +1603,45 @@ int sunxi_pinctrl_init_with_variant(struct platform_device *pdev,
 	}
 
 	ret = of_clk_get_parent_count(node);
+<<<<<<< HEAD
 	clk = devm_clk_get(&pdev->dev, ret == 1 ? NULL : "apb");
+=======
+	clk = devm_clk_get_enabled(&pdev->dev, ret == 1 ? NULL : "apb");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(clk)) {
 		ret = PTR_ERR(clk);
 		goto gpiochip_error;
 	}
 
+<<<<<<< HEAD
 	ret = clk_prepare_enable(clk);
 	if (ret)
 		goto gpiochip_error;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pctl->irq = devm_kcalloc(&pdev->dev,
 				 pctl->desc->irq_banks,
 				 sizeof(*pctl->irq),
 				 GFP_KERNEL);
 	if (!pctl->irq) {
 		ret = -ENOMEM;
+<<<<<<< HEAD
 		goto clk_error;
+=======
+		goto gpiochip_error;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	for (i = 0; i < pctl->desc->irq_banks; i++) {
 		pctl->irq[i] = platform_get_irq(pdev, i);
 		if (pctl->irq[i] < 0) {
 			ret = pctl->irq[i];
+<<<<<<< HEAD
 			goto clk_error;
+=======
+			goto gpiochip_error;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -1637,7 +1652,11 @@ int sunxi_pinctrl_init_with_variant(struct platform_device *pdev,
 	if (!pctl->domain) {
 		dev_err(&pdev->dev, "Couldn't register IRQ domain\n");
 		ret = -ENOMEM;
+<<<<<<< HEAD
 		goto clk_error;
+=======
+		goto gpiochip_error;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	for (i = 0; i < (pctl->desc->irq_banks * IRQ_PER_BANK); i++) {
@@ -1669,8 +1688,11 @@ int sunxi_pinctrl_init_with_variant(struct platform_device *pdev,
 
 	return 0;
 
+<<<<<<< HEAD
 clk_error:
 	clk_disable_unprepare(clk);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 gpiochip_error:
 	gpiochip_remove(pctl->chip);
 	return ret;

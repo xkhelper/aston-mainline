@@ -22,13 +22,21 @@ static int pmu_legacy_ctr_get_idx(struct perf_event *event)
 	struct perf_event_attr *attr = &event->attr;
 
 	if (event->attr.type != PERF_TYPE_HARDWARE)
+<<<<<<< HEAD
 		return -EOPNOTSUPP;
+=======
+		return -ENOENT;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (attr->config == PERF_COUNT_HW_CPU_CYCLES)
 		return RISCV_PMU_LEGACY_CYCLE;
 	else if (attr->config == PERF_COUNT_HW_INSTRUCTIONS)
 		return RISCV_PMU_LEGACY_INSTRET;
 	else
+<<<<<<< HEAD
 		return -EOPNOTSUPP;
+=======
+		return -ENOENT;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* For legacy config & counter index are same */

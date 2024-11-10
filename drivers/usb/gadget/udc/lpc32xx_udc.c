@@ -1487,6 +1487,7 @@ static int udc_ep0_out_req(struct lpc32xx_udc *udc)
 		req = list_entry(ep0->queue.next, struct lpc32xx_request,
 				 queue);
 
+<<<<<<< HEAD
 	if (req) {
 		if (req->req.length == 0) {
 			/* Just dequeue request */
@@ -1512,6 +1513,31 @@ static int udc_ep0_out_req(struct lpc32xx_udc *udc)
 			udc->ep0state = WAIT_FOR_SETUP;
 			return 1;
 		}
+=======
+	if (req->req.length == 0) {
+		/* Just dequeue request */
+		done(ep0, req, 0);
+		udc->ep0state = WAIT_FOR_SETUP;
+		return 1;
+	}
+
+	/* Get data from FIFO */
+	bufferspace = req->req.length - req->req.actual;
+	if (bufferspace > ep0->ep.maxpacket)
+		bufferspace = ep0->ep.maxpacket;
+
+	/* Copy data to buffer */
+	prefetchw(req->req.buf + req->req.actual);
+	tr = udc_read_hwep(udc, EP_OUT, req->req.buf + req->req.actual,
+			   bufferspace);
+	req->req.actual += bufferspace;
+
+	if (tr < ep0->ep.maxpacket) {
+		/* This is the last packet */
+		done(ep0, req, 0);
+		udc->ep0state = WAIT_FOR_SETUP;
+		return 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
@@ -1962,6 +1988,7 @@ static void udc_handle_eps(struct lpc32xx_udc *udc, struct lpc32xx_ep *ep)
 
 	/* If there isn't a request waiting, something went wrong */
 	req = list_entry(ep->queue.next, struct lpc32xx_request, queue);
+<<<<<<< HEAD
 	if (req) {
 		done(ep, req, 0);
 
@@ -1974,6 +2001,19 @@ static void udc_handle_eps(struct lpc32xx_udc *udc, struct lpc32xx_ep *ep)
 		} else
 			ep->req_pending = 0;
 	}
+=======
+
+	done(ep, req, 0);
+
+	/* Start another request if ready */
+	if (!list_empty(&ep->queue)) {
+		if (ep->is_in)
+			udc_ep_in_req_dma(udc, ep);
+		else
+			udc_ep_out_req_dma(udc, ep);
+	} else
+		ep->req_pending = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 
@@ -1989,10 +2029,13 @@ static void udc_handle_dma_ep(struct lpc32xx_udc *udc, struct lpc32xx_ep *ep)
 #endif
 
 	req = list_entry(ep->queue.next, struct lpc32xx_request, queue);
+<<<<<<< HEAD
 	if (!req) {
 		ep_err(ep, "DMA interrupt on no req!\n");
 		return;
 	}
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dd = req->dd_desc_ptr;
 
 	/* DMA descriptor should always be retired for this call */

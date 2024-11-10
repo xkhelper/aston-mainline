@@ -15,6 +15,10 @@
 #include "ice_dcb_nl.h"
 #include "devlink/devlink.h"
 #include "devlink/devlink_port.h"
+<<<<<<< HEAD
+=======
+#include "ice_sf_eth.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "ice_hwmon.h"
 /* Including ice_trace.h with CREATE_TRACE_POINTS defined will generate the
  * ice tracepoint functions. This must be done exactly once across the
@@ -86,7 +90,12 @@ ice_indr_setup_tc_cb(struct net_device *netdev, struct Qdisc *sch,
 
 bool netif_is_ice(const struct net_device *dev)
 {
+<<<<<<< HEAD
 	return dev && (dev->netdev_ops == &ice_netdev_ops);
+=======
+	return dev && (dev->netdev_ops == &ice_netdev_ops ||
+		       dev->netdev_ops == &ice_netdev_safe_mode_ops);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -520,6 +529,7 @@ static void ice_pf_dis_all_vsi(struct ice_pf *pf, bool locked)
 }
 
 /**
+<<<<<<< HEAD
  * ice_clear_sw_switch_recipes - clear switch recipes
  * @pf: board private structure
  *
@@ -539,6 +549,8 @@ static void ice_clear_sw_switch_recipes(struct ice_pf *pf)
 }
 
 /**
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * ice_prepare_for_reset - prep for reset
  * @pf: board private structure
  * @reset_type: reset type requested
@@ -574,8 +586,14 @@ ice_prepare_for_reset(struct ice_pf *pf, enum ice_reset_req reset_type)
 	mutex_unlock(&pf->vfs.table_lock);
 
 	if (ice_is_eswitch_mode_switchdev(pf)) {
+<<<<<<< HEAD
 		if (reset_type != ICE_RESET_PFR)
 			ice_clear_sw_switch_recipes(pf);
+=======
+		rtnl_lock();
+		ice_eswitch_br_fdb_flush(pf->eswitch.br_offloads->bridge);
+		rtnl_unlock();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* release ADQ specific HW and SW resources */
@@ -2974,6 +2992,12 @@ int ice_vsi_determine_xdp_res(struct ice_vsi *vsi)
 	if (avail < cpus / 2)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	if (vsi->type == ICE_VSI_SF)
+		avail = vsi->alloc_txq;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	vsi->num_xdp_txq = min_t(u16, avail, cpus);
 
 	if (vsi->num_xdp_txq < cpus)
@@ -3089,14 +3113,23 @@ static int ice_xdp_safe_mode(struct net_device __always_unused *dev,
  * @dev: netdevice
  * @xdp: XDP command
  */
+<<<<<<< HEAD
 static int ice_xdp(struct net_device *dev, struct netdev_bpf *xdp)
+=======
+int ice_xdp(struct net_device *dev, struct netdev_bpf *xdp)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ice_netdev_priv *np = netdev_priv(dev);
 	struct ice_vsi *vsi = np->vsi;
 	int ret;
 
+<<<<<<< HEAD
 	if (vsi->type != ICE_VSI_PF) {
 		NL_SET_ERR_MSG_MOD(xdp->extack, "XDP can be loaded only on PF VSI");
+=======
+	if (vsi->type != ICE_VSI_PF && vsi->type != ICE_VSI_SF) {
+		NL_SET_ERR_MSG_MOD(xdp->extack, "XDP can be loaded only on PF or SF VSI");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 
@@ -3556,6 +3589,7 @@ skip_req_irq:
 }
 
 /**
+<<<<<<< HEAD
  * ice_napi_add - register NAPI handler for the VSI
  * @vsi: VSI for which NAPI handler is to be registered
  *
@@ -3576,6 +3610,8 @@ static void ice_napi_add(struct ice_vsi *vsi)
 }
 
 /**
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * ice_set_ops - set netdev and ethtools ops for the given netdev
  * @vsi: the VSI associated with the new netdev
  */
@@ -3608,7 +3644,11 @@ static void ice_set_ops(struct ice_vsi *vsi)
  * ice_set_netdev_features - set features for the given netdev
  * @netdev: netdev instance
  */
+<<<<<<< HEAD
 static void ice_set_netdev_features(struct net_device *netdev)
+=======
+void ice_set_netdev_features(struct net_device *netdev)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ice_pf *pf = ice_netdev_to_pf(netdev);
 	bool is_dvm_ena = ice_is_dvm_ena(&pf->hw);
@@ -3790,8 +3830,12 @@ ice_lb_vsi_setup(struct ice_pf *pf, struct ice_port_info *pi)
  *
  * net_device_ops implementation for adding VLAN IDs
  */
+<<<<<<< HEAD
 static int
 ice_vlan_rx_add_vid(struct net_device *netdev, __be16 proto, u16 vid)
+=======
+int ice_vlan_rx_add_vid(struct net_device *netdev, __be16 proto, u16 vid)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ice_netdev_priv *np = netdev_priv(netdev);
 	struct ice_vsi_vlan_ops *vlan_ops;
@@ -3853,8 +3897,12 @@ finish:
  *
  * net_device_ops implementation for removing VLAN IDs
  */
+<<<<<<< HEAD
 static int
 ice_vlan_rx_kill_vid(struct net_device *netdev, __be16 proto, u16 vid)
+=======
+int ice_vlan_rx_kill_vid(struct net_device *netdev, __be16 proto, u16 vid)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ice_netdev_priv *np = netdev_priv(netdev);
 	struct ice_vsi_vlan_ops *vlan_ops;
@@ -4023,6 +4071,12 @@ static void ice_deinit_pf(struct ice_pf *pf)
 
 	if (pf->ptp.clock)
 		ptp_clock_unregister(pf->ptp.clock);
+<<<<<<< HEAD
+=======
+
+	xa_destroy(&pf->dyn_ports);
+	xa_destroy(&pf->sf_nums);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -4116,6 +4170,12 @@ static int ice_init_pf(struct ice_pf *pf)
 	hash_init(pf->vfs.table);
 	ice_mbx_init_snapshot(&pf->hw);
 
+<<<<<<< HEAD
+=======
+	xa_init(&pf->dyn_ports);
+	xa_init(&pf->sf_nums);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -4548,6 +4608,7 @@ ice_init_tx_topology(struct ice_hw *hw, const struct firmware *firmware)
 	u8 num_tx_sched_layers = hw->num_tx_sched_layers;
 	struct ice_pf *pf = hw->back;
 	struct device *dev;
+<<<<<<< HEAD
 	u8 *buf_copy;
 	int err;
 
@@ -4558,6 +4619,12 @@ ice_init_tx_topology(struct ice_hw *hw, const struct firmware *firmware)
 	buf_copy = kmemdup(firmware->data, firmware->size, GFP_KERNEL);
 
 	err = ice_cfg_tx_topo(hw, buf_copy, firmware->size);
+=======
+	int err;
+
+	dev = ice_pf_to_dev(pf);
+	err = ice_cfg_tx_topo(hw, firmware->data, firmware->size);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!err) {
 		if (hw->num_tx_sched_layers > num_tx_sched_layers)
 			dev_info(dev, "Tx scheduling layers switching feature disabled\n");
@@ -4785,14 +4852,21 @@ int ice_init_dev(struct ice_pf *pf)
 	ice_init_feature_support(pf);
 
 	err = ice_init_ddp_config(hw, pf);
+<<<<<<< HEAD
 	if (err)
 		return err;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* if ice_init_ddp_config fails, ICE_FLAG_ADV_FEATURES bit won't be
 	 * set in pf->state, which will cause ice_is_safe_mode to return
 	 * true
 	 */
+<<<<<<< HEAD
 	if (ice_is_safe_mode(pf)) {
+=======
+	if (err || ice_is_safe_mode(pf)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* we already got function/device capabilities but these don't
 		 * reflect what the driver needs to do in safe mode. Instead of
 		 * adding conditional logic everywhere to ignore these
@@ -5457,6 +5531,10 @@ static void ice_remove(struct pci_dev *pdev)
 		ice_remove_arfs(pf);
 
 	devl_lock(priv_to_devlink(pf));
+<<<<<<< HEAD
+=======
+	ice_dealloc_all_dynamic_ports(pf);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ice_deinit_devlink(pf);
 
 	ice_unload(pf);
@@ -5944,8 +6022,21 @@ static int __init ice_module_init(void)
 		goto err_dest_lag_wq;
 	}
 
+<<<<<<< HEAD
 	return 0;
 
+=======
+	status = ice_sf_driver_register();
+	if (status) {
+		pr_err("Failed to register SF driver, err %d\n", status);
+		goto err_sf_driver;
+	}
+
+	return 0;
+
+err_sf_driver:
+	pci_unregister_driver(&ice_driver);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_dest_lag_wq:
 	destroy_workqueue(ice_lag_wq);
 	ice_debugfs_exit();
@@ -5963,6 +6054,10 @@ module_init(ice_module_init);
  */
 static void __exit ice_module_exit(void)
 {
+<<<<<<< HEAD
+=======
+	ice_sf_driver_unregister();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pci_unregister_driver(&ice_driver);
 	ice_debugfs_exit();
 	destroy_workqueue(ice_wq);
@@ -6764,7 +6859,12 @@ static int ice_up_complete(struct ice_vsi *vsi)
 
 	if (vsi->port_info &&
 	    (vsi->port_info->phy.link_info.link_info & ICE_AQ_LINK_UP) &&
+<<<<<<< HEAD
 	    vsi->netdev && vsi->type == ICE_VSI_PF) {
+=======
+	    ((vsi->netdev && (vsi->type == ICE_VSI_PF ||
+			      vsi->type == ICE_VSI_SF)))) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ice_print_link_msg(vsi, true);
 		netif_tx_start_all_queues(vsi->netdev);
 		netif_carrier_on(vsi->netdev);
@@ -7122,7 +7222,10 @@ void ice_update_pf_stats(struct ice_pf *pf)
  * @netdev: network interface device structure
  * @stats: main device statistics structure
  */
+<<<<<<< HEAD
 static
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void ice_get_stats64(struct net_device *netdev, struct rtnl_link_stats64 *stats)
 {
 	struct ice_netdev_priv *np = netdev_priv(netdev);
@@ -7463,7 +7566,11 @@ int ice_vsi_open(struct ice_vsi *vsi)
 
 	ice_vsi_cfg_netdev_tc(vsi, vsi->tc_cfg.ena_tc);
 
+<<<<<<< HEAD
 	if (vsi->type == ICE_VSI_PF) {
+=======
+	if (vsi->type == ICE_VSI_PF || vsi->type == ICE_VSI_SF) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Notify the stack of the actual queue counts. */
 		err = netif_set_real_num_tx_queues(vsi->netdev, vsi->num_txq);
 		if (err)
@@ -7799,7 +7906,11 @@ clear_recovery:
  *
  * Returns 0 on success, negative on failure
  */
+<<<<<<< HEAD
 static int ice_change_mtu(struct net_device *netdev, int new_mtu)
+=======
+int ice_change_mtu(struct net_device *netdev, int new_mtu)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ice_netdev_priv *np = netdev_priv(netdev);
 	struct ice_vsi *vsi = np->vsi;
@@ -8223,7 +8334,11 @@ ice_bridge_setlink(struct net_device *dev, struct nlmsghdr *nlh,
  * @netdev: network interface device structure
  * @txqueue: Tx queue
  */
+<<<<<<< HEAD
 static void ice_tx_timeout(struct net_device *netdev, unsigned int txqueue)
+=======
+void ice_tx_timeout(struct net_device *netdev, unsigned int txqueue)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ice_netdev_priv *np = netdev_priv(netdev);
 	struct ice_tx_ring *tx_ring = NULL;

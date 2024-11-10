@@ -113,7 +113,11 @@ static void ksz_get_default_port_prio_reg(struct ksz_device *dev, int *reg,
 static void ksz_get_dscp_prio_reg(struct ksz_device *dev, int *reg,
 				  int *per_reg, u8 *mask)
 {
+<<<<<<< HEAD
 	if (ksz_is_ksz87xx(dev)) {
+=======
+	if (ksz_is_ksz87xx(dev) || ksz_is_8895_family(dev)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		*reg = KSZ8765_REG_TOS_DSCP_CTRL;
 		*per_reg = 4;
 		*mask = GENMASK(1, 0);

@@ -78,6 +78,10 @@ Code  Seq#    Include File                                           Comments
 0x03  all    linux/hdreg.h
 0x04  D2-DC  linux/umsdos_fs.h                                       Dead since 2.6.11, but don't reuse these.
 0x06  all    linux/lp.h
+<<<<<<< HEAD
+=======
+0x07  9F-D0  linux/vmw_vmci_defs.h, uapi/linux/vm_sockets.h
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 0x09  all    linux/raid/md_u.h
 0x10  00-0F  drivers/char/s390/vmcp.h
 0x10  10-1F  arch/s390/include/uapi/sclp_ctl.h
@@ -292,6 +296,10 @@ Code  Seq#    Include File                                           Comments
 't'   80-8F  linux/isdn_ppp.h
 't'   90-91  linux/toshiba.h                                         toshiba and toshiba_acpi SMM
 'u'   00-1F  linux/smb_fs.h                                          gone
+<<<<<<< HEAD
+=======
+'u'   00-2F  linux/ublk_cmd.h                                        conflict!
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 'u'   20-3F  linux/uvcvideo.h                                        USB video class host driver
 'u'   40-4f  linux/udmabuf.h                                         userspace dma-buf misc device
 'v'   00-1F  linux/ext2_fs.h                                         conflict!

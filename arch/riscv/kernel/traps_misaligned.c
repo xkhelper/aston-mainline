@@ -136,8 +136,11 @@
 #define REG_PTR(insn, pos, regs)	\
 	(ulong *)((ulong)(regs) + REG_OFFSET(insn, pos))
 
+<<<<<<< HEAD
 #define GET_RM(insn)			(((insn) >> 12) & 7)
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define GET_RS1(insn, regs)		(*REG_PTR(insn, SH_RS1, regs))
 #define GET_RS2(insn, regs)		(*REG_PTR(insn, SH_RS2, regs))
 #define GET_RS1S(insn, regs)		(*REG_PTR(RVC_RS1S(insn), 0, regs))

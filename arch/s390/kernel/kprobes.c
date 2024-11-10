@@ -21,6 +21,10 @@
 #include <linux/hardirq.h>
 #include <linux/ftrace.h>
 #include <linux/execmem.h>
+<<<<<<< HEAD
+=======
+#include <asm/text-patching.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/set_memory.h>
 #include <asm/sections.h>
 #include <asm/dis.h>
@@ -152,7 +156,16 @@ void arch_arm_kprobe(struct kprobe *p)
 {
 	struct swap_insn_args args = {.p = p, .arm_kprobe = 1};
 
+<<<<<<< HEAD
 	stop_machine_cpuslocked(swap_instruction, &args, NULL);
+=======
+	if (MACHINE_HAS_SEQ_INSN) {
+		swap_instruction(&args);
+		text_poke_sync();
+	} else {
+		stop_machine_cpuslocked(swap_instruction, &args, NULL);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 NOKPROBE_SYMBOL(arch_arm_kprobe);
 
@@ -160,7 +173,16 @@ void arch_disarm_kprobe(struct kprobe *p)
 {
 	struct swap_insn_args args = {.p = p, .arm_kprobe = 0};
 
+<<<<<<< HEAD
 	stop_machine_cpuslocked(swap_instruction, &args, NULL);
+=======
+	if (MACHINE_HAS_SEQ_INSN) {
+		swap_instruction(&args);
+		text_poke_sync();
+	} else {
+		stop_machine_cpuslocked(swap_instruction, &args, NULL);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 NOKPROBE_SYMBOL(arch_disarm_kprobe);
 

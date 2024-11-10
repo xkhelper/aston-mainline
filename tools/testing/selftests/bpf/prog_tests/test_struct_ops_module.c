@@ -9,6 +9,10 @@
 #include "struct_ops_nulled_out_cb.skel.h"
 #include "struct_ops_forgotten_cb.skel.h"
 #include "struct_ops_detach.skel.h"
+<<<<<<< HEAD
+=======
+#include "unsupported_ops.skel.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void check_map_info(struct bpf_map_info *info)
 {
@@ -311,5 +315,9 @@ void serial_test_struct_ops_module(void)
 		test_struct_ops_forgotten_cb();
 	if (test__start_subtest("test_detach_link"))
 		test_detach_link();
+<<<<<<< HEAD
+=======
+	RUN_TESTS(unsupported_ops);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 

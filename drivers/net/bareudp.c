@@ -68,6 +68,10 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
 	__be16 proto;
 	void *oiph;
 	int err;
+<<<<<<< HEAD
+=======
+	int nh;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	bareudp = rcu_dereference_sk_user_data(sk);
 	if (!bareudp)
@@ -148,10 +152,32 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
 	}
 	skb_dst_set(skb, &tun_dst->dst);
 	skb->dev = bareudp->dev;
+<<<<<<< HEAD
 	oiph = skb_network_header(skb);
 	skb_reset_network_header(skb);
 	skb_reset_mac_header(skb);
 
+=======
+	skb_reset_mac_header(skb);
+
+	/* Save offset of outer header relative to skb->head,
+	 * because we are going to reset the network header to the inner header
+	 * and might change skb->head.
+	 */
+	nh = skb_network_header(skb) - skb->head;
+
+	skb_reset_network_header(skb);
+
+	if (!pskb_inet_may_pull(skb)) {
+		DEV_STATS_INC(bareudp->dev, rx_length_errors);
+		DEV_STATS_INC(bareudp->dev, rx_errors);
+		goto drop;
+	}
+
+	/* Get the outer header. */
+	oiph = skb->head + nh;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ipv6_mod_enabled() || family == AF_INET)
 		err = IP_ECN_decapsulate(oiph, skb);
 	else
@@ -301,6 +327,12 @@ static int bareudp_xmit_skb(struct sk_buff *skb, struct net_device *dev,
 	__be32 saddr;
 	int err;
 
+<<<<<<< HEAD
+=======
+	if (!skb_vlan_inet_prepare(skb, skb->protocol != htons(ETH_P_TEB)))
+		return -EINVAL;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!sock)
 		return -ESHUTDOWN;
 
@@ -368,6 +400,12 @@ static int bareudp6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
 	__be16 sport;
 	int err;
 
+<<<<<<< HEAD
+=======
+	if (!skb_vlan_inet_prepare(skb, skb->protocol != htons(ETH_P_TEB)))
+		return -EINVAL;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!sock)
 		return -ESHUTDOWN;
 
@@ -553,7 +591,10 @@ static void bareudp_setup(struct net_device *dev)
 	SET_NETDEV_DEVTYPE(dev, &bareudp_type);
 	dev->features    |= NETIF_F_SG | NETIF_F_HW_CSUM | NETIF_F_FRAGLIST;
 	dev->features    |= NETIF_F_RXCSUM;
+<<<<<<< HEAD
 	dev->features    |= NETIF_F_LLTX;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev->features    |= NETIF_F_GSO_SOFTWARE;
 	dev->hw_features |= NETIF_F_SG | NETIF_F_HW_CSUM | NETIF_F_FRAGLIST;
 	dev->hw_features |= NETIF_F_RXCSUM;
@@ -566,6 +607,10 @@ static void bareudp_setup(struct net_device *dev)
 	dev->type = ARPHRD_NONE;
 	netif_keep_dst(dev);
 	dev->priv_flags |= IFF_NO_QUEUE;
+<<<<<<< HEAD
+=======
+	dev->lltx = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev->flags = IFF_POINTOPOINT | IFF_NOARP | IFF_MULTICAST;
 	dev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
 }

@@ -23,7 +23,11 @@
 #include <linux/workqueue.h>
 #include <linux/atomic.h>
 #include <linux/fixp-arith.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "usbhid/usbhid.h"
 #include "hid-ids.h"
 
@@ -3767,8 +3771,13 @@ static int hidpp_initialize_hires_scroll(struct hidpp_device *hidpp)
 /* Generic HID++ devices                                                      */
 /* -------------------------------------------------------------------------- */
 
+<<<<<<< HEAD
 static u8 *hidpp_report_fixup(struct hid_device *hdev, u8 *rdesc,
 			      unsigned int *rsize)
+=======
+static const u8 *hidpp_report_fixup(struct hid_device *hdev, u8 *rdesc,
+				    unsigned int *rsize)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct hidpp_device *hidpp = hid_get_drvdata(hdev);
 

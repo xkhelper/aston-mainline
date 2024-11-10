@@ -41,9 +41,17 @@ static const struct rockchip_grf_info rk3036_grf __initconst = {
 };
 
 #define RK3128_GRF_SOC_CON0		0x140
+<<<<<<< HEAD
 
 static const struct rockchip_grf_value rk3128_defaults[] __initconst = {
 	{ "jtag switching", RK3128_GRF_SOC_CON0, HIWORD_UPDATE(0, 1, 8) },
+=======
+#define RK3128_GRF_SOC_CON1		0x144
+
+static const struct rockchip_grf_value rk3128_defaults[] __initconst = {
+	{ "jtag switching", RK3128_GRF_SOC_CON0, HIWORD_UPDATE(0, 1, 8) },
+	{ "vpu main clock", RK3128_GRF_SOC_CON1, HIWORD_UPDATE(0, 1, 10) },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct rockchip_grf_info rk3128_grf __initconst = {
@@ -121,6 +129,32 @@ static const struct rockchip_grf_info rk3566_pipegrf __initconst = {
 	.num_values = ARRAY_SIZE(rk3566_defaults),
 };
 
+<<<<<<< HEAD
+=======
+#define RK3576_SYSGRF_SOC_CON1		0x0004
+
+static const struct rockchip_grf_value rk3576_defaults_sys_grf[] __initconst = {
+	{ "i3c0 weakpull", RK3576_SYSGRF_SOC_CON1, HIWORD_UPDATE(3, 3, 6) },
+	{ "i3c1 weakpull", RK3576_SYSGRF_SOC_CON1, HIWORD_UPDATE(3, 3, 8) },
+};
+
+static const struct rockchip_grf_info rk3576_sysgrf __initconst = {
+	.values = rk3576_defaults_sys_grf,
+	.num_values = ARRAY_SIZE(rk3576_defaults_sys_grf),
+};
+
+#define RK3576_IOCGRF_MISC_CON		0x04F0
+
+static const struct rockchip_grf_value rk3576_defaults_ioc_grf[] __initconst = {
+	{ "jtag switching", RK3576_IOCGRF_MISC_CON, HIWORD_UPDATE(0, 1, 1) },
+};
+
+static const struct rockchip_grf_info rk3576_iocgrf __initconst = {
+	.values = rk3576_defaults_ioc_grf,
+	.num_values = ARRAY_SIZE(rk3576_defaults_ioc_grf),
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define RK3588_GRF_SOC_CON6		0x0318
 
 static const struct rockchip_grf_value rk3588_defaults[] __initconst = {
@@ -132,7 +166,10 @@ static const struct rockchip_grf_info rk3588_sysgrf __initconst = {
 	.num_values = ARRAY_SIZE(rk3588_defaults),
 };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct of_device_id rockchip_grf_dt_match[] __initconst = {
 	{
 		.compatible = "rockchip,rk3036-grf",
@@ -159,6 +196,15 @@ static const struct of_device_id rockchip_grf_dt_match[] __initconst = {
 		.compatible = "rockchip,rk3566-pipe-grf",
 		.data = (void *)&rk3566_pipegrf,
 	}, {
+<<<<<<< HEAD
+=======
+		.compatible = "rockchip,rk3576-sys-grf",
+		.data = (void *)&rk3576_sysgrf,
+	}, {
+		.compatible = "rockchip,rk3576-ioc-grf",
+		.data = (void *)&rk3576_iocgrf,
+	}, {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.compatible = "rockchip,rk3588-sys-grf",
 		.data = (void *)&rk3588_sysgrf,
 	},

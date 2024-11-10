@@ -1044,11 +1044,16 @@ int mtk_paris_pinctrl_probe(struct platform_device *pdev)
 
 	hw->nbase = hw->soc->nbase_names;
 
+<<<<<<< HEAD
 	if (of_find_property(hw->dev->of_node,
 			     "mediatek,rsel-resistance-in-si-unit", NULL))
 		hw->rsel_si_unit = true;
 	else
 		hw->rsel_si_unit = false;
+=======
+	hw->rsel_si_unit = of_property_read_bool(hw->dev->of_node,
+						 "mediatek,rsel-resistance-in-si-unit");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	spin_lock_init(&hw->lock);
 

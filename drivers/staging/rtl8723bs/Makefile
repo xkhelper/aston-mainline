@@ -3,7 +3,10 @@ r8723bs-y = \
 		core/rtw_ap.o \
 		core/rtw_btcoex.o \
 	 	core/rtw_cmd.o \
+<<<<<<< HEAD
 		core/rtw_debug.o \
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		core/rtw_efuse.o \
 		core/rtw_io.o \
 		core/rtw_ioctl_set.o \
@@ -12,7 +15,10 @@ r8723bs-y = \
 		core/rtw_mlme_ext.o \
 		core/rtw_pwrctrl.o \
 		core/rtw_recv.o \
+<<<<<<< HEAD
 		core/rtw_rf.o \
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		core/rtw_security.o \
 		core/rtw_sta_mgt.o \
 		core/rtw_wlan_util.o \

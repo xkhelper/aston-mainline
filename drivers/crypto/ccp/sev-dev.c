@@ -910,7 +910,22 @@ static int __sev_do_cmd_locked(int cmd, void *data, int *psp_ret)
 
 	sev->int_rcvd = 0;
 
+<<<<<<< HEAD
 	reg = FIELD_PREP(SEV_CMDRESP_CMD, cmd) | SEV_CMDRESP_IOC;
+=======
+	reg = FIELD_PREP(SEV_CMDRESP_CMD, cmd);
+
+	/*
+	 * If invoked during panic handling, local interrupts are disabled so
+	 * the PSP command completion interrupt can't be used.
+	 * sev_wait_cmd_ioc() already checks for interrupts disabled and
+	 * polls for PSP command completion.  Ensure we do not request an
+	 * interrupt from the PSP if irqs disabled.
+	 */
+	if (!irqs_disabled())
+		reg |= SEV_CMDRESP_IOC;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	iowrite32(reg, sev->io_regs + sev->vdata->cmdresp_reg);
 
 	/* wait for command completion */
@@ -1629,8 +1644,11 @@ static int sev_update_firmware(struct device *dev)
 
 	if (ret)
 		dev_dbg(dev, "Failed to update SEV firmware: %#x\n", error);
+<<<<<<< HEAD
 	else
 		dev_info(dev, "SEV firmware update successful\n");
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	__free_pages(p, order);
 
@@ -2382,6 +2400,10 @@ void sev_pci_init(void)
 {
 	struct sev_device *sev = psp_master->sev_data;
 	struct sev_platform_init_args args = {0};
+<<<<<<< HEAD
+=======
+	u8 api_major, api_minor, build;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int rc;
 
 	if (!sev)
@@ -2392,9 +2414,25 @@ void sev_pci_init(void)
 	if (sev_get_api_version())
 		goto err;
 
+<<<<<<< HEAD
 	if (sev_update_firmware(sev->dev) == 0)
 		sev_get_api_version();
 
+=======
+	api_major = sev->api_major;
+	api_minor = sev->api_minor;
+	build     = sev->build;
+
+	if (sev_update_firmware(sev->dev) == 0)
+		sev_get_api_version();
+
+	if (api_major != sev->api_major || api_minor != sev->api_minor ||
+	    build != sev->build)
+		dev_info(sev->dev, "SEV firmware updated from %d.%d.%d to %d.%d.%d\n",
+			 api_major, api_minor, build,
+			 sev->api_major, sev->api_minor, sev->build);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Initialize the platform */
 	args.probe = true;
 	rc = sev_platform_init(&args);
@@ -2410,6 +2448,11 @@ void sev_pci_init(void)
 	return;
 
 err:
+<<<<<<< HEAD
+=======
+	sev_dev_destroy(psp_master);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	psp_master->sev_data = NULL;
 }
 

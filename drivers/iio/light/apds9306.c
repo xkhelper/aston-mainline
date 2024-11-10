@@ -28,7 +28,11 @@
 #include <linux/iio/events.h>
 #include <linux/iio/sysfs.h>
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define APDS9306_MAIN_CTRL_REG		0x00
 #define APDS9306_ALS_MEAS_RATE_REG	0x04

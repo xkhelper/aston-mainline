@@ -418,7 +418,11 @@ static void lib80211_ccmp_print_stats(struct seq_file *m, void *priv)
 		   ccmp->dot11RSNAStatsCCMPDecryptErrors);
 }
 
+<<<<<<< HEAD
 static struct lib80211_crypto_ops lib80211_crypt_ccmp = {
+=======
+static const struct lib80211_crypto_ops lib80211_crypt_ccmp = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name = "CCMP",
 	.init = lib80211_ccmp_init,
 	.deinit = lib80211_ccmp_deinit,

@@ -2514,7 +2514,11 @@ static void tda1997x_codec_remove(struct snd_soc_component *component)
 {
 }
 
+<<<<<<< HEAD
 static struct snd_soc_component_driver tda1997x_codec_driver = {
+=======
+static const struct snd_soc_component_driver tda1997x_codec_driver = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.probe			= tda1997x_codec_probe,
 	.remove			= tda1997x_codec_remove,
 	.idle_bias_on		= 1,

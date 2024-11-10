@@ -2496,12 +2496,17 @@ ret_intrmod:
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef PTP_HARDWARE_TIMESTAMPING
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int lio_get_ts_info(struct net_device *netdev,
 			   struct kernel_ethtool_ts_info *info)
 {
 	struct lio *lio = GET_LIO(netdev);
 
 	info->so_timestamping =
+<<<<<<< HEAD
 #ifdef PTP_HARDWARE_TIMESTAMPING
 		SOF_TIMESTAMPING_TX_HARDWARE |
 		SOF_TIMESTAMPING_RX_HARDWARE |
@@ -2517,16 +2522,33 @@ static int lio_get_ts_info(struct net_device *netdev,
 		info->phc_index = -1;
 
 #ifdef PTP_HARDWARE_TIMESTAMPING
+=======
+		SOF_TIMESTAMPING_TX_HARDWARE |
+		SOF_TIMESTAMPING_RX_HARDWARE |
+		SOF_TIMESTAMPING_RAW_HARDWARE |
+		SOF_TIMESTAMPING_TX_SOFTWARE;
+
+	if (lio->ptp_clock)
+		info->phc_index = ptp_clock_index(lio->ptp_clock);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	info->tx_types = (1 << HWTSTAMP_TX_OFF) | (1 << HWTSTAMP_TX_ON);
 
 	info->rx_filters = (1 << HWTSTAMP_FILTER_NONE) |
 			   (1 << HWTSTAMP_FILTER_PTP_V1_L4_EVENT) |
 			   (1 << HWTSTAMP_FILTER_PTP_V2_L2_EVENT) |
 			   (1 << HWTSTAMP_FILTER_PTP_V2_L4_EVENT);
+<<<<<<< HEAD
 #endif
 
 	return 0;
 }
+=======
+
+	return 0;
+}
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Return register dump len. */
 static int lio_get_regs_len(struct net_device *dev)
@@ -3146,7 +3168,13 @@ static const struct ethtool_ops lio_ethtool_ops = {
 	.set_coalesce		= lio_set_intr_coalesce,
 	.get_priv_flags		= lio_get_priv_flags,
 	.set_priv_flags		= lio_set_priv_flags,
+<<<<<<< HEAD
 	.get_ts_info		= lio_get_ts_info,
+=======
+#ifdef PTP_HARDWARE_TIMESTAMPING
+	.get_ts_info		= lio_get_ts_info,
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct ethtool_ops lio_vf_ethtool_ops = {
@@ -3169,7 +3197,13 @@ static const struct ethtool_ops lio_vf_ethtool_ops = {
 	.set_coalesce		= lio_set_intr_coalesce,
 	.get_priv_flags		= lio_get_priv_flags,
 	.set_priv_flags		= lio_set_priv_flags,
+<<<<<<< HEAD
 	.get_ts_info		= lio_get_ts_info,
+=======
+#ifdef PTP_HARDWARE_TIMESTAMPING
+	.get_ts_info		= lio_get_ts_info,
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 void liquidio_set_ethtool_ops(struct net_device *netdev)

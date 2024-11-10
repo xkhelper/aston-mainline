@@ -564,7 +564,10 @@ static const struct file_operations acpi_thermal_rel_fops = {
 	.open		= acpi_thermal_rel_open,
 	.release	= acpi_thermal_rel_release,
 	.unlocked_ioctl	= acpi_thermal_rel_ioctl,
+<<<<<<< HEAD
 	.llseek		= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct miscdevice acpi_thermal_rel_misc_device = {

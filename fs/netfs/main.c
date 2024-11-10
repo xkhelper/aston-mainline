@@ -36,6 +36,7 @@ DEFINE_SPINLOCK(netfs_proc_lock);
 static const char *netfs_origins[nr__netfs_io_origin] = {
 	[NETFS_READAHEAD]		= "RA",
 	[NETFS_READPAGE]		= "RP",
+<<<<<<< HEAD
 	[NETFS_READ_FOR_WRITE]		= "RW",
 	[NETFS_COPY_TO_CACHE]		= "CC",
 	[NETFS_WRITEBACK]		= "WB",
@@ -43,6 +44,16 @@ static const char *netfs_origins[nr__netfs_io_origin] = {
 	[NETFS_UNBUFFERED_WRITE]	= "UW",
 	[NETFS_DIO_READ]		= "DR",
 	[NETFS_DIO_WRITE]		= "DW",
+=======
+	[NETFS_READ_GAPS]		= "RG",
+	[NETFS_READ_FOR_WRITE]		= "RW",
+	[NETFS_DIO_READ]		= "DR",
+	[NETFS_WRITEBACK]		= "WB",
+	[NETFS_WRITETHROUGH]		= "WT",
+	[NETFS_UNBUFFERED_WRITE]	= "UW",
+	[NETFS_DIO_WRITE]		= "DW",
+	[NETFS_PGPRIV2_COPY_TO_CACHE]	= "2C",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
@@ -62,7 +73,11 @@ static int netfs_requests_seq_show(struct seq_file *m, void *v)
 
 	rreq = list_entry(v, struct netfs_io_request, proc_link);
 	seq_printf(m,
+<<<<<<< HEAD
 		   "%08x %s %3d %2lx %4d %3d @%04llx %llx/%llx",
+=======
+		   "%08x %s %3d %2lx %4ld %3d @%04llx %llx/%llx",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		   rreq->debug_id,
 		   netfs_origins[rreq->origin],
 		   refcount_read(&rreq->ref),
@@ -142,7 +157,11 @@ static int __init netfs_init(void)
 
 error_fscache:
 error_procfile:
+<<<<<<< HEAD
 	remove_proc_entry("fs/netfs", NULL);
+=======
+	remove_proc_subtree("fs/netfs", NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 error_proc:
 	mempool_exit(&netfs_subrequest_pool);
 error_subreqpool:
@@ -159,7 +178,11 @@ fs_initcall(netfs_init);
 static void __exit netfs_exit(void)
 {
 	fscache_exit();
+<<<<<<< HEAD
 	remove_proc_entry("fs/netfs", NULL);
+=======
+	remove_proc_subtree("fs/netfs", NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mempool_exit(&netfs_subrequest_pool);
 	kmem_cache_destroy(netfs_subrequest_slab);
 	mempool_exit(&netfs_request_pool);

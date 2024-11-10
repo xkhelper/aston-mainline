@@ -440,6 +440,10 @@ int snd_oxfw_create_pcm(struct snd_oxfw *oxfw)
 		return err;
 
 	pcm->private_data = oxfw;
+<<<<<<< HEAD
+=======
+	pcm->nonatomic = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	strcpy(pcm->name, oxfw->card->shortname);
 	snd_pcm_set_ops(pcm, SNDRV_PCM_STREAM_PLAYBACK, &playback_ops);
 	if (cap > 0)

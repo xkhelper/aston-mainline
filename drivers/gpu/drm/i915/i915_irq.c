@@ -34,7 +34,10 @@
 #include <drm/drm_drv.h>
 
 #include "display/intel_display_irq.h"
+<<<<<<< HEAD
 #include "display/intel_display_types.h"
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "display/intel_hotplug.h"
 #include "display/intel_hotplug_irq.h"
 #include "display/intel_lpe_audio.h"

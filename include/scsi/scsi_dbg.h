@@ -24,7 +24,10 @@ extern const char *scsi_extd_sense_format(unsigned char, unsigned char,
 					  const char **);
 extern const char *scsi_mlreturn_string(int);
 extern const char *scsi_hostbyte_string(int);
+<<<<<<< HEAD
 extern const char *scsi_driverbyte_string(int);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else
 static inline bool
 scsi_opcode_sa_name(int cmd, int sa,
@@ -76,12 +79,15 @@ scsi_hostbyte_string(int result)
 	return NULL;
 }
 
+<<<<<<< HEAD
 static inline const char *
 scsi_driverbyte_string(int result)
 {
 	return NULL;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 #endif /* _SCSI_SCSI_DBG_H */

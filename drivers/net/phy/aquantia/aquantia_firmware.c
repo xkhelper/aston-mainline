@@ -6,7 +6,11 @@
 #include <linux/crc-itu-t.h>
 #include <linux/nvmem-consumer.h>
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "aquantia.h"
 
@@ -353,6 +357,7 @@ int aqr_firmware_load(struct phy_device *phydev)
 {
 	int ret;
 
+<<<<<<< HEAD
 	ret = aqr_wait_reset_complete(phydev);
 	if (ret)
 		return ret;
@@ -374,5 +379,34 @@ int aqr_firmware_load(struct phy_device *phydev)
 		return ret;
 
 exit:
+=======
+	/* Check if the firmware is not already loaded by polling
+	 * the current version returned by the PHY.
+	 */
+	ret = aqr_wait_reset_complete(phydev);
+	switch (ret) {
+	case 0:
+		/* Some firmware is loaded => do nothing */
+		return 0;
+	case -ETIMEDOUT:
+		/* VEND1_GLOBAL_FW_ID still reads 0 after 2 seconds of polling.
+		 * We don't have full confidence that no firmware is loaded (in
+		 * theory it might just not have loaded yet), but we will
+		 * assume that, and load a new image.
+		 */
+		ret = aqr_firmware_load_nvmem(phydev);
+		if (!ret)
+			return ret;
+
+		ret = aqr_firmware_load_fs(phydev);
+		if (ret)
+			return ret;
+		break;
+	default:
+		/* PHY read error, propagate it to the caller */
+		return ret;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }

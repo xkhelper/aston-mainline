@@ -129,7 +129,11 @@ static u32 vdec_1_vififo_level(struct amvdec_session *sess)
 	return amvdec_read_dos(core, VLD_MEM_VIFIFO_LEVEL);
 }
 
+<<<<<<< HEAD
 static int vdec_1_stop(struct amvdec_session *sess)
+=======
+static void __vdec_1_stop(struct amvdec_session *sess)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct amvdec_core *core = sess->core;
 	struct amvdec_codec_ops *codec_ops = sess->fmt_out->codec_ops;
@@ -158,10 +162,24 @@ static int vdec_1_stop(struct amvdec_session *sess)
 		regmap_update_bits(core->regmap_ao, AO_RTI_GEN_PWR_SLEEP0,
 				   GEN_PWR_VDEC_1, GEN_PWR_VDEC_1);
 
+<<<<<<< HEAD
 	clk_disable_unprepare(core->vdec_1_clk);
 
 	if (sess->priv)
 		codec_ops->stop(sess);
+=======
+	if (sess->priv)
+		codec_ops->stop(sess);
+}
+
+static int vdec_1_stop(struct amvdec_session *sess)
+{
+	struct amvdec_core *core = sess->core;
+
+	__vdec_1_stop(sess);
+
+	clk_disable_unprepare(core->vdec_1_clk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -235,7 +253,12 @@ static int vdec_1_start(struct amvdec_session *sess)
 	return 0;
 
 stop:
+<<<<<<< HEAD
 	vdec_1_stop(sess);
+=======
+	__vdec_1_stop(sess);
+	clk_disable_unprepare(core->vdec_1_clk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 

@@ -1202,17 +1202,26 @@ static bool __must_check is_valid_recovery_journal_block(const struct recovery_j
  * @journal: The journal to use.
  * @header: The unpacked block header to check.
  * @sequence: The expected sequence number.
+<<<<<<< HEAD
  * @type: The expected metadata type.
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Return: True if the block matches.
  */
 static bool __must_check is_exact_recovery_journal_block(const struct recovery_journal *journal,
 							 const struct recovery_block_header *header,
+<<<<<<< HEAD
 							 sequence_number_t sequence,
 							 enum vdo_metadata_type type)
 {
 	return ((header->metadata_type == type) &&
 		(header->sequence_number == sequence) &&
+=======
+							 sequence_number_t sequence)
+{
+	return ((header->sequence_number == sequence) &&
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		(is_valid_recovery_journal_block(journal, header, true)));
 }
 
@@ -1371,7 +1380,12 @@ static void extract_entries_from_block(struct repair_completion *repair,
 		get_recovery_journal_block_header(journal, repair->journal_data,
 						  sequence);
 
+<<<<<<< HEAD
 	if (!is_exact_recovery_journal_block(journal, &header, sequence, format)) {
+=======
+	if (!is_exact_recovery_journal_block(journal, &header, sequence) ||
+	    (header.metadata_type != format)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* This block is invalid, so skip it. */
 		return;
 	}
@@ -1557,10 +1571,20 @@ static int parse_journal_for_recovery(struct repair_completion *repair)
 	sequence_number_t i, head;
 	bool found_entries = false;
 	struct recovery_journal *journal = repair->completion.vdo->recovery_journal;
+<<<<<<< HEAD
 
 	head = min(repair->block_map_head, repair->slab_journal_head);
 	for (i = head; i <= repair->highest_tail; i++) {
 		struct recovery_block_header header;
+=======
+	struct recovery_block_header header;
+	enum vdo_metadata_type expected_format;
+
+	head = min(repair->block_map_head, repair->slab_journal_head);
+	header = get_recovery_journal_block_header(journal, repair->journal_data, head);
+	expected_format = header.metadata_type;
+	for (i = head; i <= repair->highest_tail; i++) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		journal_entry_count_t block_entries;
 		u8 j;
 
@@ -1572,6 +1596,7 @@ static int parse_journal_for_recovery(struct repair_completion *repair)
 		};
 
 		header = get_recovery_journal_block_header(journal, repair->journal_data, i);
+<<<<<<< HEAD
 		if (header.metadata_type == VDO_METADATA_RECOVERY_JOURNAL) {
 			/* This is an old format block, so we need to upgrade */
 			vdo_log_error_strerror(VDO_UNSUPPORTED_VERSION,
@@ -1585,6 +1610,17 @@ static int parse_journal_for_recovery(struct repair_completion *repair)
 						     VDO_METADATA_RECOVERY_JOURNAL_2)) {
 			/* A bad block header was found so this must be the end of the journal. */
 			break;
+=======
+		if (!is_exact_recovery_journal_block(journal, &header, i)) {
+			/* A bad block header was found so this must be the end of the journal. */
+			break;
+		} else if (header.metadata_type != expected_format) {
+			/* There is a mix of old and new format blocks, so we need to rebuild. */
+			vdo_log_error_strerror(VDO_CORRUPT_JOURNAL,
+					       "Recovery journal is in an invalid format, a read-only rebuild is required.");
+			vdo_enter_read_only_mode(repair->completion.vdo, VDO_CORRUPT_JOURNAL);
+			return VDO_CORRUPT_JOURNAL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		block_entries = header.entry_count;
@@ -1620,8 +1656,19 @@ static int parse_journal_for_recovery(struct repair_completion *repair)
 			break;
 	}
 
+<<<<<<< HEAD
 	if (!found_entries)
 		return validate_heads(repair);
+=======
+	if (!found_entries) {
+		return validate_heads(repair);
+	} else if (expected_format == VDO_METADATA_RECOVERY_JOURNAL) {
+		/* All journal blocks have the old format, so we need to upgrade. */
+		vdo_log_error_strerror(VDO_UNSUPPORTED_VERSION,
+				       "Recovery journal is in the old format. Downgrade and complete recovery, then upgrade with a clean volume");
+		return VDO_UNSUPPORTED_VERSION;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Set the tail to the last valid tail block, if there is one. */
 	if (repair->tail_recovery_point.sector_count == 0)

@@ -34,6 +34,7 @@ struct matrix_keymap_data {
 	unsigned int	keymap_size;
 };
 
+<<<<<<< HEAD
 /**
  * struct matrix_keypad_platform_data - platform-dependent keypad data
  * @keymap_data: pointer to &matrix_keymap_data
@@ -80,6 +81,8 @@ struct matrix_keypad_platform_data {
 	bool		drive_inactive_cols;
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int matrix_keypad_build_keymap(const struct matrix_keymap_data *keymap_data,
 			       const char *keymap_name,
 			       unsigned int rows, unsigned int cols,
@@ -88,6 +91,9 @@ int matrix_keypad_build_keymap(const struct matrix_keymap_data *keymap_data,
 int matrix_keypad_parse_properties(struct device *dev,
 				   unsigned int *rows, unsigned int *cols);
 
+<<<<<<< HEAD
 #define matrix_keypad_parse_of_params matrix_keypad_parse_properties
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _MATRIX_KEYPAD_H */

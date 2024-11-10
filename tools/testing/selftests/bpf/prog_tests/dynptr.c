@@ -9,6 +9,10 @@
 enum test_setup_type {
 	SETUP_SYSCALL_SLEEP,
 	SETUP_SKB_PROG,
+<<<<<<< HEAD
+=======
+	SETUP_SKB_PROG_TP,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct {
@@ -28,6 +32,10 @@ static struct {
 	{"test_dynptr_clone", SETUP_SKB_PROG},
 	{"test_dynptr_skb_no_buff", SETUP_SKB_PROG},
 	{"test_dynptr_skb_strcmp", SETUP_SKB_PROG},
+<<<<<<< HEAD
+=======
+	{"test_dynptr_skb_tp_btf", SETUP_SKB_PROG_TP},
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void verify_success(const char *prog_name, enum test_setup_type setup_type)
@@ -35,7 +43,11 @@ static void verify_success(const char *prog_name, enum test_setup_type setup_typ
 	struct dynptr_success *skel;
 	struct bpf_program *prog;
 	struct bpf_link *link;
+<<<<<<< HEAD
        int err;
+=======
+	int err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	skel = dynptr_success__open();
 	if (!ASSERT_OK_PTR(skel, "dynptr_success__open"))
@@ -47,7 +59,11 @@ static void verify_success(const char *prog_name, enum test_setup_type setup_typ
 	if (!ASSERT_OK_PTR(prog, "bpf_object__find_program_by_name"))
 		goto cleanup;
 
+<<<<<<< HEAD
        bpf_program__set_autoload(prog, true);
+=======
+	bpf_program__set_autoload(prog, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = dynptr_success__load(skel);
 	if (!ASSERT_OK(err, "dynptr_success__load"))
@@ -87,6 +103,40 @@ static void verify_success(const char *prog_name, enum test_setup_type setup_typ
 
 		break;
 	}
+<<<<<<< HEAD
+=======
+	case SETUP_SKB_PROG_TP:
+	{
+		struct __sk_buff skb = {};
+		struct bpf_object *obj;
+		int aux_prog_fd;
+
+		/* Just use its test_run to trigger kfree_skb tracepoint */
+		err = bpf_prog_test_load("./test_pkt_access.bpf.o", BPF_PROG_TYPE_SCHED_CLS,
+					 &obj, &aux_prog_fd);
+		if (!ASSERT_OK(err, "prog_load sched cls"))
+			goto cleanup;
+
+		LIBBPF_OPTS(bpf_test_run_opts, topts,
+			    .data_in = &pkt_v4,
+			    .data_size_in = sizeof(pkt_v4),
+			    .ctx_in = &skb,
+			    .ctx_size_in = sizeof(skb),
+		);
+
+		link = bpf_program__attach(prog);
+		if (!ASSERT_OK_PTR(link, "bpf_program__attach"))
+			goto cleanup;
+
+		err = bpf_prog_test_run_opts(aux_prog_fd, &topts);
+		bpf_link__destroy(link);
+
+		if (!ASSERT_OK(err, "test_run"))
+			goto cleanup;
+
+		break;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	ASSERT_EQ(skel->bss->err, 0, "err");

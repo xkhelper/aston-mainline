@@ -722,12 +722,15 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_lpspi3>;
 	status = "okay";
+<<<<<<< HEAD
 
 	spidev0: spi@0 {
 		reg = <0>;
 		compatible = "rohm,dh2228fv";
 		spi-max-frequency = <30000000>;
 	};
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &iomuxc {

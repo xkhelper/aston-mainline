@@ -1230,7 +1230,12 @@ static noinline_for_stack int ethtool_get_rxfh(struct net_device *dev,
 	if (rxfh.rsvd8[0] || rxfh.rsvd8[1] || rxfh.rsvd32)
 		return -EINVAL;
 	/* Most drivers don't handle rss_context, check it's 0 as well */
+<<<<<<< HEAD
 	if (rxfh.rss_context && !ops->cap_rss_ctx_supported)
+=======
+	if (rxfh.rss_context && !(ops->cap_rss_ctx_supported ||
+				  ops->create_rxfh_context))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EOPNOTSUPP;
 
 	rxfh.indir_size = rxfh_dev.indir_size;
@@ -1263,10 +1268,22 @@ static noinline_for_stack int ethtool_get_rxfh(struct net_device *dev,
 		if (rxfh_dev.indir)
 			memcpy(rxfh_dev.indir, ethtool_rxfh_context_indir(ctx),
 			       indir_bytes);
+<<<<<<< HEAD
 		if (rxfh_dev.key)
 			memcpy(rxfh_dev.key, ethtool_rxfh_context_key(ctx),
 			       user_key_size);
 		rxfh_dev.hfunc = ctx->hfunc;
+=======
+		if (!ops->rxfh_per_ctx_key) {
+			rxfh_dev.key_size = 0;
+		} else {
+			if (rxfh_dev.key)
+				memcpy(rxfh_dev.key,
+				       ethtool_rxfh_context_key(ctx),
+				       user_key_size);
+			rxfh_dev.hfunc = ctx->hfunc;
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rxfh_dev.input_xfrm = ctx->input_xfrm;
 		ret = 0;
 	} else {
@@ -1284,6 +1301,14 @@ static noinline_for_stack int ethtool_get_rxfh(struct net_device *dev,
 				sizeof(rxfh.input_xfrm))) {
 		ret = -EFAULT;
 	} else if (copy_to_user(useraddr +
+<<<<<<< HEAD
+=======
+				offsetof(struct ethtool_rxfh, key_size),
+				&rxfh_dev.key_size,
+				sizeof(rxfh.key_size))) {
+		ret = -EFAULT;
+	} else if (copy_to_user(useraddr +
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      offsetof(struct ethtool_rxfh, rss_config[0]),
 			      rss_config, total_size)) {
 		ret = -EFAULT;
@@ -1360,7 +1385,12 @@ static noinline_for_stack int ethtool_set_rxfh(struct net_device *dev,
 	if (rxfh.rsvd8[0] || rxfh.rsvd8[1] || rxfh.rsvd32)
 		return -EINVAL;
 	/* Most drivers don't handle rss_context, check it's 0 as well */
+<<<<<<< HEAD
 	if (rxfh.rss_context && !ops->cap_rss_ctx_supported)
+=======
+	if (rxfh.rss_context && !(ops->cap_rss_ctx_supported ||
+				  ops->create_rxfh_context))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EOPNOTSUPP;
 	/* Check input data transformation capabilities */
 	if (rxfh.input_xfrm && rxfh.input_xfrm != RXH_XFRM_SYM_XOR &&
@@ -1390,6 +1420,16 @@ static noinline_for_stack int ethtool_set_rxfh(struct net_device *dev,
 
 	indir_bytes = dev_indir_size * sizeof(rxfh_dev.indir[0]);
 
+<<<<<<< HEAD
+=======
+	/* Check settings which may be global rather than per RSS-context */
+	if (rxfh.rss_context && !ops->rxfh_per_ctx_key)
+		if (rxfh.key_size ||
+		    (rxfh.hfunc && rxfh.hfunc != ETH_RSS_HASH_NO_CHANGE) ||
+		    (rxfh.input_xfrm && rxfh.input_xfrm != RXH_XFRM_NO_CHANGE))
+			return -EOPNOTSUPP;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rss_config = kzalloc(indir_bytes + dev_key_size, GFP_USER);
 	if (!rss_config)
 		return -ENOMEM;
@@ -2072,8 +2112,11 @@ static noinline_for_stack int ethtool_set_channels(struct net_device *dev,
 {
 	struct ethtool_channels channels, curr = { .cmd = ETHTOOL_GCHANNELS };
 	u16 from_channel, to_channel;
+<<<<<<< HEAD
 	u64 max_rxnfc_in_use;
 	u32 max_rxfh_in_use;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int i;
 	int ret;
 
@@ -2103,6 +2146,7 @@ static noinline_for_stack int ethtool_set_channels(struct net_device *dev,
 	    (!channels.rx_count || !channels.tx_count))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	/* ensure the new Rx count fits within the configured Rx flow
 	 * indirection table/rxnfc settings */
 	if (ethtool_get_max_rxnfc_channel(dev, &max_rxnfc_in_use))
@@ -2111,6 +2155,11 @@ static noinline_for_stack int ethtool_set_channels(struct net_device *dev,
 	if (channels.combined_count + channels.rx_count <=
 	    max_t(u64, max_rxnfc_in_use, max_rxfh_in_use))
 		return -EINVAL;
+=======
+	ret = ethtool_check_max_channel(dev, channels, NULL);
+	if (ret)
+		return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Disabling channels, query zero-copy AF_XDP sockets */
 	from_channel = channels.combined_count +

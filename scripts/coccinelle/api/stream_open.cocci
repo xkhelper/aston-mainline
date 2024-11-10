@@ -131,7 +131,10 @@ identifier llseek_f;
 identifier fops0.fops;
 @@
   struct file_operations fops = {
+<<<<<<< HEAD
     .llseek = no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   };
 
 @ has_noop_llseek @

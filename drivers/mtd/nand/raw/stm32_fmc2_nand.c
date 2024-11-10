@@ -1851,7 +1851,10 @@ static int stm32_fmc2_nfc_parse_child(struct stm32_fmc2_nfc *nfc,
 static int stm32_fmc2_nfc_parse_dt(struct stm32_fmc2_nfc *nfc)
 {
 	struct device_node *dn = nfc->dev->of_node;
+<<<<<<< HEAD
 	struct device_node *child;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int nchips = of_get_child_count(dn);
 	int ret = 0;
 
@@ -1865,12 +1868,19 @@ static int stm32_fmc2_nfc_parse_dt(struct stm32_fmc2_nfc *nfc)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	for_each_child_of_node(dn, child) {
 		ret = stm32_fmc2_nfc_parse_child(nfc, child);
 		if (ret < 0) {
 			of_node_put(child);
 			return ret;
 		}
+=======
+	for_each_child_of_node_scoped(dn, child) {
+		ret = stm32_fmc2_nfc_parse_child(nfc, child);
+		if (ret < 0)
+			return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return ret;

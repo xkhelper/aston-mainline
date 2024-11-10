@@ -216,9 +216,13 @@ hda_dsp_stream_get(struct snd_sof_dev *sdev, int direction, u32 flags)
 
 	/* stream found ? */
 	if (!hext_stream) {
+<<<<<<< HEAD
 		dev_err(sdev->dev, "error: no free %s streams\n",
 			direction == SNDRV_PCM_STREAM_PLAYBACK ?
 			"playback" : "capture");
+=======
+		dev_err(sdev->dev, "error: no free %s streams\n", snd_pcm_direction_name(direction));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return hext_stream;
 	}
 

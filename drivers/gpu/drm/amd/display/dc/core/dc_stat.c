@@ -61,6 +61,10 @@ void dc_stat_get_dmub_notification(const struct dc *dc, struct dmub_notification
 	/* For HPD/HPD RX, convert dpia port index into link index */
 	if (notify->type == DMUB_NOTIFICATION_HPD ||
 	    notify->type == DMUB_NOTIFICATION_HPD_IRQ ||
+<<<<<<< HEAD
+=======
+	    notify->type == DMUB_NOTIFICATION_AUX_REPLY ||
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    notify->type == DMUB_NOTIFICATION_DPIA_NOTIFICATION ||
 	    notify->type == DMUB_NOTIFICATION_SET_CONFIG_REPLY) {
 		notify->link_index =

@@ -108,9 +108,13 @@ static inline u8 mwifiex_space_avail_for_new_ba_stream(
 
 	for (i = 0; i < adapter->priv_num; i++) {
 		priv = adapter->priv[i];
+<<<<<<< HEAD
 		if (priv)
 			ba_stream_num += list_count_nodes(
 				&priv->tx_ba_stream_tbl_ptr);
+=======
+		ba_stream_num += list_count_nodes(&priv->tx_ba_stream_tbl_ptr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (adapter->fw_api_ver == MWIFIEX_FW_V15) {

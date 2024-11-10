@@ -13,6 +13,10 @@
 #include <linux/slab.h>
 #include <linux/rculist_nulls.h>
 #include <linux/cpu.h>
+<<<<<<< HEAD
+=======
+#include <linux/cpuset.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/task_work.h>
 #include <linux/audit.h>
 #include <linux/mmu_context.h>
@@ -1167,7 +1171,11 @@ struct io_wq *io_wq_create(unsigned bounded, struct io_wq_data *data)
 
 	if (!alloc_cpumask_var(&wq->cpu_mask, GFP_KERNEL))
 		goto err;
+<<<<<<< HEAD
 	cpumask_copy(wq->cpu_mask, cpu_possible_mask);
+=======
+	cpuset_cpus_allowed(data->task, wq->cpu_mask);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	wq->acct[IO_WQ_ACCT_BOUND].max_workers = bounded;
 	wq->acct[IO_WQ_ACCT_UNBOUND].max_workers =
 				task_rlimit(current, RLIMIT_NPROC);
@@ -1322,6 +1330,7 @@ static int io_wq_cpu_offline(unsigned int cpu, struct hlist_node *node)
 
 int io_wq_cpu_affinity(struct io_uring_task *tctx, cpumask_var_t mask)
 {
+<<<<<<< HEAD
 	if (!tctx || !tctx->io_wq)
 		return -EINVAL;
 
@@ -1333,6 +1342,31 @@ int io_wq_cpu_affinity(struct io_uring_task *tctx, cpumask_var_t mask)
 	rcu_read_unlock();
 
 	return 0;
+=======
+	cpumask_var_t allowed_mask;
+	int ret = 0;
+
+	if (!tctx || !tctx->io_wq)
+		return -EINVAL;
+
+	if (!alloc_cpumask_var(&allowed_mask, GFP_KERNEL))
+		return -ENOMEM;
+
+	rcu_read_lock();
+	cpuset_cpus_allowed(tctx->io_wq->task, allowed_mask);
+	if (mask) {
+		if (cpumask_subset(mask, allowed_mask))
+			cpumask_copy(tctx->io_wq->cpu_mask, mask);
+		else
+			ret = -EINVAL;
+	} else {
+		cpumask_copy(tctx->io_wq->cpu_mask, allowed_mask);
+	}
+	rcu_read_unlock();
+
+	free_cpumask_var(allowed_mask);
+	return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*

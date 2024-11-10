@@ -32,7 +32,11 @@
 int
 nv10_fence_emit(struct nouveau_fence *fence)
 {
+<<<<<<< HEAD
 	struct nvif_push *push = fence->channel->chan.push;
+=======
+	struct nvif_push *push = &fence->channel->chan.push;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret = PUSH_WAIT(push, 2);
 	if (ret == 0) {
 		PUSH_MTHD(push, NV06E, SET_REFERENCE, fence->base.seqno);
@@ -88,7 +92,11 @@ nv10_fence_destroy(struct nouveau_drm *drm)
 	nouveau_bo_unmap(priv->bo);
 	if (priv->bo)
 		nouveau_bo_unpin(priv->bo);
+<<<<<<< HEAD
 	nouveau_bo_ref(NULL, &priv->bo);
+=======
+	nouveau_bo_fini(priv->bo);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	drm->fence = NULL;
 	kfree(priv);
 }

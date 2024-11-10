@@ -379,7 +379,10 @@ int test_get_tcp_ao_counters(int sk, struct tcp_ao_counters *out)
 
 	key_dump[0].nkeys = nr_keys;
 	key_dump[0].get_all = 1;
+<<<<<<< HEAD
 	key_dump[0].get_all = 1;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	err = getsockopt(sk, IPPROTO_TCP, TCP_AO_GET_KEYS,
 			 key_dump, &key_dump_sz);
 	if (err) {

@@ -9,11 +9,19 @@
 
 #include <drm/drm_device.h>
 #include <drm/drm_file.h>
+<<<<<<< HEAD
 #include <drm/xe_drm.h>
+=======
+#include <uapi/drm/xe_drm.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "xe_device.h"
 #include "xe_gt.h"
 #include "xe_hw_engine_class_sysfs.h"
+<<<<<<< HEAD
+=======
+#include "xe_hw_engine_group.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "xe_hw_fence.h"
 #include "xe_lrc.h"
 #include "xe_macros.h"
@@ -73,6 +81,10 @@ static struct xe_exec_queue *__xe_exec_queue_alloc(struct xe_device *xe,
 	q->ops = gt->exec_queue_ops;
 	INIT_LIST_HEAD(&q->lr.link);
 	INIT_LIST_HEAD(&q->multi_gt_link);
+<<<<<<< HEAD
+=======
+	INIT_LIST_HEAD(&q->hw_engine_group_link);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	q->sched_props.timeslice_us = hwe->eclass->sched_props.timeslice_us;
 	q->sched_props.preempt_timeout_us =
@@ -166,7 +178,12 @@ err_post_alloc:
 
 struct xe_exec_queue *xe_exec_queue_create_class(struct xe_device *xe, struct xe_gt *gt,
 						 struct xe_vm *vm,
+<<<<<<< HEAD
 						 enum xe_engine_class class, u32 flags)
+=======
+						 enum xe_engine_class class,
+						 u32 flags, u64 extensions)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct xe_hw_engine *hwe, *hwe0 = NULL;
 	enum xe_hw_engine_id id;
@@ -186,7 +203,60 @@ struct xe_exec_queue *xe_exec_queue_create_class(struct xe_device *xe, struct xe
 	if (!logical_mask)
 		return ERR_PTR(-ENODEV);
 
+<<<<<<< HEAD
 	return xe_exec_queue_create(xe, vm, logical_mask, 1, hwe0, flags, 0);
+=======
+	return xe_exec_queue_create(xe, vm, logical_mask, 1, hwe0, flags, extensions);
+}
+
+/**
+ * xe_exec_queue_create_bind() - Create bind exec queue.
+ * @xe: Xe device.
+ * @tile: tile which bind exec queue belongs to.
+ * @flags: exec queue creation flags
+ * @extensions: exec queue creation extensions
+ *
+ * Normalize bind exec queue creation. Bind exec queue is tied to migration VM
+ * for access to physical memory required for page table programming. On a
+ * faulting devices the reserved copy engine instance must be used to avoid
+ * deadlocking (user binds cannot get stuck behind faults as kernel binds which
+ * resolve faults depend on user binds). On non-faulting devices any copy engine
+ * can be used.
+ *
+ * Returns exec queue on success, ERR_PTR on failure
+ */
+struct xe_exec_queue *xe_exec_queue_create_bind(struct xe_device *xe,
+						struct xe_tile *tile,
+						u32 flags, u64 extensions)
+{
+	struct xe_gt *gt = tile->primary_gt;
+	struct xe_exec_queue *q;
+	struct xe_vm *migrate_vm;
+
+	migrate_vm = xe_migrate_get_vm(tile->migrate);
+	if (xe->info.has_usm) {
+		struct xe_hw_engine *hwe = xe_gt_hw_engine(gt,
+							   XE_ENGINE_CLASS_COPY,
+							   gt->usm.reserved_bcs_instance,
+							   false);
+
+		if (!hwe) {
+			xe_vm_put(migrate_vm);
+			return ERR_PTR(-EINVAL);
+		}
+
+		q = xe_exec_queue_create(xe, migrate_vm,
+					 BIT(hwe->logical_instance), 1, hwe,
+					 flags, extensions);
+	} else {
+		q = xe_exec_queue_create_class(xe, gt, migrate_vm,
+					       XE_ENGINE_CLASS_COPY, flags,
+					       extensions);
+	}
+	xe_vm_put(migrate_vm);
+
+	return q;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void xe_exec_queue_destroy(struct kref *ref)
@@ -208,8 +278,19 @@ void xe_exec_queue_fini(struct xe_exec_queue *q)
 {
 	int i;
 
+<<<<<<< HEAD
 	for (i = 0; i < q->width; ++i)
 		xe_lrc_put(q->lrc[i]);
+=======
+	/*
+	 * Before releasing our ref to lrc and xef, accumulate our run ticks
+	 */
+	xe_exec_queue_update_run_ticks(q);
+
+	for (i = 0; i < q->width; ++i)
+		xe_lrc_put(q->lrc[i]);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__xe_exec_queue_free(q);
 }
 
@@ -418,6 +499,7 @@ static int exec_queue_user_extensions(struct xe_device *xe, struct xe_exec_queue
 	return 0;
 }
 
+<<<<<<< HEAD
 static const enum xe_engine_class user_to_xe_engine_class[] = {
 	[DRM_XE_ENGINE_CLASS_RENDER] = XE_ENGINE_CLASS_RENDER,
 	[DRM_XE_ENGINE_CLASS_COPY] = XE_ENGINE_CLASS_COPY,
@@ -475,6 +557,8 @@ static u32 bind_exec_queue_logical_mask(struct xe_device *xe, struct xe_gt *gt,
 	return logical_mask;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static u32 calc_validate_logical_mask(struct xe_device *xe, struct xe_gt *gt,
 				      struct drm_xe_engine_class_instance *eci,
 				      u16 width, u16 num_placements)
@@ -497,7 +581,11 @@ static u32 calc_validate_logical_mask(struct xe_device *xe, struct xe_gt *gt,
 
 			n = j * width + i;
 
+<<<<<<< HEAD
 			hwe = find_hw_engine(xe, eci[n]);
+=======
+			hwe = xe_hw_engine_lookup(xe, eci[n]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (XE_IOCTL_DBG(xe, !hwe))
 				return 0;
 
@@ -536,8 +624,14 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
 	struct drm_xe_engine_class_instance __user *user_eci =
 		u64_to_user_ptr(args->instances);
 	struct xe_hw_engine *hwe;
+<<<<<<< HEAD
 	struct xe_vm *vm, *migrate_vm;
 	struct xe_gt *gt;
+=======
+	struct xe_vm *vm;
+	struct xe_gt *gt;
+	struct xe_tile *tile;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct xe_exec_queue *q = NULL;
 	u32 logical_mask;
 	u32 id;
@@ -562,6 +656,7 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
 		return -EINVAL;
 
 	if (eci[0].engine_class == DRM_XE_ENGINE_CLASS_VM_BIND) {
+<<<<<<< HEAD
 		for_each_gt(gt, xe, id) {
 			struct xe_exec_queue *new;
 			u32 flags;
@@ -593,6 +688,22 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
 			xe_pm_runtime_put(xe); /* now held by engine */
 
 			xe_vm_put(migrate_vm);
+=======
+		if (XE_IOCTL_DBG(xe, args->width != 1) ||
+		    XE_IOCTL_DBG(xe, args->num_placements != 1) ||
+		    XE_IOCTL_DBG(xe, eci[0].engine_instance != 0))
+			return -EINVAL;
+
+		for_each_tile(tile, xe, id) {
+			struct xe_exec_queue *new;
+			u32 flags = EXEC_QUEUE_FLAG_VM;
+
+			if (id)
+				flags |= EXEC_QUEUE_FLAG_BIND_ENGINE_CHILD;
+
+			new = xe_exec_queue_create_bind(xe, tile, flags,
+							args->extensions);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (IS_ERR(new)) {
 				err = PTR_ERR(new);
 				if (q)
@@ -613,7 +724,11 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
 		if (XE_IOCTL_DBG(xe, !logical_mask))
 			return -EINVAL;
 
+<<<<<<< HEAD
 		hwe = find_hw_engine(xe, eci[0]);
+=======
+		hwe = xe_hw_engine_lookup(xe, eci[0]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (XE_IOCTL_DBG(xe, !hwe))
 			return -EINVAL;
 
@@ -648,16 +763,34 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
 			if (XE_IOCTL_DBG(xe, err))
 				goto put_exec_queue;
 		}
+<<<<<<< HEAD
 	}
 
 	mutex_lock(&xef->exec_queue.lock);
 	err = xa_alloc(&xef->exec_queue.xa, &id, q, xa_limit_32b, GFP_KERNEL);
 	mutex_unlock(&xef->exec_queue.lock);
+=======
+
+		if (q->vm && q->hwe->hw_engine_group) {
+			err = xe_hw_engine_group_add_exec_queue(q->hwe->hw_engine_group, q);
+			if (err)
+				goto put_exec_queue;
+		}
+	}
+
+	q->xef = xe_file_get(xef);
+
+	/* user id alloc must always be last in ioctl to prevent UAF */
+	err = xa_alloc(&xef->exec_queue.xa, &id, q, xa_limit_32b, GFP_KERNEL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err)
 		goto kill_exec_queue;
 
 	args->exec_queue_id = id;
+<<<<<<< HEAD
 	q->xef = xe_file_get(xef);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 
@@ -798,6 +931,18 @@ void xe_exec_queue_update_run_ticks(struct xe_exec_queue *q)
 	xef->run_ticks[q->class] += (new_ts - old_ts) * q->width;
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * xe_exec_queue_kill - permanently stop all execution from an exec queue
+ * @q: The exec queue
+ *
+ * This function permanently stops all activity on an exec queue. If the queue
+ * is actively executing on the HW, it will be kicked off the engine; any
+ * pending jobs are discarded and all future submissions are rejected.
+ * This function is safe to call multiple times.
+ */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void xe_exec_queue_kill(struct xe_exec_queue *q)
 {
 	struct xe_exec_queue *eq = q, *next;
@@ -830,6 +975,12 @@ int xe_exec_queue_destroy_ioctl(struct drm_device *dev, void *data,
 	if (XE_IOCTL_DBG(xe, !q))
 		return -ENOENT;
 
+<<<<<<< HEAD
+=======
+	if (q->vm && q->hwe->hw_engine_group)
+		xe_hw_engine_group_del_exec_queue(q->hwe->hw_engine_group, q);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xe_exec_queue_kill(q);
 
 	trace_xe_exec_queue_close(q);
@@ -841,10 +992,19 @@ int xe_exec_queue_destroy_ioctl(struct drm_device *dev, void *data,
 static void xe_exec_queue_last_fence_lockdep_assert(struct xe_exec_queue *q,
 						    struct xe_vm *vm)
 {
+<<<<<<< HEAD
 	if (q->flags & EXEC_QUEUE_FLAG_VM)
 		lockdep_assert_held(&vm->lock);
 	else
 		xe_vm_assert_held(vm);
+=======
+	if (q->flags & EXEC_QUEUE_FLAG_VM) {
+		lockdep_assert_held(&vm->lock);
+	} else {
+		xe_vm_assert_held(vm);
+		lockdep_assert_held(&q->hwe->hw_engine_group->mode_sem);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -856,10 +1016,14 @@ void xe_exec_queue_last_fence_put(struct xe_exec_queue *q, struct xe_vm *vm)
 {
 	xe_exec_queue_last_fence_lockdep_assert(q, vm);
 
+<<<<<<< HEAD
 	if (q->last_fence) {
 		dma_fence_put(q->last_fence);
 		q->last_fence = NULL;
 	}
+=======
+	xe_exec_queue_last_fence_put_unlocked(q);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -902,6 +1066,36 @@ struct dma_fence *xe_exec_queue_last_fence_get(struct xe_exec_queue *q,
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * xe_exec_queue_last_fence_get_for_resume() - Get last fence
+ * @q: The exec queue
+ * @vm: The VM the engine does a bind or exec for
+ *
+ * Get last fence, takes a ref. Only safe to be called in the context of
+ * resuming the hw engine group's long-running exec queue, when the group
+ * semaphore is held.
+ *
+ * Returns: last fence if not signaled, dma fence stub if signaled
+ */
+struct dma_fence *xe_exec_queue_last_fence_get_for_resume(struct xe_exec_queue *q,
+							  struct xe_vm *vm)
+{
+	struct dma_fence *fence;
+
+	lockdep_assert_held_write(&q->hwe->hw_engine_group->mode_sem);
+
+	if (q->last_fence &&
+	    test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &q->last_fence->flags))
+		xe_exec_queue_last_fence_put_unlocked(q);
+
+	fence = q->last_fence ? q->last_fence : dma_fence_get_stub();
+	dma_fence_get(fence);
+	return fence;
+}
+
+/**
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * xe_exec_queue_last_fence_set() - Set last fence
  * @q: The exec queue
  * @vm: The VM the engine does a bind or exec for
@@ -918,3 +1112,29 @@ void xe_exec_queue_last_fence_set(struct xe_exec_queue *q, struct xe_vm *vm,
 	xe_exec_queue_last_fence_put(q, vm);
 	q->last_fence = dma_fence_get(fence);
 }
+<<<<<<< HEAD
+=======
+
+/**
+ * xe_exec_queue_last_fence_test_dep - Test last fence dependency of queue
+ * @q: The exec queue
+ * @vm: The VM the engine does a bind or exec for
+ *
+ * Returns:
+ * -ETIME if there exists an unsignalled last fence dependency, zero otherwise.
+ */
+int xe_exec_queue_last_fence_test_dep(struct xe_exec_queue *q, struct xe_vm *vm)
+{
+	struct dma_fence *fence;
+	int err = 0;
+
+	fence = xe_exec_queue_last_fence_get(q, vm);
+	if (fence) {
+		err = test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags) ?
+			0 : -ETIME;
+		dma_fence_put(fence);
+	}
+
+	return err;
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

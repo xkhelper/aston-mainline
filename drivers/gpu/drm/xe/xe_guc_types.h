@@ -72,6 +72,7 @@ struct xe_guc {
 		atomic_t stopped;
 		/** @submission_state.lock: protects submission state */
 		struct mutex lock;
+<<<<<<< HEAD
 #ifdef CONFIG_PROVE_LOCKING
 #define NUM_SUBMIT_WQ	256
 		/** @submission_state.submit_wq_pool: submission ordered workqueues pool */
@@ -81,6 +82,12 @@ struct xe_guc {
 #endif
 		/** @submission_state.enabled: submission is enabled */
 		bool enabled;
+=======
+		/** @submission_state.enabled: submission is enabled */
+		bool enabled;
+		/** @submission_state.fini_wq: submit fini wait queue */
+		wait_queue_head_t fini_wq;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} submission_state;
 	/** @hwconfig: Hardware config state */
 	struct {

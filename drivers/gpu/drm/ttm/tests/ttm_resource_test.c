@@ -198,7 +198,11 @@ static void ttm_resource_fini_basic(struct kunit *test)
 	ttm_resource_init(bo, place, res);
 	ttm_resource_fini(man, res);
 
+<<<<<<< HEAD
 	KUNIT_ASSERT_TRUE(test, list_empty(&res->lru));
+=======
+	KUNIT_ASSERT_TRUE(test, list_empty(&res->lru.link));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KUNIT_ASSERT_EQ(test, man->usage, 0);
 }
 

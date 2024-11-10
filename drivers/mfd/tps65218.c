@@ -186,7 +186,11 @@ static const struct regmap_irq tps65218_irqs[] = {
 	},
 };
 
+<<<<<<< HEAD
 static struct regmap_irq_chip tps65218_irq_chip = {
+=======
+static const struct regmap_irq_chip tps65218_irq_chip = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name = "tps65218",
 	.irqs = tps65218_irqs,
 	.num_irqs = ARRAY_SIZE(tps65218_irqs),

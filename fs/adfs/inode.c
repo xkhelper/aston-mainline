@@ -55,12 +55,20 @@ static void adfs_write_failed(struct address_space *mapping, loff_t to)
 
 static int adfs_write_begin(struct file *file, struct address_space *mapping,
 			loff_t pos, unsigned len,
+<<<<<<< HEAD
 			struct page **pagep, void **fsdata)
 {
 	int ret;
 
 	*pagep = NULL;
 	ret = cont_write_begin(file, mapping, pos, len, pagep, fsdata,
+=======
+			struct folio **foliop, void **fsdata)
+{
+	int ret;
+
+	ret = cont_write_begin(file, mapping, pos, len, foliop, fsdata,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				adfs_get_block,
 				&ADFS_I(mapping->host)->mmu_private);
 	if (unlikely(ret))

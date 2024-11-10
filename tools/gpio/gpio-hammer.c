@@ -54,7 +54,11 @@ int hammer_device(const char *device_name, unsigned int *lines, int num_lines,
 
 	fprintf(stdout, "Hammer lines [");
 	for (i = 0; i < num_lines; i++) {
+<<<<<<< HEAD
 		fprintf(stdout, "%d", lines[i]);
+=======
+		fprintf(stdout, "%u", lines[i]);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (i != (num_lines - 1))
 			fprintf(stdout, ", ");
 	}
@@ -89,7 +93,11 @@ int hammer_device(const char *device_name, unsigned int *lines, int num_lines,
 
 		fprintf(stdout, "[");
 		for (i = 0; i < num_lines; i++) {
+<<<<<<< HEAD
 			fprintf(stdout, "%d: %d", lines[i],
+=======
+			fprintf(stdout, "%u: %d", lines[i],
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				gpiotools_test_bit(values.bits, i));
 			if (i != (num_lines - 1))
 				fprintf(stdout, ", ");

@@ -848,6 +848,7 @@
 			pins = "gpio143";
 			function = "gpio";
 			drive-strength = <2>;
+<<<<<<< HEAD
 			bias-pull-down;
 		};
 
@@ -857,6 +858,17 @@
 		       drive-strength = <2>;
 		       bias-pull-up;
 	       };
+=======
+			bias-disable;
+		};
+
+		wake-n-pins {
+			pins = "gpio145";
+			function = "gpio";
+			drive-strength = <2>;
+			bias-pull-up;
+		};
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	pcie3a_default: pcie3a-default-state {
@@ -871,7 +883,11 @@
 			pins = "gpio151";
 			function = "gpio";
 			drive-strength = <2>;
+<<<<<<< HEAD
 			bias-pull-down;
+=======
+			bias-disable;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		wake-n-pins {
@@ -894,7 +910,11 @@
 			pins = "gpio141";
 			function = "gpio";
 			drive-strength = <2>;
+<<<<<<< HEAD
 			bias-pull-down;
+=======
+			bias-disable;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		wake-n-pins {

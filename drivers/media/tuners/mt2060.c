@@ -514,7 +514,11 @@ static void mt2060_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id mt2060_id_table[] = {
+<<<<<<< HEAD
 	{"mt2060", 0},
+=======
+	{ "mt2060" },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 MODULE_DEVICE_TABLE(i2c, mt2060_id_table);

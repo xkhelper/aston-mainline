@@ -54,7 +54,13 @@ properties:
           It's not present on stm32f4.
           It's required on stm32h7 and stm32mp1.
 
+<<<<<<< HEAD
   clock-names: true
+=======
+  clock-names:
+    minItems: 1
+    maxItems: 2
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   st,max-clk-rate-hz:
     description:

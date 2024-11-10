@@ -214,7 +214,11 @@ static struct platform_driver imx_sgtl5000_driver = {
 		.of_match_table = imx_sgtl5000_dt_ids,
 	},
 	.probe = imx_sgtl5000_probe,
+<<<<<<< HEAD
 	.remove_new = imx_sgtl5000_remove,
+=======
+	.remove = imx_sgtl5000_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(imx_sgtl5000_driver);
 

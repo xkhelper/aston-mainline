@@ -22,7 +22,10 @@
  * Authors: Andres Rodriguez <andresx7@gmail.com>
  */
 
+<<<<<<< HEAD
 #include <linux/fdtable.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/file.h>
 #include <linux/pid.h>
 
@@ -43,10 +46,17 @@ static int amdgpu_sched_process_priority_override(struct amdgpu_device *adev,
 	uint32_t id;
 	int r;
 
+<<<<<<< HEAD
 	if (!f.file)
 		return -EINVAL;
 
 	r = amdgpu_file_to_fpriv(f.file, &fpriv);
+=======
+	if (!fd_file(f))
+		return -EINVAL;
+
+	r = amdgpu_file_to_fpriv(fd_file(f), &fpriv);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (r) {
 		fdput(f);
 		return r;
@@ -72,10 +82,17 @@ static int amdgpu_sched_context_priority_override(struct amdgpu_device *adev,
 	struct amdgpu_ctx *ctx;
 	int r;
 
+<<<<<<< HEAD
 	if (!f.file)
 		return -EINVAL;
 
 	r = amdgpu_file_to_fpriv(f.file, &fpriv);
+=======
+	if (!fd_file(f))
+		return -EINVAL;
+
+	r = amdgpu_file_to_fpriv(fd_file(f), &fpriv);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (r) {
 		fdput(f);
 		return r;

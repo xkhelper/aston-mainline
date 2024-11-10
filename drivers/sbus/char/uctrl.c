@@ -221,7 +221,10 @@ static irqreturn_t uctrl_interrupt(int irq, void *dev_id)
 
 static const struct file_operations uctrl_fops = {
 	.owner =	THIS_MODULE,
+<<<<<<< HEAD
 	.llseek =	no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.unlocked_ioctl =	uctrl_ioctl,
 	.open =		uctrl_open,
 };

@@ -67,6 +67,11 @@ static void dp_retrain_link_dp_test(struct dc_link *link,
 {
 	struct pipe_ctx *pipes[MAX_PIPES];
 	struct dc_state *state = link->dc->current_state;
+<<<<<<< HEAD
+=======
+	bool was_hpo_acquired = resource_is_hpo_acquired(link->dc->current_state);
+	bool is_hpo_acquired;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	uint8_t count;
 	int i;
 
@@ -83,6 +88,15 @@ static void dp_retrain_link_dp_test(struct dc_link *link,
 				pipes[i]);
 	}
 
+<<<<<<< HEAD
+=======
+	if (link->dc->hwss.setup_hpo_hw_control) {
+		is_hpo_acquired = resource_is_hpo_acquired(state);
+		if (was_hpo_acquired != is_hpo_acquired)
+			link->dc->hwss.setup_hpo_hw_control(link->dc->hwseq, is_hpo_acquired);
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = count-1; i >= 0; i--)
 		link_set_dpms_on(state, pipes[i]);
 }
@@ -804,8 +818,16 @@ bool dp_set_test_pattern(
 			break;
 		}
 
+<<<<<<< HEAD
 		if (pipe_ctx->stream_res.tg->funcs->lock_doublebuffer_enable) {
 			if (pipe_ctx->stream && should_use_dmub_lock(pipe_ctx->stream->link)) {
+=======
+		if (!pipe_ctx->stream)
+			return false;
+
+		if (pipe_ctx->stream_res.tg->funcs->lock_doublebuffer_enable) {
+			if (should_use_dmub_lock(pipe_ctx->stream->link)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				union dmub_hw_lock_flags hw_locks = { 0 };
 				struct dmub_hw_lock_inst_flags inst_flags = { 0 };
 

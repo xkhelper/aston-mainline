@@ -32,6 +32,7 @@ static const struct key_entry toshiba_wmi_keymap[] __initconst = {
 	{ KE_END, 0 }
 };
 
+<<<<<<< HEAD
 static void toshiba_wmi_notify(u32 value, void *context)
 {
 	struct acpi_buffer response = { ACPI_ALLOCATE_BUFFER, NULL };
@@ -45,13 +46,20 @@ static void toshiba_wmi_notify(u32 value, void *context)
 	}
 
 	obj = (union acpi_object *)response.pointer;
+=======
+static void toshiba_wmi_notify(union acpi_object *obj, void *context)
+{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!obj)
 		return;
 
 	/* TODO: Add proper checks once we have data */
 	pr_debug("Unknown event received, obj type %x\n", obj->type);
+<<<<<<< HEAD
 
 	kfree(response.pointer);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct dmi_system_id toshiba_wmi_dmi_table[] __initconst = {

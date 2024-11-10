@@ -10,7 +10,11 @@
 #include "fw/api/txq.h"
 
 /* Highest firmware API version supported */
+<<<<<<< HEAD
 #define IWL_SC_UCODE_API_MAX	92
+=======
+#define IWL_SC_UCODE_API_MAX	93
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Lowest firmware API version supported */
 #define IWL_SC_UCODE_API_MIN	90

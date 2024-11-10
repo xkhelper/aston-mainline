@@ -184,7 +184,11 @@ static void brcmf_feat_wlc_version_overrides(struct brcmf_pub *drv)
 static void brcmf_feat_iovar_int_get(struct brcmf_if *ifp,
 				     enum brcmf_feat_id id, char *name)
 {
+<<<<<<< HEAD
 	u32 data = 0;
+=======
+	u32 data;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 
 	/* we need to know firmware error */

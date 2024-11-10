@@ -36,6 +36,10 @@
 #include <asm/kvm_page_track.h>
 #include <asm/kvm_vcpu_regs.h>
 #include <asm/hyperv-tlfs.h>
+<<<<<<< HEAD
+=======
+#include <asm/reboot.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define __KVM_HAVE_ARCH_VCPU_DEBUGFS
 
@@ -211,6 +215,10 @@ enum exit_fastpath_completion {
 	EXIT_FASTPATH_NONE,
 	EXIT_FASTPATH_REENTER_GUEST,
 	EXIT_FASTPATH_EXIT_HANDLED,
+<<<<<<< HEAD
+=======
+	EXIT_FASTPATH_EXIT_USERSPACE,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 typedef enum exit_fastpath_completion fastpath_t;
 
@@ -280,10 +288,13 @@ enum x86_intercept_stage;
 #define PFERR_PRIVATE_ACCESS   BIT_ULL(49)
 #define PFERR_SYNTHETIC_MASK   (PFERR_IMPLICIT_ACCESS | PFERR_PRIVATE_ACCESS)
 
+<<<<<<< HEAD
 #define PFERR_NESTED_GUEST_PAGE (PFERR_GUEST_PAGE_MASK |	\
 				 PFERR_WRITE_MASK |		\
 				 PFERR_PRESENT_MASK)
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* apic attention bits */
 #define KVM_APIC_CHECK_VAPIC	0
 /*
@@ -1629,8 +1640,15 @@ struct kvm_x86_ops {
 
 	int (*check_processor_compatibility)(void);
 
+<<<<<<< HEAD
 	int (*hardware_enable)(void);
 	void (*hardware_disable)(void);
+=======
+	int (*enable_virtualization_cpu)(void);
+	void (*disable_virtualization_cpu)(void);
+	cpu_emergency_virt_cb *emergency_disable_virtualization_cpu;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void (*hardware_unsetup)(void);
 	bool (*has_emulated_msr)(struct kvm *kvm, u32 index);
 	void (*vcpu_after_set_cpuid)(struct kvm_vcpu *vcpu);
@@ -1727,6 +1745,11 @@ struct kvm_x86_ops {
 	void (*enable_nmi_window)(struct kvm_vcpu *vcpu);
 	void (*enable_irq_window)(struct kvm_vcpu *vcpu);
 	void (*update_cr8_intercept)(struct kvm_vcpu *vcpu, int tpr, int irr);
+<<<<<<< HEAD
+=======
+
+	const bool x2apic_icr_is_split;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const unsigned long required_apicv_inhibits;
 	bool allow_apicv_in_x2apic_without_x2apic_virtualization;
 	void (*refresh_apicv_exec_ctrl)(struct kvm_vcpu *vcpu);
@@ -1806,7 +1829,11 @@ struct kvm_x86_ops {
 	int (*vm_move_enc_context_from)(struct kvm *kvm, unsigned int source_fd);
 	void (*guest_memory_reclaimed)(struct kvm *kvm);
 
+<<<<<<< HEAD
 	int (*get_msr_feature)(struct kvm_msr_entry *entry);
+=======
+	int (*get_feature_msr)(u32 msr, u64 *data);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	int (*check_emulate_instruction)(struct kvm_vcpu *vcpu, int emul_type,
 					 void *insn, int insn_len);
@@ -2060,6 +2087,11 @@ void kvm_prepare_emulation_failure_exit(struct kvm_vcpu *vcpu);
 
 void kvm_enable_efer_bits(u64);
 bool kvm_valid_efer(struct kvm_vcpu *vcpu, u64 efer);
+<<<<<<< HEAD
+=======
+int kvm_get_msr_with_filter(struct kvm_vcpu *vcpu, u32 index, u64 *data);
+int kvm_set_msr_with_filter(struct kvm_vcpu *vcpu, u32 index, u64 data);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int __kvm_get_msr(struct kvm_vcpu *vcpu, u32 index, u64 *data, bool host_initiated);
 int kvm_get_msr(struct kvm_vcpu *vcpu, u32 index, u64 *data);
 int kvm_set_msr(struct kvm_vcpu *vcpu, u32 index, u64 data);
@@ -2136,7 +2168,19 @@ int kvm_get_nr_pending_nmis(struct kvm_vcpu *vcpu);
 
 void kvm_update_dr7(struct kvm_vcpu *vcpu);
 
+<<<<<<< HEAD
 int kvm_mmu_unprotect_page(struct kvm *kvm, gfn_t gfn);
+=======
+bool __kvm_mmu_unprotect_gfn_and_retry(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+				       bool always_retry);
+
+static inline bool kvm_mmu_unprotect_gfn_and_retry(struct kvm_vcpu *vcpu,
+						   gpa_t cr2_or_gpa)
+{
+	return __kvm_mmu_unprotect_gfn_and_retry(vcpu, cr2_or_gpa, false);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void kvm_mmu_free_roots(struct kvm *kvm, struct kvm_mmu *mmu,
 			ulong roots_to_free);
 void kvm_mmu_free_guest_mode_roots(struct kvm *kvm, struct kvm_mmu *mmu);
@@ -2254,6 +2298,10 @@ int kvm_cpu_has_injectable_intr(struct kvm_vcpu *v);
 int kvm_cpu_has_interrupt(struct kvm_vcpu *vcpu);
 int kvm_cpu_has_extint(struct kvm_vcpu *v);
 int kvm_arch_interrupt_allowed(struct kvm_vcpu *vcpu);
+<<<<<<< HEAD
+=======
+int kvm_cpu_get_extint(struct kvm_vcpu *v);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int kvm_cpu_get_interrupt(struct kvm_vcpu *v);
 void kvm_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event);
 
@@ -2345,7 +2393,12 @@ int memslot_rmap_alloc(struct kvm_memory_slot *slot, unsigned long npages);
 	 KVM_X86_QUIRK_OUT_7E_INC_RIP |		\
 	 KVM_X86_QUIRK_MISC_ENABLE_NO_MWAIT |	\
 	 KVM_X86_QUIRK_FIX_HYPERCALL_INSN |	\
+<<<<<<< HEAD
 	 KVM_X86_QUIRK_MWAIT_NEVER_UD_FAULTS)
+=======
+	 KVM_X86_QUIRK_MWAIT_NEVER_UD_FAULTS |	\
+	 KVM_X86_QUIRK_SLOT_ZAP_ALL)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * KVM previously used a u32 field in kvm_run to indicate the hypercall was

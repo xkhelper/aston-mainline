@@ -11,6 +11,20 @@ maintainers:
 
 allOf:
   - $ref: dma-controller.yaml#
+<<<<<<< HEAD
+=======
+  - if:
+      properties:
+        compatible:
+          contains:
+            const: fsl,imx8qxp-dma-apbh
+    then:
+      required:
+        - power-domains
+    else:
+      properties:
+        power-domains: false
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 properties:
   compatible:
@@ -20,6 +34,10 @@ properties:
               - fsl,imx6q-dma-apbh
               - fsl,imx6sx-dma-apbh
               - fsl,imx7d-dma-apbh
+<<<<<<< HEAD
+=======
+              - fsl,imx8qxp-dma-apbh
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - const: fsl,imx28-dma-apbh
       - enum:
           - fsl,imx23-dma-apbh
@@ -42,6 +60,12 @@ properties:
   dma-channels:
     enum: [4, 8, 16]
 
+<<<<<<< HEAD
+=======
+  power-domains:
+    maxItems: 1
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 required:
   - compatible
   - reg

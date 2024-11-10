@@ -163,8 +163,16 @@ static inline struct metadata_dst *tun_dst_unclone(struct sk_buff *skb)
 	if (!new_md)
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
 	memcpy(&new_md->u.tun_info, &md_dst->u.tun_info,
 	       sizeof(struct ip_tunnel_info) + md_size);
+=======
+	unsafe_memcpy(&new_md->u.tun_info, &md_dst->u.tun_info,
+		      sizeof(struct ip_tunnel_info) + md_size,
+		      /* metadata_dst_alloc() reserves room (md_size bytes) for
+		       * options right after the ip_tunnel_info struct.
+		       */);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_DST_CACHE
 	/* Unclone the dst cache if there is one */
 	if (new_md->u.tun_info.dst_cache.cache) {

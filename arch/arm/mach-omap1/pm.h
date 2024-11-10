@@ -114,6 +114,7 @@ extern void omap1_pm_suspend(void);
 
 extern void omap1510_cpu_suspend(unsigned long, unsigned long);
 extern void omap1610_cpu_suspend(unsigned long, unsigned long);
+<<<<<<< HEAD
 extern void omap1510_idle_loop_suspend(void);
 extern void omap1610_idle_loop_suspend(void);
 
@@ -121,6 +122,11 @@ extern unsigned int omap1510_cpu_suspend_sz;
 extern unsigned int omap1610_cpu_suspend_sz;
 extern unsigned int omap1510_idle_loop_suspend_sz;
 extern unsigned int omap1610_idle_loop_suspend_sz;
+=======
+
+extern unsigned int omap1510_cpu_suspend_sz;
+extern unsigned int omap1610_cpu_suspend_sz;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_OMAP_SERIAL_WAKE
 extern void omap_serial_wake_trigger(int enable);

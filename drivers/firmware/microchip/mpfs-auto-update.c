@@ -76,14 +76,20 @@
 #define AUTO_UPDATE_INFO_SIZE		SZ_1M
 #define AUTO_UPDATE_BITSTREAM_BASE	(AUTO_UPDATE_DIRECTORY_SIZE + AUTO_UPDATE_INFO_SIZE)
 
+<<<<<<< HEAD
 #define AUTO_UPDATE_TIMEOUT_MS		60000
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct mpfs_auto_update_priv {
 	struct mpfs_sys_controller *sys_controller;
 	struct device *dev;
 	struct mtd_info *flash;
 	struct fw_upload *fw_uploader;
+<<<<<<< HEAD
 	struct completion programming_complete;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	size_t size_per_bitstream;
 	bool cancel_request;
 };
@@ -156,6 +162,7 @@ static void mpfs_auto_update_cancel(struct fw_upload *fw_uploader)
 
 static enum fw_upload_err mpfs_auto_update_poll_complete(struct fw_upload *fw_uploader)
 {
+<<<<<<< HEAD
 	struct mpfs_auto_update_priv *priv = fw_uploader->dd_handle;
 	int ret;
 
@@ -169,6 +176,8 @@ static enum fw_upload_err mpfs_auto_update_poll_complete(struct fw_upload *fw_up
 	if (!ret)
 		return FW_UPLOAD_ERR_TIMEOUT;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return FW_UPLOAD_ERR_NONE;
 }
 
@@ -349,6 +358,7 @@ static enum fw_upload_err mpfs_auto_update_write(struct fw_upload *fw_uploader, 
 						 u32 offset, u32 size, u32 *written)
 {
 	struct mpfs_auto_update_priv *priv = fw_uploader->dd_handle;
+<<<<<<< HEAD
 	enum fw_upload_err err = FW_UPLOAD_ERR_NONE;
 	int ret;
 
@@ -376,6 +386,25 @@ out:
 	complete(&priv->programming_complete);
 
 	return err;
+=======
+	int ret;
+
+	ret = mpfs_auto_update_write_bitstream(fw_uploader, data, offset, size, written);
+	if (ret)
+		return FW_UPLOAD_ERR_RW_ERROR;
+
+	if (priv->cancel_request)
+		return FW_UPLOAD_ERR_CANCELED;
+
+	if (mpfs_auto_update_is_bitstream_info(data, size))
+		return FW_UPLOAD_ERR_NONE;
+
+	ret = mpfs_auto_update_verify_image(fw_uploader);
+	if (ret)
+		return FW_UPLOAD_ERR_FW_INVALID;
+
+	return FW_UPLOAD_ERR_NONE;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct fw_upload_ops mpfs_auto_update_ops = {
@@ -461,8 +490,11 @@ static int mpfs_auto_update_probe(struct platform_device *pdev)
 		return dev_err_probe(dev, ret,
 				     "The current bitstream does not support auto-update\n");
 
+<<<<<<< HEAD
 	init_completion(&priv->programming_complete);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fw_uploader = firmware_upload_register(THIS_MODULE, dev, "mpfs-auto-update",
 					       &mpfs_auto_update_ops, priv);
 	if (IS_ERR(fw_uploader))

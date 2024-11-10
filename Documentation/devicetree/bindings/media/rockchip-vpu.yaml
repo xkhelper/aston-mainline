@@ -26,11 +26,23 @@ properties:
           - rockchip,rk3568-vpu
           - rockchip,rk3588-av1-vpu
       - items:
+<<<<<<< HEAD
           - const: rockchip,rk3188-vpu
+=======
+          - enum:
+              - rockchip,rk3128-vpu
+              - rockchip,rk3188-vpu
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - const: rockchip,rk3066-vpu
       - items:
           - const: rockchip,rk3228-vpu
           - const: rockchip,rk3399-vpu
+<<<<<<< HEAD
+=======
+      - items:
+          - const: rockchip,rk3588-vpu121
+          - const: rockchip,rk3568-vpu
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   reg:
     maxItems: 1

@@ -89,7 +89,10 @@ __i915_gem_object_unset_pages(struct drm_i915_gem_object *obj);
  * @handle: userspace handle
  *
  * Returns:
+<<<<<<< HEAD
  *
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * A pointer to the object named by the handle if such exists on @filp, NULL
  * otherwise. This object is only valid whilst under the RCU read lock, and
  * note carefully the object may be in the process of being destroyed.

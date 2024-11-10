@@ -151,14 +151,21 @@ static int setup_filters(struct perf_kwork *kwork)
 			bpf_map_update_elem(fd, &cpu.cpu, &val, BPF_ANY);
 		}
 		perf_cpu_map__put(map);
+<<<<<<< HEAD
 
 		skel->bss->has_cpu_filter = 1;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
 }
 
+<<<<<<< HEAD
 int perf_kwork__top_prepare_bpf(struct perf_kwork *kwork __maybe_unused)
+=======
+int perf_kwork__top_prepare_bpf(struct perf_kwork *kwork)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct bpf_program *prog;
 	struct kwork_class *class;
@@ -193,6 +200,12 @@ int perf_kwork__top_prepare_bpf(struct perf_kwork *kwork __maybe_unused)
 			class_bpf->load_prepare();
 	}
 
+<<<<<<< HEAD
+=======
+	if (kwork->cpu_list)
+		skel->rodata->has_cpu_filter = 1;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (kwork_top_bpf__load(skel)) {
 		pr_debug("Failed to load kwork top skeleton\n");
 		goto out;

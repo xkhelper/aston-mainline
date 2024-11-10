@@ -27,6 +27,10 @@ properties:
     items:
       - enum:
           - qcom,qdu1000-pdc
+<<<<<<< HEAD
+=======
+          - qcom,sa8255p-pdc
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - qcom,sa8775p-pdc
           - qcom,sc7180-pdc
           - qcom,sc7280-pdc

@@ -16,7 +16,11 @@
 #include <linux/mod_devicetable.h>
 #include <linux/spi/spi.h>
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* ADRF6780 Register Map */
 #define ADRF6780_REG_CONTROL			0x00

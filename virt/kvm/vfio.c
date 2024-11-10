@@ -194,7 +194,11 @@ static int kvm_vfio_file_del(struct kvm_device *dev, unsigned int fd)
 	int ret;
 
 	f = fdget(fd);
+<<<<<<< HEAD
 	if (!f.file)
+=======
+	if (!fd_file(f))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBADF;
 
 	ret = -ENOENT;
@@ -202,7 +206,11 @@ static int kvm_vfio_file_del(struct kvm_device *dev, unsigned int fd)
 	mutex_lock(&kv->lock);
 
 	list_for_each_entry(kvf, &kv->file_list, node) {
+<<<<<<< HEAD
 		if (kvf->file != f.file)
+=======
+		if (kvf->file != fd_file(f))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 
 		list_del(&kvf->node);
@@ -240,7 +248,11 @@ static int kvm_vfio_file_set_spapr_tce(struct kvm_device *dev,
 		return -EFAULT;
 
 	f = fdget(param.groupfd);
+<<<<<<< HEAD
 	if (!f.file)
+=======
+	if (!fd_file(f))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBADF;
 
 	ret = -ENOENT;
@@ -248,7 +260,11 @@ static int kvm_vfio_file_set_spapr_tce(struct kvm_device *dev,
 	mutex_lock(&kv->lock);
 
 	list_for_each_entry(kvf, &kv->file_list, node) {
+<<<<<<< HEAD
 		if (kvf->file != f.file)
+=======
+		if (kvf->file != fd_file(f))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 
 		if (!kvf->iommu_group) {

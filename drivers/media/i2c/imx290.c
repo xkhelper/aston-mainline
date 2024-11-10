@@ -18,7 +18,11 @@
 #include <linux/regmap.h>
 #include <linux/regulator/consumer.h>
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <media/media-entity.h>
 #include <media/v4l2-cci.h>

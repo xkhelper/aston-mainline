@@ -1052,6 +1052,10 @@ struct ravb_hw_info {
 	netdev_features_t net_features;
 	int stats_len;
 	u32 tccr_mask;
+<<<<<<< HEAD
+=======
+	u32 tx_max_frame_size;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 rx_max_frame_size;
 	u32 rx_buffer_size;
 	u32 rx_desc_size;

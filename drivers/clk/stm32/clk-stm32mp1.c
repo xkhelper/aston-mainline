@@ -2354,7 +2354,11 @@ static struct platform_driver stm32mp1_rcc_clocks_driver = {
 		.of_match_table = stm32mp1_match_data,
 	},
 	.probe = stm32mp1_rcc_clocks_probe,
+<<<<<<< HEAD
 	.remove_new = stm32mp1_rcc_clocks_remove,
+=======
+	.remove = stm32mp1_rcc_clocks_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int __init stm32mp1_clocks_init(void)

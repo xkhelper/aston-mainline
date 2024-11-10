@@ -611,6 +611,10 @@ void iwl_mvm_rx_chub_update_mcc(struct iwl_mvm *mvm,
 	char mcc[3];
 	struct ieee80211_regdomain *regd;
 	int wgds_tbl_idx;
+<<<<<<< HEAD
+=======
+	bool changed = false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	lockdep_assert_held(&mvm->mutex);
 
@@ -630,10 +634,22 @@ void iwl_mvm_rx_chub_update_mcc(struct iwl_mvm *mvm,
 	IWL_DEBUG_LAR(mvm,
 		      "RX: received chub update mcc cmd (mcc '%s' src %d)\n",
 		      mcc, src);
+<<<<<<< HEAD
 	regd = iwl_mvm_get_regdomain(mvm->hw->wiphy, mcc, src, NULL);
 	if (IS_ERR_OR_NULL(regd))
 		return;
 
+=======
+	regd = iwl_mvm_get_regdomain(mvm->hw->wiphy, mcc, src, &changed);
+	if (IS_ERR_OR_NULL(regd))
+		return;
+
+	if (!changed) {
+		IWL_DEBUG_LAR(mvm, "RX: No change in the regulatory data\n");
+		goto out;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	wgds_tbl_idx = iwl_mvm_get_sar_geo_profile(mvm);
 	if (wgds_tbl_idx < 1)
 		IWL_DEBUG_INFO(mvm,
@@ -644,5 +660,10 @@ void iwl_mvm_rx_chub_update_mcc(struct iwl_mvm *mvm,
 			       wgds_tbl_idx);
 
 	regulatory_set_wiphy_regd(mvm->hw->wiphy, regd);
+<<<<<<< HEAD
+=======
+
+out:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(regd);
 }

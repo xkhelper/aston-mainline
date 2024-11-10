@@ -5,10 +5,18 @@
 
 #include <drm/drm_managed.h>
 
+<<<<<<< HEAD
 #include "regs/xe_sriov_regs.h"
 
 #include "xe_gt_sriov_pf.h"
 #include "xe_gt_sriov_pf_config.h"
+=======
+#include "regs/xe_regs.h"
+
+#include "xe_gt_sriov_pf.h"
+#include "xe_gt_sriov_pf_config.h"
+#include "xe_gt_sriov_pf_control.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "xe_gt_sriov_pf_helpers.h"
 #include "xe_gt_sriov_pf_service.h"
 #include "xe_mmio.h"
@@ -57,6 +65,13 @@ int xe_gt_sriov_pf_init_early(struct xe_gt *gt)
 	if (err)
 		return err;
 
+<<<<<<< HEAD
+=======
+	err = xe_gt_sriov_pf_control_init(gt);
+	if (err)
+		return err;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -93,4 +108,8 @@ void xe_gt_sriov_pf_init_hw(struct xe_gt *gt)
 void xe_gt_sriov_pf_restart(struct xe_gt *gt)
 {
 	xe_gt_sriov_pf_config_restart(gt);
+<<<<<<< HEAD
+=======
+	xe_gt_sriov_pf_control_restart(gt);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

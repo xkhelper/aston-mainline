@@ -18,12 +18,17 @@
 #define __RADIOTAP_H
 
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * struct ieee80211_radiotap_header - base radiotap header
  */
 struct ieee80211_radiotap_header {
+<<<<<<< HEAD
 	/**
 	 * @it_version: radiotap version, always 0
 	 */
@@ -43,6 +48,29 @@ struct ieee80211_radiotap_header {
 	 * @it_present: (first) present word
 	 */
 	__le32 it_present;
+=======
+	__struct_group(ieee80211_radiotap_header_fixed, hdr, __packed,
+		/**
+		 * @it_version: radiotap version, always 0
+		 */
+		uint8_t it_version;
+
+		/**
+		 * @it_pad: padding (or alignment)
+		 */
+		uint8_t it_pad;
+
+		/**
+		 * @it_len: overall radiotap header length
+		 */
+		__le16 it_len;
+
+		/**
+		 * @it_present: (first) present word
+		 */
+		__le32 it_present;
+	);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/**
 	 * @it_optional: all remaining presence bitmaps
@@ -50,6 +78,12 @@ struct ieee80211_radiotap_header {
 	__le32 it_optional[];
 } __packed;
 
+<<<<<<< HEAD
+=======
+static_assert(offsetof(struct ieee80211_radiotap_header, it_optional) == sizeof(struct ieee80211_radiotap_header_fixed),
+	      "struct member likely outside of __struct_group()");
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* version is always 0 */
 #define PKTHDR_RADIOTAP_VERSION	0
 

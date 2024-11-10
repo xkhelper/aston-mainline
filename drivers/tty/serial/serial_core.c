@@ -407,6 +407,7 @@ static void uart_shutdown(struct tty_struct *tty, struct uart_state *state)
 		/*
 		 * Turn off DTR and RTS early.
 		 */
+<<<<<<< HEAD
 		if (uport && uart_console(uport) && tty) {
 			uport->cons->cflag = tty->termios.c_cflag;
 			uport->cons->ispeed = tty->termios.c_ispeed;
@@ -415,6 +416,18 @@ static void uart_shutdown(struct tty_struct *tty, struct uart_state *state)
 
 		if (!tty || C_HUPCL(tty))
 			uart_port_dtr_rts(uport, false);
+=======
+		if (uport) {
+			if (uart_console(uport) && tty) {
+				uport->cons->cflag = tty->termios.c_cflag;
+				uport->cons->ispeed = tty->termios.c_ispeed;
+				uport->cons->ospeed = tty->termios.c_ospeed;
+			}
+
+			if (!tty || C_HUPCL(tty))
+				uart_port_dtr_rts(uport, false);
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		uart_port_shutdown(port);
 	}
@@ -1102,6 +1115,7 @@ static int uart_tiocmget(struct tty_struct *tty)
 	struct uart_state *state = tty->driver_data;
 	struct tty_port *port = &state->port;
 	struct uart_port *uport;
+<<<<<<< HEAD
 	int result = -EIO;
 
 	mutex_lock(&port->mutex);
@@ -1117,6 +1131,21 @@ static int uart_tiocmget(struct tty_struct *tty)
 	}
 out:
 	mutex_unlock(&port->mutex);
+=======
+	int result;
+
+	guard(mutex)(&port->mutex);
+
+	uport = uart_port_check(state);
+	if (!uport || tty_io_error(tty))
+		return -EIO;
+
+	uart_port_lock_irq(uport);
+	result = uport->mctrl;
+	result |= uport->ops->get_mctrl(uport);
+	uart_port_unlock_irq(uport);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return result;
 }
 
@@ -1126,6 +1155,7 @@ uart_tiocmset(struct tty_struct *tty, unsigned int set, unsigned int clear)
 	struct uart_state *state = tty->driver_data;
 	struct tty_port *port = &state->port;
 	struct uart_port *uport;
+<<<<<<< HEAD
 	int ret = -EIO;
 
 	mutex_lock(&port->mutex);
@@ -1140,6 +1170,18 @@ uart_tiocmset(struct tty_struct *tty, unsigned int set, unsigned int clear)
 out:
 	mutex_unlock(&port->mutex);
 	return ret;
+=======
+
+	guard(mutex)(&port->mutex);
+
+	uport = uart_port_check(state);
+	if (!uport || tty_io_error(tty))
+		return -EIO;
+
+	uart_update_mctrl(uport, set, clear);
+
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int uart_break_ctl(struct tty_struct *tty, int break_state)
@@ -1147,6 +1189,7 @@ static int uart_break_ctl(struct tty_struct *tty, int break_state)
 	struct uart_state *state = tty->driver_data;
 	struct tty_port *port = &state->port;
 	struct uart_port *uport;
+<<<<<<< HEAD
 	int ret = -EIO;
 
 	mutex_lock(&port->mutex);
@@ -1160,6 +1203,19 @@ static int uart_break_ctl(struct tty_struct *tty, int break_state)
 out:
 	mutex_unlock(&port->mutex);
 	return ret;
+=======
+
+	guard(mutex)(&port->mutex);
+
+	uport = uart_port_check(state);
+	if (!uport)
+		return -EIO;
+
+	if (uport->type != PORT_UNKNOWN && uport->ops->break_ctl)
+		uport->ops->break_ctl(uport, break_state);
+
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int uart_do_autoconfig(struct tty_struct *tty, struct uart_state *state)
@@ -1176,6 +1232,7 @@ static int uart_do_autoconfig(struct tty_struct *tty, struct uart_state *state)
 	 * changing, and hence any extra opens of the port while
 	 * we're auto-configuring.
 	 */
+<<<<<<< HEAD
 	if (mutex_lock_interruptible(&port->mutex))
 		return -ERESTARTSYS;
 
@@ -1187,6 +1244,16 @@ static int uart_do_autoconfig(struct tty_struct *tty, struct uart_state *state)
 
 	ret = -EBUSY;
 	if (tty_port_users(port) == 1) {
+=======
+	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &port->mutex) {
+		uport = uart_port_check(state);
+		if (!uport)
+			return -EIO;
+
+		if (tty_port_users(port) != 1)
+			return -EBUSY;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		uart_shutdown(tty, state);
 
 		/*
@@ -1207,6 +1274,7 @@ static int uart_do_autoconfig(struct tty_struct *tty, struct uart_state *state)
 		uport->ops->config_port(uport, flags);
 
 		ret = uart_startup(tty, state, true);
+<<<<<<< HEAD
 		if (ret == 0)
 			tty_port_set_initialized(port, true);
 		if (ret > 0)
@@ -1215,6 +1283,17 @@ static int uart_do_autoconfig(struct tty_struct *tty, struct uart_state *state)
 out:
 	mutex_unlock(&port->mutex);
 	return ret;
+=======
+		if (ret < 0)
+			return ret;
+		if (ret > 0)
+			return 0;
+
+		tty_port_set_initialized(port, true);
+	}
+
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void uart_enable_ms(struct uart_port *uport)
@@ -1709,10 +1788,18 @@ static void uart_set_termios(struct tty_struct *tty,
 	unsigned int iflag_mask = IGNBRK|BRKINT|IGNPAR|PARMRK|INPCK;
 	bool sw_changed = false;
 
+<<<<<<< HEAD
 	mutex_lock(&state->port.mutex);
 	uport = uart_port_check(state);
 	if (!uport)
 		goto out;
+=======
+	guard(mutex)(&state->port.mutex);
+
+	uport = uart_port_check(state);
+	if (!uport)
+		return;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Drivers doing software flow control also need to know
@@ -1735,9 +1822,14 @@ static void uart_set_termios(struct tty_struct *tty,
 	    tty->termios.c_ospeed == old_termios->c_ospeed &&
 	    tty->termios.c_ispeed == old_termios->c_ispeed &&
 	    ((tty->termios.c_iflag ^ old_termios->c_iflag) & iflag_mask) == 0 &&
+<<<<<<< HEAD
 	    !sw_changed) {
 		goto out;
 	}
+=======
+	    !sw_changed)
+		return;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	uart_change_line_settings(tty, state, old_termios);
 	/* reload cflag from termios; port driver may have overridden flags */
@@ -1754,8 +1846,11 @@ static void uart_set_termios(struct tty_struct *tty,
 			mask |= TIOCM_RTS;
 		uart_set_mctrl(uport, mask);
 	}
+<<<<<<< HEAD
 out:
 	mutex_unlock(&state->port.mutex);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -2049,10 +2144,18 @@ static void uart_line_info(struct seq_file *m, struct uart_driver *drv, int i)
 	unsigned int status;
 	int mmio;
 
+<<<<<<< HEAD
 	mutex_lock(&port->mutex);
 	uport = uart_port_check(state);
 	if (!uport)
 		goto out;
+=======
+	guard(mutex)(&port->mutex);
+
+	uport = uart_port_check(state);
+	if (!uport)
+		return;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mmio = uport->iotype >= UPIO_MEM;
 	seq_printf(m, "%d: uart:%s %s%08llX irq:%d",
@@ -2064,7 +2167,11 @@ static void uart_line_info(struct seq_file *m, struct uart_driver *drv, int i)
 
 	if (uport->type == PORT_UNKNOWN) {
 		seq_putc(m, '\n');
+<<<<<<< HEAD
 		goto out;
+=======
+		return;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (capable(CAP_SYS_ADMIN)) {
@@ -2115,8 +2222,11 @@ static void uart_line_info(struct seq_file *m, struct uart_driver *drv, int i)
 	seq_putc(m, '\n');
 #undef STATBIT
 #undef INFOBIT
+<<<<<<< HEAD
 out:
 	mutex_unlock(&port->mutex);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int uart_proc_show(struct seq_file *m, void *v)
@@ -2393,13 +2503,20 @@ int uart_suspend_port(struct uart_driver *drv, struct uart_port *uport)
 	struct device *tty_dev;
 	struct uart_match match = {uport, drv};
 
+<<<<<<< HEAD
 	mutex_lock(&port->mutex);
+=======
+	guard(mutex)(&port->mutex);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	tty_dev = device_find_child(&uport->port_dev->dev, &match, serial_match_port);
 	if (tty_dev && device_may_wakeup(tty_dev)) {
 		enable_irq_wake(uport->irq);
 		put_device(tty_dev);
+<<<<<<< HEAD
 		mutex_unlock(&port->mutex);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 	put_device(tty_dev);
@@ -2417,7 +2534,11 @@ int uart_suspend_port(struct uart_driver *drv, struct uart_port *uport)
 			uart_port_unlock_irq(uport);
 		}
 		device_set_awake_path(uport->dev);
+<<<<<<< HEAD
 		goto unlock;
+=======
+		return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	uport->suspended = 1;
@@ -2460,8 +2581,11 @@ int uart_suspend_port(struct uart_driver *drv, struct uart_port *uport)
 		console_stop(uport->cons);
 
 	uart_change_pm(state, UART_PM_STATE_OFF);
+<<<<<<< HEAD
 unlock:
 	mutex_unlock(&port->mutex);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -2475,14 +2599,21 @@ int uart_resume_port(struct uart_driver *drv, struct uart_port *uport)
 	struct uart_match match = {uport, drv};
 	struct ktermios termios;
 
+<<<<<<< HEAD
 	mutex_lock(&port->mutex);
+=======
+	guard(mutex)(&port->mutex);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	tty_dev = device_find_child(&uport->port_dev->dev, &match, serial_match_port);
 	if (!uport->suspended && device_may_wakeup(tty_dev)) {
 		if (irqd_is_wakeup_set(irq_get_irq_data((uport->irq))))
 			disable_irq_wake(uport->irq);
 		put_device(tty_dev);
+<<<<<<< HEAD
 		mutex_unlock(&port->mutex);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 	put_device(tty_dev);
@@ -2555,8 +2686,11 @@ int uart_resume_port(struct uart_driver *drv, struct uart_port *uport)
 		tty_port_set_suspended(port, false);
 	}
 
+<<<<<<< HEAD
 	mutex_unlock(&port->mutex);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 EXPORT_SYMBOL(uart_resume_port);
@@ -2696,6 +2830,7 @@ static int uart_poll_init(struct tty_driver *driver, int line, char *options)
 	int ret = 0;
 
 	tport = &state->port;
+<<<<<<< HEAD
 	mutex_lock(&tport->mutex);
 
 	port = uart_port_check(state);
@@ -2704,6 +2839,15 @@ static int uart_poll_init(struct tty_driver *driver, int line, char *options)
 		ret = -1;
 		goto out;
 	}
+=======
+
+	guard(mutex)(&tport->mutex);
+
+	port = uart_port_check(state);
+	if (!port || port->type == PORT_UNKNOWN ||
+	    !(port->ops->poll_get_char && port->ops->poll_put_char))
+		return -1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pm_state = state->pm_state;
 	uart_change_pm(state, UART_PM_STATE_ON);
@@ -2723,10 +2867,17 @@ static int uart_poll_init(struct tty_driver *driver, int line, char *options)
 		ret = uart_set_options(port, NULL, baud, parity, bits, flow);
 		console_list_unlock();
 	}
+<<<<<<< HEAD
 out:
 	if (ret)
 		uart_change_pm(state, pm_state);
 	mutex_unlock(&tport->mutex);
+=======
+
+	if (ret)
+		uart_change_pm(state, pm_state);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -3176,8 +3327,20 @@ static int serial_core_add_one_port(struct uart_driver *drv, struct uart_port *u
 	state->uart_port = uport;
 	uport->state = state;
 
+<<<<<<< HEAD
 	state->pm_state = UART_PM_STATE_UNDEFINED;
 	uport->cons = drv->cons;
+=======
+	/*
+	 * If this port is in use as a console then the spinlock is already
+	 * initialised.
+	 */
+	if (!uart_console_registered(uport))
+		uart_port_spin_lock_init(uport);
+
+	state->pm_state = UART_PM_STATE_UNDEFINED;
+	uart_port_set_cons(uport, drv->cons);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	uport->minor = drv->tty_driver->minor_start + uport->line;
 	uport->name = kasprintf(GFP_KERNEL, "%s%d", drv->dev_name,
 				drv->tty_driver->name_base + uport->line);
@@ -3186,6 +3349,7 @@ static int serial_core_add_one_port(struct uart_driver *drv, struct uart_port *u
 		goto out;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * If this port is in use as a console then the spinlock is already
 	 * initialised.
@@ -3193,6 +3357,8 @@ static int serial_core_add_one_port(struct uart_driver *drv, struct uart_port *u
 	if (!uart_console_registered(uport))
 		uart_port_spin_lock_init(uport);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (uport->cons && uport->dev)
 		of_console_check(uport->dev->of_node, uport->cons->name, uport->line);
 

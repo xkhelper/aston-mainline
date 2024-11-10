@@ -146,6 +146,10 @@ struct rand_data {
 #define JENT_ENTROPY_SAFETY_FACTOR	64
 
 #include <linux/fips.h>
+<<<<<<< HEAD
+=======
+#include <linux/minmax.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "jitterentropy.h"
 
 /***************************************************************************
@@ -638,10 +642,14 @@ int jent_read_entropy(struct rand_data *ec, unsigned char *data,
 			return -2;
 		}
 
+<<<<<<< HEAD
 		if ((DATA_SIZE_BITS / 8) < len)
 			tocopy = (DATA_SIZE_BITS / 8);
 		else
 			tocopy = len;
+=======
+		tocopy = min(DATA_SIZE_BITS / 8, len);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (jent_read_random_block(ec->hash_state, p, tocopy))
 			return -1;
 

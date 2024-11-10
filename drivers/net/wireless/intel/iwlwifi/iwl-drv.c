@@ -1205,7 +1205,11 @@ static int iwl_parse_tlv_firmware(struct iwl_drv *drv,
 			if (tlv_len != sizeof(u32))
 				goto invalid_tlv_len;
 			if (le32_to_cpup((const __le32 *)tlv_data) >
+<<<<<<< HEAD
 			    IWL_MVM_STATION_COUNT_MAX) {
+=======
+			    IWL_STATION_COUNT_MAX) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				IWL_ERR(drv,
 					"%d is an invalid number of station\n",
 					le32_to_cpup((const __le32 *)tlv_data));
@@ -1413,10 +1417,15 @@ _iwl_op_mode_start(struct iwl_drv *drv, struct iwlwifi_opmode_table *op)
 	const struct iwl_op_mode_ops *ops = op->ops;
 	struct dentry *dbgfs_dir = NULL;
 	struct iwl_op_mode *op_mode = NULL;
+<<<<<<< HEAD
+=======
+	int retry, max_retry = !!iwlwifi_mod_params.fw_restart * IWL_MAX_INIT_RETRY;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* also protects start/stop from racing against each other */
 	lockdep_assert_held(&iwlwifi_opmode_table_mtx);
 
+<<<<<<< HEAD
 #ifdef CONFIG_IWLWIFI_DEBUGFS
 	drv->dbgfs_op_mode = debugfs_create_dir(op->name,
 						drv->dbgfs_drv);
@@ -1433,6 +1442,33 @@ _iwl_op_mode_start(struct iwl_drv *drv, struct iwlwifi_opmode_table *op)
 	drv->dbgfs_op_mode = NULL;
 #endif
 
+=======
+	for (retry = 0; retry <= max_retry; retry++) {
+
+#ifdef CONFIG_IWLWIFI_DEBUGFS
+		drv->dbgfs_op_mode = debugfs_create_dir(op->name,
+							drv->dbgfs_drv);
+		dbgfs_dir = drv->dbgfs_op_mode;
+#endif
+
+		op_mode = ops->start(drv->trans, drv->trans->cfg,
+				     &drv->fw, dbgfs_dir);
+
+		if (op_mode)
+			return op_mode;
+
+		if (test_bit(STATUS_TRANS_DEAD, &drv->trans->status))
+			break;
+
+		IWL_ERR(drv, "retry init count %d\n", retry);
+
+#ifdef CONFIG_IWLWIFI_DEBUGFS
+		debugfs_remove_recursive(drv->dbgfs_op_mode);
+		drv->dbgfs_op_mode = NULL;
+#endif
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return NULL;
 }
 
@@ -1479,7 +1515,11 @@ static void iwl_req_fw_callback(const struct firmware *ucode_raw, void *context)
 	fw->ucode_capa.standard_phy_calibration_size =
 			IWL_DEFAULT_STANDARD_PHY_CALIBRATE_TBL_SIZE;
 	fw->ucode_capa.n_scan_channels = IWL_DEFAULT_SCAN_CHANNELS;
+<<<<<<< HEAD
 	fw->ucode_capa.num_stations = IWL_MVM_STATION_COUNT_MAX;
+=======
+	fw->ucode_capa.num_stations = IWL_STATION_COUNT_MAX;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fw->ucode_capa.num_beacons = 1;
 	/* dump all fw memory areas by default */
 	fw->dbg.dump_mask = 0xffffffff;

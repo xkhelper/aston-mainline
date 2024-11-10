@@ -88,6 +88,11 @@ struct infrared {
 	u32			ir_config;
 };
 
+<<<<<<< HEAD
+=======
+#define MAX_CI_SLOTS	2
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* place to store all the necessary device information */
 struct av7110 {
 	/* devices */
@@ -163,7 +168,11 @@ struct av7110 {
 
 	/* CA */
 
+<<<<<<< HEAD
 	struct ca_slot_info	ci_slot[2];
+=======
+	struct ca_slot_info	ci_slot[MAX_CI_SLOTS];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	enum av7110_video_mode	vidmode;
 	struct dmxdev		dmxdev;

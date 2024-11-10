@@ -81,6 +81,10 @@ config CLK_IMX8MP
 	tristate "IMX8MP CCM Clock Driver"
 	depends on ARCH_MXC || COMPILE_TEST
 	select MXC_CLK
+<<<<<<< HEAD
+=======
+	select AUXILIARY_BUS if RESET_CONTROLLER
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	    Build the driver for i.MX8MP CCM Clock Driver
 

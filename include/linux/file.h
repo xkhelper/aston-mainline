@@ -11,6 +11,10 @@
 #include <linux/posix_types.h>
 #include <linux/errno.h>
 #include <linux/cleanup.h>
+<<<<<<< HEAD
+=======
+#include <linux/err.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct file;
 
@@ -35,22 +39,56 @@ static inline void fput_light(struct file *file, int fput_needed)
 		fput(file);
 }
 
+<<<<<<< HEAD
 struct fd {
 	struct file *file;
 	unsigned int flags;
+=======
+/* either a reference to struct file + flags
+ * (cloned vs. borrowed, pos locked), with
+ * flags stored in lower bits of value,
+ * or empty (represented by 0).
+ */
+struct fd {
+	unsigned long word;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 #define FDPUT_FPUT       1
 #define FDPUT_POS_UNLOCK 2
 
+<<<<<<< HEAD
 static inline void fdput(struct fd fd)
 {
 	if (fd.flags & FDPUT_FPUT)
 		fput(fd.file);
+=======
+#define fd_file(f) ((struct file *)((f).word & ~(FDPUT_FPUT|FDPUT_POS_UNLOCK)))
+static inline bool fd_empty(struct fd f)
+{
+	return unlikely(!f.word);
+}
+
+#define EMPTY_FD (struct fd){0}
+static inline struct fd BORROWED_FD(struct file *f)
+{
+	return (struct fd){(unsigned long)f};
+}
+static inline struct fd CLONED_FD(struct file *f)
+{
+	return (struct fd){(unsigned long)f | FDPUT_FPUT};
+}
+
+static inline void fdput(struct fd fd)
+{
+	if (fd.word & FDPUT_FPUT)
+		fput(fd_file(fd));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 extern struct file *fget(unsigned int fd);
 extern struct file *fget_raw(unsigned int fd);
 extern struct file *fget_task(struct task_struct *task, unsigned int fd);
+<<<<<<< HEAD
 extern unsigned long __fdget(unsigned int fd);
 extern unsigned long __fdget_raw(unsigned int fd);
 extern unsigned long __fdget_pos(unsigned int fd);
@@ -80,6 +118,18 @@ static inline void fdput_pos(struct fd f)
 {
 	if (f.flags & FDPUT_POS_UNLOCK)
 		__f_unlock_pos(f.file);
+=======
+extern void __f_unlock_pos(struct file *);
+
+struct fd fdget(unsigned int fd);
+struct fd fdget_raw(unsigned int fd);
+struct fd fdget_pos(unsigned int fd);
+
+static inline void fdput_pos(struct fd f)
+{
+	if (f.word & FDPUT_POS_UNLOCK)
+		__f_unlock_pos(fd_file(f));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fdput(f);
 }
 
@@ -96,6 +146,10 @@ extern void put_unused_fd(unsigned int fd);
 
 DEFINE_CLASS(get_unused_fd, int, if (_T >= 0) put_unused_fd(_T),
 	     get_unused_fd_flags(flags), unsigned flags)
+<<<<<<< HEAD
+=======
+DEFINE_FREE(fput, struct file *, if (!IS_ERR_OR_NULL(_T)) fput(_T))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * take_fd() will take care to set @fd to -EBADF ensuring that

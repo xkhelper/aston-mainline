@@ -4,6 +4,7 @@ Building External Modules
 
 This document describes how to build an out-of-tree kernel module.
 
+<<<<<<< HEAD
 .. Table of Contents
 
 	=== 1 Introduction
@@ -39,6 +40,14 @@ This document describes how to build an out-of-tree kernel module.
 "kbuild" is the build system used by the Linux kernel. Modules must use
 kbuild to stay compatible with changes in the build infrastructure and
 to pick up the right flags to "gcc." Functionality for building modules
+=======
+Introduction
+============
+
+"kbuild" is the build system used by the Linux kernel. Modules must use
+kbuild to stay compatible with changes in the build infrastructure and
+to pick up the right flags to the compiler. Functionality for building modules
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 both in-tree and out-of-tree is provided. The method for building
 either is similar, and all modules are initially developed and built
 out-of-tree.
@@ -48,11 +57,19 @@ in building out-of-tree (or "external") modules. The author of an
 external module should supply a makefile that hides most of the
 complexity, so one only has to type "make" to build the module. This is
 easily accomplished, and a complete example will be presented in
+<<<<<<< HEAD
 section 3.
 
 
 2. How to Build External Modules
 ================================
+=======
+section `Creating a Kbuild File for an External Module`_.
+
+
+How to Build External Modules
+=============================
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 To build external modules, you must have a prebuilt kernel available
 that contains the configuration and header files used in the build.
@@ -69,12 +86,21 @@ NOTE: "modules_prepare" will not build Module.symvers even if
 CONFIG_MODVERSIONS is set; therefore, a full kernel build needs to be
 executed to make module versioning work.
 
+<<<<<<< HEAD
 2.1 Command Syntax
 ==================
 
 	The command to build an external module is::
 
 		$ make -C <path_to_kernel_src> M=$PWD
+=======
+Command Syntax
+--------------
+
+	The command to build an external module is::
+
+		$ make -C <path_to_kernel_dir> M=$PWD
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	The kbuild system knows that an external module is being built
 	due to the "M=<dir>" option given in the command.
@@ -88,15 +114,29 @@ executed to make module versioning work.
 
 		$ make -C /lib/modules/`uname -r`/build M=$PWD modules_install
 
+<<<<<<< HEAD
 2.2 Options
 ===========
 
 	($KDIR refers to the path of the kernel source directory.)
+=======
+Options
+-------
+
+	($KDIR refers to the path of the kernel source directory, or the path
+	of the kernel output directory if the kernel was built in a separate
+	build directory.)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	make -C $KDIR M=$PWD
 
 	-C $KDIR
+<<<<<<< HEAD
 		The directory where the kernel source is located.
+=======
+		The directory that contains the kernel and relevant build
+		artifacts used for building an external module.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"make" will actually change to the specified directory
 		when executing and will change back when finished.
 
@@ -106,8 +146,13 @@ executed to make module versioning work.
 		directory where the external module (kbuild file) is
 		located.
 
+<<<<<<< HEAD
 2.3 Targets
 ===========
+=======
+Targets
+-------
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	When building an external module, only a subset of the "make"
 	targets are available.
@@ -129,7 +174,12 @@ executed to make module versioning work.
 	modules_install
 		Install the external module(s). The default location is
 		/lib/modules/<kernel_release>/updates/, but a prefix may
+<<<<<<< HEAD
 		be added with INSTALL_MOD_PATH (discussed in section 5).
+=======
+		be added with INSTALL_MOD_PATH (discussed in section
+		`Module Installation`_).
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	clean
 		Remove all generated files in the module directory only.
@@ -137,8 +187,13 @@ executed to make module versioning work.
 	help
 		List the available targets for external modules.
 
+<<<<<<< HEAD
 2.4 Building Separate Files
 ===========================
+=======
+Building Separate Files
+-----------------------
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	It is possible to build single files that are part of a module.
 	This works equally well for the kernel, a module, and even for
@@ -152,8 +207,13 @@ executed to make module versioning work.
 		make -C $KDIR M=$PWD ./
 
 
+<<<<<<< HEAD
 3. Creating a Kbuild File for an External Module
 ================================================
+=======
+Creating a Kbuild File for an External Module
+=============================================
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 In the last section we saw the command to build a module for the
 running kernel. The module is not actually built, however, because a
@@ -180,10 +240,16 @@ module 8123.ko, which is built from the following files::
 	8123_if.c
 	8123_if.h
 	8123_pci.c
+<<<<<<< HEAD
 	8123_bin.o_shipped	<= Binary blob
 
 3.1 Shared Makefile
 -------------------
+=======
+
+Shared Makefile
+---------------
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	An external module always includes a wrapper makefile that
 	supports building the module using "make" with no arguments.
@@ -198,7 +264,11 @@ module 8123.ko, which is built from the following files::
 		ifneq ($(KERNELRELEASE),)
 		# kbuild part of makefile
 		obj-m  := 8123.o
+<<<<<<< HEAD
 		8123-y := 8123_if.o 8123_pci.o 8123_bin.o
+=======
+		8123-y := 8123_if.o 8123_pci.o
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		else
 		# normal makefile
@@ -207,10 +277,13 @@ module 8123.ko, which is built from the following files::
 		default:
 			$(MAKE) -C $(KDIR) M=$$PWD
 
+<<<<<<< HEAD
 		# Module specific targets
 		genbin:
 			echo "X" > 8123_bin.o_shipped
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		endif
 
 	The check for KERNELRELEASE is used to separate the two parts
@@ -221,6 +294,7 @@ module 8123.ko, which is built from the following files::
 	line; the second pass is by the kbuild system, which is
 	initiated by the parameterized "make" in the default target.
 
+<<<<<<< HEAD
 3.2 Separate Kbuild File and Makefile
 -------------------------------------
 
@@ -228,12 +302,24 @@ module 8123.ko, which is built from the following files::
 	file named "Kbuild," and only if that is not found, will it
 	then look for a makefile. Utilizing a "Kbuild" file allows us
 	to split up the makefile from example 1 into two files:
+=======
+Separate Kbuild File and Makefile
+---------------------------------
+
+	Kbuild will first look for a file named "Kbuild", and if it is not
+	found, it will then look for "Makefile". Utilizing a "Kbuild" file
+	allows us to split up the "Makefile" from example 1 into two files:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	Example 2::
 
 		--> filename: Kbuild
 		obj-m  := 8123.o
+<<<<<<< HEAD
 		8123-y := 8123_if.o 8123_pci.o 8123_bin.o
+=======
+		8123-y := 8123_if.o 8123_pci.o
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		--> filename: Makefile
 		KDIR ?= /lib/modules/`uname -r`/build
@@ -241,15 +327,19 @@ module 8123.ko, which is built from the following files::
 		default:
 			$(MAKE) -C $(KDIR) M=$$PWD
 
+<<<<<<< HEAD
 		# Module specific targets
 		genbin:
 			echo "X" > 8123_bin.o_shipped
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	The split in example 2 is questionable due to the simplicity of
 	each file; however, some external modules use makefiles
 	consisting of several hundred lines, and here it really pays
 	off to separate the kbuild part from the rest.
 
+<<<<<<< HEAD
 	The next example shows a backward compatible version.
 
 	Example 3::
@@ -303,6 +393,10 @@ module 8123.ko, which is built from the following files::
 
 3.4 Building Multiple Modules
 =============================
+=======
+Building Multiple Modules
+-------------------------
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	kbuild supports building multiple modules with a single build
 	file. For example, if you wanted to build two modules, foo.ko
@@ -315,8 +409,13 @@ module 8123.ko, which is built from the following files::
 	It is that simple!
 
 
+<<<<<<< HEAD
 4. Include Files
 ================
+=======
+Include Files
+=============
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Within the kernel, header files are kept in standard locations
 according to the following rule:
@@ -334,19 +433,32 @@ according to the following rule:
 	      include/scsi; and architecture specific headers are located
 	      under arch/$(SRCARCH)/include/.
 
+<<<<<<< HEAD
 4.1 Kernel Includes
 -------------------
+=======
+Kernel Includes
+---------------
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	To include a header file located under include/linux/, simply
 	use::
 
 		#include <linux/module.h>
 
+<<<<<<< HEAD
 	kbuild will add options to "gcc" so the relevant directories
 	are searched.
 
 4.2 Single Subdirectory
 -----------------------
+=======
+	kbuild will add options to the compiler so the relevant directories
+	are searched.
+
+Single Subdirectory
+-------------------
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	External modules tend to place header files in a separate
 	include/ directory where their source is located, although this
@@ -360,6 +472,7 @@ according to the following rule:
 		--> filename: Kbuild
 		obj-m := 8123.o
 
+<<<<<<< HEAD
 		ccflags-y := -Iinclude
 		8123-y := 8123_if.o 8123_pci.o 8123_bin.o
 
@@ -369,6 +482,13 @@ according to the following rule:
 
 4.3 Several Subdirectories
 --------------------------
+=======
+		ccflags-y := -I $(src)/include
+		8123-y := 8123_if.o 8123_pci.o
+
+Several Subdirectories
+----------------------
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	kbuild can handle files that are spread over several directories.
 	Consider the following example::
@@ -407,8 +527,13 @@ according to the following rule:
 	file is located.
 
 
+<<<<<<< HEAD
 5. Module Installation
 ======================
+=======
+Module Installation
+===================
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Modules which are included in the kernel are installed in the
 directory:
@@ -419,8 +544,13 @@ And external modules are installed in:
 
 	/lib/modules/$(KERNELRELEASE)/updates/
 
+<<<<<<< HEAD
 5.1 INSTALL_MOD_PATH
 --------------------
+=======
+INSTALL_MOD_PATH
+----------------
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	Above are the default directories but as always some level of
 	customization is possible. A prefix can be added to the
@@ -434,8 +564,13 @@ And external modules are installed in:
 	calling "make." This has effect when installing both in-tree
 	and out-of-tree modules.
 
+<<<<<<< HEAD
 5.2 INSTALL_MOD_DIR
 -------------------
+=======
+INSTALL_MOD_DIR
+---------------
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	External modules are by default installed to a directory under
 	/lib/modules/$(KERNELRELEASE)/updates/, but you may wish to
@@ -448,8 +583,13 @@ And external modules are installed in:
 		=> Install dir: /lib/modules/$(KERNELRELEASE)/gandalf/
 
 
+<<<<<<< HEAD
 6. Module Versioning
 ====================
+=======
+Module Versioning
+=================
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Module versioning is enabled by the CONFIG_MODVERSIONS tag, and is used
 as a simple ABI consistency check. A CRC value of the full prototype
@@ -461,8 +601,13 @@ module.
 Module.symvers contains a list of all exported symbols from a kernel
 build.
 
+<<<<<<< HEAD
 6.1 Symbols From the Kernel (vmlinux + modules)
 -----------------------------------------------
+=======
+Symbols From the Kernel (vmlinux + modules)
+-------------------------------------------
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	During a kernel build, a file named Module.symvers will be
 	generated. Module.symvers contains all exported symbols from
@@ -486,8 +631,13 @@ build.
 	1) It lists all exported symbols from vmlinux and all modules.
 	2) It lists the CRC if CONFIG_MODVERSIONS is enabled.
 
+<<<<<<< HEAD
 6.2 Symbols and External Modules
 --------------------------------
+=======
+Symbols and External Modules
+----------------------------
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	When building an external module, the build system needs access
 	to the symbols from the kernel to check if all external symbols
@@ -496,8 +646,13 @@ build.
 	tree. During the MODPOST step, a new Module.symvers file will be
 	written containing all exported symbols from that external module.
 
+<<<<<<< HEAD
 6.3 Symbols From Another External Module
 ----------------------------------------
+=======
+Symbols From Another External Module
+------------------------------------
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	Sometimes, an external module uses exported symbols from
 	another external module. Kbuild needs to have full knowledge of
@@ -537,11 +692,19 @@ build.
 		initialization of its symbol tables.
 
 
+<<<<<<< HEAD
 7. Tips & Tricks
 ================
 
 7.1 Testing for CONFIG_FOO_BAR
 ------------------------------
+=======
+Tips & Tricks
+=============
+
+Testing for CONFIG_FOO_BAR
+--------------------------
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	Modules often need to check for certain `CONFIG_` options to
 	decide if a specific feature is included in the module. In
@@ -553,9 +716,12 @@ build.
 
 		ext2-y := balloc.o bitmap.o dir.o
 		ext2-$(CONFIG_EXT2_FS_XATTR) += xattr.o
+<<<<<<< HEAD
 
 	External modules have traditionally used "grep" to check for
 	specific `CONFIG_` settings directly in .config. This usage is
 	broken. As introduced before, external modules should use
 	kbuild for building and can therefore use the same methods as
 	in-tree modules when testing for `CONFIG_` definitions.
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

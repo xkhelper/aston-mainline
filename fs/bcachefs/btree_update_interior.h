@@ -159,6 +159,11 @@ static inline int bch2_foreground_maybe_merge(struct btree_trans *trans,
 					      unsigned level,
 					      unsigned flags)
 {
+<<<<<<< HEAD
+=======
+	bch2_trans_verify_not_unlocked(trans);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return  bch2_foreground_maybe_merge_sibling(trans, path, level, flags,
 						    btree_prev_sib) ?:
 		bch2_foreground_maybe_merge_sibling(trans, path, level, flags,

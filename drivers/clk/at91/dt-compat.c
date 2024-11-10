@@ -563,9 +563,16 @@ of_at91_clk_pll_get_characteristics(struct device_node *np)
 	if (num_cells < 2 || num_cells > 4)
 		return NULL;
 
+<<<<<<< HEAD
 	if (!of_get_property(np, "atmel,pll-clk-output-ranges", &tmp))
 		return NULL;
 	num_output = tmp / (sizeof(u32) * num_cells);
+=======
+	num_output = of_property_count_u32_elems(np, "atmel,pll-clk-output-ranges");
+	if (num_output <= 0)
+		return NULL;
+	num_output /= num_cells;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	characteristics = kzalloc(sizeof(*characteristics), GFP_KERNEL);
 	if (!characteristics)

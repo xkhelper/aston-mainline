@@ -399,11 +399,18 @@ static inline  u64 tlbstate_lam_cr3_mask(void)
 	return lam << X86_CR3_LAM_U57_BIT;
 }
 
+<<<<<<< HEAD
 static inline void set_tlbstate_lam_mode(struct mm_struct *mm)
 {
 	this_cpu_write(cpu_tlbstate.lam,
 		       mm->context.lam_cr3_mask >> X86_CR3_LAM_U57_BIT);
 	this_cpu_write(tlbstate_untag_mask, mm->context.untag_mask);
+=======
+static inline void cpu_tlbstate_update_lam(unsigned long lam, u64 untag_mask)
+{
+	this_cpu_write(cpu_tlbstate.lam, lam >> X86_CR3_LAM_U57_BIT);
+	this_cpu_write(tlbstate_untag_mask, untag_mask);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #else
@@ -413,7 +420,11 @@ static inline u64 tlbstate_lam_cr3_mask(void)
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline void set_tlbstate_lam_mode(struct mm_struct *mm)
+=======
+static inline void cpu_tlbstate_update_lam(unsigned long lam, u64 untag_mask)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 }
 #endif

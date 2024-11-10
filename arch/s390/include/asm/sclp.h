@@ -72,6 +72,10 @@ struct sclp_info {
 	unsigned char has_core_type : 1;
 	unsigned char has_sprp : 1;
 	unsigned char has_hvs : 1;
+<<<<<<< HEAD
+=======
+	unsigned char has_wti : 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned char has_esca : 1;
 	unsigned char has_sief2 : 1;
 	unsigned char has_64bscao : 1;

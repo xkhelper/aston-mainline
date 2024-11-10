@@ -697,7 +697,12 @@ svcauth_unix_set_client(struct svc_rqst *rqstp)
 	rqstp->rq_auth_stat = rpc_autherr_badcred;
 	ipm = ip_map_cached_get(xprt);
 	if (ipm == NULL)
+<<<<<<< HEAD
 		ipm = __ip_map_lookup(sn->ip_map_cache, rqstp->rq_server->sv_program->pg_class,
+=======
+		ipm = __ip_map_lookup(sn->ip_map_cache,
+				      rqstp->rq_server->sv_programs->pg_class,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    &sin6->sin6_addr);
 
 	if (ipm == NULL)

@@ -14,7 +14,11 @@
 #include <linux/module.h>
 #include <linux/string.h>
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 typedef void (sha512_block_fn)(struct sha512_state *sst, u8 const *src,
 			       int blocks);

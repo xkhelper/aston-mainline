@@ -143,7 +143,11 @@ static struct platform_driver gpio_halt_driver = {
 		.of_match_table = gpio_halt_match,
 	},
 	.probe		= gpio_halt_probe,
+<<<<<<< HEAD
 	.remove_new	= gpio_halt_remove,
+=======
+	.remove		= gpio_halt_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(gpio_halt_driver);

@@ -14,11 +14,23 @@ void bch2_recalc_btree_reserve(struct bch_fs *);
 
 void bch2_btree_node_to_freelist(struct bch_fs *, struct btree *);
 
+<<<<<<< HEAD
 void bch2_btree_node_hash_remove(struct btree_cache *, struct btree *);
+=======
+void __bch2_btree_node_hash_remove(struct btree_cache *, struct btree *);
+void bch2_btree_node_hash_remove(struct btree_cache *, struct btree *);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int __bch2_btree_node_hash_insert(struct btree_cache *, struct btree *);
 int bch2_btree_node_hash_insert(struct btree_cache *, struct btree *,
 				unsigned, enum btree_id);
 
+<<<<<<< HEAD
+=======
+void bch2_node_pin(struct bch_fs *, struct btree *);
+void bch2_btree_cache_unpin(struct bch_fs *);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void bch2_btree_node_update_key_early(struct btree_trans *, enum btree_id, unsigned,
 				      struct bkey_s_c, struct bkey_i *);
 

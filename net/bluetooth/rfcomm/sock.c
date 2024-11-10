@@ -865,9 +865,13 @@ static int rfcomm_sock_ioctl(struct socket *sock, unsigned int cmd, unsigned lon
 
 	if (err == -ENOIOCTLCMD) {
 #ifdef CONFIG_BT_RFCOMM_TTY
+<<<<<<< HEAD
 		lock_sock(sk);
 		err = rfcomm_dev_ioctl(sk, cmd, (void __user *) arg);
 		release_sock(sk);
+=======
+		err = rfcomm_dev_ioctl(sk, cmd, (void __user *) arg);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else
 		err = -EOPNOTSUPP;
 #endif

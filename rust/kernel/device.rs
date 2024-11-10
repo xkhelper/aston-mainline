@@ -51,6 +51,7 @@ impl Device {
     ///
     /// It must also be ensured that `bindings::device::release` can be called from any thread.
     /// While not officially documented, this should be the case for any `struct device`.
+<<<<<<< HEAD
     pub unsafe fn from_raw(ptr: *mut bindings::device) -> ARef<Self> {
         // SAFETY: By the safety requirements, ptr is valid.
         // Initially increase the reference count by one to compensate for the final decrement once
@@ -63,6 +64,11 @@ impl Device {
         // SAFETY: `ptr` is valid by the safety requirements of this function. By the above call to
         // `bindings::get_device` we also own a reference to the underlying `struct device`.
         unsafe { ARef::from_raw(ptr::NonNull::new_unchecked(ptr)) }
+=======
+    pub unsafe fn get_device(ptr: *mut bindings::device) -> ARef<Self> {
+        // SAFETY: By the safety requirements ptr is valid
+        unsafe { Self::as_ref(ptr) }.into()
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     }
 
     /// Obtain the raw `struct device *`.

@@ -35,7 +35,13 @@ Library functionality that is used throughout the kernel.
 
    kobject
    kref
+<<<<<<< HEAD
    assoc_array
+=======
+   cleanup
+   assoc_array
+   folio_queue
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
    xarray
    maple_tree
    idr
@@ -49,6 +55,10 @@ Library functionality that is used throughout the kernel.
    wrappers/atomic_t
    wrappers/atomic_bitops
    floating-point
+<<<<<<< HEAD
+=======
+   union_find
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Low level entry and exit
 ========================

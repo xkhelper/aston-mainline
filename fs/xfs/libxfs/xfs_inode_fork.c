@@ -185,7 +185,11 @@ xfs_iformat_btree(
 
 	ifp = xfs_ifork_ptr(ip, whichfork);
 	dfp = (xfs_bmdr_block_t *)XFS_DFORK_PTR(dip, whichfork);
+<<<<<<< HEAD
 	size = XFS_BMAP_BROOT_SPACE(mp, dfp);
+=======
+	size = xfs_bmap_broot_space(mp, dfp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	nrecs = be16_to_cpu(dfp->bb_numrecs);
 	level = be16_to_cpu(dfp->bb_level);
 
@@ -198,7 +202,11 @@ xfs_iformat_btree(
 	 */
 	if (unlikely(ifp->if_nextents <= XFS_IFORK_MAXEXT(ip, whichfork) ||
 		     nrecs == 0 ||
+<<<<<<< HEAD
 		     XFS_BMDR_SPACE_CALC(nrecs) >
+=======
+		     xfs_bmdr_space_calc(nrecs) >
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					XFS_DFORK_SIZE(dip, mp, whichfork) ||
 		     ifp->if_nextents > ip->i_nblocks) ||
 		     level == 0 || level > XFS_BM_MAXLEVELS(mp, whichfork)) {
@@ -409,7 +417,11 @@ xfs_iroot_realloc(
 		 * allocate it now and get out.
 		 */
 		if (ifp->if_broot_bytes == 0) {
+<<<<<<< HEAD
 			new_size = XFS_BMAP_BROOT_SPACE_CALC(mp, rec_diff);
+=======
+			new_size = xfs_bmap_broot_space_calc(mp, rec_diff);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ifp->if_broot = kmalloc(new_size,
 						GFP_KERNEL | __GFP_NOFAIL);
 			ifp->if_broot_bytes = (int)new_size;
@@ -422,6 +434,7 @@ xfs_iroot_realloc(
 		 * location.  The records don't change location because
 		 * they are kept butted up against the btree block header.
 		 */
+<<<<<<< HEAD
 		cur_max = xfs_bmbt_maxrecs(mp, ifp->if_broot_bytes, 0);
 		new_max = cur_max + rec_diff;
 		new_size = XFS_BMAP_BROOT_SPACE_CALC(mp, new_max);
@@ -433,6 +446,19 @@ xfs_iroot_realloc(
 						     (int)new_size);
 		ifp->if_broot_bytes = (int)new_size;
 		ASSERT(XFS_BMAP_BMDR_SPACE(ifp->if_broot) <=
+=======
+		cur_max = xfs_bmbt_maxrecs(mp, ifp->if_broot_bytes, false);
+		new_max = cur_max + rec_diff;
+		new_size = xfs_bmap_broot_space_calc(mp, new_max);
+		ifp->if_broot = krealloc(ifp->if_broot, new_size,
+					 GFP_KERNEL | __GFP_NOFAIL);
+		op = (char *)xfs_bmap_broot_ptr_addr(mp, ifp->if_broot, 1,
+						     ifp->if_broot_bytes);
+		np = (char *)xfs_bmap_broot_ptr_addr(mp, ifp->if_broot, 1,
+						     (int)new_size);
+		ifp->if_broot_bytes = (int)new_size;
+		ASSERT(xfs_bmap_bmdr_space(ifp->if_broot) <=
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			xfs_inode_fork_size(ip, whichfork));
 		memmove(np, op, cur_max * (uint)sizeof(xfs_fsblock_t));
 		return;
@@ -444,11 +470,19 @@ xfs_iroot_realloc(
 	 * records, just get rid of the root and clear the status bit.
 	 */
 	ASSERT((ifp->if_broot != NULL) && (ifp->if_broot_bytes > 0));
+<<<<<<< HEAD
 	cur_max = xfs_bmbt_maxrecs(mp, ifp->if_broot_bytes, 0);
 	new_max = cur_max + rec_diff;
 	ASSERT(new_max >= 0);
 	if (new_max > 0)
 		new_size = XFS_BMAP_BROOT_SPACE_CALC(mp, new_max);
+=======
+	cur_max = xfs_bmbt_maxrecs(mp, ifp->if_broot_bytes, false);
+	new_max = cur_max + rec_diff;
+	ASSERT(new_max >= 0);
+	if (new_max > 0)
+		new_size = xfs_bmap_broot_space_calc(mp, new_max);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else
 		new_size = 0;
 	if (new_size > 0) {
@@ -457,12 +491,17 @@ xfs_iroot_realloc(
 		 * First copy over the btree block header.
 		 */
 		memcpy(new_broot, ifp->if_broot,
+<<<<<<< HEAD
 			XFS_BMBT_BLOCK_LEN(ip->i_mount));
+=======
+			xfs_bmbt_block_len(ip->i_mount));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		new_broot = NULL;
 	}
 
 	/*
+<<<<<<< HEAD
 	 * Only copy the records and pointers if there are any.
 	 */
 	if (new_max > 0) {
@@ -472,13 +511,30 @@ xfs_iroot_realloc(
 		op = (char *)XFS_BMBT_REC_ADDR(mp, ifp->if_broot, 1);
 		np = (char *)XFS_BMBT_REC_ADDR(mp, new_broot, 1);
 		memcpy(np, op, new_max * (uint)sizeof(xfs_bmbt_rec_t));
+=======
+	 * Only copy the keys and pointers if there are any.
+	 */
+	if (new_max > 0) {
+		/*
+		 * First copy the keys.
+		 */
+		op = (char *)xfs_bmbt_key_addr(mp, ifp->if_broot, 1);
+		np = (char *)xfs_bmbt_key_addr(mp, new_broot, 1);
+		memcpy(np, op, new_max * (uint)sizeof(xfs_bmbt_key_t));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * Then copy the pointers.
 		 */
+<<<<<<< HEAD
 		op = (char *)XFS_BMAP_BROOT_PTR_ADDR(mp, ifp->if_broot, 1,
 						     ifp->if_broot_bytes);
 		np = (char *)XFS_BMAP_BROOT_PTR_ADDR(mp, new_broot, 1,
+=======
+		op = (char *)xfs_bmap_broot_ptr_addr(mp, ifp->if_broot, 1,
+						     ifp->if_broot_bytes);
+		np = (char *)xfs_bmap_broot_ptr_addr(mp, new_broot, 1,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						     (int)new_size);
 		memcpy(np, op, new_max * (uint)sizeof(xfs_fsblock_t));
 	}
@@ -486,7 +542,11 @@ xfs_iroot_realloc(
 	ifp->if_broot = new_broot;
 	ifp->if_broot_bytes = (int)new_size;
 	if (ifp->if_broot)
+<<<<<<< HEAD
 		ASSERT(XFS_BMAP_BMDR_SPACE(ifp->if_broot) <=
+=======
+		ASSERT(xfs_bmap_bmdr_space(ifp->if_broot) <=
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			xfs_inode_fork_size(ip, whichfork));
 	return;
 }
@@ -655,7 +715,11 @@ xfs_iflush_fork(
 		if ((iip->ili_fields & brootflag[whichfork]) &&
 		    (ifp->if_broot_bytes > 0)) {
 			ASSERT(ifp->if_broot != NULL);
+<<<<<<< HEAD
 			ASSERT(XFS_BMAP_BMDR_SPACE(ifp->if_broot) <=
+=======
+			ASSERT(xfs_bmap_bmdr_space(ifp->if_broot) <=
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			        xfs_inode_fork_size(ip, whichfork));
 			xfs_bmbt_to_bmdr(mp, ifp->if_broot, ifp->if_broot_bytes,
 				(xfs_bmdr_block_t *)cp,

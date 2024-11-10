@@ -4146,7 +4146,11 @@ qlcnic_inetaddr_event(struct notifier_block *this,
 
 	struct in_ifaddr *ifa = (struct in_ifaddr *)ptr;
 
+<<<<<<< HEAD
 	dev = ifa->ifa_dev ? ifa->ifa_dev->dev : NULL;
+=======
+	dev = ifa->ifa_dev->dev;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 recheck:
 	if (dev == NULL)

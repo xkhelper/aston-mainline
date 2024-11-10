@@ -276,7 +276,12 @@ intel_crtc_duplicate_state(struct drm_crtc *crtc)
 	crtc_state->do_async_flip = false;
 	crtc_state->fb_bits = 0;
 	crtc_state->update_planes = 0;
+<<<<<<< HEAD
 	crtc_state->dsb = NULL;
+=======
+	crtc_state->dsb_color_vblank = NULL;
+	crtc_state->dsb_color_commit = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return &crtc_state->uapi;
 }
@@ -310,7 +315,12 @@ intel_crtc_destroy_state(struct drm_crtc *crtc,
 {
 	struct intel_crtc_state *crtc_state = to_intel_crtc_state(state);
 
+<<<<<<< HEAD
 	drm_WARN_ON(crtc->dev, crtc_state->dsb);
+=======
+	drm_WARN_ON(crtc->dev, crtc_state->dsb_color_vblank);
+	drm_WARN_ON(crtc->dev, crtc_state->dsb_color_commit);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	__drm_atomic_helper_crtc_destroy_state(&crtc_state->uapi);
 	intel_crtc_free_hw_state(crtc_state);

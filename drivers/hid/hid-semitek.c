@@ -11,8 +11,13 @@
 
 #include "hid-ids.h"
 
+<<<<<<< HEAD
 static __u8 *semitek_report_fixup(struct hid_device *hdev, __u8 *rdesc,
                                   unsigned int *rsize)
+=======
+static const __u8 *semitek_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+					unsigned int *rsize)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	/* In the report descriptor for interface 2, fix the incorrect
 	   description of report ID 0x04 (the report contains a

@@ -2,6 +2,10 @@
 #include <linux/kernel.h>
 #include <linux/init.h>
 #include <linux/random.h>
+<<<<<<< HEAD
+=======
+#include <linux/debugfs.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/sched.h>
 #include <linux/stat.h>
 #include <linux/types.h>

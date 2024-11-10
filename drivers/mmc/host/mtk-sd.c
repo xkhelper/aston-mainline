@@ -795,14 +795,23 @@ static void msdc_unprepare_data(struct msdc_host *host, struct mmc_data *data)
 static u64 msdc_timeout_cal(struct msdc_host *host, u64 ns, u64 clks)
 {
 	struct mmc_host *mmc = mmc_from_priv(host);
+<<<<<<< HEAD
 	u64 timeout, clk_ns;
 	u32 mode = 0;
+=======
+	u64 timeout;
+	u32 clk_ns, mode = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (mmc->actual_clock == 0) {
 		timeout = 0;
 	} else {
+<<<<<<< HEAD
 		clk_ns  = 1000000000ULL;
 		do_div(clk_ns, mmc->actual_clock);
+=======
+		clk_ns = 1000000000U / mmc->actual_clock;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		timeout = ns + clk_ns - 1;
 		do_div(timeout, clk_ns);
 		timeout += clks;
@@ -831,7 +840,11 @@ static void msdc_set_timeout(struct msdc_host *host, u64 ns, u64 clks)
 
 	timeout = msdc_timeout_cal(host, ns, clks);
 	sdr_set_field(host->base + SDC_CFG, SDC_CFG_DTOC,
+<<<<<<< HEAD
 		      (u32)(timeout > 255 ? 255 : timeout));
+=======
+		      min_t(u32, timeout, 255));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void msdc_set_busy_timeout(struct msdc_host *host, u64 ns, u64 clks)
@@ -840,7 +853,11 @@ static void msdc_set_busy_timeout(struct msdc_host *host, u64 ns, u64 clks)
 
 	timeout = msdc_timeout_cal(host, ns, clks);
 	sdr_set_field(host->base + SDC_CFG, SDC_CFG_WRDTOC,
+<<<<<<< HEAD
 		      (u32)(timeout > 8191 ? 8191 : timeout));
+=======
+		      min_t(u32, timeout, 8191));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void msdc_gate_clock(struct msdc_host *host)

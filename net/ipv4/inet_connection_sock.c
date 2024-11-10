@@ -236,7 +236,11 @@ static bool inet_bhash2_conflict(const struct sock *sk,
 
 #define sk_for_each_bound_bhash(__sk, __tb2, __tb)			\
 	hlist_for_each_entry(__tb2, &(__tb)->bhash2, bhash_node)	\
+<<<<<<< HEAD
 		sk_for_each_bound(sk2, &(__tb2)->owners)
+=======
+		sk_for_each_bound((__sk), &(__tb2)->owners)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* This should be called only when the tb and tb2 hashbuckets' locks are held */
 static int inet_csk_bind_conflict(const struct sock *sk,
@@ -714,6 +718,10 @@ struct sock *inet_csk_accept(struct sock *sk, struct proto_accept_arg *arg)
 out:
 	release_sock(sk);
 	if (newsk && mem_cgroup_sockets_enabled) {
+<<<<<<< HEAD
+=======
+		gfp_t gfp = GFP_KERNEL | __GFP_NOFAIL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		int amt = 0;
 
 		/* atomically get the memory usage, set and charge the
@@ -731,8 +739,13 @@ out:
 		}
 
 		if (amt)
+<<<<<<< HEAD
 			mem_cgroup_charge_skmem(newsk->sk_memcg, amt,
 						GFP_KERNEL | __GFP_NOFAIL);
+=======
+			mem_cgroup_charge_skmem(newsk->sk_memcg, amt, gfp);
+		kmem_cache_charge(newsk, gfp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		release_sock(newsk);
 	}
@@ -1044,6 +1057,7 @@ static bool reqsk_queue_unlink(struct request_sock *req)
 		found = __sk_nulls_del_node_init_rcu(sk);
 		spin_unlock(lock);
 	}
+<<<<<<< HEAD
 	if (timer_pending(&req->rsk_timer) && del_timer_sync(&req->rsk_timer))
 		reqsk_put(req);
 	return found;
@@ -1053,12 +1067,38 @@ bool inet_csk_reqsk_queue_drop(struct sock *sk, struct request_sock *req)
 {
 	bool unlinked = reqsk_queue_unlink(req);
 
+=======
+
+	return found;
+}
+
+static bool __inet_csk_reqsk_queue_drop(struct sock *sk,
+					struct request_sock *req,
+					bool from_timer)
+{
+	bool unlinked = reqsk_queue_unlink(req);
+
+	if (!from_timer && timer_delete_sync(&req->rsk_timer))
+		reqsk_put(req);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (unlinked) {
 		reqsk_queue_removed(&inet_csk(sk)->icsk_accept_queue, req);
 		reqsk_put(req);
 	}
+<<<<<<< HEAD
 	return unlinked;
 }
+=======
+
+	return unlinked;
+}
+
+bool inet_csk_reqsk_queue_drop(struct sock *sk, struct request_sock *req)
+{
+	return __inet_csk_reqsk_queue_drop(sk, req, false);
+}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 EXPORT_SYMBOL(inet_csk_reqsk_queue_drop);
 
 void inet_csk_reqsk_queue_drop_and_put(struct sock *sk, struct request_sock *req)
@@ -1151,7 +1191,11 @@ static void reqsk_timer_handler(struct timer_list *t)
 
 		if (!inet_ehash_insert(req_to_sk(nreq), req_to_sk(oreq), NULL)) {
 			/* delete timer */
+<<<<<<< HEAD
 			inet_csk_reqsk_queue_drop(sk_listener, nreq);
+=======
+			__inet_csk_reqsk_queue_drop(sk_listener, nreq, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto no_ownership;
 		}
 
@@ -1177,7 +1221,12 @@ no_ownership:
 	}
 
 drop:
+<<<<<<< HEAD
 	inet_csk_reqsk_queue_drop_and_put(oreq->rsk_listener, oreq);
+=======
+	__inet_csk_reqsk_queue_drop(sk_listener, oreq, true);
+	reqsk_put(req);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static bool reqsk_queue_hash_req(struct request_sock *req,

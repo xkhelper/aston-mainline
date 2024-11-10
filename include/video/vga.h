@@ -197,9 +197,32 @@ struct vgastate {
 extern int save_vga(struct vgastate *state);
 extern int restore_vga(struct vgastate *state);
 
+<<<<<<< HEAD
 /*
  * generic VGA port read/write
  */
+=======
+static inline unsigned char vga_mm_r (void __iomem *regbase, unsigned short port)
+{
+	return readb (regbase + port);
+}
+
+static inline void vga_mm_w (void __iomem *regbase, unsigned short port, unsigned char val)
+{
+	writeb (val, regbase + port);
+}
+
+static inline void vga_mm_w_fast (void __iomem *regbase, unsigned short port,
+				  unsigned char reg, unsigned char val)
+{
+	writew (VGA_OUT16VAL (val, reg), regbase + port);
+}
+
+/*
+ * generic VGA port read/write
+ */
+#ifdef CONFIG_HAS_IOPORT
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline unsigned char vga_io_r (unsigned short port)
 {
@@ -217,6 +240,7 @@ static inline void vga_io_w_fast (unsigned short port, unsigned char reg,
 	outw(VGA_OUT16VAL (val, reg), port);
 }
 
+<<<<<<< HEAD
 static inline unsigned char vga_mm_r (void __iomem *regbase, unsigned short port)
 {
 	return readb (regbase + port);
@@ -233,6 +257,8 @@ static inline void vga_mm_w_fast (void __iomem *regbase, unsigned short port,
 	writew (VGA_OUT16VAL (val, reg), regbase + port);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline unsigned char vga_r (void __iomem *regbase, unsigned short port)
 {
 	if (regbase)
@@ -258,7 +284,28 @@ static inline void vga_w_fast (void __iomem *regbase, unsigned short port,
 	else
 		vga_io_w_fast (port, reg, val);
 }
+<<<<<<< HEAD
 
+=======
+#else /* CONFIG_HAS_IOPORT */
+static inline unsigned char vga_r (void __iomem *regbase, unsigned short port)
+{
+	return vga_mm_r (regbase, port);
+}
+
+static inline void vga_w (void __iomem *regbase, unsigned short port, unsigned char val)
+{
+	vga_mm_w (regbase, port, val);
+}
+
+
+static inline void vga_w_fast (void __iomem *regbase, unsigned short port,
+			       unsigned char reg, unsigned char val)
+{
+	vga_mm_w_fast (regbase, port, reg, val);
+}
+#endif /* CONFIG_HAS_IOPORT */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * VGA CRTC register read/write
@@ -280,6 +327,10 @@ static inline void vga_wcrt (void __iomem *regbase, unsigned char reg, unsigned 
 #endif /* VGA_OUTW_WRITE */
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_HAS_IOPORT
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline unsigned char vga_io_rcrt (unsigned char reg)
 {
         vga_io_w (VGA_CRT_IC, reg);
@@ -295,6 +346,10 @@ static inline void vga_io_wcrt (unsigned char reg, unsigned char val)
         vga_io_w (VGA_CRT_DC, val);
 #endif /* VGA_OUTW_WRITE */
 }
+<<<<<<< HEAD
+=======
+#endif /* CONFIG_HAS_IOPORT */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline unsigned char vga_mm_rcrt (void __iomem *regbase, unsigned char reg)
 {
@@ -333,6 +388,10 @@ static inline void vga_wseq (void __iomem *regbase, unsigned char reg, unsigned 
 #endif /* VGA_OUTW_WRITE */
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_HAS_IOPORT
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline unsigned char vga_io_rseq (unsigned char reg)
 {
         vga_io_w (VGA_SEQ_I, reg);
@@ -348,6 +407,10 @@ static inline void vga_io_wseq (unsigned char reg, unsigned char val)
         vga_io_w (VGA_SEQ_D, val);
 #endif /* VGA_OUTW_WRITE */
 }
+<<<<<<< HEAD
+=======
+#endif /* CONFIG_HAS_IOPORT */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline unsigned char vga_mm_rseq (void __iomem *regbase, unsigned char reg)
 {
@@ -385,6 +448,10 @@ static inline void vga_wgfx (void __iomem *regbase, unsigned char reg, unsigned 
 #endif /* VGA_OUTW_WRITE */
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_HAS_IOPORT
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline unsigned char vga_io_rgfx (unsigned char reg)
 {
         vga_io_w (VGA_GFX_I, reg);
@@ -400,6 +467,10 @@ static inline void vga_io_wgfx (unsigned char reg, unsigned char val)
         vga_io_w (VGA_GFX_D, val);
 #endif /* VGA_OUTW_WRITE */
 }
+<<<<<<< HEAD
+=======
+#endif /* CONFIG_HAS_IOPORT */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline unsigned char vga_mm_rgfx (void __iomem *regbase, unsigned char reg)
 {
@@ -434,6 +505,10 @@ static inline void vga_wattr (void __iomem *regbase, unsigned char reg, unsigned
         vga_w (regbase, VGA_ATT_W, val);
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_HAS_IOPORT
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline unsigned char vga_io_rattr (unsigned char reg)
 {
         vga_io_w (VGA_ATT_IW, reg);
@@ -445,6 +520,10 @@ static inline void vga_io_wattr (unsigned char reg, unsigned char val)
         vga_io_w (VGA_ATT_IW, reg);
         vga_io_w (VGA_ATT_W, val);
 }
+<<<<<<< HEAD
+=======
+#endif /* CONFIG_HAS_IOPORT */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline unsigned char vga_mm_rattr (void __iomem *regbase, unsigned char reg)
 {

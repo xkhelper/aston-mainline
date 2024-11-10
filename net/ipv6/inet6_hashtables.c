@@ -46,7 +46,11 @@ EXPORT_SYMBOL_GPL(inet6_ehashfn);
  *
  * The sockhash lock must be held as a reader here.
  */
+<<<<<<< HEAD
 struct sock *__inet6_lookup_established(struct net *net,
+=======
+struct sock *__inet6_lookup_established(const struct net *net,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					struct inet_hashinfo *hashinfo,
 					   const struct in6_addr *saddr,
 					   const __be16 sport,
@@ -89,7 +93,11 @@ found:
 }
 EXPORT_SYMBOL(__inet6_lookup_established);
 
+<<<<<<< HEAD
 static inline int compute_score(struct sock *sk, struct net *net,
+=======
+static inline int compute_score(struct sock *sk, const struct net *net,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				const unsigned short hnum,
 				const struct in6_addr *daddr,
 				const int dif, const int sdif)
@@ -126,7 +134,11 @@ static inline int compute_score(struct sock *sk, struct net *net,
  * Return: NULL if sk doesn't have SO_REUSEPORT set, otherwise a pointer to
  *         the selected sock or an error.
  */
+<<<<<<< HEAD
 struct sock *inet6_lookup_reuseport(struct net *net, struct sock *sk,
+=======
+struct sock *inet6_lookup_reuseport(const struct net *net, struct sock *sk,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    struct sk_buff *skb, int doff,
 				    const struct in6_addr *saddr,
 				    __be16 sport,
@@ -147,7 +159,11 @@ struct sock *inet6_lookup_reuseport(struct net *net, struct sock *sk,
 EXPORT_SYMBOL_GPL(inet6_lookup_reuseport);
 
 /* called with rcu_read_lock() */
+<<<<<<< HEAD
 static struct sock *inet6_lhash2_lookup(struct net *net,
+=======
+static struct sock *inet6_lhash2_lookup(const struct net *net,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct inet_listen_hashbucket *ilb2,
 		struct sk_buff *skb, int doff,
 		const struct in6_addr *saddr,
@@ -174,7 +190,11 @@ static struct sock *inet6_lhash2_lookup(struct net *net,
 	return result;
 }
 
+<<<<<<< HEAD
 struct sock *inet6_lookup_run_sk_lookup(struct net *net,
+=======
+struct sock *inet6_lookup_run_sk_lookup(const struct net *net,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					int protocol,
 					struct sk_buff *skb, int doff,
 					const struct in6_addr *saddr,
@@ -199,7 +219,11 @@ struct sock *inet6_lookup_run_sk_lookup(struct net *net,
 }
 EXPORT_SYMBOL_GPL(inet6_lookup_run_sk_lookup);
 
+<<<<<<< HEAD
 struct sock *inet6_lookup_listener(struct net *net,
+=======
+struct sock *inet6_lookup_listener(const struct net *net,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct inet_hashinfo *hashinfo,
 		struct sk_buff *skb, int doff,
 		const struct in6_addr *saddr,
@@ -243,7 +267,12 @@ done:
 }
 EXPORT_SYMBOL_GPL(inet6_lookup_listener);
 
+<<<<<<< HEAD
 struct sock *inet6_lookup(struct net *net, struct inet_hashinfo *hashinfo,
+=======
+struct sock *inet6_lookup(const struct net *net,
+			  struct inet_hashinfo *hashinfo,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			  struct sk_buff *skb, int doff,
 			  const struct in6_addr *saddr, const __be16 sport,
 			  const struct in6_addr *daddr, const __be16 dport,

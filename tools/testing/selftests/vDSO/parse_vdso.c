@@ -36,6 +36,15 @@
 #define ELF_BITS_XFORM(bits, x) ELF_BITS_XFORM2(bits, x)
 #define ELF(x) ELF_BITS_XFORM(ELF_BITS, x)
 
+<<<<<<< HEAD
+=======
+#ifdef __s390x__
+#define ELF_HASH_ENTRY ELF(Xword)
+#else
+#define ELF_HASH_ENTRY ELF(Word)
+#endif
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct vdso_info
 {
 	bool valid;
@@ -47,8 +56,13 @@ static struct vdso_info
 	/* Symbol table */
 	ELF(Sym) *symtab;
 	const char *symstrings;
+<<<<<<< HEAD
 	ELF(Word) *bucket, *chain;
 	ELF(Word) nbucket, nchain;
+=======
+	ELF_HASH_ENTRY *bucket, *chain;
+	ELF_HASH_ENTRY nbucket, nchain;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Version table */
 	ELF(Versym) *versym;
@@ -115,7 +129,11 @@ void vdso_init_from_sysinfo_ehdr(uintptr_t base)
 	/*
 	 * Fish out the useful bits of the dynamic table.
 	 */
+<<<<<<< HEAD
 	ELF(Word) *hash = 0;
+=======
+	ELF_HASH_ENTRY *hash = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	vdso_info.symstrings = 0;
 	vdso_info.symtab = 0;
 	vdso_info.versym = 0;
@@ -133,7 +151,11 @@ void vdso_init_from_sysinfo_ehdr(uintptr_t base)
 				 + vdso_info.load_offset);
 			break;
 		case DT_HASH:
+<<<<<<< HEAD
 			hash = (ELF(Word) *)
+=======
+			hash = (ELF_HASH_ENTRY *)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				((uintptr_t)dyn[i].d_un.d_ptr
 				 + vdso_info.load_offset);
 			break;
@@ -216,7 +238,12 @@ void *vdso_sym(const char *version, const char *name)
 		ELF(Sym) *sym = &vdso_info.symtab[chain];
 
 		/* Check for a defined global or weak function w/ right name. */
+<<<<<<< HEAD
 		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC)
+=======
+		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC &&
+		    ELF64_ST_TYPE(sym->st_info) != STT_NOTYPE)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 		if (ELF64_ST_BIND(sym->st_info) != STB_GLOBAL &&
 		    ELF64_ST_BIND(sym->st_info) != STB_WEAK)

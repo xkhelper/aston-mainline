@@ -1378,7 +1378,10 @@ void svc_sock_update_bufs(struct svc_serv *serv)
 		set_bit(XPT_CHNGBUF, &svsk->sk_xprt.xpt_flags);
 	spin_unlock_bh(&serv->sv_lock);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(svc_sock_update_bufs);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Initialize socket for RPC use and create svc_sock struct

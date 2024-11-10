@@ -208,7 +208,11 @@ TRACE_EVENT(mm_khugepaged_scan_file,
 
 TRACE_EVENT(mm_khugepaged_collapse_file,
 	TP_PROTO(struct mm_struct *mm, struct folio *new_folio, pgoff_t index,
+<<<<<<< HEAD
 			bool is_shmem, unsigned long addr, struct file *file,
+=======
+			unsigned long addr, bool is_shmem, struct file *file,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			int nr, int result),
 	TP_ARGS(mm, new_folio, index, addr, is_shmem, file, nr, result),
 	TP_STRUCT__entry(
@@ -233,7 +237,11 @@ TRACE_EVENT(mm_khugepaged_collapse_file,
 		__entry->result = result;
 	),
 
+<<<<<<< HEAD
 	TP_printk("mm=%p, hpage_pfn=0x%lx, index=%ld, addr=%ld, is_shmem=%d, filename=%s, nr=%d, result=%s",
+=======
+	TP_printk("mm=%p, hpage_pfn=0x%lx, index=%ld, addr=%lx, is_shmem=%d, filename=%s, nr=%d, result=%s",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__entry->mm,
 		__entry->hpfn,
 		__entry->index,

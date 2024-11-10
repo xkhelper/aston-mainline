@@ -13,7 +13,10 @@
 
 struct irq_sim_work_ctx {
 	struct irq_work		work;
+<<<<<<< HEAD
 	int			irq_base;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int		irq_count;
 	unsigned long		*pending;
 	struct irq_domain	*domain;

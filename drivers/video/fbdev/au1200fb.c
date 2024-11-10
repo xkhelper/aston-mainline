@@ -1833,7 +1833,11 @@ static struct platform_driver au1200fb_driver = {
 		.pm	= AU1200FB_PMOPS,
 	},
 	.probe		= au1200fb_drv_probe,
+<<<<<<< HEAD
 	.remove_new	= au1200fb_drv_remove,
+=======
+	.remove		= au1200fb_drv_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(au1200fb_driver);
 

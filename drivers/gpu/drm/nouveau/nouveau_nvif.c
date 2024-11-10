@@ -35,7 +35,10 @@
 #include <nvif/ioctl.h>
 
 #include "nouveau_drv.h"
+<<<<<<< HEAD
 #include "nouveau_usif.h"
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void
 nvkm_client_unmap(void *priv, void __iomem *ptr, u32 size)
@@ -98,5 +101,8 @@ nvif_driver_nvkm = {
 	.ioctl = nvkm_client_ioctl,
 	.map = nvkm_client_map,
 	.unmap = nvkm_client_unmap,
+<<<<<<< HEAD
 	.keep = false,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };

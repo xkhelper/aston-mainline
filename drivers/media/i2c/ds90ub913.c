@@ -877,7 +877,14 @@ static void ub913_remove(struct i2c_client *client)
 	ub913_gpiochip_remove(priv);
 }
 
+<<<<<<< HEAD
 static const struct i2c_device_id ub913_id[] = { { "ds90ub913a-q1", 0 }, {} };
+=======
+static const struct i2c_device_id ub913_id[] = {
+	{ "ds90ub913a-q1" },
+	{}
+};
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_DEVICE_TABLE(i2c, ub913_id);
 
 static const struct of_device_id ub913_dt_ids[] = {

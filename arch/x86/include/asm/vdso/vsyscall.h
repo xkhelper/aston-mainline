@@ -9,9 +9,12 @@
 #include <asm/vgtod.h>
 #include <asm/vvar.h>
 
+<<<<<<< HEAD
 DEFINE_VVAR(struct vdso_data, _vdso_data);
 DEFINE_VVAR_SINGLE(struct vdso_rng_data, _vdso_rng_data);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Update the vDSO data page to keep in sync with kernel timekeeping.
  */
@@ -22,6 +25,16 @@ struct vdso_data *__x86_get_k_vdso_data(void)
 }
 #define __arch_get_k_vdso_data __x86_get_k_vdso_data
 
+<<<<<<< HEAD
+=======
+static __always_inline
+struct vdso_rng_data *__x86_get_k_vdso_rng_data(void)
+{
+	return &_vdso_rng_data;
+}
+#define __arch_get_k_vdso_rng_data __x86_get_k_vdso_rng_data
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* The asm-generic header needs to be included after the definitions above */
 #include <asm-generic/vdso/vsyscall.h>
 

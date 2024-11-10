@@ -55,6 +55,11 @@ static inline void update_wptr(struct msm_gpu *gpu, struct msm_ringbuffer *ring)
 /* Return the highest priority ringbuffer with something in it */
 static struct msm_ringbuffer *get_next_ring(struct msm_gpu *gpu)
 {
+<<<<<<< HEAD
+=======
+	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
+	struct a5xx_gpu *a5xx_gpu = to_a5xx_gpu(adreno_gpu);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long flags;
 	int i;
 
@@ -64,6 +69,11 @@ static struct msm_ringbuffer *get_next_ring(struct msm_gpu *gpu)
 
 		spin_lock_irqsave(&ring->preempt_lock, flags);
 		empty = (get_wptr(ring) == gpu->funcs->get_rptr(gpu, ring));
+<<<<<<< HEAD
+=======
+		if (!empty && ring == a5xx_gpu->cur_ring)
+			empty = ring->memptrs->fence == a5xx_gpu->last_seqno[i];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		spin_unlock_irqrestore(&ring->preempt_lock, flags);
 
 		if (!empty)
@@ -98,11 +108,25 @@ void a5xx_preempt_trigger(struct msm_gpu *gpu)
 		return;
 
 	/*
+<<<<<<< HEAD
+=======
+	 * Serialize preemption start to ensure that we always make
+	 * decision on latest state. Otherwise we can get stuck in
+	 * lower priority or empty ring.
+	 */
+	spin_lock_irqsave(&a5xx_gpu->preempt_start_lock, flags);
+
+	/*
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * Try to start preemption by moving from NONE to START. If
 	 * unsuccessful, a preemption is already in flight
 	 */
 	if (!try_preempt_state(a5xx_gpu, PREEMPT_NONE, PREEMPT_START))
+<<<<<<< HEAD
 		return;
+=======
+		goto out;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Get the next ring to preempt to */
 	ring = get_next_ring(gpu);
@@ -127,9 +151,17 @@ void a5xx_preempt_trigger(struct msm_gpu *gpu)
 		set_preempt_state(a5xx_gpu, PREEMPT_ABORT);
 		update_wptr(gpu, a5xx_gpu->cur_ring);
 		set_preempt_state(a5xx_gpu, PREEMPT_NONE);
+<<<<<<< HEAD
 		return;
 	}
 
+=======
+		goto out;
+	}
+
+	spin_unlock_irqrestore(&a5xx_gpu->preempt_start_lock, flags);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Make sure the wptr doesn't update while we're in motion */
 	spin_lock_irqsave(&ring->preempt_lock, flags);
 	a5xx_gpu->preempt[ring->id]->wptr = get_wptr(ring);
@@ -152,6 +184,13 @@ void a5xx_preempt_trigger(struct msm_gpu *gpu)
 
 	/* And actually start the preemption */
 	gpu_write(gpu, REG_A5XX_CP_CONTEXT_SWITCH_CNTL, 1);
+<<<<<<< HEAD
+=======
+	return;
+
+out:
+	spin_unlock_irqrestore(&a5xx_gpu->preempt_start_lock, flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void a5xx_preempt_irq(struct msm_gpu *gpu)
@@ -188,6 +227,15 @@ void a5xx_preempt_irq(struct msm_gpu *gpu)
 	update_wptr(gpu, a5xx_gpu->cur_ring);
 
 	set_preempt_state(a5xx_gpu, PREEMPT_NONE);
+<<<<<<< HEAD
+=======
+
+	/*
+	 * Try to trigger preemption again in case there was a submit or
+	 * retire during ring switch
+	 */
+	a5xx_preempt_trigger(gpu);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void a5xx_preempt_hw_init(struct msm_gpu *gpu)
@@ -204,6 +252,11 @@ void a5xx_preempt_hw_init(struct msm_gpu *gpu)
 		return;
 
 	for (i = 0; i < gpu->nr_rings; i++) {
+<<<<<<< HEAD
+=======
+		a5xx_gpu->preempt[i]->data = 0;
+		a5xx_gpu->preempt[i]->info = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		a5xx_gpu->preempt[i]->wptr = 0;
 		a5xx_gpu->preempt[i]->rptr = 0;
 		a5xx_gpu->preempt[i]->rbase = gpu->rb[i]->iova;
@@ -298,5 +351,9 @@ void a5xx_preempt_init(struct msm_gpu *gpu)
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	spin_lock_init(&a5xx_gpu->preempt_start_lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	timer_setup(&a5xx_gpu->preempt_timer, a5xx_preempt_timer, 0);
 }

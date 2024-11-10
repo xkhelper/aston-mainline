@@ -164,9 +164,17 @@ static int vkms_modeset_init(struct vkms_device *vkmsdev)
 	dev->mode_config.max_height = YRES_MAX;
 	dev->mode_config.cursor_width = 512;
 	dev->mode_config.cursor_height = 512;
+<<<<<<< HEAD
 	/* FIXME: There's a confusion between bpp and depth between this and
 	 * fbdev helpers. We have to go with 0, meaning "pick the default",
 	 * which ix XRGB8888 in all cases. */
+=======
+	/*
+	 * FIXME: There's a confusion between bpp and depth between this and
+	 * fbdev helpers. We have to go with 0, meaning "pick the default",
+	 * which is XRGB8888 in all cases.
+	 */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev->mode_config.preferred_depth = 0;
 	dev->mode_config.helper_private = &vkms_mode_config_helpers;
 

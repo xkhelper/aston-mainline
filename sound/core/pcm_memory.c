@@ -9,7 +9,10 @@
 #include <linux/init.h>
 #include <linux/slab.h>
 #include <linux/moduleparam.h>
+<<<<<<< HEAD
 #include <linux/vmalloc.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/export.h>
 #include <sound/core.h>
 #include <sound/pcm.h>
@@ -184,7 +187,11 @@ static void snd_pcm_lib_preallocate_proc_write(struct snd_info_entry *entry,
 	struct snd_pcm_substream *substream = entry->private_data;
 	struct snd_card *card = substream->pcm->card;
 	char line[64], str[64];
+<<<<<<< HEAD
 	size_t size;
+=======
+	unsigned long size;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct snd_dma_buffer new_dmab;
 
 	guard(mutex)(&substream->pcm->open_mutex);
@@ -194,7 +201,14 @@ static void snd_pcm_lib_preallocate_proc_write(struct snd_info_entry *entry,
 	}
 	if (!snd_info_get_line(buffer, line, sizeof(line))) {
 		snd_info_get_str(str, line, sizeof(str));
+<<<<<<< HEAD
 		size = simple_strtoul(str, NULL, 10) * 1024;
+=======
+		buffer->error = kstrtoul(str, 10, &size);
+		if (buffer->error != 0)
+			return;
+		size *= 1024;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if ((size != 0 && size < 8192) || size > substream->dma_max) {
 			buffer->error = -EINVAL;
 			return;
@@ -210,7 +224,11 @@ static void snd_pcm_lib_preallocate_proc_write(struct snd_info_entry *entry,
 					   substream->stream,
 					   size, &new_dmab) < 0) {
 				buffer->error = -ENOMEM;
+<<<<<<< HEAD
 				pr_debug("ALSA pcmC%dD%d%c,%d:%s: cannot preallocate for size %zu\n",
+=======
+				pr_debug("ALSA pcmC%dD%d%c,%d:%s: cannot preallocate for size %lu\n",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					 substream->pcm->card->number, substream->pcm->device,
 					 substream->stream ? 'c' : 'p', substream->number,
 					 substream->pcm->name, size);
@@ -497,6 +515,7 @@ int snd_pcm_lib_free_pages(struct snd_pcm_substream *substream)
 	return 0;
 }
 EXPORT_SYMBOL(snd_pcm_lib_free_pages);
+<<<<<<< HEAD
 
 int _snd_pcm_lib_alloc_vmalloc_buffer(struct snd_pcm_substream *substream,
 				      size_t size, gfp_t gfp_flags)
@@ -555,3 +574,5 @@ struct page *snd_pcm_lib_get_vmalloc_page(struct snd_pcm_substream *substream,
 	return vmalloc_to_page(substream->runtime->dma_area + offset);
 }
 EXPORT_SYMBOL(snd_pcm_lib_get_vmalloc_page);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

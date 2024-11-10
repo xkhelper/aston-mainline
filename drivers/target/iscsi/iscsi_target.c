@@ -17,7 +17,11 @@
 #include <linux/idr.h>
 #include <linux/delay.h>
 #include <linux/sched/signal.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/inet.h>
 #include <net/ipv6.h>
 #include <scsi/scsi_proto.h>

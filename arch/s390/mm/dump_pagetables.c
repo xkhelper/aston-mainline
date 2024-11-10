@@ -18,6 +18,7 @@ static unsigned long max_addr;
 struct addr_marker {
 	int is_start;
 	unsigned long start_address;
+<<<<<<< HEAD
 	const char *name;
 };
 
@@ -101,6 +102,14 @@ static struct addr_marker address_markers[] = {
 #endif
 	{1, -1UL, NULL}
 };
+=======
+	unsigned long size;
+	const char *name;
+};
+
+static struct addr_marker *markers;
+static unsigned int markers_cnt;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct pg_state {
 	struct ptdump_state ptdump;
@@ -173,7 +182,12 @@ static void note_page_update_state(struct pg_state *st, unsigned long addr, unsi
 
 	while (addr >= st->marker[1].start_address) {
 		st->marker++;
+<<<<<<< HEAD
 		pt_dump_seq_printf(m, "---[ %s ]---\n", st->marker->name);
+=======
+		pt_dump_seq_printf(m, "---[ %s %s ]---\n", st->marker->name,
+				   st->marker->is_start ? "Start" : "End");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	st->start_address = addr;
 	st->current_prot = prot;
@@ -202,7 +216,11 @@ static void note_page(struct ptdump_state *pt_st, unsigned long addr, int level,
 	if (level == -1)
 		addr = max_addr;
 	if (st->level == -1) {
+<<<<<<< HEAD
 		pt_dump_seq_printf(m, "---[ %s ]---\n", st->marker->name);
+=======
+		pt_dump_seq_puts(m, "---[ Kernel Virtual Address Space ]---\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		note_page_update_state(st, addr, prot, level);
 	} else if (prot != st->current_prot || level != st->level ||
 		   addr >= st->marker[1].start_address) {
@@ -276,7 +294,11 @@ static int ptdump_show(struct seq_file *m, void *v)
 		.check_wx = false,
 		.wx_pages = 0,
 		.start_address = 0,
+<<<<<<< HEAD
 		.marker = address_markers,
+=======
+		.marker = markers,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	get_online_mems();
@@ -299,10 +321,30 @@ static int ptdump_cmp(const void *a, const void *b)
 	if (ama->start_address < amb->start_address)
 		return -1;
 	/*
+<<<<<<< HEAD
 	 * If the start addresses of two markers are identical consider the
 	 * marker which defines the start of an area higher than the one which
 	 * defines the end of an area. This keeps pairs of markers sorted.
 	 */
+=======
+	 * If the start addresses of two markers are identical sort markers in an
+	 * order that considers areas contained within other areas correctly.
+	 */
+	if (ama->is_start && amb->is_start) {
+		if (ama->size > amb->size)
+			return -1;
+		if (ama->size < amb->size)
+			return 1;
+		return 0;
+	}
+	if (!ama->is_start && !amb->is_start) {
+		if (ama->size > amb->size)
+			return 1;
+		if (ama->size < amb->size)
+			return -1;
+		return 0;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ama->is_start)
 		return 1;
 	if (amb->is_start)
@@ -310,12 +352,47 @@ static int ptdump_cmp(const void *a, const void *b)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int add_marker(unsigned long start, unsigned long end, const char *name)
+{
+	size_t oldsize, newsize;
+
+	oldsize = markers_cnt * sizeof(*markers);
+	newsize = oldsize + 2 * sizeof(*markers);
+	if (!oldsize)
+		markers = kvmalloc(newsize, GFP_KERNEL);
+	else
+		markers = kvrealloc(markers, newsize, GFP_KERNEL);
+	if (!markers)
+		goto error;
+	markers[markers_cnt].is_start = 1;
+	markers[markers_cnt].start_address = start;
+	markers[markers_cnt].size = end - start;
+	markers[markers_cnt].name = name;
+	markers_cnt++;
+	markers[markers_cnt].is_start = 0;
+	markers[markers_cnt].start_address = end;
+	markers[markers_cnt].size = end - start;
+	markers[markers_cnt].name = name;
+	markers_cnt++;
+	return 0;
+error:
+	markers_cnt = 0;
+	return -ENOMEM;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int pt_dump_init(void)
 {
 #ifdef CONFIG_KFENCE
 	unsigned long kfence_start = (unsigned long)__kfence_pool;
 #endif
 	unsigned long lowcore = (unsigned long)get_lowcore();
+<<<<<<< HEAD
+=======
+	int rc;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Figure out the maximum virtual address being accessible with the
@@ -324,6 +401,7 @@ static int pt_dump_init(void)
 	 */
 	max_addr = (get_lowcore()->kernel_asce.val & _REGION_ENTRY_TYPE_MASK) >> 2;
 	max_addr = 1UL << (max_addr * 11 + 31);
+<<<<<<< HEAD
 	address_markers[LOWCORE_START_NR].start_address = lowcore;
 	address_markers[LOWCORE_END_NR].start_address = lowcore + sizeof(struct lowcore);
 	address_markers[IDENTITY_START_NR].start_address = __identity_base;
@@ -356,9 +434,43 @@ static int pt_dump_init(void)
 #endif
 	sort(address_markers, ARRAY_SIZE(address_markers) - 1,
 	     sizeof(address_markers[0]), ptdump_cmp, NULL);
+=======
+	/* start + end markers - must be added first */
+	rc = add_marker(0, -1UL, NULL);
+	rc |= add_marker((unsigned long)_stext, (unsigned long)_end, "Kernel Image");
+	rc |= add_marker(lowcore, lowcore + sizeof(struct lowcore), "Lowcore");
+	rc |= add_marker(__identity_base, __identity_base + ident_map_size, "Identity Mapping");
+	rc |= add_marker((unsigned long)__samode31, (unsigned long)__eamode31, "Amode31 Area");
+	rc |= add_marker(MODULES_VADDR, MODULES_END, "Modules Area");
+	rc |= add_marker(__abs_lowcore, __abs_lowcore + ABS_LOWCORE_MAP_SIZE, "Lowcore Area");
+	rc |= add_marker(__memcpy_real_area, __memcpy_real_area + MEMCPY_REAL_SIZE, "Real Memory Copy Area");
+	rc |= add_marker((unsigned long)vmemmap, (unsigned long)vmemmap + vmemmap_size, "vmemmap Area");
+	rc |= add_marker(VMALLOC_START, VMALLOC_END, "vmalloc Area");
+#ifdef CONFIG_KFENCE
+	rc |= add_marker(kfence_start, kfence_start + KFENCE_POOL_SIZE, "KFence Pool");
+#endif
+#ifdef CONFIG_KMSAN
+	rc |= add_marker(KMSAN_VMALLOC_SHADOW_START, KMSAN_VMALLOC_SHADOW_END, "Kmsan vmalloc Shadow");
+	rc |= add_marker(KMSAN_VMALLOC_ORIGIN_START, KMSAN_VMALLOC_ORIGIN_END, "Kmsan vmalloc Origins");
+	rc |= add_marker(KMSAN_MODULES_SHADOW_START, KMSAN_MODULES_SHADOW_END, "Kmsan Modules Shadow");
+	rc |= add_marker(KMSAN_MODULES_ORIGIN_START, KMSAN_MODULES_ORIGIN_END, "Kmsan Modules Origins");
+#endif
+#ifdef CONFIG_KASAN
+	rc |= add_marker(KASAN_SHADOW_START, KASAN_SHADOW_END, "Kasan Shadow");
+#endif
+	if (rc)
+		goto error;
+	sort(&markers[1], markers_cnt - 1, sizeof(*markers), ptdump_cmp, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_PTDUMP_DEBUGFS
 	debugfs_create_file("kernel_page_tables", 0400, NULL, NULL, &ptdump_fops);
 #endif /* CONFIG_PTDUMP_DEBUGFS */
 	return 0;
+<<<<<<< HEAD
+=======
+error:
+	kvfree(markers);
+	return -ENOMEM;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 device_initcall(pt_dump_init);

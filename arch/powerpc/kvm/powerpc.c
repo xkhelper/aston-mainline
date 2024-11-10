@@ -1938,11 +1938,19 @@ static int kvm_vcpu_ioctl_enable_cap(struct kvm_vcpu *vcpu,
 
 		r = -EBADF;
 		f = fdget(cap->args[0]);
+<<<<<<< HEAD
 		if (!f.file)
 			break;
 
 		r = -EPERM;
 		dev = kvm_device_from_filp(f.file);
+=======
+		if (!fd_file(f))
+			break;
+
+		r = -EPERM;
+		dev = kvm_device_from_filp(fd_file(f));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (dev)
 			r = kvmppc_mpic_connect_vcpu(dev, vcpu, cap->args[1]);
 
@@ -1957,11 +1965,19 @@ static int kvm_vcpu_ioctl_enable_cap(struct kvm_vcpu *vcpu,
 
 		r = -EBADF;
 		f = fdget(cap->args[0]);
+<<<<<<< HEAD
 		if (!f.file)
 			break;
 
 		r = -EPERM;
 		dev = kvm_device_from_filp(f.file);
+=======
+		if (!fd_file(f))
+			break;
+
+		r = -EPERM;
+		dev = kvm_device_from_filp(fd_file(f));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (dev) {
 			if (xics_on_xive())
 				r = kvmppc_xive_connect_vcpu(dev, vcpu, cap->args[1]);
@@ -1980,7 +1996,11 @@ static int kvm_vcpu_ioctl_enable_cap(struct kvm_vcpu *vcpu,
 
 		r = -EBADF;
 		f = fdget(cap->args[0]);
+<<<<<<< HEAD
 		if (!f.file)
+=======
+		if (!fd_file(f))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 
 		r = -ENXIO;
@@ -1990,7 +2010,11 @@ static int kvm_vcpu_ioctl_enable_cap(struct kvm_vcpu *vcpu,
 		}
 
 		r = -EPERM;
+<<<<<<< HEAD
 		dev = kvm_device_from_filp(f.file);
+=======
+		dev = kvm_device_from_filp(fd_file(f));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (dev)
 			r = kvmppc_xive_native_connect_vcpu(dev, vcpu,
 							    cap->args[1]);

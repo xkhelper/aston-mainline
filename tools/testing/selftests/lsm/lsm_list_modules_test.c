@@ -128,6 +128,12 @@ TEST(correct_lsm_list_modules)
 		case LSM_ID_EVM:
 			name = "evm";
 			break;
+<<<<<<< HEAD
+=======
+		case LSM_ID_IPE:
+			name = "ipe";
+			break;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		default:
 			name = "INVALID";
 			break;

@@ -12,7 +12,11 @@
 
 #include <drm/drm_print.h>
 #include <drm/drm_syncobj.h>
+<<<<<<< HEAD
 #include <drm/xe_drm.h>
+=======
+#include <uapi/drm/xe_drm.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "xe_device_types.h"
 #include "xe_exec_queue.h"
@@ -54,11 +58,20 @@ static struct xe_user_fence *user_fence_create(struct xe_device *xe, u64 addr,
 {
 	struct xe_user_fence *ufence;
 	u64 __user *ptr = u64_to_user_ptr(addr);
+<<<<<<< HEAD
 
 	if (!access_ok(ptr, sizeof(*ptr)))
 		return ERR_PTR(-EFAULT);
 
 	ufence = kmalloc(sizeof(*ufence), GFP_KERNEL);
+=======
+	u64 __maybe_unused prefetch_val;
+
+	if (get_user(prefetch_val, ptr))
+		return ERR_PTR(-EFAULT);
+
+	ufence = kzalloc(sizeof(*ufence), GFP_KERNEL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ufence)
 		return ERR_PTR(-ENOMEM);
 
@@ -204,6 +217,7 @@ int xe_sync_entry_parse(struct xe_device *xe, struct xe_file *xef,
 	return 0;
 }
 
+<<<<<<< HEAD
 int xe_sync_entry_wait(struct xe_sync_entry *sync)
 {
 	if (sync->fence)
@@ -224,6 +238,13 @@ int xe_sync_entry_add_deps(struct xe_sync_entry *sync, struct xe_sched_job *job)
 			return err;
 		}
 	}
+=======
+int xe_sync_entry_add_deps(struct xe_sync_entry *sync, struct xe_sched_job *job)
+{
+	if (sync->fence)
+		return  drm_sched_job_add_dependency(&job->drm,
+						     dma_fence_get(sync->fence));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -264,10 +285,15 @@ void xe_sync_entry_cleanup(struct xe_sync_entry *sync)
 {
 	if (sync->syncobj)
 		drm_syncobj_put(sync->syncobj);
+<<<<<<< HEAD
 	if (sync->fence)
 		dma_fence_put(sync->fence);
 	if (sync->chain_fence)
 		dma_fence_chain_free(sync->chain_fence);
+=======
+	dma_fence_put(sync->fence);
+	dma_fence_chain_free(sync->chain_fence);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (sync->ufence)
 		user_fence_put(sync->ufence);
 }

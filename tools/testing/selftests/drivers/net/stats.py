@@ -1,10 +1,20 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: GPL-2.0
 
+<<<<<<< HEAD
 from lib.py import ksft_run, ksft_exit, ksft_pr
 from lib.py import ksft_ge, ksft_eq, ksft_in, ksft_true, ksft_raises, KsftSkipEx, KsftXfailEx
 from lib.py import EthtoolFamily, NetdevFamily, RtnlFamily, NlError
 from lib.py import NetDrvEnv
+=======
+import errno
+from lib.py import ksft_run, ksft_exit, ksft_pr
+from lib.py import ksft_ge, ksft_eq, ksft_in, ksft_true, ksft_raises, KsftSkipEx, KsftXfailEx
+from lib.py import ksft_disruptive
+from lib.py import EthtoolFamily, NetdevFamily, RtnlFamily, NlError
+from lib.py import NetDrvEnv
+from lib.py import ip, defer
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 ethnl = EthtoolFamily()
 netfam = NetdevFamily()
@@ -17,7 +27,11 @@ def check_pause(cfg) -> None:
     try:
         ethnl.pause_get({"header": {"dev-index": cfg.ifindex}})
     except NlError as e:
+<<<<<<< HEAD
         if e.error == 95:
+=======
+        if e.error == errno.EOPNOTSUPP:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
             raise KsftXfailEx("pause not supported by the device")
         raise
 
@@ -32,7 +46,11 @@ def check_fec(cfg) -> None:
     try:
         ethnl.fec_get({"header": {"dev-index": cfg.ifindex}})
     except NlError as e:
+<<<<<<< HEAD
         if e.error == 95:
+=======
+        if e.error == errno.EOPNOTSUPP:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
             raise KsftXfailEx("FEC not supported by the device")
         raise
 
@@ -117,7 +135,11 @@ def qstat_by_ifindex(cfg) -> None:
     # loopback has no stats
     with ksft_raises(NlError) as cm:
         netfam.qstats_get({"ifindex": 1}, dump=True)
+<<<<<<< HEAD
     ksft_eq(cm.exception.nl_msg.error, -95)
+=======
+    ksft_eq(cm.exception.nl_msg.error, -errno.EOPNOTSUPP)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     ksft_eq(cm.exception.nl_msg.extack['bad-attr'], '.ifindex')
 
     # Try to get stats for lowest unused ifindex but not 0
@@ -133,9 +155,37 @@ def qstat_by_ifindex(cfg) -> None:
     ksft_eq(cm.exception.nl_msg.extack['bad-attr'], '.ifindex')
 
 
+<<<<<<< HEAD
 def main() -> None:
     with NetDrvEnv(__file__) as cfg:
         ksft_run([check_pause, check_fec, pkt_byte_sum, qstat_by_ifindex],
+=======
+@ksft_disruptive
+def check_down(cfg) -> None:
+    try:
+        qstat = netfam.qstats_get({"ifindex": cfg.ifindex}, dump=True)[0]
+    except NlError as e:
+        if e.error == errno.EOPNOTSUPP:
+            raise KsftSkipEx("qstats not supported by the device")
+        raise
+
+    ip(f"link set dev {cfg.dev['ifname']} down")
+    defer(ip, f"link set dev {cfg.dev['ifname']} up")
+
+    qstat2 = netfam.qstats_get({"ifindex": cfg.ifindex}, dump=True)[0]
+    for k, v in qstat.items():
+        ksft_ge(qstat2[k], qstat[k], comment=f"{k} went backwards on device down")
+
+    # exercise per-queue API to make sure that "device down" state
+    # is handled correctly and doesn't crash
+    netfam.qstats_get({"ifindex": cfg.ifindex, "scope": "queue"}, dump=True)
+
+
+def main() -> None:
+    with NetDrvEnv(__file__) as cfg:
+        ksft_run([check_pause, check_fec, pkt_byte_sum, qstat_by_ifindex,
+                  check_down],
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
                  args=(cfg, ))
     ksft_exit()
 

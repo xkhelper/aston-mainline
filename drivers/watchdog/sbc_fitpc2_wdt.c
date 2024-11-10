@@ -181,7 +181,10 @@ static int fitpc2_wdt_release(struct inode *inode, struct file *file)
 
 static const struct file_operations fitpc2_wdt_fops = {
 	.owner		= THIS_MODULE,
+<<<<<<< HEAD
 	.llseek		= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.write		= fitpc2_wdt_write,
 	.unlocked_ioctl	= fitpc2_wdt_ioctl,
 	.compat_ioctl	= compat_ptr_ioctl,

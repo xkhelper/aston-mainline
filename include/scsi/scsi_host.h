@@ -677,7 +677,10 @@ struct Scsi_Host {
 	/*
 	 * Optional work queue to be utilized by the transport
 	 */
+<<<<<<< HEAD
 	char work_q_name[20];
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct workqueue_struct *work_q;
 
 	/*

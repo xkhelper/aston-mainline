@@ -348,7 +348,11 @@ static int regcache_maple_init(struct regmap *map)
 	int ret;
 	int range_start;
 
+<<<<<<< HEAD
 	mt = kmalloc(sizeof(*mt), GFP_KERNEL);
+=======
+	mt = kmalloc(sizeof(*mt), map->alloc_flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!mt)
 		return -ENOMEM;
 	map->cache = mt;

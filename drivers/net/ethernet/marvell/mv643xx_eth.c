@@ -2802,7 +2802,11 @@ port_err:
 static int mv643xx_eth_shared_of_probe(struct platform_device *pdev)
 {
 	struct mv643xx_eth_shared_platform_data *pd;
+<<<<<<< HEAD
 	struct device_node *pnp, *np = pdev->dev.of_node;
+=======
+	struct device_node *np = pdev->dev.of_node;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	/* bail out if not registered from DT */
@@ -2816,10 +2820,16 @@ static int mv643xx_eth_shared_of_probe(struct platform_device *pdev)
 
 	mv643xx_eth_property(np, "tx-checksum-limit", pd->tx_csum_limit);
 
+<<<<<<< HEAD
 	for_each_available_child_of_node(np, pnp) {
 		ret = mv643xx_eth_shared_of_add_port(pdev, pnp);
 		if (ret) {
 			of_node_put(pnp);
+=======
+	for_each_available_child_of_node_scoped(np, pnp) {
+		ret = mv643xx_eth_shared_of_add_port(pdev, pnp);
+		if (ret) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			mv643xx_eth_shared_of_remove();
 			return ret;
 		}

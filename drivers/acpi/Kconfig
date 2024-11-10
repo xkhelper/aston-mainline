@@ -451,7 +451,11 @@ config ACPI_HED
 
 config ACPI_BGRT
 	bool "Boottime Graphics Resource Table support"
+<<<<<<< HEAD
 	depends on EFI && (X86 || ARM64)
+=======
+	depends on EFI && (X86 || ARM64 || LOONGARCH)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  This driver adds support for exposing the ACPI Boottime Graphics
 	  Resource Table, which allows the operating system to obtain

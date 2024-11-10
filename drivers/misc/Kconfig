@@ -104,6 +104,19 @@ config PHANTOM
 	  If you choose to build module, its name will be phantom. If unsure,
 	  say N here.
 
+<<<<<<< HEAD
+=======
+config RPMB
+	tristate "RPMB partition interface"
+	depends on MMC
+	help
+	  Unified RPMB unit interface for RPMB capable devices such as eMMC and
+	  UFS. Provides interface for in-kernel security controllers to access
+	  RPMB unit.
+
+	  If unsure, select N.
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config TIFM_CORE
 	tristate "TI Flash Media interface support"
 	depends on PCI

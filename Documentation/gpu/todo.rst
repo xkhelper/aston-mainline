@@ -37,7 +37,11 @@ Audit each individual driver, make sure it'll work with the generic
 implementation (there's lots of outdated locking leftovers in various
 implementations), and then remove it.
 
+<<<<<<< HEAD
 Contact: Daniel Vetter, respective driver maintainers
+=======
+Contact: Simona Vetter, respective driver maintainers
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Level: Intermediate
 
@@ -61,7 +65,11 @@ do by directly using the new atomic helper driver callbacks.
   .. [2] https://lwn.net/Articles/653071/
   .. [3] https://lwn.net/Articles/653466/
 
+<<<<<<< HEAD
 Contact: Daniel Vetter, respective driver maintainers
+=======
+Contact: Simona Vetter, respective driver maintainers
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Level: Advanced
 
@@ -75,7 +83,11 @@ helper should also be moved from drm_plane_helper.c to the atomic helpers, to
 avoid confusion - the other helpers in that file are all deprecated legacy
 helpers.
 
+<<<<<<< HEAD
 Contact: Ville Syrjälä, Daniel Vetter, driver maintainers
+=======
+Contact: Ville Syrjälä, Simona Vetter, driver maintainers
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Level: Advanced
 
@@ -97,7 +109,11 @@ with the current helpers:
 - Then we could go through all the drivers and remove the more-or-less confused
   checks for plane_state->fb and plane_state->crtc.
 
+<<<<<<< HEAD
 Contact: Daniel Vetter
+=======
+Contact: Simona Vetter
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Level: Advanced
 
@@ -116,7 +132,11 @@ Somewhat related is the legacy_cursor_update hack, which should be replaced with
 the new atomic_async_check/commit functionality in the helpers in drivers that
 still look at that flag.
 
+<<<<<<< HEAD
 Contact: Daniel Vetter, respective driver maintainers
+=======
+Contact: Simona Vetter, respective driver maintainers
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Level: Advanced
 
@@ -169,7 +189,11 @@ interfaces to fix these issues:
   ``_helper_funcs`` since they are not part of the core ABI. There's a
   ``FIXME`` comment in the kerneldoc for each such case in ``drm_crtc.h``.
 
+<<<<<<< HEAD
 Contact: Daniel Vetter
+=======
+Contact: Simona Vetter
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Level: Intermediate
 
@@ -194,7 +218,11 @@ performance-critical drivers it might also be better to go with a more
 fine-grained per-buffer object and per-context lockings scheme. Currently only
 the ``msm`` and `i915` drivers use ``struct_mutex``.
 
+<<<<<<< HEAD
 Contact: Daniel Vetter, respective driver maintainers
+=======
+Contact: Simona Vetter, respective driver maintainers
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Level: Advanced
 
@@ -251,7 +279,11 @@ being rewritten without dependencies on the fbdev module. Some of the
 helpers could further benefit from using struct iosys_map instead of
 raw pointers.
 
+<<<<<<< HEAD
 Contact: Thomas Zimmermann <tzimmermann@suse.de>, Daniel Vetter
+=======
+Contact: Thomas Zimmermann <tzimmermann@suse.de>, Simona Vetter
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Level: Advanced
 
@@ -297,7 +329,11 @@ Various hold-ups:
   version of the varios drm_gem_fb_create functions. Maybe called
   drm_gem_fb_create/_with_dirty/_with_funcs as needed.
 
+<<<<<<< HEAD
 Contact: Daniel Vetter
+=======
+Contact: Simona Vetter
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Level: Intermediate
 
@@ -329,7 +365,11 @@ everything after it has done the write-protect/mkwrite trickery:
 
 Might be good to also have some igt testcases for this.
 
+<<<<<<< HEAD
 Contact: Daniel Vetter, Noralf Tronnes
+=======
+Contact: Simona Vetter, Noralf Tronnes
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Level: Advanced
 
@@ -359,7 +399,11 @@ between setting up the &drm_driver structure and calling drm_dev_register().
 
 - Once all drivers are converted, remove the load/unload callbacks.
 
+<<<<<<< HEAD
 Contact: Daniel Vetter
+=======
+Contact: Simona Vetter
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Level: Intermediate
 
@@ -422,7 +466,11 @@ The task is to use struct iosys_map where it makes sense.
 * TTM might benefit from using struct iosys_map internally.
 * Framebuffer copying and blitting helpers should operate on struct iosys_map.
 
+<<<<<<< HEAD
 Contact: Thomas Zimmermann <tzimmermann@suse.de>, Christian König, Daniel Vetter
+=======
+Contact: Thomas Zimmermann <tzimmermann@suse.de>, Christian König, Simona Vetter
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Level: Intermediate
 
@@ -475,6 +523,7 @@ Remove disable/unprepare in remove/shutdown in panel-simple and panel-edp
 As of commit d2aacaf07395 ("drm/panel: Check for already prepared/enabled in
 drm_panel"), we have a check in the drm_panel core to make sure nobody
 double-calls prepare/enable/disable/unprepare. Eventually that should probably
+<<<<<<< HEAD
 be turned into a WARN_ON() or somehow made louder, but right now we actually
 expect it to trigger and so we don't want it to be too loud.
 
@@ -494,6 +543,24 @@ disable/unprepare from those panels. Alternatively, this TODO item could be
 removed by convincing stakeholders that those calls are fine and downgrading
 the error message in drm_panel_disable() / drm_panel_unprepare() to a
 debug-level message.
+=======
+be turned into a WARN_ON() or somehow made louder.
+
+At the moment, we expect that we may still encounter the warnings in the
+drm_panel core when using panel-simple and panel-edp. Since those panel
+drivers are used with a lot of different DRM modeset drivers they still
+make an extra effort to disable/unprepare the panel themsevles at shutdown
+time. Specifically we could still encounter those warnings if the panel
+driver gets shutdown() _before_ the DRM modeset driver and the DRM modeset
+driver properly calls drm_atomic_helper_shutdown() in its own shutdown()
+callback. Warnings could be avoided in such a case by using something like
+device links to ensure that the panel gets shutdown() after the DRM modeset
+driver.
+
+Once all DRM modeset drivers are known to shutdown properly, the extra
+calls to disable/unprepare in remove/shutdown in panel-simple and panel-edp
+should be removed and this TODO item marked complete.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Contact: Douglas Anderson <dianders@chromium.org>
 
@@ -561,7 +628,11 @@ This is a really varied tasks with lots of little bits and pieces:
   <https://lore.kernel.org/lkml/1446217392-11981-1-git-send-email-alexandru.murtaza@intel.com/>`_
   for some example code that could be reused.
 
+<<<<<<< HEAD
 Contact: Daniel Vetter
+=======
+Contact: Simona Vetter
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Level: Advanced
 
@@ -590,7 +661,11 @@ There's a bunch of issues with it:
   this (together with the drm_minor->drm_device move) would allow us to remove
   debugfs_init.
 
+<<<<<<< HEAD
 Contact: Daniel Vetter
+=======
+Contact: Simona Vetter
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Level: Intermediate
 
@@ -611,7 +686,11 @@ Both these problems can be solved by switching over to drmm_kzalloc(), and the
 various convenience wrappers provided, e.g. drmm_crtc_alloc_with_planes(),
 drmm_universal_plane_alloc(), ... and so on.
 
+<<<<<<< HEAD
 Contact: Daniel Vetter
+=======
+Contact: Simona Vetter
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Level: Intermediate
 
@@ -631,7 +710,11 @@ cache is also tied to &drm_gem_object.import_attach. Meanwhile we paper over
 this problem for USB devices by fishing out the USB host controller device, as
 long as that supports DMA. Otherwise importing can still needlessly fail.
 
+<<<<<<< HEAD
 Contact: Thomas Zimmermann <tzimmermann@suse.de>, Daniel Vetter
+=======
+Contact: Thomas Zimmermann <tzimmermann@suse.de>, Simona Vetter
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Level: Advanced
 
@@ -712,7 +795,11 @@ Plan to fix this:
 2. In all, only look at one of the three status bits set by the above helpers.
 3. Remove the other two status bits.
 
+<<<<<<< HEAD
 Contact: Daniel Vetter
+=======
+Contact: Simona Vetter
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Level: Intermediate
 

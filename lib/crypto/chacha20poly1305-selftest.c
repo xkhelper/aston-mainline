@@ -7,7 +7,11 @@
 #include <crypto/chacha.h>
 #include <crypto/poly1305.h>
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/bug.h>
 #include <linux/init.h>
 #include <linux/mm.h>

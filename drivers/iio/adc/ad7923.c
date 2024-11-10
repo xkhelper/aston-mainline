@@ -361,6 +361,7 @@ static int ad7923_probe(struct spi_device *spi)
 }
 
 static const struct spi_device_id ad7923_id[] = {
+<<<<<<< HEAD
 	{"ad7904", AD7904},
 	{"ad7914", AD7914},
 	{"ad7923", AD7924},
@@ -369,6 +370,16 @@ static const struct spi_device_id ad7923_id[] = {
 	{"ad7918", AD7918},
 	{"ad7928", AD7928},
 	{}
+=======
+	{ "ad7904", AD7904 },
+	{ "ad7914", AD7914 },
+	{ "ad7923", AD7924 },
+	{ "ad7924", AD7924 },
+	{ "ad7908", AD7908 },
+	{ "ad7918", AD7918 },
+	{ "ad7928", AD7928 },
+	{ }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(spi, ad7923_id);
 
@@ -380,7 +391,11 @@ static const struct of_device_id ad7923_of_match[] = {
 	{ .compatible = "adi,ad7908", },
 	{ .compatible = "adi,ad7918", },
 	{ .compatible = "adi,ad7928", },
+<<<<<<< HEAD
 	{ },
+=======
+	{ }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(of, ad7923_of_match);
 

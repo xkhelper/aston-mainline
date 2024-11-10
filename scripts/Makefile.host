@@ -160,3 +160,11 @@ $(host-rust): $(obj)/%: $(src)/%.rs FORCE
 
 targets += $(host-csingle) $(host-cmulti) $(host-cobjs) \
 	   $(host-cxxmulti) $(host-cxxobjs) $(host-rust)
+<<<<<<< HEAD
+=======
+
+# %.lex.o <- %.lex.c <- %.l
+# %.tab.o <- %.tab.[ch] <- %.y
+targets += $(call intermediate_targets, .lex.o, .lex.c) \
+           $(call intermediate_targets, .tab.o, .tab.c .tab.h)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

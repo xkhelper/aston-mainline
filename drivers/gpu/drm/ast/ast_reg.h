@@ -37,6 +37,15 @@
 #define AST_IO_VGACRCB_HWC_16BPP	BIT(0) /* set: ARGB4444, cleared: 2bpp palette */
 #define AST_IO_VGACRCB_HWC_ENABLED	BIT(1)
 
+<<<<<<< HEAD
+=======
+#define AST_IO_VGACRD1_MCU_FW_EXECUTING	BIT(5)
+#define AST_IO_VGACRD7_EDID_VALID_FLAG	BIT(0)
+#define AST_IO_VGACRDC_LINK_SUCCESS	BIT(0)
+#define AST_IO_VGACRDF_HPD		BIT(0)
+#define AST_IO_VGACRE5_EDID_READ_DONE	BIT(0)
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define AST_IO_VGAIR1_R			(0x5A)
 #define AST_IO_VGAIR1_VREFRESH		BIT(3)
 
@@ -67,6 +76,7 @@
 #define AST_DP_VIDEO_ENABLE		BIT(0)
 
 /*
+<<<<<<< HEAD
  * CRD1[b5]: DP MCU FW is executing
  * CRDC[b0]: DP link success
  * CRDF[b0]: DP HPD
@@ -79,6 +89,8 @@
 #define ASTDP_HOST_EDID_READ_DONE_MASK	GENMASK(0, 0)
 
 /*
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * CRDF[b4]: Mirror of AST_DP_VIDEO_ENABLE
  * Precondition:	A. ~AST_DP_PHY_SLEEP  &&
  *			B. DP_HPD &&
@@ -86,10 +98,13 @@
  */
 #define ASTDP_MIRROR_VIDEO_ENABLE	BIT(4)
 
+<<<<<<< HEAD
 #define ASTDP_EDID_READ_POINTER_MASK	GENMASK(7, 0)
 #define ASTDP_EDID_VALID_FLAG_MASK	GENMASK(0, 0)
 #define ASTDP_EDID_READ_DATA_MASK	GENMASK(7, 0)
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * ASTDP setmode registers:
  * CRE0[7:0]: MISC0 ((0x00: 18-bpp) or (0x20: 24-bpp)

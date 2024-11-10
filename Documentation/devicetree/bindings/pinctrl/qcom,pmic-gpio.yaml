@@ -425,6 +425,10 @@ patternProperties:
         additionalProperties: false
 
   "-hog(-[0-9]+)?$":
+<<<<<<< HEAD
+=======
+    type: object
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     required:
       - gpio-hog
 

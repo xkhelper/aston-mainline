@@ -512,16 +512,23 @@ static int mmphw_probe(struct platform_device *pdev)
 	}
 
 	/* get clock */
+<<<<<<< HEAD
 	ctrl->clk = devm_clk_get(ctrl->dev, mi->clk_name);
+=======
+	ctrl->clk = devm_clk_get_enabled(ctrl->dev, mi->clk_name);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(ctrl->clk)) {
 		ret = PTR_ERR(ctrl->clk);
 		dev_err_probe(ctrl->dev, ret,
 			      "unable to get clk %s\n", mi->clk_name);
 		goto failed;
 	}
+<<<<<<< HEAD
 	ret = clk_prepare_enable(ctrl->clk);
 	if (ret)
 		goto failed;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* init global regs */
 	ctrl_set_default(ctrl);
@@ -556,7 +563,10 @@ failed_path_init:
 		path_deinit(path_plat);
 	}
 
+<<<<<<< HEAD
 	clk_disable_unprepare(ctrl->clk);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 failed:
 	dev_err(&pdev->dev, "device init failed\n");
 

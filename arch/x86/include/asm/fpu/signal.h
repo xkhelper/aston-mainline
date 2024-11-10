@@ -29,7 +29,11 @@ fpu__alloc_mathframe(unsigned long sp, int ia32_frame,
 
 unsigned long fpu__get_fpstate_size(void);
 
+<<<<<<< HEAD
 extern bool copy_fpstate_to_sigframe(void __user *buf, void __user *fp, int size);
+=======
+extern bool copy_fpstate_to_sigframe(void __user *buf, void __user *fp, int size, u32 pkru);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void fpu__clear_user_states(struct fpu *fpu);
 extern bool fpu__restore_sig(void __user *buf, int ia32_frame);
 

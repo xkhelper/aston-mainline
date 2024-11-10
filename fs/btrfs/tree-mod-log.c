@@ -170,7 +170,11 @@ static noinline int tree_mod_log_insert(struct btrfs_fs_info *fs_info,
  * this until all tree mod log insertions are recorded in the rb tree and then
  * write unlock fs_info::tree_mod_log_lock.
  */
+<<<<<<< HEAD
 static bool tree_mod_dont_log(struct btrfs_fs_info *fs_info, struct extent_buffer *eb)
+=======
+static bool tree_mod_dont_log(struct btrfs_fs_info *fs_info, const struct extent_buffer *eb)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (!test_bit(BTRFS_FS_TREE_MOD_LOG_USERS, &fs_info->flags))
 		return true;
@@ -188,7 +192,11 @@ static bool tree_mod_dont_log(struct btrfs_fs_info *fs_info, struct extent_buffe
 
 /* Similar to tree_mod_dont_log, but doesn't acquire any locks. */
 static bool tree_mod_need_log(const struct btrfs_fs_info *fs_info,
+<<<<<<< HEAD
 				    struct extent_buffer *eb)
+=======
+			      const struct extent_buffer *eb)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (!test_bit(BTRFS_FS_TREE_MOD_LOG_USERS, &fs_info->flags))
 		return false;
@@ -198,7 +206,11 @@ static bool tree_mod_need_log(const struct btrfs_fs_info *fs_info,
 	return true;
 }
 
+<<<<<<< HEAD
 static struct tree_mod_elem *alloc_tree_mod_elem(struct extent_buffer *eb,
+=======
+static struct tree_mod_elem *alloc_tree_mod_elem(const struct extent_buffer *eb,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						 int slot,
 						 enum btrfs_mod_log_op op)
 {
@@ -221,7 +233,11 @@ static struct tree_mod_elem *alloc_tree_mod_elem(struct extent_buffer *eb,
 	return tm;
 }
 
+<<<<<<< HEAD
 int btrfs_tree_mod_log_insert_key(struct extent_buffer *eb, int slot,
+=======
+int btrfs_tree_mod_log_insert_key(const struct extent_buffer *eb, int slot,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				  enum btrfs_mod_log_op op)
 {
 	struct tree_mod_elem *tm;
@@ -258,7 +274,11 @@ out_unlock:
 	return ret;
 }
 
+<<<<<<< HEAD
 static struct tree_mod_elem *tree_mod_log_alloc_move(struct extent_buffer *eb,
+=======
+static struct tree_mod_elem *tree_mod_log_alloc_move(const struct extent_buffer *eb,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						     int dst_slot, int src_slot,
 						     int nr_items)
 {
@@ -278,7 +298,11 @@ static struct tree_mod_elem *tree_mod_log_alloc_move(struct extent_buffer *eb,
 	return tm;
 }
 
+<<<<<<< HEAD
 int btrfs_tree_mod_log_insert_move(struct extent_buffer *eb,
+=======
+int btrfs_tree_mod_log_insert_move(const struct extent_buffer *eb,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   int dst_slot, int src_slot,
 				   int nr_items)
 {
@@ -535,7 +559,11 @@ static struct tree_mod_elem *tree_mod_log_search(struct btrfs_fs_info *fs_info,
 }
 
 int btrfs_tree_mod_log_eb_copy(struct extent_buffer *dst,
+<<<<<<< HEAD
 			       struct extent_buffer *src,
+=======
+			       const struct extent_buffer *src,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       unsigned long dst_offset,
 			       unsigned long src_offset,
 			       int nr_items)

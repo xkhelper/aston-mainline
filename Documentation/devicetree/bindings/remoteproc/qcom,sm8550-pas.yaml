@@ -16,6 +16,10 @@ description:
 properties:
   compatible:
     enum:
+<<<<<<< HEAD
+=======
+      - qcom,sdx75-mpss-pas
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       - qcom,sm8550-adsp-pas
       - qcom,sm8550-cdsp-pas
       - qcom,sm8550-mpss-pas
@@ -113,6 +117,10 @@ allOf:
       properties:
         compatible:
           enum:
+<<<<<<< HEAD
+=======
+            - qcom,sdx75-mpss-pas
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
             - qcom,sm8650-mpss-pas
     then:
       properties:
@@ -146,6 +154,10 @@ allOf:
       properties:
         compatible:
           enum:
+<<<<<<< HEAD
+=======
+            - qcom,sdx75-mpss-pas
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
             - qcom,sm8550-mpss-pas
             - qcom,sm8650-mpss-pas
     then:

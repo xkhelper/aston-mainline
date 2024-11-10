@@ -173,8 +173,13 @@ static void tef6862_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id tef6862_id[] = {
+<<<<<<< HEAD
 	{DRIVER_NAME, 0},
 	{},
+=======
+	{ DRIVER_NAME },
+	{}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 MODULE_DEVICE_TABLE(i2c, tef6862_id);

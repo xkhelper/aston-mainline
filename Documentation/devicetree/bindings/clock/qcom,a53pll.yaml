@@ -21,6 +21,10 @@ properties:
       - qcom,ipq6018-a53pll
       - qcom,ipq8074-a53pll
       - qcom,ipq9574-a73pll
+<<<<<<< HEAD
+=======
+      - qcom,msm8226-a7pll
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       - qcom,msm8916-a53pll
       - qcom,msm8939-a53pll
 
@@ -40,6 +44,12 @@ properties:
 
   operating-points-v2: true
 
+<<<<<<< HEAD
+=======
+  opp-table:
+    type: object
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 required:
   - compatible
   - reg

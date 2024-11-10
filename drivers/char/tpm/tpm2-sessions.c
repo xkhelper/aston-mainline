@@ -71,7 +71,11 @@
 #include "tpm.h"
 #include <linux/random.h>
 #include <linux/scatterlist.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <crypto/kpp.h>
 #include <crypto/ecdh.h>
 #include <crypto/hash.h>
@@ -333,6 +337,12 @@ void tpm_buf_append_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf,
 	}
 
 #ifdef CONFIG_TCG_TPM2_HMAC
+<<<<<<< HEAD
+=======
+	/* The first write to /dev/tpm{rm0} will flush the session. */
+	attributes |= TPM2_SA_CONTINUE_SESSION;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * The Architecture Guide requires us to strip trailing zeros
 	 * before computing the HMAC
@@ -484,7 +494,12 @@ static void tpm2_KDFe(u8 z[EC_PT_SZ], const char *str, u8 *pt_u, u8 *pt_v,
 	sha256_final(&sctx, out);
 }
 
+<<<<<<< HEAD
 static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip)
+=======
+static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip,
+				struct tpm2_auth *auth)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct crypto_kpp *kpp;
 	struct kpp_request *req;
@@ -543,7 +558,11 @@ static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip)
 	sg_set_buf(&s[0], chip->null_ec_key_x, EC_PT_SZ);
 	sg_set_buf(&s[1], chip->null_ec_key_y, EC_PT_SZ);
 	kpp_request_set_input(req, s, EC_PT_SZ*2);
+<<<<<<< HEAD
 	sg_init_one(d, chip->auth->salt, EC_PT_SZ);
+=======
+	sg_init_one(d, auth->salt, EC_PT_SZ);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kpp_request_set_output(req, d, EC_PT_SZ);
 	crypto_kpp_compute_shared_secret(req);
 	kpp_request_free(req);
@@ -554,8 +573,12 @@ static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip)
 	 * This works because KDFe fully consumes the secret before it
 	 * writes the salt
 	 */
+<<<<<<< HEAD
 	tpm2_KDFe(chip->auth->salt, "SECRET", x, chip->null_ec_key_x,
 		  chip->auth->salt);
+=======
+	tpm2_KDFe(auth->salt, "SECRET", x, chip->null_ec_key_x, auth->salt);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
  out:
 	crypto_free_kpp(kpp);
@@ -853,7 +876,13 @@ int tpm_buf_check_hmac_response(struct tpm_chip *chip, struct tpm_buf *buf,
 		if (rc)
 			/* manually close the session if it wasn't consumed */
 			tpm2_flush_context(chip, auth->handle);
+<<<<<<< HEAD
 		memzero_explicit(auth, sizeof(*auth));
+=======
+
+		kfree_sensitive(auth);
+		chip->auth = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		/* reset for next use  */
 		auth->session = TPM_HEADER_SIZE;
@@ -881,7 +910,12 @@ void tpm2_end_auth_session(struct tpm_chip *chip)
 		return;
 
 	tpm2_flush_context(chip, auth->handle);
+<<<<<<< HEAD
 	memzero_explicit(auth, sizeof(*auth));
+=======
+	kfree_sensitive(auth);
+	chip->auth = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(tpm2_end_auth_session);
 
@@ -915,6 +949,7 @@ static int tpm2_parse_start_auth_session(struct tpm2_auth *auth,
 
 static int tpm2_load_null(struct tpm_chip *chip, u32 *null_key)
 {
+<<<<<<< HEAD
 	int rc;
 	unsigned int offset = 0; /* dummy offset for null seed context */
 	u8 name[SHA256_DIGEST_SIZE + 2];
@@ -942,6 +977,39 @@ static int tpm2_load_null(struct tpm_chip *chip, u32 *null_key)
 	chip->flags |= TPM_CHIP_FLAG_DISABLE;
 
 	return rc;
+=======
+	unsigned int offset = 0; /* dummy offset for null seed context */
+	u8 name[SHA256_DIGEST_SIZE + 2];
+	u32 tmp_null_key;
+	int rc;
+
+	rc = tpm2_load_context(chip, chip->null_key_context, &offset,
+			       &tmp_null_key);
+	if (rc != -EINVAL) {
+		if (!rc)
+			*null_key = tmp_null_key;
+		goto err;
+	}
+
+	/* Try to re-create null key, given the integrity failure: */
+	rc = tpm2_create_primary(chip, TPM2_RH_NULL, &tmp_null_key, name);
+	if (rc)
+		goto err;
+
+	/* Return null key if the name has not been changed: */
+	if (!memcmp(name, chip->null_key_name, sizeof(name))) {
+		*null_key = tmp_null_key;
+		return 0;
+	}
+
+	/* Deduce from the name change TPM interference: */
+	dev_err(&chip->dev, "null key integrity check failed\n");
+	tpm2_flush_context(chip, tmp_null_key);
+	chip->flags |= TPM_CHIP_FLAG_DISABLE;
+
+err:
+	return rc ? -ENODEV : 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -958,6 +1026,7 @@ static int tpm2_load_null(struct tpm_chip *chip, u32 *null_key)
  */
 int tpm2_start_auth_session(struct tpm_chip *chip)
 {
+<<<<<<< HEAD
 	struct tpm_buf buf;
 	struct tpm2_auth *auth = chip->auth;
 	int rc;
@@ -968,6 +1037,22 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
 		return 0;
 	}
 
+=======
+	struct tpm2_auth *auth;
+	struct tpm_buf buf;
+	u32 null_key;
+	int rc;
+
+	if (chip->auth) {
+		dev_warn_once(&chip->dev, "auth session is active\n");
+		return 0;
+	}
+
+	auth = kzalloc(sizeof(*auth), GFP_KERNEL);
+	if (!auth)
+		return -ENOMEM;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rc = tpm2_load_null(chip, &null_key);
 	if (rc)
 		goto out;
@@ -988,7 +1073,11 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
 	tpm_buf_append(&buf, auth->our_nonce, sizeof(auth->our_nonce));
 
 	/* append encrypted salt and squirrel away unencrypted in auth */
+<<<<<<< HEAD
 	tpm_buf_append_salt(&buf, chip);
+=======
+	tpm_buf_append_salt(&buf, chip, auth);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* session type (HMAC, audit or policy) */
 	tpm_buf_append_u8(&buf, TPM2_SE_HMAC);
 
@@ -1010,10 +1099,20 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
 
 	tpm_buf_destroy(&buf);
 
+<<<<<<< HEAD
 	if (rc)
 		goto out;
 
  out:
+=======
+	if (rc == TPM2_RC_SUCCESS) {
+		chip->auth = auth;
+		return 0;
+	}
+
+out:
+	kfree_sensitive(auth);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rc;
 }
 EXPORT_SYMBOL(tpm2_start_auth_session);
@@ -1347,12 +1446,21 @@ static int tpm2_create_null_primary(struct tpm_chip *chip)
  *
  * Derive and context save the null primary and allocate memory in the
  * struct tpm_chip for the authorizations.
+<<<<<<< HEAD
+=======
+ *
+ * Return:
+ * * 0		- OK
+ * * -errno	- A system error
+ * * TPM_RC	- A TPM error
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int tpm2_sessions_init(struct tpm_chip *chip)
 {
 	int rc;
 
 	rc = tpm2_create_null_primary(chip);
+<<<<<<< HEAD
 	if (rc)
 		dev_err(&chip->dev, "TPM: security failed (NULL seed derivation): %d\n", rc);
 
@@ -1362,4 +1470,14 @@ int tpm2_sessions_init(struct tpm_chip *chip)
 
 	return rc;
 }
+=======
+	if (rc) {
+		dev_err(&chip->dev, "null key creation failed with %d\n", rc);
+		return rc;
+	}
+
+	return rc;
+}
+EXPORT_SYMBOL(tpm2_sessions_init);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* CONFIG_TCG_TPM2_HMAC */

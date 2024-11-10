@@ -7,6 +7,7 @@
 #ifndef BITMAP_H
 #define BITMAP_H 1
 
+<<<<<<< HEAD
 #define BITMAP_MAJOR_LO 3
 /* version 4 insists the bitmap is in little-endian order
  * with version 3, it is host-endian which is non-portable
@@ -82,6 +83,9 @@
 
 #define PAGE_BITS (PAGE_SIZE << 3)
 #define PAGE_BIT_SHIFT (PAGE_SHIFT + 3)
+=======
+#define BITMAP_MAGIC 0x6d746962
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 typedef __u16 bitmap_counter_t;
 #define COUNTER_BITS 16
@@ -91,6 +95,7 @@ typedef __u16 bitmap_counter_t;
 #define NEEDED_MASK ((bitmap_counter_t) (1 << (COUNTER_BITS - 1)))
 #define RESYNC_MASK ((bitmap_counter_t) (1 << (COUNTER_BITS - 2)))
 #define COUNTER_MAX ((bitmap_counter_t) RESYNC_MASK - 1)
+<<<<<<< HEAD
 #define NEEDED(x) (((bitmap_counter_t) x) & NEEDED_MASK)
 #define RESYNC(x) (((bitmap_counter_t) x) & RESYNC_MASK)
 #define COUNTER(x) (((bitmap_counter_t) x) & COUNTER_MAX)
@@ -111,6 +116,8 @@ typedef __u16 bitmap_counter_t;
  */
 
 #define BITMAP_MAGIC 0x6d746962
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* use these for bitmap->flags and bitmap->sb->state bit-fields */
 enum bitmap_state {
@@ -152,6 +159,7 @@ typedef struct bitmap_super_s {
  *    devices.  For raid10 it is the size of the array.
  */
 
+<<<<<<< HEAD
 #ifdef __KERNEL__
 
 /* the in-memory bitmap is represented by bitmap_pages */
@@ -283,5 +291,60 @@ static inline bool md_bitmap_enabled(struct bitmap *bitmap)
 }
 
 #endif
+=======
+struct md_bitmap_stats {
+	u64		events_cleared;
+	int		behind_writes;
+	bool		behind_wait;
+
+	unsigned long	missing_pages;
+	unsigned long	file_pages;
+	unsigned long	sync_size;
+	unsigned long	pages;
+	struct file	*file;
+};
+
+struct bitmap_operations {
+	bool (*enabled)(struct mddev *mddev);
+	int (*create)(struct mddev *mddev, int slot);
+	int (*resize)(struct mddev *mddev, sector_t blocks, int chunksize,
+		      bool init);
+
+	int (*load)(struct mddev *mddev);
+	void (*destroy)(struct mddev *mddev);
+	void (*flush)(struct mddev *mddev);
+	void (*write_all)(struct mddev *mddev);
+	void (*dirty_bits)(struct mddev *mddev, unsigned long s,
+			   unsigned long e);
+	void (*unplug)(struct mddev *mddev, bool sync);
+	void (*daemon_work)(struct mddev *mddev);
+	void (*wait_behind_writes)(struct mddev *mddev);
+
+	int (*startwrite)(struct mddev *mddev, sector_t offset,
+			  unsigned long sectors, bool behind);
+	void (*endwrite)(struct mddev *mddev, sector_t offset,
+			 unsigned long sectors, bool success, bool behind);
+	bool (*start_sync)(struct mddev *mddev, sector_t offset,
+			   sector_t *blocks, bool degraded);
+	void (*end_sync)(struct mddev *mddev, sector_t offset, sector_t *blocks);
+	void (*cond_end_sync)(struct mddev *mddev, sector_t sector, bool force);
+	void (*close_sync)(struct mddev *mddev);
+
+	void (*update_sb)(void *data);
+	int (*get_stats)(void *data, struct md_bitmap_stats *stats);
+
+	void (*sync_with_cluster)(struct mddev *mddev,
+				  sector_t old_lo, sector_t old_hi,
+				  sector_t new_lo, sector_t new_hi);
+	void *(*get_from_slot)(struct mddev *mddev, int slot);
+	int (*copy_from_slot)(struct mddev *mddev, int slot, sector_t *lo,
+			      sector_t *hi, bool clear_bits);
+	void (*set_pages)(void *data, unsigned long pages);
+	void (*free)(void *data);
+};
+
+/* the bitmap API */
+void mddev_set_bitmap_ops(struct mddev *mddev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif

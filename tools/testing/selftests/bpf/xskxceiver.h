@@ -55,7 +55,10 @@
 #define XSK_UMEM__LARGE_FRAME_SIZE (3 * 1024)
 #define XSK_UMEM__MAX_FRAME_SIZE (4 * 1024)
 #define XSK_DESC__INVALID_OPTION (0xffff)
+<<<<<<< HEAD
 #define XSK_DESC__MAX_SKB_FRAGS 18
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define HUGEPAGE_SIZE (2 * 1024 * 1024)
 #define PKT_DUMP_NB_TO_PRINT 16
 #define RUN_ALL_TESTS UINT_MAX

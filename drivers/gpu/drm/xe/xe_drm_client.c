@@ -5,7 +5,11 @@
 #include "xe_drm_client.h"
 
 #include <drm/drm_print.h>
+<<<<<<< HEAD
 #include <drm/xe_drm.h>
+=======
+#include <uapi/drm/xe_drm.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/kernel.h>
 #include <linux/slab.h>
 #include <linux/types.h>
@@ -168,6 +172,7 @@ static void bo_meminfo(struct xe_bo *bo,
 		       struct drm_memory_stats stats[TTM_NUM_MEM_TYPES])
 {
 	u64 sz = bo->size;
+<<<<<<< HEAD
 	u32 mem_type;
 
 	xe_bo_assert_held(bo);
@@ -177,6 +182,12 @@ static void bo_meminfo(struct xe_bo *bo,
 	else
 		mem_type = XE_PL_TT;
 
+=======
+	u32 mem_type = bo->ttm.resource->mem_type;
+
+	xe_bo_assert_held(bo);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (drm_gem_object_is_shared_for_memory_stats(&bo->ttm.base))
 		stats[mem_type].shared += sz;
 	else
@@ -288,8 +299,20 @@ static void show_run_ticks(struct drm_printer *p, struct drm_file *file)
 
 	/* Accumulate all the exec queues from this client */
 	mutex_lock(&xef->exec_queue.lock);
+<<<<<<< HEAD
 	xa_for_each(&xef->exec_queue.xa, i, q)
 		xe_exec_queue_update_run_ticks(q);
+=======
+	xa_for_each(&xef->exec_queue.xa, i, q) {
+		xe_exec_queue_get(q);
+		mutex_unlock(&xef->exec_queue.lock);
+
+		xe_exec_queue_update_run_ticks(q);
+
+		mutex_lock(&xef->exec_queue.lock);
+		xe_exec_queue_put(q);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_unlock(&xef->exec_queue.lock);
 
 	/* Get the total GPU cycles */

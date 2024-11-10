@@ -5,5 +5,12 @@
 ksft_skip=4
 
 [ -e /dev/tpm0 ] || exit $ksft_skip
+<<<<<<< HEAD
 
 python3 -m unittest -v tpm2_tests.SmokeTest
+=======
+read tpm_version < /sys/class/tpm/tpm0/tpm_version_major
+[ "$tpm_version" == 2 ] || exit $ksft_skip
+
+python3 -m unittest -v tpm2_tests.SmokeTest 2>&1
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

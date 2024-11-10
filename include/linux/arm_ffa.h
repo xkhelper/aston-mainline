@@ -73,6 +73,14 @@
 #define FFA_FN64_MEM_PERM_GET		FFA_SMC_64(0x88)
 #define FFA_MEM_PERM_SET		FFA_SMC_32(0x89)
 #define FFA_FN64_MEM_PERM_SET		FFA_SMC_64(0x89)
+<<<<<<< HEAD
+=======
+#define FFA_CONSOLE_LOG			FFA_SMC_32(0x8A)
+#define FFA_PARTITION_INFO_GET_REGS	FFA_SMC_64(0x8B)
+#define FFA_EL3_INTR_HANDLE		FFA_SMC_32(0x8C)
+#define FFA_MSG_SEND_DIRECT_REQ2	FFA_SMC_64(0x8D)
+#define FFA_MSG_SEND_DIRECT_RESP2	FFA_SMC_64(0x8E)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * For some calls it is necessary to use SMC64 to pass or return 64-bit values.
@@ -265,6 +273,14 @@ struct ffa_indirect_msg_hdr {
 	u32 size;
 };
 
+<<<<<<< HEAD
+=======
+/* For use with FFA_MSG_SEND_DIRECT_{REQ,RESP}2 which pass data via registers */
+struct ffa_send_direct_data2 {
+	unsigned long data[14]; /* x4-x17 */
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct ffa_mem_region_addr_range {
 	/* The base IPA of the constituent memory region, aligned to 4 kiB */
 	u64 address;
@@ -426,6 +442,11 @@ struct ffa_msg_ops {
 	int (*sync_send_receive)(struct ffa_device *dev,
 				 struct ffa_send_direct_data *data);
 	int (*indirect_send)(struct ffa_device *dev, void *buf, size_t sz);
+<<<<<<< HEAD
+=======
+	int (*sync_send_receive2)(struct ffa_device *dev, const uuid_t *uuid,
+				  struct ffa_send_direct_data2 *data);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct ffa_mem_ops {

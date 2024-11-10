@@ -839,7 +839,11 @@ static irqreturn_t um_timer(int irq, void *dev)
 	if (get_current()->mm != NULL)
 	{
         /* userspace - relay signal, results in correct userspace timers */
+<<<<<<< HEAD
 		os_alarm_process(get_current()->mm->context.id.u.pid);
+=======
+		os_alarm_process(get_current()->mm->context.id.pid);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	(*timer_clockevent.event_handler)(&timer_clockevent);

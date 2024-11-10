@@ -22,11 +22,16 @@
  *  distribution for more details.
  */
 #include "cgroup-internal.h"
+<<<<<<< HEAD
 
 #include <linux/cpu.h>
 #include <linux/cpumask.h>
 #include <linux/cpuset.h>
 #include <linux/delay.h>
+=======
+#include "cpuset-internal.h"
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/init.h>
 #include <linux/interrupt.h>
 #include <linux/kernel.h>
@@ -40,10 +45,15 @@
 #include <linux/sched/mm.h>
 #include <linux/sched/task.h>
 #include <linux/security.h>
+<<<<<<< HEAD
 #include <linux/spinlock.h>
 #include <linux/oom.h>
 #include <linux/sched/isolation.h>
 #include <linux/cgroup.h>
+=======
+#include <linux/oom.h>
+#include <linux/sched/isolation.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/wait.h>
 #include <linux/workqueue.h>
 
@@ -57,6 +67,7 @@ DEFINE_STATIC_KEY_FALSE(cpusets_enabled_key);
  */
 DEFINE_STATIC_KEY_FALSE(cpusets_insane_config_key);
 
+<<<<<<< HEAD
 /* See "Frequency meter" comments, below. */
 
 struct fmeter {
@@ -81,6 +92,8 @@ enum prs_errcode {
 	PERR_HKEEPING,
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const char * const perr_strings[] = {
 	[PERR_INVCPUS]   = "Invalid cpu list in cpuset.cpus.exclusive",
 	[PERR_INVPARENT] = "Parent is an invalid partition root",
@@ -90,6 +103,7 @@ static const char * const perr_strings[] = {
 	[PERR_HOTPLUG]   = "No cpu available due to hotplug",
 	[PERR_CPUSEMPTY] = "cpuset.cpus and cpuset.cpus.exclusive are empty",
 	[PERR_HKEEPING]  = "partition config conflicts with housekeeping setup",
+<<<<<<< HEAD
 };
 
 struct cpuset {
@@ -217,6 +231,9 @@ struct cpuset {
 struct cpuset_remove_tasks_struct {
 	struct work_struct work;
 	struct cpuset *cs;
+=======
+	[PERR_ACCESS]    = "Enable partition not permitted",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
@@ -229,6 +246,15 @@ static cpumask_var_t	subpartitions_cpus;
  */
 static cpumask_var_t	isolated_cpus;
 
+<<<<<<< HEAD
+=======
+/*
+ * Housekeeping (HK_TYPE_DOMAIN) CPUs at boot
+ */
+static cpumask_var_t	boot_hk_cpus;
+static bool		have_boot_isolcpus;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* List of remote partition root children */
 static struct list_head remote_children;
 
@@ -279,6 +305,7 @@ struct tmpmasks {
 	cpumask_var_t new_cpus;		/* For update_cpumasks_hier() */
 };
 
+<<<<<<< HEAD
 static inline struct cpuset *css_cs(struct cgroup_subsys_state *css)
 {
 	return css ? container_of(css, struct cpuset, css) : NULL;
@@ -295,6 +322,8 @@ static inline struct cpuset *parent_cs(struct cpuset *cs)
 	return css_cs(cs->css.parent);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void inc_dl_tasks_cs(struct task_struct *p)
 {
 	struct cpuset *cs = task_cs(p);
@@ -309,6 +338,7 @@ void dec_dl_tasks_cs(struct task_struct *p)
 	cs->nr_deadline_tasks--;
 }
 
+<<<<<<< HEAD
 /* bits in struct cpuset flags field */
 typedef enum {
 	CS_ONLINE,
@@ -362,6 +392,8 @@ static inline int is_spread_slab(const struct cpuset *cs)
 	return test_bit(CS_SPREAD_SLAB, &cs->flags);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int is_partition_valid(const struct cpuset *cs)
 {
 	return cs->partition_root_state > 0;
@@ -403,6 +435,7 @@ static struct cpuset top_cpuset = {
 	.remote_sibling = LIST_HEAD_INIT(top_cpuset.remote_sibling),
 };
 
+<<<<<<< HEAD
 /**
  * cpuset_for_each_child - traverse online children of a cpuset
  * @child_cs: loop cursor pointing to the current child
@@ -431,6 +464,8 @@ static struct cpuset top_cpuset = {
 	css_for_each_descendant_pre((pos_css), &(root_cs)->css)		\
 		if (is_cpuset_online(((des_cs) = css_cs((pos_css)))))
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * There are two global locks guarding cpuset structures - cpuset_mutex and
  * callback_lock. We also require taking task_lock() when dereferencing a
@@ -484,6 +519,19 @@ void cpuset_unlock(void)
 
 static DEFINE_SPINLOCK(callback_lock);
 
+<<<<<<< HEAD
+=======
+void cpuset_callback_lock_irq(void)
+{
+	spin_lock_irq(&callback_lock);
+}
+
+void cpuset_callback_unlock_irq(void)
+{
+	spin_unlock_irq(&callback_lock);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct workqueue_struct *cpuset_migrate_mm_wq;
 
 static DECLARE_WAIT_QUEUE_HEAD(cpuset_attach_wq);
@@ -500,6 +548,29 @@ static inline void check_insane_mems_config(nodemask_t *nodes)
 }
 
 /*
+<<<<<<< HEAD
+=======
+ * decrease cs->attach_in_progress.
+ * wake_up cpuset_attach_wq if cs->attach_in_progress==0.
+ */
+static inline void dec_attach_in_progress_locked(struct cpuset *cs)
+{
+	lockdep_assert_held(&cpuset_mutex);
+
+	cs->attach_in_progress--;
+	if (!cs->attach_in_progress)
+		wake_up(&cpuset_attach_wq);
+}
+
+static inline void dec_attach_in_progress(struct cpuset *cs)
+{
+	mutex_lock(&cpuset_mutex);
+	dec_attach_in_progress_locked(cs);
+	mutex_unlock(&cpuset_mutex);
+}
+
+/*
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Cgroup v2 behavior is used on the "cpus" and "mems" control files when
  * on default hierarchy or when the cpuset_v2_mode flag is set by mounting
  * the v1 cpuset cgroup filesystem with the "cpuset_v2_mode" mount option.
@@ -596,6 +667,7 @@ static void guarantee_online_mems(struct cpuset *cs, nodemask_t *pmask)
 	nodes_and(*pmask, cs->effective_mems, node_states[N_MEMORY]);
 }
 
+<<<<<<< HEAD
 /*
  * update task's spread flag if cpuset's page/slab spread flag is set
  *
@@ -635,6 +707,8 @@ static int is_cpuset_subset(const struct cpuset *p, const struct cpuset *q)
 		is_mem_exclusive(p) <= is_mem_exclusive(q);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * alloc_cpumasks - allocate three cpumasks for cpuset
  * @cs:  the cpuset that have cpumasks to be allocated.
@@ -750,6 +824,7 @@ static inline bool xcpus_empty(struct cpuset *cs)
 	       cpumask_empty(cs->exclusive_cpus);
 }
 
+<<<<<<< HEAD
 static inline struct cpumask *fetch_xcpus(struct cpuset *cs)
 {
 	return !cpumask_empty(cs->exclusive_cpus) ? cs->exclusive_cpus :
@@ -757,6 +832,8 @@ static inline struct cpumask *fetch_xcpus(struct cpuset *cs)
 						  : cs->effective_xcpus;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * cpusets_are_exclusive() - check if two cpusets are exclusive
  *
@@ -764,8 +841,13 @@ static inline struct cpumask *fetch_xcpus(struct cpuset *cs)
  */
 static inline bool cpusets_are_exclusive(struct cpuset *cs1, struct cpuset *cs2)
 {
+<<<<<<< HEAD
 	struct cpumask *xcpus1 = fetch_xcpus(cs1);
 	struct cpumask *xcpus2 = fetch_xcpus(cs2);
+=======
+	struct cpumask *xcpus1 = user_xcpus(cs1);
+	struct cpumask *xcpus2 = user_xcpus(cs2);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (cpumask_intersects(xcpus1, xcpus2))
 		return false;
@@ -773,6 +855,7 @@ static inline bool cpusets_are_exclusive(struct cpuset *cs1, struct cpuset *cs2)
 }
 
 /*
+<<<<<<< HEAD
  * validate_change_legacy() - Validate conditions specific to legacy (v1)
  *                            behavior.
  */
@@ -802,6 +885,8 @@ out:
 }
 
 /*
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * validate_change() - Used to validate that any proposed cpuset change
  *		       follows the structural rules for cpusets.
  *
@@ -830,7 +915,11 @@ static int validate_change(struct cpuset *cur, struct cpuset *trial)
 	rcu_read_lock();
 
 	if (!is_in_v2_mode())
+<<<<<<< HEAD
 		ret = validate_change_legacy(cur, trial);
+=======
+		ret = cpuset1_validate_change(cur, trial);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		goto out;
 
@@ -996,6 +1085,7 @@ static inline int nr_cpusets(void)
  *	   were changed (added or removed.)
  *
  * Finding the best partition (set of domains):
+<<<<<<< HEAD
  *	The triple nested loops below over i, j, k scan over the
  *	load balanced cpusets (using the array of cpuset pointers in
  *	csa[]) looking for pairs of cpusets that have overlapping
@@ -1008,6 +1098,17 @@ static inline int nr_cpusets(void)
  *	all cpusets having the same 'pn' value then form the one
  *	element of the partition (one sched domain) to be passed to
  *	partition_sched_domains().
+=======
+ *	The double nested loops below over i, j scan over the load
+ *	balanced cpusets (using the array of cpuset pointers in csa[])
+ *	looking for pairs of cpusets that have overlapping cpus_allowed
+ *	and merging them using a union-find algorithm.
+ *
+ *	The union of the cpus_allowed masks from the set of all cpusets
+ *	having the same root then form the one element of the partition
+ *	(one sched domain) to be passed to partition_sched_domains().
+ *
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static int generate_sched_domains(cpumask_var_t **domains,
 			struct sched_domain_attr **attributes)
@@ -1015,7 +1116,11 @@ static int generate_sched_domains(cpumask_var_t **domains,
 	struct cpuset *cp;	/* top-down scan of cpusets */
 	struct cpuset **csa;	/* array of all cpuset ptrs */
 	int csn;		/* how many cpuset ptrs in csa so far */
+<<<<<<< HEAD
 	int i, j, k;		/* indices for partition finding loops */
+=======
+	int i, j;		/* indices for partition finding loops */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cpumask_var_t *doms;	/* resulting partition; i.e. sched domains */
 	struct sched_domain_attr *dattr;  /* attributes for custom domains */
 	int ndoms = 0;		/* number of sched domains in result */
@@ -1023,6 +1128,10 @@ static int generate_sched_domains(cpumask_var_t **domains,
 	struct cgroup_subsys_state *pos_css;
 	bool root_load_balance = is_sched_load_balance(&top_cpuset);
 	bool cgrpv2 = cgroup_subsys_on_dfl(cpuset_cgrp_subsys);
+<<<<<<< HEAD
+=======
+	int nslot_update;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	doms = NULL;
 	dattr = NULL;
@@ -1111,6 +1220,7 @@ v2:
 		goto single_root_domain;
 
 	for (i = 0; i < csn; i++)
+<<<<<<< HEAD
 		csa[i]->pn = i;
 	ndoms = csn;
 
@@ -1133,10 +1243,33 @@ restart:
 				}
 				ndoms--;	/* one less element */
 				goto restart;
+=======
+		uf_node_init(&csa[i]->node);
+
+	/* Merge overlapping cpusets */
+	for (i = 0; i < csn; i++) {
+		for (j = i + 1; j < csn; j++) {
+			if (cpusets_overlap(csa[i], csa[j])) {
+				/*
+				 * Cgroup v2 shouldn't pass down overlapping
+				 * partition root cpusets.
+				 */
+				WARN_ON_ONCE(cgrpv2);
+				uf_union(&csa[i]->node, &csa[j]->node);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	/* Count the total number of domains */
+	for (i = 0; i < csn; i++) {
+		if (uf_find(&csa[i]->node) == &csa[i]->node)
+			ndoms++;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Now we know how many domains to create.
 	 * Convert <csn, csa> to <ndoms, doms> and populate cpu masks.
@@ -1167,6 +1300,7 @@ restart:
 	}
 
 	for (nslot = 0, i = 0; i < csn; i++) {
+<<<<<<< HEAD
 		struct cpuset *a = csa[i];
 		struct cpumask *dp;
 		int apn = a->pn;
@@ -1205,6 +1339,27 @@ restart:
 			}
 		}
 		nslot++;
+=======
+		nslot_update = 0;
+		for (j = i; j < csn; j++) {
+			if (uf_find(&csa[j]->node) == &csa[i]->node) {
+				struct cpumask *dp = doms[nslot];
+
+				if (i == j) {
+					nslot_update = 1;
+					cpumask_clear(dp);
+					if (dattr)
+						*(dattr + nslot) = SD_ATTR_INIT;
+				}
+				cpumask_or(dp, dp, csa[j]->effective_cpus);
+				cpumask_and(dp, dp, housekeeping_cpumask(HK_TYPE_DOMAIN));
+				if (dattr)
+					update_domain_attr_tree(dattr + nslot, csa[j]);
+			}
+		}
+		if (nslot_update)
+			nslot++;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	BUG_ON(nslot != ndoms);
 
@@ -1296,7 +1451,11 @@ partition_and_rebuild_sched_domains(int ndoms_new, cpumask_var_t doms_new[],
  *
  * Call with cpuset_mutex held.  Takes cpus_read_lock().
  */
+<<<<<<< HEAD
 static void rebuild_sched_domains_locked(void)
+=======
+void rebuild_sched_domains_locked(void)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct cgroup_subsys_state *pos_css;
 	struct sched_domain_attr *attr;
@@ -1348,7 +1507,11 @@ static void rebuild_sched_domains_locked(void)
 	partition_and_rebuild_sched_domains(ndoms, doms, attr);
 }
 #else /* !CONFIG_SMP */
+<<<<<<< HEAD
 static void rebuild_sched_domains_locked(void)
+=======
+void rebuild_sched_domains_locked(void)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 }
 #endif /* CONFIG_SMP */
@@ -1368,7 +1531,11 @@ void rebuild_sched_domains(void)
 }
 
 /**
+<<<<<<< HEAD
  * update_tasks_cpumask - Update the cpumasks of tasks in the cpuset.
+=======
+ * cpuset_update_tasks_cpumask - Update the cpumasks of tasks in the cpuset.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @cs: the cpuset in which each task's cpus_allowed mask needs to be changed
  * @new_cpus: the temp variable for the new effective_cpus mask
  *
@@ -1378,7 +1545,11 @@ void rebuild_sched_domains(void)
  * is used instead of effective_cpus to make sure all offline CPUs are also
  * included as hotplug code won't update cpumasks for tasks in top_cpuset.
  */
+<<<<<<< HEAD
 static void update_tasks_cpumask(struct cpuset *cs, struct cpumask *new_cpus)
+=======
+void cpuset_update_tasks_cpumask(struct cpuset *cs, struct cpumask *new_cpus)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct css_task_iter it;
 	struct task_struct *task;
@@ -1428,8 +1599,11 @@ enum partition_cmd {
 	partcmd_invalidate,	/* Make partition invalid	  */
 };
 
+<<<<<<< HEAD
 static int update_flag(cpuset_flagbits_t bit, struct cpuset *cs,
 		       int turning_on);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void update_sibling_cpumasks(struct cpuset *parent, struct cpuset *cs,
 				    struct tmpmasks *tmp);
 
@@ -1443,11 +1617,19 @@ static int update_partition_exclusive(struct cpuset *cs, int new_prs)
 	bool exclusive = (new_prs > PRS_MEMBER);
 
 	if (exclusive && !is_cpu_exclusive(cs)) {
+<<<<<<< HEAD
 		if (update_flag(CS_CPU_EXCLUSIVE, cs, 1))
 			return PERR_NOTEXCL;
 	} else if (!exclusive && is_cpu_exclusive(cs)) {
 		/* Turning off CS_CPU_EXCLUSIVE will not return error */
 		update_flag(CS_CPU_EXCLUSIVE, cs, 0);
+=======
+		if (cpuset_update_flag(CS_CPU_EXCLUSIVE, cs, 1))
+			return PERR_NOTEXCL;
+	} else if (!exclusive && is_cpu_exclusive(cs)) {
+		/* Turning off CS_CPU_EXCLUSIVE will not return error */
+		cpuset_update_flag(CS_CPU_EXCLUSIVE, cs, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return 0;
 }
@@ -1516,12 +1698,17 @@ static void reset_partition_data(struct cpuset *cs)
 		if (is_cpu_exclusive(cs))
 			clear_bit(CS_CPU_EXCLUSIVE, &cs->flags);
 	}
+<<<<<<< HEAD
 	if (!cpumask_and(cs->effective_cpus,
 			 parent->effective_cpus, cs->cpus_allowed)) {
 		cs->use_parent_ecpus = true;
 		parent->child_ecpus_count++;
 		cpumask_copy(cs->effective_cpus, parent->effective_cpus);
 	}
+=======
+	if (!cpumask_and(cs->effective_cpus, parent->effective_cpus, cs->cpus_allowed))
+		cpumask_copy(cs->effective_cpus, parent->effective_cpus);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1662,7 +1849,11 @@ static inline bool is_local_partition(struct cpuset *cs)
  * @cs: the cpuset to update
  * @new_prs: new partition_root_state
  * @tmp: temparary masks
+<<<<<<< HEAD
  * Return: 1 if successful, 0 if error
+=======
+ * Return: 0 if successful, errcode if error
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Enable the current cpuset to become a remote partition root taking CPUs
  * directly from the top cpuset. cpuset_mutex must be held by the caller.
@@ -1676,7 +1867,11 @@ static int remote_partition_enable(struct cpuset *cs, int new_prs,
 	 * The user must have sysadmin privilege.
 	 */
 	if (!capable(CAP_SYS_ADMIN))
+<<<<<<< HEAD
 		return 0;
+=======
+		return PERR_ACCESS;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * The requested exclusive_cpus must not be allocated to other
@@ -1690,26 +1885,39 @@ static int remote_partition_enable(struct cpuset *cs, int new_prs,
 	if (cpumask_empty(tmp->new_cpus) ||
 	    cpumask_intersects(tmp->new_cpus, subpartitions_cpus) ||
 	    cpumask_subset(top_cpuset.effective_cpus, tmp->new_cpus))
+<<<<<<< HEAD
 		return 0;
+=======
+		return PERR_INVCPUS;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	spin_lock_irq(&callback_lock);
 	isolcpus_updated = partition_xcpus_add(new_prs, NULL, tmp->new_cpus);
 	list_add(&cs->remote_sibling, &remote_children);
+<<<<<<< HEAD
 	if (cs->use_parent_ecpus) {
 		struct cpuset *parent = parent_cs(cs);
 
 		cs->use_parent_ecpus = false;
 		parent->child_ecpus_count--;
 	}
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_unlock_irq(&callback_lock);
 	update_unbound_workqueue_cpumask(isolcpus_updated);
 
 	/*
 	 * Proprogate changes in top_cpuset's effective_cpus down the hierarchy.
 	 */
+<<<<<<< HEAD
 	update_tasks_cpumask(&top_cpuset, tmp->new_cpus);
 	update_sibling_cpumasks(&top_cpuset, NULL, tmp);
 	return 1;
+=======
+	cpuset_update_tasks_cpumask(&top_cpuset, tmp->new_cpus);
+	update_sibling_cpumasks(&top_cpuset, NULL, tmp);
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1743,7 +1951,11 @@ static void remote_partition_disable(struct cpuset *cs, struct tmpmasks *tmp)
 	/*
 	 * Proprogate changes in top_cpuset's effective_cpus down the hierarchy.
 	 */
+<<<<<<< HEAD
 	update_tasks_cpumask(&top_cpuset, tmp->new_cpus);
+=======
+	cpuset_update_tasks_cpumask(&top_cpuset, tmp->new_cpus);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	update_sibling_cpumasks(&top_cpuset, NULL, tmp);
 }
 
@@ -1795,7 +2007,11 @@ static void remote_cpus_update(struct cpuset *cs, struct cpumask *newmask,
 	/*
 	 * Proprogate changes in top_cpuset's effective_cpus down the hierarchy.
 	 */
+<<<<<<< HEAD
 	update_tasks_cpumask(&top_cpuset, tmp->new_cpus);
+=======
+	cpuset_update_tasks_cpumask(&top_cpuset, tmp->new_cpus);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	update_sibling_cpumasks(&top_cpuset, NULL, tmp);
 	return;
 
@@ -1850,6 +2066,7 @@ static void remote_partition_check(struct cpuset *cs, struct cpumask *newmask,
  * @new_cpus: cpu mask
  * Return: true if there is conflict, false otherwise
  *
+<<<<<<< HEAD
  * CPUs outside of housekeeping_cpumask(HK_TYPE_DOMAIN) can only be used in
  * an isolated partition.
  */
@@ -1859,6 +2076,17 @@ static bool prstate_housekeeping_conflict(int prstate, struct cpumask *new_cpus)
 	bool all_in_hk = cpumask_subset(new_cpus, hk_domain);
 
 	if (!all_in_hk && (prstate != PRS_ISOLATED))
+=======
+ * CPUs outside of boot_hk_cpus, if defined, can only be used in an
+ * isolated partition.
+ */
+static bool prstate_housekeeping_conflict(int prstate, struct cpumask *new_cpus)
+{
+	if (!have_boot_isolcpus)
+		return false;
+
+	if ((prstate != PRS_ISOLATED) && !cpumask_subset(new_cpus, boot_hk_cpus))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return true;
 
 	return false;
@@ -2167,7 +2395,11 @@ write_error:
 		update_partition_exclusive(cs, new_prs);
 
 	if (adding || deleting) {
+<<<<<<< HEAD
 		update_tasks_cpumask(parent, tmp->addmask);
+=======
+		cpuset_update_tasks_cpumask(parent, tmp->addmask);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		update_sibling_cpumasks(parent, cs, tmp);
 	}
 
@@ -2325,6 +2557,7 @@ static void update_cpumasks_hier(struct cpuset *cs, struct tmpmasks *tmp,
 		 * it is a partition root that has explicitly distributed
 		 * out all its CPUs.
 		 */
+<<<<<<< HEAD
 		if (is_in_v2_mode() && !remote && cpumask_empty(tmp->new_cpus)) {
 			cpumask_copy(tmp->new_cpus, parent->effective_cpus);
 			if (!cp->use_parent_ecpus) {
@@ -2336,6 +2569,10 @@ static void update_cpumasks_hier(struct cpuset *cs, struct tmpmasks *tmp,
 			WARN_ON_ONCE(!parent->child_ecpus_count);
 			parent->child_ecpus_count--;
 		}
+=======
+		if (is_in_v2_mode() && !remote && cpumask_empty(tmp->new_cpus))
+			cpumask_copy(tmp->new_cpus, parent->effective_cpus);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (remote)
 			goto get_css;
@@ -2359,7 +2596,11 @@ update_parent_effective:
 		/*
 		 * update_parent_effective_cpumask() should have been called
 		 * for cs already in update_cpumask(). We should also call
+<<<<<<< HEAD
 		 * update_tasks_cpumask() again for tasks in the parent
+=======
+		 * cpuset_update_tasks_cpumask() again for tasks in the parent
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 * cpuset if the parent's effective_cpus changes.
 		 */
 		if ((cp != cs) && old_prs) {
@@ -2416,7 +2657,11 @@ get_css:
 		WARN_ON(!is_in_v2_mode() &&
 			!cpumask_equal(cp->cpus_allowed, cp->effective_cpus));
 
+<<<<<<< HEAD
 		update_tasks_cpumask(cp, cp->effective_cpus);
+=======
+		cpuset_update_tasks_cpumask(cp, cp->effective_cpus);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * On default hierarchy, inherit the CS_SCHED_LOAD_BALANCE
@@ -2472,8 +2717,12 @@ static void update_sibling_cpumasks(struct cpuset *parent, struct cpuset *cs,
 	 * Check all its siblings and call update_cpumasks_hier()
 	 * if their effective_cpus will need to be changed.
 	 *
+<<<<<<< HEAD
 	 * With the addition of effective_xcpus which is a subset of
 	 * cpus_allowed. It is possible a change in parent's effective_cpus
+=======
+	 * It is possible a change in parent's effective_cpus
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * due to a change in a child partition's effective_xcpus will impact
 	 * its siblings even if they do not inherit parent's effective_cpus
 	 * directly.
@@ -2487,8 +2736,12 @@ static void update_sibling_cpumasks(struct cpuset *parent, struct cpuset *cs,
 	cpuset_for_each_child(sibling, pos_css, parent) {
 		if (sibling == cs)
 			continue;
+<<<<<<< HEAD
 		if (!sibling->use_parent_ecpus &&
 		    !is_partition_valid(sibling)) {
+=======
+		if (!is_partition_valid(sibling)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			compute_effective_cpumask(tmp->new_cpus, sibling,
 						  parent);
 			if (cpumask_equal(tmp->new_cpus, sibling->effective_cpus))
@@ -2598,7 +2851,11 @@ static int update_cpumask(struct cpuset *cs, struct cpuset *trialcs,
 		invalidate = true;
 		rcu_read_lock();
 		cpuset_for_each_child(cp, css, parent) {
+<<<<<<< HEAD
 			struct cpumask *xcpus = fetch_xcpus(trialcs);
+=======
+			struct cpumask *xcpus = user_xcpus(trialcs);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			if (is_partition_valid(cp) &&
 			    cpumask_intersects(xcpus, cp->effective_xcpus)) {
@@ -2845,14 +3102,22 @@ static void cpuset_change_task_nodemask(struct task_struct *tsk,
 static void *cpuset_being_rebound;
 
 /**
+<<<<<<< HEAD
  * update_tasks_nodemask - Update the nodemasks of tasks in the cpuset.
+=======
+ * cpuset_update_tasks_nodemask - Update the nodemasks of tasks in the cpuset.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @cs: the cpuset in which each task's mems_allowed mask needs to be changed
  *
  * Iterate through each task of @cs updating its mems_allowed to the
  * effective cpuset's.  As this function is called with cpuset_mutex held,
  * cpuset membership stays stable.
  */
+<<<<<<< HEAD
 static void update_tasks_nodemask(struct cpuset *cs)
+=======
+void cpuset_update_tasks_nodemask(struct cpuset *cs)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	static nodemask_t newmems;	/* protected by cpuset_mutex */
 	struct css_task_iter it;
@@ -2950,7 +3215,11 @@ static void update_nodemasks_hier(struct cpuset *cs, nodemask_t *new_mems)
 		WARN_ON(!is_in_v2_mode() &&
 			!nodes_equal(cp->mems_allowed, cp->effective_mems));
 
+<<<<<<< HEAD
 		update_tasks_nodemask(cp);
+=======
+		cpuset_update_tasks_nodemask(cp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		rcu_read_lock();
 		css_put(&cp->css);
@@ -3036,6 +3305,7 @@ bool current_cpuset_is_being_rebound(void)
 	return ret;
 }
 
+<<<<<<< HEAD
 static int update_relax_domain_level(struct cpuset *cs, s64 val)
 {
 #ifdef CONFIG_SMP
@@ -3074,6 +3344,10 @@ static void update_tasks_flags(struct cpuset *cs)
 
 /*
  * update_flag - read a 0 or a 1 in a file and update associated flag
+=======
+/*
+ * cpuset_update_flag - read a 0 or a 1 in a file and update associated flag
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * bit:		the bit to update (see cpuset_flagbits_t)
  * cs:		the cpuset to update
  * turning_on: 	whether the flag is being set or cleared
@@ -3081,7 +3355,11 @@ static void update_tasks_flags(struct cpuset *cs)
  * Call with cpuset_mutex held.
  */
 
+<<<<<<< HEAD
 static int update_flag(cpuset_flagbits_t bit, struct cpuset *cs,
+=======
+int cpuset_update_flag(cpuset_flagbits_t bit, struct cpuset *cs,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		       int turning_on)
 {
 	struct cpuset *trialcs;
@@ -3117,7 +3395,11 @@ static int update_flag(cpuset_flagbits_t bit, struct cpuset *cs,
 		rebuild_sched_domains_locked();
 
 	if (spread_flag_changed)
+<<<<<<< HEAD
 		update_tasks_flags(cs);
+=======
+		cpuset1_update_tasks_flags(cs);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out:
 	free_cpuset(trialcs);
 	return err;
@@ -3166,9 +3448,12 @@ static int update_prstate(struct cpuset *cs, int new_prs)
 		goto out;
 
 	if (!old_prs) {
+<<<<<<< HEAD
 		enum partition_cmd cmd = (new_prs == PRS_ROOT)
 				       ? partcmd_enable : partcmd_enablei;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * cpus_allowed and exclusive_cpus cannot be both empty.
 		 */
@@ -3177,6 +3462,7 @@ static int update_prstate(struct cpuset *cs, int new_prs)
 			goto out;
 		}
 
+<<<<<<< HEAD
 		err = update_parent_effective_cpumask(cs, cmd, NULL, &tmpmask);
 		/*
 		 * If an attempt to become local partition root fails,
@@ -3184,6 +3470,20 @@ static int update_prstate(struct cpuset *cs, int new_prs)
 		 */
 		if (err && remote_partition_enable(cs, new_prs, &tmpmask))
 			err = 0;
+=======
+		/*
+		 * If parent is valid partition, enable local partiion.
+		 * Otherwise, enable a remote partition.
+		 */
+		if (is_partition_valid(parent)) {
+			enum partition_cmd cmd = (new_prs == PRS_ROOT)
+					       ? partcmd_enable : partcmd_enablei;
+
+			err = update_parent_effective_cpumask(cs, cmd, NULL, &tmpmask);
+		} else {
+			err = remote_partition_enable(cs, new_prs, &tmpmask);
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else if (old_prs && new_prs) {
 		/*
 		 * A change in load balance state only, no change in cpumasks.
@@ -3236,6 +3536,7 @@ out:
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * Frequency meter - How fast is some event occurring?
  *
@@ -3337,6 +3638,8 @@ static int fmeter_getrate(struct fmeter *fmp)
 	return val;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct cpuset *cpuset_attach_old_cs;
 
 /*
@@ -3445,9 +3748,13 @@ static void cpuset_cancel_attach(struct cgroup_taskset *tset)
 	cs = css_cs(css);
 
 	mutex_lock(&cpuset_mutex);
+<<<<<<< HEAD
 	cs->attach_in_progress--;
 	if (!cs->attach_in_progress)
 		wake_up(&cpuset_attach_wq);
+=======
+	dec_attach_in_progress_locked(cs);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (cs->nr_migrate_dl_tasks) {
 		int cpu = cpumask_any(cs->effective_cpus);
@@ -3483,7 +3790,11 @@ static void cpuset_attach_task(struct cpuset *cs, struct task_struct *task)
 	WARN_ON_ONCE(set_cpus_allowed_ptr(task, cpus_attach));
 
 	cpuset_change_task_nodemask(task, &cpuset_attach_nodemask_to);
+<<<<<<< HEAD
 	cpuset_update_task_spread_flags(cs, task);
+=======
+	cpuset1_update_task_spread_flags(cs, task);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void cpuset_attach(struct cgroup_taskset *tset)
@@ -3562,13 +3873,18 @@ out:
 		reset_migrate_dl_data(cs);
 	}
 
+<<<<<<< HEAD
 	cs->attach_in_progress--;
 	if (!cs->attach_in_progress)
 		wake_up(&cpuset_attach_wq);
+=======
+	dec_attach_in_progress_locked(cs);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_unlock(&cpuset_mutex);
 }
 
+<<<<<<< HEAD
 /* The various types of files and directories in a cpuset file system */
 
 typedef enum {
@@ -3672,6 +3988,12 @@ out_unlock:
  * Common handling for a write to a "cpus" or "mems" file.
  */
 static ssize_t cpuset_write_resmask(struct kernfs_open_file *of,
+=======
+/*
+ * Common handling for a write to a "cpus" or "mems" file.
+ */
+ssize_t cpuset_write_resmask(struct kernfs_open_file *of,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    char *buf, size_t nbytes, loff_t off)
 {
 	struct cpuset *cs = css_cs(of_css(of));
@@ -3746,7 +4068,11 @@ out_unlock:
  * and since these maps can change value dynamically, one could read
  * gibberish by doing partial reads while a list was changing.
  */
+<<<<<<< HEAD
 static int cpuset_common_seq_show(struct seq_file *sf, void *v)
+=======
+int cpuset_common_seq_show(struct seq_file *sf, void *v)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct cpuset *cs = css_cs(seq_css(sf));
 	cpuset_filetype_t type = seq_cft(sf)->private;
@@ -3787,6 +4113,7 @@ static int cpuset_common_seq_show(struct seq_file *sf, void *v)
 	return ret;
 }
 
+<<<<<<< HEAD
 static u64 cpuset_read_u64(struct cgroup_subsys_state *css, struct cftype *cft)
 {
 	struct cpuset *cs = css_cs(css);
@@ -3833,6 +4160,8 @@ static s64 cpuset_read_s64(struct cgroup_subsys_state *css, struct cftype *cft)
 	return 0;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int sched_partition_show(struct seq_file *seq, void *v)
 {
 	struct cpuset *cs = css_cs(seq_css(seq));
@@ -3897,6 +4226,7 @@ out_unlock:
 }
 
 /*
+<<<<<<< HEAD
  * for the common functions, 'private' gives the type of file
  */
 
@@ -4004,6 +4334,8 @@ static struct cftype legacy_files[] = {
 };
 
 /*
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * This is currently a minimal set for the default hierarchy. It can be
  * expanded later on by migrating more features and control files from v1.
  */
@@ -4150,8 +4482,11 @@ static int cpuset_css_online(struct cgroup_subsys_state *css)
 	if (is_in_v2_mode()) {
 		cpumask_copy(cs->effective_cpus, parent->effective_cpus);
 		cs->effective_mems = parent->effective_mems;
+<<<<<<< HEAD
 		cs->use_parent_ecpus = true;
 		parent->child_ecpus_count++;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	spin_unlock_irq(&callback_lock);
 
@@ -4215,6 +4550,7 @@ static void cpuset_css_offline(struct cgroup_subsys_state *css)
 
 	if (!cgroup_subsys_on_dfl(cpuset_cgrp_subsys) &&
 	    is_sched_load_balance(cs))
+<<<<<<< HEAD
 		update_flag(CS_SCHED_LOAD_BALANCE, cs, 0);
 
 	if (cs->use_parent_ecpus) {
@@ -4223,6 +4559,9 @@ static void cpuset_css_offline(struct cgroup_subsys_state *css)
 		cs->use_parent_ecpus = false;
 		parent->child_ecpus_count--;
 	}
+=======
+		cpuset_update_flag(CS_SCHED_LOAD_BALANCE, cs, 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	cpuset_dec();
 	clear_bit(CS_ONLINE, &cs->flags);
@@ -4312,11 +4651,15 @@ static void cpuset_cancel_fork(struct task_struct *task, struct css_set *cset)
 	if (same_cs)
 		return;
 
+<<<<<<< HEAD
 	mutex_lock(&cpuset_mutex);
 	cs->attach_in_progress--;
 	if (!cs->attach_in_progress)
 		wake_up(&cpuset_attach_wq);
 	mutex_unlock(&cpuset_mutex);
+=======
+	dec_attach_in_progress(cs);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -4348,10 +4691,14 @@ static void cpuset_fork(struct task_struct *task)
 	guarantee_online_mems(cs, &cpuset_attach_nodemask_to);
 	cpuset_attach_task(cs, task);
 
+<<<<<<< HEAD
 	cs->attach_in_progress--;
 	if (!cs->attach_in_progress)
 		wake_up(&cpuset_attach_wq);
 
+=======
+	dec_attach_in_progress_locked(cs);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_unlock(&cpuset_mutex);
 }
 
@@ -4368,7 +4715,13 @@ struct cgroup_subsys cpuset_cgrp_subsys = {
 	.can_fork	= cpuset_can_fork,
 	.cancel_fork	= cpuset_cancel_fork,
 	.fork		= cpuset_fork,
+<<<<<<< HEAD
 	.legacy_cftypes	= legacy_files,
+=======
+#ifdef CONFIG_CPUSETS_V1
+	.legacy_cftypes	= cpuset1_files,
+#endif
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.dfl_cftypes	= dfl_files,
 	.early_init	= true,
 	.threaded	= true,
@@ -4401,6 +4754,7 @@ int __init cpuset_init(void)
 
 	BUG_ON(!alloc_cpumask_var(&cpus_attach, GFP_KERNEL));
 
+<<<<<<< HEAD
 	return 0;
 }
 
@@ -4488,6 +4842,18 @@ hotplug_update_tasks_legacy(struct cpuset *cs,
 	}
 }
 
+=======
+	have_boot_isolcpus = housekeeping_enabled(HK_TYPE_DOMAIN);
+	if (have_boot_isolcpus) {
+		BUG_ON(!alloc_cpumask_var(&boot_hk_cpus, GFP_KERNEL));
+		cpumask_copy(boot_hk_cpus, housekeeping_cpumask(HK_TYPE_DOMAIN));
+		cpumask_andnot(isolated_cpus, cpu_possible_mask, boot_hk_cpus);
+	}
+
+	return 0;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void
 hotplug_update_tasks(struct cpuset *cs,
 		     struct cpumask *new_cpus, nodemask_t *new_mems,
@@ -4505,9 +4871,15 @@ hotplug_update_tasks(struct cpuset *cs,
 	spin_unlock_irq(&callback_lock);
 
 	if (cpus_updated)
+<<<<<<< HEAD
 		update_tasks_cpumask(cs, new_cpus);
 	if (mems_updated)
 		update_tasks_nodemask(cs);
+=======
+		cpuset_update_tasks_cpumask(cs, new_cpus);
+	if (mems_updated)
+		cpuset_update_tasks_nodemask(cs);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void cpuset_force_rebuild(void)
@@ -4608,7 +4980,11 @@ update_tasks:
 		hotplug_update_tasks(cs, &new_cpus, &new_mems,
 				     cpus_updated, mems_updated);
 	else
+<<<<<<< HEAD
 		hotplug_update_tasks_legacy(cs, &new_cpus, &new_mems,
+=======
+		cpuset1_hotplug_update_tasks(cs, &new_cpus, &new_mems,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					    cpus_updated, mems_updated);
 
 unlock:
@@ -4693,7 +5069,11 @@ static void cpuset_handle_hotplug(void)
 			top_cpuset.mems_allowed = new_mems;
 		top_cpuset.effective_mems = new_mems;
 		spin_unlock_irq(&callback_lock);
+<<<<<<< HEAD
 		update_tasks_nodemask(&top_cpuset);
+=======
+		cpuset_update_tasks_nodemask(&top_cpuset);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	mutex_unlock(&cpuset_mutex);
@@ -5033,6 +5413,7 @@ int cpuset_mem_spread_node(void)
 }
 
 /**
+<<<<<<< HEAD
  * cpuset_slab_spread_node() - On which node to begin search for a slab page
  */
 int cpuset_slab_spread_node(void)
@@ -5046,6 +5427,8 @@ int cpuset_slab_spread_node(void)
 EXPORT_SYMBOL_GPL(cpuset_mem_spread_node);
 
 /**
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * cpuset_mems_allowed_intersects - Does @tsk1's mems_allowed intersect @tsk2's?
  * @tsk1: pointer to task_struct of some task.
  * @tsk2: pointer to task_struct of some other task.
@@ -5083,6 +5466,7 @@ void cpuset_print_current_mems_allowed(void)
 	rcu_read_unlock();
 }
 
+<<<<<<< HEAD
 /*
  * Collection of memory_pressure is suppressed unless
  * this flag is enabled by writing "1" to the special
@@ -5116,6 +5500,8 @@ void __cpuset_memory_pressure_bump(void)
 	rcu_read_unlock();
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_PROC_PID_CPUSET
 /*
  * proc_cpuset_show()

@@ -52,6 +52,18 @@ AMD_DAL_DIO_DCN30 = $(addprefix $(AMDDALPATH)/dc/dio/dcn30/,$(DIO_DCN30))
 AMD_DISPLAY_FILES += $(AMD_DAL_DIO_DCN30)
 
 ###############################################################################
+<<<<<<< HEAD
+=======
+# DCN301
+###############################################################################
+DIO_DCN301 = dcn301_dio_link_encoder.o
+
+AMD_DAL_DIO_DCN301 = $(addprefix $(AMDDALPATH)/dc/dio/dcn301/,$(DIO_DCN301))
+
+AMD_DISPLAY_FILES += $(AMD_DAL_DIO_DCN301)
+
+###############################################################################
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # DCN31
 ###############################################################################
 DIO_DCN31 = dcn31_dio_link_encoder.o
@@ -61,6 +73,18 @@ AMD_DAL_DIO_DCN31 = $(addprefix $(AMDDALPATH)/dc/dio/dcn31/,$(DIO_DCN31))
 AMD_DISPLAY_FILES += $(AMD_DAL_DIO_DCN31)
 
 ###############################################################################
+<<<<<<< HEAD
+=======
+# DCN314
+###############################################################################
+DIO_DCN314 = dcn314_dio_stream_encoder.o
+
+AMD_DAL_DIO_DCN314 = $(addprefix $(AMDDALPATH)/dc/dio/dcn314/,$(DIO_DCN314))
+
+AMD_DISPLAY_FILES += $(AMD_DAL_DIO_DCN314)
+
+###############################################################################
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # DCN32
 ###############################################################################
 DIO_DCN32 = dcn32_dio_link_encoder.o dcn32_dio_stream_encoder.o

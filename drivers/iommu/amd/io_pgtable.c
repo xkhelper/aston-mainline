@@ -24,6 +24,7 @@
 #include "amd_iommu.h"
 #include "../iommu-pages.h"
 
+<<<<<<< HEAD
 static void v1_tlb_flush_all(void *cookie)
 {
 }
@@ -45,6 +46,8 @@ static const struct iommu_flush_ops v1_flush_ops = {
 	.tlb_add_page	= v1_tlb_add_page,
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Helper function to get the first pte of a large mapping
  */
@@ -132,6 +135,7 @@ static void free_sub_pt(u64 *root, int mode, struct list_head *freelist)
 	}
 }
 
+<<<<<<< HEAD
 void amd_iommu_domain_set_pgtable(struct protection_domain *domain,
 				  u64 *root, int mode)
 {
@@ -144,25 +148,42 @@ void amd_iommu_domain_set_pgtable(struct protection_domain *domain,
 	amd_iommu_domain_set_pt_root(domain, pt_root);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * This function is used to add another level to an IO page table. Adding
  * another level increases the size of the address space by 9 bits to a size up
  * to 64 bits.
  */
+<<<<<<< HEAD
 static bool increase_address_space(struct protection_domain *domain,
 				   unsigned long address,
 				   gfp_t gfp)
 {
+=======
+static bool increase_address_space(struct amd_io_pgtable *pgtable,
+				   unsigned long address,
+				   gfp_t gfp)
+{
+	struct io_pgtable_cfg *cfg = &pgtable->pgtbl.cfg;
+	struct protection_domain *domain =
+		container_of(pgtable, struct protection_domain, iop);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long flags;
 	bool ret = true;
 	u64 *pte;
 
+<<<<<<< HEAD
 	pte = iommu_alloc_page_node(domain->nid, gfp);
+=======
+	pte = iommu_alloc_page_node(cfg->amd.nid, gfp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!pte)
 		return false;
 
 	spin_lock_irqsave(&domain->lock, flags);
 
+<<<<<<< HEAD
 	if (address <= PM_LEVEL_SIZE(domain->iop.mode))
 		goto out;
 
@@ -182,6 +203,20 @@ static bool increase_address_space(struct protection_domain *domain,
 	 * be published.
 	 */
 	amd_iommu_domain_set_pgtable(domain, pte, domain->iop.mode);
+=======
+	if (address <= PM_LEVEL_SIZE(pgtable->mode))
+		goto out;
+
+	ret = false;
+	if (WARN_ON_ONCE(pgtable->mode == PAGE_MODE_6_LEVEL))
+		goto out;
+
+	*pte = PM_LEVEL_PDE(pgtable->mode, iommu_virt_to_phys(pgtable->root));
+
+	pgtable->root  = pte;
+	pgtable->mode += 1;
+	amd_iommu_update_and_flush_device_table(domain);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pte = NULL;
 	ret = true;
@@ -193,30 +228,51 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static u64 *alloc_pte(struct protection_domain *domain,
+=======
+static u64 *alloc_pte(struct amd_io_pgtable *pgtable,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		      unsigned long address,
 		      unsigned long page_size,
 		      u64 **pte_page,
 		      gfp_t gfp,
 		      bool *updated)
 {
+<<<<<<< HEAD
+=======
+	struct io_pgtable_cfg *cfg = &pgtable->pgtbl.cfg;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int level, end_lvl;
 	u64 *pte, *page;
 
 	BUG_ON(!is_power_of_2(page_size));
 
+<<<<<<< HEAD
 	while (address > PM_LEVEL_SIZE(domain->iop.mode)) {
+=======
+	while (address > PM_LEVEL_SIZE(pgtable->mode)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * Return an error if there is no memory to update the
 		 * page-table.
 		 */
+<<<<<<< HEAD
 		if (!increase_address_space(domain, address, gfp))
+=======
+		if (!increase_address_space(pgtable, address, gfp))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return NULL;
 	}
 
 
+<<<<<<< HEAD
 	level   = domain->iop.mode - 1;
 	pte     = &domain->iop.root[PM_LEVEL_INDEX(level, address)];
+=======
+	level   = pgtable->mode - 1;
+	pte     = &pgtable->root[PM_LEVEL_INDEX(level, address)];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	address = PAGE_SIZE_ALIGN(address, page_size);
 	end_lvl = PAGE_SIZE_LEVEL(page_size);
 
@@ -251,7 +307,11 @@ static u64 *alloc_pte(struct protection_domain *domain,
 
 		if (!IOMMU_PTE_PRESENT(__pte) ||
 		    pte_level == PAGE_MODE_NONE) {
+<<<<<<< HEAD
 			page = iommu_alloc_page_node(domain->nid, gfp);
+=======
+			page = iommu_alloc_page_node(cfg->amd.nid, gfp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			if (!page)
 				return NULL;
@@ -365,7 +425,11 @@ static int iommu_v1_map_pages(struct io_pgtable_ops *ops, unsigned long iova,
 			      phys_addr_t paddr, size_t pgsize, size_t pgcount,
 			      int prot, gfp_t gfp, size_t *mapped)
 {
+<<<<<<< HEAD
 	struct protection_domain *dom = io_pgtable_ops_to_domain(ops);
+=======
+	struct amd_io_pgtable *pgtable = io_pgtable_ops_to_data(ops);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	LIST_HEAD(freelist);
 	bool updated = false;
 	u64 __pte, *pte;
@@ -382,7 +446,11 @@ static int iommu_v1_map_pages(struct io_pgtable_ops *ops, unsigned long iova,
 
 	while (pgcount > 0) {
 		count = PAGE_SIZE_PTE_COUNT(pgsize);
+<<<<<<< HEAD
 		pte   = alloc_pte(dom, iova, pgsize, NULL, gfp, &updated);
+=======
+		pte   = alloc_pte(pgtable, iova, pgsize, NULL, gfp, &updated);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		ret = -ENOMEM;
 		if (!pte)
@@ -419,6 +487,10 @@ static int iommu_v1_map_pages(struct io_pgtable_ops *ops, unsigned long iova,
 
 out:
 	if (updated) {
+<<<<<<< HEAD
+=======
+		struct protection_domain *dom = io_pgtable_ops_to_domain(ops);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		unsigned long flags;
 
 		spin_lock_irqsave(&dom->lock, flags);
@@ -560,20 +632,28 @@ static int iommu_v1_read_and_clear_dirty(struct io_pgtable_ops *ops,
  */
 static void v1_free_pgtable(struct io_pgtable *iop)
 {
+<<<<<<< HEAD
 	struct amd_io_pgtable *pgtable = container_of(iop, struct amd_io_pgtable, iop);
 	struct protection_domain *dom;
+=======
+	struct amd_io_pgtable *pgtable = container_of(iop, struct amd_io_pgtable, pgtbl);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	LIST_HEAD(freelist);
 
 	if (pgtable->mode == PAGE_MODE_NONE)
 		return;
 
+<<<<<<< HEAD
 	dom = container_of(pgtable, struct protection_domain, iop);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Page-table is not visible to IOMMU anymore, so free it */
 	BUG_ON(pgtable->mode < PAGE_MODE_NONE ||
 	       pgtable->mode > PAGE_MODE_6_LEVEL);
 
 	free_sub_pt(pgtable->root, pgtable->mode, &freelist);
+<<<<<<< HEAD
 
 	/* Update data structure */
 	amd_iommu_domain_clr_pt_root(dom);
@@ -581,6 +661,8 @@ static void v1_free_pgtable(struct io_pgtable *iop)
 	/* Make changes visible to IOMMUs */
 	amd_iommu_domain_update(dom);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	iommu_put_pages_list(&freelist);
 }
 
@@ -588,6 +670,7 @@ static struct io_pgtable *v1_alloc_pgtable(struct io_pgtable_cfg *cfg, void *coo
 {
 	struct amd_io_pgtable *pgtable = io_pgtable_cfg_to_data(cfg);
 
+<<<<<<< HEAD
 	cfg->pgsize_bitmap  = AMD_IOMMU_PGSIZES;
 	cfg->ias            = IOMMU_IN_ADDR_BIT_SIZE;
 	cfg->oas            = IOMMU_OUT_ADDR_BIT_SIZE;
@@ -599,6 +682,23 @@ static struct io_pgtable *v1_alloc_pgtable(struct io_pgtable_cfg *cfg, void *coo
 	pgtable->iop.ops.read_and_clear_dirty = iommu_v1_read_and_clear_dirty;
 
 	return &pgtable->iop;
+=======
+	pgtable->root = iommu_alloc_page_node(cfg->amd.nid, GFP_KERNEL);
+	if (!pgtable->root)
+		return NULL;
+	pgtable->mode = PAGE_MODE_3_LEVEL;
+
+	cfg->pgsize_bitmap  = amd_iommu_pgsize_bitmap;
+	cfg->ias            = IOMMU_IN_ADDR_BIT_SIZE;
+	cfg->oas            = IOMMU_OUT_ADDR_BIT_SIZE;
+
+	pgtable->pgtbl.ops.map_pages    = iommu_v1_map_pages;
+	pgtable->pgtbl.ops.unmap_pages  = iommu_v1_unmap_pages;
+	pgtable->pgtbl.ops.iova_to_phys = iommu_v1_iova_to_phys;
+	pgtable->pgtbl.ops.read_and_clear_dirty = iommu_v1_read_and_clear_dirty;
+
+	return &pgtable->pgtbl;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 struct io_pgtable_init_fns io_pgtable_amd_iommu_v1_init_fns = {

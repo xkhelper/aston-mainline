@@ -19,15 +19,25 @@
 #include "smack.h"
 
 static unsigned int smack_ip_output(void *priv,
+<<<<<<< HEAD
 					struct sk_buff *skb,
 					const struct nf_hook_state *state)
+=======
+				    struct sk_buff *skb,
+				    const struct nf_hook_state *state)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct sock *sk = skb_to_full_sk(skb);
 	struct socket_smack *ssp;
 	struct smack_known *skp;
 
+<<<<<<< HEAD
 	if (sk && sk->sk_security) {
 		ssp = sk->sk_security;
+=======
+	if (sk) {
+		ssp = smack_sock(sk);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		skp = ssp->smk_out;
 		skb->secmark = skp->smk_secid;
 	}

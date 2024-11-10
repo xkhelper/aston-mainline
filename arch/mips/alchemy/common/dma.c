@@ -131,6 +131,7 @@ static const struct dma_dev dma_dev_table_bank2[DMA_NUM_DEV_BANK2] = {
 	{ AU1100_SD1_PHYS_ADDR + 0x04, DMA_DS | DMA_DW8 | DMA_DR }	/* coherent */
 };
 
+<<<<<<< HEAD
 void dump_au1000_dma_channel(unsigned int dmanr)
 {
 	struct dma_chan *chan;
@@ -154,6 +155,8 @@ void dump_au1000_dma_channel(unsigned int dmanr)
 	       __raw_readl(chan->io + DMA_BUFFER1_COUNT));
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Finds a free channel, and binds the requested device to it.
  * Returns the allocated channel number, or negative on error.

@@ -164,7 +164,10 @@
 					    QORIQ_CLK_PLL_DIV(1)>;
 			voltage-ranges = <1800 1800 3300 3300>;
 			sdhci,auto-cmd12;
+<<<<<<< HEAD
 			big-endian;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			bus-width = <4>;
 			status = "disabled";
 		};
@@ -183,7 +186,10 @@
 					    QORIQ_CLK_PLL_DIV(1)>;
 			voltage-ranges = <1800 1800 3300 3300>;
 			sdhci,auto-cmd12;
+<<<<<<< HEAD
 			big-endian;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			broken-cd;
 			bus-width = <4>;
 			status = "disabled";
@@ -541,7 +547,10 @@
 			#address-cells = <3>;
 			#size-cells = <2>;
 			device_type = "pci";
+<<<<<<< HEAD
 			num-viewport = <2>;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			bus-range = <0x0 0xff>;
 			ranges = <0x81000000 0x0 0x00000000 0x40 0x00010000 0x0 0x00010000   /* downstream I/O */
 				  0x82000000 0x0 0x40000000 0x40 0x40000000 0x0 0x40000000>; /* non-prefetchable memory */
@@ -556,7 +565,11 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		rcpm: power-controller@1ee2140 {
+=======
+		rcpm: wakeup-controller@1ee2140 {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			compatible = "fsl,ls1012a-rcpm", "fsl,qoriq-rcpm-2.1+";
 			reg = <0x0 0x1ee2140 0x0 0x4>;
 			#fsl,rcpm-wakeup-cells = <1>;

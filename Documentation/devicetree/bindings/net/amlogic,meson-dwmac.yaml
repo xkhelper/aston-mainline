@@ -58,6 +58,7 @@ allOf:
             - const: timing-adjustment
 
         amlogic,tx-delay-ns:
+<<<<<<< HEAD
           $ref: /schemas/types.yaml#/definitions/uint32
           description:
             The internal RGMII TX clock delay (provided by this driver) in
@@ -70,6 +71,20 @@ allOf:
             delay in the MAC to prevent the clock from going off because both
             PHY and MAC are adding a delay).
             Any configuration is ignored when the phy-mode is set to "rmii".
+=======
+          enum: [0, 2, 4, 6]
+          default: 2
+          description:
+            The internal RGMII TX clock delay (provided by this driver)
+            in nanoseconds. When phy-mode is set to "rgmii" then the TX
+            delay should be explicitly configured. When the phy-mode is
+            set to either "rgmii-id" or "rgmii-txid" the TX clock delay
+            is already provided by the PHY. In that case this property
+            should be set to 0ns (which disables the TX clock delay in
+            the MAC to prevent the clock from going off because both
+            PHY and MAC are adding a delay). Any configuration is
+            ignored when the phy-mode is set to "rmii".
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
         amlogic,rx-delay-ns:
           deprecated: true

@@ -83,14 +83,20 @@ static void __init
 do_xor_speed(struct xor_block_template *tmpl, void *b1, void *b2)
 {
 	int speed;
+<<<<<<< HEAD
 	int i, j;
 	ktime_t min, start, diff;
+=======
+	unsigned long reps;
+	ktime_t min, start, t0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	tmpl->next = template_list;
 	template_list = tmpl;
 
 	preempt_disable();
 
+<<<<<<< HEAD
 	min = (ktime_t)S64_MAX;
 	for (i = 0; i < 3; i++) {
 		start = ktime_get();
@@ -103,13 +109,30 @@ do_xor_speed(struct xor_block_template *tmpl, void *b1, void *b2)
 		if (diff < min)
 			min = diff;
 	}
+=======
+	reps = 0;
+	t0 = ktime_get();
+	/* delay start until time has advanced */
+	while ((start = ktime_get()) == t0)
+		cpu_relax();
+	do {
+		mb(); /* prevent loop optimization */
+		tmpl->do_2(BENCH_SIZE, b1, b2);
+		mb();
+	} while (reps++ < REPS || (t0 = ktime_get()) == start);
+	min = ktime_sub(t0, start);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	preempt_enable();
 
 	// bytes/ns == GB/s, multiply by 1000 to get MB/s [not MiB/s]
+<<<<<<< HEAD
 	if (!min)
 		min = 1;
 	speed = (1000 * REPS * BENCH_SIZE) / (unsigned int)ktime_to_ns(min);
+=======
+	speed = (1000 * reps * BENCH_SIZE) / (unsigned int)ktime_to_ns(min);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	tmpl->speed = speed;
 
 	pr_info("   %-16s: %5d MB/sec\n", tmpl->name, speed);

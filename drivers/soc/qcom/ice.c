@@ -8,6 +8,10 @@
  */
 
 #include <linux/bitfield.h>
+<<<<<<< HEAD
+=======
+#include <linux/cleanup.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/clk.h>
 #include <linux/delay.h>
 #include <linux/iopoll.h>
@@ -265,7 +269,10 @@ struct qcom_ice *of_qcom_ice_get(struct device *dev)
 {
 	struct platform_device *pdev = to_platform_device(dev);
 	struct qcom_ice *ice;
+<<<<<<< HEAD
 	struct device_node *node;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct resource *res;
 	void __iomem *base;
 
@@ -292,15 +299,24 @@ struct qcom_ice *of_qcom_ice_get(struct device *dev)
 	 * (legacy DT binding), then it must at least provide a phandle
 	 * to the ICE devicetree node, otherwise ICE is not supported.
 	 */
+<<<<<<< HEAD
 	node = of_parse_phandle(dev->of_node, "qcom,ice", 0);
+=======
+	struct device_node *node __free(device_node) = of_parse_phandle(dev->of_node,
+									"qcom,ice", 0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!node)
 		return NULL;
 
 	pdev = of_find_device_by_node(node);
 	if (!pdev) {
 		dev_err(dev, "Cannot find device node %s\n", node->name);
+<<<<<<< HEAD
 		ice = ERR_PTR(-EPROBE_DEFER);
 		goto out;
+=======
+		return ERR_PTR(-EPROBE_DEFER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	ice = platform_get_drvdata(pdev);
@@ -308,8 +324,12 @@ struct qcom_ice *of_qcom_ice_get(struct device *dev)
 		dev_err(dev, "Cannot get ice instance from %s\n",
 			dev_name(&pdev->dev));
 		platform_device_put(pdev);
+<<<<<<< HEAD
 		ice = ERR_PTR(-EPROBE_DEFER);
 		goto out;
+=======
+		return ERR_PTR(-EPROBE_DEFER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	ice->link = device_link_add(dev, &pdev->dev, DL_FLAG_AUTOREMOVE_SUPPLIER);
@@ -321,9 +341,12 @@ struct qcom_ice *of_qcom_ice_get(struct device *dev)
 		ice = ERR_PTR(-EINVAL);
 	}
 
+<<<<<<< HEAD
 out:
 	of_node_put(node);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ice;
 }
 EXPORT_SYMBOL_GPL(of_qcom_ice_get);

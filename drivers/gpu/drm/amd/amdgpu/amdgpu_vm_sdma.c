@@ -35,6 +35,7 @@
  */
 static int amdgpu_vm_sdma_map_table(struct amdgpu_bo_vm *table)
 {
+<<<<<<< HEAD
 	int r;
 
 	r = amdgpu_ttm_alloc_gart(&table->bo.tbo);
@@ -45,6 +46,9 @@ static int amdgpu_vm_sdma_map_table(struct amdgpu_bo_vm *table)
 		r = amdgpu_ttm_alloc_gart(&table->shadow->tbo);
 
 	return r;
+=======
+	return amdgpu_ttm_alloc_gart(&table->bo.tbo);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Allocate a new job for @count PTE updates */
@@ -77,23 +81,33 @@ static int amdgpu_vm_sdma_alloc_job(struct amdgpu_vm_update_params *p,
  * amdgpu_vm_sdma_prepare - prepare SDMA command submission
  *
  * @p: see amdgpu_vm_update_params definition
+<<<<<<< HEAD
  * @resv: reservation object with embedded fence
  * @sync_mode: synchronization mode
+=======
+ * @sync: amdgpu_sync object with fences to wait for
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Returns:
  * Negativ errno, 0 for success.
  */
 static int amdgpu_vm_sdma_prepare(struct amdgpu_vm_update_params *p,
+<<<<<<< HEAD
 				  struct dma_resv *resv,
 				  enum amdgpu_sync_mode sync_mode)
 {
 	struct amdgpu_sync sync;
+=======
+				  struct amdgpu_sync *sync)
+{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int r;
 
 	r = amdgpu_vm_sdma_alloc_job(p, 0);
 	if (r)
 		return r;
 
+<<<<<<< HEAD
 	if (!resv)
 		return 0;
 
@@ -103,6 +117,12 @@ static int amdgpu_vm_sdma_prepare(struct amdgpu_vm_update_params *p,
 		r = amdgpu_sync_push_to_job(&sync, p->job);
 	amdgpu_sync_free(&sync);
 
+=======
+	if (!sync)
+		return 0;
+
+	r = amdgpu_sync_push_to_job(sync, p->job);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (r) {
 		p->num_dw_left = 0;
 		amdgpu_job_free(p->job);
@@ -273,17 +293,24 @@ static int amdgpu_vm_sdma_update(struct amdgpu_vm_update_params *p,
 
 		if (!p->pages_addr) {
 			/* set page commands needed */
+<<<<<<< HEAD
 			if (vmbo->shadow)
 				amdgpu_vm_sdma_set_ptes(p, vmbo->shadow, pe, addr,
 							count, incr, flags);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			amdgpu_vm_sdma_set_ptes(p, bo, pe, addr, count,
 						incr, flags);
 			return 0;
 		}
 
 		/* copy commands needed */
+<<<<<<< HEAD
 		ndw -= p->adev->vm_manager.vm_pte_funcs->copy_pte_num_dw *
 			(vmbo->shadow ? 2 : 1);
+=======
+		ndw -= p->adev->vm_manager.vm_pte_funcs->copy_pte_num_dw;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* for padding */
 		ndw -= 7;
@@ -298,8 +325,11 @@ static int amdgpu_vm_sdma_update(struct amdgpu_vm_update_params *p,
 			pte[i] |= flags;
 		}
 
+<<<<<<< HEAD
 		if (vmbo->shadow)
 			amdgpu_vm_sdma_copy_ptes(p, vmbo->shadow, pe, nptes);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		amdgpu_vm_sdma_copy_ptes(p, bo, pe, nptes);
 
 		pe += nptes * 8;

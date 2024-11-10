@@ -9,6 +9,7 @@
 
 /* BPF map that will be filled by user space */
 struct filters {
+<<<<<<< HEAD
 	__uint(type, BPF_MAP_TYPE_ARRAY);
 	__type(key, int);
 	__type(value, struct perf_bpf_filter_entry);
@@ -16,6 +17,43 @@ struct filters {
 } filters SEC(".maps");
 
 int dropped;
+=======
+	__uint(type, BPF_MAP_TYPE_HASH);
+	__type(key, int);
+	__type(value, struct perf_bpf_filter_entry[MAX_FILTERS]);
+	__uint(max_entries, 1);
+} filters SEC(".maps");
+
+/*
+ * An evsel has multiple instances for each CPU or task but we need a single
+ * id to be used as a key for the idx_hash.  This hashmap would translate the
+ * instance's ID to a representative ID.
+ */
+struct event_hash {
+	__uint(type, BPF_MAP_TYPE_HASH);
+	__type(key, __u64);
+	__type(value, __u64);
+	__uint(max_entries, 1);
+} event_hash SEC(".maps");
+
+/* tgid/evtid to filter index */
+struct idx_hash {
+	__uint(type, BPF_MAP_TYPE_HASH);
+	__type(key, struct idx_hash_key);
+	__type(value, int);
+	__uint(max_entries, 1);
+} idx_hash SEC(".maps");
+
+/* tgid to filter index */
+struct lost_count {
+	__uint(type, BPF_MAP_TYPE_ARRAY);
+	__type(key, int);
+	__type(value, int);
+	__uint(max_entries, 1);
+} dropped SEC(".maps");
+
+volatile const int use_idx_hash;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void *bpf_cast_to_kern_ctx(void *) __ksym;
 
@@ -65,6 +103,10 @@ static inline __u64 perf_get_sample(struct bpf_perf_event_data_kern *kctx,
 	BUILD_CHECK_SAMPLE(DATA_SRC);
 	BUILD_CHECK_SAMPLE(TRANSACTION);
 	BUILD_CHECK_SAMPLE(PHYS_ADDR);
+<<<<<<< HEAD
+=======
+	BUILD_CHECK_SAMPLE(CGROUP);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	BUILD_CHECK_SAMPLE(DATA_PAGE_SIZE);
 	BUILD_CHECK_SAMPLE(CODE_PAGE_SIZE);
 	BUILD_CHECK_SAMPLE(WEIGHT_STRUCT);
@@ -107,6 +149,11 @@ static inline __u64 perf_get_sample(struct bpf_perf_event_data_kern *kctx,
 		return kctx->data->weight.full;
 	case PBF_TERM_PHYS_ADDR:
 		return kctx->data->phys_addr;
+<<<<<<< HEAD
+=======
+	case PBF_TERM_CGROUP:
+		return kctx->data->cgroup;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case PBF_TERM_CODE_PAGE_SIZE:
 		return kctx->data->code_page_size;
 	case PBF_TERM_DATA_PAGE_SIZE:
@@ -155,7 +202,10 @@ static inline __u64 perf_get_sample(struct bpf_perf_event_data_kern *kctx,
 	case __PBF_UNUSED_TERM16:
 	case __PBF_UNUSED_TERM18:
 	case __PBF_UNUSED_TERM20:
+<<<<<<< HEAD
 	case __PBF_UNUSED_TERM21:
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		break;
 	}
@@ -179,6 +229,7 @@ int perf_sample_filter(void *ctx)
 	__u64 sample_data;
 	int in_group = 0;
 	int group_result = 0;
+<<<<<<< HEAD
 	int i;
 
 	kctx = bpf_cast_to_kern_ctx(ctx);
@@ -212,6 +263,68 @@ int perf_sample_filter(void *ctx)
 			break;
 		case PBF_OP_AND:
 			CHECK_RESULT(sample_data, &, entry->value)
+=======
+	int i, k;
+	int *losts;
+
+	kctx = bpf_cast_to_kern_ctx(ctx);
+
+	k = 0;
+
+	if (use_idx_hash) {
+		struct idx_hash_key key = {
+			.tgid = bpf_get_current_pid_tgid() >> 32,
+		};
+		__u64 eid = kctx->event->id;
+		__u64 *key_id;
+		int *idx;
+
+		/* get primary_event_id */
+		if (kctx->event->parent)
+			eid = kctx->event->parent->id;
+
+		key_id = bpf_map_lookup_elem(&event_hash, &eid);
+		if (key_id == NULL)
+			goto drop;
+
+		key.evt_id = *key_id;
+
+		idx = bpf_map_lookup_elem(&idx_hash, &key);
+		if (idx)
+			k = *idx;
+		else
+			goto drop;
+	}
+
+	entry = bpf_map_lookup_elem(&filters, &k);
+	if (entry == NULL)
+		goto drop;
+
+	for (i = 0; i < MAX_FILTERS; i++) {
+		sample_data = perf_get_sample(kctx, &entry[i]);
+
+		switch (entry[i].op) {
+		case PBF_OP_EQ:
+			CHECK_RESULT(sample_data, ==, entry[i].value)
+			break;
+		case PBF_OP_NEQ:
+			CHECK_RESULT(sample_data, !=, entry[i].value)
+			break;
+		case PBF_OP_GT:
+			CHECK_RESULT(sample_data, >, entry[i].value)
+			break;
+		case PBF_OP_GE:
+			CHECK_RESULT(sample_data, >=, entry[i].value)
+			break;
+		case PBF_OP_LT:
+			CHECK_RESULT(sample_data, <, entry[i].value)
+			break;
+		case PBF_OP_LE:
+			CHECK_RESULT(sample_data, <=, entry[i].value)
+			break;
+		case PBF_OP_AND:
+			CHECK_RESULT(sample_data, &, entry[i].value)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		case PBF_OP_GROUP_BEGIN:
 			in_group = 1;
@@ -222,13 +335,26 @@ int perf_sample_filter(void *ctx)
 				goto drop;
 			in_group = 0;
 			break;
+<<<<<<< HEAD
+=======
+		case PBF_OP_DONE:
+			/* no failures so far, accept it */
+			return 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 	/* generate sample data */
 	return 1;
 
 drop:
+<<<<<<< HEAD
 	__sync_fetch_and_add(&dropped, 1);
+=======
+	losts = bpf_map_lookup_elem(&dropped, &k);
+	if (losts != NULL)
+		__sync_fetch_and_add(losts, 1);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 

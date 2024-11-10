@@ -1410,7 +1410,10 @@ gpio_virtuser_make_lookup_table(struct gpio_virtuser_device *dev)
 	size_t num_entries = gpio_virtuser_get_lookup_count(dev);
 	struct gpio_virtuser_lookup_entry *entry;
 	struct gpio_virtuser_lookup *lookup;
+<<<<<<< HEAD
 	struct gpiod_lookup *curr;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int i = 0;
 
 	lockdep_assert_held(&dev->lock);
@@ -1426,6 +1429,7 @@ gpio_virtuser_make_lookup_table(struct gpio_virtuser_device *dev)
 
 	list_for_each_entry(lookup, &dev->lookup_list, siblings) {
 		list_for_each_entry(entry, &lookup->entry_list, siblings) {
+<<<<<<< HEAD
 			curr = &table->table[i];
 
 			curr->con_id = lookup->con_id;
@@ -1434,6 +1438,12 @@ gpio_virtuser_make_lookup_table(struct gpio_virtuser_device *dev)
 			curr->chip_hwnum = entry->offset < 0 ?
 						U16_MAX : entry->offset;
 			curr->flags = entry->flags;
+=======
+			table->table[i] =
+				GPIO_LOOKUP_IDX(entry->key,
+						entry->offset < 0 ? U16_MAX : entry->offset,
+						lookup->con_id, i, entry->flags);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			i++;
 		}
 	}

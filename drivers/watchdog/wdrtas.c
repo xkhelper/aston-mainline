@@ -469,7 +469,10 @@ static int wdrtas_reboot(struct notifier_block *this,
 
 static const struct file_operations wdrtas_fops = {
 	.owner		= THIS_MODULE,
+<<<<<<< HEAD
 	.llseek		= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.write		= wdrtas_write,
 	.unlocked_ioctl	= wdrtas_ioctl,
 	.compat_ioctl	= compat_ptr_ioctl,
@@ -485,7 +488,10 @@ static struct miscdevice wdrtas_miscdev = {
 
 static const struct file_operations wdrtas_temp_fops = {
 	.owner		= THIS_MODULE,
+<<<<<<< HEAD
 	.llseek		= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.read		= wdrtas_temp_read,
 	.open		= wdrtas_temp_open,
 	.release	= wdrtas_temp_close,

@@ -41,8 +41,11 @@ static int nft_fib6_flowi_init(struct flowi6 *fl6, const struct nft_fib *priv,
 	if (ipv6_addr_type(&fl6->daddr) & IPV6_ADDR_LINKLOCAL) {
 		lookup_flags |= RT6_LOOKUP_F_IFACE;
 		fl6->flowi6_oif = get_ifindex(dev ? dev : pkt->skb->dev);
+<<<<<<< HEAD
 	} else if (priv->flags & NFTA_FIB_F_IIF) {
 		fl6->flowi6_l3mdev = l3mdev_master_ifindex_rcu(dev);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (ipv6_addr_type(&fl6->saddr) & IPV6_ADDR_UNICAST)
@@ -75,6 +78,11 @@ static u32 __nft_fib6_eval_type(const struct nft_fib *priv,
 	else if (priv->flags & NFTA_FIB_F_OIF)
 		dev = nft_out(pkt);
 
+<<<<<<< HEAD
+=======
+	fl6.flowi6_l3mdev = l3mdev_master_ifindex_rcu(dev);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	nft_fib6_flowi_init(&fl6, priv, pkt, dev, iph);
 
 	if (dev && nf_ipv6_chk_addr(nft_net(pkt), &fl6.daddr, dev, true))
@@ -165,6 +173,10 @@ void nft_fib6_eval(const struct nft_expr *expr, struct nft_regs *regs,
 		.flowi6_iif = LOOPBACK_IFINDEX,
 		.flowi6_proto = pkt->tprot,
 		.flowi6_uid = sock_net_uid(nft_net(pkt), NULL),
+<<<<<<< HEAD
+=======
+		.flowi6_l3mdev = l3mdev_master_ifindex_rcu(nft_in(pkt)),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 	struct rt6_info *rt;
 	int lookup_flags;

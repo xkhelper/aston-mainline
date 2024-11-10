@@ -53,11 +53,27 @@ properties:
       - const: aggre1 # Aggre NoC PCIe1 AXI clock
 
   interrupts:
+<<<<<<< HEAD
     maxItems: 1
 
   interrupt-names:
     items:
       - const: msi
+=======
+    minItems: 8
+    maxItems: 8
+
+  interrupt-names:
+    items:
+      - const: msi0
+      - const: msi1
+      - const: msi2
+      - const: msi3
+      - const: msi4
+      - const: msi5
+      - const: msi6
+      - const: msi7
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   resets:
     maxItems: 1
@@ -66,9 +82,12 @@ properties:
     items:
       - const: pci
 
+<<<<<<< HEAD
   vddpe-3v3-supply:
     description: PCIe endpoint power supply
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 allOf:
   - $ref: qcom,pcie-common.yaml#
 
@@ -137,8 +156,21 @@ examples:
 
             dma-coherent;
 
+<<<<<<< HEAD
             interrupts = <GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>;
             interrupt-names = "msi";
+=======
+            interrupts = <GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>,
+                         <GIC_SPI 308 IRQ_TYPE_LEVEL_HIGH>,
+                         <GIC_SPI 309 IRQ_TYPE_LEVEL_HIGH>,
+                         <GIC_SPI 312 IRQ_TYPE_LEVEL_HIGH>,
+                         <GIC_SPI 313 IRQ_TYPE_LEVEL_HIGH>,
+                         <GIC_SPI 314 IRQ_TYPE_LEVEL_HIGH>,
+                         <GIC_SPI 374 IRQ_TYPE_LEVEL_HIGH>,
+                         <GIC_SPI 375 IRQ_TYPE_LEVEL_HIGH>;
+            interrupt-names = "msi0", "msi1", "msi2", "msi3",
+                              "msi4", "msi5", "msi6", "msi7";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
             #interrupt-cells = <1>;
             interrupt-map-mask = <0 0 0 0x7>;
             interrupt-map = <0 0 0 1 &intc 0 0 0 434 IRQ_TYPE_LEVEL_HIGH>,

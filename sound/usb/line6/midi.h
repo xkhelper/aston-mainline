@@ -2,7 +2,11 @@
 /*
  * Line 6 Linux USB driver
  *
+<<<<<<< HEAD
  * Copyright (C) 2004-2010 Markus Grabner (grabner@icg.tugraz.at)
+=======
+ * Copyright (C) 2004-2010 Markus Grabner (line6@grabner-graz.at)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 #ifndef MIDI_H

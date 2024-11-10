@@ -109,7 +109,11 @@ struct page {
 			/**
 			 * @private: Mapping-private opaque data.
 			 * Usually used for buffer_heads if PagePrivate.
+<<<<<<< HEAD
 			 * Used for swp_entry_t if PageSwapCache.
+=======
+			 * Used for swp_entry_t if swapcache flag set.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			 * Indicates order in the buddy system if PageBuddy.
 			 */
 			unsigned long private;
@@ -660,6 +664,12 @@ struct vma_numab_state {
  * per VM-area/task. A VM area is any part of the process virtual memory
  * space that has a special rule for the page-fault handlers (ie a shared
  * library, the executable area etc).
+<<<<<<< HEAD
+=======
+ *
+ * Only explicitly marked struct members may be accessed by RCU readers before
+ * getting a stable reference.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct vm_area_struct {
 	/* The first cache line has the info for VMA tree walking. */
@@ -675,7 +685,15 @@ struct vm_area_struct {
 #endif
 	};
 
+<<<<<<< HEAD
 	struct mm_struct *vm_mm;	/* The address space we belong to. */
+=======
+	/*
+	 * The address space we belong to.
+	 * Unstable RCU readers are allowed to read this.
+	 */
+	struct mm_struct *vm_mm;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pgprot_t vm_page_prot;          /* Access permissions of this VMA. */
 
 	/*
@@ -688,7 +706,14 @@ struct vm_area_struct {
 	};
 
 #ifdef CONFIG_PER_VMA_LOCK
+<<<<<<< HEAD
 	/* Flag to indicate areas detached from the mm->mm_mt tree */
+=======
+	/*
+	 * Flag to indicate areas detached from the mm->mm_mt tree.
+	 * Unstable RCU readers are allowed to read this.
+	 */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool detached;
 
 	/*
@@ -706,6 +731,10 @@ struct vm_area_struct {
 	 * slowpath.
 	 */
 	int vm_lock_seq;
+<<<<<<< HEAD
+=======
+	/* Unstable RCU readers are allowed to read this. */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct vma_lock *vm_lock;
 #endif
 
@@ -947,7 +976,11 @@ struct mm_struct {
 #ifdef CONFIG_MMU_NOTIFIER
 		struct mmu_notifier_subscriptions *notifier_subscriptions;
 #endif
+<<<<<<< HEAD
 #if defined(CONFIG_TRANSPARENT_HUGEPAGE) && !USE_SPLIT_PMD_PTLOCKS
+=======
+#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && !defined(CONFIG_SPLIT_PMD_PTLOCKS)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pgtable_t pmd_huge_pte; /* protected by page_table_lock */
 #endif
 #ifdef CONFIG_NUMA_BALANCING
@@ -1313,6 +1346,12 @@ struct vm_special_mapping {
 
 	int (*mremap)(const struct vm_special_mapping *sm,
 		     struct vm_area_struct *new_vma);
+<<<<<<< HEAD
+=======
+
+	void (*close)(const struct vm_special_mapping *sm,
+		      struct vm_area_struct *vma);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum tlb_flush_reason {

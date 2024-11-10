@@ -38,7 +38,12 @@ static struct snd_sf_sample *sf_sample_new(struct snd_sf_list *sflist,
 static void sf_sample_delete(struct snd_sf_list *sflist,
 			     struct snd_soundfont *sf, struct snd_sf_sample *sp);
 static int load_map(struct snd_sf_list *sflist, const void __user *data, int count);
+<<<<<<< HEAD
 static int load_info(struct snd_sf_list *sflist, const void __user *data, long count);
+=======
+static int load_info(struct snd_card *card, struct snd_sf_list *sflist,
+		     const void __user *data, long count);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int remove_info(struct snd_sf_list *sflist, struct snd_soundfont *sf,
 		       int bank, int instr);
 static void init_voice_info(struct soundfont_voice_info *avp);
@@ -113,7 +118,12 @@ snd_soundfont_close_check(struct snd_sf_list *sflist, int client)
  * it wants to do with it.
  */
 int
+<<<<<<< HEAD
 snd_soundfont_load(struct snd_sf_list *sflist, const void __user *data,
+=======
+snd_soundfont_load(struct snd_card *card,
+		   struct snd_sf_list *sflist, const void __user *data,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		   long count, int client)
 {
 	struct soundfont_patch_info patch;
@@ -121,7 +131,11 @@ snd_soundfont_load(struct snd_sf_list *sflist, const void __user *data,
 	int  rc;
 
 	if (count < (long)sizeof(patch)) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "patch record too small %ld\n", count);
+=======
+		dev_err(card->dev, "patch record too small %ld\n", count);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 	if (copy_from_user(&patch, data, sizeof(patch)))
@@ -131,6 +145,7 @@ snd_soundfont_load(struct snd_sf_list *sflist, const void __user *data,
 	data += sizeof(patch);
 
 	if (patch.key != SNDRV_OSS_SOUNDFONT_PATCH) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "The wrong kind of patch %x\n", patch.key);
 		return -EINVAL;
 	}
@@ -141,6 +156,18 @@ snd_soundfont_load(struct snd_sf_list *sflist, const void __user *data,
 	}
 	if (patch.len < 0) {
 		snd_printk(KERN_ERR "poor length %d\n", patch.len);
+=======
+		dev_err(card->dev, "The wrong kind of patch %x\n", patch.key);
+		return -EINVAL;
+	}
+	if (count < patch.len) {
+		dev_err(card->dev, "Patch too short %ld, need %d\n",
+			count, patch.len);
+		return -EINVAL;
+	}
+	if (patch.len < 0) {
+		dev_err(card->dev, "poor length %d\n", patch.len);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 
@@ -164,7 +191,11 @@ snd_soundfont_load(struct snd_sf_list *sflist, const void __user *data,
 	rc = -EINVAL;
 	switch (patch.type) {
 	case SNDRV_SFNT_LOAD_INFO:
+<<<<<<< HEAD
 		rc = load_info(sflist, data, count);
+=======
+		rc = load_info(card, sflist, data, count);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case SNDRV_SFNT_LOAD_DATA:
 		rc = load_data(sflist, data, count);
@@ -184,8 +215,13 @@ snd_soundfont_load(struct snd_sf_list *sflist, const void __user *data,
 	case SNDRV_SFNT_REMOVE_INFO:
 		/* patch must be opened */
 		if (!sflist->currsf) {
+<<<<<<< HEAD
 			snd_printk(KERN_ERR "soundfont: remove_info: "
 				   "patch not opened\n");
+=======
+			dev_err(card->dev,
+				"soundfont: remove_info: patch not opened\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			rc = -EINVAL;
 		} else {
 			int bank, instr;
@@ -509,7 +545,12 @@ remove_info(struct snd_sf_list *sflist, struct snd_soundfont *sf,
  * open soundfont.
  */
 static int
+<<<<<<< HEAD
 load_info(struct snd_sf_list *sflist, const void __user *data, long count)
+=======
+load_info(struct snd_card *card,
+	  struct snd_sf_list *sflist, const void __user *data, long count)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct snd_soundfont *sf;
 	struct snd_sf_zone *zone;
@@ -525,7 +566,11 @@ load_info(struct snd_sf_list *sflist, const void __user *data, long count)
 		return -EINVAL;
 
 	if (count < (long)sizeof(hdr)) {
+<<<<<<< HEAD
 		printk(KERN_ERR "Soundfont error: invalid patch zone length\n");
+=======
+		dev_err(card->dev, "Soundfont error: invalid patch zone length\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 	if (copy_from_user((char*)&hdr, data, sizeof(hdr)))
@@ -535,15 +580,26 @@ load_info(struct snd_sf_list *sflist, const void __user *data, long count)
 	count -= sizeof(hdr);
 
 	if (hdr.nvoices <= 0 || hdr.nvoices >= 100) {
+<<<<<<< HEAD
 		printk(KERN_ERR "Soundfont error: Illegal voice number %d\n",
 		       hdr.nvoices);
+=======
+		dev_err(card->dev, "Soundfont error: Illegal voice number %d\n",
+			hdr.nvoices);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 
 	if (count < (long)sizeof(struct soundfont_voice_info) * hdr.nvoices) {
+<<<<<<< HEAD
 		printk(KERN_ERR "Soundfont Error: "
 		       "patch length(%ld) is smaller than nvoices(%d)\n",
 		       count, hdr.nvoices);
+=======
+		dev_err(card->dev,
+			"Soundfont Error: patch length(%ld) is smaller than nvoices(%d)\n",
+			count, hdr.nvoices);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 
@@ -974,7 +1030,12 @@ int snd_sf_vol_table[128] = {
 
 /* load GUS patch */
 static int
+<<<<<<< HEAD
 load_guspatch(struct snd_sf_list *sflist, const char __user *data, long count)
+=======
+load_guspatch(struct snd_card *card,
+	      struct snd_sf_list *sflist, const char __user *data, long count)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct patch_info patch;
 	struct snd_soundfont *sf;
@@ -984,7 +1045,11 @@ load_guspatch(struct snd_sf_list *sflist, const char __user *data, long count)
 	int rc;
 
 	if (count < (long)sizeof(patch)) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "patch record too small %ld\n", count);
+=======
+		dev_err(card->dev, "patch record too small %ld\n", count);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 	if (copy_from_user(&patch, data, sizeof(patch)))
@@ -1076,10 +1141,17 @@ load_guspatch(struct snd_sf_list *sflist, const char __user *data, long count)
 	/* panning position; -128 - 127 => 0-127 */
 	zone->v.pan = (patch.panning + 128) / 2;
 #if 0
+<<<<<<< HEAD
 	snd_printk(KERN_DEBUG
 		   "gus: basefrq=%d (ofs=%d) root=%d,tune=%d, range:%d-%d\n",
 		   (int)patch.base_freq, zone->v.rate_offset,
 		   zone->v.root, zone->v.tune, zone->v.low, zone->v.high);
+=======
+	pr_debug(
+		 "gus: basefrq=%d (ofs=%d) root=%d,tune=%d, range:%d-%d\n",
+		 (int)patch.base_freq, zone->v.rate_offset,
+		 zone->v.root, zone->v.tune, zone->v.low, zone->v.high);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 	/* detuning is ignored */
@@ -1111,12 +1183,21 @@ load_guspatch(struct snd_sf_list *sflist, const char __user *data, long count)
 		zone->v.parm.volrelease = 0x8000 | snd_sf_calc_parm_decay(release);
 		zone->v.attenuation = calc_gus_attenuation(patch.env_offset[0]);
 #if 0
+<<<<<<< HEAD
 		snd_printk(KERN_DEBUG
 			   "gus: atkhld=%x, dcysus=%x, volrel=%x, att=%d\n",
 			   zone->v.parm.volatkhld,
 			   zone->v.parm.voldcysus,
 			   zone->v.parm.volrelease,
 			   zone->v.attenuation);
+=======
+		dev_dbg(card->dev,
+			"gus: atkhld=%x, dcysus=%x, volrel=%x, att=%d\n",
+			zone->v.parm.volatkhld,
+			zone->v.parm.voldcysus,
+			zone->v.parm.volrelease,
+			zone->v.attenuation);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	}
 
@@ -1160,12 +1241,21 @@ load_guspatch(struct snd_sf_list *sflist, const char __user *data, long count)
 
 /* load GUS patch */
 int
+<<<<<<< HEAD
 snd_soundfont_load_guspatch(struct snd_sf_list *sflist, const char __user *data,
+=======
+snd_soundfont_load_guspatch(struct snd_card *card,
+			    struct snd_sf_list *sflist, const char __user *data,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    long count)
 {
 	int rc;
 	lock_preset(sflist);
+<<<<<<< HEAD
 	rc = load_guspatch(sflist, data, count);
+=======
+	rc = load_guspatch(card, sflist, data, count);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unlock_preset(sflist);
 	return rc;
 }

@@ -398,7 +398,11 @@ static struct platform_driver stm32_adfsdm_driver = {
 		   .of_match_table = stm32_adfsdm_of_match,
 		   },
 	.probe = stm32_adfsdm_probe,
+<<<<<<< HEAD
 	.remove_new = stm32_adfsdm_remove,
+=======
+	.remove = stm32_adfsdm_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(stm32_adfsdm_driver);

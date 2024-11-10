@@ -496,7 +496,11 @@ static void saa6588_remove(struct i2c_client *client)
 /* ----------------------------------------------------------------------- */
 
 static const struct i2c_device_id saa6588_id[] = {
+<<<<<<< HEAD
 	{ "saa6588", 0 },
+=======
+	{ "saa6588" },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, saa6588_id);

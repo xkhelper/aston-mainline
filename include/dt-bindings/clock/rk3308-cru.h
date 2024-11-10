@@ -212,8 +212,11 @@
 #define PCLK_CAN		233
 #define PCLK_OWIRE		234
 
+<<<<<<< HEAD
 #define CLK_NR_CLKS		(PCLK_OWIRE + 1)
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* soft-reset indices */
 
 /* cru_softrst_con0 */

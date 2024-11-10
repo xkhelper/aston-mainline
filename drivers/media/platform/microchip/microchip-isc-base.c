@@ -902,8 +902,16 @@ static int isc_set_fmt(struct isc_device *isc, struct v4l2_format *f)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int isc_validate(struct isc_device *isc)
 {
+=======
+static int isc_link_validate(struct media_link *link)
+{
+	struct video_device *vdev =
+		media_entity_to_video_device(link->sink->entity);
+	struct isc_device *isc = video_get_drvdata(vdev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 	int i;
 	struct isc_format *sd_fmt = NULL;
@@ -1906,6 +1914,7 @@ int microchip_isc_pipeline_init(struct isc_device *isc)
 }
 EXPORT_SYMBOL_GPL(microchip_isc_pipeline_init);
 
+<<<<<<< HEAD
 static int isc_link_validate(struct media_link *link)
 {
 	struct video_device *vdev =
@@ -1920,6 +1929,8 @@ static int isc_link_validate(struct media_link *link)
 	return isc_validate(isc);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct media_entity_operations isc_entity_operations = {
 	.link_validate = isc_link_validate,
 };

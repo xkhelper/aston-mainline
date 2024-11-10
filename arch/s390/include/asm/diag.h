@@ -38,6 +38,10 @@ enum diag_stat_enum {
 	DIAG_STAT_X308,
 	DIAG_STAT_X318,
 	DIAG_STAT_X320,
+<<<<<<< HEAD
+=======
+	DIAG_STAT_X49C,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	DIAG_STAT_X500,
 	NR_DIAG_STAT
 };
@@ -363,4 +367,15 @@ void _diag0c_amode31(unsigned long rx);
 void _diag308_reset_amode31(void);
 int _diag8c_amode31(struct diag8c *addr, struct ccw_dev_id *devno, size_t len);
 
+<<<<<<< HEAD
+=======
+/* diag 49c subcodes */
+enum diag49c_sc {
+	DIAG49C_SUBC_ACK = 0,
+	DIAG49C_SUBC_REG = 1
+};
+
+int diag49c(unsigned long subcode);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _ASM_S390_DIAG_H */

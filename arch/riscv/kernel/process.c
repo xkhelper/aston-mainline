@@ -15,6 +15,10 @@
 #include <linux/tick.h>
 #include <linux/ptrace.h>
 #include <linux/uaccess.h>
+<<<<<<< HEAD
+=======
+#include <linux/personality.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/unistd.h>
 #include <asm/processor.h>
@@ -26,6 +30,10 @@
 #include <asm/cpuidle.h>
 #include <asm/vector.h>
 #include <asm/cpufeature.h>
+<<<<<<< HEAD
+=======
+#include <asm/exec.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #if defined(CONFIG_STACKPROTECTOR) && !defined(CONFIG_STACKPROTECTOR_PER_TASK)
 #include <linux/stackprotector.h>
@@ -99,6 +107,16 @@ void show_regs(struct pt_regs *regs)
 		dump_backtrace(regs, NULL, KERN_DEFAULT);
 }
 
+<<<<<<< HEAD
+=======
+unsigned long arch_align_stack(unsigned long sp)
+{
+	if (!(current->personality & ADDR_NO_RANDOMIZE) && randomize_va_space)
+		sp -= get_random_u32_below(PAGE_SIZE);
+	return sp & ~0xf;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_COMPAT
 static bool compat_mode_supported __read_mostly;
 

@@ -272,7 +272,10 @@
 				regulator-name = "vdd_logic";
 				regulator-always-on;
 				regulator-boot-on;
+<<<<<<< HEAD
 				regulator-init-microvolt = <900000>;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				regulator-initial-mode = <0x2>;
 				regulator-min-microvolt = <500000>;
 				regulator-max-microvolt = <1350000>;
@@ -285,7 +288,10 @@
 
 			vdd_gpu: DCDC_REG2 {
 				regulator-name = "vdd_gpu";
+<<<<<<< HEAD
 				regulator-init-microvolt = <900000>;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				regulator-initial-mode = <0x2>;
 				regulator-min-microvolt = <500000>;
 				regulator-max-microvolt = <1350000>;
@@ -309,7 +315,10 @@
 
 			vdd_npu: DCDC_REG4 {
 				regulator-name = "vdd_npu";
+<<<<<<< HEAD
 				regulator-init-microvolt = <900000>;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				regulator-initial-mode = <0x2>;
 				regulator-min-microvolt = <500000>;
 				regulator-max-microvolt = <1350000>;

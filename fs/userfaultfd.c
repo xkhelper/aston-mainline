@@ -104,6 +104,7 @@ bool userfaultfd_wp_unpopulated(struct vm_area_struct *vma)
 	return ctx->features & UFFD_FEATURE_WP_UNPOPULATED;
 }
 
+<<<<<<< HEAD
 static void userfaultfd_set_vm_flags(struct vm_area_struct *vma,
 				     vm_flags_t flags)
 {
@@ -119,6 +120,8 @@ static void userfaultfd_set_vm_flags(struct vm_area_struct *vma,
 		vma_set_page_prot(vma);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int userfaultfd_wake_function(wait_queue_entry_t *wq, unsigned mode,
 				     int wake_flags, void *key)
 {
@@ -386,6 +389,7 @@ vm_fault_t handle_userfault(struct vm_fault *vmf, unsigned long reason)
 	unsigned int blocking_state;
 
 	/*
+<<<<<<< HEAD
 	 * We don't do userfault handling for the final child pid update.
 	 *
 	 * We also don't do userfault handling during
@@ -395,6 +399,10 @@ vm_fault_t handle_userfault(struct vm_fault *vmf, unsigned long reason)
 	 * the no_page_table() helper in follow_page_mask(), but the
 	 * shmem_vm_ops->fault method is invoked even during
 	 * coredumping and it ends up here.
+=======
+	 * We don't do userfault handling for the final child pid update
+	 * and when coredumping (faults triggered by get_dump_page()).
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	if (current->flags & (PF_EXITING|PF_DUMPCORE))
 		goto out;
@@ -615,6 +623,7 @@ static void userfaultfd_event_wait_completion(struct userfaultfd_ctx *ctx,
 	spin_unlock_irq(&ctx->event_wqh.lock);
 
 	if (release_new_ctx) {
+<<<<<<< HEAD
 		struct vm_area_struct *vma;
 		struct mm_struct *mm = release_new_ctx->mm;
 		VMA_ITERATOR(vmi, mm, 0);
@@ -631,6 +640,9 @@ static void userfaultfd_event_wait_completion(struct userfaultfd_ctx *ctx,
 		}
 		mmap_write_unlock(mm);
 
+=======
+		userfaultfd_release_new(release_new_ctx);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		userfaultfd_ctx_put(release_new_ctx);
 	}
 
@@ -662,9 +674,13 @@ int dup_userfaultfd(struct vm_area_struct *vma, struct list_head *fcs)
 		return 0;
 
 	if (!(octx->features & UFFD_FEATURE_EVENT_FORK)) {
+<<<<<<< HEAD
 		vma_start_write(vma);
 		vma->vm_userfaultfd_ctx = NULL_VM_UFFD_CTX;
 		userfaultfd_set_vm_flags(vma, vma->vm_flags & ~__VM_UFFD_FLAGS);
+=======
+		userfaultfd_reset_ctx(vma);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 
@@ -731,6 +747,37 @@ void dup_userfaultfd_complete(struct list_head *fcs)
 	}
 }
 
+<<<<<<< HEAD
+=======
+void dup_userfaultfd_fail(struct list_head *fcs)
+{
+	struct userfaultfd_fork_ctx *fctx, *n;
+
+	/*
+	 * An error has occurred on fork, we will tear memory down, but have
+	 * allocated memory for fctx's and raised reference counts for both the
+	 * original and child contexts (and on the mm for each as a result).
+	 *
+	 * These would ordinarily be taken care of by a user handling the event,
+	 * but we are no longer doing so, so manually clean up here.
+	 *
+	 * mm tear down will take care of cleaning up VMA contexts.
+	 */
+	list_for_each_entry_safe(fctx, n, fcs, list) {
+		struct userfaultfd_ctx *octx = fctx->orig;
+		struct userfaultfd_ctx *ctx = fctx->new;
+
+		atomic_dec(&octx->mmap_changing);
+		VM_BUG_ON(atomic_read(&octx->mmap_changing) < 0);
+		userfaultfd_ctx_put(octx);
+		userfaultfd_ctx_put(ctx);
+
+		list_del(&fctx->list);
+		kfree(fctx);
+	}
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void mremap_userfaultfd_prep(struct vm_area_struct *vma,
 			     struct vm_userfaultfd_ctx *vm_ctx)
 {
@@ -749,9 +796,13 @@ void mremap_userfaultfd_prep(struct vm_area_struct *vma,
 		up_write(&ctx->map_changing_lock);
 	} else {
 		/* Drop uffd context if remap feature not enabled */
+<<<<<<< HEAD
 		vma_start_write(vma);
 		vma->vm_userfaultfd_ctx = NULL_VM_UFFD_CTX;
 		userfaultfd_set_vm_flags(vma, vma->vm_flags & ~__VM_UFFD_FLAGS);
+=======
+		userfaultfd_reset_ctx(vma);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -870,6 +921,7 @@ static int userfaultfd_release(struct inode *inode, struct file *file)
 {
 	struct userfaultfd_ctx *ctx = file->private_data;
 	struct mm_struct *mm = ctx->mm;
+<<<<<<< HEAD
 	struct vm_area_struct *vma, *prev;
 	/* len == 0 means wake all */
 	struct userfaultfd_wake_range range = { .len = 0, };
@@ -918,6 +970,16 @@ static int userfaultfd_release(struct inode *inode, struct file *file)
 	mmput(mm);
 wakeup:
 	/*
+=======
+	/* len == 0 means wake all */
+	struct userfaultfd_wake_range range = { .len = 0, };
+
+	WRITE_ONCE(ctx->released, true);
+
+	userfaultfd_release_all(mm, ctx);
+
+	/*
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * After no new page faults can wait on this fault_*wqh, flush
 	 * the last page faults that may have been already waiting on
 	 * the fault_*wqh.
@@ -1293,6 +1355,7 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
 				unsigned long arg)
 {
 	struct mm_struct *mm = ctx->mm;
+<<<<<<< HEAD
 	struct vm_area_struct *vma, *prev, *cur;
 	int ret;
 	struct uffdio_register uffdio_register;
@@ -1301,6 +1364,16 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
 	bool found;
 	bool basic_ioctls;
 	unsigned long start, end, vma_end;
+=======
+	struct vm_area_struct *vma, *cur;
+	int ret;
+	struct uffdio_register uffdio_register;
+	struct uffdio_register __user *user_uffdio_register;
+	unsigned long vm_flags;
+	bool found;
+	bool basic_ioctls;
+	unsigned long start, end;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct vma_iterator vmi;
 	bool wp_async = userfaultfd_wp_async_ctx(ctx);
 
@@ -1428,6 +1501,7 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
 	} for_each_vma_range(vmi, cur, end);
 	BUG_ON(!found);
 
+<<<<<<< HEAD
 	vma_iter_set(&vmi, start);
 	prev = vma_prev(&vmi);
 	if (vma->vm_start < start)
@@ -1479,6 +1553,10 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
 		prev = vma;
 		start = vma->vm_end;
 	}
+=======
+	ret = userfaultfd_register_range(ctx, vma, vm_flags, start, end,
+					 wp_async);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 out_unlock:
 	mmap_write_unlock(mm);
@@ -1519,7 +1597,10 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
 	struct vm_area_struct *vma, *prev, *cur;
 	int ret;
 	struct uffdio_range uffdio_unregister;
+<<<<<<< HEAD
 	unsigned long new_flags;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool found;
 	unsigned long start, end, vma_end;
 	const void __user *buf = (void __user *)arg;
@@ -1622,6 +1703,7 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
 			wake_userfault(vma->vm_userfaultfd_ctx.ctx, &range);
 		}
 
+<<<<<<< HEAD
 		/* Reset ptes for the whole vma range if wr-protected */
 		if (userfaultfd_wp(vma))
 			uffd_wp_range(vma, start, vma_end - start, false);
@@ -1629,11 +1711,16 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
 		new_flags = vma->vm_flags & ~__VM_UFFD_FLAGS;
 		vma = vma_modify_flags_uffd(&vmi, prev, vma, start, vma_end,
 					    new_flags, NULL_VM_UFFD_CTX);
+=======
+		vma = userfaultfd_clear_vma(&vmi, prev, vma,
+					    start, vma_end);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (IS_ERR(vma)) {
 			ret = PTR_ERR(vma);
 			break;
 		}
 
+<<<<<<< HEAD
 		/*
 		 * In the vma_merge() successful mprotect-like case 8:
 		 * the next vma was merged into the current one and
@@ -1643,6 +1730,8 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
 		userfaultfd_set_vm_flags(vma, new_flags);
 		vma->vm_userfaultfd_ctx = NULL_VM_UFFD_CTX;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	skip:
 		prev = vma;
 		start = vma->vm_end;

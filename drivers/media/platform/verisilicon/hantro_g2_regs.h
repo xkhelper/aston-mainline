@@ -318,6 +318,13 @@
 #define G2_TILE_BSD_ADDR		(G2_SWREG(183))
 #define G2_DS_DST			(G2_SWREG(186))
 #define G2_DS_DST_CHR			(G2_SWREG(188))
+<<<<<<< HEAD
+=======
+#define G2_OUT_COMP_LUMA_ADDR		(G2_SWREG(190))
+#define G2_REF_COMP_LUMA_ADDR(i)	(G2_SWREG(192) + ((i) * 0x8))
+#define G2_OUT_COMP_CHROMA_ADDR		(G2_SWREG(224))
+#define G2_REF_COMP_CHROMA_ADDR(i)	(G2_SWREG(226) + ((i) * 0x8))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define g2_strm_buffer_len	G2_DEC_REG(258, 0, 0xffffffff)
 #define g2_strm_start_offset	G2_DEC_REG(259, 0, 0xffffffff)

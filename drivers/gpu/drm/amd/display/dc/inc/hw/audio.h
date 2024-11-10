@@ -46,6 +46,11 @@ struct audio_funcs {
 		const struct audio_info *audio_info,
 		const struct audio_dp_link_info *dp_link_info);
 
+<<<<<<< HEAD
+=======
+	void (*az_disable_hbr_audio)(struct audio *audio);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void (*wall_dto_setup)(struct audio *audio,
 		enum signal_type signal,
 		const struct audio_crtc_info *crtc_info,

@@ -751,11 +751,19 @@ static int brcm_sata_phy_probe(struct platform_device *pdev)
 {
 	const char *rxaeq_mode;
 	struct device *dev = &pdev->dev;
+<<<<<<< HEAD
 	struct device_node *dn = dev->of_node, *child;
 	const struct of_device_id *of_id;
 	struct brcm_sata_phy *priv;
 	struct phy_provider *provider;
 	int ret, count = 0;
+=======
+	struct device_node *dn = dev->of_node;
+	const struct of_device_id *of_id;
+	struct brcm_sata_phy *priv;
+	struct phy_provider *provider;
+	int count = 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (of_get_child_count(dn) == 0)
 		return -ENODEV;
@@ -782,19 +790,28 @@ static int brcm_sata_phy_probe(struct platform_device *pdev)
 			return PTR_ERR(priv->ctrl_base);
 	}
 
+<<<<<<< HEAD
 	for_each_available_child_of_node(dn, child) {
+=======
+	for_each_available_child_of_node_scoped(dn, child) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		unsigned int id;
 		struct brcm_sata_port *port;
 
 		if (of_property_read_u32(child, "reg", &id)) {
 			dev_err(dev, "missing reg property in node %pOFn\n",
 					child);
+<<<<<<< HEAD
 			ret = -EINVAL;
 			goto put_child;
+=======
+			return -EINVAL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		if (id >= MAX_PORTS) {
 			dev_err(dev, "invalid reg: %u\n", id);
+<<<<<<< HEAD
 			ret = -EINVAL;
 			goto put_child;
 		}
@@ -802,6 +819,13 @@ static int brcm_sata_phy_probe(struct platform_device *pdev)
 			dev_err(dev, "already registered port %u\n", id);
 			ret = -EINVAL;
 			goto put_child;
+=======
+			return -EINVAL;
+		}
+		if (priv->phys[id].phy) {
+			dev_err(dev, "already registered port %u\n", id);
+			return -EINVAL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		port = &priv->phys[id];
@@ -822,8 +846,12 @@ static int brcm_sata_phy_probe(struct platform_device *pdev)
 		port->ssc_en = of_property_read_bool(child, "brcm,enable-ssc");
 		if (IS_ERR(port->phy)) {
 			dev_err(dev, "failed to create PHY\n");
+<<<<<<< HEAD
 			ret = PTR_ERR(port->phy);
 			goto put_child;
+=======
+			return PTR_ERR(port->phy);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		phy_set_drvdata(port->phy, port);
@@ -839,9 +867,12 @@ static int brcm_sata_phy_probe(struct platform_device *pdev)
 	dev_info(dev, "registered %d port(s)\n", count);
 
 	return 0;
+<<<<<<< HEAD
 put_child:
 	of_node_put(child);
 	return ret;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct platform_driver brcm_sata_phy_driver = {

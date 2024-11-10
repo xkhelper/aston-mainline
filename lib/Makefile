@@ -14,6 +14,10 @@ KCOV_INSTRUMENT_list_debug.o := n
 KCOV_INSTRUMENT_debugobjects.o := n
 KCOV_INSTRUMENT_dynamic_debug.o := n
 KCOV_INSTRUMENT_fault-inject.o := n
+<<<<<<< HEAD
+=======
+KCOV_INSTRUMENT_find_bit.o := n
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 # string.o implements standard library functions like memset/memcpy etc.
 # Use -ffreestanding to ensure that the compiler does not try to "optimize"
@@ -34,7 +38,11 @@ lib-y := ctype.o string.o vsprintf.o cmdline.o \
 	 is_single_threaded.o plist.o decompress.o kobject_uevent.o \
 	 earlycpio.o seq_buf.o siphash.o dec_and_lock.o \
 	 nmi_backtrace.o win_minmax.o memcat_p.o \
+<<<<<<< HEAD
 	 buildid.o objpool.o
+=======
+	 buildid.o objpool.o union_find.o
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 lib-$(CONFIG_PRINTK) += dump_stack.o
 lib-$(CONFIG_SMP) += cpumask.o
@@ -393,6 +401,7 @@ obj-$(CONFIG_GENERIC_LIB_DEVMEM_IS_ALLOWED) += devmem_is_allowed.o
 
 obj-$(CONFIG_FIRMWARE_TABLE) += fw_table.o
 
+<<<<<<< HEAD
 # FORTIFY_SOURCE compile-time behavior tests
 TEST_FORTIFY_SRCS = $(wildcard $(src)/test_fortify/*-*.c)
 TEST_FORTIFY_LOGS = $(patsubst $(src)/%.c, %.log, $(TEST_FORTIFY_SRCS))
@@ -430,3 +439,6 @@ endif
 # Some architectures define __NO_FORTIFY if __SANITIZE_ADDRESS__ is undefined.
 # Pass CFLAGS_KASAN to avoid warnings.
 $(foreach x, $(patsubst %.log,%.o,$(TEST_FORTIFY_LOGS)), $(eval KASAN_SANITIZE_$(x) := y))
+=======
+subdir-$(CONFIG_FORTIFY_SOURCE) += test_fortify
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -17,7 +17,11 @@ The idea is that you identify packets with destination address matching a local
 socket on your box, set the packet mark to a certain value::
 
     # iptables -t mangle -N DIVERT
+<<<<<<< HEAD
     # iptables -t mangle -A PREROUTING -p tcp -m socket -j DIVERT
+=======
+    # iptables -t mangle -A PREROUTING -p tcp -m socket --transparent -j DIVERT
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     # iptables -t mangle -A DIVERT -j MARK --set-mark 1
     # iptables -t mangle -A DIVERT -j ACCEPT
 

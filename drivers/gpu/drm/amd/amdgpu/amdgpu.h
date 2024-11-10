@@ -118,6 +118,11 @@
 
 #define MAX_GPU_INSTANCE		64
 
+<<<<<<< HEAD
+=======
+#define GFX_SLICE_PERIOD		msecs_to_jiffies(250)
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct amdgpu_gpu_instance {
 	struct amdgpu_device		*adev;
 	int				mgpu_fan_enabled;
@@ -235,6 +240,10 @@ extern int sched_policy;
 extern bool debug_evictions;
 extern bool no_system_mem_limit;
 extern int halt_if_hws_hang;
+<<<<<<< HEAD
+=======
+extern uint amdgpu_svm_default_granularity;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else
 static const int __maybe_unused sched_policy = KFD_SCHED_POLICY_HWS;
 static const bool __maybe_unused debug_evictions; /* = false */
@@ -347,9 +356,15 @@ enum amdgpu_kiq_irq {
 	AMDGPU_CP_KIQ_IRQ_DRIVER0 = 0,
 	AMDGPU_CP_KIQ_IRQ_LAST
 };
+<<<<<<< HEAD
 #define SRIOV_USEC_TIMEOUT 1200000 /* wait 12 * 100ms for SRIOV */
 #define MAX_KIQ_REG_WAIT (amdgpu_sriov_vf(adev) ? 50000 : 5000) /* in usecs, extend for VF */
 #define MAX_KIQ_REG_BAILOUT_INTERVAL 5 /* in msecs, 5ms */
+=======
+#define SRIOV_USEC_TIMEOUT  1200000 /* wait 12 * 100ms for SRIOV */
+#define MAX_KIQ_REG_WAIT       5000 /* in usecs, 5ms */
+#define MAX_KIQ_REG_BAILOUT_INTERVAL   5 /* in msecs, 5ms */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define MAX_KIQ_REG_TRY 1000
 
 int amdgpu_device_ip_set_clockgating_state(void *dev,
@@ -823,6 +838,7 @@ struct amdgpu_mqd {
 struct amdgpu_reset_domain;
 struct amdgpu_fru_info;
 
+<<<<<<< HEAD
 struct amdgpu_reset_info {
 	/* reset dump register */
 	u32 *reset_dump_reg_list;
@@ -834,6 +850,8 @@ struct amdgpu_reset_info {
 #endif
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Non-zero (true) if the GPU has VRAM. Zero (false) otherwise.
  */
@@ -1091,10 +1109,13 @@ struct amdgpu_device {
 
 	struct amdgpu_virt	virt;
 
+<<<<<<< HEAD
 	/* link all shadow bo */
 	struct list_head                shadow_list;
 	struct mutex                    shadow_list_lock;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* record hw reset is performed */
 	bool has_hw_reset;
 	u8				reset_magic[AMDGPU_RESET_MAGIC_NUM];
@@ -1157,8 +1178,11 @@ struct amdgpu_device {
 
 	struct mutex			benchmark_mutex;
 
+<<<<<<< HEAD
 	struct amdgpu_reset_info	reset_info;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool                            scpm_enabled;
 	uint32_t                        scpm_status;
 
@@ -1175,6 +1199,14 @@ struct amdgpu_device {
 	bool                            debug_disable_soft_recovery;
 	bool                            debug_use_vram_fw_buf;
 	bool                            debug_enable_ras_aca;
+<<<<<<< HEAD
+=======
+	bool                            debug_exp_resets;
+
+	bool				enforce_isolation[MAX_XCP];
+	/* Added this mutex for cleaner shader isolation between GFX and compute processes */
+	struct mutex                    enforce_isolation_mutex;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static inline uint32_t amdgpu_ip_version(const struct amdgpu_device *adev,
@@ -1484,7 +1516,10 @@ extern const int amdgpu_max_kms_ioctl;
 
 int amdgpu_driver_load_kms(struct amdgpu_device *adev, unsigned long flags);
 void amdgpu_driver_unload_kms(struct drm_device *dev);
+<<<<<<< HEAD
 void amdgpu_driver_lastclose_kms(struct drm_device *dev);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int amdgpu_driver_open_kms(struct drm_device *dev, struct drm_file *file_priv);
 void amdgpu_driver_postclose_kms(struct drm_device *dev,
 				 struct drm_file *file_priv);
@@ -1588,6 +1623,7 @@ static inline bool amdgpu_acpi_is_s3_active(struct amdgpu_device *adev) { return
 static inline void amdgpu_choose_low_power_state(struct amdgpu_device *adev) { }
 #endif
 
+<<<<<<< HEAD
 #if defined(CONFIG_DRM_AMD_DC)
 int amdgpu_dm_display_resume(struct amdgpu_device *adev );
 #else
@@ -1595,6 +1631,8 @@ static inline int amdgpu_dm_display_resume(struct amdgpu_device *adev) { return 
 #endif
 
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void amdgpu_register_gpu_instance(struct amdgpu_device *adev);
 void amdgpu_unregister_gpu_instance(struct amdgpu_device *adev);
 

@@ -89,6 +89,10 @@ static char *i40e_filter_state_string[] = {
 	"ACTIVE",
 	"FAILED",
 	"REMOVE",
+<<<<<<< HEAD
+=======
+	"NEW_SYNC",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**

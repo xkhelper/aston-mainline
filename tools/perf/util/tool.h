@@ -15,6 +15,7 @@ struct perf_tool;
 struct machine;
 struct ordered_events;
 
+<<<<<<< HEAD
 typedef int (*event_sample)(struct perf_tool *tool, union perf_event *event,
 			    struct perf_sample *sample,
 			    struct evsel *evsel, struct machine *machine);
@@ -23,6 +24,16 @@ typedef int (*event_op)(struct perf_tool *tool, union perf_event *event,
 			struct perf_sample *sample, struct machine *machine);
 
 typedef int (*event_attr_op)(struct perf_tool *tool,
+=======
+typedef int (*event_sample)(const struct perf_tool *tool, union perf_event *event,
+			    struct perf_sample *sample,
+			    struct evsel *evsel, struct machine *machine);
+
+typedef int (*event_op)(const struct perf_tool *tool, union perf_event *event,
+			struct perf_sample *sample, struct machine *machine);
+
+typedef int (*event_attr_op)(const struct perf_tool *tool,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     union perf_event *event,
 			     struct evlist **pevlist);
 
@@ -31,7 +42,11 @@ typedef s64 (*event_op3)(struct perf_session *session, union perf_event *event);
 typedef int (*event_op4)(struct perf_session *session, union perf_event *event, u64 data,
 			 const char *str);
 
+<<<<<<< HEAD
 typedef int (*event_oe)(struct perf_tool *tool, union perf_event *event,
+=======
+typedef int (*event_oe)(const struct perf_tool *tool, union perf_event *event,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			struct ordered_events *oe);
 
 enum show_feature_header {
@@ -85,7 +100,24 @@ struct perf_tool {
 	bool		namespace_events;
 	bool		cgroup_events;
 	bool		no_warn;
+<<<<<<< HEAD
 	enum show_feature_header show_feat_hdr;
 };
 
+=======
+	bool		dont_split_sample_group;
+	enum show_feature_header show_feat_hdr;
+};
+
+void perf_tool__init(struct perf_tool *tool, bool ordered_events);
+
+bool perf_tool__compressed_is_stub(const struct perf_tool *tool);
+
+int process_event_sample_stub(const struct perf_tool *tool,
+			      union perf_event *event,
+			      struct perf_sample *sample,
+			      struct evsel *evsel,
+			      struct machine *machine);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __PERF_TOOL_H */

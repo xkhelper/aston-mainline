@@ -61,7 +61,11 @@ static int do_adjust_pte(struct vm_area_struct *vma, unsigned long address,
 	return ret;
 }
 
+<<<<<<< HEAD
 #if USE_SPLIT_PTE_PTLOCKS
+=======
+#if defined(CONFIG_SPLIT_PTE_PTLOCKS)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * If we are using split PTE locks, then we need to take the page
  * lock here.  Otherwise we are using shared mm->page_table_lock
@@ -80,10 +84,17 @@ static inline void do_pte_unlock(spinlock_t *ptl)
 {
 	spin_unlock(ptl);
 }
+<<<<<<< HEAD
 #else /* !USE_SPLIT_PTE_PTLOCKS */
 static inline void do_pte_lock(spinlock_t *ptl) {}
 static inline void do_pte_unlock(spinlock_t *ptl) {}
 #endif /* USE_SPLIT_PTE_PTLOCKS */
+=======
+#else /* !defined(CONFIG_SPLIT_PTE_PTLOCKS) */
+static inline void do_pte_lock(spinlock_t *ptl) {}
+static inline void do_pte_unlock(spinlock_t *ptl) {}
+#endif /* defined(CONFIG_SPLIT_PTE_PTLOCKS) */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int adjust_pte(struct vm_area_struct *vma, unsigned long address,
 	unsigned long pfn)

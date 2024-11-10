@@ -842,9 +842,12 @@
 #define WCD939X_DSD_HPHR_CFG5				   (0x35a6)
 #define WCD939X_MAX_REGISTER				   (WCD939X_DSD_HPHR_CFG5)
 
+<<<<<<< HEAD
 #define WCD939X_MAX_SWR_PORTS		(6)
 #define WCD939X_MAX_RX_SWR_PORTS	(6)
 #define WCD939X_MAX_TX_SWR_PORTS	(4)
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define WCD939X_MAX_SWR_CH_IDS		(15)
 
 struct wcd939x_sdw_ch_info {
@@ -863,6 +866,10 @@ enum wcd939x_tx_sdw_ports {
 	WCD939X_ADC_DMIC_1_2_PORT,
 	WCD939X_DMIC_0_3_MBHC_PORT,
 	WCD939X_DMIC_3_7_PORT,
+<<<<<<< HEAD
+=======
+	WCD939X_MAX_TX_SWR_PORTS = WCD939X_DMIC_3_7_PORT,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum wcd939x_tx_sdw_channels {
@@ -888,6 +895,11 @@ enum wcd939x_rx_sdw_ports {
 	WCD939X_LO_PORT,
 	WCD939X_DSD_PORT,
 	WCD939X_HIFI_PCM_PORT,
+<<<<<<< HEAD
+=======
+	WCD939X_MAX_RX_SWR_PORTS = WCD939X_HIFI_PCM_PORT,
+	WCD939X_MAX_SWR_PORTS = WCD939X_MAX_RX_SWR_PORTS,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum wcd939x_rx_sdw_channels {

@@ -288,7 +288,11 @@ static ssize_t snd_compr_write(struct file *f, const char __user *buf,
 
 	stream = &data->stream;
 	guard(mutex)(&stream->device->lock);
+<<<<<<< HEAD
 	/* write is allowed when stream is running or has been steup */
+=======
+	/* write is allowed when stream is running or has been setup */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (stream->runtime->state) {
 	case SNDRV_PCM_STATE_SETUP:
 	case SNDRV_PCM_STATE_PREPARED:
@@ -581,7 +585,11 @@ snd_compr_set_params(struct snd_compr_stream *stream, unsigned long arg)
 		 */
 		params = memdup_user((void __user *)arg, sizeof(*params));
 		if (IS_ERR(params))
+<<<<<<< HEAD
 			return PTR_ERR(no_free_ptr(params));
+=======
+			return PTR_ERR(params);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		retval = snd_compress_check_input(params);
 		if (retval)

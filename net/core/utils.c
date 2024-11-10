@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 /*
+<<<<<<< HEAD
  *	Generic address resultion entity
+=======
+ *	Generic address resolution entity
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  *	Authors:
  *	net_random Alan Cox

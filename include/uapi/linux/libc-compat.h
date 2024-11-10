@@ -140,6 +140,7 @@
 
 #endif /* _NETINET_IN_H */
 
+<<<<<<< HEAD
 /* Coordinate with glibc netipx/ipx.h header. */
 #if defined(__NETIPX_IPX_H)
 
@@ -159,6 +160,8 @@
 
 #endif /* defined(__NETIPX_IPX_H) */
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Definitions for xattr.h */
 #if defined(_SYS_XATTR_H)
 #define __UAPI_DEF_XATTR		0
@@ -240,6 +243,7 @@
 #define __UAPI_DEF_IP6_MTUINFO		1
 #endif
 
+<<<<<<< HEAD
 /* Definitions for ipx.h */
 #ifndef __UAPI_DEF_SOCKADDR_IPX
 #define __UAPI_DEF_SOCKADDR_IPX			1
@@ -257,6 +261,8 @@
 #define __UAPI_DEF_IPX_ROUTE_DEF		1
 #endif
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Definitions for xattr.h */
 #ifndef __UAPI_DEF_XATTR
 #define __UAPI_DEF_XATTR		1

@@ -15,7 +15,11 @@
 #include <linux/types.h>
 #include <linux/list.h>
 #include <linux/fs.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/byteorder.h>
 
 struct parsed_partitions;

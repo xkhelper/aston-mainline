@@ -163,7 +163,11 @@
 	status = "okay";
 
 	rt5651: rt5651@1a {
+<<<<<<< HEAD
 		compatible = "rockchip,rt5651";
+=======
+		compatible = "realtek,rt5651";
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		reg = <0x1a>;
 		clocks = <&cru SCLK_I2S_8CH_OUT>;
 		clock-names = "mclk";

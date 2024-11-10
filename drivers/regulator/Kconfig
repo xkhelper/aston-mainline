@@ -1373,6 +1373,7 @@ config REGULATOR_SLG51000
 	  The SLG51000 is seven compact and customizable low dropout
 	  regulators.
 
+<<<<<<< HEAD
 config REGULATOR_SM5703
 	tristate "Silicon Mitus SM5703 regulators"
 	depends on MFD_SM5703
@@ -1380,6 +1381,8 @@ config REGULATOR_SM5703
 	  This driver provides support for voltage regulators of SM5703
 	  multi-function device.
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config REGULATOR_STM32_BOOSTER
 	tristate "STMicroelectronics STM32 BOOSTER"
 	depends on ARCH_STM32 || COMPILE_TEST

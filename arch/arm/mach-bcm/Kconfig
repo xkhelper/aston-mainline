@@ -185,6 +185,10 @@ config ARCH_BRCMSTB
 	select ARCH_HAS_RESET_CONTROLLER
 	select ARM_AMBA
 	select ARM_GIC
+<<<<<<< HEAD
+=======
+	select ARM_GIC_V3
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select ARM_ERRATA_798181 if SMP
 	select HAVE_ARM_ARCH_TIMER
 	select ZONE_DMA if ARM_LPAE

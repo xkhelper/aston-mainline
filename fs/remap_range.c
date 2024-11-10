@@ -537,7 +537,11 @@ int vfs_dedupe_file_range(struct file *file, struct file_dedupe_range *same)
 
 	for (i = 0, info = same->info; i < count; i++, info++) {
 		struct fd dst_fd = fdget(info->dest_fd);
+<<<<<<< HEAD
 		struct file *dst_file = dst_fd.file;
+=======
+		struct file *dst_file = fd_file(dst_fd);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (!dst_file) {
 			info->status = -EBADF;

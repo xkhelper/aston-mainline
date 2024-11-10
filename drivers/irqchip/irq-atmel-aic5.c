@@ -67,8 +67,12 @@
 
 static struct irq_domain *aic5_domain;
 
+<<<<<<< HEAD
 static asmlinkage void __exception_irq_entry
 aic5_handle(struct pt_regs *regs)
+=======
+static void __exception_irq_entry aic5_handle(struct pt_regs *regs)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct irq_chip_generic *bgc = irq_get_domain_generic_chip(aic5_domain, 0);
 	u32 irqnr;

@@ -98,7 +98,11 @@ static int conntrack_data_insert(struct mnl_socket *sock, struct nlmsghdr *nlh,
 	char buf[MNL_SOCKET_BUFFER_SIZE];
 	struct nlmsghdr *rplnlh;
 	unsigned int portid;
+<<<<<<< HEAD
 	int err, ret;
+=======
+	int ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	portid = mnl_socket_get_portid(sock);
 
@@ -207,6 +211,10 @@ static int conntrack_data_generate_v6(struct mnl_socket *sock,
 static int count_entries(const struct nlmsghdr *nlh, void *data)
 {
 	reply_counter++;
+<<<<<<< HEAD
+=======
+	return MNL_CB_OK;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int conntracK_count_zone(struct mnl_socket *sock, uint16_t zone)
@@ -216,7 +224,11 @@ static int conntracK_count_zone(struct mnl_socket *sock, uint16_t zone)
 	struct nfgenmsg *nfh;
 	struct nlattr *nest;
 	unsigned int portid;
+<<<<<<< HEAD
 	int err, ret;
+=======
+	int ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	portid = mnl_socket_get_portid(sock);
 
@@ -263,7 +275,11 @@ static int conntrack_flush_zone(struct mnl_socket *sock, uint16_t zone)
 	struct nfgenmsg *nfh;
 	struct nlattr *nest;
 	unsigned int portid;
+<<<<<<< HEAD
 	int err, ret;
+=======
+	int ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	portid = mnl_socket_get_portid(sock);
 

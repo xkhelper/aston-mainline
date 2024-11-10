@@ -99,8 +99,12 @@ static int sch_transaction(void)
 	if (retries > MAX_RETRIES) {
 		dev_err(&sch_adapter.dev, "SMBus Timeout!\n");
 		result = -ETIMEDOUT;
+<<<<<<< HEAD
 	}
 	if (temp & 0x04) {
+=======
+	} else if (temp & 0x04) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		result = -EIO;
 		dev_dbg(&sch_adapter.dev, "Bus collision! SMBus may be "
 			"locked until next hard reset. (sorry!)\n");

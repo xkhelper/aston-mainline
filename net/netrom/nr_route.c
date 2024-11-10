@@ -189,7 +189,11 @@ static int __must_check nr_add_node(ax25_address *nr, const char *mnemonic,
 		}
 
 		nr_node->callsign = *nr;
+<<<<<<< HEAD
 		strcpy(nr_node->mnemonic, mnemonic);
+=======
+		strscpy(nr_node->mnemonic, mnemonic);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		nr_node->which = 0;
 		nr_node->count = 1;
@@ -214,7 +218,11 @@ static int __must_check nr_add_node(ax25_address *nr, const char *mnemonic,
 	nr_node_lock(nr_node);
 
 	if (quality != 0)
+<<<<<<< HEAD
 		strcpy(nr_node->mnemonic, mnemonic);
+=======
+		strscpy(nr_node->mnemonic, mnemonic);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (found = 0, i = 0; i < nr_node->count; i++) {
 		if (nr_node->routes[i].neighbour == nr_neigh) {

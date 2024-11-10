@@ -5,7 +5,12 @@
  * Copyright (C) 2020-2023 Loongson Technology Corporation Limited
  */
 
+<<<<<<< HEAD
 static int loongarch_call__parse(struct arch *arch, struct ins_operands *ops, struct map_symbol *ms)
+=======
+static int loongarch_call__parse(struct arch *arch, struct ins_operands *ops, struct map_symbol *ms,
+		struct disasm_line *dl __maybe_unused)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	char *c, *endptr, *tok, *name;
 	struct map *map = ms->map;
@@ -51,7 +56,12 @@ static struct ins_ops loongarch_call_ops = {
 	.scnprintf = call__scnprintf,
 };
 
+<<<<<<< HEAD
 static int loongarch_jump__parse(struct arch *arch, struct ins_operands *ops, struct map_symbol *ms)
+=======
+static int loongarch_jump__parse(struct arch *arch, struct ins_operands *ops, struct map_symbol *ms,
+		struct disasm_line *dl __maybe_unused)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct map *map = ms->map;
 	struct symbol *sym = ms->sym;

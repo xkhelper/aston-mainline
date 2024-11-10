@@ -1132,8 +1132,12 @@ static char *smscore_get_fw_filename(struct smscore_device_t *coredev,
  * return: 0 on success, <0 on error.
  */
 static int smscore_load_firmware_from_file(struct smscore_device_t *coredev,
+<<<<<<< HEAD
 					   int mode,
 					   loadfirmware_t loadfirmware_handler)
+=======
+					   int mode)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int rc = -ENOENT;
 	u8 *fw_buf;
@@ -1147,8 +1151,12 @@ static int smscore_load_firmware_from_file(struct smscore_device_t *coredev,
 	}
 	pr_debug("Firmware name: %s\n", fw_filename);
 
+<<<<<<< HEAD
 	if (!loadfirmware_handler &&
 	    !(coredev->device_flags & SMS_DEVICE_FAMILY2))
+=======
+	if (!(coredev->device_flags & SMS_DEVICE_FAMILY2))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	rc = request_firmware(&fw, fw_filename, coredev->device);
@@ -1166,10 +1174,15 @@ static int smscore_load_firmware_from_file(struct smscore_device_t *coredev,
 		memcpy(fw_buf, fw->data, fw->size);
 		fw_buf_size = fw->size;
 
+<<<<<<< HEAD
 		rc = (coredev->device_flags & SMS_DEVICE_FAMILY2) ?
 			smscore_load_firmware_family2(coredev, fw_buf, fw_buf_size)
 			: loadfirmware_handler(coredev->context, fw_buf,
 			fw_buf_size);
+=======
+		rc = smscore_load_firmware_family2(coredev, fw_buf,
+						   fw_buf_size);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	kfree(fw_buf);
@@ -1353,8 +1366,12 @@ int smscore_set_device_mode(struct smscore_device_t *coredev, int mode)
 		}
 
 		if (!(coredev->modes_supported & (1 << mode))) {
+<<<<<<< HEAD
 			rc = smscore_load_firmware_from_file(coredev,
 							     mode, NULL);
+=======
+			rc = smscore_load_firmware_from_file(coredev, mode);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (rc >= 0)
 				pr_debug("firmware download success\n");
 		} else {

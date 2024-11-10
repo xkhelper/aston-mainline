@@ -16,6 +16,7 @@
 #include <linux/types.h>
 
 /**
+<<<<<<< HEAD
  *	selinux_audit_rule_init - alloc/init an selinux audit rule structure.
  *	@field: the field this rule refers to
  *	@op: the operator the rule uses
@@ -26,20 +27,41 @@
  *	Returns 0 if successful, -errno if not.  On success, the rule structure
  *	will be allocated internally.  The caller must free this structure with
  *	selinux_audit_rule_free() after use.
+=======
+ * selinux_audit_rule_init - alloc/init an selinux audit rule structure.
+ * @field: the field this rule refers to
+ * @op: the operator the rule uses
+ * @rulestr: the text "target" of the rule
+ * @rule: pointer to the new rule structure returned via this
+ * @gfp: GFP flag used for kmalloc
+ *
+ * Returns 0 if successful, -errno if not.  On success, the rule structure
+ * will be allocated internally.  The caller must free this structure with
+ * selinux_audit_rule_free() after use.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int selinux_audit_rule_init(u32 field, u32 op, char *rulestr, void **rule,
 			    gfp_t gfp);
 
 /**
+<<<<<<< HEAD
  *	selinux_audit_rule_free - free an selinux audit rule structure.
  *	@rule: pointer to the audit rule to be freed
  *
  *	This will free all memory associated with the given rule.
  *	If @rule is NULL, no operation is performed.
+=======
+ * selinux_audit_rule_free - free an selinux audit rule structure.
+ * @rule: pointer to the audit rule to be freed
+ *
+ * This will free all memory associated with the given rule.
+ * If @rule is NULL, no operation is performed.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 void selinux_audit_rule_free(void *rule);
 
 /**
+<<<<<<< HEAD
  *	selinux_audit_rule_match - determine if a context ID matches a rule.
  *	@sid: the context ID to check
  *	@field: the field this rule refers to
@@ -48,13 +70,29 @@ void selinux_audit_rule_free(void *rule);
  *
  *	Returns 1 if the context id matches the rule, 0 if it does not, and
  *	-errno on failure.
+=======
+ * selinux_audit_rule_match - determine if a context ID matches a rule.
+ * @sid: the context ID to check
+ * @field: the field this rule refers to
+ * @op: the operator the rule uses
+ * @rule: pointer to the audit rule to check against
+ *
+ * Returns 1 if the context id matches the rule, 0 if it does not, and
+ * -errno on failure.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int selinux_audit_rule_match(u32 sid, u32 field, u32 op, void *rule);
 
 /**
+<<<<<<< HEAD
  *	selinux_audit_rule_known - check to see if rule contains selinux fields.
  *	@rule: rule to be checked
  *	Returns 1 if there are selinux fields specified in the rule, 0 otherwise.
+=======
+ * selinux_audit_rule_known - check to see if rule contains selinux fields.
+ * @rule: rule to be checked
+ * Returns 1 if there are selinux fields specified in the rule, 0 otherwise.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int selinux_audit_rule_known(struct audit_krule *rule);
 

@@ -94,7 +94,11 @@
 #define USB_MINI_PCIE_1XCAN_PRODUCT_ID 0x011B
 
 static const struct kvaser_usb_driver_info kvaser_usb_driver_info_hydra = {
+<<<<<<< HEAD
 	.quirks = KVASER_USB_QUIRK_HAS_HARDWARE_TIMESTAMP,
+=======
+	.quirks = 0,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.ops = &kvaser_usb_hydra_dev_ops,
 };
 
@@ -756,6 +760,7 @@ freeurb:
 static const struct net_device_ops kvaser_usb_netdev_ops = {
 	.ndo_open = kvaser_usb_open,
 	.ndo_stop = kvaser_usb_close,
+<<<<<<< HEAD
 	.ndo_start_xmit = kvaser_usb_start_xmit,
 	.ndo_change_mtu = can_change_mtu,
 };
@@ -763,16 +768,21 @@ static const struct net_device_ops kvaser_usb_netdev_ops = {
 static const struct net_device_ops kvaser_usb_netdev_ops_hwts = {
 	.ndo_open = kvaser_usb_open,
 	.ndo_stop = kvaser_usb_close,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.ndo_eth_ioctl = can_eth_ioctl_hwts,
 	.ndo_start_xmit = kvaser_usb_start_xmit,
 	.ndo_change_mtu = can_change_mtu,
 };
 
 static const struct ethtool_ops kvaser_usb_ethtool_ops = {
+<<<<<<< HEAD
 	.get_ts_info = ethtool_op_get_ts_info,
 };
 
 static const struct ethtool_ops kvaser_usb_ethtool_ops_hwts = {
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.get_ts_info = can_ethtool_op_get_ts_info_hwts,
 };
 
@@ -859,6 +869,7 @@ static int kvaser_usb_init_one(struct kvaser_usb *dev, int channel)
 	netdev->flags |= IFF_ECHO;
 
 	netdev->netdev_ops = &kvaser_usb_netdev_ops;
+<<<<<<< HEAD
 	if (driver_info->quirks & KVASER_USB_QUIRK_HAS_HARDWARE_TIMESTAMP) {
 		netdev->netdev_ops = &kvaser_usb_netdev_ops_hwts;
 		netdev->ethtool_ops = &kvaser_usb_ethtool_ops_hwts;
@@ -866,6 +877,9 @@ static int kvaser_usb_init_one(struct kvaser_usb *dev, int channel)
 		netdev->netdev_ops = &kvaser_usb_netdev_ops;
 		netdev->ethtool_ops = &kvaser_usb_ethtool_ops;
 	}
+=======
+	netdev->ethtool_ops = &kvaser_usb_ethtool_ops;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	SET_NETDEV_DEV(netdev, &dev->intf->dev);
 	netdev->dev_id = channel;
 
@@ -915,10 +929,15 @@ static int kvaser_usb_probe(struct usb_interface *intf,
 	ops = driver_info->ops;
 
 	err = ops->dev_setup_endpoints(dev);
+<<<<<<< HEAD
 	if (err) {
 		dev_err(&intf->dev, "Cannot get usb endpoint(s)");
 		return err;
 	}
+=======
+	if (err)
+		return dev_err_probe(&intf->dev, err, "Cannot get usb endpoint(s)");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dev->udev = interface_to_usbdev(intf);
 
@@ -929,6 +948,7 @@ static int kvaser_usb_probe(struct usb_interface *intf,
 	dev->card_data.ctrlmode_supported = 0;
 	dev->card_data.capabilities = 0;
 	err = ops->dev_init_card(dev);
+<<<<<<< HEAD
 	if (err) {
 		dev_err(&intf->dev,
 			"Failed to initialize card, error %d\n", err);
@@ -949,6 +969,22 @@ static int kvaser_usb_probe(struct usb_interface *intf,
 				"Cannot get software details, error %d\n", err);
 			return err;
 		}
+=======
+	if (err)
+		return dev_err_probe(&intf->dev, err,
+				     "Failed to initialize card\n");
+
+	err = ops->dev_get_software_info(dev);
+	if (err)
+		return dev_err_probe(&intf->dev, err,
+				     "Cannot get software info\n");
+
+	if (ops->dev_get_software_details) {
+		err = ops->dev_get_software_details(dev);
+		if (err)
+			return dev_err_probe(&intf->dev, err,
+					     "Cannot get software details\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (WARN_ON(!dev->cfg))
@@ -962,18 +998,30 @@ static int kvaser_usb_probe(struct usb_interface *intf,
 	dev_dbg(&intf->dev, "Max outstanding tx = %d URBs\n", dev->max_tx_urbs);
 
 	err = ops->dev_get_card_info(dev);
+<<<<<<< HEAD
 	if (err) {
 		dev_err(&intf->dev, "Cannot get card info, error %d\n", err);
 		return err;
 	}
+=======
+	if (err)
+		return dev_err_probe(&intf->dev, err,
+				     "Cannot get card info\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (ops->dev_get_capabilities) {
 		err = ops->dev_get_capabilities(dev);
 		if (err) {
+<<<<<<< HEAD
 			dev_err(&intf->dev,
 				"Cannot get capabilities, error %d\n", err);
 			kvaser_usb_remove_interfaces(dev);
 			return err;
+=======
+			kvaser_usb_remove_interfaces(dev);
+			return dev_err_probe(&intf->dev, err,
+					     "Cannot get capabilities\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 

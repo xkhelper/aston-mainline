@@ -17,6 +17,10 @@
 #include <linux/gfp.h>
 #include <linux/huge_mm.h>
 #include <linux/iommu.h>
+<<<<<<< HEAD
+=======
+#include <linux/iommu-dma.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/iova.h>
 #include <linux/irq.h>
 #include <linux/list_sort.h>
@@ -1037,9 +1041,29 @@ out_unmap:
 	return NULL;
 }
 
+<<<<<<< HEAD
 static struct sg_table *iommu_dma_alloc_noncontiguous(struct device *dev,
 		size_t size, enum dma_data_direction dir, gfp_t gfp,
 		unsigned long attrs)
+=======
+/*
+ * This is the actual return value from the iommu_dma_alloc_noncontiguous.
+ *
+ * The users of the DMA API should only care about the sg_table, but to make
+ * the DMA-API internal vmaping and freeing easier we stash away the page
+ * array as well (except for the fallback case).  This can go away any time,
+ * e.g. when a vmap-variant that takes a scatterlist comes along.
+ */
+struct dma_sgt_handle {
+	struct sg_table sgt;
+	struct page **pages;
+};
+#define sgt_handle(sgt) \
+	container_of((sgt), struct dma_sgt_handle, sgt)
+
+struct sg_table *iommu_dma_alloc_noncontiguous(struct device *dev, size_t size,
+	       enum dma_data_direction dir, gfp_t gfp, unsigned long attrs)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct dma_sgt_handle *sh;
 
@@ -1055,7 +1079,11 @@ static struct sg_table *iommu_dma_alloc_noncontiguous(struct device *dev,
 	return &sh->sgt;
 }
 
+<<<<<<< HEAD
 static void iommu_dma_free_noncontiguous(struct device *dev, size_t size,
+=======
+void iommu_dma_free_noncontiguous(struct device *dev, size_t size,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct sg_table *sgt, enum dma_data_direction dir)
 {
 	struct dma_sgt_handle *sh = sgt_handle(sgt);
@@ -1066,8 +1094,31 @@ static void iommu_dma_free_noncontiguous(struct device *dev, size_t size,
 	kfree(sh);
 }
 
+<<<<<<< HEAD
 static void iommu_dma_sync_single_for_cpu(struct device *dev,
 		dma_addr_t dma_handle, size_t size, enum dma_data_direction dir)
+=======
+void *iommu_dma_vmap_noncontiguous(struct device *dev, size_t size,
+		struct sg_table *sgt)
+{
+	unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+
+	return vmap(sgt_handle(sgt)->pages, count, VM_MAP, PAGE_KERNEL);
+}
+
+int iommu_dma_mmap_noncontiguous(struct device *dev, struct vm_area_struct *vma,
+		size_t size, struct sg_table *sgt)
+{
+	unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+
+	if (vma->vm_pgoff >= count || vma_pages(vma) > count - vma->vm_pgoff)
+		return -ENXIO;
+	return vm_map_pages(vma, sgt_handle(sgt)->pages, count);
+}
+
+void iommu_dma_sync_single_for_cpu(struct device *dev, dma_addr_t dma_handle,
+		size_t size, enum dma_data_direction dir)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	phys_addr_t phys;
 
@@ -1081,8 +1132,13 @@ static void iommu_dma_sync_single_for_cpu(struct device *dev,
 	swiotlb_sync_single_for_cpu(dev, phys, size, dir);
 }
 
+<<<<<<< HEAD
 static void iommu_dma_sync_single_for_device(struct device *dev,
 		dma_addr_t dma_handle, size_t size, enum dma_data_direction dir)
+=======
+void iommu_dma_sync_single_for_device(struct device *dev, dma_addr_t dma_handle,
+		size_t size, enum dma_data_direction dir)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	phys_addr_t phys;
 
@@ -1096,9 +1152,14 @@ static void iommu_dma_sync_single_for_device(struct device *dev,
 		arch_sync_dma_for_device(phys, size, dir);
 }
 
+<<<<<<< HEAD
 static void iommu_dma_sync_sg_for_cpu(struct device *dev,
 		struct scatterlist *sgl, int nelems,
 		enum dma_data_direction dir)
+=======
+void iommu_dma_sync_sg_for_cpu(struct device *dev, struct scatterlist *sgl,
+		int nelems, enum dma_data_direction dir)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct scatterlist *sg;
 	int i;
@@ -1112,9 +1173,14 @@ static void iommu_dma_sync_sg_for_cpu(struct device *dev,
 			arch_sync_dma_for_cpu(sg_phys(sg), sg->length, dir);
 }
 
+<<<<<<< HEAD
 static void iommu_dma_sync_sg_for_device(struct device *dev,
 		struct scatterlist *sgl, int nelems,
 		enum dma_data_direction dir)
+=======
+void iommu_dma_sync_sg_for_device(struct device *dev, struct scatterlist *sgl,
+		int nelems, enum dma_data_direction dir)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct scatterlist *sg;
 	int i;
@@ -1129,9 +1195,15 @@ static void iommu_dma_sync_sg_for_device(struct device *dev,
 			arch_sync_dma_for_device(sg_phys(sg), sg->length, dir);
 }
 
+<<<<<<< HEAD
 static dma_addr_t iommu_dma_map_page(struct device *dev, struct page *page,
 		unsigned long offset, size_t size, enum dma_data_direction dir,
 		unsigned long attrs)
+=======
+dma_addr_t iommu_dma_map_page(struct device *dev, struct page *page,
+	      unsigned long offset, size_t size, enum dma_data_direction dir,
+	      unsigned long attrs)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	phys_addr_t phys = page_to_phys(page) + offset;
 	bool coherent = dev_is_dma_coherent(dev);
@@ -1189,7 +1261,11 @@ static dma_addr_t iommu_dma_map_page(struct device *dev, struct page *page,
 	return iova;
 }
 
+<<<<<<< HEAD
 static void iommu_dma_unmap_page(struct device *dev, dma_addr_t dma_handle,
+=======
+void iommu_dma_unmap_page(struct device *dev, dma_addr_t dma_handle,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		size_t size, enum dma_data_direction dir, unsigned long attrs)
 {
 	struct iommu_domain *domain = iommu_get_dma_domain(dev);
@@ -1342,8 +1418,13 @@ out_unmap:
  * impedance-matching, to be able to hand off a suitably-aligned list,
  * but still preserve the original offsets and sizes for the caller.
  */
+<<<<<<< HEAD
 static int iommu_dma_map_sg(struct device *dev, struct scatterlist *sg,
 		int nents, enum dma_data_direction dir, unsigned long attrs)
+=======
+int iommu_dma_map_sg(struct device *dev, struct scatterlist *sg, int nents,
+		enum dma_data_direction dir, unsigned long attrs)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct iommu_domain *domain = iommu_get_dma_domain(dev);
 	struct iommu_dma_cookie *cookie = domain->iova_cookie;
@@ -1462,8 +1543,13 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static void iommu_dma_unmap_sg(struct device *dev, struct scatterlist *sg,
 		int nents, enum dma_data_direction dir, unsigned long attrs)
+=======
+void iommu_dma_unmap_sg(struct device *dev, struct scatterlist *sg, int nents,
+		enum dma_data_direction dir, unsigned long attrs)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	dma_addr_t end = 0, start;
 	struct scatterlist *tmp;
@@ -1512,7 +1598,11 @@ static void iommu_dma_unmap_sg(struct device *dev, struct scatterlist *sg,
 		__iommu_dma_unmap(dev, start, end - start);
 }
 
+<<<<<<< HEAD
 static dma_addr_t iommu_dma_map_resource(struct device *dev, phys_addr_t phys,
+=======
+dma_addr_t iommu_dma_map_resource(struct device *dev, phys_addr_t phys,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		size_t size, enum dma_data_direction dir, unsigned long attrs)
 {
 	return __iommu_dma_map(dev, phys, size,
@@ -1520,7 +1610,11 @@ static dma_addr_t iommu_dma_map_resource(struct device *dev, phys_addr_t phys,
 			dma_get_mask(dev));
 }
 
+<<<<<<< HEAD
 static void iommu_dma_unmap_resource(struct device *dev, dma_addr_t handle,
+=======
+void iommu_dma_unmap_resource(struct device *dev, dma_addr_t handle,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		size_t size, enum dma_data_direction dir, unsigned long attrs)
 {
 	__iommu_dma_unmap(dev, handle, size);
@@ -1557,7 +1651,11 @@ static void __iommu_dma_free(struct device *dev, size_t size, void *cpu_addr)
 		dma_free_contiguous(dev, page, alloc_size);
 }
 
+<<<<<<< HEAD
 static void iommu_dma_free(struct device *dev, size_t size, void *cpu_addr,
+=======
+void iommu_dma_free(struct device *dev, size_t size, void *cpu_addr,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dma_addr_t handle, unsigned long attrs)
 {
 	__iommu_dma_unmap(dev, handle, size);
@@ -1601,8 +1699,13 @@ out_free_pages:
 	return NULL;
 }
 
+<<<<<<< HEAD
 static void *iommu_dma_alloc(struct device *dev, size_t size,
 		dma_addr_t *handle, gfp_t gfp, unsigned long attrs)
+=======
+void *iommu_dma_alloc(struct device *dev, size_t size, dma_addr_t *handle,
+		gfp_t gfp, unsigned long attrs)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	bool coherent = dev_is_dma_coherent(dev);
 	int ioprot = dma_info_to_prot(DMA_BIDIRECTIONAL, coherent, attrs);
@@ -1635,7 +1738,11 @@ static void *iommu_dma_alloc(struct device *dev, size_t size,
 	return cpu_addr;
 }
 
+<<<<<<< HEAD
 static int iommu_dma_mmap(struct device *dev, struct vm_area_struct *vma,
+=======
+int iommu_dma_mmap(struct device *dev, struct vm_area_struct *vma,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		void *cpu_addr, dma_addr_t dma_addr, size_t size,
 		unsigned long attrs)
 {
@@ -1666,7 +1773,11 @@ static int iommu_dma_mmap(struct device *dev, struct vm_area_struct *vma,
 			       vma->vm_page_prot);
 }
 
+<<<<<<< HEAD
 static int iommu_dma_get_sgtable(struct device *dev, struct sg_table *sgt,
+=======
+int iommu_dma_get_sgtable(struct device *dev, struct sg_table *sgt,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		void *cpu_addr, dma_addr_t dma_addr, size_t size,
 		unsigned long attrs)
 {
@@ -1693,19 +1804,31 @@ static int iommu_dma_get_sgtable(struct device *dev, struct sg_table *sgt,
 	return ret;
 }
 
+<<<<<<< HEAD
 static unsigned long iommu_dma_get_merge_boundary(struct device *dev)
+=======
+unsigned long iommu_dma_get_merge_boundary(struct device *dev)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct iommu_domain *domain = iommu_get_dma_domain(dev);
 
 	return (1UL << __ffs(domain->pgsize_bitmap)) - 1;
 }
 
+<<<<<<< HEAD
 static size_t iommu_dma_opt_mapping_size(void)
+=======
+size_t iommu_dma_opt_mapping_size(void)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return iova_rcache_range();
 }
 
+<<<<<<< HEAD
 static size_t iommu_dma_max_mapping_size(struct device *dev)
+=======
+size_t iommu_dma_max_mapping_size(struct device *dev)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (dev_is_untrusted(dev))
 		return swiotlb_max_mapping_size(dev);
@@ -1713,6 +1836,7 @@ static size_t iommu_dma_max_mapping_size(struct device *dev)
 	return SIZE_MAX;
 }
 
+<<<<<<< HEAD
 static const struct dma_map_ops iommu_dma_ops = {
 	.flags			= DMA_F_PCI_P2PDMA_SUPPORTED |
 				  DMA_F_CAN_SKIP_SYNC,
@@ -1739,6 +1863,8 @@ static const struct dma_map_ops iommu_dma_ops = {
 	.max_mapping_size       = iommu_dma_max_mapping_size,
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void iommu_setup_dma_ops(struct device *dev)
 {
 	struct iommu_domain *domain = iommu_get_domain_for_dev(dev);
@@ -1746,6 +1872,7 @@ void iommu_setup_dma_ops(struct device *dev)
 	if (dev_is_pci(dev))
 		dev->iommu->pci_32bit_workaround = !iommu_dma_forcedac;
 
+<<<<<<< HEAD
 	if (iommu_is_dma_domain(domain)) {
 		if (iommu_dma_init_domain(domain, dev))
 			goto out_err;
@@ -1759,6 +1886,17 @@ void iommu_setup_dma_ops(struct device *dev)
 out_err:
 	 pr_warn("Failed to set up IOMMU for device %s; retaining platform DMA ops\n",
 		 dev_name(dev));
+=======
+	dev->dma_iommu = iommu_is_dma_domain(domain);
+	if (dev->dma_iommu && iommu_dma_init_domain(domain, dev))
+		goto out_err;
+
+	return;
+out_err:
+	pr_warn("Failed to set up IOMMU for device %s; retaining platform DMA ops\n",
+		dev_name(dev));
+	dev->dma_iommu = false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct iommu_dma_msi_page *iommu_dma_get_msi_page(struct device *dev,

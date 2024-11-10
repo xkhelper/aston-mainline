@@ -481,7 +481,11 @@ xfs_ioctl_setattr_xflags(
 
 	if (rtflag != XFS_IS_REALTIME_INODE(ip)) {
 		/* Can't change realtime flag if any extents are allocated. */
+<<<<<<< HEAD
 		if (ip->i_df.if_nextents || ip->i_delayed_blks)
+=======
+		if (xfs_inode_has_filedata(ip))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EINVAL;
 
 		/*
@@ -602,7 +606,11 @@ xfs_ioctl_setattr_check_extsize(
 	if (!fa->fsx_valid)
 		return 0;
 
+<<<<<<< HEAD
 	if (S_ISREG(VFS_I(ip)->i_mode) && ip->i_df.if_nextents &&
+=======
+	if (S_ISREG(VFS_I(ip)->i_mode) && xfs_inode_has_filedata(ip) &&
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    XFS_FSB_TO_B(mp, ip->i_extsize) != fa->fsx_extsize)
 		return -EINVAL;
 
@@ -876,6 +884,7 @@ out_free_buf:
 	return error;
 }
 
+<<<<<<< HEAD
 STATIC int
 xfs_ioc_getfsmap(
 	struct xfs_inode	*ip,
@@ -1006,6 +1015,8 @@ out_free:
 	return error;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int
 xfs_ioc_swapext(
 	xfs_swapext_t	*sxp)
@@ -1016,33 +1027,58 @@ xfs_ioc_swapext(
 
 	/* Pull information for the target fd */
 	f = fdget((int)sxp->sx_fdtarget);
+<<<<<<< HEAD
 	if (!f.file) {
+=======
+	if (!fd_file(f)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		error = -EINVAL;
 		goto out;
 	}
 
+<<<<<<< HEAD
 	if (!(f.file->f_mode & FMODE_WRITE) ||
 	    !(f.file->f_mode & FMODE_READ) ||
 	    (f.file->f_flags & O_APPEND)) {
+=======
+	if (!(fd_file(f)->f_mode & FMODE_WRITE) ||
+	    !(fd_file(f)->f_mode & FMODE_READ) ||
+	    (fd_file(f)->f_flags & O_APPEND)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		error = -EBADF;
 		goto out_put_file;
 	}
 
 	tmp = fdget((int)sxp->sx_fdtmp);
+<<<<<<< HEAD
 	if (!tmp.file) {
+=======
+	if (!fd_file(tmp)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		error = -EINVAL;
 		goto out_put_file;
 	}
 
+<<<<<<< HEAD
 	if (!(tmp.file->f_mode & FMODE_WRITE) ||
 	    !(tmp.file->f_mode & FMODE_READ) ||
 	    (tmp.file->f_flags & O_APPEND)) {
+=======
+	if (!(fd_file(tmp)->f_mode & FMODE_WRITE) ||
+	    !(fd_file(tmp)->f_mode & FMODE_READ) ||
+	    (fd_file(tmp)->f_flags & O_APPEND)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		error = -EBADF;
 		goto out_put_tmp_file;
 	}
 
+<<<<<<< HEAD
 	if (IS_SWAPFILE(file_inode(f.file)) ||
 	    IS_SWAPFILE(file_inode(tmp.file))) {
+=======
+	if (IS_SWAPFILE(file_inode(fd_file(f))) ||
+	    IS_SWAPFILE(file_inode(fd_file(tmp)))) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		error = -EINVAL;
 		goto out_put_tmp_file;
 	}
@@ -1052,14 +1088,24 @@ xfs_ioc_swapext(
 	 * before we cast and access them as XFS structures as we have no
 	 * control over what the user passes us here.
 	 */
+<<<<<<< HEAD
 	if (f.file->f_op != &xfs_file_operations ||
 	    tmp.file->f_op != &xfs_file_operations) {
+=======
+	if (fd_file(f)->f_op != &xfs_file_operations ||
+	    fd_file(tmp)->f_op != &xfs_file_operations) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		error = -EINVAL;
 		goto out_put_tmp_file;
 	}
 
+<<<<<<< HEAD
 	ip = XFS_I(file_inode(f.file));
 	tip = XFS_I(file_inode(tmp.file));
+=======
+	ip = XFS_I(file_inode(fd_file(f)));
+	tip = XFS_I(file_inode(fd_file(tmp)));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (ip->i_mount != tip->i_mount) {
 		error = -EINVAL;
@@ -1518,6 +1564,13 @@ xfs_file_ioctl(
 
 	case XFS_IOC_EXCHANGE_RANGE:
 		return xfs_ioc_exchange_range(filp, arg);
+<<<<<<< HEAD
+=======
+	case XFS_IOC_START_COMMIT:
+		return xfs_ioc_start_commit(filp, arg);
+	case XFS_IOC_COMMIT_RANGE:
+		return xfs_ioc_commit_range(filp, arg);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	default:
 		return -ENOTTY;

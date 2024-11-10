@@ -772,6 +772,10 @@ iwl_mvm_ftm_set_secured_ranging(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 			struct iwl_mvm_ftm_iter_data target;
 
 			target.bssid = bssid;
+<<<<<<< HEAD
+=======
+			target.cipher = cipher;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ieee80211_iter_keys(mvm->hw, vif, iter, &target);
 		} else {
 			memcpy(tk, entry->tk, sizeof(entry->tk));

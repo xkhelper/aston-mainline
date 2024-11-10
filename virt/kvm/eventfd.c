@@ -328,12 +328,20 @@ kvm_irqfd_assign(struct kvm *kvm, struct kvm_irqfd *args)
 	seqcount_spinlock_init(&irqfd->irq_entry_sc, &kvm->irqfds.lock);
 
 	f = fdget(args->fd);
+<<<<<<< HEAD
 	if (!f.file) {
+=======
+	if (!fd_file(f)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EBADF;
 		goto out;
 	}
 
+<<<<<<< HEAD
 	eventfd = eventfd_ctx_fileget(f.file);
+=======
+	eventfd = eventfd_ctx_fileget(fd_file(f));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(eventfd)) {
 		ret = PTR_ERR(eventfd);
 		goto fail;
@@ -420,7 +428,11 @@ kvm_irqfd_assign(struct kvm *kvm, struct kvm_irqfd *args)
 	 * Check if there was an event already pending on the eventfd
 	 * before we registered, and trigger it as if we didn't miss it.
 	 */
+<<<<<<< HEAD
 	events = vfs_poll(f.file, &irqfd->pt);
+=======
+	events = vfs_poll(fd_file(f), &irqfd->pt);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (events & EPOLLIN)
 		schedule_work(&irqfd->inject);

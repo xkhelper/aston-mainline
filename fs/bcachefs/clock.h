@@ -20,6 +20,7 @@ static inline void bch2_increment_clock(struct bch_fs *c, u64 sectors,
 
 void bch2_io_clock_schedule_timeout(struct io_clock *, u64);
 
+<<<<<<< HEAD
 #define bch2_kthread_wait_event_ioclock_timeout(condition, clock, timeout)\
 ({									\
 	long __ret = timeout;						\
@@ -29,6 +30,8 @@ void bch2_io_clock_schedule_timeout(struct io_clock *, u64);
 	__ret;								\
 })
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void bch2_io_timers_to_text(struct printbuf *, struct io_clock *);
 
 void bch2_io_clock_exit(struct io_clock *);

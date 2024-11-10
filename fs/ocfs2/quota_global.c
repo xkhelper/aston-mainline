@@ -371,12 +371,25 @@ int ocfs2_global_read_info(struct super_block *sb, int type)
 
 	status = ocfs2_extent_map_get_blocks(oinfo->dqi_gqinode, 0, &oinfo->dqi_giblk,
 					     &pcount, NULL);
+<<<<<<< HEAD
 	if (status < 0)
 		goto out_unlock;
 
 	status = ocfs2_qinfo_lock(oinfo, 0);
 	if (status < 0)
 		goto out_unlock;
+=======
+	if (status < 0) {
+		mlog_errno(status);
+		goto out_unlock;
+	}
+
+	status = ocfs2_qinfo_lock(oinfo, 0);
+	if (status < 0) {
+		mlog_errno(status);
+		goto out_unlock;
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	status = sb->s_op->quota_read(sb, type, (char *)&dinfo,
 				      sizeof(struct ocfs2_global_disk_dqinfo),
 				      OCFS2_GLOBAL_INFO_OFF);
@@ -404,12 +417,20 @@ int ocfs2_global_read_info(struct super_block *sb, int type)
 	schedule_delayed_work(&oinfo->dqi_sync_work,
 			      msecs_to_jiffies(oinfo->dqi_syncms));
 
+<<<<<<< HEAD
 out_err:
 	return status;
 out_unlock:
 	ocfs2_unlock_global_qf(oinfo, 0);
 	mlog_errno(status);
 	goto out_err;
+=======
+	return 0;
+out_unlock:
+	ocfs2_unlock_global_qf(oinfo, 0);
+out_err:
+	return status;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Write information to global quota file. Expects exclusive lock on quota

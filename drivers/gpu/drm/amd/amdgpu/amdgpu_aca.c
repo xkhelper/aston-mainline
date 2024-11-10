@@ -80,6 +80,12 @@ static void aca_banks_release(struct aca_banks *banks)
 {
 	struct aca_bank_node *node, *tmp;
 
+<<<<<<< HEAD
+=======
+	if (list_empty(&banks->list))
+		return;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	list_for_each_entry_safe(node, tmp, &banks->list, node) {
 		list_del(&node->node);
 		kvfree(node);
@@ -453,6 +459,7 @@ static int aca_log_aca_error_data(struct aca_bank_error *bank_error, enum aca_er
 
 	switch (type) {
 	case ACA_ERROR_TYPE_UE:
+<<<<<<< HEAD
 		amdgpu_ras_error_statistic_ue_count(err_data, &mcm_info, NULL, count);
 		break;
 	case ACA_ERROR_TYPE_CE:
@@ -460,6 +467,15 @@ static int aca_log_aca_error_data(struct aca_bank_error *bank_error, enum aca_er
 		break;
 	case ACA_ERROR_TYPE_DEFERRED:
 		amdgpu_ras_error_statistic_de_count(err_data, &mcm_info, NULL, count);
+=======
+		amdgpu_ras_error_statistic_ue_count(err_data, &mcm_info, count);
+		break;
+	case ACA_ERROR_TYPE_CE:
+		amdgpu_ras_error_statistic_ce_count(err_data, &mcm_info, count);
+		break;
+	case ACA_ERROR_TYPE_DEFERRED:
+		amdgpu_ras_error_statistic_de_count(err_data, &mcm_info, count);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		break;
@@ -508,7 +524,11 @@ static int __aca_get_error_data(struct amdgpu_device *adev, struct aca_handle *h
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	/* udpate aca bank to aca source error_cache first */
+=======
+	/* update aca bank to aca source error_cache first */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = aca_banks_update(adev, smu_type, handler_aca_log_bank_error, qctx, NULL);
 	if (ret)
 		return ret;
@@ -562,9 +582,19 @@ static void aca_error_fini(struct aca_error *aerr)
 	struct aca_bank_error *bank_error, *tmp;
 
 	mutex_lock(&aerr->lock);
+<<<<<<< HEAD
 	list_for_each_entry_safe(bank_error, tmp, &aerr->list, node)
 		aca_bank_error_remove(aerr, bank_error);
 
+=======
+	if (list_empty(&aerr->list))
+		goto out_unlock;
+
+	list_for_each_entry_safe(bank_error, tmp, &aerr->list, node)
+		aca_bank_error_remove(aerr, bank_error);
+
+out_unlock:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_destroy(&aerr->lock);
 }
 
@@ -680,6 +710,12 @@ static void aca_manager_fini(struct aca_handle_manager *mgr)
 {
 	struct aca_handle *handle, *tmp;
 
+<<<<<<< HEAD
+=======
+	if (list_empty(&mgr->list))
+		return;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	list_for_each_entry_safe(handle, tmp, &mgr->list, node)
 		amdgpu_aca_remove_handle(handle);
 }

@@ -1405,16 +1405,23 @@ static int lmk04832_probe(struct spi_device *spi)
 
 	lmk->dev = &spi->dev;
 
+<<<<<<< HEAD
 	lmk->oscin = devm_clk_get(lmk->dev, "oscin");
+=======
+	lmk->oscin = devm_clk_get_enabled(lmk->dev, "oscin");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(lmk->oscin)) {
 		dev_err(lmk->dev, "failed to get oscin clock\n");
 		return PTR_ERR(lmk->oscin);
 	}
 
+<<<<<<< HEAD
 	ret = clk_prepare_enable(lmk->oscin);
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	lmk->reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset",
 						  GPIOD_OUT_LOW);
 
@@ -1422,14 +1429,22 @@ static int lmk04832_probe(struct spi_device *spi)
 				 sizeof(struct lmk_dclk), GFP_KERNEL);
 	if (!lmk->dclk) {
 		ret = -ENOMEM;
+<<<<<<< HEAD
 		goto err_disable_oscin;
+=======
+		return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	lmk->clkout = devm_kcalloc(lmk->dev, info->num_channels,
 				   sizeof(*lmk->clkout), GFP_KERNEL);
 	if (!lmk->clkout) {
 		ret = -ENOMEM;
+<<<<<<< HEAD
 		goto err_disable_oscin;
+=======
+		return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	lmk->clk_data = devm_kzalloc(lmk->dev, struct_size(lmk->clk_data, hws,
@@ -1437,7 +1452,11 @@ static int lmk04832_probe(struct spi_device *spi)
 				     GFP_KERNEL);
 	if (!lmk->clk_data) {
 		ret = -ENOMEM;
+<<<<<<< HEAD
 		goto err_disable_oscin;
+=======
+		return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	device_property_read_u32(lmk->dev, "ti,vco-hz", &lmk->vco_rate);
@@ -1465,7 +1484,11 @@ static int lmk04832_probe(struct spi_device *spi)
 			dev_err(lmk->dev, "missing reg property in child: %s\n",
 				child->full_name);
 			of_node_put(child);
+<<<<<<< HEAD
 			goto err_disable_oscin;
+=======
+			return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		of_property_read_u32(child, "ti,clkout-fmt",
@@ -1486,7 +1509,11 @@ static int lmk04832_probe(struct spi_device *spi)
 
 			__func__, PTR_ERR(lmk->regmap));
 		ret = PTR_ERR(lmk->regmap);
+<<<<<<< HEAD
 		goto err_disable_oscin;
+=======
+		return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	regmap_write(lmk->regmap, LMK04832_REG_RST3W, LMK04832_BIT_RESET);
@@ -1496,7 +1523,11 @@ static int lmk04832_probe(struct spi_device *spi)
 					 &rdbk_pin);
 		ret = lmk04832_set_spi_rdbk(lmk, rdbk_pin);
 		if (ret)
+<<<<<<< HEAD
 			goto err_disable_oscin;
+=======
+			return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	regmap_bulk_read(lmk->regmap, LMK04832_REG_ID_PROD_MSB, &tmp, 3);
@@ -1504,13 +1535,21 @@ static int lmk04832_probe(struct spi_device *spi)
 		dev_err(lmk->dev, "unsupported device type: pid 0x%04x, maskrev 0x%02x\n",
 			tmp[0] << 8 | tmp[1], tmp[2]);
 		ret = -EINVAL;
+<<<<<<< HEAD
 		goto err_disable_oscin;
+=======
+		return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	ret = lmk04832_register_vco(lmk);
 	if (ret) {
 		dev_err(lmk->dev, "failed to init device clock path\n");
+<<<<<<< HEAD
 		goto err_disable_oscin;
+=======
+		return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (lmk->vco_rate) {
@@ -1518,21 +1557,33 @@ static int lmk04832_probe(struct spi_device *spi)
 		ret = clk_set_rate(lmk->vco.clk, lmk->vco_rate);
 		if (ret) {
 			dev_err(lmk->dev, "failed to set VCO rate\n");
+<<<<<<< HEAD
 			goto err_disable_oscin;
+=======
+			return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
 	ret = lmk04832_register_sclk(lmk);
 	if (ret) {
 		dev_err(lmk->dev, "failed to init SYNC/SYSREF clock path\n");
+<<<<<<< HEAD
 		goto err_disable_oscin;
+=======
+		return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	for (i = 0; i < info->num_channels; i++) {
 		ret = lmk04832_register_clkout(lmk, i);
 		if (ret) {
 			dev_err(lmk->dev, "failed to register clk %d\n", i);
+<<<<<<< HEAD
 			goto err_disable_oscin;
+=======
+			return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -1541,12 +1592,17 @@ static int lmk04832_probe(struct spi_device *spi)
 					  lmk->clk_data);
 	if (ret) {
 		dev_err(lmk->dev, "failed to add provider (%d)\n", ret);
+<<<<<<< HEAD
 		goto err_disable_oscin;
+=======
+		return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	spi_set_drvdata(spi, lmk);
 
 	return 0;
+<<<<<<< HEAD
 
 err_disable_oscin:
 	clk_disable_unprepare(lmk->oscin);
@@ -1559,6 +1615,8 @@ static void lmk04832_remove(struct spi_device *spi)
 	struct lmk04832 *lmk = spi_get_drvdata(spi);
 
 	clk_disable_unprepare(lmk->oscin);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct spi_device_id lmk04832_id[] = {
@@ -1579,7 +1637,10 @@ static struct spi_driver lmk04832_driver = {
 		.of_match_table = lmk04832_of_id,
 	},
 	.probe		= lmk04832_probe,
+<<<<<<< HEAD
 	.remove		= lmk04832_remove,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.id_table	= lmk04832_id,
 };
 module_spi_driver(lmk04832_driver);

@@ -36,6 +36,15 @@ properties:
     minItems: 1
     maxItems: 2
 
+<<<<<<< HEAD
+=======
+  interrupts:
+    maxItems: 1
+    description: Pre-timeout interrupt from the watchdog.
+
+  wakeup-source: true
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 required:
   - compatible
   - reg

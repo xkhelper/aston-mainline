@@ -7,7 +7,11 @@
 #include "glob.h"
 #include "nterr.h"
 #include "smb_common.h"
+<<<<<<< HEAD
 #include "smbstatus.h"
+=======
+#include "../common/smb2status.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "mgmt/user_session.h"
 #include "connection.h"
 

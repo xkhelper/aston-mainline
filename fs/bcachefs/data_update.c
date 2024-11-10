@@ -80,6 +80,10 @@ static bool bkey_nocow_lock(struct bch_fs *c, struct moving_context *ctxt, struc
 					if (ptr2 == ptr)
 						break;
 
+<<<<<<< HEAD
+=======
+					ca = bch2_dev_have_ref(c, ptr2->dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					bucket = PTR_BUCKET_POS(ca, ptr2);
 					bch2_bucket_nocow_unlock(&c->nocow_locks, bucket, 0);
 				}
@@ -235,7 +239,12 @@ static int __bch2_data_update_index_update(struct btree_trans *trans,
 			if (((1U << i) & m->data_opts.rewrite_ptrs) &&
 			    (ptr = bch2_extent_has_ptr(old, p, bkey_i_to_s(insert))) &&
 			    !ptr->cached) {
+<<<<<<< HEAD
 				bch2_extent_ptr_set_cached(bkey_i_to_s(insert), ptr);
+=======
+				bch2_extent_ptr_set_cached(c, &m->op.opts,
+							   bkey_i_to_s(insert), ptr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				rewrites_found |= 1U << i;
 			}
 			i++;
@@ -283,7 +292,12 @@ restart_drop_extra_replicas:
 			    durability - ptr_durability >= m->op.opts.data_replicas) {
 				durability -= ptr_durability;
 
+<<<<<<< HEAD
 				bch2_extent_ptr_set_cached(bkey_i_to_s(insert), &entry->ptr);
+=======
+				bch2_extent_ptr_set_cached(c, &m->op.opts,
+							   bkey_i_to_s(insert), &entry->ptr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				goto restart_drop_extra_replicas;
 			}
 		}
@@ -294,7 +308,11 @@ restart_drop_extra_replicas:
 			bch2_extent_ptr_decoded_append(insert, &p);
 
 		bch2_bkey_narrow_crcs(insert, (struct bch_extent_crc_unpacked) { 0 });
+<<<<<<< HEAD
 		bch2_extent_normalize(c, bkey_i_to_s(insert));
+=======
+		bch2_extent_normalize_by_opts(c, &m->op.opts, bkey_i_to_s(insert));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		ret = bch2_sum_sector_overwrites(trans, &iter, insert,
 						 &should_check_enospc,
@@ -557,7 +575,12 @@ void bch2_data_update_to_text(struct printbuf *out, struct data_update *m)
 int bch2_extent_drop_ptrs(struct btree_trans *trans,
 			  struct btree_iter *iter,
 			  struct bkey_s_c k,
+<<<<<<< HEAD
 			  struct data_update_opts data_opts)
+=======
+			  struct bch_io_opts *io_opts,
+			  struct data_update_opts *data_opts)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct bch_fs *c = trans->c;
 	struct bkey_i *n;
@@ -568,11 +591,19 @@ int bch2_extent_drop_ptrs(struct btree_trans *trans,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	while (data_opts.kill_ptrs) {
 		unsigned i = 0, drop = __fls(data_opts.kill_ptrs);
 
 		bch2_bkey_drop_ptrs(bkey_i_to_s(n), ptr, i++ == drop);
 		data_opts.kill_ptrs ^= 1U << drop;
+=======
+	while (data_opts->kill_ptrs) {
+		unsigned i = 0, drop = __fls(data_opts->kill_ptrs);
+
+		bch2_bkey_drop_ptrs_noerror(bkey_i_to_s(n), ptr, i++ == drop);
+		data_opts->kill_ptrs ^= 1U << drop;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/*
@@ -580,7 +611,11 @@ int bch2_extent_drop_ptrs(struct btree_trans *trans,
 	 * will do the appropriate thing with it (turning it into a
 	 * KEY_TYPE_error key, or just a discard if it was a cached extent)
 	 */
+<<<<<<< HEAD
 	bch2_extent_normalize(c, bkey_i_to_s(n));
+=======
+	bch2_extent_normalize_by_opts(c, io_opts, bkey_i_to_s(n));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Since we're not inserting through an extent iterator
@@ -639,7 +674,11 @@ int bch2_data_update_init(struct btree_trans *trans,
 
 	bch2_write_op_init(&m->op, c, io_opts);
 	m->op.pos	= bkey_start_pos(k.k);
+<<<<<<< HEAD
 	m->op.version	= k.k->version;
+=======
+	m->op.version	= k.k->bversion;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	m->op.target	= data_opts.target;
 	m->op.write_point = wp;
 	m->op.nr_replicas = 0;
@@ -719,7 +758,11 @@ int bch2_data_update_init(struct btree_trans *trans,
 		m->data_opts.rewrite_ptrs = 0;
 		/* if iter == NULL, it's just a promote */
 		if (iter)
+<<<<<<< HEAD
 			ret = bch2_extent_drop_ptrs(trans, iter, k, m->data_opts);
+=======
+			ret = bch2_extent_drop_ptrs(trans, iter, k, &io_opts, &m->data_opts);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 	}
 

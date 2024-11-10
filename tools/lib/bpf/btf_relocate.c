@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+// SPDX-License-Identifier: (LGPL-2.1 OR BSD-2-Clause)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Copyright (c) 2024, Oracle and/or its affiliates. */
 
 #ifndef _GNU_SOURCE

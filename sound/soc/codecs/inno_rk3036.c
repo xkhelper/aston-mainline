@@ -476,7 +476,11 @@ static struct platform_driver rk3036_codec_platform_driver = {
 		.of_match_table = of_match_ptr(rk3036_codec_of_match),
 	},
 	.probe = rk3036_codec_platform_probe,
+<<<<<<< HEAD
 	.remove_new = rk3036_codec_platform_remove,
+=======
+	.remove = rk3036_codec_platform_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(rk3036_codec_platform_driver);

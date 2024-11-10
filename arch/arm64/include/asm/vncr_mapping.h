@@ -52,6 +52,10 @@
 #define VNCR_PIRE0_EL1		0x290
 #define VNCR_PIRE0_EL2		0x298
 #define VNCR_PIR_EL1		0x2A0
+<<<<<<< HEAD
+=======
+#define VNCR_POR_EL1		0x2A8
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define VNCR_ICH_LR0_EL2        0x400
 #define VNCR_ICH_LR1_EL2        0x408
 #define VNCR_ICH_LR2_EL2        0x410

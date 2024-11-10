@@ -26,8 +26,12 @@ const struct nla_policy nft_fib_policy[NFTA_FIB_MAX + 1] = {
 };
 EXPORT_SYMBOL(nft_fib_policy);
 
+<<<<<<< HEAD
 int nft_fib_validate(const struct nft_ctx *ctx, const struct nft_expr *expr,
 		     const struct nft_data **data)
+=======
+int nft_fib_validate(const struct nft_ctx *ctx, const struct nft_expr *expr)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	const struct nft_fib *priv = nft_expr_priv(expr);
 	unsigned int hooks;

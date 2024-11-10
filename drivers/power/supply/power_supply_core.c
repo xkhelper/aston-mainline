@@ -9,6 +9,10 @@
  *  Modified: 2004, Oct     Szabolcs Gyurko
  */
 
+<<<<<<< HEAD
+=======
+#include <linux/cleanup.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/module.h>
 #include <linux/types.h>
 #include <linux/init.h>
@@ -756,10 +760,17 @@ int power_supply_get_battery_info(struct power_supply *psy,
 
 	for (index = 0; index < len; index++) {
 		struct power_supply_battery_ocv_table *table;
+<<<<<<< HEAD
 		char *propname;
 		int i, tab_len, size;
 
 		propname = kasprintf(GFP_KERNEL, "ocv-capacity-table-%d", index);
+=======
+		int i, tab_len, size;
+
+		char *propname __free(kfree) = kasprintf(GFP_KERNEL, "ocv-capacity-table-%d",
+							 index);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!propname) {
 			power_supply_put_battery_info(psy, info);
 			err = -ENOMEM;
@@ -768,13 +779,19 @@ int power_supply_get_battery_info(struct power_supply *psy,
 		list = of_get_property(battery_np, propname, &size);
 		if (!list || !size) {
 			dev_err(&psy->dev, "failed to get %s\n", propname);
+<<<<<<< HEAD
 			kfree(propname);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			power_supply_put_battery_info(psy, info);
 			err = -EINVAL;
 			goto out_put_node;
 		}
 
+<<<<<<< HEAD
 		kfree(propname);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		tab_len = size / (2 * sizeof(__be32));
 		info->ocv_table_size[index] = tab_len;
 
@@ -1232,11 +1249,15 @@ EXPORT_SYMBOL_GPL(power_supply_set_property);
 int power_supply_property_is_writeable(struct power_supply *psy,
 					enum power_supply_property psp)
 {
+<<<<<<< HEAD
 	if (atomic_read(&psy->use_cnt) <= 0 ||
 			!psy->desc->property_is_writeable)
 		return -ENODEV;
 
 	return psy->desc->property_is_writeable(psy, psp);
+=======
+	return psy->desc->property_is_writeable && psy->desc->property_is_writeable(psy, psp);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(power_supply_property_is_writeable);
 
@@ -1296,7 +1317,11 @@ static int power_supply_read_temp(struct thermal_zone_device *tzd,
 	return ret;
 }
 
+<<<<<<< HEAD
 static struct thermal_zone_device_ops psy_tzd_ops = {
+=======
+static const struct thermal_zone_device_ops psy_tzd_ops = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.get_temp = power_supply_read_temp,
 };
 
@@ -1361,10 +1386,13 @@ __power_supply_register(struct device *parent,
 		pr_warn("%s: Expected proper parent device for '%s'\n",
 			__func__, desc->name);
 
+<<<<<<< HEAD
 	if (psy_has_property(desc, POWER_SUPPLY_PROP_USB_TYPE) &&
 	    (!desc->usb_types || !desc->num_usb_types))
 		return ERR_PTR(-EINVAL);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	psy = kzalloc(sizeof(*psy), GFP_KERNEL);
 	if (!psy)
 		return ERR_PTR(-ENOMEM);

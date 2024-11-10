@@ -41,6 +41,7 @@ static struct task_struct *pick_task_stop(struct rq *rq)
 	return rq->stop;
 }
 
+<<<<<<< HEAD
 static struct task_struct *pick_next_task_stop(struct rq *rq)
 {
 	struct task_struct *p = pick_task_stop(rq);
@@ -51,16 +52,26 @@ static struct task_struct *pick_next_task_stop(struct rq *rq)
 	return p;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void
 enqueue_task_stop(struct rq *rq, struct task_struct *p, int flags)
 {
 	add_nr_running(rq, 1);
 }
 
+<<<<<<< HEAD
 static void
 dequeue_task_stop(struct rq *rq, struct task_struct *p, int flags)
 {
 	sub_nr_running(rq, 1);
+=======
+static bool
+dequeue_task_stop(struct rq *rq, struct task_struct *p, int flags)
+{
+	sub_nr_running(rq, 1);
+	return true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void yield_task_stop(struct rq *rq)
@@ -68,7 +79,11 @@ static void yield_task_stop(struct rq *rq)
 	BUG(); /* the stop task should never yield, its pointless. */
 }
 
+<<<<<<< HEAD
 static void put_prev_task_stop(struct rq *rq, struct task_struct *prev)
+=======
+static void put_prev_task_stop(struct rq *rq, struct task_struct *prev, struct task_struct *next)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	update_curr_common(rq);
 }
@@ -111,13 +126,20 @@ DEFINE_SCHED_CLASS(stop) = {
 
 	.wakeup_preempt		= wakeup_preempt_stop,
 
+<<<<<<< HEAD
 	.pick_next_task		= pick_next_task_stop,
+=======
+	.pick_task		= pick_task_stop,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.put_prev_task		= put_prev_task_stop,
 	.set_next_task          = set_next_task_stop,
 
 #ifdef CONFIG_SMP
 	.balance		= balance_stop,
+<<<<<<< HEAD
 	.pick_task		= pick_task_stop,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.select_task_rq		= select_task_rq_stop,
 	.set_cpus_allowed	= set_cpus_allowed_common,
 #endif

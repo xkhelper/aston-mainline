@@ -5,7 +5,11 @@
  * Copyright (C) 2021 Intel Corporation
  */
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void eir_create(struct hci_dev *hdev, u8 *data);
 

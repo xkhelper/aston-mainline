@@ -170,6 +170,16 @@ struct aspeed_i2c_bus {
 
 static int aspeed_i2c_reset(struct aspeed_i2c_bus *bus);
 
+<<<<<<< HEAD
+=======
+/* precondition: bus.lock has been acquired. */
+static void aspeed_i2c_do_stop(struct aspeed_i2c_bus *bus)
+{
+	bus->master_state = ASPEED_I2C_MASTER_STOP;
+	writel(ASPEED_I2CD_M_STOP_CMD, bus->base + ASPEED_I2C_CMD_REG);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int aspeed_i2c_recover_bus(struct aspeed_i2c_bus *bus)
 {
 	unsigned long time_left, flags;
@@ -187,7 +197,11 @@ static int aspeed_i2c_recover_bus(struct aspeed_i2c_bus *bus)
 			command);
 
 		reinit_completion(&bus->cmd_complete);
+<<<<<<< HEAD
 		writel(ASPEED_I2CD_M_STOP_CMD, bus->base + ASPEED_I2C_CMD_REG);
+=======
+		aspeed_i2c_do_stop(bus);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		spin_unlock_irqrestore(&bus->lock, flags);
 
 		time_left = wait_for_completion_timeout(
@@ -391,6 +405,7 @@ static void aspeed_i2c_do_start(struct aspeed_i2c_bus *bus)
 }
 
 /* precondition: bus.lock has been acquired. */
+<<<<<<< HEAD
 static void aspeed_i2c_do_stop(struct aspeed_i2c_bus *bus)
 {
 	bus->master_state = ASPEED_I2C_MASTER_STOP;
@@ -398,6 +413,8 @@ static void aspeed_i2c_do_stop(struct aspeed_i2c_bus *bus)
 }
 
 /* precondition: bus.lock has been acquired. */
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void aspeed_i2c_next_msg_or_stop(struct aspeed_i2c_bus *bus)
 {
 	if (bus->msgs_index + 1 < bus->msgs_count) {
@@ -991,7 +1008,11 @@ static const struct of_device_id aspeed_i2c_bus_of_table[] = {
 		.compatible = "aspeed,ast2600-i2c-bus",
 		.data = aspeed_i2c_25xx_get_clk_reg_val,
 	},
+<<<<<<< HEAD
 	{ },
+=======
+	{ }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(of, aspeed_i2c_bus_of_table);
 

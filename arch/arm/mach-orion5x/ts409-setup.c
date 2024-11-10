@@ -312,7 +312,11 @@ static void __init qnap_ts409_init(void)
 	platform_device_register(&ts409_leds);
 
 	/* register tsx09 specific power-off method */
+<<<<<<< HEAD
 	pm_power_off = qnap_tsx09_power_off;
+=======
+	register_platform_power_off(qnap_tsx09_power_off);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 MACHINE_START(TS409, "QNAP TS-409")

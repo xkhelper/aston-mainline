@@ -43,6 +43,7 @@ ifneq ($(wildcard $(TMP_O)),)
 	$(Q)$(MAKE) -C feature OUTPUT=$(TMP_O) clean >/dev/null
 endif
 
+<<<<<<< HEAD
 $(OUTPUT)fixdep-in.o: FORCE
 	$(Q)$(MAKE) $(build)=fixdep
 
@@ -52,3 +53,7 @@ $(OUTPUT)fixdep: $(OUTPUT)fixdep-in.o
 FORCE:
 
 .PHONY: FORCE
+=======
+$(OUTPUT)fixdep: $(srctree)/tools/build/fixdep.c
+	$(QUIET_CC)$(HOSTCC) $(KBUILD_HOSTCFLAGS) $(KBUILD_HOSTLDFLAGS) -o $@ $<
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

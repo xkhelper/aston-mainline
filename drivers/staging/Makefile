@@ -17,7 +17,10 @@ obj-$(CONFIG_MFD_NVEC)		+= nvec/
 obj-$(CONFIG_LTE_GDM724X)	+= gdm724x/
 obj-$(CONFIG_FB_TFT)		+= fbtft/
 obj-$(CONFIG_MOST)		+= most/
+<<<<<<< HEAD
 obj-$(CONFIG_KS7010)		+= ks7010/
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 obj-$(CONFIG_GREYBUS)		+= greybus/
 obj-$(CONFIG_BCM2835_VCHIQ)	+= vc04_services/
 obj-$(CONFIG_XIL_AXIS_FIFO)	+= axis-fifo/

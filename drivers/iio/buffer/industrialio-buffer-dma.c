@@ -248,7 +248,11 @@ void iio_dma_buffer_block_done(struct iio_dma_buffer_block *block)
 	iio_dma_buffer_queue_wake(queue);
 	dma_fence_end_signalling(cookie);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(iio_dma_buffer_block_done);
+=======
+EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_block_done, IIO_DMA_BUFFER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * iio_dma_buffer_block_list_abort() - Indicate that a list block has been
@@ -287,7 +291,11 @@ void iio_dma_buffer_block_list_abort(struct iio_dma_buffer_queue *queue,
 	iio_dma_buffer_queue_wake(queue);
 	dma_fence_end_signalling(cookie);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(iio_dma_buffer_block_list_abort);
+=======
+EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_block_list_abort, IIO_DMA_BUFFER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static bool iio_dma_block_reusable(struct iio_dma_buffer_block *block)
 {
@@ -420,7 +428,11 @@ out_unlock:
 
 	return ret;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(iio_dma_buffer_request_update);
+=======
+EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_request_update, IIO_DMA_BUFFER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void iio_dma_buffer_fileio_free(struct iio_dma_buffer_queue *queue)
 {
@@ -506,7 +518,11 @@ int iio_dma_buffer_enable(struct iio_buffer *buffer,
 
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(iio_dma_buffer_enable);
+=======
+EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_enable, IIO_DMA_BUFFER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * iio_dma_buffer_disable() - Disable DMA buffer
@@ -530,7 +546,11 @@ int iio_dma_buffer_disable(struct iio_buffer *buffer,
 
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(iio_dma_buffer_disable);
+=======
+EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_disable, IIO_DMA_BUFFER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void iio_dma_buffer_enqueue(struct iio_dma_buffer_queue *queue,
 	struct iio_dma_buffer_block *block)
@@ -636,7 +656,11 @@ int iio_dma_buffer_read(struct iio_buffer *buffer, size_t n,
 {
 	return iio_dma_buffer_io(buffer, n, user_buffer, false);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(iio_dma_buffer_read);
+=======
+EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_read, IIO_DMA_BUFFER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * iio_dma_buffer_write() - DMA buffer write callback
@@ -653,7 +677,11 @@ int iio_dma_buffer_write(struct iio_buffer *buffer, size_t n,
 	return iio_dma_buffer_io(buffer, n,
 				 (__force __user char *)user_buffer, true);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(iio_dma_buffer_write);
+=======
+EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_write, IIO_DMA_BUFFER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * iio_dma_buffer_usage() - DMA buffer data_available and
@@ -696,7 +724,11 @@ size_t iio_dma_buffer_usage(struct iio_buffer *buf)
 
 	return data_available;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(iio_dma_buffer_usage);
+=======
+EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_usage, IIO_DMA_BUFFER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct iio_dma_buffer_block *
 iio_dma_buffer_attach_dmabuf(struct iio_buffer *buffer,
@@ -723,7 +755,11 @@ iio_dma_buffer_attach_dmabuf(struct iio_buffer *buffer,
 
 	return block;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(iio_dma_buffer_attach_dmabuf);
+=======
+EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_attach_dmabuf, IIO_DMA_BUFFER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void iio_dma_buffer_detach_dmabuf(struct iio_buffer *buffer,
 				  struct iio_dma_buffer_block *block)
@@ -731,7 +767,11 @@ void iio_dma_buffer_detach_dmabuf(struct iio_buffer *buffer,
 	block->state = IIO_BLOCK_STATE_DEAD;
 	iio_buffer_block_put_atomic(block);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(iio_dma_buffer_detach_dmabuf);
+=======
+EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_detach_dmabuf, IIO_DMA_BUFFER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int iio_dma_can_enqueue_block(struct iio_dma_buffer_block *block)
 {
@@ -784,7 +824,11 @@ out_end_signalling:
 
 	return ret;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(iio_dma_buffer_enqueue_dmabuf);
+=======
+EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_enqueue_dmabuf, IIO_DMA_BUFFER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void iio_dma_buffer_lock_queue(struct iio_buffer *buffer)
 {
@@ -792,7 +836,11 @@ void iio_dma_buffer_lock_queue(struct iio_buffer *buffer)
 
 	mutex_lock(&queue->lock);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(iio_dma_buffer_lock_queue);
+=======
+EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_lock_queue, IIO_DMA_BUFFER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void iio_dma_buffer_unlock_queue(struct iio_buffer *buffer)
 {
@@ -800,7 +848,11 @@ void iio_dma_buffer_unlock_queue(struct iio_buffer *buffer)
 
 	mutex_unlock(&queue->lock);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(iio_dma_buffer_unlock_queue);
+=======
+EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_unlock_queue, IIO_DMA_BUFFER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * iio_dma_buffer_set_bytes_per_datum() - DMA buffer set_bytes_per_datum callback
@@ -816,7 +868,11 @@ int iio_dma_buffer_set_bytes_per_datum(struct iio_buffer *buffer, size_t bpd)
 
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(iio_dma_buffer_set_bytes_per_datum);
+=======
+EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_set_bytes_per_datum, IIO_DMA_BUFFER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * iio_dma_buffer_set_length - DMA buffer set_length callback
@@ -836,7 +892,11 @@ int iio_dma_buffer_set_length(struct iio_buffer *buffer, unsigned int length)
 
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(iio_dma_buffer_set_length);
+=======
+EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_set_length, IIO_DMA_BUFFER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * iio_dma_buffer_init() - Initialize DMA buffer queue
@@ -864,7 +924,11 @@ int iio_dma_buffer_init(struct iio_dma_buffer_queue *queue,
 
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(iio_dma_buffer_init);
+=======
+EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_init, IIO_DMA_BUFFER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * iio_dma_buffer_exit() - Cleanup DMA buffer queue
@@ -882,7 +946,11 @@ void iio_dma_buffer_exit(struct iio_dma_buffer_queue *queue)
 
 	mutex_unlock(&queue->lock);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(iio_dma_buffer_exit);
+=======
+EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_exit, IIO_DMA_BUFFER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * iio_dma_buffer_release() - Release final buffer resources
@@ -896,7 +964,11 @@ void iio_dma_buffer_release(struct iio_dma_buffer_queue *queue)
 {
 	mutex_destroy(&queue->lock);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(iio_dma_buffer_release);
+=======
+EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_release, IIO_DMA_BUFFER);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 MODULE_AUTHOR("Lars-Peter Clausen <lars@metafoo.de>");
 MODULE_DESCRIPTION("DMA buffer for the IIO framework");

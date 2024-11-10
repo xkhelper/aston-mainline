@@ -379,7 +379,11 @@ DEFINE_SHOW_ATTRIBUTE(rs400_debugfs_gart_info);
 static void rs400_debugfs_pcie_gart_info_init(struct radeon_device *rdev)
 {
 #if defined(CONFIG_DEBUG_FS)
+<<<<<<< HEAD
 	struct dentry *root = rdev->ddev->primary->debugfs_root;
+=======
+	struct dentry *root = rdev_to_drm(rdev)->primary->debugfs_root;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	debugfs_create_file("rs400_gart_info", 0444, root, rdev,
 			    &rs400_debugfs_gart_info_fops);
@@ -474,7 +478,11 @@ int rs400_resume(struct radeon_device *rdev)
 			RREG32(R_0007C0_CP_STAT));
 	}
 	/* post */
+<<<<<<< HEAD
 	radeon_combios_asic_init(rdev->ddev);
+=======
+	radeon_combios_asic_init(rdev_to_drm(rdev));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Resume clock after posting */
 	r300_clock_startup(rdev);
 	/* Initialize surface registers */
@@ -552,7 +560,11 @@ int rs400_init(struct radeon_device *rdev)
 		return -EINVAL;
 
 	/* Initialize clocks */
+<<<<<<< HEAD
 	radeon_get_clock_info(rdev->ddev);
+=======
+	radeon_get_clock_info(rdev_to_drm(rdev));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* initialize memory controller */
 	rs400_mc_init(rdev);
 	/* Fence driver */

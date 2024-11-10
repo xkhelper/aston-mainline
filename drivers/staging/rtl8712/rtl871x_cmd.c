@@ -528,8 +528,14 @@ void r8712_setstakey_cmd(struct _adapter *padapter, u8 *psta, u8 unicast_key)
 	if (unicast_key)
 		memcpy(&psetstakey_para->key, &sta->x_UncstKey, 16);
 	else
+<<<<<<< HEAD
 		memcpy(&psetstakey_para->key, &psecuritypriv->XGrpKey[psecuritypriv->XGrpKeyid - 1].
 		       skey, 16);
+=======
+		memcpy(&psetstakey_para->key,
+		       &psecuritypriv->XGrpKey[psecuritypriv->XGrpKeyid - 1].skey,
+		       16);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	r8712_enqueue_cmd(pcmdpriv, ph2c);
 }
 

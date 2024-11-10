@@ -45,7 +45,11 @@ extern int bpf_dynptr_clone(const struct bpf_dynptr *ptr, struct bpf_dynptr *clo
 
 /* Description
  *  Modify the address of a AF_UNIX sockaddr.
+<<<<<<< HEAD
  * Returns__bpf_kfunc
+=======
+ * Returns
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *  -EINVAL if the address size is too big or, 0 if the sockaddr was successfully modified.
  */
 extern int bpf_sock_addr_set_sun_path(struct bpf_sock_addr_kern *sa_kern,
@@ -78,4 +82,16 @@ extern int bpf_verify_pkcs7_signature(struct bpf_dynptr *data_ptr,
 
 extern bool bpf_session_is_return(void) __ksym __weak;
 extern __u64 *bpf_session_cookie(void) __ksym __weak;
+<<<<<<< HEAD
+=======
+
+struct dentry;
+/* Description
+ *  Returns xattr of a dentry
+ * Returns
+ *  Error code
+ */
+extern int bpf_get_dentry_xattr(struct dentry *dentry, const char *name,
+			      struct bpf_dynptr *value_ptr) __ksym __weak;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

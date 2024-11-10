@@ -22,7 +22,11 @@
 #include <linux/spi/spi.h>
 
 #include <asm/byteorder.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* register map */
 #define LTC2983_STATUS_REG			0x0000

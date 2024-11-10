@@ -23,7 +23,11 @@
 #include <linux/slab.h>
 #include <linux/export.h>
 #include <net/mac80211.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "ieee80211_i.h"
 #include "driver-ops.h"
@@ -1231,7 +1235,11 @@ static bool ieee80211_add_vht_ie(struct ieee80211_sub_if_data *sdata,
 		bool disable_mu_mimo = false;
 		struct ieee80211_sub_if_data *other;
 
+<<<<<<< HEAD
 		list_for_each_entry_rcu(other, &local->interfaces, list) {
+=======
+		list_for_each_entry(other, &local->interfaces, list) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (other->vif.bss_conf.mu_mimo_owner) {
 				disable_mu_mimo = true;
 				break;
@@ -3031,6 +3039,7 @@ void ieee80211_dynamic_ps_timer(struct timer_list *t)
 
 void ieee80211_dfs_cac_timer_work(struct wiphy *wiphy, struct wiphy_work *work)
 {
+<<<<<<< HEAD
 	struct ieee80211_sub_if_data *sdata =
 		container_of(work, struct ieee80211_sub_if_data,
 			     dfs_cac_timer_work.work);
@@ -3043,6 +3052,21 @@ void ieee80211_dfs_cac_timer_work(struct wiphy *wiphy, struct wiphy_work *work)
 		cfg80211_cac_event(sdata->dev, &chandef,
 				   NL80211_RADAR_CAC_FINISHED,
 				   GFP_KERNEL);
+=======
+	struct ieee80211_link_data *link =
+		container_of(work, struct ieee80211_link_data,
+			     dfs_cac_timer_work.work);
+	struct cfg80211_chan_def chandef = link->conf->chanreq.oper;
+	struct ieee80211_sub_if_data *sdata = link->sdata;
+
+	lockdep_assert_wiphy(sdata->local->hw.wiphy);
+
+	if (sdata->wdev.links[link->link_id].cac_started) {
+		ieee80211_link_release_channel(link);
+		cfg80211_cac_event(sdata->dev, &chandef,
+				   NL80211_RADAR_CAC_FINISHED,
+				   GFP_KERNEL, link->link_id);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -4715,7 +4739,11 @@ static bool ieee80211_assoc_config_link(struct ieee80211_link_data *link,
 	    ((assoc_data->wmm && !elems->wmm_param) ||
 	     (link->u.mgd.conn.mode >= IEEE80211_CONN_MODE_HT &&
 	      (!elems->ht_cap_elem || !elems->ht_operation)) ||
+<<<<<<< HEAD
 	     (link->u.mgd.conn.mode >= IEEE80211_CONN_MODE_VHT &&
+=======
+	     (is_5ghz && link->u.mgd.conn.mode >= IEEE80211_CONN_MODE_VHT &&
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	      (!elems->vht_cap_elem || !elems->vht_operation)))) {
 		const struct cfg80211_bss_ies *ies;
 		struct ieee802_11_elems *bss_elems;
@@ -4763,6 +4791,7 @@ static bool ieee80211_assoc_config_link(struct ieee80211_link_data *link,
 			sdata_info(sdata,
 				   "AP bug: HT operation missing from AssocResp\n");
 		}
+<<<<<<< HEAD
 		if (!elems->vht_cap_elem && bss_elems->vht_cap_elem &&
 		    link->u.mgd.conn.mode >= IEEE80211_CONN_MODE_VHT) {
 			elems->vht_cap_elem = bss_elems->vht_cap_elem;
@@ -4776,6 +4805,24 @@ static bool ieee80211_assoc_config_link(struct ieee80211_link_data *link,
 				   "AP bug: VHT operation missing from AssocResp\n");
 		}
 
+=======
+
+		if (is_5ghz) {
+			if (!elems->vht_cap_elem && bss_elems->vht_cap_elem &&
+			    link->u.mgd.conn.mode >= IEEE80211_CONN_MODE_VHT) {
+				elems->vht_cap_elem = bss_elems->vht_cap_elem;
+				sdata_info(sdata,
+					   "AP bug: VHT capa missing from AssocResp\n");
+			}
+
+			if (!elems->vht_operation && bss_elems->vht_operation &&
+			    link->u.mgd.conn.mode >= IEEE80211_CONN_MODE_VHT) {
+				elems->vht_operation = bss_elems->vht_operation;
+				sdata_info(sdata,
+					   "AP bug: VHT operation missing from AssocResp\n");
+			}
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		kfree(bss_elems);
 	}
 
@@ -7660,6 +7707,10 @@ static int ieee80211_do_assoc(struct ieee80211_sub_if_data *sdata)
 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
 
 	assoc_data->tries++;
+<<<<<<< HEAD
+=======
+	assoc_data->comeback = false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (assoc_data->tries > IEEE80211_ASSOC_MAX_TRIES) {
 		sdata_info(sdata, "association with %pM timed out\n",
 			   assoc_data->ap_addr);

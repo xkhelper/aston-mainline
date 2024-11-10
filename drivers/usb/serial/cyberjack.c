@@ -67,7 +67,10 @@ MODULE_DEVICE_TABLE(usb, id_table);
 
 static struct usb_serial_driver cyberjack_device = {
 	.driver = {
+<<<<<<< HEAD
 		.owner =	THIS_MODULE,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name =		"cyberjack",
 	},
 	.description =		"Reiner SCT Cyberjack USB card reader",

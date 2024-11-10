@@ -24,7 +24,11 @@
  * Third Edition.
  */
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <crypto/algapi.h>
 #include <crypto/twofish.h>
 #include <linux/module.h>

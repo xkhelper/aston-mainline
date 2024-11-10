@@ -1023,7 +1023,11 @@ static int xhci_invalidate_cancelled_tds(struct xhci_virt_ep *ep)
 					td_to_noop(xhci, ring, cached_td, false);
 					cached_td->cancel_status = TD_CLEARED;
 				}
+<<<<<<< HEAD
 
+=======
+				td_to_noop(xhci, ring, td, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				td->cancel_status = TD_CLEARING_CACHE;
 				cached_td = td;
 				break;
@@ -1399,6 +1403,23 @@ static void xhci_handle_cmd_set_deq(struct xhci_hcd *xhci, int slot_id,
 			struct xhci_stream_ctx *ctx =
 				&ep->stream_info->stream_ctx_array[stream_id];
 			deq = le64_to_cpu(ctx->stream_ring) & SCTX_DEQ_MASK;
+<<<<<<< HEAD
+=======
+
+			/*
+			 * Cadence xHCI controllers store some endpoint state
+			 * information within Rsvd0 fields of Stream Endpoint
+			 * context. This field is not cleared during Set TR
+			 * Dequeue Pointer command which causes XDMA to skip
+			 * over transfer ring and leads to data loss on stream
+			 * pipe.
+			 * To fix this issue driver must clear Rsvd0 field.
+			 */
+			if (xhci->quirks & XHCI_CDNS_SCTX_QUIRK) {
+				ctx->reserved[0] = 0;
+				ctx->reserved[1] = 0;
+			}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			deq = le64_to_cpu(ep_ctx->deq) & ~EP_CTX_CYCLE_MASK;
 		}
@@ -1704,6 +1725,17 @@ static void handle_cmd_completion(struct xhci_hcd *xhci,
 
 	trace_xhci_handle_command(xhci->cmd_ring, &cmd_trb->generic);
 
+<<<<<<< HEAD
+=======
+	cmd_comp_code = GET_COMP_CODE(le32_to_cpu(event->status));
+
+	/* If CMD ring stopped we own the trbs between enqueue and dequeue */
+	if (cmd_comp_code == COMP_COMMAND_RING_STOPPED) {
+		complete_all(&xhci->cmd_ring_stop_completion);
+		return;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cmd_dequeue_dma = xhci_trb_virt_to_dma(xhci->cmd_ring->deq_seg,
 			cmd_trb);
 	/*
@@ -1720,6 +1752,7 @@ static void handle_cmd_completion(struct xhci_hcd *xhci,
 
 	cancel_delayed_work(&xhci->cmd_timer);
 
+<<<<<<< HEAD
 	cmd_comp_code = GET_COMP_CODE(le32_to_cpu(event->status));
 
 	/* If CMD ring stopped we own the trbs between enqueue and dequeue */
@@ -1728,6 +1761,8 @@ static void handle_cmd_completion(struct xhci_hcd *xhci,
 		return;
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (cmd->command_trb != xhci->cmd_ring->dequeue) {
 		xhci_err(xhci,
 			 "Command completion event does not match command\n");
@@ -2521,9 +2556,12 @@ static int process_bulk_intr_td(struct xhci_hcd *xhci, struct xhci_virt_ep *ep,
 		td->status = 0;
 		break;
 	case COMP_SHORT_PACKET:
+<<<<<<< HEAD
 		xhci_dbg(xhci, "ep %#x - asked for %d bytes, %d bytes untransferred\n",
 			 td->urb->ep->desc.bEndpointAddress,
 			 requested, remaining);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		td->status = 0;
 		break;
 	case COMP_STOPPED_SHORT_PACKET:
@@ -2764,6 +2802,7 @@ static int handle_tx_event(struct xhci_hcd *xhci,
 		return 0;
 	}
 
+<<<<<<< HEAD
 	do {
 		/* This TRB should be in the TD at the head of this ring's
 		 * TD list.
@@ -2793,6 +2832,50 @@ static int handle_tx_event(struct xhci_hcd *xhci,
 			goto check_endpoint_halted;
 		}
 
+=======
+	/*
+	 * xhci 4.10.2 states isoc endpoints should continue
+	 * processing the next TD if there was an error mid TD.
+	 * So host like NEC don't generate an event for the last
+	 * isoc TRB even if the IOC flag is set.
+	 * xhci 4.9.1 states that if there are errors in mult-TRB
+	 * TDs xHC should generate an error for that TRB, and if xHC
+	 * proceeds to the next TD it should genete an event for
+	 * any TRB with IOC flag on the way. Other host follow this.
+	 *
+	 * We wait for the final IOC event, but if we get an event
+	 * anywhere outside this TD, just give it back already.
+	 */
+	td = list_first_entry_or_null(&ep_ring->td_list, struct xhci_td, td_list);
+
+	if (td && td->error_mid_td && !trb_in_td(xhci, td, ep_trb_dma, false)) {
+		xhci_dbg(xhci, "Missing TD completion event after mid TD error\n");
+		ep_ring->dequeue = td->last_trb;
+		ep_ring->deq_seg = td->last_trb_seg;
+		inc_deq(xhci, ep_ring);
+		xhci_td_cleanup(xhci, td, ep_ring, td->status);
+	}
+
+	if (list_empty(&ep_ring->td_list)) {
+		/*
+		 * Don't print wanings if ring is empty due to a stopped endpoint generating an
+		 * extra completion event if the device was suspended. Or, a event for the last TRB
+		 * of a short TD we already got a short event for. The short TD is already removed
+		 * from the TD list.
+		 */
+		if (trb_comp_code != COMP_STOPPED &&
+		    trb_comp_code != COMP_STOPPED_LENGTH_INVALID &&
+		    !ep_ring->last_td_was_short) {
+			xhci_warn(xhci, "Event TRB for slot %u ep %u with no TDs queued\n",
+				  slot_id, ep_index);
+		}
+
+		ep->skip = false;
+		goto check_endpoint_halted;
+	}
+
+	do {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		td = list_first_entry(&ep_ring->td_list, struct xhci_td,
 				      td_list);
 
@@ -2803,7 +2886,18 @@ static int handle_tx_event(struct xhci_hcd *xhci,
 
 			if (ep->skip && usb_endpoint_xfer_isoc(&td->urb->ep->desc)) {
 				skip_isoc_td(xhci, td, ep, status);
+<<<<<<< HEAD
 				continue;
+=======
+				if (!list_empty(&ep_ring->td_list))
+					continue;
+
+				xhci_dbg(xhci, "All TDs skipped for slot %u ep %u. Clear skip flag.\n",
+					 slot_id, ep_index);
+				ep->skip = false;
+				td = NULL;
+				goto check_endpoint_halted;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 
 			/*
@@ -2828,6 +2922,7 @@ static int handle_tx_event(struct xhci_hcd *xhci,
 				return 0;
 			}
 
+<<<<<<< HEAD
 			/*
 			 * xhci 4.10.2 states isoc endpoints should continue
 			 * processing the next TD if there was an error mid TD.
@@ -2866,6 +2961,15 @@ static int handle_tx_event(struct xhci_hcd *xhci,
 
 				return -ESHUTDOWN;
 			}
+=======
+			/* HC is busted, give up! */
+			xhci_err(xhci,
+				 "ERROR Transfer event TRB DMA ptr not part of current TD ep_index %d comp_code %u\n",
+				 ep_index, trb_comp_code);
+			trb_in_td(xhci, td, ep_trb_dma, true);
+
+			return -ESHUTDOWN;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		if (ep->skip) {
@@ -3941,10 +4045,13 @@ static int xhci_get_isoc_frame_id(struct xhci_hcd *xhci,
 	start_frame_id = (start_frame_id >> 3) & 0x7ff;
 	end_frame_id = (end_frame_id >> 3) & 0x7ff;
 
+<<<<<<< HEAD
 	xhci_dbg(xhci, "%s: index %d, reg 0x%x start_frame_id 0x%x, end_frame_id 0x%x, start_frame 0x%x\n",
 		 __func__, index, readl(&xhci->run_regs->microframe_index),
 		 start_frame_id, end_frame_id, start_frame);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (start_frame_id < end_frame_id) {
 		if (start_frame > end_frame_id ||
 				start_frame < start_frame_id)

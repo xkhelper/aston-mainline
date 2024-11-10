@@ -575,6 +575,7 @@ unsigned int cpufreq_policy_transition_delay_us(struct cpufreq_policy *policy)
 		return policy->transition_delay_us;
 
 	latency = policy->cpuinfo.transition_latency / NSEC_PER_USEC;
+<<<<<<< HEAD
 	if (latency) {
 		unsigned int max_delay_us = 2 * MSEC_PER_SEC;
 
@@ -599,6 +600,13 @@ unsigned int cpufreq_policy_transition_delay_us(struct cpufreq_policy *policy)
 	}
 
 	return LATENCY_MULTIPLIER;
+=======
+	if (latency)
+		/* Give a 50% breathing room between updates */
+		return latency + (latency >> 1);
+
+	return USEC_PER_MSEC;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(cpufreq_policy_transition_delay_us);
 

@@ -441,6 +441,7 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
 		},
 	},
 	{
+<<<<<<< HEAD
 		/* Asus ExpertBook B1402CBA */
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
@@ -505,12 +506,58 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
 	},
 	{
 		/* Asus Vivobook E1504GA */
+=======
+		/* Asus Vivobook X1704VAP */
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+			DMI_MATCH(DMI_BOARD_NAME, "X1704VAP"),
+		},
+	},
+	{
+		/* Asus ExpertBook B1402C* */
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+			DMI_MATCH(DMI_BOARD_NAME, "B1402C"),
+		},
+	},
+	{
+		/* Asus ExpertBook B1502C* */
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+			DMI_MATCH(DMI_BOARD_NAME, "B1502C"),
+		},
+	},
+	{
+		/* Asus ExpertBook B2402 (B2402CBA / B2402FBA / B2402CVA / B2402FVA) */
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+			DMI_MATCH(DMI_BOARD_NAME, "B2402"),
+		},
+	},
+	{
+		/* Asus ExpertBook B2502 (B2502CBA / B2502FBA / B2502CVA / B2502FVA) */
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+			DMI_MATCH(DMI_BOARD_NAME, "B2502"),
+		},
+	},
+	{
+		/* Asus Vivobook Go E1404GA* */
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+			DMI_MATCH(DMI_BOARD_NAME, "E1404GA"),
+		},
+	},
+	{
+		/* Asus Vivobook E1504GA* */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
 			DMI_MATCH(DMI_BOARD_NAME, "E1504GA"),
 		},
 	},
 	{
+<<<<<<< HEAD
 		/* Asus Vivobook E1504GAB */
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
@@ -536,6 +583,12 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
 			DMI_MATCH(DMI_BOARD_NAME, "N6506MJ"),
+=======
+		/* Asus Vivobook Pro N6506M* */
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+			DMI_MATCH(DMI_BOARD_NAME, "N6506M"),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		},
 	},
 	{
@@ -545,6 +598,16 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
 			DMI_MATCH(DMI_BOARD_NAME, "17U70P"),
 		},
 	},
+<<<<<<< HEAD
+=======
+	{
+		/* LG Electronics 16T90SP */
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "LG Electronics"),
+			DMI_MATCH(DMI_BOARD_NAME, "16T90SP"),
+		},
+	},
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 
@@ -555,6 +618,15 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
  */
 static const struct dmi_system_id irq1_edge_low_force_override[] = {
 	{
+<<<<<<< HEAD
+=======
+		/* MECHREV Jiaolong17KS Series GM7XG0M */
+		.matches = {
+			DMI_MATCH(DMI_BOARD_NAME, "GM7XG0M"),
+		},
+	},
+	{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* XMG APEX 17 (M23) */
 		.matches = {
 			DMI_MATCH(DMI_BOARD_NAME, "GMxBGxx"),
@@ -573,6 +645,15 @@ static const struct dmi_system_id irq1_edge_low_force_override[] = {
 		},
 	},
 	{
+<<<<<<< HEAD
+=======
+		/* TongFang GMxXGxX/TUXEDO Polaris 15 Gen5 AMD */
+		.matches = {
+			DMI_MATCH(DMI_BOARD_NAME, "GMxXGxX"),
+		},
+	},
+	{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* TongFang GMxXGxx sold as Eluktronics Inc. RP-15 */
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),

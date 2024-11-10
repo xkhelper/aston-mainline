@@ -282,6 +282,7 @@ static int weim_probe(struct platform_device *pdev)
 	dev_set_drvdata(&pdev->dev, priv);
 
 	/* get the clock */
+<<<<<<< HEAD
 	clk = devm_clk_get(&pdev->dev, NULL);
 	if (IS_ERR(clk))
 		return PTR_ERR(clk);
@@ -298,6 +299,20 @@ static int weim_probe(struct platform_device *pdev)
 		dev_info(&pdev->dev, "Driver registered.\n");
 
 	return ret;
+=======
+	clk = devm_clk_get_enabled(&pdev->dev, NULL);
+	if (IS_ERR(clk))
+		return PTR_ERR(clk);
+
+	/* parse the device node */
+	ret = weim_parse_dt(pdev);
+	if (ret)
+		return ret;
+
+	dev_info(&pdev->dev, "Driver registered.\n");
+
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #if IS_ENABLED(CONFIG_OF_DYNAMIC)

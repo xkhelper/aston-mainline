@@ -1,7 +1,11 @@
 // SPDX-License-Identifier: GPL-2.0
 // Copyright (C) 2018 Intel Corporation
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/acpi.h>
 #include <linux/i2c.h>
 #include <linux/module.h>
@@ -1520,6 +1524,10 @@ static const struct v4l2_subdev_internal_ops imx355_internal_ops = {
 static int imx355_init_controls(struct imx355 *imx355)
 {
 	struct i2c_client *client = v4l2_get_subdevdata(&imx355->sd);
+<<<<<<< HEAD
+=======
+	struct v4l2_fwnode_device_properties props;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct v4l2_ctrl_handler *ctrl_hdlr;
 	s64 exposure_max;
 	s64 vblank_def;
@@ -1531,7 +1539,11 @@ static int imx355_init_controls(struct imx355 *imx355)
 	int ret;
 
 	ctrl_hdlr = &imx355->ctrl_handler;
+<<<<<<< HEAD
 	ret = v4l2_ctrl_handler_init(ctrl_hdlr, 10);
+=======
+	ret = v4l2_ctrl_handler_init(ctrl_hdlr, 12);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -1603,6 +1615,18 @@ static int imx355_init_controls(struct imx355 *imx355)
 		goto error;
 	}
 
+<<<<<<< HEAD
+=======
+	ret = v4l2_fwnode_device_parse(&client->dev, &props);
+	if (ret)
+		goto error;
+
+	ret = v4l2_ctrl_new_fwnode_properties(ctrl_hdlr, &imx355_ctrl_ops,
+					      &props);
+	if (ret)
+		goto error;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	imx355->sd.ctrl_handler = ctrl_hdlr;
 
 	return 0;

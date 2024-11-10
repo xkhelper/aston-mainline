@@ -53,6 +53,7 @@ nvkm_device_find(u64 handle)
 	return device;
 }
 
+<<<<<<< HEAD
 int
 nvkm_device_list(u64 *name, int size)
 {
@@ -73,6 +74,8 @@ null_chipset = {
 	.bios     = { 0x00000001, nvkm_bios_new },
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct nvkm_device_chip
 nv4_chipset = {
 	.name = "NV04",
@@ -490,7 +493,10 @@ nv40_chipset = {
 	.fifo     = { 0x00000001, nv40_fifo_new },
 	.gr       = { 0x00000001, nv40_gr_new },
 	.mpeg     = { 0x00000001, nv40_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, nv40_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv10_sw_new },
 };
 
@@ -516,7 +522,10 @@ nv41_chipset = {
 	.fifo     = { 0x00000001, nv40_fifo_new },
 	.gr       = { 0x00000001, nv40_gr_new },
 	.mpeg     = { 0x00000001, nv40_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, nv40_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv10_sw_new },
 };
 
@@ -542,7 +551,10 @@ nv42_chipset = {
 	.fifo     = { 0x00000001, nv40_fifo_new },
 	.gr       = { 0x00000001, nv40_gr_new },
 	.mpeg     = { 0x00000001, nv40_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, nv40_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv10_sw_new },
 };
 
@@ -568,7 +580,10 @@ nv43_chipset = {
 	.fifo     = { 0x00000001, nv40_fifo_new },
 	.gr       = { 0x00000001, nv40_gr_new },
 	.mpeg     = { 0x00000001, nv40_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, nv40_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv10_sw_new },
 };
 
@@ -594,7 +609,10 @@ nv44_chipset = {
 	.fifo     = { 0x00000001, nv40_fifo_new },
 	.gr       = { 0x00000001, nv44_gr_new },
 	.mpeg     = { 0x00000001, nv44_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, nv40_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv10_sw_new },
 };
 
@@ -620,7 +638,10 @@ nv45_chipset = {
 	.fifo     = { 0x00000001, nv40_fifo_new },
 	.gr       = { 0x00000001, nv40_gr_new },
 	.mpeg     = { 0x00000001, nv44_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, nv40_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv10_sw_new },
 };
 
@@ -646,7 +667,10 @@ nv46_chipset = {
 	.fifo     = { 0x00000001, nv40_fifo_new },
 	.gr       = { 0x00000001, nv44_gr_new },
 	.mpeg     = { 0x00000001, nv44_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, nv40_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv10_sw_new },
 };
 
@@ -672,7 +696,10 @@ nv47_chipset = {
 	.fifo     = { 0x00000001, nv40_fifo_new },
 	.gr       = { 0x00000001, nv40_gr_new },
 	.mpeg     = { 0x00000001, nv44_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, nv40_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv10_sw_new },
 };
 
@@ -698,7 +725,10 @@ nv49_chipset = {
 	.fifo     = { 0x00000001, nv40_fifo_new },
 	.gr       = { 0x00000001, nv40_gr_new },
 	.mpeg     = { 0x00000001, nv44_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, nv40_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv10_sw_new },
 };
 
@@ -724,7 +754,10 @@ nv4a_chipset = {
 	.fifo     = { 0x00000001, nv40_fifo_new },
 	.gr       = { 0x00000001, nv44_gr_new },
 	.mpeg     = { 0x00000001, nv44_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, nv40_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv10_sw_new },
 };
 
@@ -750,7 +783,10 @@ nv4b_chipset = {
 	.fifo     = { 0x00000001, nv40_fifo_new },
 	.gr       = { 0x00000001, nv40_gr_new },
 	.mpeg     = { 0x00000001, nv44_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, nv40_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv10_sw_new },
 };
 
@@ -776,7 +812,10 @@ nv4c_chipset = {
 	.fifo     = { 0x00000001, nv40_fifo_new },
 	.gr       = { 0x00000001, nv44_gr_new },
 	.mpeg     = { 0x00000001, nv44_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, nv40_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv10_sw_new },
 };
 
@@ -802,7 +841,10 @@ nv4e_chipset = {
 	.fifo     = { 0x00000001, nv40_fifo_new },
 	.gr       = { 0x00000001, nv44_gr_new },
 	.mpeg     = { 0x00000001, nv44_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, nv40_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv10_sw_new },
 };
 
@@ -831,7 +873,10 @@ nv50_chipset = {
 	.fifo     = { 0x00000001, nv50_fifo_new },
 	.gr       = { 0x00000001, nv50_gr_new },
 	.mpeg     = { 0x00000001, nv50_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, nv50_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv50_sw_new },
 };
 
@@ -857,7 +902,10 @@ nv63_chipset = {
 	.fifo     = { 0x00000001, nv40_fifo_new },
 	.gr       = { 0x00000001, nv44_gr_new },
 	.mpeg     = { 0x00000001, nv44_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, nv40_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv10_sw_new },
 };
 
@@ -883,7 +931,10 @@ nv67_chipset = {
 	.fifo     = { 0x00000001, nv40_fifo_new },
 	.gr       = { 0x00000001, nv44_gr_new },
 	.mpeg     = { 0x00000001, nv44_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, nv40_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv10_sw_new },
 };
 
@@ -909,7 +960,10 @@ nv68_chipset = {
 	.fifo     = { 0x00000001, nv40_fifo_new },
 	.gr       = { 0x00000001, nv44_gr_new },
 	.mpeg     = { 0x00000001, nv44_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, nv40_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv10_sw_new },
 };
 
@@ -940,7 +994,10 @@ nv84_chipset = {
 	.fifo     = { 0x00000001, g84_fifo_new },
 	.gr       = { 0x00000001, g84_gr_new },
 	.mpeg     = { 0x00000001, g84_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, g84_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv50_sw_new },
 	.vp       = { 0x00000001, g84_vp_new },
 };
@@ -972,7 +1029,10 @@ nv86_chipset = {
 	.fifo     = { 0x00000001, g84_fifo_new },
 	.gr       = { 0x00000001, g84_gr_new },
 	.mpeg     = { 0x00000001, g84_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, g84_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv50_sw_new },
 	.vp       = { 0x00000001, g84_vp_new },
 };
@@ -1004,7 +1064,10 @@ nv92_chipset = {
 	.fifo     = { 0x00000001, g84_fifo_new },
 	.gr       = { 0x00000001, g84_gr_new },
 	.mpeg     = { 0x00000001, g84_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, g84_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv50_sw_new },
 	.vp       = { 0x00000001, g84_vp_new },
 };
@@ -1036,7 +1099,10 @@ nv94_chipset = {
 	.fifo     = { 0x00000001, g84_fifo_new },
 	.gr       = { 0x00000001, g84_gr_new },
 	.mpeg     = { 0x00000001, g84_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, g84_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv50_sw_new },
 	.vp       = { 0x00000001, g84_vp_new },
 };
@@ -1068,7 +1134,10 @@ nv96_chipset = {
 	.fifo     = { 0x00000001, g84_fifo_new },
 	.gr       = { 0x00000001, g84_gr_new },
 	.mpeg     = { 0x00000001, g84_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, g84_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv50_sw_new },
 	.vp       = { 0x00000001, g84_vp_new },
 };
@@ -1100,7 +1169,10 @@ nv98_chipset = {
 	.mspdec   = { 0x00000001, g98_mspdec_new },
 	.msppp    = { 0x00000001, g98_msppp_new },
 	.msvld    = { 0x00000001, g98_msvld_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, g84_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sec      = { 0x00000001, g98_sec_new },
 	.sw       = { 0x00000001, nv50_sw_new },
 };
@@ -1132,7 +1204,10 @@ nva0_chipset = {
 	.fifo     = { 0x00000001, g84_fifo_new },
 	.gr       = { 0x00000001, gt200_gr_new },
 	.mpeg     = { 0x00000001, g84_mpeg_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, gt200_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv50_sw_new },
 	.vp       = { 0x00000001, g84_vp_new },
 };
@@ -1167,7 +1242,10 @@ nva3_chipset = {
 	.mspdec   = { 0x00000001, gt215_mspdec_new },
 	.msppp    = { 0x00000001, gt215_msppp_new },
 	.msvld    = { 0x00000001, gt215_msvld_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, gt215_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv50_sw_new },
 };
 
@@ -1200,7 +1278,10 @@ nva5_chipset = {
 	.mspdec   = { 0x00000001, gt215_mspdec_new },
 	.msppp    = { 0x00000001, gt215_msppp_new },
 	.msvld    = { 0x00000001, gt215_msvld_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, gt215_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv50_sw_new },
 };
 
@@ -1233,7 +1314,10 @@ nva8_chipset = {
 	.mspdec   = { 0x00000001, gt215_mspdec_new },
 	.msppp    = { 0x00000001, gt215_msppp_new },
 	.msvld    = { 0x00000001, gt215_msvld_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, gt215_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv50_sw_new },
 };
 
@@ -1264,7 +1348,10 @@ nvaa_chipset = {
 	.mspdec   = { 0x00000001, g98_mspdec_new },
 	.msppp    = { 0x00000001, g98_msppp_new },
 	.msvld    = { 0x00000001, g98_msvld_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, g84_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sec      = { 0x00000001, g98_sec_new },
 	.sw       = { 0x00000001, nv50_sw_new },
 };
@@ -1296,7 +1383,10 @@ nvac_chipset = {
 	.mspdec   = { 0x00000001, g98_mspdec_new },
 	.msppp    = { 0x00000001, g98_msppp_new },
 	.msvld    = { 0x00000001, g98_msvld_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, g84_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sec      = { 0x00000001, g98_sec_new },
 	.sw       = { 0x00000001, nv50_sw_new },
 };
@@ -1330,7 +1420,10 @@ nvaf_chipset = {
 	.mspdec   = { 0x00000001, gt215_mspdec_new },
 	.msppp    = { 0x00000001, gt215_msppp_new },
 	.msvld    = { 0x00000001, mcp89_msvld_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, gt215_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, nv50_sw_new },
 };
 
@@ -1366,7 +1459,10 @@ nvc0_chipset = {
 	.mspdec   = { 0x00000001, gf100_mspdec_new },
 	.msppp    = { 0x00000001, gf100_msppp_new },
 	.msvld    = { 0x00000001, gf100_msvld_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, gf100_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, gf100_sw_new },
 };
 
@@ -1402,7 +1498,10 @@ nvc1_chipset = {
 	.mspdec   = { 0x00000001, gf100_mspdec_new },
 	.msppp    = { 0x00000001, gf100_msppp_new },
 	.msvld    = { 0x00000001, gf100_msvld_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, gf108_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, gf100_sw_new },
 };
 
@@ -1438,7 +1537,10 @@ nvc3_chipset = {
 	.mspdec   = { 0x00000001, gf100_mspdec_new },
 	.msppp    = { 0x00000001, gf100_msppp_new },
 	.msvld    = { 0x00000001, gf100_msvld_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, gf100_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, gf100_sw_new },
 };
 
@@ -1474,7 +1576,10 @@ nvc4_chipset = {
 	.mspdec   = { 0x00000001, gf100_mspdec_new },
 	.msppp    = { 0x00000001, gf100_msppp_new },
 	.msvld    = { 0x00000001, gf100_msvld_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, gf100_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, gf100_sw_new },
 };
 
@@ -1510,7 +1615,10 @@ nvc8_chipset = {
 	.mspdec   = { 0x00000001, gf100_mspdec_new },
 	.msppp    = { 0x00000001, gf100_msppp_new },
 	.msvld    = { 0x00000001, gf100_msvld_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, gf100_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, gf100_sw_new },
 };
 
@@ -1546,7 +1654,10 @@ nvce_chipset = {
 	.mspdec   = { 0x00000001, gf100_mspdec_new },
 	.msppp    = { 0x00000001, gf100_msppp_new },
 	.msvld    = { 0x00000001, gf100_msvld_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, gf100_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, gf100_sw_new },
 };
 
@@ -1582,7 +1693,10 @@ nvcf_chipset = {
 	.mspdec   = { 0x00000001, gf100_mspdec_new },
 	.msppp    = { 0x00000001, gf100_msppp_new },
 	.msvld    = { 0x00000001, gf100_msvld_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, gf100_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, gf100_sw_new },
 };
 
@@ -1617,7 +1731,10 @@ nvd7_chipset = {
 	.mspdec   = { 0x00000001, gf100_mspdec_new },
 	.msppp    = { 0x00000001, gf100_msppp_new },
 	.msvld    = { 0x00000001, gf100_msvld_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, gf117_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, gf100_sw_new },
 };
 
@@ -1653,7 +1770,10 @@ nvd9_chipset = {
 	.mspdec   = { 0x00000001, gf100_mspdec_new },
 	.msppp    = { 0x00000001, gf100_msppp_new },
 	.msvld    = { 0x00000001, gf100_msvld_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, gf117_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, gf100_sw_new },
 };
 
@@ -1690,7 +1810,10 @@ nve4_chipset = {
 	.mspdec   = { 0x00000001, gk104_mspdec_new },
 	.msppp    = { 0x00000001, gf100_msppp_new },
 	.msvld    = { 0x00000001, gk104_msvld_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, gk104_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, gf100_sw_new },
 };
 
@@ -1727,7 +1850,10 @@ nve6_chipset = {
 	.mspdec   = { 0x00000001, gk104_mspdec_new },
 	.msppp    = { 0x00000001, gf100_msppp_new },
 	.msvld    = { 0x00000001, gk104_msvld_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, gk104_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, gf100_sw_new },
 };
 
@@ -1764,7 +1890,10 @@ nve7_chipset = {
 	.mspdec   = { 0x00000001, gk104_mspdec_new },
 	.msppp    = { 0x00000001, gf100_msppp_new },
 	.msvld    = { 0x00000001, gk104_msvld_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, gk104_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, gf100_sw_new },
 };
 
@@ -1789,7 +1918,10 @@ nvea_chipset = {
 	.dma      = { 0x00000001, gf119_dma_new },
 	.fifo     = { 0x00000001, gk20a_fifo_new },
 	.gr       = { 0x00000001, gk20a_gr_new },
+<<<<<<< HEAD
 	.pm       = { 0x00000001, gk104_pm_new },
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sw       = { 0x00000001, gf100_sw_new },
 };
 
@@ -3104,7 +3236,10 @@ nvkm_device_ctor(const struct nvkm_device_func *func,
 		 const struct nvkm_device_quirk *quirk,
 		 struct device *dev, enum nvkm_device_type type, u64 handle,
 		 const char *name, const char *cfg, const char *dbg,
+<<<<<<< HEAD
 		 bool detect, bool mmio, u64 subdev_mask,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 struct nvkm_device *device)
 {
 	struct nvkm_subdev *subdev;
@@ -3132,6 +3267,7 @@ nvkm_device_ctor(const struct nvkm_device_func *func,
 	mmio_base = device->func->resource_addr(device, 0);
 	mmio_size = device->func->resource_size(device, 0);
 
+<<<<<<< HEAD
 	if (detect || mmio) {
 		device->pri = ioremap(mmio_base, mmio_size);
 		if (device->pri == NULL) {
@@ -3359,6 +3495,230 @@ nvkm_device_ctor(const struct nvkm_device_func *func,
 		}
 	} else {
 		device->chip = &null_chipset;
+=======
+	device->pri = ioremap(mmio_base, mmio_size);
+	if (device->pri == NULL) {
+		nvdev_error(device, "unable to map PRI\n");
+		ret = -ENOMEM;
+		goto done;
+	}
+
+	/* identify the chipset, and determine classes of subdev/engines */
+
+	/* switch mmio to cpu's native endianness */
+	if (!nvkm_device_endianness(device)) {
+		nvdev_error(device,
+			    "Couldn't switch GPU to CPUs endianness\n");
+		ret = -ENOSYS;
+		goto done;
+	}
+
+	boot0 = nvkm_rd32(device, 0x000000);
+
+	/* chipset can be overridden for devel/testing purposes */
+	chipset = nvkm_longopt(device->cfgopt, "NvChipset", 0);
+	if (chipset) {
+		u32 override_boot0;
+
+		if (chipset >= 0x10) {
+			override_boot0  = ((chipset & 0x1ff) << 20);
+			override_boot0 |= 0x000000a1;
+		} else {
+			if (chipset != 0x04)
+				override_boot0 = 0x20104000;
+			else
+				override_boot0 = 0x20004000;
+		}
+
+		nvdev_warn(device, "CHIPSET OVERRIDE: %08x -> %08x\n",
+			   boot0, override_boot0);
+		boot0 = override_boot0;
+	}
+
+	/* determine chipset and derive architecture from it */
+	if ((boot0 & 0x1f000000) > 0) {
+		device->chipset = (boot0 & 0x1ff00000) >> 20;
+		device->chiprev = (boot0 & 0x000000ff);
+		switch (device->chipset & 0x1f0) {
+		case 0x010: {
+			if (0x461 & (1 << (device->chipset & 0xf)))
+				device->card_type = NV_10;
+			else
+				device->card_type = NV_11;
+			device->chiprev = 0x00;
+			break;
+		}
+		case 0x020: device->card_type = NV_20; break;
+		case 0x030: device->card_type = NV_30; break;
+		case 0x040:
+		case 0x060: device->card_type = NV_40; break;
+		case 0x050:
+		case 0x080:
+		case 0x090:
+		case 0x0a0: device->card_type = NV_50; break;
+		case 0x0c0:
+		case 0x0d0: device->card_type = NV_C0; break;
+		case 0x0e0:
+		case 0x0f0:
+		case 0x100: device->card_type = NV_E0; break;
+		case 0x110:
+		case 0x120: device->card_type = GM100; break;
+		case 0x130: device->card_type = GP100; break;
+		case 0x140: device->card_type = GV100; break;
+		case 0x160: device->card_type = TU100; break;
+		case 0x170: device->card_type = GA100; break;
+		case 0x190: device->card_type = AD100; break;
+		default:
+			break;
+		}
+	} else
+	if ((boot0 & 0xff00fff0) == 0x20004000) {
+		if (boot0 & 0x00f00000)
+			device->chipset = 0x05;
+		else
+			device->chipset = 0x04;
+		device->card_type = NV_04;
+	}
+
+	switch (device->chipset) {
+	case 0x004: device->chip = &nv4_chipset; break;
+	case 0x005: device->chip = &nv5_chipset; break;
+	case 0x010: device->chip = &nv10_chipset; break;
+	case 0x011: device->chip = &nv11_chipset; break;
+	case 0x015: device->chip = &nv15_chipset; break;
+	case 0x017: device->chip = &nv17_chipset; break;
+	case 0x018: device->chip = &nv18_chipset; break;
+	case 0x01a: device->chip = &nv1a_chipset; break;
+	case 0x01f: device->chip = &nv1f_chipset; break;
+	case 0x020: device->chip = &nv20_chipset; break;
+	case 0x025: device->chip = &nv25_chipset; break;
+	case 0x028: device->chip = &nv28_chipset; break;
+	case 0x02a: device->chip = &nv2a_chipset; break;
+	case 0x030: device->chip = &nv30_chipset; break;
+	case 0x031: device->chip = &nv31_chipset; break;
+	case 0x034: device->chip = &nv34_chipset; break;
+	case 0x035: device->chip = &nv35_chipset; break;
+	case 0x036: device->chip = &nv36_chipset; break;
+	case 0x040: device->chip = &nv40_chipset; break;
+	case 0x041: device->chip = &nv41_chipset; break;
+	case 0x042: device->chip = &nv42_chipset; break;
+	case 0x043: device->chip = &nv43_chipset; break;
+	case 0x044: device->chip = &nv44_chipset; break;
+	case 0x045: device->chip = &nv45_chipset; break;
+	case 0x046: device->chip = &nv46_chipset; break;
+	case 0x047: device->chip = &nv47_chipset; break;
+	case 0x049: device->chip = &nv49_chipset; break;
+	case 0x04a: device->chip = &nv4a_chipset; break;
+	case 0x04b: device->chip = &nv4b_chipset; break;
+	case 0x04c: device->chip = &nv4c_chipset; break;
+	case 0x04e: device->chip = &nv4e_chipset; break;
+	case 0x050: device->chip = &nv50_chipset; break;
+	case 0x063: device->chip = &nv63_chipset; break;
+	case 0x067: device->chip = &nv67_chipset; break;
+	case 0x068: device->chip = &nv68_chipset; break;
+	case 0x084: device->chip = &nv84_chipset; break;
+	case 0x086: device->chip = &nv86_chipset; break;
+	case 0x092: device->chip = &nv92_chipset; break;
+	case 0x094: device->chip = &nv94_chipset; break;
+	case 0x096: device->chip = &nv96_chipset; break;
+	case 0x098: device->chip = &nv98_chipset; break;
+	case 0x0a0: device->chip = &nva0_chipset; break;
+	case 0x0a3: device->chip = &nva3_chipset; break;
+	case 0x0a5: device->chip = &nva5_chipset; break;
+	case 0x0a8: device->chip = &nva8_chipset; break;
+	case 0x0aa: device->chip = &nvaa_chipset; break;
+	case 0x0ac: device->chip = &nvac_chipset; break;
+	case 0x0af: device->chip = &nvaf_chipset; break;
+	case 0x0c0: device->chip = &nvc0_chipset; break;
+	case 0x0c1: device->chip = &nvc1_chipset; break;
+	case 0x0c3: device->chip = &nvc3_chipset; break;
+	case 0x0c4: device->chip = &nvc4_chipset; break;
+	case 0x0c8: device->chip = &nvc8_chipset; break;
+	case 0x0ce: device->chip = &nvce_chipset; break;
+	case 0x0cf: device->chip = &nvcf_chipset; break;
+	case 0x0d7: device->chip = &nvd7_chipset; break;
+	case 0x0d9: device->chip = &nvd9_chipset; break;
+	case 0x0e4: device->chip = &nve4_chipset; break;
+	case 0x0e6: device->chip = &nve6_chipset; break;
+	case 0x0e7: device->chip = &nve7_chipset; break;
+	case 0x0ea: device->chip = &nvea_chipset; break;
+	case 0x0f0: device->chip = &nvf0_chipset; break;
+	case 0x0f1: device->chip = &nvf1_chipset; break;
+	case 0x106: device->chip = &nv106_chipset; break;
+	case 0x108: device->chip = &nv108_chipset; break;
+	case 0x117: device->chip = &nv117_chipset; break;
+	case 0x118: device->chip = &nv118_chipset; break;
+	case 0x120: device->chip = &nv120_chipset; break;
+	case 0x124: device->chip = &nv124_chipset; break;
+	case 0x126: device->chip = &nv126_chipset; break;
+	case 0x12b: device->chip = &nv12b_chipset; break;
+	case 0x130: device->chip = &nv130_chipset; break;
+	case 0x132: device->chip = &nv132_chipset; break;
+	case 0x134: device->chip = &nv134_chipset; break;
+	case 0x136: device->chip = &nv136_chipset; break;
+	case 0x137: device->chip = &nv137_chipset; break;
+	case 0x138: device->chip = &nv138_chipset; break;
+	case 0x13b: device->chip = &nv13b_chipset; break;
+	case 0x140: device->chip = &nv140_chipset; break;
+	case 0x162: device->chip = &nv162_chipset; break;
+	case 0x164: device->chip = &nv164_chipset; break;
+	case 0x166: device->chip = &nv166_chipset; break;
+	case 0x167: device->chip = &nv167_chipset; break;
+	case 0x168: device->chip = &nv168_chipset; break;
+	case 0x172: device->chip = &nv172_chipset; break;
+	case 0x173: device->chip = &nv173_chipset; break;
+	case 0x174: device->chip = &nv174_chipset; break;
+	case 0x176: device->chip = &nv176_chipset; break;
+	case 0x177: device->chip = &nv177_chipset; break;
+	case 0x192: device->chip = &nv192_chipset; break;
+	case 0x193: device->chip = &nv193_chipset; break;
+	case 0x194: device->chip = &nv194_chipset; break;
+	case 0x196: device->chip = &nv196_chipset; break;
+	case 0x197: device->chip = &nv197_chipset; break;
+	default:
+		if (nvkm_boolopt(device->cfgopt, "NvEnableUnsupportedChipsets", false)) {
+			switch (device->chipset) {
+			case 0x170: device->chip = &nv170_chipset; break;
+			default:
+				break;
+			}
+		}
+
+		if (!device->chip) {
+			nvdev_error(device, "unknown chipset (%08x)\n", boot0);
+			ret = -ENODEV;
+			goto done;
+		}
+		break;
+	}
+
+	nvdev_info(device, "NVIDIA %s (%08x)\n",
+		   device->chip->name, boot0);
+
+	/* vGPU detection */
+	boot1 = nvkm_rd32(device, 0x0000004);
+	if (device->card_type >= TU100 && (boot1 & 0x00030000)) {
+		nvdev_info(device, "vGPUs are not supported\n");
+		ret = -ENODEV;
+		goto done;
+	}
+
+	/* read strapping information */
+	strap = nvkm_rd32(device, 0x101000);
+
+	/* determine frequency of timing crystal */
+	if ( device->card_type <= NV_10 || device->chipset < 0x17 ||
+	    (device->chipset >= 0x20 && device->chipset < 0x25))
+		strap &= 0x00000040;
+	else
+		strap &= 0x00400040;
+
+	switch (strap) {
+	case 0x00000000: device->crystal = 13500; break;
+	case 0x00000040: device->crystal = 14318; break;
+	case 0x00400000: device->crystal = 27000; break;
+	case 0x00400040: device->crystal = 25000; break;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (!device->name)
@@ -3368,7 +3728,11 @@ nvkm_device_ctor(const struct nvkm_device_func *func,
 	nvkm_intr_ctor(device);
 
 #define NVKM_LAYOUT_ONCE(type,data,ptr)                                                      \
+<<<<<<< HEAD
 	if (device->chip->ptr.inst && (subdev_mask & (BIT_ULL(type)))) {                     \
+=======
+	if (device->chip->ptr.inst) {                                                        \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		WARN_ON(device->chip->ptr.inst != 0x00000001);                               \
 		ret = device->chip->ptr.ctor(device, (type), -1, &device->ptr);              \
 		subdev = nvkm_device_subdev(device, (type), 0);                              \
@@ -3387,7 +3751,11 @@ nvkm_device_ctor(const struct nvkm_device_func *func,
 #define NVKM_LAYOUT_INST(type,data,ptr,cnt)                                                  \
 	WARN_ON(device->chip->ptr.inst & ~((1 << ARRAY_SIZE(device->ptr)) - 1));             \
 	for (j = 0; device->chip->ptr.inst && j < ARRAY_SIZE(device->ptr); j++) {            \
+<<<<<<< HEAD
 		if ((device->chip->ptr.inst & BIT(j)) && (subdev_mask & BIT_ULL(type))) {    \
+=======
+		if (device->chip->ptr.inst & BIT(j)) {                                       \
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ret = device->chip->ptr.ctor(device, (type), (j), &device->ptr[j]);  \
 			subdev = nvkm_device_subdev(device, (type), (j));                    \
 			if (ret) {                                                           \
@@ -3409,7 +3777,11 @@ nvkm_device_ctor(const struct nvkm_device_func *func,
 
 	ret = nvkm_intr_install(device);
 done:
+<<<<<<< HEAD
 	if (device->pri && (!mmio || ret)) {
+=======
+	if (ret && device->pri) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		iounmap(device->pri);
 		device->pri = NULL;
 	}

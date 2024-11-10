@@ -77,7 +77,11 @@
 };
 
 &hdmi {
+<<<<<<< HEAD
 	hpd-gpios = <&expgpio 1 GPIO_ACTIVE_LOW>;
+=======
+	hpd-gpios = <&expgpio 0 GPIO_ACTIVE_LOW>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	power-domains = <&power RPI_POWER_DOMAIN_HDMI>;
 	status = "okay";
 };

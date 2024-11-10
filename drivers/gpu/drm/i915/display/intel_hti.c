@@ -9,12 +9,17 @@
 #include "intel_hti.h"
 #include "intel_hti_regs.h"
 
+<<<<<<< HEAD
 void intel_hti_init(struct drm_i915_private *i915)
+=======
+void intel_hti_init(struct intel_display *display)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	/*
 	 * If the platform has HTI, we need to find out whether it has reserved
 	 * any display resources before we create our display outputs.
 	 */
+<<<<<<< HEAD
 	if (DISPLAY_INFO(i915)->has_hti)
 		i915->display.hti.state = intel_de_read(i915, HDPORT_STATE);
 }
@@ -31,11 +36,33 @@ bool intel_hti_uses_phy(struct drm_i915_private *i915, enum phy phy)
 u32 intel_hti_dpll_mask(struct drm_i915_private *i915)
 {
 	if (!(i915->display.hti.state & HDPORT_ENABLED))
+=======
+	if (DISPLAY_INFO(display)->has_hti)
+		display->hti.state = intel_de_read(display, HDPORT_STATE);
+}
+
+bool intel_hti_uses_phy(struct intel_display *display, enum phy phy)
+{
+	if (drm_WARN_ON(display->drm, phy == PHY_NONE))
+		return false;
+
+	return display->hti.state & HDPORT_ENABLED &&
+		display->hti.state & HDPORT_DDI_USED(phy);
+}
+
+u32 intel_hti_dpll_mask(struct intel_display *display)
+{
+	if (!(display->hti.state & HDPORT_ENABLED))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	/*
 	 * Note: This is subtle. The values must coincide with what's defined
 	 * for the platform.
 	 */
+<<<<<<< HEAD
 	return REG_FIELD_GET(HDPORT_DPLL_USED_MASK, i915->display.hti.state);
+=======
+	return REG_FIELD_GET(HDPORT_DPLL_USED_MASK, display->hti.state);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

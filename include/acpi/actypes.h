@@ -1311,6 +1311,10 @@ typedef enum {
 #define ACPI_OSI_WIN_10_19H1            0x14
 #define ACPI_OSI_WIN_10_20H1            0x15
 #define ACPI_OSI_WIN_11                 0x16
+<<<<<<< HEAD
+=======
+#define ACPI_OSI_WIN_11_22H2            0x17
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Definitions of getopt */
 

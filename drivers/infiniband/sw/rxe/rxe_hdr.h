@@ -234,7 +234,11 @@ static inline void __bth_set_resv6a(void *arg)
 {
 	struct rxe_bth *bth = arg;
 
+<<<<<<< HEAD
 	bth->qpn = cpu_to_be32(~BTH_RESV6A_MASK);
+=======
+	bth->qpn &= cpu_to_be32(~BTH_RESV6A_MASK);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline int __bth_ack(void *arg)

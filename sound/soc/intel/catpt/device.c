@@ -374,7 +374,11 @@ MODULE_DEVICE_TABLE(acpi, catpt_ids);
 
 static struct platform_driver catpt_acpi_driver = {
 	.probe = catpt_acpi_probe,
+<<<<<<< HEAD
 	.remove_new = catpt_acpi_remove,
+=======
+	.remove = catpt_acpi_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "intel_catpt",
 		.acpi_match_table = catpt_ids,

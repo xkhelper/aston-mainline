@@ -366,7 +366,11 @@ struct page *pfn_to_online_page(unsigned long pfn)
 }
 EXPORT_SYMBOL_GPL(pfn_to_online_page);
 
+<<<<<<< HEAD
 int __ref __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
+=======
+int __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct mhp_params *params)
 {
 	const unsigned long end_pfn = pfn + nr_pages;
@@ -524,7 +528,11 @@ static void update_pgdat_span(struct pglist_data *pgdat)
 	pgdat->node_spanned_pages = node_end_pfn - node_start_pfn;
 }
 
+<<<<<<< HEAD
 void __ref remove_pfn_range_from_zone(struct zone *zone,
+=======
+void remove_pfn_range_from_zone(struct zone *zone,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      unsigned long start_pfn,
 				      unsigned long nr_pages)
 {
@@ -629,7 +637,11 @@ int restore_online_page_callback(online_page_callback_t callback)
 EXPORT_SYMBOL_GPL(restore_online_page_callback);
 
 /* we are OK calling __meminit stuff here - we have CONFIG_MEMORY_HOTPLUG */
+<<<<<<< HEAD
 void __ref generic_online_page(struct page *page, unsigned int order)
+=======
+void generic_online_page(struct page *page, unsigned int order)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	__free_pages_core(page, order, MEMINIT_HOTPLUG);
 }
@@ -741,7 +753,11 @@ static inline void section_taint_zone_device(unsigned long pfn)
  * (usually MIGRATE_MOVABLE). Besides setting the migratetype, no related
  * zone stats (e.g., nr_isolate_pageblock) are touched.
  */
+<<<<<<< HEAD
 void __ref move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
+=======
+void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				  unsigned long nr_pages,
 				  struct vmem_altmap *altmap, int migratetype)
 {
@@ -1143,7 +1159,11 @@ void mhp_deinit_memmap_on_memory(unsigned long pfn, unsigned long nr_pages)
 /*
  * Must be called with mem_hotplug_lock in write mode.
  */
+<<<<<<< HEAD
 int __ref online_pages(unsigned long pfn, unsigned long nr_pages,
+=======
+int online_pages(unsigned long pfn, unsigned long nr_pages,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		       struct zone *zone, struct memory_group *group)
 {
 	unsigned long flags;
@@ -1233,7 +1253,11 @@ failed_addition:
 }
 
 /* we are OK calling __meminit stuff here - we have CONFIG_MEMORY_HOTPLUG */
+<<<<<<< HEAD
 static pg_data_t __ref *hotadd_init_pgdat(int nid)
+=======
+static pg_data_t *hotadd_init_pgdat(int nid)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct pglist_data *pgdat;
 
@@ -1386,7 +1410,11 @@ bool mhp_supports_memmap_on_memory(void)
 }
 EXPORT_SYMBOL_GPL(mhp_supports_memmap_on_memory);
 
+<<<<<<< HEAD
 static void __ref remove_memory_blocks_and_altmaps(u64 start, u64 size)
+=======
+static void remove_memory_blocks_and_altmaps(u64 start, u64 size)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned long memblock_size = memory_block_size_bytes();
 	u64 cur_start;
@@ -1473,7 +1501,11 @@ out:
  *
  * we are OK calling __meminit stuff here - we have CONFIG_MEMORY_HOTPLUG
  */
+<<<<<<< HEAD
 int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+=======
+int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct mhp_params params = { .pgprot = pgprot_mhp(PAGE_KERNEL) };
 	enum memblock_flags memblock_flags = MEMBLOCK_NONE;
@@ -1580,7 +1612,11 @@ error_mem_hotplug_end:
 }
 
 /* requires device_hotplug_lock, see add_memory_resource() */
+<<<<<<< HEAD
 int __ref __add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags)
+=======
+int __add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct resource *res;
 	int ret;
@@ -1772,20 +1808,30 @@ found:
 
 static void do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
 {
+<<<<<<< HEAD
 	unsigned long pfn;
 	struct page *page, *head;
+=======
+	struct folio *folio;
+	unsigned long pfn;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	LIST_HEAD(source);
 	static DEFINE_RATELIMIT_STATE(migrate_rs, DEFAULT_RATELIMIT_INTERVAL,
 				      DEFAULT_RATELIMIT_BURST);
 
 	for (pfn = start_pfn; pfn < end_pfn; pfn++) {
+<<<<<<< HEAD
 		struct folio *folio;
 		bool isolated;
+=======
+		struct page *page;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (!pfn_valid(pfn))
 			continue;
 		page = pfn_to_page(pfn);
 		folio = page_folio(page);
+<<<<<<< HEAD
 		head = &folio->page;
 
 		if (PageHuge(page)) {
@@ -1794,11 +1840,23 @@ static void do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
 			continue;
 		} else if (PageTransHuge(page))
 			pfn = page_to_pfn(head) + thp_nr_pages(page) - 1;
+=======
+
+		/*
+		 * No reference or lock is held on the folio, so it might
+		 * be modified concurrently (e.g. split).  As such,
+		 * folio_nr_pages() may read garbage.  This is fine as the outer
+		 * loop will revisit the split folio later.
+		 */
+		if (folio_test_large(folio))
+			pfn = folio_pfn(folio) + folio_nr_pages(folio) - 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * HWPoison pages have elevated reference counts so the migration would
 		 * fail on them. It also doesn't make any sense to migrate them in the
 		 * first place. Still try to unmap such a page in case it is still mapped
+<<<<<<< HEAD
 		 * (e.g. current hwpoison implementation doesn't unmap KSM pages but keep
 		 * the unmap as the catch all safety net).
 		 */
@@ -1833,6 +1891,34 @@ static void do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
 			}
 		}
 		put_page(page);
+=======
+		 * (keep the unmap as the catch all safety net).
+		 */
+		if (folio_test_hwpoison(folio) ||
+		    (folio_test_large(folio) && folio_test_has_hwpoisoned(folio))) {
+			if (WARN_ON(folio_test_lru(folio)))
+				folio_isolate_lru(folio);
+			if (folio_mapped(folio))
+				unmap_poisoned_folio(folio, TTU_IGNORE_MLOCK);
+			continue;
+		}
+
+		if (!folio_try_get(folio))
+			continue;
+
+		if (unlikely(page_folio(page) != folio))
+			goto put_folio;
+
+		if (!isolate_folio_to_list(folio, &source)) {
+			if (__ratelimit(&migrate_rs)) {
+				pr_warn("failed to isolate pfn %lx\n",
+					page_to_pfn(page));
+				dump_page(page, "isolation failed");
+			}
+		}
+put_folio:
+		folio_put(folio);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	if (!list_empty(&source)) {
 		nodemask_t nmask = node_states[N_MEMORY];
@@ -1847,7 +1933,11 @@ static void do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
 		 * We have checked that migration range is on a single zone so
 		 * we can use the nid of the first page to all the others.
 		 */
+<<<<<<< HEAD
 		mtc.nid = page_to_nid(list_first_entry(&source, struct page, lru));
+=======
+		mtc.nid = folio_nid(list_first_entry(&source, struct folio, lru));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * try to allocate from a different node but reuse this node
@@ -1860,11 +1950,20 @@ static void do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
 		ret = migrate_pages(&source, alloc_migration_target, NULL,
 			(unsigned long)&mtc, MIGRATE_SYNC, MR_MEMORY_HOTPLUG, NULL);
 		if (ret) {
+<<<<<<< HEAD
 			list_for_each_entry(page, &source, lru) {
 				if (__ratelimit(&migrate_rs)) {
 					pr_warn("migrating pfn %lx failed ret:%d\n",
 						page_to_pfn(page), ret);
 					dump_page(page, "migration failure");
+=======
+			list_for_each_entry(folio, &source, lru) {
+				if (__ratelimit(&migrate_rs)) {
+					pr_warn("migrating pfn %lx failed ret:%d\n",
+						folio_pfn(folio), ret);
+					dump_page(&folio->page,
+						  "migration failure");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				}
 			}
 			putback_movable_pages(&source);
@@ -1939,7 +2038,11 @@ static int count_system_ram_pages_cb(unsigned long start_pfn,
 /*
  * Must be called with mem_hotplug_lock in write mode.
  */
+<<<<<<< HEAD
 int __ref offline_pages(unsigned long start_pfn, unsigned long nr_pages,
+=======
+int offline_pages(unsigned long start_pfn, unsigned long nr_pages,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			struct zone *zone, struct memory_group *group)
 {
 	const unsigned long end_pfn = start_pfn + nr_pages;
@@ -2240,7 +2343,11 @@ static int memory_blocks_have_altmaps(u64 start, u64 size)
 	return 1;
 }
 
+<<<<<<< HEAD
 static int __ref try_remove_memory(u64 start, u64 size)
+=======
+static int try_remove_memory(u64 start, u64 size)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int rc, nid = NUMA_NO_NODE;
 

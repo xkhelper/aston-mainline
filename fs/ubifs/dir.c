@@ -555,6 +555,14 @@ static unsigned int vfs_dent_type(uint8_t type)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+struct ubifs_dir_data {
+	struct ubifs_dent_node *dent;
+	u64 cookie;
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * The classical Unix view for directory is that it is a linear array of
  * (name, inode number) entries. Linux/VFS assumes this model as well.
@@ -582,6 +590,10 @@ static int ubifs_readdir(struct file *file, struct dir_context *ctx)
 	struct inode *dir = file_inode(file);
 	struct ubifs_info *c = dir->i_sb->s_fs_info;
 	bool encrypted = IS_ENCRYPTED(dir);
+<<<<<<< HEAD
+=======
+	struct ubifs_dir_data *data = file->private_data;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dbg_gen("dir ino %lu, f_pos %#llx", dir->i_ino, ctx->pos);
 
@@ -604,6 +616,7 @@ static int ubifs_readdir(struct file *file, struct dir_context *ctx)
 		fstr_real_len = fstr.len;
 	}
 
+<<<<<<< HEAD
 	if (file->f_version == 0) {
 		/*
 		 * The file was seek'ed, which means that @file->private_data
@@ -625,6 +638,29 @@ static int ubifs_readdir(struct file *file, struct dir_context *ctx)
 	/* File positions 0 and 1 correspond to "." and ".." */
 	if (ctx->pos < 2) {
 		ubifs_assert(c, !file->private_data);
+=======
+	if (data->cookie == 0) {
+		/*
+		 * The file was seek'ed, which means that @data->dent
+		 * is now invalid. This may also be just the first
+		 * 'ubifs_readdir()' invocation, in which case
+		 * @data->dent is NULL, and the below code is
+		 * basically a no-op.
+		 */
+		kfree(data->dent);
+		data->dent = NULL;
+	}
+
+	/*
+	 * 'ubifs_dir_llseek()' sets @data->cookie to zero, and we use this
+	 * for detecting whether the file was seek'ed.
+	 */
+	data->cookie = 1;
+
+	/* File positions 0 and 1 correspond to "." and ".." */
+	if (ctx->pos < 2) {
+		ubifs_assert(c, !data->dent);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!dir_emit_dots(file, ctx)) {
 			if (encrypted)
 				fscrypt_fname_free_buffer(&fstr);
@@ -641,10 +677,17 @@ static int ubifs_readdir(struct file *file, struct dir_context *ctx)
 		}
 
 		ctx->pos = key_hash_flash(c, &dent->key);
+<<<<<<< HEAD
 		file->private_data = dent;
 	}
 
 	dent = file->private_data;
+=======
+		data->dent = dent;
+	}
+
+	dent = data->dent;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!dent) {
 		/*
 		 * The directory was seek'ed to and is now readdir'ed.
@@ -658,7 +701,11 @@ static int ubifs_readdir(struct file *file, struct dir_context *ctx)
 			goto out;
 		}
 		ctx->pos = key_hash_flash(c, &dent->key);
+<<<<<<< HEAD
 		file->private_data = dent;
+=======
+		data->dent = dent;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	while (1) {
@@ -701,15 +748,26 @@ static int ubifs_readdir(struct file *file, struct dir_context *ctx)
 			goto out;
 		}
 
+<<<<<<< HEAD
 		kfree(file->private_data);
 		ctx->pos = key_hash_flash(c, &dent->key);
 		file->private_data = dent;
+=======
+		kfree(data->dent);
+		ctx->pos = key_hash_flash(c, &dent->key);
+		data->dent = dent;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		cond_resched();
 	}
 
 out:
+<<<<<<< HEAD
 	kfree(file->private_data);
 	file->private_data = NULL;
+=======
+	kfree(data->dent);
+	data->dent = NULL;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (encrypted)
 		fscrypt_fname_free_buffer(&fstr);
@@ -733,7 +791,14 @@ out:
 /* Free saved readdir() state when the directory is closed */
 static int ubifs_dir_release(struct inode *dir, struct file *file)
 {
+<<<<<<< HEAD
 	kfree(file->private_data);
+=======
+	struct ubifs_dir_data *data = file->private_data;
+
+	kfree(data->dent);
+	kfree(data);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	file->private_data = NULL;
 	return 0;
 }
@@ -1712,6 +1777,27 @@ int ubifs_getattr(struct mnt_idmap *idmap, const struct path *path,
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int ubifs_dir_open(struct inode *inode, struct file *file)
+{
+	struct ubifs_dir_data *data;
+
+	data = kzalloc(sizeof(struct ubifs_dir_data), GFP_KERNEL);
+	if (!data)
+		return -ENOMEM;
+	file->private_data = data;
+	return 0;
+}
+
+static loff_t ubifs_dir_llseek(struct file *file, loff_t offset, int whence)
+{
+	struct ubifs_dir_data *data = file->private_data;
+
+	return generic_llseek_cookie(file, offset, whence, &data->cookie);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const struct inode_operations ubifs_dir_inode_operations = {
 	.lookup      = ubifs_lookup,
 	.create      = ubifs_create,
@@ -1732,7 +1818,12 @@ const struct inode_operations ubifs_dir_inode_operations = {
 };
 
 const struct file_operations ubifs_dir_operations = {
+<<<<<<< HEAD
 	.llseek         = generic_file_llseek,
+=======
+	.open		= ubifs_dir_open,
+	.llseek         = ubifs_dir_llseek,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.release        = ubifs_dir_release,
 	.read           = generic_read_dir,
 	.iterate_shared = ubifs_readdir,

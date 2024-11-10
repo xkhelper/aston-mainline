@@ -1693,7 +1693,10 @@ static void fsl_ssi_remove(struct platform_device *pdev)
 	}
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM_SLEEP
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int fsl_ssi_suspend(struct device *dev)
 {
 	struct fsl_ssi *ssi = dev_get_drvdata(dev);
@@ -1723,20 +1726,33 @@ static int fsl_ssi_resume(struct device *dev)
 
 	return regcache_sync(regs);
 }
+<<<<<<< HEAD
 #endif /* CONFIG_PM_SLEEP */
 
 static const struct dev_pm_ops fsl_ssi_pm = {
 	SET_SYSTEM_SLEEP_PM_OPS(fsl_ssi_suspend, fsl_ssi_resume)
+=======
+
+static const struct dev_pm_ops fsl_ssi_pm = {
+	SYSTEM_SLEEP_PM_OPS(fsl_ssi_suspend, fsl_ssi_resume)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct platform_driver fsl_ssi_driver = {
 	.driver = {
 		.name = "fsl-ssi-dai",
 		.of_match_table = fsl_ssi_ids,
+<<<<<<< HEAD
 		.pm = &fsl_ssi_pm,
 	},
 	.probe = fsl_ssi_probe,
 	.remove_new = fsl_ssi_remove,
+=======
+		.pm = pm_sleep_ptr(&fsl_ssi_pm),
+	},
+	.probe = fsl_ssi_probe,
+	.remove = fsl_ssi_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(fsl_ssi_driver);

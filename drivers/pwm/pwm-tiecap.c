@@ -324,7 +324,11 @@ static struct platform_driver ecap_pwm_driver = {
 		.pm = pm_ptr(&ecap_pwm_pm_ops),
 	},
 	.probe = ecap_pwm_probe,
+<<<<<<< HEAD
 	.remove_new = ecap_pwm_remove,
+=======
+	.remove = ecap_pwm_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(ecap_pwm_driver);
 

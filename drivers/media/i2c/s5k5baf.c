@@ -2018,8 +2018,13 @@ static void s5k5baf_remove(struct i2c_client *c)
 }
 
 static const struct i2c_device_id s5k5baf_id[] = {
+<<<<<<< HEAD
 	{ S5K5BAF_DRIVER_NAME, 0 },
 	{ },
+=======
+	{ S5K5BAF_DRIVER_NAME },
+	{ }
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(i2c, s5k5baf_id);
 

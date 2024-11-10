@@ -5,7 +5,11 @@
 
 #include <linux/module.h>
 #include <linux/skbuff.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <net/tcp.h>
 #include <net/netns/generic.h>
 #include <linux/proc_fs.h>

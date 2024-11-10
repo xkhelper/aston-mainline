@@ -1105,7 +1105,11 @@ static struct platform_driver imxfb_driver = {
 		.pm	= pm_sleep_ptr(&imxfb_pm_ops),
 	},
 	.probe		= imxfb_probe,
+<<<<<<< HEAD
 	.remove_new	= imxfb_remove,
+=======
+	.remove		= imxfb_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.id_table	= imxfb_devtype,
 };
 module_platform_driver(imxfb_driver);

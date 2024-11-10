@@ -5,6 +5,10 @@
 #define _ICE_DEVLINK_H_
 
 struct ice_pf *ice_allocate_pf(struct device *dev);
+<<<<<<< HEAD
+=======
+struct ice_sf_priv *ice_allocate_sf(struct device *dev, struct ice_pf *pf);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void ice_devlink_register(struct ice_pf *pf);
 void ice_devlink_unregister(struct ice_pf *pf);

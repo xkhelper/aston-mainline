@@ -11,7 +11,11 @@
 #include <linux/errno.h>
 #include <linux/firmware.h>
 #include <linux/usb.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <net/bluetooth/bluetooth.h>
 
 #define VERSION "1.0"

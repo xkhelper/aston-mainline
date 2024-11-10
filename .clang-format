@@ -141,11 +141,20 @@ ForEachMacros:
   - 'damon_for_each_target_safe'
   - 'damos_for_each_filter'
   - 'damos_for_each_filter_safe'
+<<<<<<< HEAD
+=======
+  - 'damos_for_each_quota_goal'
+  - 'damos_for_each_quota_goal_safe'
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - 'data__for_each_file'
   - 'data__for_each_file_new'
   - 'data__for_each_file_start'
   - 'device_for_each_child_node'
+<<<<<<< HEAD
   - 'displayid_iter_for_each'
+=======
+  - 'device_for_each_child_node_scoped'
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - 'dma_fence_array_for_each'
   - 'dma_fence_chain_for_each'
   - 'dma_fence_unwrap_for_each'
@@ -172,11 +181,22 @@ ForEachMacros:
   - 'drm_for_each_plane'
   - 'drm_for_each_plane_mask'
   - 'drm_for_each_privobj'
+<<<<<<< HEAD
   - 'drm_gem_for_each_gpuva'
   - 'drm_gem_for_each_gpuva_safe'
   - 'drm_gpuva_for_each_op'
   - 'drm_gpuva_for_each_op_from_reverse'
   - 'drm_gpuva_for_each_op_safe'
+=======
+  - 'drm_gem_for_each_gpuvm_bo'
+  - 'drm_gem_for_each_gpuvm_bo_safe'
+  - 'drm_gpuva_for_each_op'
+  - 'drm_gpuva_for_each_op_from_reverse'
+  - 'drm_gpuva_for_each_op_reverse'
+  - 'drm_gpuva_for_each_op_safe'
+  - 'drm_gpuvm_bo_for_each_va'
+  - 'drm_gpuvm_bo_for_each_va_safe'
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - 'drm_gpuvm_for_each_va'
   - 'drm_gpuvm_for_each_va_range'
   - 'drm_gpuvm_for_each_va_range_safe'
@@ -192,11 +212,18 @@ ForEachMacros:
   - 'dsa_switch_for_each_port_continue_reverse'
   - 'dsa_switch_for_each_port_safe'
   - 'dsa_switch_for_each_user_port'
+<<<<<<< HEAD
+=======
+  - 'dsa_switch_for_each_user_port_continue_reverse'
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - 'dsa_tree_for_each_cpu_port'
   - 'dsa_tree_for_each_user_port'
   - 'dsa_tree_for_each_user_port_continue_reverse'
   - 'dso__for_each_symbol'
+<<<<<<< HEAD
   - 'dsos__for_each_with_build_id'
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - 'elf_hash_for_each_possible'
   - 'elf_symtab__for_each_symbol'
   - 'evlist__for_each_cpu'
@@ -216,6 +243,10 @@ ForEachMacros:
   - 'for_each_and_bit'
   - 'for_each_andnot_bit'
   - 'for_each_available_child_of_node'
+<<<<<<< HEAD
+=======
+  - 'for_each_available_child_of_node_scoped'
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - 'for_each_bench'
   - 'for_each_bio'
   - 'for_each_board_func_rsrc'
@@ -234,6 +265,10 @@ ForEachMacros:
   - 'for_each_card_widgets_safe'
   - 'for_each_cgroup_storage_type'
   - 'for_each_child_of_node'
+<<<<<<< HEAD
+=======
+  - 'for_each_child_of_node_scoped'
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - 'for_each_clear_bit'
   - 'for_each_clear_bit_from'
   - 'for_each_clear_bitrange'
@@ -251,6 +286,10 @@ ForEachMacros:
   - 'for_each_cpu'
   - 'for_each_cpu_and'
   - 'for_each_cpu_andnot'
+<<<<<<< HEAD
+=======
+  - 'for_each_cpu_from'
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - 'for_each_cpu_or'
   - 'for_each_cpu_wrap'
   - 'for_each_dapm_widgets'
@@ -269,13 +308,21 @@ ForEachMacros:
   - 'for_each_element'
   - 'for_each_element_extid'
   - 'for_each_element_id'
+<<<<<<< HEAD
+=======
+  - 'for_each_enabled_cpu'
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - 'for_each_endpoint_of_node'
   - 'for_each_event'
   - 'for_each_event_tps'
   - 'for_each_evictable_lru'
   - 'for_each_fib6_node_rt_rcu'
   - 'for_each_fib6_walker_rt'
+<<<<<<< HEAD
   - 'for_each_free_mem_pfn_range_in_zone'
+=======
+  - 'for_each_file_lock'
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - 'for_each_free_mem_pfn_range_in_zone_from'
   - 'for_each_free_mem_range'
   - 'for_each_free_mem_range_reverse'
@@ -286,15 +333,27 @@ ForEachMacros:
   - 'for_each_group_member'
   - 'for_each_group_member_head'
   - 'for_each_hstate'
+<<<<<<< HEAD
   - 'for_each_if'
   - 'for_each_inject_fn'
   - 'for_each_insn'
+=======
+  - 'for_each_hwgpio'
+  - 'for_each_if'
+  - 'for_each_inject_fn'
+  - 'for_each_insn'
+  - 'for_each_insn_op_loc'
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - 'for_each_insn_prefix'
   - 'for_each_intid'
   - 'for_each_iommu'
   - 'for_each_ip_tunnel_rcu'
   - 'for_each_irq_nr'
   - 'for_each_lang'
+<<<<<<< HEAD
+=======
+  - 'for_each_link_ch_maps'
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - 'for_each_link_codecs'
   - 'for_each_link_cpus'
   - 'for_each_link_platforms'
@@ -332,6 +391,12 @@ ForEachMacros:
   - 'for_each_new_plane_in_state_reverse'
   - 'for_each_new_private_obj_in_state'
   - 'for_each_new_reg'
+<<<<<<< HEAD
+=======
+  - 'for_each_nhlt_endpoint'
+  - 'for_each_nhlt_endpoint_fmtcfg'
+  - 'for_each_nhlt_fmtcfg'
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - 'for_each_node'
   - 'for_each_node_by_name'
   - 'for_each_node_by_type'
@@ -387,12 +452,23 @@ ForEachMacros:
   - 'for_each_reloc_from'
   - 'for_each_requested_gpio'
   - 'for_each_requested_gpio_in_range'
+<<<<<<< HEAD
   - 'for_each_reserved_mem_range'
   - 'for_each_reserved_mem_region'
+=======
+  - 'for_each_reserved_child_of_node'
+  - 'for_each_reserved_mem_range'
+  - 'for_each_reserved_mem_region'
+  - 'for_each_rtd_ch_maps'
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - 'for_each_rtd_codec_dais'
   - 'for_each_rtd_components'
   - 'for_each_rtd_cpu_dais'
   - 'for_each_rtd_dais'
+<<<<<<< HEAD
+=======
+  - 'for_each_rtd_dais_reverse'
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - 'for_each_sband_iftype_data'
   - 'for_each_script'
   - 'for_each_sec'
@@ -533,8 +609,11 @@ ForEachMacros:
   - 'lwq_for_each_safe'
   - 'map__for_each_symbol'
   - 'map__for_each_symbol_by_name'
+<<<<<<< HEAD
   - 'maps__for_each_entry'
   - 'maps__for_each_entry_safe'
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - 'mas_for_each'
   - 'mci_for_each_dimm'
   - 'media_device_for_each_entity'
@@ -560,7 +639,13 @@ ForEachMacros:
   - 'netdev_hw_addr_list_for_each'
   - 'nft_rule_for_each_expr'
   - 'nla_for_each_attr'
+<<<<<<< HEAD
   - 'nla_for_each_nested'
+=======
+  - 'nla_for_each_attr_type'
+  - 'nla_for_each_nested'
+  - 'nla_for_each_nested_type'
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - 'nlmsg_for_each_attr'
   - 'nlmsg_for_each_msg'
   - 'nr_neigh_for_each'
@@ -579,6 +664,10 @@ ForEachMacros:
   - 'perf_config_sections__for_each_entry'
   - 'perf_config_set__for_each_entry'
   - 'perf_cpu_map__for_each_cpu'
+<<<<<<< HEAD
+=======
+  - 'perf_cpu_map__for_each_cpu_skip_any'
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - 'perf_cpu_map__for_each_idx'
   - 'perf_evlist__for_each_entry'
   - 'perf_evlist__for_each_entry_reverse'
@@ -639,7 +728,10 @@ ForEachMacros:
   - 'shost_for_each_device'
   - 'sk_for_each'
   - 'sk_for_each_bound'
+<<<<<<< HEAD
   - 'sk_for_each_bound_bhash2'
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - 'sk_for_each_entry_offset_rcu'
   - 'sk_for_each_from'
   - 'sk_for_each_rcu'
@@ -653,6 +745,10 @@ ForEachMacros:
   - 'snd_soc_dapm_widget_for_each_path_safe'
   - 'snd_soc_dapm_widget_for_each_sink_path'
   - 'snd_soc_dapm_widget_for_each_source_path'
+<<<<<<< HEAD
+=======
+  - 'sparsebit_for_each_set_range'
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - 'strlist__for_each_entry'
   - 'strlist__for_each_entry_safe'
   - 'sym_for_each_insn'
@@ -662,7 +758,10 @@ ForEachMacros:
   - 'tcf_act_for_each_action'
   - 'tcf_exts_for_each_action'
   - 'ttm_resource_manager_for_each_res'
+<<<<<<< HEAD
   - 'twsk_for_each_bound_bhash2'
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - 'udp_portaddr_for_each_entry'
   - 'udp_portaddr_for_each_entry_rcu'
   - 'usb_hub_for_each_child'
@@ -686,6 +785,12 @@ ForEachMacros:
   - 'xbc_node_for_each_child'
   - 'xbc_node_for_each_key_value'
   - 'xbc_node_for_each_subkey'
+<<<<<<< HEAD
+=======
+  - 'ynl_attr_for_each'
+  - 'ynl_attr_for_each_nested'
+  - 'ynl_attr_for_each_payload'
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - 'zorro_for_each_dev'
 
 IncludeBlocks: Preserve

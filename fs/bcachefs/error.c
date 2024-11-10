@@ -239,7 +239,26 @@ int __bch2_fsck_err(struct bch_fs *c,
 	if (!c)
 		c = trans->c;
 
+<<<<<<< HEAD
 	WARN_ON(!trans && bch2_current_has_btree_trans(c));
+=======
+	/*
+	 * Ugly: if there's a transaction in the current task it has to be
+	 * passed in to unlock if we prompt for user input.
+	 *
+	 * But, plumbing a transaction and transaction restarts into
+	 * bkey_validate() is problematic.
+	 *
+	 * So:
+	 * - make all bkey errors AUTOFIX, they're simple anyways (we just
+	 *   delete the key)
+	 * - and we don't need to warn if we're not prompting
+	 */
+	WARN_ON((flags & FSCK_CAN_FIX) &&
+		!(flags & FSCK_AUTOFIX) &&
+		!trans &&
+		bch2_current_has_btree_trans(c));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if ((flags & FSCK_CAN_FIX) &&
 	    test_bit(err, c->sb.errors_silent))
@@ -381,6 +400,17 @@ int __bch2_fsck_err(struct bch_fs *c,
 	     !(flags & FSCK_CAN_IGNORE)))
 		ret = -BCH_ERR_fsck_errors_not_fixed;
 
+<<<<<<< HEAD
+=======
+	bool exiting =
+		test_bit(BCH_FS_fsck_running, &c->flags) &&
+		(ret != -BCH_ERR_fsck_fix &&
+		 ret != -BCH_ERR_fsck_ignore);
+
+	if (exiting)
+		print = true;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (print) {
 		if (bch2_fs_stdio_redirect(c))
 			bch2_print(c, "%s\n", out->buf);
@@ -388,9 +418,13 @@ int __bch2_fsck_err(struct bch_fs *c,
 			bch2_print_string_as_lines(KERN_ERR, out->buf);
 	}
 
+<<<<<<< HEAD
 	if (test_bit(BCH_FS_fsck_running, &c->flags) &&
 	    (ret != -BCH_ERR_fsck_fix &&
 	     ret != -BCH_ERR_fsck_ignore))
+=======
+	if (exiting)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		bch_err(c, "Unable to continue, halting");
 	else if (suppressing)
 		bch_err(c, "Ratelimiting new instances of previous error");
@@ -418,10 +452,24 @@ err:
 
 int __bch2_bkey_fsck_err(struct bch_fs *c,
 			 struct bkey_s_c k,
+<<<<<<< HEAD
 			 enum bch_fsck_flags flags,
 			 enum bch_sb_error_id err,
 			 const char *fmt, ...)
 {
+=======
+			 enum bch_validate_flags validate_flags,
+			 enum bch_sb_error_id err,
+			 const char *fmt, ...)
+{
+	if (validate_flags & BCH_VALIDATE_silent)
+		return -BCH_ERR_fsck_delete_bkey;
+
+	unsigned fsck_flags = 0;
+	if (!(validate_flags & (BCH_VALIDATE_write|BCH_VALIDATE_commit)))
+		fsck_flags |= FSCK_AUTOFIX|FSCK_CAN_FIX;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct printbuf buf = PRINTBUF;
 	va_list args;
 
@@ -433,7 +481,11 @@ int __bch2_bkey_fsck_err(struct bch_fs *c,
 	va_end(args);
 	prt_str(&buf, ": delete?");
 
+<<<<<<< HEAD
 	int ret = __bch2_fsck_err(c, NULL, flags, err, "%s", buf.buf);
+=======
+	int ret = __bch2_fsck_err(c, NULL, fsck_flags, err, "%s", buf.buf);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	printbuf_exit(&buf);
 	return ret;
 }

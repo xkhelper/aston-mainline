@@ -1075,6 +1075,7 @@ static void __init allocate_node_data(int nid)
 {
 	struct pglist_data *p;
 	unsigned long start_pfn, end_pfn;
+<<<<<<< HEAD
 #ifdef CONFIG_NUMA
 
 	NODE_DATA(nid) = memblock_alloc_node(sizeof(struct pglist_data),
@@ -1083,6 +1084,11 @@ static void __init allocate_node_data(int nid)
 		prom_printf("Cannot allocate pglist_data for nid[%d]\n", nid);
 		prom_halt();
 	}
+=======
+
+#ifdef CONFIG_NUMA
+	alloc_node_data(nid);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	NODE_DATA(nid)->node_id = nid;
 #endif
@@ -1115,11 +1121,17 @@ static void init_node_masks_nonnuma(void)
 }
 
 #ifdef CONFIG_NUMA
+<<<<<<< HEAD
 struct pglist_data *node_data[MAX_NUMNODES];
 
 EXPORT_SYMBOL(numa_cpu_lookup_table);
 EXPORT_SYMBOL(numa_cpumask_lookup_table);
 EXPORT_SYMBOL(node_data);
+=======
+
+EXPORT_SYMBOL(numa_cpu_lookup_table);
+EXPORT_SYMBOL(numa_cpumask_lookup_table);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int scan_pio_for_cfg_handle(struct mdesc_handle *md, u64 pio,
 				   u32 cfg_handle)

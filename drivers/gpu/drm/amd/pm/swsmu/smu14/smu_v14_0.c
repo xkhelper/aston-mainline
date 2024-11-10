@@ -452,17 +452,36 @@ int smu_v14_0_init_smc_tables(struct smu_context *smu)
 			ret = -ENOMEM;
 			goto err3_out;
 		}
+<<<<<<< HEAD
+=======
+
+		smu_table->user_overdrive_table =
+			kzalloc(tables[SMU_TABLE_OVERDRIVE].size, GFP_KERNEL);
+		if (!smu_table->user_overdrive_table) {
+			ret = -ENOMEM;
+			goto err4_out;
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	smu_table->combo_pptable =
 		kzalloc(tables[SMU_TABLE_COMBO_PPTABLE].size, GFP_KERNEL);
 	if (!smu_table->combo_pptable) {
 		ret = -ENOMEM;
+<<<<<<< HEAD
 		goto err4_out;
+=======
+		goto err5_out;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
 
+<<<<<<< HEAD
+=======
+err5_out:
+	kfree(smu_table->user_overdrive_table);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err4_out:
 	kfree(smu_table->boot_overdrive_table);
 err3_out:

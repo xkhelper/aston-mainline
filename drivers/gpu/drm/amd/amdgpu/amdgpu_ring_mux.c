@@ -410,7 +410,11 @@ void amdgpu_sw_ring_ib_end(struct amdgpu_ring *ring)
 	struct amdgpu_ring_mux *mux = &adev->gfx.muxer;
 
 	WARN_ON(!ring->is_sw_ring);
+<<<<<<< HEAD
 	if (ring->hw_prio > AMDGPU_RING_PRIO_DEFAULT)
+=======
+	if (adev->gfx.mcbp && ring->hw_prio > AMDGPU_RING_PRIO_DEFAULT)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	amdgpu_ring_mux_end_ib(mux, ring);
 }

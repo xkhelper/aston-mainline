@@ -677,7 +677,11 @@ static void redir_to_connected(int family, int sotype, int sock_mapfd,
 			       int verd_mapfd, enum redir_mode mode)
 {
 	const char *log_prefix = redir_mode_str(mode);
+<<<<<<< HEAD
 	int s, c0, c1, p0, p1;
+=======
+	int c0, c1, p0, p1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int pass;
 	int err, n;
 	u32 key;
@@ -685,6 +689,7 @@ static void redir_to_connected(int family, int sotype, int sock_mapfd,
 
 	zero_verdict_count(verd_mapfd);
 
+<<<<<<< HEAD
 	s = socket_loopback(family, sotype | SOCK_NONBLOCK);
 	if (s < 0)
 		return;
@@ -692,6 +697,12 @@ static void redir_to_connected(int family, int sotype, int sock_mapfd,
 	err = create_socket_pairs(s, family, sotype, &c0, &c1, &p0, &p1);
 	if (err)
 		goto close_srv;
+=======
+	err = create_socket_pairs(family, sotype | SOCK_NONBLOCK, &c0, &c1,
+				  &p0, &p1);
+	if (err)
+		return;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = add_to_sockmap(sock_mapfd, p0, p1);
 	if (err)
@@ -722,8 +733,11 @@ close:
 	xclose(c1);
 	xclose(p0);
 	xclose(c0);
+<<<<<<< HEAD
 close_srv:
 	xclose(s);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void test_skb_redir_to_connected(struct test_sockmap_listen *skel,
@@ -909,7 +923,11 @@ static void test_msg_redir_to_listening_with_link(struct test_sockmap_listen *sk
 
 static void redir_partial(int family, int sotype, int sock_map, int parser_map)
 {
+<<<<<<< HEAD
 	int s, c0 = -1, c1 = -1, p0 = -1, p1 = -1;
+=======
+	int c0 = -1, c1 = -1, p0 = -1, p1 = -1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err, n, key, value;
 	char buf[] = "abc";
 
@@ -919,6 +937,7 @@ static void redir_partial(int family, int sotype, int sock_map, int parser_map)
 	if (err)
 		return;
 
+<<<<<<< HEAD
 	s = socket_loopback(family, sotype | SOCK_NONBLOCK);
 	if (s < 0)
 		goto clean_parser_map;
@@ -926,6 +945,12 @@ static void redir_partial(int family, int sotype, int sock_map, int parser_map)
 	err = create_socket_pairs(s, family, sotype, &c0, &c1, &p0, &p1);
 	if (err)
 		goto close_srv;
+=======
+	err = create_socket_pairs(family, sotype | SOCK_NONBLOCK, &c0, &c1,
+				  &p0, &p1);
+	if (err)
+		goto clean_parser_map;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = add_to_sockmap(sock_map, p0, p1);
 	if (err)
@@ -944,8 +969,11 @@ close:
 	xclose(p0);
 	xclose(c1);
 	xclose(p1);
+<<<<<<< HEAD
 close_srv:
 	xclose(s);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 clean_parser_map:
 	key = 0;
@@ -1500,6 +1528,7 @@ static void test_unix_redir(struct test_sockmap_listen *skel, struct bpf_map *ma
 /* Returns two connected loopback vsock sockets */
 static int vsock_socketpair_connectible(int sotype, int *v0, int *v1)
 {
+<<<<<<< HEAD
 	struct sockaddr_storage addr;
 	socklen_t len = sizeof(addr);
 	int s, p, c;
@@ -1543,6 +1572,9 @@ close_srv:
 	close(s);
 
 	return -1;
+=======
+	return create_pair(AF_VSOCK, sotype | SOCK_NONBLOCK, v0, v1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void vsock_unix_redir_connectible(int sock_mapfd, int verd_mapfd,
@@ -1691,6 +1723,7 @@ static void test_reuseport(struct test_sockmap_listen *skel,
 
 static int inet_socketpair(int family, int type, int *s, int *c)
 {
+<<<<<<< HEAD
 	struct sockaddr_storage addr;
 	socklen_t len;
 	int p0, c0;
@@ -1729,6 +1762,9 @@ close_cli0:
 close_peer0:
 	xclose(p0);
 	return err;
+=======
+	return create_pair(family, type | SOCK_NONBLOCK, s, c);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void udp_redir_to_connected(int family, int sock_mapfd, int verd_mapfd,
@@ -1795,11 +1831,19 @@ static void inet_unix_redir_to_connected(int family, int type, int sock_mapfd,
 	int sfd[2];
 	int err;
 
+<<<<<<< HEAD
 	if (socketpair(AF_UNIX, SOCK_DGRAM | SOCK_NONBLOCK, 0, sfd))
 		return;
 	c0 = sfd[0], p0 = sfd[1];
 
 	err = inet_socketpair(family, SOCK_DGRAM, &p1, &c1);
+=======
+	if (socketpair(AF_UNIX, type | SOCK_NONBLOCK, 0, sfd))
+		return;
+	c0 = sfd[0], p0 = sfd[1];
+
+	err = inet_socketpair(family, type, &p1, &c1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err)
 		goto close;
 
@@ -1847,7 +1891,11 @@ static void unix_inet_redir_to_connected(int family, int type, int sock_mapfd,
 	int sfd[2];
 	int err;
 
+<<<<<<< HEAD
 	err = inet_socketpair(family, SOCK_DGRAM, &p0, &c0);
+=======
+	err = inet_socketpair(family, type, &p0, &c0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err)
 		return;
 
@@ -1882,7 +1930,11 @@ static void unix_inet_skb_redir_to_connected(struct test_sockmap_listen *skel,
 	unix_inet_redir_to_connected(family, SOCK_DGRAM,
 				     sock_map, -1, verdict_map,
 				     REDIR_EGRESS, NO_FLAGS);
+<<<<<<< HEAD
 	unix_inet_redir_to_connected(family, SOCK_DGRAM,
+=======
+	unix_inet_redir_to_connected(family, SOCK_STREAM,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				     sock_map, -1, verdict_map,
 				     REDIR_EGRESS, NO_FLAGS);
 
@@ -1925,6 +1977,10 @@ static void test_udp_unix_redir(struct test_sockmap_listen *skel, struct bpf_map
 				int family)
 {
 	const char *family_name, *map_name;
+<<<<<<< HEAD
+=======
+	struct netns_obj *netns;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char s[MAX_TEST_NAME];
 
 	family_name = family_str(family);
@@ -1932,8 +1988,20 @@ static void test_udp_unix_redir(struct test_sockmap_listen *skel, struct bpf_map
 	snprintf(s, sizeof(s), "%s %s %s", map_name, family_name, __func__);
 	if (!test__start_subtest(s))
 		return;
+<<<<<<< HEAD
 	inet_unix_skb_redir_to_connected(skel, map, family);
 	unix_inet_skb_redir_to_connected(skel, map, family);
+=======
+
+	netns = netns_new("sockmap_listen", true);
+	if (!ASSERT_OK_PTR(netns, "netns_new"))
+		return;
+
+	inet_unix_skb_redir_to_connected(skel, map, family);
+	unix_inet_skb_redir_to_connected(skel, map, family);
+
+	netns_free(netns);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void run_tests(struct test_sockmap_listen *skel, struct bpf_map *map,

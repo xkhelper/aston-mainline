@@ -240,6 +240,10 @@ static int of_dra7_atl_clk_probe(struct platform_device *pdev)
 		}
 
 		clk = of_clk_get_from_provider(&clkspec);
+<<<<<<< HEAD
+=======
+		of_node_put(clkspec.np);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (IS_ERR(clk)) {
 			pr_err("%s: failed to get atl clock %d from provider\n",
 			       __func__, i);

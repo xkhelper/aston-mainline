@@ -965,6 +965,7 @@ EXPORT_SYMBOL_GPL(lp55xx_update_bits);
 bool lp55xx_is_extclk_used(struct lp55xx_chip *chip)
 {
 	struct clk *clk;
+<<<<<<< HEAD
 	int err;
 
 	clk = devm_clk_get(&chip->cl->dev, "32k_clk");
@@ -983,6 +984,18 @@ bool lp55xx_is_extclk_used(struct lp55xx_chip *chip)
 	dev_info(&chip->cl->dev, "%dHz external clock used\n",	LP55XX_CLK_32K);
 
 	chip->clk = clk;
+=======
+
+	clk = devm_clk_get_enabled(&chip->cl->dev, "32k_clk");
+	if (IS_ERR(clk))
+		goto use_internal_clk;
+
+	if (clk_get_rate(clk) != LP55XX_CLK_32K)
+		goto use_internal_clk;
+
+	dev_info(&chip->cl->dev, "%dHz external clock used\n",	LP55XX_CLK_32K);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return true;
 
 use_internal_clk:
@@ -995,9 +1008,12 @@ static void lp55xx_deinit_device(struct lp55xx_chip *chip)
 {
 	struct lp55xx_platform_data *pdata = chip->pdata;
 
+<<<<<<< HEAD
 	if (chip->clk)
 		clk_disable_unprepare(chip->clk);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (pdata->enable_gpiod)
 		gpiod_set_value(pdata->enable_gpiod, 0);
 }
@@ -1173,6 +1189,7 @@ static int lp55xx_parse_multi_led(struct device_node *np,
 				  struct lp55xx_led_config *cfg,
 				  int child_number)
 {
+<<<<<<< HEAD
 	struct device_node *child;
 	int num_colors = 0, ret;
 
@@ -1183,6 +1200,15 @@ static int lp55xx_parse_multi_led(struct device_node *np,
 			of_node_put(child);
 			return ret;
 		}
+=======
+	int num_colors = 0, ret;
+
+	for_each_available_child_of_node_scoped(np, child) {
+		ret = lp55xx_parse_multi_led_child(child, cfg, child_number,
+						   num_colors);
+		if (ret)
+			return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		num_colors++;
 	}
 

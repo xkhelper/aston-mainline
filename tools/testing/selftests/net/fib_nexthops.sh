@@ -78,7 +78,16 @@ log_test()
 	else
 		ret=1
 		nfail=$((nfail+1))
+<<<<<<< HEAD
 		printf "TEST: %-60s  [FAIL]\n" "${msg}"
+=======
+		if [[ $rc -eq $ksft_skip ]]; then
+			printf "TEST: %-60s  [SKIP]\n" "${msg}"
+		else
+			printf "TEST: %-60s  [FAIL]\n" "${msg}"
+		fi
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if [ "$VERBOSE" = "1" ]; then
 			echo "    rc=$rc, expected $expected"
 		fi
@@ -923,6 +932,32 @@ ipv6_grp_fcnal()
 
 	ipv6_grp_refs
 	log_test $? 0 "Nexthop group replace refcounts"
+<<<<<<< HEAD
+=======
+
+	#
+	# 16-bit weights.
+	#
+	run_cmd "$IP nexthop add id 62 via 2001:db8:91::2 dev veth1"
+	run_cmd "$IP nexthop add id 63 via 2001:db8:91::3 dev veth1"
+	run_cmd "$IP nexthop add id 64 via 2001:db8:91::4 dev veth1"
+	run_cmd "$IP nexthop add id 65 via 2001:db8:91::5 dev veth1"
+	run_cmd "$IP nexthop add id 66 dev veth1"
+
+	run_cmd "$IP nexthop add id 103 group 62,1000"
+	if [[ $? == 0 ]]; then
+		local GRP="id 103 group 62,254/63,255/64,256/65,257/66,65535"
+		run_cmd "$IP nexthop replace $GRP"
+		check_nexthop "id 103" "$GRP"
+		rc=$?
+	else
+		rc=$ksft_skip
+	fi
+
+	$IP nexthop flush >/dev/null 2>&1
+
+	log_test $rc 0 "16-bit weights"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 ipv6_res_grp_fcnal()
@@ -987,6 +1022,34 @@ ipv6_res_grp_fcnal()
 	check_nexthop_bucket "list id 102" \
 		"id 102 index 0 nhid 63 id 102 index 1 nhid 62 id 102 index 2 nhid 62 id 102 index 3 nhid 62"
 	log_test $? 0 "Nexthop buckets updated after replace - nECMP"
+<<<<<<< HEAD
+=======
+
+	#
+	# 16-bit weights.
+	#
+	run_cmd "$IP nexthop add id 62 via 2001:db8:91::2 dev veth1"
+	run_cmd "$IP nexthop add id 63 via 2001:db8:91::3 dev veth1"
+	run_cmd "$IP nexthop add id 64 via 2001:db8:91::4 dev veth1"
+	run_cmd "$IP nexthop add id 65 via 2001:db8:91::5 dev veth1"
+	run_cmd "$IP nexthop add id 66 dev veth1"
+
+	run_cmd "$IP nexthop add id 103 group 62,1000 type resilient buckets 32"
+	if [[ $? == 0 ]]; then
+		local GRP="id 103 group 62,254/63,255/64,256/65,257/66,65535 $(:
+			  )type resilient buckets 32 idle_timer 0 $(:
+			  )unbalanced_timer 0"
+		run_cmd "$IP nexthop replace $GRP"
+		check_nexthop "id 103" "$GRP unbalanced_time 0"
+		rc=$?
+	else
+		rc=$ksft_skip
+	fi
+
+	$IP nexthop flush >/dev/null 2>&1
+
+	log_test $rc 0 "16-bit weights"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 ipv6_fcnal_runtime()

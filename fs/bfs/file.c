@@ -172,11 +172,19 @@ static void bfs_write_failed(struct address_space *mapping, loff_t to)
 
 static int bfs_write_begin(struct file *file, struct address_space *mapping,
 			loff_t pos, unsigned len,
+<<<<<<< HEAD
 			struct page **pagep, void **fsdata)
 {
 	int ret;
 
 	ret = block_write_begin(mapping, pos, len, pagep, bfs_get_block);
+=======
+			struct folio **foliop, void **fsdata)
+{
+	int ret;
+
+	ret = block_write_begin(mapping, pos, len, foliop, bfs_get_block);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (unlikely(ret))
 		bfs_write_failed(mapping, pos + len);
 

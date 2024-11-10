@@ -62,11 +62,14 @@ gsc_to_gt(struct xe_gsc *gsc)
 	return container_of(gsc, struct xe_gt, uc.gsc);
 }
 
+<<<<<<< HEAD
 static inline struct xe_device *kdev_to_xe(struct device *kdev)
 {
 	return dev_get_drvdata(kdev);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool xe_gsc_proxy_init_done(struct xe_gsc *gsc)
 {
 	struct xe_gt *gt = gsc_to_gt(gsc);
@@ -345,7 +348,11 @@ void xe_gsc_proxy_irq_handler(struct xe_gsc *gsc, u32 iir)
 static int xe_gsc_proxy_component_bind(struct device *xe_kdev,
 				       struct device *mei_kdev, void *data)
 {
+<<<<<<< HEAD
 	struct xe_device *xe = kdev_to_xe(xe_kdev);
+=======
+	struct xe_device *xe = kdev_to_xe_device(xe_kdev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct xe_gt *gt = xe->tiles[0].media_gt;
 	struct xe_gsc *gsc = &gt->uc.gsc;
 
@@ -360,7 +367,11 @@ static int xe_gsc_proxy_component_bind(struct device *xe_kdev,
 static void xe_gsc_proxy_component_unbind(struct device *xe_kdev,
 					  struct device *mei_kdev, void *data)
 {
+<<<<<<< HEAD
 	struct xe_device *xe = kdev_to_xe(xe_kdev);
+=======
+	struct xe_device *xe = kdev_to_xe_device(xe_kdev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct xe_gt *gt = xe->tiles[0].media_gt;
 	struct xe_gsc *gsc = &gt->uc.gsc;
 
@@ -376,6 +387,7 @@ static const struct component_ops xe_gsc_proxy_component_ops = {
 	.unbind = xe_gsc_proxy_component_unbind,
 };
 
+<<<<<<< HEAD
 static void proxy_channel_free(struct drm_device *drm, void *arg)
 {
 	struct xe_gsc *gsc = arg;
@@ -397,6 +409,8 @@ static void proxy_channel_free(struct drm_device *drm, void *arg)
 	}
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int proxy_channel_alloc(struct xe_gsc *gsc)
 {
 	struct xe_gt *gt = gsc_to_gt(gsc);
@@ -405,6 +419,7 @@ static int proxy_channel_alloc(struct xe_gsc *gsc)
 	struct xe_bo *bo;
 	void *csme;
 
+<<<<<<< HEAD
 	csme = kzalloc(GSC_PROXY_CHANNEL_SIZE, GFP_KERNEL);
 	if (!csme)
 		return -ENOMEM;
@@ -417,6 +432,17 @@ static int proxy_channel_alloc(struct xe_gsc *gsc)
 		kfree(csme);
 		return PTR_ERR(bo);
 	}
+=======
+	csme = drmm_kzalloc(&xe->drm, GSC_PROXY_CHANNEL_SIZE, GFP_KERNEL);
+	if (!csme)
+		return -ENOMEM;
+
+	bo = xe_managed_bo_create_pin_map(xe, tile, GSC_PROXY_CHANNEL_SIZE,
+					  XE_BO_FLAG_SYSTEM |
+					  XE_BO_FLAG_GGTT);
+	if (IS_ERR(bo))
+		return PTR_ERR(bo);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	gsc->proxy.bo = bo;
 	gsc->proxy.to_gsc = IOSYS_MAP_INIT_OFFSET(&bo->vmap, 0);
@@ -424,7 +450,11 @@ static int proxy_channel_alloc(struct xe_gsc *gsc)
 	gsc->proxy.to_csme = csme;
 	gsc->proxy.from_csme = csme + GSC_PROXY_BUFFER_SIZE;
 
+<<<<<<< HEAD
 	return drmm_add_action_or_reset(&xe->drm, proxy_channel_free, gsc);
+=======
+	return 0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**

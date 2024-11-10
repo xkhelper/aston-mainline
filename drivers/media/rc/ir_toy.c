@@ -12,7 +12,11 @@
  * Copyright (C) 2011 Peter Kooiman <pkooiman@gmail.com>
  */
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/completion.h>
 #include <linux/kernel.h>
 #include <linux/module.h>

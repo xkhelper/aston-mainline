@@ -79,6 +79,12 @@ struct writeback_control {
 	 */
 	struct swap_iocb **swap_plug;
 
+<<<<<<< HEAD
+=======
+	/* Target list for splitting a large folio */
+	struct list_head *list;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* internal fields used by the ->writepages implementation: */
 	struct folio_batch fbatch;
 	pgoff_t index;
@@ -200,7 +206,12 @@ void inode_io_list_del(struct inode *inode);
 /* writeback.h requires fs.h; it, too, is not included from here. */
 static inline void wait_on_inode(struct inode *inode)
 {
+<<<<<<< HEAD
 	wait_on_bit(&inode->i_state, __I_NEW, TASK_UNINTERRUPTIBLE);
+=======
+	wait_var_event(inode_state_wait_address(inode, __I_NEW),
+		       !(READ_ONCE(inode->i_state) & I_NEW));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #ifdef CONFIG_CGROUP_WRITEBACK
@@ -217,7 +228,11 @@ void wbc_account_cgroup_owner(struct writeback_control *wbc, struct page *page,
 			      size_t bytes);
 int cgroup_writeback_by_id(u64 bdi_id, int memcg_id,
 			   enum wb_reason reason, struct wb_completion *done);
+<<<<<<< HEAD
 void cgroup_writeback_umount(void);
+=======
+void cgroup_writeback_umount(struct super_block *sb);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool cleanup_offline_cgwb(struct bdi_writeback *wb);
 
 /**
@@ -324,7 +339,11 @@ static inline void wbc_account_cgroup_owner(struct writeback_control *wbc,
 {
 }
 
+<<<<<<< HEAD
 static inline void cgroup_writeback_umount(void)
+=======
+static inline void cgroup_writeback_umount(struct super_block *sb)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 }
 

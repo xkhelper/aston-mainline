@@ -126,6 +126,11 @@ source "sound/soc/xtensa/Kconfig"
 # Supported codecs
 source "sound/soc/codecs/Kconfig"
 
+<<<<<<< HEAD
+=======
+source "sound/soc/sdw_utils/Kconfig"
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # generic frame-work
 source "sound/soc/generic/Kconfig"
 

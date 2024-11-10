@@ -606,7 +606,11 @@ static int nft_ct_set_init(const struct nft_ctx *ctx,
 	}
 
 	priv->len = len;
+<<<<<<< HEAD
 	err = nft_parse_register_load(tb[NFTA_CT_SREG], &priv->sreg, len);
+=======
+	err = nft_parse_register_load(ctx, tb[NFTA_CT_SREG], &priv->sreg, len);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err < 0)
 		goto err1;
 

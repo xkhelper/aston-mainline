@@ -927,7 +927,11 @@ static int npcm7xx_en_pwm_fan(struct device *dev,
 static int npcm7xx_pwm_fan_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
+<<<<<<< HEAD
 	struct device_node *np, *child;
+=======
+	struct device_node *np;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct npcm7xx_pwm_fan_data *data;
 	struct resource *res;
 	struct device *hwmon;
@@ -1004,11 +1008,18 @@ static int npcm7xx_pwm_fan_probe(struct platform_device *pdev)
 		}
 	}
 
+<<<<<<< HEAD
 	for_each_child_of_node(np, child) {
 		ret = npcm7xx_en_pwm_fan(dev, child, data);
 		if (ret) {
 			dev_err(dev, "enable pwm and fan failed\n");
 			of_node_put(child);
+=======
+	for_each_child_of_node_scoped(np, child) {
+		ret = npcm7xx_en_pwm_fan(dev, child, data);
+		if (ret) {
+			dev_err(dev, "enable pwm and fan failed\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return ret;
 		}
 	}

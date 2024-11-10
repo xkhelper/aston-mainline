@@ -203,7 +203,11 @@ struct pci_dev;
 #define BCMA_CORE_PCI_MDIO_RXCTRL0		0x840
 
 /* PCIE Root Capability Register bits (Host mode only) */
+<<<<<<< HEAD
 #define BCMA_CORE_PCI_RC_CRS_VISIBILITY		0x0001
+=======
+#define BCMA_CORE_PCI_RC_RRS_VISIBILITY		0x0001
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct bcma_drv_pci;
 struct bcma_bus;

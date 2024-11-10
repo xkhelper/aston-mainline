@@ -218,7 +218,11 @@ static int ma35_pinctrl_dt_node_to_map_func(struct pinctrl_dev *pctldev,
 	}
 
 	map_num += grp->npins;
+<<<<<<< HEAD
 	new_map = devm_kcalloc(pctldev->dev, map_num, sizeof(*new_map), GFP_KERNEL);
+=======
+	new_map = kcalloc(map_num, sizeof(*new_map), GFP_KERNEL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!new_map)
 		return -ENOMEM;
 

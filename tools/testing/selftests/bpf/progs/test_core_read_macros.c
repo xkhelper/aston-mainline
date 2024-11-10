@@ -36,7 +36,11 @@ int handler(void *ctx)
 		return 0;
 
 	/* next pointers for kernel address space have to be initialized from
+<<<<<<< HEAD
 	 * BPF side, user-space mmaped addresses are stil user-space addresses
+=======
+	 * BPF side, user-space mmaped addresses are still user-space addresses
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	k_probe_in.next = &k_probe_in;
 	__builtin_preserve_access_index(({k_core_in.next = &k_core_in;}));

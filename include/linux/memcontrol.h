@@ -57,7 +57,11 @@ enum memcg_memory_event {
 
 struct mem_cgroup_reclaim_cookie {
 	pg_data_t *pgdat;
+<<<<<<< HEAD
 	unsigned int generation;
+=======
+	int generation;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #ifdef CONFIG_MEMCG
@@ -70,6 +74,10 @@ struct mem_cgroup_id {
 };
 
 struct memcg_vmstats_percpu;
+<<<<<<< HEAD
+=======
+struct memcg1_events_percpu;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct memcg_vmstats;
 struct lruvec_stats_percpu;
 struct lruvec_stats;
@@ -77,7 +85,11 @@ struct lruvec_stats;
 struct mem_cgroup_reclaim_iter {
 	struct mem_cgroup *position;
 	/* scan generation, increased every round-trip */
+<<<<<<< HEAD
 	unsigned int generation;
+=======
+	atomic_t generation;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
@@ -193,6 +205,14 @@ struct mem_cgroup {
 		struct page_counter memsw;	/* v1 only */
 	};
 
+<<<<<<< HEAD
+=======
+	/* registered local peak watchers */
+	struct list_head memory_peaks;
+	struct list_head swap_peaks;
+	spinlock_t	 peaks_lock;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Range enforcement for interrupt charges */
 	struct work_struct high_work;
 
@@ -270,6 +290,11 @@ struct mem_cgroup {
 	struct page_counter kmem;		/* v1 only */
 	struct page_counter tcpmem;		/* v1 only */
 
+<<<<<<< HEAD
+=======
+	struct memcg1_events_percpu __percpu *events_percpu;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long soft_limit;
 
 	/* protected by memcg_oom_lock */
@@ -361,11 +386,19 @@ static inline bool folio_memcg_kmem(struct folio *folio);
  * After the initialization objcg->memcg is always pointing at
  * a valid memcg, but can be atomically swapped to the parent memcg.
  *
+<<<<<<< HEAD
  * The caller must ensure that the returned memcg won't be released:
  * e.g. acquire the rcu_read_lock or css_set_lock.
  */
 static inline struct mem_cgroup *obj_cgroup_memcg(struct obj_cgroup *objcg)
 {
+=======
+ * The caller must ensure that the returned memcg won't be released.
+ */
+static inline struct mem_cgroup *obj_cgroup_memcg(struct obj_cgroup *objcg)
+{
+	lockdep_assert_once(rcu_read_lock_held() || lockdep_is_held(&cgroup_mutex));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return READ_ONCE(objcg->memcg);
 }
 
@@ -439,6 +472,22 @@ static inline struct mem_cgroup *folio_memcg(struct folio *folio)
 	return __folio_memcg(folio);
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * folio_memcg_charged - If a folio is charged to a memory cgroup.
+ * @folio: Pointer to the folio.
+ *
+ * Returns true if folio is charged to a memory cgroup, otherwise returns false.
+ */
+static inline bool folio_memcg_charged(struct folio *folio)
+{
+	if (folio_memcg_kmem(folio))
+		return __folio_objcg(folio) != NULL;
+	return __folio_memcg(folio) != NULL;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * folio_memcg_rcu - Locklessly get the memory cgroup associated with a folio.
  * @folio: Pointer to the folio.
@@ -455,7 +504,10 @@ static inline struct mem_cgroup *folio_memcg_rcu(struct folio *folio)
 	unsigned long memcg_data = READ_ONCE(folio->memcg_data);
 
 	VM_BUG_ON_FOLIO(folio_test_slab(folio), folio);
+<<<<<<< HEAD
 	WARN_ON_ONCE(!rcu_read_lock_held());
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (memcg_data & MEMCG_DATA_KMEM) {
 		struct obj_cgroup *objcg;
@@ -464,6 +516,11 @@ static inline struct mem_cgroup *folio_memcg_rcu(struct folio *folio)
 		return obj_cgroup_memcg(objcg);
 	}
 
+<<<<<<< HEAD
+=======
+	WARN_ON_ONCE(!rcu_read_lock_held());
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return (struct mem_cgroup *)(memcg_data & ~OBJEXTS_FLAGS_MASK);
 }
 
@@ -677,7 +734,12 @@ int mem_cgroup_hugetlb_try_charge(struct mem_cgroup *memcg, gfp_t gfp,
 
 int mem_cgroup_swapin_charge_folio(struct folio *folio, struct mm_struct *mm,
 				  gfp_t gfp, swp_entry_t entry);
+<<<<<<< HEAD
 void mem_cgroup_swapin_uncharge_swap(swp_entry_t entry);
+=======
+
+void mem_cgroup_swapin_uncharge_swap(swp_entry_t entry, unsigned int nr_pages);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void __mem_cgroup_uncharge(struct folio *folio);
 
@@ -762,6 +824,11 @@ struct mem_cgroup *get_mem_cgroup_from_mm(struct mm_struct *mm);
 
 struct mem_cgroup *get_mem_cgroup_from_current(void);
 
+<<<<<<< HEAD
+=======
+struct mem_cgroup *get_mem_cgroup_from_folio(struct folio *folio);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct lruvec *folio_lruvec_lock(struct folio *folio);
 struct lruvec *folio_lruvec_lock_irq(struct folio *folio);
 struct lruvec *folio_lruvec_lock_irqsave(struct folio *folio,
@@ -1006,8 +1073,13 @@ static inline void count_memcg_folio_events(struct folio *folio,
 		count_memcg_events(memcg, idx, nr);
 }
 
+<<<<<<< HEAD
 static inline void count_memcg_event_mm(struct mm_struct *mm,
 					enum vm_event_item idx)
+=======
+static inline void count_memcg_events_mm(struct mm_struct *mm,
+					enum vm_event_item idx, unsigned long count)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct mem_cgroup *memcg;
 
@@ -1017,10 +1089,23 @@ static inline void count_memcg_event_mm(struct mm_struct *mm,
 	rcu_read_lock();
 	memcg = mem_cgroup_from_task(rcu_dereference(mm->owner));
 	if (likely(memcg))
+<<<<<<< HEAD
 		count_memcg_events(memcg, idx, 1);
 	rcu_read_unlock();
 }
 
+=======
+		count_memcg_events(memcg, idx, count);
+	rcu_read_unlock();
+}
+
+static inline void count_memcg_event_mm(struct mm_struct *mm,
+					enum vm_event_item idx)
+{
+	count_memcg_events_mm(mm, idx, 1);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void memcg_memory_event(struct mem_cgroup *memcg,
 				      enum memcg_memory_event event)
 {
@@ -1176,7 +1261,11 @@ static inline int mem_cgroup_swapin_charge_folio(struct folio *folio,
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline void mem_cgroup_swapin_uncharge_swap(swp_entry_t entry)
+=======
+static inline void mem_cgroup_swapin_uncharge_swap(swp_entry_t entry, unsigned int nr)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 }
 
@@ -1240,6 +1329,14 @@ static inline struct mem_cgroup *get_mem_cgroup_from_current(void)
 	return NULL;
 }
 
+<<<<<<< HEAD
+=======
+static inline struct mem_cgroup *get_mem_cgroup_from_folio(struct folio *folio)
+{
+	return NULL;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline
 struct mem_cgroup *mem_cgroup_from_css(struct cgroup_subsys_state *css)
 {
@@ -1462,6 +1559,14 @@ static inline void count_memcg_folio_events(struct folio *folio,
 {
 }
 
+<<<<<<< HEAD
+=======
+static inline void count_memcg_events_mm(struct mm_struct *mm,
+					enum vm_event_item idx, unsigned long count)
+{
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline
 void count_memcg_event_mm(struct mm_struct *mm, enum vm_event_item idx)
 {
@@ -1717,7 +1822,10 @@ static inline int memcg_kmem_id(struct mem_cgroup *memcg)
 	return memcg ? memcg->kmemcg_id : -1;
 }
 
+<<<<<<< HEAD
 struct mem_cgroup *mem_cgroup_from_obj(void *p);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct mem_cgroup *mem_cgroup_from_slab_obj(void *p);
 
 static inline void count_objcg_event(struct obj_cgroup *objcg,
@@ -1780,11 +1888,14 @@ static inline int memcg_kmem_id(struct mem_cgroup *memcg)
 	return -1;
 }
 
+<<<<<<< HEAD
 static inline struct mem_cgroup *mem_cgroup_from_obj(void *p)
 {
 	return NULL;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline struct mem_cgroup *mem_cgroup_from_slab_obj(void *p)
 {
 	return NULL;

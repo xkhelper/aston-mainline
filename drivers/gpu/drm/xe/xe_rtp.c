@@ -7,7 +7,11 @@
 
 #include <kunit/visibility.h>
 
+<<<<<<< HEAD
 #include <drm/xe_drm.h>
+=======
+#include <uapi/drm/xe_drm.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "xe_gt.h"
 #include "xe_gt_topology.h"
@@ -217,14 +221,23 @@ void xe_rtp_process_ctx_enable_active_tracking(struct xe_rtp_process_ctx *ctx,
 	ctx->active_entries = active_entries;
 	ctx->n_entries = n_entries;
 }
+<<<<<<< HEAD
 
 static void rtp_mark_active(struct xe_device *xe,
 			    struct xe_rtp_process_ctx *ctx,
 			    unsigned int first, unsigned int last)
+=======
+EXPORT_SYMBOL_IF_KUNIT(xe_rtp_process_ctx_enable_active_tracking);
+
+static void rtp_mark_active(struct xe_device *xe,
+			    struct xe_rtp_process_ctx *ctx,
+			    unsigned int idx)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (!ctx->active_entries)
 		return;
 
+<<<<<<< HEAD
 	if (drm_WARN_ON(&xe->drm, last > ctx->n_entries))
 		return;
 
@@ -232,6 +245,12 @@ static void rtp_mark_active(struct xe_device *xe,
 		bitmap_set(ctx->active_entries, first, 1);
 	else
 		bitmap_set(ctx->active_entries, first, last - first + 1);
+=======
+	if (drm_WARN_ON(&xe->drm, idx >= ctx->n_entries))
+		return;
+
+	bitmap_set(ctx->active_entries, idx, 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -276,8 +295,12 @@ void xe_rtp_process_to_sr(struct xe_rtp_process_ctx *ctx,
 		}
 
 		if (match)
+<<<<<<< HEAD
 			rtp_mark_active(xe, ctx, entry - entries,
 					entry - entries);
+=======
+			rtp_mark_active(xe, ctx, entry - entries);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 EXPORT_SYMBOL_IF_KUNIT(xe_rtp_process_to_sr);
@@ -288,23 +311,35 @@ EXPORT_SYMBOL_IF_KUNIT(xe_rtp_process_to_sr);
  * @entries: Table with RTP definitions
  *
  * Walk the table pointed by @entries (with an empty sentinel), executing the
+<<<<<<< HEAD
  * rules. A few differences from xe_rtp_process_to_sr():
  *
  * 1. There is no action associated with each entry since this uses
  *    struct xe_rtp_entry. Its main use is for marking active workarounds via
  *    xe_rtp_process_ctx_enable_active_tracking().
  * 2. There is support for OR operations by having entries with no name.
+=======
+ * rules. One difference from xe_rtp_process_to_sr(): there is no action
+ * associated with each entry since this uses struct xe_rtp_entry. Its main use
+ * is for marking active workarounds via
+ * xe_rtp_process_ctx_enable_active_tracking().
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 void xe_rtp_process(struct xe_rtp_process_ctx *ctx,
 		    const struct xe_rtp_entry *entries)
 {
+<<<<<<< HEAD
 	const struct xe_rtp_entry *entry, *first_entry;
+=======
+	const struct xe_rtp_entry *entry;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct xe_hw_engine *hwe;
 	struct xe_gt *gt;
 	struct xe_device *xe;
 
 	rtp_get_context(ctx, &hwe, &gt, &xe);
 
+<<<<<<< HEAD
 	first_entry = entries;
 	if (drm_WARN_ON(&xe->drm, !first_entry->name))
 		return;
@@ -326,6 +361,16 @@ void xe_rtp_process(struct xe_rtp_process_ctx *ctx,
 				entry - entries);
 	}
 }
+=======
+	for (entry = entries; entry && entry->rules; entry++) {
+		if (!rule_matches(xe, gt, hwe, entry->rules, entry->n_rules))
+			continue;
+
+		rtp_mark_active(xe, ctx, entry - entries);
+	}
+}
+EXPORT_SYMBOL_IF_KUNIT(xe_rtp_process);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 bool xe_rtp_match_even_instance(const struct xe_gt *gt,
 				const struct xe_hw_engine *hwe)

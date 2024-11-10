@@ -304,8 +304,13 @@ static void ak881x_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id ak881x_id[] = {
+<<<<<<< HEAD
 	{ "ak8813", 0 },
 	{ "ak8814", 0 },
+=======
+	{ "ak8813" },
+	{ "ak8814" },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, ak881x_id);

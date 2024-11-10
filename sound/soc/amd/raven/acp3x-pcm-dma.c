@@ -509,7 +509,11 @@ static const struct dev_pm_ops acp3x_pm_ops = {
 
 static struct platform_driver acp3x_dma_driver = {
 	.probe = acp3x_audio_probe,
+<<<<<<< HEAD
 	.remove_new = acp3x_audio_remove,
+=======
+	.remove = acp3x_audio_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "acp3x_rv_i2s_dma",
 		.pm = &acp3x_pm_ops,

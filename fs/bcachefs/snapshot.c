@@ -469,6 +469,10 @@ static u32 bch2_snapshot_tree_oldest_subvol(struct bch_fs *c, u32 snapshot_root)
 	u32 id = snapshot_root;
 	u32 subvol = 0, s;
 
+<<<<<<< HEAD
+=======
+	rcu_read_lock();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	while (id) {
 		s = snapshot_t(c, id)->subvol;
 
@@ -477,6 +481,10 @@ static u32 bch2_snapshot_tree_oldest_subvol(struct bch_fs *c, u32 snapshot_root)
 
 		id = bch2_snapshot_tree_next(c, id);
 	}
+<<<<<<< HEAD
+=======
+	rcu_read_unlock();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return subvol;
 }
@@ -903,12 +911,39 @@ static int check_snapshot_exists(struct btree_trans *trans, u32 id)
 	if (bch2_snapshot_equiv(c, id))
 		return 0;
 
+<<<<<<< HEAD
 	/* 0 is an invalid tree ID */
 	u32 tree_id = 0;
 	int ret = bch2_snapshot_tree_create(trans, id, 0, &tree_id);
 	if (ret)
 		return ret;
 
+=======
+	/* Do we need to reconstruct the snapshot_tree entry as well? */
+	struct btree_iter iter;
+	struct bkey_s_c k;
+	int ret = 0;
+	u32 tree_id = 0;
+
+	for_each_btree_key_norestart(trans, iter, BTREE_ID_snapshot_trees, POS_MIN,
+				     0, k, ret) {
+		if (le32_to_cpu(bkey_s_c_to_snapshot_tree(k).v->root_snapshot) == id) {
+			tree_id = k.k->p.offset;
+			break;
+		}
+	}
+	bch2_trans_iter_exit(trans, &iter);
+
+	if (ret)
+		return ret;
+
+	if (!tree_id) {
+		ret = bch2_snapshot_tree_create(trans, id, 0, &tree_id);
+		if (ret)
+			return ret;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct bkey_i_snapshot *snapshot = bch2_trans_kmalloc(trans, sizeof(*snapshot));
 	ret = PTR_ERR_OR_ZERO(snapshot);
 	if (ret)
@@ -919,6 +954,19 @@ static int check_snapshot_exists(struct btree_trans *trans, u32 id)
 	snapshot->v.tree	= cpu_to_le32(tree_id);
 	snapshot->v.btime.lo	= cpu_to_le64(bch2_current_time(c));
 
+<<<<<<< HEAD
+=======
+	for_each_btree_key_norestart(trans, iter, BTREE_ID_subvolumes, POS_MIN,
+				     0, k, ret) {
+		if (le32_to_cpu(bkey_s_c_to_subvolume(k).v->snapshot) == id) {
+			snapshot->v.subvol = cpu_to_le32(k.k->p.offset);
+			SET_BCH_SNAPSHOT_SUBVOL(&snapshot->v, true);
+			break;
+		}
+	}
+	bch2_trans_iter_exit(trans, &iter);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return  bch2_btree_insert_trans(trans, BTREE_ID_snapshots, &snapshot->k_i, 0) ?:
 		bch2_mark_snapshot(trans, BTREE_ID_snapshots, 0,
 				   bkey_s_c_null, bkey_i_to_s(&snapshot->k_i), 0) ?:
@@ -1730,6 +1778,7 @@ int __bch2_key_has_snapshot_overwrites(struct btree_trans *trans,
 	return ret;
 }
 
+<<<<<<< HEAD
 static u32 bch2_snapshot_smallest_child(struct bch_fs *c, u32 id)
 {
 	const struct snapshot_t *s = snapshot_t(c, id);
@@ -1826,6 +1875,8 @@ again:
 	return ret ?: trans_was_restarted(trans, restart_count);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int bch2_check_snapshot_needs_deletion(struct btree_trans *trans, struct bkey_s_c k)
 {
 	struct bch_fs *c = trans->c;

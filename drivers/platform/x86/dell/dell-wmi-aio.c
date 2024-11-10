@@ -70,6 +70,7 @@ static bool dell_wmi_aio_event_check(u8 *buffer, int length)
 	return false;
 }
 
+<<<<<<< HEAD
 static void dell_wmi_aio_notify(u32 value, void *context)
 {
 	struct acpi_buffer response = { ACPI_ALLOCATE_BUFFER, NULL };
@@ -84,6 +85,12 @@ static void dell_wmi_aio_notify(u32 value, void *context)
 	}
 
 	obj = (union acpi_object *)response.pointer;
+=======
+static void dell_wmi_aio_notify(union acpi_object *obj, void *context)
+{
+	struct dell_wmi_event *event;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (obj) {
 		unsigned int scancode = 0;
 
@@ -114,7 +121,10 @@ static void dell_wmi_aio_notify(u32 value, void *context)
 			break;
 		}
 	}
+<<<<<<< HEAD
 	kfree(obj);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int __init dell_wmi_aio_input_setup(void)

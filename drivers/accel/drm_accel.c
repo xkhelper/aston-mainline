@@ -8,7 +8,11 @@
 
 #include <linux/debugfs.h>
 #include <linux/device.h>
+<<<<<<< HEAD
 #include <linux/idr.h>
+=======
+#include <linux/xarray.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <drm/drm_accel.h>
 #include <drm/drm_auth.h>
@@ -18,8 +22,12 @@
 #include <drm/drm_ioctl.h>
 #include <drm/drm_print.h>
 
+<<<<<<< HEAD
 static DEFINE_SPINLOCK(accel_minor_lock);
 static struct idr accel_minors_idr;
+=======
+DEFINE_XARRAY_ALLOC(accel_minors_xa);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct dentry *accel_debugfs_root;
 
@@ -118,6 +126,7 @@ void accel_set_device_instance_params(struct device *kdev, int index)
 }
 
 /**
+<<<<<<< HEAD
  * accel_minor_alloc() - Allocates a new accel minor
  *
  * This function access the accel minors idr and allocates from it
@@ -211,6 +220,8 @@ static void accel_minor_release(struct drm_minor *minor)
 }
 
 /**
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * accel_open - open method for ACCEL file
  * @inode: device inode
  * @filp: file pointer.
@@ -227,7 +238,11 @@ int accel_open(struct inode *inode, struct file *filp)
 	struct drm_minor *minor;
 	int retcode;
 
+<<<<<<< HEAD
 	minor = accel_minor_acquire(iminor(inode));
+=======
+	minor = drm_minor_acquire(&accel_minors_xa, iminor(inode));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(minor))
 		return PTR_ERR(minor);
 
@@ -246,7 +261,11 @@ int accel_open(struct inode *inode, struct file *filp)
 
 err_undo:
 	atomic_dec(&dev->open_count);
+<<<<<<< HEAD
 	accel_minor_release(minor);
+=======
+	drm_minor_release(minor);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return retcode;
 }
 EXPORT_SYMBOL_GPL(accel_open);
@@ -257,7 +276,11 @@ static int accel_stub_open(struct inode *inode, struct file *filp)
 	struct drm_minor *minor;
 	int err;
 
+<<<<<<< HEAD
 	minor = accel_minor_acquire(iminor(inode));
+=======
+	minor = drm_minor_acquire(&accel_minors_xa, iminor(inode));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(minor))
 		return PTR_ERR(minor);
 
@@ -274,7 +297,11 @@ static int accel_stub_open(struct inode *inode, struct file *filp)
 		err = 0;
 
 out:
+<<<<<<< HEAD
 	accel_minor_release(minor);
+=======
+	drm_minor_release(minor);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return err;
 }
@@ -290,15 +317,22 @@ void accel_core_exit(void)
 	unregister_chrdev(ACCEL_MAJOR, "accel");
 	debugfs_remove(accel_debugfs_root);
 	accel_sysfs_destroy();
+<<<<<<< HEAD
 	idr_destroy(&accel_minors_idr);
+=======
+	WARN_ON(!xa_empty(&accel_minors_xa));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int __init accel_core_init(void)
 {
 	int ret;
 
+<<<<<<< HEAD
 	idr_init(&accel_minors_idr);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = accel_sysfs_init();
 	if (ret < 0) {
 		DRM_ERROR("Cannot create ACCEL class: %d\n", ret);

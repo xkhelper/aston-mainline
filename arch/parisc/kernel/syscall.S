@@ -243,10 +243,17 @@ linux_gateway_entry:
 
 #ifdef CONFIG_64BIT
 	ldil	L%sys_call_table, %r1
+<<<<<<< HEAD
 	or,=	%r2,%r2,%r2
 	addil	L%(sys_call_table64-sys_call_table), %r1
 	ldo	R%sys_call_table(%r1), %r19
 	or,=	%r2,%r2,%r2
+=======
+	or,ev	%r2,%r2,%r2
+	ldil	L%sys_call_table64, %r1
+	ldo	R%sys_call_table(%r1), %r19
+	or,ev	%r2,%r2,%r2
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ldo	R%sys_call_table64(%r1), %r19
 #else
 	load32	sys_call_table, %r19
@@ -379,10 +386,17 @@ tracesys_next:
 	extrd,u	%r19,63,1,%r2			/* W hidden in bottom bit */
 
 	ldil	L%sys_call_table, %r1
+<<<<<<< HEAD
 	or,=	%r2,%r2,%r2
 	addil	L%(sys_call_table64-sys_call_table), %r1
 	ldo	R%sys_call_table(%r1), %r19
 	or,=	%r2,%r2,%r2
+=======
+	or,ev	%r2,%r2,%r2
+	ldil	L%sys_call_table64, %r1
+	ldo	R%sys_call_table(%r1), %r19
+	or,ev	%r2,%r2,%r2
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ldo	R%sys_call_table64(%r1), %r19
 #else
 	load32	sys_call_table, %r19
@@ -1327,6 +1341,11 @@ ENTRY(sys_call_table)
 END(sys_call_table)
 
 #ifdef CONFIG_64BIT
+<<<<<<< HEAD
+=======
+#undef __SYSCALL_WITH_COMPAT
+#define __SYSCALL_WITH_COMPAT(nr, native, compat)	__SYSCALL(nr, native)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.align 8
 ENTRY(sys_call_table64)
 #include <asm/syscall_table_64.h>    /* 64-bit syscalls */

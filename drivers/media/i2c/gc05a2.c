@@ -65,7 +65,11 @@
 
 static const char *const gc05a2_test_pattern_menu[] = {
 	"No Pattern",  "Fade_to_gray_Color Bar", "Color Bar",
+<<<<<<< HEAD
 	"PN9",	       "Horizental_gradient",    "Checkboard Pattern",
+=======
+	"PN9",	       "Horizontal_gradient",    "Checkboard Pattern",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	"Slant",       "Resolution",	         "Solid Black",
 	"Solid White",
 };

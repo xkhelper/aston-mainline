@@ -38,7 +38,11 @@
 #include <asm/byteorder.h>
 #include <asm/dma.h>
 #include <asm/mach-types.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/usb/ch9.h>
 #include <linux/usb/gadget.h>

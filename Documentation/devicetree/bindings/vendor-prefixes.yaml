@@ -368,6 +368,11 @@ patternProperties:
     description: Devantech, Ltd.
   "^dfi,.*":
     description: DFI Inc.
+<<<<<<< HEAD
+=======
+  "^dfrobot,.*":
+    description: DFRobot Corporation
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   "^dh,.*":
     description: DH electronics GmbH
   "^difrnce,.*":
@@ -804,6 +809,11 @@ patternProperties:
     description: Lantiq Semiconductor
   "^lattice,.*":
     description: Lattice Semiconductor
+<<<<<<< HEAD
+=======
+  "^lckfb,.*":
+    description: Shenzhen JLC Technology Group Co., Ltd.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   "^lctech,.*":
     description: Shenzen LC Technology Co., Ltd.
   "^leadtek,.*":
@@ -1476,6 +1486,11 @@ patternProperties:
     description: Terasic Inc.
   "^tesla,.*":
     description: Tesla, Inc.
+<<<<<<< HEAD
+=======
+  "^test,.*":
+    description: Reserved for use by tests. For example, KUnit.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   "^tfc,.*":
     description: Three Five Corp
   "^thead,.*":
@@ -1535,6 +1550,11 @@ patternProperties:
     description: Turing Machines, Inc.
   "^tyan,.*":
     description: Tyan Computer Corporation
+<<<<<<< HEAD
+=======
+  "^tyhx,.*":
+    description: NanjingTianyihexin Electronics Ltd.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   "^u-blox,.*":
     description: u-blox
   "^u-boot,.*":

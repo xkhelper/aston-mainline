@@ -53,7 +53,11 @@ struct da9121_range {
 	int reg_max;
 };
 
+<<<<<<< HEAD
 static struct da9121_range da9121_10A_2phase_current = {
+=======
+static const struct da9121_range da9121_10A_2phase_current = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.val_min =  7000000,
 	.val_max = 20000000,
 	.val_stp =  1000000,
@@ -61,7 +65,11 @@ static struct da9121_range da9121_10A_2phase_current = {
 	.reg_max = 14,
 };
 
+<<<<<<< HEAD
 static struct da9121_range da9121_6A_2phase_current = {
+=======
+static const struct da9121_range da9121_6A_2phase_current = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.val_min =  7000000,
 	.val_max = 12000000,
 	.val_stp =  1000000,
@@ -69,7 +77,11 @@ static struct da9121_range da9121_6A_2phase_current = {
 	.reg_max = 6,
 };
 
+<<<<<<< HEAD
 static struct da9121_range da9121_5A_1phase_current = {
+=======
+static const struct da9121_range da9121_5A_1phase_current = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.val_min =  3500000,
 	.val_max = 10000000,
 	.val_stp =   500000,
@@ -77,7 +89,11 @@ static struct da9121_range da9121_5A_1phase_current = {
 	.reg_max = 14,
 };
 
+<<<<<<< HEAD
 static struct da9121_range da9121_3A_1phase_current = {
+=======
+static const struct da9121_range da9121_3A_1phase_current = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.val_min = 3500000,
 	.val_max = 6000000,
 	.val_stp =  500000,
@@ -85,7 +101,11 @@ static struct da9121_range da9121_3A_1phase_current = {
 	.reg_max = 6,
 };
 
+<<<<<<< HEAD
 static struct da9121_range da914x_40A_4phase_current = {
+=======
+static const struct da9121_range da914x_40A_4phase_current = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.val_min = 26000000,
 	.val_max = 78000000,
 	.val_stp =  4000000,
@@ -93,7 +113,11 @@ static struct da9121_range da914x_40A_4phase_current = {
 	.reg_max = 14,
 };
 
+<<<<<<< HEAD
 static struct da9121_range da914x_20A_2phase_current = {
+=======
+static const struct da9121_range da914x_20A_2phase_current = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.val_min = 13000000,
 	.val_max = 39000000,
 	.val_stp =  2000000,
@@ -104,7 +128,11 @@ static struct da9121_range da914x_20A_2phase_current = {
 struct da9121_variant_info {
 	int num_bucks;
 	int num_phases;
+<<<<<<< HEAD
 	struct da9121_range *current_range;
+=======
+	const struct da9121_range *current_range;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct da9121_variant_info variant_parameters[] = {
@@ -188,7 +216,11 @@ static int da9121_get_current_limit(struct regulator_dev *rdev)
 {
 	struct da9121 *chip = rdev_get_drvdata(rdev);
 	int id = rdev_get_id(rdev);
+<<<<<<< HEAD
 	struct da9121_range *range =
+=======
+	const struct da9121_range *range =
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		variant_parameters[chip->variant_id].current_range;
 	unsigned int val = 0;
 	int ret = 0;
@@ -219,7 +251,11 @@ static int da9121_ceiling_selector(struct regulator_dev *rdev,
 		unsigned int *selector)
 {
 	struct da9121 *chip = rdev_get_drvdata(rdev);
+<<<<<<< HEAD
 	struct da9121_range *range =
+=======
+	const struct da9121_range *range =
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		variant_parameters[chip->variant_id].current_range;
 	unsigned int level;
 	unsigned int i = 0;
@@ -259,7 +295,11 @@ static int da9121_set_current_limit(struct regulator_dev *rdev,
 {
 	struct da9121 *chip = rdev_get_drvdata(rdev);
 	int id = rdev_get_id(rdev);
+<<<<<<< HEAD
 	struct da9121_range *range =
+=======
+	const struct da9121_range *range =
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		variant_parameters[chip->variant_id].current_range;
 	unsigned int sel = 0;
 	int ret = 0;

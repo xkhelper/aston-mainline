@@ -543,7 +543,11 @@ inno_hdmi_encoder_atomic_check(struct drm_encoder *encoder,
 	return 0;
 }
 
+<<<<<<< HEAD
 static struct drm_encoder_helper_funcs inno_hdmi_encoder_helper_funcs = {
+=======
+static const struct drm_encoder_helper_funcs inno_hdmi_encoder_helper_funcs = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.atomic_check	= inno_hdmi_encoder_atomic_check,
 	.atomic_enable	= inno_hdmi_encoder_enable,
 	.atomic_disable	= inno_hdmi_encoder_disable,

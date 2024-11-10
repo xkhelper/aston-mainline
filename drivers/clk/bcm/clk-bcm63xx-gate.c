@@ -567,7 +567,11 @@ static const struct of_device_id clk_bcm63xx_dt_ids[] = {
 
 static struct platform_driver clk_bcm63xx = {
 	.probe = clk_bcm63xx_probe,
+<<<<<<< HEAD
 	.remove_new = clk_bcm63xx_remove,
+=======
+	.remove = clk_bcm63xx_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "bcm63xx-clock",
 		.of_match_table = clk_bcm63xx_dt_ids,

@@ -9,6 +9,14 @@
 		interrupt-controller;
 		#interrupt-cells = <2>;
 
+<<<<<<< HEAD
+=======
+		pmic_adc: adc {
+			compatible = "mediatek,mt6359-auxadc";
+			#io-channel-cells = <1>;
+		};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mt6359codec: mt6359codec {
 		};
 

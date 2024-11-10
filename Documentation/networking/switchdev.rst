@@ -137,10 +137,17 @@ would be sub-port 0 on port 1 on switch 1.
 Port Features
 ^^^^^^^^^^^^^
 
+<<<<<<< HEAD
 NETIF_F_NETNS_LOCAL
 
 If the switchdev driver (and device) only supports offloading of the default
 network namespace (netns), the driver should set this feature flag to prevent
+=======
+dev->netns_local
+
+If the switchdev driver (and device) only supports offloading of the default
+network namespace (netns), the driver should set this private flag to prevent
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 the port netdev from being moved out of the default netns.  A netns-aware
 driver/device would not set this flag and be responsible for partitioning
 hardware to preserve netns containment.  This means hardware cannot forward

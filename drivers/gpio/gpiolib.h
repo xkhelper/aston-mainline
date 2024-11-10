@@ -89,9 +89,27 @@ static inline struct gpio_device *to_gpio_device(struct device *dev)
 	return container_of(dev, struct gpio_device, dev);
 }
 
+<<<<<<< HEAD
 /* gpio suffixes used for ACPI and device tree lookup */
 extern const char *const gpio_suffixes[];
 extern const size_t gpio_suffix_count;
+=======
+/* GPIO suffixes used for ACPI and device tree lookup */
+extern const char *const gpio_suffixes[];
+
+#define for_each_gpio_property_name(propname, con_id)					\
+	for (const char * const *__suffixes = gpio_suffixes;				\
+	     *__suffixes && ({								\
+		const char *__gs = *__suffixes;						\
+											\
+		if (con_id)								\
+			snprintf(propname, sizeof(propname), "%s-%s", con_id, __gs);	\
+		else									\
+			snprintf(propname, sizeof(propname), "%s", __gs);		\
+		1;									\
+	     });									\
+	     __suffixes++)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * struct gpio_array - Opaque descriptor for a structure of GPIO array attributes

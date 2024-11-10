@@ -1332,7 +1332,10 @@ static ssize_t cio_settle_write(struct file *file, const char __user *buf,
 static const struct proc_ops cio_settle_proc_ops = {
 	.proc_open	= nonseekable_open,
 	.proc_write	= cio_settle_write,
+<<<<<<< HEAD
 	.proc_lseek	= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int __init cio_settle_init(void)

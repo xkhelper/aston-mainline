@@ -1,3 +1,7 @@
 CONFIG_KUNIT=y
 CONFIG_OF=y
 CONFIG_OF_KUNIT_TEST=y
+<<<<<<< HEAD
+=======
+CONFIG_OF_OVERLAY_KUNIT_TEST=y
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

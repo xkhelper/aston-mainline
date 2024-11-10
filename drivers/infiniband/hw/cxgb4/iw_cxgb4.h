@@ -532,11 +532,28 @@ static inline struct c4iw_ucontext *to_c4iw_ucontext(struct ib_ucontext *c)
 	return container_of(c, struct c4iw_ucontext, ibucontext);
 }
 
+<<<<<<< HEAD
+=======
+enum {
+	CXGB4_MMAP_BAR,
+	CXGB4_MMAP_BAR_WC,
+	CXGB4_MMAP_CONTIG,
+	CXGB4_MMAP_NON_CONTIG,
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct c4iw_mm_entry {
 	struct list_head entry;
 	u64 addr;
 	u32 key;
+<<<<<<< HEAD
 	unsigned len;
+=======
+	void *vaddr;
+	dma_addr_t dma_addr;
+	unsigned len;
+	u8 mmap_flag;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static inline struct c4iw_mm_entry *remove_mmap(struct c4iw_ucontext *ucontext,
@@ -561,6 +578,35 @@ static inline struct c4iw_mm_entry *remove_mmap(struct c4iw_ucontext *ucontext,
 	return NULL;
 }
 
+<<<<<<< HEAD
+=======
+static inline void insert_flag_to_mmap(struct c4iw_rdev *rdev,
+				       struct c4iw_mm_entry *mm, u64 addr)
+{
+	if (addr >= pci_resource_start(rdev->lldi.pdev, 0) &&
+	    (addr < (pci_resource_start(rdev->lldi.pdev, 0) +
+		    pci_resource_len(rdev->lldi.pdev, 0))))
+		mm->mmap_flag = CXGB4_MMAP_BAR;
+	else if (addr >= pci_resource_start(rdev->lldi.pdev, 2) &&
+		 (addr < (pci_resource_start(rdev->lldi.pdev, 2) +
+			 pci_resource_len(rdev->lldi.pdev, 2)))) {
+		if (addr >= rdev->oc_mw_pa) {
+			mm->mmap_flag = CXGB4_MMAP_BAR_WC;
+		} else {
+			if (is_t4(rdev->lldi.adapter_type))
+				mm->mmap_flag = CXGB4_MMAP_BAR;
+			else
+				mm->mmap_flag = CXGB4_MMAP_BAR_WC;
+		}
+	} else {
+		if (addr)
+			mm->mmap_flag = CXGB4_MMAP_CONTIG;
+		else
+			mm->mmap_flag = CXGB4_MMAP_NON_CONTIG;
+	}
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void insert_mmap(struct c4iw_ucontext *ucontext,
 			       struct c4iw_mm_entry *mm)
 {
@@ -936,7 +982,10 @@ u32 c4iw_get_resource(struct c4iw_id_table *id_table);
 void c4iw_put_resource(struct c4iw_id_table *id_table, u32 entry);
 int c4iw_init_resource(struct c4iw_rdev *rdev, u32 nr_tpt,
 		       u32 nr_pdid, u32 nr_srqt);
+<<<<<<< HEAD
 int c4iw_init_ctrl_qp(struct c4iw_rdev *rdev);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int c4iw_pblpool_create(struct c4iw_rdev *rdev);
 int c4iw_rqtpool_create(struct c4iw_rdev *rdev);
 int c4iw_ocqp_pool_create(struct c4iw_rdev *rdev);
@@ -944,7 +993,10 @@ void c4iw_pblpool_destroy(struct c4iw_rdev *rdev);
 void c4iw_rqtpool_destroy(struct c4iw_rdev *rdev);
 void c4iw_ocqp_pool_destroy(struct c4iw_rdev *rdev);
 void c4iw_destroy_resource(struct c4iw_resource *rscp);
+<<<<<<< HEAD
 int c4iw_destroy_ctrl_qp(struct c4iw_rdev *rdev);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void c4iw_register_device(struct work_struct *work);
 void c4iw_unregister_device(struct c4iw_dev *dev);
 int __init c4iw_cm_init(void);
@@ -1006,8 +1058,11 @@ int c4iw_ep_disconnect(struct c4iw_ep *ep, int abrupt, gfp_t gfp);
 int c4iw_flush_rq(struct t4_wq *wq, struct t4_cq *cq, int count);
 int c4iw_flush_sq(struct c4iw_qp *qhp);
 int c4iw_ev_handler(struct c4iw_dev *rnicp, u32 qid);
+<<<<<<< HEAD
 u16 c4iw_rqes_posted(struct c4iw_qp *qhp);
 int c4iw_post_terminate(struct c4iw_qp *qhp, struct t4_cqe *err_cqe);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 u32 c4iw_get_cqid(struct c4iw_rdev *rdev, struct c4iw_dev_ucontext *uctx);
 void c4iw_put_cqid(struct c4iw_rdev *rdev, u32 qid,
 		struct c4iw_dev_ucontext *uctx);

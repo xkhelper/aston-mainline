@@ -1611,10 +1611,16 @@ int brcms_ucode_init_buf(struct brcms_info *wl, void **pbuf, u32 idx)
 			if (le32_to_cpu(hdr->idx) == idx) {
 				pdata = wl->fw.fw_bin[i]->data +
 					le32_to_cpu(hdr->offset);
+<<<<<<< HEAD
 				*pbuf = kvmalloc(len, GFP_KERNEL);
 				if (*pbuf == NULL)
 					goto fail;
 				memcpy(*pbuf, pdata, len);
+=======
+				*pbuf = kvmemdup(pdata, len, GFP_KERNEL);
+				if (*pbuf == NULL)
+					return -ENOMEM;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				return 0;
 			}
 		}
@@ -1622,7 +1628,10 @@ int brcms_ucode_init_buf(struct brcms_info *wl, void **pbuf, u32 idx)
 	brcms_err(wl->wlc->hw->d11core,
 		  "ERROR: ucode buf tag:%d can not be found!\n", idx);
 	*pbuf = NULL;
+<<<<<<< HEAD
 fail:
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return -ENODATA;
 }
 

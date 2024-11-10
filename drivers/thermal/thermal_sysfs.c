@@ -12,6 +12,10 @@
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
+<<<<<<< HEAD
+=======
+#include <linux/container_of.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/sysfs.h>
 #include <linux/device.h>
 #include <linux/err.h>
@@ -52,7 +56,11 @@ mode_show(struct device *dev, struct device_attribute *attr, char *buf)
 	int enabled;
 
 	mutex_lock(&tz->lock);
+<<<<<<< HEAD
 	enabled = thermal_zone_device_is_enabled(tz);
+=======
+	enabled = tz->mode == THERMAL_DEVICE_ENABLED;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_unlock(&tz->lock);
 
 	return sprintf(buf, "%s\n", enabled ? "enabled" : "disabled");
@@ -78,10 +86,23 @@ mode_store(struct device *dev, struct device_attribute *attr,
 	return count;
 }
 
+<<<<<<< HEAD
+=======
+#define thermal_trip_of_attr(_ptr_, _attr_)				\
+	({ 								\
+		struct thermal_trip_desc *td;				\
+									\
+		td = container_of(_ptr_, struct thermal_trip_desc,	\
+				  trip_attrs._attr_.attr);		\
+		&td->trip;						\
+	})
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static ssize_t
 trip_point_type_show(struct device *dev, struct device_attribute *attr,
 		     char *buf)
 {
+<<<<<<< HEAD
 	struct thermal_zone_device *tz = to_thermal_zone(dev);
 	int trip_id;
 
@@ -89,21 +110,33 @@ trip_point_type_show(struct device *dev, struct device_attribute *attr,
 		return -EINVAL;
 
 	return sprintf(buf, "%s\n", thermal_trip_type_name(tz->trips[trip_id].trip.type));
+=======
+	struct thermal_trip *trip = thermal_trip_of_attr(attr, type);
+
+	return sprintf(buf, "%s\n", thermal_trip_type_name(trip->type));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static ssize_t
 trip_point_temp_store(struct device *dev, struct device_attribute *attr,
 		      const char *buf, size_t count)
 {
+<<<<<<< HEAD
 	struct thermal_zone_device *tz = to_thermal_zone(dev);
 	struct thermal_trip *trip;
 	int trip_id, ret;
 	int temp;
+=======
+	struct thermal_trip *trip = thermal_trip_of_attr(attr, temp);
+	struct thermal_zone_device *tz = to_thermal_zone(dev);
+	int ret, temp;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = kstrtoint(buf, 10, &temp);
 	if (ret)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (sscanf(attr->attr.name, "trip_point_%d_temp", &trip_id) != 1)
 		return -EINVAL;
 
@@ -123,6 +156,30 @@ trip_point_temp_store(struct device *dev, struct device_attribute *attr,
 		__thermal_zone_device_update(tz, THERMAL_TRIP_CHANGED);
 	}
 
+=======
+	mutex_lock(&tz->lock);
+
+	if (temp == trip->temperature)
+		goto unlock;
+
+	/* Arrange the condition to avoid integer overflows. */
+	if (temp != THERMAL_TEMP_INVALID &&
+	    temp <= trip->hysteresis + THERMAL_TEMP_INVALID) {
+		ret = -EINVAL;
+		goto unlock;
+	}
+
+	if (tz->ops.set_trip_temp) {
+		ret = tz->ops.set_trip_temp(tz, trip, temp);
+		if (ret)
+			goto unlock;
+	}
+
+	thermal_zone_set_trip_temp(tz, trip, temp);
+
+	__thermal_zone_device_update(tz, THERMAL_TRIP_CHANGED);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 unlock:
 	mutex_unlock(&tz->lock);
 
@@ -133,6 +190,7 @@ static ssize_t
 trip_point_temp_show(struct device *dev, struct device_attribute *attr,
 		     char *buf)
 {
+<<<<<<< HEAD
 	struct thermal_zone_device *tz = to_thermal_zone(dev);
 	int trip_id;
 
@@ -140,21 +198,33 @@ trip_point_temp_show(struct device *dev, struct device_attribute *attr,
 		return -EINVAL;
 
 	return sprintf(buf, "%d\n", READ_ONCE(tz->trips[trip_id].trip.temperature));
+=======
+	struct thermal_trip *trip = thermal_trip_of_attr(attr, temp);
+
+	return sprintf(buf, "%d\n", READ_ONCE(trip->temperature));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static ssize_t
 trip_point_hyst_store(struct device *dev, struct device_attribute *attr,
 		      const char *buf, size_t count)
 {
+<<<<<<< HEAD
 	struct thermal_zone_device *tz = to_thermal_zone(dev);
 	struct thermal_trip *trip;
 	int trip_id, ret;
 	int hyst;
+=======
+	struct thermal_trip *trip = thermal_trip_of_attr(attr, hyst);
+	struct thermal_zone_device *tz = to_thermal_zone(dev);
+	int ret, hyst;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = kstrtoint(buf, 10, &hyst);
 	if (ret || hyst < 0)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (sscanf(attr->attr.name, "trip_point_%d_hyst", &trip_id) != 1)
 		return -EINVAL;
 
@@ -171,12 +241,44 @@ trip_point_hyst_store(struct device *dev, struct device_attribute *attr,
 	mutex_unlock(&tz->lock);
 
 	return count;
+=======
+	mutex_lock(&tz->lock);
+
+	if (hyst == trip->hysteresis)
+		goto unlock;
+
+	/*
+	 * Allow the hysteresis to be updated when the temperature is invalid
+	 * to allow user space to avoid having to adjust hysteresis after a
+	 * valid temperature has been set, but in that case just change the
+	 * value and do nothing else.
+	 */
+	if (trip->temperature == THERMAL_TEMP_INVALID) {
+		WRITE_ONCE(trip->hysteresis, hyst);
+		goto unlock;
+	}
+
+	if (trip->temperature - hyst <= THERMAL_TEMP_INVALID) {
+		ret = -EINVAL;
+		goto unlock;
+	}
+
+	thermal_zone_set_trip_hyst(tz, trip, hyst);
+
+	__thermal_zone_device_update(tz, THERMAL_TRIP_CHANGED);
+
+unlock:
+	mutex_unlock(&tz->lock);
+
+	return ret ? ret : count;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static ssize_t
 trip_point_hyst_show(struct device *dev, struct device_attribute *attr,
 		     char *buf)
 {
+<<<<<<< HEAD
 	struct thermal_zone_device *tz = to_thermal_zone(dev);
 	int trip_id;
 
@@ -184,6 +286,11 @@ trip_point_hyst_show(struct device *dev, struct device_attribute *attr,
 		return -EINVAL;
 
 	return sprintf(buf, "%d\n", READ_ONCE(tz->trips[trip_id].trip.hysteresis));
+=======
+	struct thermal_trip *trip = thermal_trip_of_attr(attr, hyst);
+
+	return sprintf(buf, "%d\n", READ_ONCE(trip->hysteresis));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static ssize_t
@@ -382,6 +489,7 @@ static const struct attribute_group *thermal_zone_attribute_groups[] = {
  */
 static int create_trip_attrs(struct thermal_zone_device *tz)
 {
+<<<<<<< HEAD
 	const struct thermal_trip_desc *td;
 	struct attribute **attrs;
 
@@ -463,6 +571,57 @@ static int create_trip_attrs(struct thermal_zone_device *tz)
 		}
 		attrs[indx + tz->num_trips * 2] =
 					&tz->trip_hyst_attrs[indx].attr.attr;
+=======
+	struct thermal_trip_desc *td;
+	struct attribute **attrs;
+	int i;
+
+	attrs = kcalloc(tz->num_trips * 3 + 1, sizeof(*attrs), GFP_KERNEL);
+	if (!attrs)
+		return -ENOMEM;
+
+	i = 0;
+	for_each_trip_desc(tz, td) {
+		struct thermal_trip_attrs *trip_attrs = &td->trip_attrs;
+
+		/* create trip type attribute */
+		snprintf(trip_attrs->type.name, THERMAL_NAME_LENGTH,
+			 "trip_point_%d_type", i);
+
+		sysfs_attr_init(&trip_attrs->type.attr.attr);
+		trip_attrs->type.attr.attr.name = trip_attrs->type.name;
+		trip_attrs->type.attr.attr.mode = S_IRUGO;
+		trip_attrs->type.attr.show = trip_point_type_show;
+		attrs[i] = &trip_attrs->type.attr.attr;
+
+		/* create trip temp attribute */
+		snprintf(trip_attrs->temp.name, THERMAL_NAME_LENGTH,
+			 "trip_point_%d_temp", i);
+
+		sysfs_attr_init(&trip_attrs->temp.attr.attr);
+		trip_attrs->temp.attr.attr.name = trip_attrs->temp.name;
+		trip_attrs->temp.attr.attr.mode = S_IRUGO;
+		trip_attrs->temp.attr.show = trip_point_temp_show;
+		if (td->trip.flags & THERMAL_TRIP_FLAG_RW_TEMP) {
+			trip_attrs->temp.attr.attr.mode |= S_IWUSR;
+			trip_attrs->temp.attr.store = trip_point_temp_store;
+		}
+		attrs[i + tz->num_trips] = &trip_attrs->temp.attr.attr;
+
+		snprintf(trip_attrs->hyst.name, THERMAL_NAME_LENGTH,
+			 "trip_point_%d_hyst", i);
+
+		sysfs_attr_init(&trip_attrs->hyst.attr.attr);
+		trip_attrs->hyst.attr.attr.name = trip_attrs->hyst.name;
+		trip_attrs->hyst.attr.attr.mode = S_IRUGO;
+		trip_attrs->hyst.attr.show = trip_point_hyst_show;
+		if (td->trip.flags & THERMAL_TRIP_FLAG_RW_HYST) {
+			trip_attrs->hyst.attr.attr.mode |= S_IWUSR;
+			trip_attrs->hyst.attr.store = trip_point_hyst_store;
+		}
+		attrs[i + 2 * tz->num_trips] = &trip_attrs->hyst.attr.attr;
+		i++;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	attrs[tz->num_trips * 3] = NULL;
 
@@ -479,6 +638,7 @@ static int create_trip_attrs(struct thermal_zone_device *tz)
  */
 static void destroy_trip_attrs(struct thermal_zone_device *tz)
 {
+<<<<<<< HEAD
 	if (!tz)
 		return;
 
@@ -486,6 +646,10 @@ static void destroy_trip_attrs(struct thermal_zone_device *tz)
 	kfree(tz->trip_temp_attrs);
 	kfree(tz->trip_hyst_attrs);
 	kfree(tz->trips_attribute_group.attrs);
+=======
+	if (tz)
+		kfree(tz->trips_attribute_group.attrs);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int thermal_zone_create_device_groups(struct thermal_zone_device *tz)
@@ -887,6 +1051,7 @@ void thermal_cooling_device_stats_reinit(struct thermal_cooling_device *cdev)
 ssize_t
 trip_point_show(struct device *dev, struct device_attribute *attr, char *buf)
 {
+<<<<<<< HEAD
 	struct thermal_instance *instance;
 
 	instance =
@@ -894,6 +1059,14 @@ trip_point_show(struct device *dev, struct device_attribute *attr, char *buf)
 
 	return sprintf(buf, "%d\n",
 		       thermal_zone_trip_id(instance->tz, instance->trip));
+=======
+	struct thermal_zone_device *tz = to_thermal_zone(dev);
+	struct thermal_instance *instance;
+
+	instance = container_of(attr, struct thermal_instance, attr);
+
+	return sprintf(buf, "%d\n", thermal_zone_trip_id(tz, instance->trip));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 ssize_t
@@ -909,6 +1082,10 @@ weight_show(struct device *dev, struct device_attribute *attr, char *buf)
 ssize_t weight_store(struct device *dev, struct device_attribute *attr,
 		     const char *buf, size_t count)
 {
+<<<<<<< HEAD
+=======
+	struct thermal_zone_device *tz = to_thermal_zone(dev);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct thermal_instance *instance;
 	int ret, weight;
 
@@ -919,6 +1096,7 @@ ssize_t weight_store(struct device *dev, struct device_attribute *attr,
 	instance = container_of(attr, struct thermal_instance, weight_attr);
 
 	/* Don't race with governors using the 'weight' value */
+<<<<<<< HEAD
 	mutex_lock(&instance->tz->lock);
 
 	instance->weight = weight;
@@ -927,6 +1105,15 @@ ssize_t weight_store(struct device *dev, struct device_attribute *attr,
 				   THERMAL_INSTANCE_WEIGHT_CHANGED);
 
 	mutex_unlock(&instance->tz->lock);
+=======
+	mutex_lock(&tz->lock);
+
+	instance->weight = weight;
+
+	thermal_governor_update_tz(tz, THERMAL_INSTANCE_WEIGHT_CHANGED);
+
+	mutex_unlock(&tz->lock);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return count;
 }

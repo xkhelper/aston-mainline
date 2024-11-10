@@ -5,6 +5,10 @@
 #define _LAN743X_H
 
 #include <linux/phy.h>
+<<<<<<< HEAD
+=======
+#include <linux/phylink.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "lan743x_ptp.h"
 
 #define DRIVER_AUTHOR   "Bryan Whitehead <Bryan.Whitehead@microchip.com>"
@@ -1083,6 +1087,11 @@ struct lan743x_adapter {
 	u32			flags;
 	u32			hw_cfg;
 	phy_interface_t		phy_interface;
+<<<<<<< HEAD
+=======
+	struct phylink		*phylink;
+	struct phylink_config	phylink_config;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define LAN743X_COMPONENT_FLAG_RX(channel)  BIT(20 + (channel))
@@ -1203,5 +1212,9 @@ void lan743x_hs_syslock_release(struct lan743x_adapter *adapter);
 void lan743x_mac_flow_ctrl_set_enables(struct lan743x_adapter *adapter,
 				       bool tx_enable, bool rx_enable);
 int lan743x_sgmii_read(struct lan743x_adapter *adapter, u8 mmd, u16 addr);
+<<<<<<< HEAD
+=======
+void lan743x_mac_eee_enable(struct lan743x_adapter *adapter, bool enable);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* _LAN743X_H */

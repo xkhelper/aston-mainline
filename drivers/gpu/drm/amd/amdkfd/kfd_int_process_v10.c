@@ -129,6 +129,7 @@ enum SQ_INTERRUPT_ERROR_TYPE {
 				KFD_DEBUG_CP_BAD_OP_ECODE_MASK)		\
 				>> KFD_DEBUG_CP_BAD_OP_ECODE_SHIFT)
 
+<<<<<<< HEAD
 static void event_interrupt_poison_consumption(struct kfd_node *dev,
 				uint16_t pasid, uint16_t client_id)
 {
@@ -186,6 +187,8 @@ static void event_interrupt_poison_consumption(struct kfd_node *dev,
 	amdgpu_amdkfd_ras_poison_consumption_handler(dev->adev, block, reset);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool event_interrupt_isr_v10(struct kfd_node *dev,
 					const uint32_t *ih_ring_entry,
 					uint32_t *patched_ihre,
@@ -332,11 +335,14 @@ static void event_interrupt_wq_v10(struct kfd_node *dev,
 					REG_GET_FIELD(context_id1, SQ_INTERRUPT_WORD_WAVE_CTXID1,
 							WGP_ID),
 					sq_intr_err_type);
+<<<<<<< HEAD
 				if (sq_intr_err_type != SQ_INTERRUPT_ERROR_TYPE_ILLEGAL_INST &&
 					sq_intr_err_type != SQ_INTERRUPT_ERROR_TYPE_MEMVIOL) {
 					event_interrupt_poison_consumption(dev, pasid, source_id);
 					return;
 				}
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				break;
 			default:
 				break;
@@ -362,15 +368,19 @@ static void event_interrupt_wq_v10(struct kfd_node *dev,
 		   client_id == SOC15_IH_CLIENTID_SDMA7) {
 		if (source_id == SOC15_INTSRC_SDMA_TRAP) {
 			kfd_signal_event_interrupt(pasid, context_id0 & 0xfffffff, 28);
+<<<<<<< HEAD
 		} else if (source_id == SOC15_INTSRC_SDMA_ECC) {
 			event_interrupt_poison_consumption(dev, pasid, source_id);
 			return;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	} else if (client_id == SOC15_IH_CLIENTID_VMC ||
 		   client_id == SOC15_IH_CLIENTID_VMC1 ||
 		   client_id == SOC15_IH_CLIENTID_UTCL2) {
 		struct kfd_vm_fault_info info = {0};
 		uint16_t ring_id = SOC15_RING_ID_FROM_IH_ENTRY(ih_ring_entry);
+<<<<<<< HEAD
 		uint32_t node_id = SOC15_NODEID_FROM_IH_ENTRY(ih_ring_entry);
 		uint32_t vmid_type = SOC15_VMID_TYPE_FROM_IH_ENTRY(ih_ring_entry);
 		int hub_inst = 0;
@@ -394,6 +404,10 @@ static void event_interrupt_wq_v10(struct kfd_node *dev,
 			return;
 		}
 
+=======
+		struct kfd_hsa_memory_exception_data exception_data;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		info.vmid = vmid;
 		info.mc_id = client_id;
 		info.page_addr = ih_ring_entry[4] |

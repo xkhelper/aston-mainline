@@ -792,9 +792,15 @@ static const struct of_device_id hdmi_of_match[] = {
 
 static struct platform_driver omapdss_hdmihw_driver = {
 	.probe		= hdmi4_probe,
+<<<<<<< HEAD
 	.remove_new	= hdmi4_remove,
 	.driver         = {
 		.name   = "omapdss_hdmi",
+=======
+	.remove		= hdmi4_remove,
+	.driver		= {
+		.name	= "omapdss_hdmi",
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.pm	= &hdmi_pm_ops,
 		.of_match_table = hdmi_of_match,
 		.suppress_bind_attrs = true,

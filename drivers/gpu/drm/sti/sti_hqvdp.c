@@ -1414,7 +1414,10 @@ MODULE_DEVICE_TABLE(of, hqvdp_of_match);
 struct platform_driver sti_hqvdp_driver = {
 	.driver = {
 		.name = "sti-hqvdp",
+<<<<<<< HEAD
 		.owner = THIS_MODULE,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.of_match_table = hqvdp_of_match,
 	},
 	.probe = sti_hqvdp_probe,

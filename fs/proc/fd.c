@@ -59,7 +59,11 @@ static int seq_show(struct seq_file *m, void *v)
 		   real_mount(file->f_path.mnt)->mnt_id,
 		   file_inode(file)->i_ino);
 
+<<<<<<< HEAD
 	/* show_fd_locks() never deferences files so a stale value is safe */
+=======
+	/* show_fd_locks() never dereferences files, so a stale value is safe */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	show_fd_locks(m, file, files);
 	if (seq_has_overflowed(m))
 		goto out;
@@ -77,7 +81,11 @@ static int seq_fdinfo_open(struct inode *inode, struct file *file)
 	return single_open(file, seq_show, inode);
 }
 
+<<<<<<< HEAD
 /**
+=======
+/*
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Shared /proc/pid/fdinfo and /proc/pid/fdinfo/fd permission helper to ensure
  * that the current task has PTRACE_MODE_READ in addition to the normal
  * POSIX-like checks.
@@ -220,8 +228,13 @@ static struct dentry *proc_fd_instantiate(struct dentry *dentry,
 	ei->op.proc_get_link = proc_fd_link;
 	tid_fd_update_inode(task, inode, data->mode);
 
+<<<<<<< HEAD
 	d_set_d_op(dentry, &tid_fd_dentry_operations);
 	return d_splice_alias(inode, dentry);
+=======
+	return proc_splice_unmountable(inode, dentry,
+				       &tid_fd_dentry_operations);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct dentry *proc_lookupfd_common(struct inode *dir,
@@ -312,14 +325,22 @@ static int proc_readfd_count(struct inode *inode, loff_t *count)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int proc_readfd(struct file *file, struct dir_context *ctx)
+=======
+static int proc_fd_iterate(struct file *file, struct dir_context *ctx)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return proc_readfd_common(file, ctx, proc_fd_instantiate);
 }
 
 const struct file_operations proc_fd_operations = {
 	.read		= generic_read_dir,
+<<<<<<< HEAD
 	.iterate_shared	= proc_readfd,
+=======
+	.iterate_shared	= proc_fd_iterate,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.llseek		= generic_file_llseek,
 };
 
@@ -397,8 +418,13 @@ static struct dentry *proc_fdinfo_instantiate(struct dentry *dentry,
 	inode->i_fop = &proc_fdinfo_file_operations;
 	tid_fd_update_inode(task, inode, 0);
 
+<<<<<<< HEAD
 	d_set_d_op(dentry, &tid_fd_dentry_operations);
 	return d_splice_alias(inode, dentry);
+=======
+	return proc_splice_unmountable(inode, dentry,
+				       &tid_fd_dentry_operations);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct dentry *
@@ -407,7 +433,11 @@ proc_lookupfdinfo(struct inode *dir, struct dentry *dentry, unsigned int flags)
 	return proc_lookupfd_common(dir, dentry, proc_fdinfo_instantiate);
 }
 
+<<<<<<< HEAD
 static int proc_readfdinfo(struct file *file, struct dir_context *ctx)
+=======
+static int proc_fdinfo_iterate(struct file *file, struct dir_context *ctx)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return proc_readfd_common(file, ctx,
 				  proc_fdinfo_instantiate);
@@ -421,6 +451,10 @@ const struct inode_operations proc_fdinfo_inode_operations = {
 
 const struct file_operations proc_fdinfo_operations = {
 	.read		= generic_read_dir,
+<<<<<<< HEAD
 	.iterate_shared	= proc_readfdinfo,
+=======
+	.iterate_shared	= proc_fdinfo_iterate,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.llseek		= generic_file_llseek,
 };

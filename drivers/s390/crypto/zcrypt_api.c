@@ -715,7 +715,11 @@ static long zcrypt_rsa_modexpo(struct ap_perms *perms,
 	spin_unlock(&zcrypt_list_lock);
 
 	if (!pref_zq) {
+<<<<<<< HEAD
 		pr_debug("%s no matching queue found => ENODEV\n", __func__);
+=======
+		pr_debug("no matching queue found => ENODEV\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rc = -ENODEV;
 		goto out;
 	}
@@ -819,7 +823,11 @@ static long zcrypt_rsa_crt(struct ap_perms *perms,
 	spin_unlock(&zcrypt_list_lock);
 
 	if (!pref_zq) {
+<<<<<<< HEAD
 		pr_debug("%s no matching queue found => ENODEV\n", __func__);
+=======
+		pr_debug("no matching queue found => ENODEV\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rc = -ENODEV;
 		goto out;
 	}
@@ -940,8 +948,13 @@ static long _zcrypt_send_cprb(bool userspace, struct ap_perms *perms,
 	spin_unlock(&zcrypt_list_lock);
 
 	if (!pref_zq) {
+<<<<<<< HEAD
 		pr_debug("%s no match for address %02x.%04x => ENODEV\n",
 			 __func__, xcrb->user_defined, *domain);
+=======
+		pr_debug("no match for address %02x.%04x => ENODEV\n",
+			 xcrb->user_defined, *domain);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rc = -ENODEV;
 		goto out;
 	}
@@ -991,7 +1004,11 @@ long zcrypt_send_cprb(struct ica_xcRB *xcrb)
 	if (rc == -EAGAIN && tr.again_counter >= TRACK_AGAIN_MAX)
 		rc = -EIO;
 	if (rc)
+<<<<<<< HEAD
 		pr_debug("%s rc=%d\n", __func__, rc);
+=======
+		pr_debug("rc=%d\n", rc);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return rc;
 }
@@ -1138,6 +1155,7 @@ static long _zcrypt_send_ep11_cprb(bool userspace, struct ap_perms *perms,
 
 	if (!pref_zq) {
 		if (targets && target_num == 1) {
+<<<<<<< HEAD
 			pr_debug("%s no match for address %02x.%04x => ENODEV\n",
 				 __func__, (int)targets->ap_id,
 				 (int)targets->dom_id);
@@ -1147,6 +1165,15 @@ static long _zcrypt_send_ep11_cprb(bool userspace, struct ap_perms *perms,
 		} else {
 			pr_debug("%s no match for address ff.ffff => ENODEV\n",
 				 __func__);
+=======
+			pr_debug("no match for address %02x.%04x => ENODEV\n",
+				 (int)targets->ap_id, (int)targets->dom_id);
+		} else if (targets) {
+			pr_debug("no match for %d target addrs => ENODEV\n",
+				 (int)target_num);
+		} else {
+			pr_debug("no match for address ff.ffff => ENODEV\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		rc = -ENODEV;
 		goto out_free;
@@ -1195,7 +1222,11 @@ long zcrypt_send_ep11_cprb(struct ep11_urb *xcrb)
 	if (rc == -EAGAIN && tr.again_counter >= TRACK_AGAIN_MAX)
 		rc = -EIO;
 	if (rc)
+<<<<<<< HEAD
 		pr_debug("%s rc=%d\n", __func__, rc);
+=======
+		pr_debug("rc=%d\n", rc);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return rc;
 }
@@ -1247,7 +1278,11 @@ static long zcrypt_rng(char *buffer)
 	spin_unlock(&zcrypt_list_lock);
 
 	if (!pref_zq) {
+<<<<<<< HEAD
 		pr_debug("%s no matching queue found => ENODEV\n", __func__);
+=======
+		pr_debug("no matching queue found => ENODEV\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rc = -ENODEV;
 		goto out;
 	}
@@ -1910,7 +1945,10 @@ static const struct file_operations zcrypt_fops = {
 #endif
 	.open		= zcrypt_open,
 	.release	= zcrypt_release,
+<<<<<<< HEAD
 	.llseek		= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
@@ -2037,8 +2075,12 @@ int zcrypt_wait_api_operational(void)
 			break;
 		default:
 			/* other failure */
+<<<<<<< HEAD
 			pr_debug("%s ap_wait_init_apqn_bindings_complete()=%d\n",
 				 __func__, rc);
+=======
+			pr_debug("ap_wait_init_apqn_bindings_complete()=%d\n", rc);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		}
 		break;

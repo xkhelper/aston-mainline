@@ -89,7 +89,11 @@ enum erspan_encap_type {
 	ERSPAN_ENCAP_NOVLAN = 0x0,	/* originally without VLAN tag */
 	ERSPAN_ENCAP_ISL = 0x1,		/* originally ISL encapsulated */
 	ERSPAN_ENCAP_8021Q = 0x2,	/* originally 802.1Q encapsulated */
+<<<<<<< HEAD
 	ERSPAN_ENCAP_INFRAME = 0x3,	/* VLAN tag perserved in frame */
+=======
+	ERSPAN_ENCAP_INFRAME = 0x3,	/* VLAN tag preserved in frame */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define ERSPAN_V1_MDSIZE	4
@@ -192,7 +196,11 @@ static inline void erspan_build_header(struct sk_buff *skb,
 	enc_type = ERSPAN_ENCAP_NOVLAN;
 
 	/* If mirrored packet has vlan tag, extract tci and
+<<<<<<< HEAD
 	 *  perserve vlan header in the mirrored frame.
+=======
+	 * preserve vlan header in the mirrored frame.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	if (eth->h_proto == htons(ETH_P_8021Q)) {
 		qp = (struct qtag_prefix *)(skb->data + 2 * ETH_ALEN);

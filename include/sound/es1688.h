@@ -17,6 +17,10 @@
 #define ES1688_HW_UNDEF	0x0003
 
 struct snd_es1688 {
+<<<<<<< HEAD
+=======
+	struct snd_card *card;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long port;		/* port of ESS chip */
 	struct resource *res_port;
 	unsigned long mpu_port;		/* MPU-401 port of ESS chip */

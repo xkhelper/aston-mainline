@@ -966,8 +966,11 @@ int audio_graph2_link_dpcm(struct simple_util_priv *priv,
 	graph_parse_convert(ep,  dai_props); /* at node of <dpcm> */
 	graph_parse_convert(rep, dai_props); /* at node of <CPU/Codec> */
 
+<<<<<<< HEAD
 	snd_soc_dai_link_set_capabilities(dai_link);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	graph_link_init(priv, lnk, cpu_port, codec_port, li, is_cpu);
 err:
 	of_node_put(ep);
@@ -1141,13 +1144,17 @@ static int graph_counter(struct device_node *lnk)
 	 */
 	if (graph_lnk_is_multi(lnk)) {
 		struct device_node *ports = port_to_ports(lnk);
+<<<<<<< HEAD
 		struct device_node *port = NULL;
 		int cnt = 0;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * CPU/Codec = N:M case has many endpoints.
 		 * We can't use of_graph_get_endpoint_count() here
 		 */
+<<<<<<< HEAD
 		while(1) {
 			port = of_get_next_child(ports, port);
 			if (!port)
@@ -1156,6 +1163,9 @@ static int graph_counter(struct device_node *lnk)
 		}
 
 		return cnt - 1;
+=======
+		return of_get_child_count(ports) - 1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	/*
 	 * Single CPU / Codec
@@ -1449,7 +1459,11 @@ static struct platform_driver graph_card = {
 		.of_match_table = graph_of_match,
 	},
 	.probe	= graph_probe,
+<<<<<<< HEAD
 	.remove_new = simple_util_remove,
+=======
+	.remove = simple_util_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(graph_card);
 

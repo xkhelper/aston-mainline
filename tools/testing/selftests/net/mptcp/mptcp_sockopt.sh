@@ -349,6 +349,10 @@ init
 make_file "$cin" "client" 1
 make_file "$sin" "server" 1
 trap cleanup EXIT
+<<<<<<< HEAD
+=======
+mptcp_lib_subtests_last_ts_reset
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 run_tests $ns1 $ns2 10.0.1.1
 run_tests $ns1 $ns2 dead:beef:1::1

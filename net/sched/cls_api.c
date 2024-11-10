@@ -1518,6 +1518,10 @@ int tcf_block_get_ext(struct tcf_block **p_block, struct Qdisc *q,
 	return 0;
 
 err_dev_insert:
+<<<<<<< HEAD
+=======
+	tcf_block_offload_unbind(block, q, ei);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_block_offload_bind:
 	tcf_chain0_head_change_cb_del(block, ei);
 err_chain0_head_change_cb_add:

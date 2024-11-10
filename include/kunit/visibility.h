@@ -22,6 +22,10 @@
      * EXPORTED_FOR_KUNIT_TESTING namespace only if CONFIG_KUNIT is
      * enabled. Must use MODULE_IMPORT_NS(EXPORTED_FOR_KUNIT_TESTING)
      * in test file in order to use symbols.
+<<<<<<< HEAD
+=======
+     * @symbol: the symbol identifier to export
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
      */
     #define EXPORT_SYMBOL_IF_KUNIT(symbol) EXPORT_SYMBOL_NS(symbol, \
 	    EXPORTED_FOR_KUNIT_TESTING)

@@ -1438,7 +1438,11 @@ static int tegra_powergate_init(struct tegra_pmc *pmc,
 				struct device_node *parent)
 {
 	struct of_phandle_args child_args, parent_args;
+<<<<<<< HEAD
 	struct device_node *np, *child;
+=======
+	struct device_node *np;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err = 0;
 
 	/*
@@ -1457,12 +1461,19 @@ static int tegra_powergate_init(struct tegra_pmc *pmc,
 	if (!np)
 		return 0;
 
+<<<<<<< HEAD
 	for_each_child_of_node(np, child) {
 		err = tegra_powergate_add(pmc, child);
 		if (err < 0) {
 			of_node_put(child);
 			break;
 		}
+=======
+	for_each_child_of_node_scoped(np, child) {
+		err = tegra_powergate_add(pmc, child);
+		if (err < 0)
+			break;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (of_parse_phandle_with_args(child, "power-domains",
 					       "#power-domain-cells",
@@ -1474,10 +1485,15 @@ static int tegra_powergate_init(struct tegra_pmc *pmc,
 
 		err = of_genpd_add_subdomain(&parent_args, &child_args);
 		of_node_put(parent_args.np);
+<<<<<<< HEAD
 		if (err) {
 			of_node_put(child);
 			break;
 		}
+=======
+		if (err)
+			break;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	of_node_put(np);

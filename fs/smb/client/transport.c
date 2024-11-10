@@ -28,6 +28,10 @@
 #include "cifs_debug.h"
 #include "smb2proto.h"
 #include "smbdirect.h"
+<<<<<<< HEAD
+=======
+#include "compress.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Max number of iovectors we can use off the stack when sending requests. */
 #define CIFS_MAX_IOV_SIZE 8
@@ -432,6 +436,12 @@ smb_send_rqst(struct TCP_Server_Info *server, int num_rqst,
 	struct kvec *iov;
 	int rc;
 
+<<<<<<< HEAD
+=======
+	if (flags & CIFS_COMPRESS_REQ)
+		return smb_compress(server, &rqst[0], __smb_send_rqst);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!(flags & CIFS_TRANSFORM_REQ))
 		return __smb_send_rqst(server, num_rqst, rqst);
 
@@ -1813,11 +1823,16 @@ cifs_readv_receive(struct TCP_Server_Info *server, struct mid_q_entry *mid)
 		length = data_len; /* An RDMA read is already done. */
 	else
 #endif
+<<<<<<< HEAD
 	{
 		length = cifs_read_iter_from_socket(server, &rdata->subreq.io_iter,
 						    data_len);
 		iov_iter_revert(&rdata->subreq.io_iter, data_len);
 	}
+=======
+		length = cifs_read_iter_from_socket(server, &rdata->subreq.io_iter,
+						    data_len);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (length > 0)
 		rdata->got_bytes += length;
 	server->total_read += length;

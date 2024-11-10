@@ -163,7 +163,11 @@ static void i_usx2y_out04_int(struct urb *urb)
 
 		for (i = 0; i < 10 && usx2y->as04.urb[i] != urb; i++)
 			;
+<<<<<<< HEAD
 		snd_printdd("%s urb %i status=%i\n", __func__, i, urb->status);
+=======
+		dev_dbg(&urb->dev->dev, "%s urb %i status=%i\n", __func__, i, urb->status);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 #endif
 }
@@ -179,11 +183,18 @@ static void i_usx2y_in04_int(struct urb *urb)
 	usx2y->in04_int_calls++;
 
 	if (urb->status) {
+<<<<<<< HEAD
 		snd_printdd("Interrupt Pipe 4 came back with status=%i\n", urb->status);
 		return;
 	}
 
 	//	printk("%i:0x%02X ", 8, (int)((unsigned char*)usx2y->in04_buf)[8]); Master volume shows 0 here if fader is at max during boot ?!?
+=======
+		dev_dbg(&urb->dev->dev, "Interrupt Pipe 4 came back with status=%i\n", urb->status);
+		return;
+	}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (us428ctls) {
 		diff = -1;
 		if (us428ctls->ctl_snapshot_last == -2) {
@@ -239,7 +250,11 @@ static void i_usx2y_in04_int(struct urb *urb)
 	}
 
 	if (err)
+<<<<<<< HEAD
 		snd_printk(KERN_ERR "in04_int() usb_submit_urb err=%i\n", err);
+=======
+		dev_err(&urb->dev->dev, "in04_int() usb_submit_urb err=%i\n", err);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	urb->dev = usx2y->dev;
 	usb_submit_urb(urb, GFP_ATOMIC);

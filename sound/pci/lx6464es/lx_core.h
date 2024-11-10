@@ -129,21 +129,30 @@ int lx_stream_set_state(struct lx6464es *chip, u32 pipe,
 static inline int lx_stream_start(struct lx6464es *chip, u32 pipe,
 				  int is_capture)
 {
+<<<<<<< HEAD
 	snd_printdd("->lx_stream_start\n");
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return lx_stream_set_state(chip, pipe, is_capture, SSTATE_RUN);
 }
 
 static inline int lx_stream_pause(struct lx6464es *chip, u32 pipe,
 				  int is_capture)
 {
+<<<<<<< HEAD
 	snd_printdd("->lx_stream_pause\n");
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return lx_stream_set_state(chip, pipe, is_capture, SSTATE_PAUSE);
 }
 
 static inline int lx_stream_stop(struct lx6464es *chip, u32 pipe,
 				 int is_capture)
 {
+<<<<<<< HEAD
 	snd_printdd("->lx_stream_stop\n");
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return lx_stream_set_state(chip, pipe, is_capture, SSTATE_STOP);
 }
 

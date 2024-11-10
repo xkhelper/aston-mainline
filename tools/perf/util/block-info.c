@@ -40,16 +40,44 @@ static struct block_header_column {
 	[PERF_HPP_REPORT__BLOCK_DSO] = {
 		.name = "Shared Object",
 		.width = 20,
+<<<<<<< HEAD
 	}
 };
 
 struct block_info *block_info__new(void)
 {
 	return zalloc(sizeof(struct block_info));
+=======
+	},
+	[PERF_HPP_REPORT__BLOCK_BRANCH_COUNTER] = {
+		.name = "Branch Counter",
+		.width = 30,
+	}
+};
+
+static struct block_info *block_info__new(unsigned int br_cntr_nr)
+{
+	struct block_info *bi = zalloc(sizeof(struct block_info));
+
+	if (bi && br_cntr_nr) {
+		bi->br_cntr = calloc(br_cntr_nr, sizeof(u64));
+		if (!bi->br_cntr) {
+			free(bi);
+			return NULL;
+		}
+	}
+
+	return bi;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void block_info__delete(struct block_info *bi)
 {
+<<<<<<< HEAD
+=======
+	if (bi)
+		free(bi->br_cntr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	free(bi);
 }
 
@@ -86,7 +114,12 @@ int64_t block_info__cmp(struct perf_hpp_fmt *fmt __maybe_unused,
 
 static void init_block_info(struct block_info *bi, struct symbol *sym,
 			    struct cyc_hist *ch, int offset,
+<<<<<<< HEAD
 			    u64 total_cycles)
+=======
+			    u64 total_cycles, unsigned int br_cntr_nr,
+			    u64 *br_cntr, struct evsel *evsel)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	bi->sym = sym;
 	bi->start = ch->start;
@@ -99,10 +132,25 @@ static void init_block_info(struct block_info *bi, struct symbol *sym,
 
 	memcpy(bi->cycles_spark, ch->cycles_spark,
 	       NUM_SPARKS * sizeof(u64));
+<<<<<<< HEAD
 }
 
 int block_info__process_sym(struct hist_entry *he, struct block_hist *bh,
 			    u64 *block_cycles_aggr, u64 total_cycles)
+=======
+
+	if (br_cntr && br_cntr_nr) {
+		bi->br_cntr_nr = br_cntr_nr;
+		memcpy(bi->br_cntr, &br_cntr[offset * br_cntr_nr],
+		       br_cntr_nr * sizeof(u64));
+	}
+	bi->evsel = evsel;
+}
+
+int block_info__process_sym(struct hist_entry *he, struct block_hist *bh,
+			    u64 *block_cycles_aggr, u64 total_cycles,
+			    unsigned int br_cntr_nr)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct annotation *notes;
 	struct cyc_hist *ch;
@@ -125,12 +173,22 @@ int block_info__process_sym(struct hist_entry *he, struct block_hist *bh,
 			struct block_info *bi;
 			struct hist_entry *he_block;
 
+<<<<<<< HEAD
 			bi = block_info__new();
+=======
+			bi = block_info__new(br_cntr_nr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (!bi)
 				return -1;
 
 			init_block_info(bi, he->ms.sym, &ch[i], i,
+<<<<<<< HEAD
 					total_cycles);
+=======
+					total_cycles, br_cntr_nr,
+					notes->branch->br_cntr,
+					hists_to_evsel(he->hists));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			cycles += bi->cycles_aggr / bi->num_aggr;
 
 			he_block = hists__add_entry_block(&bh->block_hists,
@@ -327,6 +385,27 @@ static void init_block_header(struct block_fmt *block_fmt)
 	fmt->width = block_column_width;
 }
 
+<<<<<<< HEAD
+=======
+static int block_branch_counter_entry(struct perf_hpp_fmt *fmt,
+				      struct perf_hpp *hpp,
+				      struct hist_entry *he)
+{
+	struct block_fmt *block_fmt = container_of(fmt, struct block_fmt, fmt);
+	struct block_info *bi = he->block_info;
+	char *buf;
+	int ret;
+
+	if (annotation_br_cntr_entry(&buf, bi->br_cntr_nr, bi->br_cntr,
+				     bi->num_aggr, bi->evsel))
+		return 0;
+
+	ret = scnprintf(hpp->buf, hpp->size, "%*s", block_fmt->width, buf);
+	free(buf);
+	return ret;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void hpp_register(struct block_fmt *block_fmt, int idx,
 			 struct perf_hpp_list *hpp_list)
 {
@@ -357,6 +436,12 @@ static void hpp_register(struct block_fmt *block_fmt, int idx,
 	case PERF_HPP_REPORT__BLOCK_DSO:
 		fmt->entry = block_dso_entry;
 		break;
+<<<<<<< HEAD
+=======
+	case PERF_HPP_REPORT__BLOCK_BRANCH_COUNTER:
+		fmt->entry = block_branch_counter_entry;
+		break;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		return;
 	}
@@ -390,7 +475,11 @@ static void init_block_hist(struct block_hist *bh, struct block_fmt *block_fmts,
 static int process_block_report(struct hists *hists,
 				struct block_report *block_report,
 				u64 total_cycles, int *block_hpps,
+<<<<<<< HEAD
 				int nr_hpps)
+=======
+				int nr_hpps, unsigned int br_cntr_nr)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct rb_node *next = rb_first_cached(&hists->entries);
 	struct block_hist *bh = &block_report->hist;
@@ -405,7 +494,11 @@ static int process_block_report(struct hists *hists,
 	while (next) {
 		he = rb_entry(next, struct hist_entry, rb_node);
 		block_info__process_sym(he, bh, &block_report->cycles,
+<<<<<<< HEAD
 					total_cycles);
+=======
+					total_cycles, br_cntr_nr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		next = rb_next(&he->rb_node);
 	}
 
@@ -435,7 +528,11 @@ struct block_report *block_info__create_report(struct evlist *evlist,
 		struct hists *hists = evsel__hists(pos);
 
 		process_block_report(hists, &block_reports[i], total_cycles,
+<<<<<<< HEAD
 				     block_hpps, nr_hpps);
+=======
+				     block_hpps, nr_hpps, evlist->nr_br_cntr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		i++;
 	}
 

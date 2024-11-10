@@ -30,6 +30,10 @@
 #define KVM_HALT_POLL_NS_DEFAULT	500000
 #define KVM_REQ_TLB_FLUSH_GPA		KVM_ARCH_REQ(0)
 #define KVM_REQ_STEAL_UPDATE		KVM_ARCH_REQ(1)
+<<<<<<< HEAD
+=======
+#define KVM_REQ_PMU			KVM_ARCH_REQ(2)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define KVM_GUESTDBG_SW_BP_MASK		\
 	(KVM_GUESTDBG_ENABLE | KVM_GUESTDBG_USE_SW_BP)
@@ -60,9 +64,19 @@ struct kvm_arch_memory_slot {
 	unsigned long flags;
 };
 
+<<<<<<< HEAD
 struct kvm_context {
 	unsigned long vpid_cache;
 	struct kvm_vcpu *last_vcpu;
+=======
+#define HOST_MAX_PMNUM			16
+struct kvm_context {
+	unsigned long vpid_cache;
+	struct kvm_vcpu *last_vcpu;
+	/* Host PMU CSR */
+	u64 perf_ctrl[HOST_MAX_PMNUM];
+	u64 perf_cntr[HOST_MAX_PMNUM];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct kvm_world_switch {
@@ -107,6 +121,11 @@ struct kvm_arch {
 	unsigned int  root_level;
 	spinlock_t    phyid_map_lock;
 	struct kvm_phyid_map  *phyid_map;
+<<<<<<< HEAD
+=======
+	/* Enabled PV features */
+	unsigned long pv_features;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	s64 time_offset;
 	struct kvm_context __percpu *vmcs;
@@ -133,8 +152,20 @@ enum emulation_result {
 #define KVM_LARCH_FPU		(0x1 << 0)
 #define KVM_LARCH_LSX		(0x1 << 1)
 #define KVM_LARCH_LASX		(0x1 << 2)
+<<<<<<< HEAD
 #define KVM_LARCH_SWCSR_LATEST	(0x1 << 3)
 #define KVM_LARCH_HWCSR_USABLE	(0x1 << 4)
+=======
+#define KVM_LARCH_LBT		(0x1 << 3)
+#define KVM_LARCH_PMU		(0x1 << 4)
+#define KVM_LARCH_SWCSR_LATEST	(0x1 << 5)
+#define KVM_LARCH_HWCSR_USABLE	(0x1 << 6)
+
+#define LOONGARCH_PV_FEAT_UPDATED	BIT_ULL(63)
+#define LOONGARCH_PV_FEAT_MASK		(BIT(KVM_FEATURE_IPI) |		\
+					 BIT(KVM_FEATURE_STEAL_TIME) |	\
+					 BIT(KVM_FEATURE_VIRT_EXTIOI))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct kvm_vcpu_arch {
 	/*
@@ -168,10 +199,20 @@ struct kvm_vcpu_arch {
 
 	/* FPU state */
 	struct loongarch_fpu fpu FPU_ALIGN;
+<<<<<<< HEAD
+=======
+	struct loongarch_lbt lbt;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* CSR state */
 	struct loongarch_csrs *csr;
 
+<<<<<<< HEAD
+=======
+	/* Guest max PMU CSR id */
+	int max_pmu_csrid;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* GPR used as IO source/target */
 	u32 io_gpr;
 
@@ -239,6 +280,24 @@ static inline bool kvm_guest_has_lasx(struct kvm_vcpu_arch *arch)
 	return arch->cpucfg[2] & CPUCFG2_LASX;
 }
 
+<<<<<<< HEAD
+=======
+static inline bool kvm_guest_has_lbt(struct kvm_vcpu_arch *arch)
+{
+	return arch->cpucfg[2] & (CPUCFG2_X86BT | CPUCFG2_ARMBT | CPUCFG2_MIPSBT);
+}
+
+static inline bool kvm_guest_has_pmu(struct kvm_vcpu_arch *arch)
+{
+	return arch->cpucfg[6] & CPUCFG6_PMP;
+}
+
+static inline int kvm_get_pmu_num(struct kvm_vcpu_arch *arch)
+{
+	return (arch->cpucfg[6] & CPUCFG6_PMNUM) >> CPUCFG6_PMNUM_SHIFT;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Debug: dump vcpu state */
 int kvm_arch_vcpu_dump_regs(struct kvm_vcpu *vcpu);
 

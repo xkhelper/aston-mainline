@@ -220,7 +220,10 @@ static const struct file_operations tmc_fops = {
 	.open		= tmc_open,
 	.read		= tmc_read,
 	.release	= tmc_release,
+<<<<<<< HEAD
 	.llseek		= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static enum tmc_mem_intf_width tmc_get_memwidth(u32 devid)

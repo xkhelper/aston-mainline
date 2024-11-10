@@ -154,6 +154,11 @@ struct vb2_mem_ops {
  * @mem_priv:	private data with this plane.
  * @dbuf:	dma_buf - shared buffer object.
  * @dbuf_mapped:	flag to show whether dbuf is mapped or not
+<<<<<<< HEAD
+=======
+ * @dbuf_duplicated:	boolean to show whether dbuf is duplicated with a
+ *		previous plane of the buffer.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @bytesused:	number of bytes occupied by data in the plane (payload).
  * @length:	size of this plane (NOT the payload) in bytes. The maximum
  *		valid size is MAX_UINT - PAGE_SIZE.
@@ -179,6 +184,10 @@ struct vb2_plane {
 	void			*mem_priv;
 	struct dma_buf		*dbuf;
 	unsigned int		dbuf_mapped;
+<<<<<<< HEAD
+=======
+	bool			dbuf_duplicated;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int		bytesused;
 	unsigned int		length;
 	unsigned int		min_length;

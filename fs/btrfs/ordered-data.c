@@ -332,7 +332,11 @@ static void finish_ordered_fn(struct btrfs_work *work)
 }
 
 static bool can_finish_ordered_extent(struct btrfs_ordered_extent *ordered,
+<<<<<<< HEAD
 				      struct page *page, u64 file_offset,
+=======
+				      struct folio *folio, u64 file_offset,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      u64 len, bool uptodate)
 {
 	struct btrfs_inode *inode = ordered->inode;
@@ -340,10 +344,17 @@ static bool can_finish_ordered_extent(struct btrfs_ordered_extent *ordered,
 
 	lockdep_assert_held(&inode->ordered_tree_lock);
 
+<<<<<<< HEAD
 	if (page) {
 		ASSERT(page->mapping);
 		ASSERT(page_offset(page) <= file_offset);
 		ASSERT(file_offset + len <= page_offset(page) + PAGE_SIZE);
+=======
+	if (folio) {
+		ASSERT(folio->mapping);
+		ASSERT(folio_pos(folio) <= file_offset);
+		ASSERT(file_offset + len <= folio_pos(folio) + folio_size(folio));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * Ordered (Private2) bit indicates whether we still have
@@ -351,10 +362,16 @@ static bool can_finish_ordered_extent(struct btrfs_ordered_extent *ordered,
 		 *
 		 * If there's no such bit, we need to skip to next range.
 		 */
+<<<<<<< HEAD
 		if (!btrfs_folio_test_ordered(fs_info, page_folio(page),
 					      file_offset, len))
 			return false;
 		btrfs_folio_clear_ordered(fs_info, page_folio(page), file_offset, len);
+=======
+		if (!btrfs_folio_test_ordered(fs_info, folio, file_offset, len))
+			return false;
+		btrfs_folio_clear_ordered(fs_info, folio, file_offset, len);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* Now we're fine to update the accounting. */
@@ -398,7 +415,11 @@ static void btrfs_queue_ordered_fn(struct btrfs_ordered_extent *ordered)
 }
 
 void btrfs_finish_ordered_extent(struct btrfs_ordered_extent *ordered,
+<<<<<<< HEAD
 				 struct page *page, u64 file_offset, u64 len,
+=======
+				 struct folio *folio, u64 file_offset, u64 len,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				 bool uptodate)
 {
 	struct btrfs_inode *inode = ordered->inode;
@@ -408,7 +429,12 @@ void btrfs_finish_ordered_extent(struct btrfs_ordered_extent *ordered,
 	trace_btrfs_finish_ordered_extent(inode, file_offset, len, uptodate);
 
 	spin_lock_irqsave(&inode->ordered_tree_lock, flags);
+<<<<<<< HEAD
 	ret = can_finish_ordered_extent(ordered, page, file_offset, len, uptodate);
+=======
+	ret = can_finish_ordered_extent(ordered, folio, file_offset, len,
+					uptodate);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_unlock_irqrestore(&inode->ordered_tree_lock, flags);
 
 	/*
@@ -449,8 +475,13 @@ void btrfs_finish_ordered_extent(struct btrfs_ordered_extent *ordered,
 /*
  * Mark all ordered extents io inside the specified range finished.
  *
+<<<<<<< HEAD
  * @page:	 The involved page for the operation.
  *		 For uncompressed buffered IO, the page status also needs to be
+=======
+ * @folio:	 The involved folio for the operation.
+ *		 For uncompressed buffered IO, the folio status also needs to be
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *		 updated to indicate whether the pending ordered io is finished.
  *		 Can be NULL for direct IO and compressed write.
  *		 For these cases, callers are ensured they won't execute the
@@ -460,7 +491,11 @@ void btrfs_finish_ordered_extent(struct btrfs_ordered_extent *ordered,
  * extent(s) covering it.
  */
 void btrfs_mark_ordered_io_finished(struct btrfs_inode *inode,
+<<<<<<< HEAD
 				    struct page *page, u64 file_offset,
+=======
+				    struct folio *folio, u64 file_offset,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    u64 num_bytes, bool uptodate)
 {
 	struct rb_node *node;
@@ -524,7 +559,11 @@ void btrfs_mark_ordered_io_finished(struct btrfs_inode *inode,
 		ASSERT(end + 1 - cur < U32_MAX);
 		len = end + 1 - cur;
 
+<<<<<<< HEAD
 		if (can_finish_ordered_extent(entry, page, cur, len, uptodate)) {
+=======
+		if (can_finish_ordered_extent(entry, folio, cur, len, uptodate)) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			spin_unlock_irqrestore(&inode->ordered_tree_lock, flags);
 			btrfs_queue_ordered_fn(entry);
 			spin_lock_irqsave(&inode->ordered_tree_lock, flags);
@@ -1015,7 +1054,11 @@ void btrfs_get_ordered_extents_for_logging(struct btrfs_inode *inode,
 {
 	struct rb_node *n;
 
+<<<<<<< HEAD
 	ASSERT(inode_is_locked(&inode->vfs_inode));
+=======
+	btrfs_assert_inode_locked(inode);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	spin_lock_irq(&inode->ordered_tree_lock);
 	for (n = rb_first(&inode->ordered_tree); n; n = rb_next(n)) {

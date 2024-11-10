@@ -6,6 +6,7 @@
 #include "idxd.h"
 #include "perfmon.h"
 
+<<<<<<< HEAD
 static ssize_t cpumask_show(struct device *dev, struct device_attribute *attr,
 			    char *buf);
 
@@ -29,6 +30,8 @@ static struct attribute_group cpumask_attr_group = {
 	.attrs = perfmon_cpumask_attrs,
 };
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * These attributes specify the bits in the config word that the perf
  * syscall uses to pass the event ids and categories to perfmon.
@@ -67,6 +70,7 @@ static struct attribute_group perfmon_format_attr_group = {
 
 static const struct attribute_group *perfmon_attr_groups[] = {
 	&perfmon_format_attr_group,
+<<<<<<< HEAD
 	&cpumask_attr_group,
 	NULL,
 };
@@ -77,6 +81,11 @@ static ssize_t cpumask_show(struct device *dev, struct device_attribute *attr,
 	return cpumap_print_to_pagebuf(true, buf, &perfmon_dsa_cpu_mask);
 }
 
+=======
+	NULL,
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool is_idxd_event(struct idxd_pmu *idxd_pmu, struct perf_event *event)
 {
 	return &idxd_pmu->pmu == event->pmu;
@@ -217,7 +226,10 @@ static int perfmon_pmu_event_init(struct perf_event *event)
 		return -EINVAL;
 
 	event->hw.event_base = ioread64(PERFMON_TABLE_OFFSET(idxd));
+<<<<<<< HEAD
 	event->cpu = idxd->idxd_pmu->cpu;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	event->hw.config = event->attr.config;
 
 	if (event->group_leader != event)
@@ -480,14 +492,23 @@ static void idxd_pmu_init(struct idxd_pmu *idxd_pmu)
 	idxd_pmu->pmu.attr_groups	= perfmon_attr_groups;
 	idxd_pmu->pmu.task_ctx_nr	= perf_invalid_context;
 	idxd_pmu->pmu.event_init	= perfmon_pmu_event_init;
+<<<<<<< HEAD
 	idxd_pmu->pmu.pmu_enable	= perfmon_pmu_enable,
 	idxd_pmu->pmu.pmu_disable	= perfmon_pmu_disable,
+=======
+	idxd_pmu->pmu.pmu_enable	= perfmon_pmu_enable;
+	idxd_pmu->pmu.pmu_disable	= perfmon_pmu_disable;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	idxd_pmu->pmu.add		= perfmon_pmu_event_add;
 	idxd_pmu->pmu.del		= perfmon_pmu_event_del;
 	idxd_pmu->pmu.start		= perfmon_pmu_event_start;
 	idxd_pmu->pmu.stop		= perfmon_pmu_event_stop;
 	idxd_pmu->pmu.read		= perfmon_pmu_event_update;
 	idxd_pmu->pmu.capabilities	= PERF_PMU_CAP_NO_EXCLUDE;
+<<<<<<< HEAD
+=======
+	idxd_pmu->pmu.scope		= PERF_PMU_SCOPE_SYS_WIDE;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	idxd_pmu->pmu.module		= THIS_MODULE;
 }
 
@@ -496,12 +517,16 @@ void perfmon_pmu_remove(struct idxd_device *idxd)
 	if (!idxd->idxd_pmu)
 		return;
 
+<<<<<<< HEAD
 	cpuhp_state_remove_instance(cpuhp_slot, &idxd->idxd_pmu->cpuhp_node);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	perf_pmu_unregister(&idxd->idxd_pmu->pmu);
 	kfree(idxd->idxd_pmu);
 	idxd->idxd_pmu = NULL;
 }
 
+<<<<<<< HEAD
 static int perf_event_cpu_online(unsigned int cpu, struct hlist_node *node)
 {
 	struct idxd_pmu *idxd_pmu;
@@ -537,6 +562,8 @@ static int perf_event_cpu_offline(unsigned int cpu, struct hlist_node *node)
 	return 0;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int perfmon_pmu_init(struct idxd_device *idxd)
 {
 	union idxd_perfcap perfcap;
@@ -544,12 +571,15 @@ int perfmon_pmu_init(struct idxd_device *idxd)
 	int rc = -ENODEV;
 
 	/*
+<<<<<<< HEAD
 	 * perfmon module initialization failed, nothing to do
 	 */
 	if (!cpuhp_set_up)
 		return -ENODEV;
 
 	/*
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * If perfmon_offset or num_counters is 0, it means perfmon is
 	 * not supported on this hardware.
 	 */
@@ -624,11 +654,14 @@ int perfmon_pmu_init(struct idxd_device *idxd)
 	if (rc)
 		goto free;
 
+<<<<<<< HEAD
 	rc = cpuhp_state_add_instance(cpuhp_slot, &idxd_pmu->cpuhp_node);
 	if (rc) {
 		perf_pmu_unregister(&idxd->idxd_pmu->pmu);
 		goto free;
 	}
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out:
 	return rc;
 free:
@@ -637,6 +670,7 @@ free:
 
 	goto out;
 }
+<<<<<<< HEAD
 
 void __init perfmon_init(void)
 {
@@ -656,3 +690,5 @@ void __exit perfmon_exit(void)
 	if (cpuhp_set_up)
 		cpuhp_remove_multi_state(cpuhp_slot);
 }
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

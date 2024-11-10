@@ -244,7 +244,11 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
 					restart_tx = true;
 			}
 
+<<<<<<< HEAD
 			consume_skb(skb);
+=======
+			virtio_transport_consume_skb_sent(skb, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	} while(likely(!vhost_exceeds_weight(vq, ++pkts, total_len)));
 	if (added)
@@ -451,6 +455,11 @@ static struct virtio_transport vhost_transport = {
 		.notify_buffer_size       = virtio_transport_notify_buffer_size,
 		.notify_set_rcvlowat      = virtio_transport_notify_set_rcvlowat,
 
+<<<<<<< HEAD
+=======
+		.unsent_bytes             = virtio_transport_unsent_bytes,
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.read_skb = virtio_transport_read_skb,
 	},
 

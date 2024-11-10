@@ -69,7 +69,11 @@ char *get_tracing_file(const char *name)
 {
 	char *file;
 
+<<<<<<< HEAD
 	if (asprintf(&file, "%s/%s", tracing_path_mount(), name) < 0)
+=======
+	if (asprintf(&file, "%s%s", tracing_path_mount(), name) < 0)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return NULL;
 
 	return file;

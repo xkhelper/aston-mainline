@@ -35,9 +35,12 @@ int bpf_map__fprintf(struct bpf_map *map, FILE *fp)
 	if (fd < 0)
 		return fd;
 
+<<<<<<< HEAD
 	if (!map)
 		return PTR_ERR(map);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	err = -ENOMEM;
 	key = malloc(bpf_map__key_size(map));
 	if (key == NULL)

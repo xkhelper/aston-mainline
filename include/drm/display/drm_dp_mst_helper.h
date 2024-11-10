@@ -244,18 +244,30 @@ struct drm_dp_mst_branch {
 	bool link_address_sent;
 
 	/* global unique identifier to identify branch devices */
+<<<<<<< HEAD
 	u8 guid[16];
+=======
+	guid_t guid;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 
 struct drm_dp_nak_reply {
+<<<<<<< HEAD
 	u8 guid[16];
+=======
+	guid_t guid;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 reason;
 	u8 nak_data;
 };
 
 struct drm_dp_link_address_ack_reply {
+<<<<<<< HEAD
 	u8 guid[16];
+=======
+	guid_t guid;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 nports;
 	struct drm_dp_link_addr_reply_port {
 		bool input_port;
@@ -265,7 +277,11 @@ struct drm_dp_link_address_ack_reply {
 		bool ddps;
 		bool legacy_device_plug_status;
 		u8 dpcd_revision;
+<<<<<<< HEAD
 		u8 peer_guid[16];
+=======
+		guid_t peer_guid;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		u8 num_sdp_streams;
 		u8 num_sdp_stream_sinks;
 	} ports[16];
@@ -348,7 +364,11 @@ struct drm_dp_allocate_payload_ack_reply {
 };
 
 struct drm_dp_connection_status_notify {
+<<<<<<< HEAD
 	u8 guid[16];
+=======
+	guid_t guid;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 port_number;
 	bool legacy_device_plug_status;
 	bool displayport_device_plug_status;
@@ -425,7 +445,11 @@ struct drm_dp_query_payload {
 
 struct drm_dp_resource_status_notify {
 	u8 port_number;
+<<<<<<< HEAD
 	u8 guid[16];
+=======
+	guid_t guid;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u16 available_pbn;
 };
 
@@ -885,6 +909,11 @@ int drm_dp_check_act_status(struct drm_dp_mst_topology_mgr *mgr);
 void drm_dp_mst_dump_topology(struct seq_file *m,
 			      struct drm_dp_mst_topology_mgr *mgr);
 
+<<<<<<< HEAD
+=======
+void drm_dp_mst_topology_queue_probe(struct drm_dp_mst_topology_mgr *mgr);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void drm_dp_mst_topology_mgr_suspend(struct drm_dp_mst_topology_mgr *mgr);
 int __must_check
 drm_dp_mst_topology_mgr_resume(struct drm_dp_mst_topology_mgr *mgr,

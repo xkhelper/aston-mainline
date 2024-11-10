@@ -726,6 +726,7 @@ static void panel_simple_shutdown(struct device *dev)
 	 * drm_atomic_helper_shutdown() at shutdown time and that should
 	 * cause the panel to be disabled / unprepared if needed. For now,
 	 * however, we'll keep these calls due to the sheer number of
+<<<<<<< HEAD
 	 * different DRM modeset drivers used with panel-simple. The fact that
 	 * we're calling these and _also_ the drm_atomic_helper_shutdown()
 	 * will try to disable/unprepare means that we can get a warning about
@@ -736,6 +737,26 @@ static void panel_simple_shutdown(struct device *dev)
 	 */
 	drm_panel_disable(&panel->base);
 	drm_panel_unprepare(&panel->base);
+=======
+	 * different DRM modeset drivers used with panel-simple. Once we've
+	 * confirmed that all DRM modeset drivers using this panel properly
+	 * call drm_atomic_helper_shutdown() we can simply delete the two
+	 * calls below.
+	 *
+	 * TO BE EXPLICIT: THE CALLS BELOW SHOULDN'T BE COPIED TO ANY NEW
+	 * PANEL DRIVERS.
+	 *
+	 * FIXME: If we're still haven't figured out if all DRM modeset
+	 * drivers properly call drm_atomic_helper_shutdown() but we _have_
+	 * managed to make sure that DRM modeset drivers get their shutdown()
+	 * callback before the panel's shutdown() callback (perhaps using
+	 * device link), we could add a WARN_ON here to help move forward.
+	 */
+	if (panel->base.enabled)
+		drm_panel_disable(&panel->base);
+	if (panel->base.prepared)
+		drm_panel_unprepare(&panel->base);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void panel_simple_remove(struct device *dev)
@@ -2519,6 +2540,41 @@ static const struct panel_desc innolux_g070y2_l01 = {
 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
 };
 
+<<<<<<< HEAD
+=======
+static const struct display_timing innolux_g070ace_lh3_timing = {
+	.pixelclock = { 25200000, 25400000, 35700000 },
+	.hactive = { 800, 800, 800 },
+	.hfront_porch = { 30, 32, 87 },
+	.hback_porch = { 29, 31, 86 },
+	.hsync_len = { 1, 1, 1 },
+	.vactive = { 480, 480, 480 },
+	.vfront_porch = { 4, 5, 65 },
+	.vback_porch = { 3, 4, 65 },
+	.vsync_len = { 1, 1, 1 },
+	.flags = DISPLAY_FLAGS_DE_HIGH,
+};
+
+static const struct panel_desc innolux_g070ace_lh3 = {
+	.timings = &innolux_g070ace_lh3_timing,
+	.num_timings = 1,
+	.bpc = 8,
+	.size = {
+		.width = 152,
+		.height = 91,
+	},
+	.delay = {
+		.prepare = 10,
+		.enable = 450,
+		.disable = 200,
+		.unprepare = 510,
+	},
+	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
+	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
+	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct drm_display_mode innolux_g070y2_t02_mode = {
 	.clock = 33333,
 	.hdisplay = 800,
@@ -3478,6 +3534,42 @@ static const struct panel_desc olimex_lcd_olinuxino_43ts = {
 	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
 };
 
+<<<<<<< HEAD
+=======
+static const struct display_timing ontat_kd50g21_40nt_a1_timing = {
+	.pixelclock = { 30000000, 30000000, 50000000 },
+	.hactive = { 800, 800, 800 },
+	.hfront_porch = { 1, 40, 255 },
+	.hback_porch = { 1, 40, 87 },
+	.hsync_len = { 1, 48, 87 },
+	.vactive = { 480, 480, 480 },
+	.vfront_porch = { 1, 13, 255 },
+	.vback_porch = { 1, 29, 29 },
+	.vsync_len = { 3, 3, 31 },
+	.flags = DISPLAY_FLAGS_HSYNC_LOW | DISPLAY_FLAGS_VSYNC_LOW |
+		 DISPLAY_FLAGS_DE_HIGH | DISPLAY_FLAGS_PIXDATA_POSEDGE,
+};
+
+static const struct panel_desc ontat_kd50g21_40nt_a1 = {
+	.timings = &ontat_kd50g21_40nt_a1_timing,
+	.num_timings = 1,
+	.bpc = 8,
+	.size = {
+		.width = 108,
+		.height = 65,
+	},
+	.delay = {
+		.prepare = 147,		/* 5 VSDs */
+		.enable = 147,		/* 5 VSDs */
+		.disable = 88,		/* 3 VSDs */
+		.unprepare = 117,	/* 4 VSDs */
+	},
+	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+	.bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_SAMPLE_NEGEDGE,
+	.connector_type = DRM_MODE_CONNECTOR_DPI,
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * 800x480 CVT. The panel appears to be quite accepting, at least as far as
  * pixel clocks, but this is the timing that was being used in the Adafruit
@@ -4727,6 +4819,12 @@ static const struct of_device_id platform_of_match[] = {
 		.compatible = "innolux,g070ace-l01",
 		.data = &innolux_g070ace_l01,
 	}, {
+<<<<<<< HEAD
+=======
+		.compatible = "innolux,g070ace-lh3",
+		.data = &innolux_g070ace_lh3,
+	}, {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.compatible = "innolux,g070y2-l01",
 		.data = &innolux_g070y2_l01,
 	}, {
@@ -4838,6 +4936,12 @@ static const struct of_device_id platform_of_match[] = {
 		.compatible = "olimex,lcd-olinuxino-43-ts",
 		.data = &olimex_lcd_olinuxino_43ts,
 	}, {
+<<<<<<< HEAD
+=======
+		.compatible = "ontat,kd50g21-40nt-a1",
+		.data = &ontat_kd50g21_40nt_a1,
+	}, {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.compatible = "ontat,yx700wv03",
 		.data = &ontat_yx700wv03,
 	}, {

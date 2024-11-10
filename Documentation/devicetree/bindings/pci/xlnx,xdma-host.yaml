@@ -14,10 +14,28 @@ allOf:
 
 properties:
   compatible:
+<<<<<<< HEAD
     const: xlnx,xdma-host-3.00
 
   reg:
     maxItems: 1
+=======
+    enum:
+      - xlnx,xdma-host-3.00
+      - xlnx,qdma-host-3.00
+
+  reg:
+    items:
+      - description: configuration region and XDMA bridge register.
+      - description: QDMA bridge register.
+    minItems: 1
+
+  reg-names:
+    items:
+      - const: cfg
+      - const: breg
+    minItems: 1
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   ranges:
     maxItems: 2
@@ -76,6 +94,30 @@ required:
   - "#interrupt-cells"
   - interrupt-controller
 
+<<<<<<< HEAD
+=======
+if:
+  properties:
+    compatible:
+      contains:
+        enum:
+          - xlnx,qdma-host-3.00
+then:
+  properties:
+    reg:
+      minItems: 2
+    reg-names:
+      minItems: 2
+  required:
+    - reg-names
+else:
+  properties:
+    reg:
+      maxItems: 1
+    reg-names:
+      maxItems: 1
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 unevaluatedProperties: false
 
 examples:

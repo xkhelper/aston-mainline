@@ -52,16 +52,28 @@ tcp_timewait_check_oow_rate_limit(struct inet_timewait_sock *tw,
 	return TCP_TW_SUCCESS;
 }
 
+<<<<<<< HEAD
 static void twsk_rcv_nxt_update(struct tcp_timewait_sock *tcptw, u32 seq)
+=======
+static void twsk_rcv_nxt_update(struct tcp_timewait_sock *tcptw, u32 seq,
+				u32 rcv_nxt)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 #ifdef CONFIG_TCP_AO
 	struct tcp_ao_info *ao;
 
 	ao = rcu_dereference(tcptw->ao_info);
+<<<<<<< HEAD
 	if (unlikely(ao && seq < tcptw->tw_rcv_nxt))
 		WRITE_ONCE(ao->rcv_sne, ao->rcv_sne + 1);
 #endif
 	tcptw->tw_rcv_nxt = seq;
+=======
+	if (unlikely(ao && seq < rcv_nxt))
+		WRITE_ONCE(ao->rcv_sne, ao->rcv_sne + 1);
+#endif
+	WRITE_ONCE(tcptw->tw_rcv_nxt, seq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -98,8 +110,14 @@ enum tcp_tw_status
 tcp_timewait_state_process(struct inet_timewait_sock *tw, struct sk_buff *skb,
 			   const struct tcphdr *th, u32 *tw_isn)
 {
+<<<<<<< HEAD
 	struct tcp_options_received tmp_opt;
 	struct tcp_timewait_sock *tcptw = tcp_twsk((struct sock *)tw);
+=======
+	struct tcp_timewait_sock *tcptw = tcp_twsk((struct sock *)tw);
+	u32 rcv_nxt = READ_ONCE(tcptw->tw_rcv_nxt);
+	struct tcp_options_received tmp_opt;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool paws_reject = false;
 	int ts_recent_stamp;
 
@@ -117,26 +135,43 @@ tcp_timewait_state_process(struct inet_timewait_sock *tw, struct sk_buff *skb,
 		}
 	}
 
+<<<<<<< HEAD
 	if (tw->tw_substate == TCP_FIN_WAIT2) {
+=======
+	if (READ_ONCE(tw->tw_substate) == TCP_FIN_WAIT2) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Just repeat all the checks of tcp_rcv_state_process() */
 
 		/* Out of window, send ACK */
 		if (paws_reject ||
 		    !tcp_in_window(TCP_SKB_CB(skb)->seq, TCP_SKB_CB(skb)->end_seq,
+<<<<<<< HEAD
 				   tcptw->tw_rcv_nxt,
 				   tcptw->tw_rcv_nxt + tcptw->tw_rcv_wnd))
+=======
+				   rcv_nxt,
+				   rcv_nxt + tcptw->tw_rcv_wnd))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return tcp_timewait_check_oow_rate_limit(
 				tw, skb, LINUX_MIB_TCPACKSKIPPEDFINWAIT2);
 
 		if (th->rst)
 			goto kill;
 
+<<<<<<< HEAD
 		if (th->syn && !before(TCP_SKB_CB(skb)->seq, tcptw->tw_rcv_nxt))
+=======
+		if (th->syn && !before(TCP_SKB_CB(skb)->seq, rcv_nxt))
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return TCP_TW_RST;
 
 		/* Dup ACK? */
 		if (!th->ack ||
+<<<<<<< HEAD
 		    !after(TCP_SKB_CB(skb)->end_seq, tcptw->tw_rcv_nxt) ||
+=======
+		    !after(TCP_SKB_CB(skb)->end_seq, rcv_nxt) ||
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    TCP_SKB_CB(skb)->end_seq == TCP_SKB_CB(skb)->seq) {
 			inet_twsk_put(tw);
 			return TCP_TW_SUCCESS;
@@ -146,12 +181,22 @@ tcp_timewait_state_process(struct inet_timewait_sock *tw, struct sk_buff *skb,
 		 * reset.
 		 */
 		if (!th->fin ||
+<<<<<<< HEAD
 		    TCP_SKB_CB(skb)->end_seq != tcptw->tw_rcv_nxt + 1)
 			return TCP_TW_RST;
 
 		/* FIN arrived, enter true time-wait state. */
 		tw->tw_substate	  = TCP_TIME_WAIT;
 		twsk_rcv_nxt_update(tcptw, TCP_SKB_CB(skb)->end_seq);
+=======
+		    TCP_SKB_CB(skb)->end_seq != rcv_nxt + 1)
+			return TCP_TW_RST;
+
+		/* FIN arrived, enter true time-wait state. */
+		WRITE_ONCE(tw->tw_substate, TCP_TIME_WAIT);
+		twsk_rcv_nxt_update(tcptw, TCP_SKB_CB(skb)->end_seq,
+				    rcv_nxt);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (tmp_opt.saw_tstamp) {
 			WRITE_ONCE(tcptw->tw_ts_recent_stamp,
@@ -182,7 +227,11 @@ tcp_timewait_state_process(struct inet_timewait_sock *tw, struct sk_buff *skb,
 	 */
 
 	if (!paws_reject &&
+<<<<<<< HEAD
 	    (TCP_SKB_CB(skb)->seq == tcptw->tw_rcv_nxt &&
+=======
+	    (TCP_SKB_CB(skb)->seq == rcv_nxt &&
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	     (TCP_SKB_CB(skb)->seq == TCP_SKB_CB(skb)->end_seq || th->rst))) {
 		/* In window segment, it may be only reset or bare ack. */
 
@@ -229,7 +278,11 @@ kill:
 	 */
 
 	if (th->syn && !th->rst && !th->ack && !paws_reject &&
+<<<<<<< HEAD
 	    (after(TCP_SKB_CB(skb)->seq, tcptw->tw_rcv_nxt) ||
+=======
+	    (after(TCP_SKB_CB(skb)->seq, rcv_nxt) ||
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	     (tmp_opt.saw_tstamp &&
 	      (s32)(READ_ONCE(tcptw->tw_ts_recent) - tmp_opt.rcv_tsval) < 0))) {
 		u32 isn = tcptw->tw_snd_nxt + 65535 + 2;
@@ -625,6 +678,11 @@ struct sock *tcp_create_openreq_child(const struct sock *sk,
 
 	__TCP_INC_STATS(sock_net(sk), TCP_MIB_PASSIVEOPENS);
 
+<<<<<<< HEAD
+=======
+	xa_init_flags(&newsk->sk_user_frags, XA_FLAGS_ALLOC1);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return newsk;
 }
 EXPORT_SYMBOL(tcp_create_openreq_child);

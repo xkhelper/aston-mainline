@@ -39,13 +39,18 @@ static int amdgpu_vm_cpu_map_table(struct amdgpu_bo_vm *table)
  * amdgpu_vm_cpu_prepare - prepare page table update with the CPU
  *
  * @p: see amdgpu_vm_update_params definition
+<<<<<<< HEAD
  * @resv: reservation object with embedded fence
  * @sync_mode: synchronization mode
+=======
+ * @sync: sync obj with fences to wait on
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Returns:
  * Negativ errno, 0 for success.
  */
 static int amdgpu_vm_cpu_prepare(struct amdgpu_vm_update_params *p,
+<<<<<<< HEAD
 				 struct dma_resv *resv,
 				 enum amdgpu_sync_mode sync_mode)
 {
@@ -53,6 +58,14 @@ static int amdgpu_vm_cpu_prepare(struct amdgpu_vm_update_params *p,
 		return 0;
 
 	return amdgpu_bo_sync_wait_resv(p->adev, resv, sync_mode, p->vm, true);
+=======
+				 struct amdgpu_sync *sync)
+{
+	if (!sync)
+		return 0;
+
+	return amdgpu_sync_wait(sync, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**

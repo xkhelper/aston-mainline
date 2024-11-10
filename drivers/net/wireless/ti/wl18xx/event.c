@@ -142,7 +142,11 @@ int wl18xx_process_mailbox_events(struct wl1271 *wl)
 			    wl18xx_radar_type_decode(mbox->radar_type));
 
 		if (!wl->radar_debug_mode)
+<<<<<<< HEAD
 			ieee80211_radar_detected(wl->hw);
+=======
+			ieee80211_radar_detected(wl->hw, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (vector & PERIODIC_SCAN_REPORT_EVENT_ID) {

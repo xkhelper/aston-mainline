@@ -86,7 +86,10 @@ u32
 lio_cn6xxx_update_read_index(struct octeon_instr_queue *iq);
 void lio_cn6xxx_enable_interrupt(struct octeon_device *oct, u8 unused);
 void lio_cn6xxx_disable_interrupt(struct octeon_device *oct, u8 unused);
+<<<<<<< HEAD
 void cn6xxx_get_pcie_qlmport(struct octeon_device *oct);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void lio_cn6xxx_setup_reg_address(struct octeon_device *oct, void *chip,
 				  struct octeon_reg_list *reg_list);
 u32 lio_cn6xxx_coprocessor_clock(struct octeon_device *oct);

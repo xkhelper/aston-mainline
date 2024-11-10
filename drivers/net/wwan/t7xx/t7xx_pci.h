@@ -133,4 +133,10 @@ int t7xx_pci_pm_entity_unregister(struct t7xx_pci_dev *t7xx_dev, struct md_pm_en
 void t7xx_pci_pm_init_late(struct t7xx_pci_dev *t7xx_dev);
 void t7xx_pci_pm_exp_detected(struct t7xx_pci_dev *t7xx_dev);
 void t7xx_mode_update(struct t7xx_pci_dev *t7xx_dev, enum t7xx_mode mode);
+<<<<<<< HEAD
+=======
+int t7xx_pci_reprobe(struct t7xx_pci_dev *t7xx_dev, bool boot);
+int t7xx_pci_reprobe_early(struct t7xx_pci_dev *t7xx_dev);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __T7XX_PCI_H__ */

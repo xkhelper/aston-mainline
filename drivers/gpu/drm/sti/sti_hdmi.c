@@ -974,14 +974,23 @@ static const struct drm_bridge_funcs sti_hdmi_bridge_funcs = {
 
 static int sti_hdmi_connector_get_modes(struct drm_connector *connector)
 {
+<<<<<<< HEAD
 	struct sti_hdmi_connector *hdmi_connector
 		= to_sti_hdmi_connector(connector);
 	struct sti_hdmi *hdmi = hdmi_connector->hdmi;
 	struct edid *edid;
+=======
+	const struct drm_display_info *info = &connector->display_info;
+	struct sti_hdmi_connector *hdmi_connector
+		= to_sti_hdmi_connector(connector);
+	struct sti_hdmi *hdmi = hdmi_connector->hdmi;
+	const struct drm_edid *drm_edid;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int count;
 
 	DRM_DEBUG_DRIVER("\n");
 
+<<<<<<< HEAD
 	edid = drm_get_edid(connector, hdmi->ddc_adapt);
 	if (!edid)
 		goto fail;
@@ -996,6 +1005,25 @@ static int sti_hdmi_connector_get_modes(struct drm_connector *connector)
 		      edid->width_cm, edid->height_cm);
 
 	kfree(edid);
+=======
+	drm_edid = drm_edid_read(connector);
+
+	drm_edid_connector_update(connector, drm_edid);
+
+	cec_notifier_set_phys_addr(hdmi->notifier,
+				   connector->display_info.source_physical_address);
+
+	if (!drm_edid)
+		goto fail;
+
+	count = drm_edid_connector_add_modes(connector);
+
+	DRM_DEBUG_KMS("%s : %dx%d cm\n",
+		      info->is_hdmi ? "hdmi monitor" : "dvi monitor",
+		      info->width_mm / 10, info->height_mm / 10);
+
+	drm_edid_free(drm_edid);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return count;
 
 fail:
@@ -1485,7 +1513,10 @@ static void sti_hdmi_remove(struct platform_device *pdev)
 struct platform_driver sti_hdmi_driver = {
 	.driver = {
 		.name = "sti-hdmi",
+<<<<<<< HEAD
 		.owner = THIS_MODULE,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.of_match_table = hdmi_of_match,
 	},
 	.probe = sti_hdmi_probe,

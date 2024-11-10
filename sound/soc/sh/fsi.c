@@ -2107,7 +2107,11 @@ static struct platform_driver fsi_driver = {
 		.of_match_table = fsi_of_match,
 	},
 	.probe		= fsi_probe,
+<<<<<<< HEAD
 	.remove_new	= fsi_remove,
+=======
+	.remove		= fsi_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.id_table	= fsi_id_table,
 };
 

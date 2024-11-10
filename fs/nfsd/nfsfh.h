@@ -88,6 +88,11 @@ typedef struct svc_fh {
 						 * wcc data is not atomic with
 						 * operation
 						 */
+<<<<<<< HEAD
+=======
+	bool			fh_use_wgather;	/* NFSv2 wgather option */
+	bool			fh_64bit_cookies;/* readdir cookie size */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int			fh_flags;	/* FH flags */
 	bool			fh_post_saved;	/* post-op attrs saved */
 	bool			fh_pre_saved;	/* pre-op attrs saved */
@@ -215,6 +220,11 @@ extern char * SVCFH_fmt(struct svc_fh *fhp);
  * Function prototypes
  */
 __be32	fh_verify(struct svc_rqst *, struct svc_fh *, umode_t, int);
+<<<<<<< HEAD
+=======
+__be32	fh_verify_local(struct net *, struct svc_cred *, struct auth_domain *,
+			struct svc_fh *, umode_t, int);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 __be32	fh_compose(struct svc_fh *, struct svc_export *, struct dentry *, struct svc_fh *);
 __be32	fh_update(struct svc_fh *);
 void	fh_put(struct svc_fh *);

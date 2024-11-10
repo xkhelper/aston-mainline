@@ -17,14 +17,23 @@
 #include <linux/bits.h>
 #include <linux/cleanup.h>
 #include <linux/delay.h>
+<<<<<<< HEAD
 #include <linux/kernel.h>
 #include <linux/idr.h>
+=======
+#include <linux/idr.h>
+#include <linux/intel_vsec.h>
+#include <linux/kernel.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/module.h>
 #include <linux/pci.h>
 #include <linux/types.h>
 
+<<<<<<< HEAD
 #include "vsec.h"
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define PMT_XA_START			0
 #define PMT_XA_MAX			INT_MAX
 #define PMT_XA_LIMIT			XA_LIMIT(PMT_XA_START, PMT_XA_MAX)
@@ -213,6 +222,10 @@ static int intel_vsec_add_dev(struct pci_dev *pdev, struct intel_vsec_header *he
 	intel_vsec_dev->num_resources = header->num_entries;
 	intel_vsec_dev->quirks = info->quirks;
 	intel_vsec_dev->base_addr = info->base_addr;
+<<<<<<< HEAD
+=======
+	intel_vsec_dev->priv_data = info->priv_data;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (header->id == VSEC_ID_SDSI)
 		intel_vsec_dev->ida = &intel_vsec_sdsi_ida;
@@ -341,7 +354,11 @@ static bool intel_vsec_walk_vsec(struct pci_dev *pdev,
 void intel_vsec_register(struct pci_dev *pdev,
 			 struct intel_vsec_platform_info *info)
 {
+<<<<<<< HEAD
 	if (!pdev || !info)
+=======
+	if (!pdev || !info || !info->headers)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	intel_vsec_walk_header(pdev, info);

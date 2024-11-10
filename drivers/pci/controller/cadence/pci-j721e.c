@@ -7,6 +7,11 @@
  */
 
 #include <linux/clk.h>
+<<<<<<< HEAD
+=======
+#include <linux/clk-provider.h>
+#include <linux/container_of.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/delay.h>
 #include <linux/gpio/consumer.h>
 #include <linux/io.h>
@@ -22,6 +27,11 @@
 #include "../../pci.h"
 #include "pcie-cadence.h"
 
+<<<<<<< HEAD
+=======
+#define cdns_pcie_to_rc(p) container_of(p, struct cdns_pcie_rc, pcie)
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define ENABLE_REG_SYS_2	0x108
 #define STATUS_REG_SYS_2	0x508
 #define STATUS_CLR_REG_SYS_2	0x708
@@ -44,6 +54,10 @@ enum link_status {
 #define J721E_MODE_RC			BIT(7)
 #define LANE_COUNT(n)			((n) << 8)
 
+<<<<<<< HEAD
+=======
+#define ACSPCIE_PAD_DISABLE_MASK	GENMASK(1, 0)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define GENERATION_SEL_MASK		GENMASK(1, 0)
 
 struct j721e_pcie {
@@ -52,6 +66,10 @@ struct j721e_pcie {
 	u32			mode;
 	u32			num_lanes;
 	u32			max_lanes;
+<<<<<<< HEAD
+=======
+	struct gpio_desc	*reset_gpio;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void __iomem		*user_cfg_base;
 	void __iomem		*intd_cfg_base;
 	u32			linkdown_irq_regfield;
@@ -220,6 +238,39 @@ static int j721e_pcie_set_lane_count(struct j721e_pcie *pcie,
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static int j721e_enable_acspcie_refclk(struct j721e_pcie *pcie,
+				       struct regmap *syscon)
+{
+	struct device *dev = pcie->cdns_pcie->dev;
+	struct device_node *node = dev->of_node;
+	u32 mask = ACSPCIE_PAD_DISABLE_MASK;
+	struct of_phandle_args args;
+	u32 val;
+	int ret;
+
+	ret = of_parse_phandle_with_fixed_args(node,
+					       "ti,syscon-acspcie-proxy-ctrl",
+					       1, 0, &args);
+	if (ret) {
+		dev_err(dev,
+			"ti,syscon-acspcie-proxy-ctrl has invalid arguments\n");
+		return ret;
+	}
+
+	/* Clear PAD IO disable bits to enable refclk output */
+	val = ~(args.args[0]);
+	ret = regmap_update_bits(syscon, 0, mask, val);
+	if (ret) {
+		dev_err(dev, "failed to enable ACSPCIE refclk: %d\n", ret);
+		return ret;
+	}
+
+	return 0;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie)
 {
 	struct device *dev = pcie->cdns_pcie->dev;
@@ -259,7 +310,17 @@ static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	return 0;
+=======
+	/* Enable ACSPCIE refclk output if the optional property exists */
+	syscon = syscon_regmap_lookup_by_phandle_optional(node,
+						"ti,syscon-acspcie-proxy-ctrl");
+	if (!syscon)
+		return 0;
+
+	return j721e_enable_acspcie_refclk(pcie, syscon);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int cdns_ti_pcie_config_read(struct pci_bus *bus, unsigned int devfn,
@@ -482,20 +543,32 @@ static int j721e_pcie_probe(struct platform_device *pdev)
 	pm_runtime_enable(dev);
 	ret = pm_runtime_get_sync(dev);
 	if (ret < 0) {
+<<<<<<< HEAD
 		dev_err(dev, "pm_runtime_get_sync failed\n");
+=======
+		dev_err_probe(dev, ret, "pm_runtime_get_sync failed\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto err_get_sync;
 	}
 
 	ret = j721e_pcie_ctrl_init(pcie);
 	if (ret < 0) {
+<<<<<<< HEAD
 		dev_err(dev, "pm_runtime_get_sync failed\n");
+=======
+		dev_err_probe(dev, ret, "pm_runtime_get_sync failed\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto err_get_sync;
 	}
 
 	ret = devm_request_irq(dev, irq, j721e_pcie_link_irq_handler, 0,
 			       "j721e-pcie-link-down-irq", pcie);
 	if (ret < 0) {
+<<<<<<< HEAD
 		dev_err(dev, "failed to request link state IRQ %d\n", irq);
+=======
+		dev_err_probe(dev, ret, "failed to request link state IRQ %d\n", irq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto err_get_sync;
 	}
 
@@ -505,6 +578,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
 	case PCI_MODE_RC:
 		gpiod = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
 		if (IS_ERR(gpiod)) {
+<<<<<<< HEAD
 			ret = PTR_ERR(gpiod);
 			if (ret != -EPROBE_DEFER)
 				dev_err(dev, "Failed to get reset GPIO\n");
@@ -514,24 +588,43 @@ static int j721e_pcie_probe(struct platform_device *pdev)
 		ret = cdns_pcie_init_phy(dev, cdns_pcie);
 		if (ret) {
 			dev_err(dev, "Failed to init phy\n");
+=======
+			ret = dev_err_probe(dev, PTR_ERR(gpiod), "Failed to get reset GPIO\n");
+			goto err_get_sync;
+		}
+		pcie->reset_gpio = gpiod;
+
+		ret = cdns_pcie_init_phy(dev, cdns_pcie);
+		if (ret) {
+			dev_err_probe(dev, ret, "Failed to init phy\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto err_get_sync;
 		}
 
 		clk = devm_clk_get_optional(dev, "pcie_refclk");
 		if (IS_ERR(clk)) {
+<<<<<<< HEAD
 			ret = PTR_ERR(clk);
 			dev_err(dev, "failed to get pcie_refclk\n");
+=======
+			ret = dev_err_probe(dev, PTR_ERR(clk), "failed to get pcie_refclk\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto err_pcie_setup;
 		}
 
 		ret = clk_prepare_enable(clk);
 		if (ret) {
+<<<<<<< HEAD
 			dev_err(dev, "failed to enable pcie_refclk\n");
+=======
+			dev_err_probe(dev, ret, "failed to enable pcie_refclk\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto err_pcie_setup;
 		}
 		pcie->refclk = clk;
 
 		/*
+<<<<<<< HEAD
 		 * "Power Sequencing and Reset Signal Timings" table in
 		 * PCI EXPRESS CARD ELECTROMECHANICAL SPECIFICATION, REV. 3.0
 		 * indicates PERST# should be deasserted after minimum of 100us
@@ -541,6 +634,17 @@ static int j721e_pcie_probe(struct platform_device *pdev)
 		 */
 		if (gpiod) {
 			usleep_range(100, 200);
+=======
+		 * The "Power Sequencing and Reset Signal Timings" table of the
+		 * PCI Express Card Electromechanical Specification, Revision
+		 * 5.1, Section 2.9.2, Symbol "T_PERST-CLK", indicates PERST#
+		 * should be deasserted after minimum of 100us once REFCLK is
+		 * stable. The REFCLK to the connector in RC mode is selected
+		 * while enabling the PHY. So deassert PERST# after 100 us.
+		 */
+		if (gpiod) {
+			fsleep(PCIE_T_PERST_CLK_US);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			gpiod_set_value_cansleep(gpiod, 1);
 		}
 
@@ -554,7 +658,11 @@ static int j721e_pcie_probe(struct platform_device *pdev)
 	case PCI_MODE_EP:
 		ret = cdns_pcie_init_phy(dev, cdns_pcie);
 		if (ret) {
+<<<<<<< HEAD
 			dev_err(dev, "Failed to init phy\n");
+=======
+			dev_err_probe(dev, ret, "Failed to init phy\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto err_get_sync;
 		}
 
@@ -589,6 +697,90 @@ static void j721e_pcie_remove(struct platform_device *pdev)
 	pm_runtime_disable(dev);
 }
 
+<<<<<<< HEAD
+=======
+static int j721e_pcie_suspend_noirq(struct device *dev)
+{
+	struct j721e_pcie *pcie = dev_get_drvdata(dev);
+
+	if (pcie->mode == PCI_MODE_RC) {
+		gpiod_set_value_cansleep(pcie->reset_gpio, 0);
+		clk_disable_unprepare(pcie->refclk);
+	}
+
+	cdns_pcie_disable_phy(pcie->cdns_pcie);
+
+	return 0;
+}
+
+static int j721e_pcie_resume_noirq(struct device *dev)
+{
+	struct j721e_pcie *pcie = dev_get_drvdata(dev);
+	struct cdns_pcie *cdns_pcie = pcie->cdns_pcie;
+	int ret;
+
+	ret = j721e_pcie_ctrl_init(pcie);
+	if (ret < 0)
+		return ret;
+
+	j721e_pcie_config_link_irq(pcie);
+
+	/*
+	 * This is not called explicitly in the probe, it is called by
+	 * cdns_pcie_init_phy().
+	 */
+	ret = cdns_pcie_enable_phy(pcie->cdns_pcie);
+	if (ret < 0)
+		return ret;
+
+	if (pcie->mode == PCI_MODE_RC) {
+		struct cdns_pcie_rc *rc = cdns_pcie_to_rc(cdns_pcie);
+
+		ret = clk_prepare_enable(pcie->refclk);
+		if (ret < 0)
+			return ret;
+
+		/*
+		 * The "Power Sequencing and Reset Signal Timings" table of the
+		 * PCI Express Card Electromechanical Specification, Revision
+		 * 5.1, Section 2.9.2, Symbol "T_PERST-CLK", indicates PERST#
+		 * should be deasserted after minimum of 100us once REFCLK is
+		 * stable. The REFCLK to the connector in RC mode is selected
+		 * while enabling the PHY. So deassert PERST# after 100 us.
+		 */
+		if (pcie->reset_gpio) {
+			fsleep(PCIE_T_PERST_CLK_US);
+			gpiod_set_value_cansleep(pcie->reset_gpio, 1);
+		}
+
+		ret = cdns_pcie_host_link_setup(rc);
+		if (ret < 0) {
+			clk_disable_unprepare(pcie->refclk);
+			return ret;
+		}
+
+		/*
+		 * Reset internal status of BARs to force reinitialization in
+		 * cdns_pcie_host_init().
+		 */
+		for (enum cdns_pcie_rp_bar bar = RP_BAR0; bar <= RP_NO_BAR; bar++)
+			rc->avail_ib_bar[bar] = true;
+
+		ret = cdns_pcie_host_init(rc);
+		if (ret) {
+			clk_disable_unprepare(pcie->refclk);
+			return ret;
+		}
+	}
+
+	return 0;
+}
+
+static DEFINE_NOIRQ_DEV_PM_OPS(j721e_pcie_pm_ops,
+			       j721e_pcie_suspend_noirq,
+			       j721e_pcie_resume_noirq);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct platform_driver j721e_pcie_driver = {
 	.probe  = j721e_pcie_probe,
 	.remove_new = j721e_pcie_remove,
@@ -596,6 +788,10 @@ static struct platform_driver j721e_pcie_driver = {
 		.name	= "j721e-pcie",
 		.of_match_table = of_j721e_pcie_match,
 		.suppress_bind_attrs = true,
+<<<<<<< HEAD
+=======
+		.pm	= pm_sleep_ptr(&j721e_pcie_pm_ops),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 };
 builtin_platform_driver(j721e_pcie_driver);

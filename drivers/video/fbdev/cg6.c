@@ -545,7 +545,11 @@ static int cg6_blank(int blank, struct fb_info *info)
 	return 0;
 }
 
+<<<<<<< HEAD
 static struct sbus_mmap_map cg6_mmap_map[] = {
+=======
+static const struct sbus_mmap_map cg6_mmap_map[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{
 		.voff	= CG6_FBC,
 		.poff	= CG6_FBC_OFFSET,
@@ -858,7 +862,11 @@ static struct platform_driver cg6_driver = {
 		.of_match_table = cg6_match,
 	},
 	.probe		= cg6_probe,
+<<<<<<< HEAD
 	.remove_new	= cg6_remove,
+=======
+	.remove		= cg6_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int __init cg6_init(void)

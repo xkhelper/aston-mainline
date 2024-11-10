@@ -1368,7 +1368,11 @@ static void mg_copy(struct work_struct *ws)
 			 */
 			bool rb = bio_detain_shared(mg->cache, mg->op->oblock, mg->overwrite_bio);
 
+<<<<<<< HEAD
 			BUG_ON(rb); /* An exclussive lock must _not_ be held for this block */
+=======
+			BUG_ON(rb); /* An exclusive lock must _not_ be held for this block */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			mg->overwrite_bio = NULL;
 			inc_io_migrations(mg->cache);
 			mg_full_copy(ws);
@@ -1905,16 +1909,24 @@ static void check_migrations(struct work_struct *ws)
  * This function gets called on the error paths of the constructor, so we
  * have to cope with a partially initialised struct.
  */
+<<<<<<< HEAD
 static void destroy(struct cache *cache)
 {
 	unsigned int i;
 
+=======
+static void __destroy(struct cache *cache)
+{
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mempool_exit(&cache->migration_pool);
 
 	if (cache->prison)
 		dm_bio_prison_destroy_v2(cache->prison);
 
+<<<<<<< HEAD
 	cancel_delayed_work_sync(&cache->waker);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (cache->wq)
 		destroy_workqueue(cache->wq);
 
@@ -1942,13 +1954,31 @@ static void destroy(struct cache *cache)
 	if (cache->policy)
 		dm_cache_policy_destroy(cache->policy);
 
+<<<<<<< HEAD
+=======
+	bioset_exit(&cache->bs);
+
+	kfree(cache);
+}
+
+static void destroy(struct cache *cache)
+{
+	unsigned int i;
+
+	cancel_delayed_work_sync(&cache->waker);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < cache->nr_ctr_args ; i++)
 		kfree(cache->ctr_args[i]);
 	kfree(cache->ctr_args);
 
+<<<<<<< HEAD
 	bioset_exit(&cache->bs);
 
 	kfree(cache);
+=======
+	__destroy(cache);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void cache_dtr(struct dm_target *ti)
@@ -2003,7 +2033,10 @@ struct cache_args {
 	sector_t cache_sectors;
 
 	struct dm_dev *origin_dev;
+<<<<<<< HEAD
 	sector_t origin_sectors;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	uint32_t block_size;
 
@@ -2084,6 +2117,10 @@ static int parse_cache_dev(struct cache_args *ca, struct dm_arg_set *as,
 static int parse_origin_dev(struct cache_args *ca, struct dm_arg_set *as,
 			    char **error)
 {
+<<<<<<< HEAD
+=======
+	sector_t origin_sectors;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int r;
 
 	if (!at_least_one_arg(as, error))
@@ -2096,8 +2133,13 @@ static int parse_origin_dev(struct cache_args *ca, struct dm_arg_set *as,
 		return r;
 	}
 
+<<<<<<< HEAD
 	ca->origin_sectors = get_dev_size(ca->origin_dev);
 	if (ca->ti->len > ca->origin_sectors) {
+=======
+	origin_sectors = get_dev_size(ca->origin_dev);
+	if (ca->ti->len > origin_sectors) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		*error = "Device size larger than cached device";
 		return -EINVAL;
 	}
@@ -2407,7 +2449,11 @@ static int cache_create(struct cache_args *ca, struct cache **result)
 
 	ca->metadata_dev = ca->origin_dev = ca->cache_dev = NULL;
 
+<<<<<<< HEAD
 	origin_blocks = cache->origin_sectors = ca->origin_sectors;
+=======
+	origin_blocks = cache->origin_sectors = ti->len;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	origin_blocks = block_div(origin_blocks, ca->block_size);
 	cache->origin_blocks = to_oblock(origin_blocks);
 
@@ -2561,7 +2607,11 @@ static int cache_create(struct cache_args *ca, struct cache **result)
 	*result = cache;
 	return 0;
 bad:
+<<<<<<< HEAD
 	destroy(cache);
+=======
+	__destroy(cache);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return r;
 }
 
@@ -2612,7 +2662,11 @@ static int cache_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 
 	r = copy_ctr_args(cache, argc - 3, (const char **)argv + 3);
 	if (r) {
+<<<<<<< HEAD
 		destroy(cache);
+=======
+		__destroy(cache);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 	}
 
@@ -2895,19 +2949,33 @@ static dm_cblock_t get_cache_dev_size(struct cache *cache)
 static bool can_resize(struct cache *cache, dm_cblock_t new_size)
 {
 	if (from_cblock(new_size) > from_cblock(cache->cache_size)) {
+<<<<<<< HEAD
 		if (cache->sized) {
 			DMERR("%s: unable to extend cache due to missing cache table reload",
 			      cache_device_name(cache));
 			return false;
 		}
+=======
+		DMERR("%s: unable to extend cache due to missing cache table reload",
+		      cache_device_name(cache));
+		return false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/*
 	 * We can't drop a dirty block when shrinking the cache.
 	 */
+<<<<<<< HEAD
 	while (from_cblock(new_size) < from_cblock(cache->cache_size)) {
 		new_size = to_cblock(from_cblock(new_size) + 1);
 		if (is_dirty(cache, new_size)) {
+=======
+	if (cache->loaded_mappings) {
+		new_size = to_cblock(find_next_bit(cache->dirty_bitset,
+						   from_cblock(cache->cache_size),
+						   from_cblock(new_size)));
+		if (new_size != cache->cache_size) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
 			      cache_device_name(cache),
 			      (unsigned long long) from_cblock(new_size));
@@ -2943,6 +3011,7 @@ static int cache_preresume(struct dm_target *ti)
 	/*
 	 * Check to see if the cache has resized.
 	 */
+<<<<<<< HEAD
 	if (!cache->sized) {
 		r = resize_cache_dev(cache, csize);
 		if (r)
@@ -2951,12 +3020,20 @@ static int cache_preresume(struct dm_target *ti)
 		cache->sized = true;
 
 	} else if (csize != cache->cache_size) {
+=======
+	if (!cache->sized || csize != cache->cache_size) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!can_resize(cache, csize))
 			return -EINVAL;
 
 		r = resize_cache_dev(cache, csize);
 		if (r)
 			return r;
+<<<<<<< HEAD
+=======
+
+		cache->sized = true;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (!cache->loaded_mappings) {
@@ -3200,8 +3277,11 @@ static int parse_cblock_range(struct cache *cache, const char *str,
 	 * Try and parse form (ii) first.
 	 */
 	r = sscanf(str, "%llu-%llu%c", &b, &e, &dummy);
+<<<<<<< HEAD
 	if (r < 0)
 		return r;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (r == 2) {
 		result->begin = to_cblock(b);
@@ -3213,8 +3293,11 @@ static int parse_cblock_range(struct cache *cache, const char *str,
 	 * That didn't work, try form (i).
 	 */
 	r = sscanf(str, "%llu%c", &b, &dummy);
+<<<<<<< HEAD
 	if (r < 0)
 		return r;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (r == 1) {
 		result->begin = to_cblock(b);

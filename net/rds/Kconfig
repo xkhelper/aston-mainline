@@ -26,3 +26,15 @@ config RDS_DEBUG
 	bool "RDS debugging messages"
 	depends on RDS
 	default n
+<<<<<<< HEAD
+=======
+
+config GCOV_PROFILE_RDS
+	bool "Enable GCOV profiling on RDS"
+	depends on GCOV_KERNEL
+	help
+	  Enable GCOV profiling on RDS for checking which functions/lines
+	  are executed.
+
+	  If unsure, say N.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

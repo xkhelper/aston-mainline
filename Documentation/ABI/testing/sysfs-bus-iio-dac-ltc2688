@@ -53,6 +53,7 @@ KernelVersion:	5.18
 Contact:	linux-iio@vger.kernel.org
 Description:
 		Returns the available values for the dither phase.
+<<<<<<< HEAD
 
 What:		/sys/bus/iio/devices/iio:deviceX/out_voltageY_toggle_en
 KernelVersion:	5.18
@@ -84,3 +85,5 @@ Description:
 		enabled channels and allows to toggle between out_voltageY_raw0
 		and out_voltageY_raw1 through software. Writing 0 will select
 		out_voltageY_raw0 while 1 selects out_voltageY_raw1.
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

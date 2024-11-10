@@ -9,7 +9,11 @@
 
 #include "../common.h"
 
+<<<<<<< HEAD
 extern struct bus_type mhi_bus_type;
+=======
+extern const struct bus_type mhi_bus_type;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Host request register */
 #define MHI_SOC_RESET_REQ_OFFSET			0xb0

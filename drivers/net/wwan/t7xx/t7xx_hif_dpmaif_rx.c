@@ -226,7 +226,11 @@ int t7xx_dpmaif_rx_buf_alloc(struct dpmaif_ctrl *dpmaif_ctrl,
 	return 0;
 
 err_unmap_skbs:
+<<<<<<< HEAD
 	while (--i > 0)
+=======
+	while (i--)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		t7xx_unmap_bat_skb(dpmaif_ctrl->dev, bat_req->bat_skb, i);
 
 	return ret;

@@ -705,7 +705,10 @@ static const struct file_operations ep_io_operations = {
 
 	.open =		ep_open,
 	.release =	ep_release,
+<<<<<<< HEAD
 	.llseek =	no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.unlocked_ioctl = ep_ioctl,
 	.read_iter =	ep_read_iter,
 	.write_iter =	ep_write_iter,
@@ -1939,7 +1942,10 @@ gadget_dev_open (struct inode *inode, struct file *fd)
 }
 
 static const struct file_operations ep0_operations = {
+<<<<<<< HEAD
 	.llseek =	no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	.open =		gadget_dev_open,
 	.read =		ep0_read,

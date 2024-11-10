@@ -60,17 +60,29 @@ struct key *find_asymmetric_key(struct key *keyring,
 	char *req, *p;
 	int len;
 
+<<<<<<< HEAD
 	WARN_ON(!id_0 && !id_1 && !id_2);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (id_0) {
 		lookup = id_0->data;
 		len = id_0->len;
 	} else if (id_1) {
 		lookup = id_1->data;
 		len = id_1->len;
+<<<<<<< HEAD
 	} else {
 		lookup = id_2->data;
 		len = id_2->len;
+=======
+	} else if (id_2) {
+		lookup = id_2->data;
+		len = id_2->len;
+	} else {
+		WARN_ON(1);
+		return ERR_PTR(-EINVAL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* Construct an identifier "id:<keyid>". */

@@ -120,7 +120,11 @@ static int jcore_pit_local_init(unsigned cpu)
 
 static irqreturn_t jcore_timer_interrupt(int irq, void *dev_id)
 {
+<<<<<<< HEAD
 	struct jcore_pit *pit = this_cpu_ptr(dev_id);
+=======
+	struct jcore_pit *pit = dev_id;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (clockevent_state_oneshot(&pit->ced))
 		jcore_pit_disable(pit);
@@ -168,9 +172,14 @@ static int __init jcore_pit_init(struct device_node *node)
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	err = request_irq(pit_irq, jcore_timer_interrupt,
 			  IRQF_TIMER | IRQF_PERCPU,
 			  "jcore_pit", jcore_pit_percpu);
+=======
+	err = request_percpu_irq(pit_irq, jcore_timer_interrupt,
+				 "jcore_pit", jcore_pit_percpu);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err) {
 		pr_err("pit irq request failed: %d\n", err);
 		free_percpu(jcore_pit_percpu);

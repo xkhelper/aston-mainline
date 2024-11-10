@@ -280,4 +280,8 @@ examples:
         phy-names = "pciephy";
         max-link-speed = <3>;
         num-lanes = <2>;
+<<<<<<< HEAD
+=======
+        linux,pci-domain = <0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     };

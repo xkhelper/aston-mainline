@@ -19,6 +19,10 @@
 #include <linux/libata.h>
 #include <linux/hwmon.h>
 #include <linux/hwmon-sysfs.h>
+<<<<<<< HEAD
+=======
+#include <linux/phy/phy.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/thermal.h>
 #include "ahci.h"
 
@@ -44,6 +48,7 @@ enum {
 	/* Clock Reset Register */
 	IMX_CLOCK_RESET				= 0x7f3f,
 	IMX_CLOCK_RESET_RESET			= 1 << 0,
+<<<<<<< HEAD
 	/* IMX8QM HSIO AHCI definitions */
 	IMX8QM_SATA_PHY_RX_IMPED_RATIO_OFFSET	= 0x03,
 	IMX8QM_SATA_PHY_TX_IMPED_RATIO_OFFSET	= 0x09,
@@ -80,6 +85,12 @@ enum {
 	IMX8QM_CTRL_BUTTON_RST_N		= BIT(21),
 	IMX8QM_CTRL_POWER_UP_RST_N		= BIT(23),
 	IMX8QM_CTRL_LTSSM_ENABLE		= BIT(4),
+=======
+	/* IMX8QM SATA specific control registers */
+	IMX8QM_SATA_AHCI_PTC			= 0xc8,
+	IMX8QM_SATA_AHCI_PTC_RXWM_MASK		= GENMASK(6, 0),
+	IMX8QM_SATA_AHCI_PTC_RXWM		= 0x29,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum ahci_imx_type {
@@ -95,6 +106,7 @@ struct imx_ahci_priv {
 	struct clk *sata_clk;
 	struct clk *sata_ref_clk;
 	struct clk *ahb_clk;
+<<<<<<< HEAD
 	struct clk *epcs_tx_clk;
 	struct clk *epcs_rx_clk;
 	struct clk *phy_apbclk;
@@ -103,6 +115,12 @@ struct imx_ahci_priv {
 	void __iomem *phy_base;
 	struct gpio_desc *clkreq_gpiod;
 	struct regmap *gpr;
+=======
+	struct regmap *gpr;
+	struct phy *sata_phy;
+	struct phy *cali_phy0;
+	struct phy *cali_phy1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool no_device;
 	bool first_time;
 	u32 phy_params;
@@ -450,6 +468,7 @@ ATTRIBUTE_GROUPS(fsl_sata_ahci);
 
 static int imx8_sata_enable(struct ahci_host_priv *hpriv)
 {
+<<<<<<< HEAD
 	u32 val, reg;
 	int i, ret;
 	struct imx_ahci_priv *imxpriv = hpriv->plat_data;
@@ -645,6 +664,81 @@ disable_phy_pclk1:
 	clk_disable_unprepare(imxpriv->phy_pclk1);
 disable_phy_pclk0:
 	clk_disable_unprepare(imxpriv->phy_pclk0);
+=======
+	u32 val;
+	int ret;
+	struct imx_ahci_priv *imxpriv = hpriv->plat_data;
+	struct device *dev = &imxpriv->ahci_pdev->dev;
+
+	/*
+	 * Since "REXT" pin is only present for first lane of i.MX8QM
+	 * PHY, its calibration results will be stored, passed through
+	 * to the second lane PHY, and shared with all three lane PHYs.
+	 *
+	 * Initialize the first two lane PHYs here, although only the
+	 * third lane PHY is used by SATA.
+	 */
+	ret = phy_init(imxpriv->cali_phy0);
+	if (ret) {
+		dev_err(dev, "cali PHY init failed\n");
+		return ret;
+	}
+	ret = phy_power_on(imxpriv->cali_phy0);
+	if (ret) {
+		dev_err(dev, "cali PHY power on failed\n");
+		goto err_cali_phy0_exit;
+	}
+	ret = phy_init(imxpriv->cali_phy1);
+	if (ret) {
+		dev_err(dev, "cali PHY1 init failed\n");
+		goto err_cali_phy0_off;
+	}
+	ret = phy_power_on(imxpriv->cali_phy1);
+	if (ret) {
+		dev_err(dev, "cali PHY1 power on failed\n");
+		goto err_cali_phy1_exit;
+	}
+	ret = phy_init(imxpriv->sata_phy);
+	if (ret) {
+		dev_err(dev, "sata PHY init failed\n");
+		goto err_cali_phy1_off;
+	}
+	ret = phy_set_mode(imxpriv->sata_phy, PHY_MODE_SATA);
+	if (ret) {
+		dev_err(dev, "unable to set SATA PHY mode\n");
+		goto err_sata_phy_exit;
+	}
+	ret = phy_power_on(imxpriv->sata_phy);
+	if (ret) {
+		dev_err(dev, "sata PHY power up failed\n");
+		goto err_sata_phy_exit;
+	}
+
+	/* The cali_phy# can be turned off after SATA PHY is initialized. */
+	phy_power_off(imxpriv->cali_phy1);
+	phy_exit(imxpriv->cali_phy1);
+	phy_power_off(imxpriv->cali_phy0);
+	phy_exit(imxpriv->cali_phy0);
+
+	/* RxWaterMark setting */
+	val = readl(hpriv->mmio + IMX8QM_SATA_AHCI_PTC);
+	val &= ~IMX8QM_SATA_AHCI_PTC_RXWM_MASK;
+	val |= IMX8QM_SATA_AHCI_PTC_RXWM;
+	writel(val, hpriv->mmio + IMX8QM_SATA_AHCI_PTC);
+
+	return 0;
+
+err_sata_phy_exit:
+	phy_exit(imxpriv->sata_phy);
+err_cali_phy1_off:
+	phy_power_off(imxpriv->cali_phy1);
+err_cali_phy1_exit:
+	phy_exit(imxpriv->cali_phy1);
+err_cali_phy0_off:
+	phy_power_off(imxpriv->cali_phy0);
+err_cali_phy0_exit:
+	phy_exit(imxpriv->cali_phy0);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }
@@ -698,6 +792,12 @@ static int imx_sata_enable(struct ahci_host_priv *hpriv)
 		}
 	} else if (imxpriv->type == AHCI_IMX8QM) {
 		ret = imx8_sata_enable(hpriv);
+<<<<<<< HEAD
+=======
+		if (ret)
+			goto disable_clk;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	usleep_range(1000, 2000);
@@ -736,8 +836,15 @@ static void imx_sata_disable(struct ahci_host_priv *hpriv)
 		break;
 
 	case AHCI_IMX8QM:
+<<<<<<< HEAD
 		clk_disable_unprepare(imxpriv->epcs_rx_clk);
 		clk_disable_unprepare(imxpriv->epcs_tx_clk);
+=======
+		if (imxpriv->sata_phy) {
+			phy_power_off(imxpriv->sata_phy);
+			phy_exit(imxpriv->sata_phy);
+		}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 
 	default:
@@ -760,6 +867,12 @@ static void ahci_imx_error_handler(struct ata_port *ap)
 
 	ahci_error_handler(ap);
 
+<<<<<<< HEAD
+=======
+	if (imxpriv->type == AHCI_IMX8QM)
+		return;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!(imxpriv->first_time) || ahci_imx_hotplug)
 		return;
 
@@ -986,6 +1099,7 @@ static const struct scsi_host_template ahci_platform_sht = {
 
 static int imx8_sata_probe(struct device *dev, struct imx_ahci_priv *imxpriv)
 {
+<<<<<<< HEAD
 	struct resource *phy_res;
 	struct platform_device *pdev = imxpriv->ahci_pdev;
 	struct device_node *np = dev->of_node;
@@ -1045,6 +1159,21 @@ static int imx8_sata_probe(struct device *dev, struct imx_ahci_priv *imxpriv)
 	if (imxpriv->clkreq_gpiod)
 		gpiod_set_consumer_name(imxpriv->clkreq_gpiod, "SATA CLKREQ");
 
+=======
+	imxpriv->sata_phy = devm_phy_get(dev, "sata-phy");
+	if (IS_ERR(imxpriv->sata_phy))
+		return dev_err_probe(dev, PTR_ERR(imxpriv->sata_phy),
+				     "Failed to get sata_phy\n");
+
+	imxpriv->cali_phy0 = devm_phy_get(dev, "cali-phy0");
+	if (IS_ERR(imxpriv->cali_phy0))
+		return dev_err_probe(dev, PTR_ERR(imxpriv->cali_phy0),
+				     "Failed to get cali_phy0\n");
+	imxpriv->cali_phy1 = devm_phy_get(dev, "cali-phy1");
+	if (IS_ERR(imxpriv->cali_phy1))
+		return dev_err_probe(dev, PTR_ERR(imxpriv->cali_phy1),
+				     "Failed to get cali_phy1\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -1077,12 +1206,15 @@ static int imx_ahci_probe(struct platform_device *pdev)
 		return PTR_ERR(imxpriv->sata_ref_clk);
 	}
 
+<<<<<<< HEAD
 	imxpriv->ahb_clk = devm_clk_get(dev, "ahb");
 	if (IS_ERR(imxpriv->ahb_clk)) {
 		dev_err(dev, "can't get ahb clock.\n");
 		return PTR_ERR(imxpriv->ahb_clk);
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (imxpriv->type == AHCI_IMX6Q || imxpriv->type == AHCI_IMX6QP) {
 		u32 reg_value;
 
@@ -1142,11 +1274,16 @@ static int imx_ahci_probe(struct platform_device *pdev)
 		goto disable_clk;
 
 	/*
+<<<<<<< HEAD
 	 * Configure the HWINIT bits of the HOST_CAP and HOST_PORTS_IMPL,
 	 * and IP vendor specific register IMX_TIMER1MS.
 	 * Configure CAP_SSS (support stagered spin up).
 	 * Implement the port0.
 	 * Get the ahb clock rate, and configure the TIMER1MS register.
+=======
+	 * Configure the HWINIT bits of the HOST_CAP and HOST_PORTS_IMPL.
+	 * Set CAP_SSS (support stagered spin up) and Implement the port0.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	reg_val = readl(hpriv->mmio + HOST_CAP);
 	if (!(reg_val & HOST_CAP_SSS)) {
@@ -1159,8 +1296,25 @@ static int imx_ahci_probe(struct platform_device *pdev)
 		writel(reg_val, hpriv->mmio + HOST_PORTS_IMPL);
 	}
 
+<<<<<<< HEAD
 	reg_val = clk_get_rate(imxpriv->ahb_clk) / 1000;
 	writel(reg_val, hpriv->mmio + IMX_TIMER1MS);
+=======
+	if (imxpriv->type != AHCI_IMX8QM) {
+		/*
+		 * Get AHB clock rate and configure the vendor specified
+		 * TIMER1MS register on i.MX53, i.MX6Q and i.MX6QP only.
+		 */
+		imxpriv->ahb_clk = devm_clk_get(dev, "ahb");
+		if (IS_ERR(imxpriv->ahb_clk)) {
+			dev_err(dev, "Failed to get ahb clock\n");
+			ret = PTR_ERR(imxpriv->ahb_clk);
+			goto disable_sata;
+		}
+		reg_val = clk_get_rate(imxpriv->ahb_clk) / 1000;
+		writel(reg_val, hpriv->mmio + IMX_TIMER1MS);
+	}
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = ahci_platform_init_host(pdev, hpriv, &ahci_imx_port_info,
 				      &ahci_platform_sht);
@@ -1229,6 +1383,10 @@ static struct platform_driver imx_ahci_driver = {
 module_platform_driver(imx_ahci_driver);
 
 MODULE_DESCRIPTION("Freescale i.MX AHCI SATA platform driver");
+<<<<<<< HEAD
 MODULE_AUTHOR("Richard Zhu <Hong-Xing.Zhu@freescale.com>");
+=======
+MODULE_AUTHOR("Richard Zhu <hongxing.zhu@nxp.com>");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_LICENSE("GPL");
 MODULE_ALIAS("platform:" DRV_NAME);

@@ -2,7 +2,10 @@
 //
 // Copyright 2024 Advanced Micro Devices, Inc.
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifndef __DML2_MCG_FACTORY_H__
 #define __DML2_MCG_FACTORY_H__
 

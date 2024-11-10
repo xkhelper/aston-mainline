@@ -712,6 +712,7 @@ void kvm_vm_release(struct kvm_vm *vmp)
 }
 
 static void __vm_mem_region_delete(struct kvm_vm *vm,
+<<<<<<< HEAD
 				   struct userspace_mem_region *region,
 				   bool unlink)
 {
@@ -722,6 +723,15 @@ static void __vm_mem_region_delete(struct kvm_vm *vm,
 		rb_erase(&region->hva_node, &vm->regions.hva_tree);
 		hash_del(&region->slot_node);
 	}
+=======
+				   struct userspace_mem_region *region)
+{
+	int ret;
+
+	rb_erase(&region->gpa_node, &vm->regions.gpa_tree);
+	rb_erase(&region->hva_node, &vm->regions.hva_tree);
+	hash_del(&region->slot_node);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	region->region.memory_size = 0;
 	vm_ioctl(vm, KVM_SET_USER_MEMORY_REGION2, &region->region);
@@ -762,7 +772,11 @@ void kvm_vm_free(struct kvm_vm *vmp)
 
 	/* Free userspace_mem_regions. */
 	hash_for_each_safe(vmp->regions.slot_hash, ctr, node, region, slot_node)
+<<<<<<< HEAD
 		__vm_mem_region_delete(vmp, region, false);
+=======
+		__vm_mem_region_delete(vmp, region);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Free sparsebit arrays. */
 	sparsebit_free(&vmp->vpages_valid);
@@ -794,6 +808,7 @@ int kvm_memfd_alloc(size_t size, bool hugepages)
 	return fd;
 }
 
+<<<<<<< HEAD
 /*
  * Memory Compare, host virtual to guest virtual
  *
@@ -864,6 +879,8 @@ int kvm_memcmp_hva_gva(void *hva, struct kvm_vm *vm, vm_vaddr_t gva, size_t len)
 	return 0;
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void vm_userspace_mem_region_gpa_insert(struct rb_root *gpa_tree,
 					       struct userspace_mem_region *region)
 {
@@ -1270,7 +1287,11 @@ void vm_mem_region_move(struct kvm_vm *vm, uint32_t slot, uint64_t new_gpa)
  */
 void vm_mem_region_delete(struct kvm_vm *vm, uint32_t slot)
 {
+<<<<<<< HEAD
 	__vm_mem_region_delete(vm, memslot2region(vm, slot), true);
+=======
+	__vm_mem_region_delete(vm, memslot2region(vm, slot));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void vm_guest_mem_fallocate(struct kvm_vm *vm, uint64_t base, uint64_t size,

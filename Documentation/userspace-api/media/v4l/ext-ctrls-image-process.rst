@@ -31,7 +31,11 @@ Image Process Control IDs
     Pixel sampling rate in the device's pixel array. This control is
     read-only and its unit is pixels / second.
 
+<<<<<<< HEAD
     Some devices use horizontal and vertical balanking to configure the frame
+=======
+    Some devices use horizontal and vertical blanking to configure the frame
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     rate. The frame rate can be calculated from the pixel rate, analogue crop
     rectangle as well as horizontal and vertical blanking. The pixel rate
     control may be present in a different sub-device than the blanking controls

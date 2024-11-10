@@ -136,6 +136,15 @@ static inline bool amdgpu_reset_domain_schedule(struct amdgpu_reset_domain *doma
 	return queue_work(domain->wq, work);
 }
 
+<<<<<<< HEAD
+=======
+static inline bool amdgpu_reset_pending(struct amdgpu_reset_domain *domain)
+{
+	lockdep_assert_held(&domain->sem);
+	return rwsem_is_contended(&domain->sem);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void amdgpu_device_lock_reset_domain(struct amdgpu_reset_domain *reset_domain);
 
 void amdgpu_device_unlock_reset_domain(struct amdgpu_reset_domain *reset_domain);

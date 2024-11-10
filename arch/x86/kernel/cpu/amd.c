@@ -1190,6 +1190,7 @@ unsigned long amd_get_dr_addr_mask(unsigned int dr)
 }
 EXPORT_SYMBOL_GPL(amd_get_dr_addr_mask);
 
+<<<<<<< HEAD
 u32 amd_get_highest_perf(void)
 {
 	struct cpuinfo_x86 *c = &boot_cpu_data;
@@ -1206,6 +1207,8 @@ u32 amd_get_highest_perf(void)
 }
 EXPORT_SYMBOL_GPL(amd_get_highest_perf);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void zenbleed_check_cpu(void *unused)
 {
 	struct cpuinfo_x86 *c = &cpu_data(smp_processor_id());
@@ -1218,5 +1221,10 @@ void amd_check_microcode(void)
 	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD)
 		return;
 
+<<<<<<< HEAD
 	on_each_cpu(zenbleed_check_cpu, NULL, 1);
+=======
+	if (cpu_feature_enabled(X86_FEATURE_ZEN2))
+		on_each_cpu(zenbleed_check_cpu, NULL, 1);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

@@ -359,7 +359,10 @@ static int __init ali_find_watchdog(void)
 
 static const struct file_operations ali_fops = {
 	.owner		=	THIS_MODULE,
+<<<<<<< HEAD
 	.llseek		=	no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.write		=	ali_write,
 	.unlocked_ioctl =	ali_ioctl,
 	.compat_ioctl	= 	compat_ptr_ioctl,

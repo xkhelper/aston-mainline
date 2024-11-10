@@ -69,6 +69,10 @@
 #include <asm/sev.h>
 #include <asm/tdx.h>
 #include <asm/posted_intr.h>
+<<<<<<< HEAD
+=======
+#include <asm/runtime-const.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "cpu.h"
 
@@ -1165,8 +1169,13 @@ static const __initconst struct x86_cpu_id cpu_vuln_whitelist[] = {
 
 	VULNWL_INTEL(INTEL_CORE_YONAH,		NO_SSB),
 
+<<<<<<< HEAD
 	VULNWL_INTEL(INTEL_ATOM_AIRMONT_MID,	NO_L1TF | MSBDS_ONLY | NO_SWAPGS | NO_ITLB_MULTIHIT),
 	VULNWL_INTEL(INTEL_ATOM_AIRMONT_NP,	NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT),
+=======
+	VULNWL_INTEL(INTEL_ATOM_AIRMONT_MID,	NO_SSB | NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT | MSBDS_ONLY),
+	VULNWL_INTEL(INTEL_ATOM_AIRMONT_NP,	NO_SSB | NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	VULNWL_INTEL(INTEL_ATOM_GOLDMONT,	NO_MDS | NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT | NO_MMIO),
 	VULNWL_INTEL(INTEL_ATOM_GOLDMONT_D,	NO_MDS | NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT | NO_MMIO),
@@ -1443,6 +1452,12 @@ static void __init cpu_set_bug_bits(struct cpuinfo_x86 *c)
 	     boot_cpu_has(X86_FEATURE_HYPERVISOR)))
 		setup_force_cpu_bug(X86_BUG_BHI);
 
+<<<<<<< HEAD
+=======
+	if (cpu_has(c, X86_FEATURE_AMD_IBPB) && !cpu_has(c, X86_FEATURE_AMD_IBPB_RET))
+		setup_force_cpu_bug(X86_BUG_IBPB_NO_RET);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (cpu_matches(cpu_vuln_whitelist, NO_MELTDOWN))
 		return;
 
@@ -1510,6 +1525,14 @@ static void __init cpu_parse_early_param(void)
 	if (cmdline_find_option_bool(boot_command_line, "nousershstk"))
 		setup_clear_cpu_cap(X86_FEATURE_USER_SHSTK);
 
+<<<<<<< HEAD
+=======
+	/* Minimize the gap between FRED is available and available but disabled. */
+	arglen = cmdline_find_option(boot_command_line, "fred", arg, sizeof(arg));
+	if (arglen != 2 || strncmp(arg, "on", 2))
+		setup_clear_cpu_cap(X86_FEATURE_FRED);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	arglen = cmdline_find_option(boot_command_line, "clearcpuid", arg, sizeof(arg));
 	if (arglen <= 0)
 		return;
@@ -2171,7 +2194,11 @@ static inline void tss_setup_io_bitmap(struct tss_struct *tss)
  * Setup everything needed to handle exceptions from the IDT, including the IST
  * exceptions which use paranoid_entry().
  */
+<<<<<<< HEAD
 void cpu_init_exception_handling(void)
+=======
+void cpu_init_exception_handling(bool boot_cpu)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct tss_struct *tss = this_cpu_ptr(&cpu_tss_rw);
 	int cpu = raw_smp_processor_id();
@@ -2190,10 +2217,30 @@ void cpu_init_exception_handling(void)
 	/* GHCB needs to be setup to handle #VC. */
 	setup_ghcb();
 
+<<<<<<< HEAD
 	if (cpu_feature_enabled(X86_FEATURE_FRED))
 		cpu_init_fred_exceptions();
 	else
 		load_current_idt();
+=======
+	if (cpu_feature_enabled(X86_FEATURE_FRED)) {
+		/* The boot CPU has enabled FRED during early boot */
+		if (!boot_cpu)
+			cpu_init_fred_exceptions();
+
+		cpu_init_fred_rsps();
+	} else {
+		load_current_idt();
+	}
+}
+
+void __init cpu_init_replace_early_idt(void)
+{
+	if (cpu_feature_enabled(X86_FEATURE_FRED))
+		cpu_init_fred_exceptions();
+	else
+		idt_setup_early_pf();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -2368,6 +2415,18 @@ void __init arch_cpu_finalize_init(void)
 	alternative_instructions();
 
 	if (IS_ENABLED(CONFIG_X86_64)) {
+<<<<<<< HEAD
+=======
+		unsigned long USER_PTR_MAX = TASK_SIZE_MAX-1;
+
+		/*
+		 * Enable this when LAM is gated on LASS support
+		if (cpu_feature_enabled(X86_FEATURE_LAM))
+			USER_PTR_MAX = (1ul << 63) - PAGE_SIZE - 1;
+		 */
+		runtime_const_init(ptr, USER_PTR_MAX);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * Make sure the first 2MB area is not mapped by huge pages
 		 * There are typically fixed size MTRRs in there and overlapping

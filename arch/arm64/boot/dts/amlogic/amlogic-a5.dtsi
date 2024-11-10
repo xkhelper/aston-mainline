@@ -4,6 +4,10 @@
  */
 
 #include "amlogic-a4-common.dtsi"
+<<<<<<< HEAD
+=======
+#include <dt-bindings/power/amlogic,a5-pwrc.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 / {
 	cpus {
 		#address-cells = <2>;
@@ -37,4 +41,16 @@
 			enable-method = "psci";
 		};
 	};
+<<<<<<< HEAD
+=======
+
+	sm: secure-monitor {
+		compatible = "amlogic,meson-gxbb-sm";
+
+		pwrc: power-controller {
+			compatible = "amlogic,a5-pwrc";
+			#power-domain-cells = <1>;
+		};
+	};
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };

@@ -11,6 +11,7 @@
 #include "i915_reg.h"
 #include "i915_utils.h"
 
+<<<<<<< HEAD
 #define FDO_BUG_MSG "Please file a bug on drm/i915; see " FDO_BUG_URL " for details."
 
 void
@@ -56,6 +57,12 @@ void add_taint_for_CI(struct drm_i915_private *i915, unsigned int taint)
 {
 	__i915_printk(i915, KERN_NOTICE, "CI tainted:%#x by %pS\n",
 		      taint, (void *)_RET_IP_);
+=======
+void add_taint_for_CI(struct drm_i915_private *i915, unsigned int taint)
+{
+	drm_notice(&i915->drm, "CI tainted: %#x by %pS\n",
+		   taint, __builtin_return_address(0));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Failures that occur during fault injection testing are expected */
 	if (!i915_error_injected())
@@ -74,9 +81,15 @@ int __i915_inject_probe_error(struct drm_i915_private *i915, int err,
 	if (++i915_probe_fail_count < i915_modparams.inject_probe_failure)
 		return 0;
 
+<<<<<<< HEAD
 	__i915_printk(i915, KERN_INFO,
 		      "Injecting failure %d at checkpoint %u [%s:%d]\n",
 		      err, i915_modparams.inject_probe_failure, func, line);
+=======
+	drm_info(&i915->drm, "Injecting failure %d at checkpoint %u [%s:%d]\n",
+		 err, i915_modparams.inject_probe_failure, func, line);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	i915_modparams.inject_probe_failure = 0;
 	return err;
 }
@@ -110,7 +123,11 @@ void set_timer_ms(struct timer_list *t, unsigned long timeout)
 	 * Paranoia to make sure the compiler computes the timeout before
 	 * loading 'jiffies' as jiffies is volatile and may be updated in
 	 * the background by a timer tick. All to reduce the complexity
+<<<<<<< HEAD
 	 * of the addition and reduce the risk of losing a jiffie.
+=======
+	 * of the addition and reduce the risk of losing a jiffy.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	barrier();
 

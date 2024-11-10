@@ -197,11 +197,28 @@
 		ssi-controller = <&ssi1>;
 	};
 
+<<<<<<< HEAD
 	sound_spdif: sound-spdif {
 		compatible = "fsl,imx-audio-spdif";
 		spdif-controller = <&spdif>;
 		spdif-in;
 		spdif-out;
+=======
+	spdif_out: spdif-out {
+		compatible = "linux,spdif-dit";
+		#sound-dai-cells = <0>;
+	};
+
+	spdif_in: spdif-in {
+		compatible = "linux,spdif-dir";
+		#sound-dai-cells = <0>;
+	};
+
+	sound_spdif: sound-spdif {
+		compatible = "fsl,imx-audio-spdif";
+		audio-cpu = <&spdif>;
+		audio-codec = <&spdif_out>, <&spdif_in>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		model = "imx-spdif";
 		status = "disabled";
 	};

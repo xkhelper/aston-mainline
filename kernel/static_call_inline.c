@@ -411,6 +411,20 @@ static void static_call_del_module(struct module *mod)
 
 	for (site = start; site < stop; site++) {
 		key = static_call_key(site);
+<<<<<<< HEAD
+=======
+
+		/*
+		 * If the key was not updated due to a memory allocation
+		 * failure in __static_call_init() then treating key::sites
+		 * as key::mods in the code below would cause random memory
+		 * access and #GP. In that case all subsequent sites have
+		 * not been touched either, so stop iterating.
+		 */
+		if (!static_call_key_has_mods(key))
+			break;
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (key == prev_key)
 			continue;
 
@@ -442,7 +456,11 @@ static int static_call_module_notify(struct notifier_block *nb,
 	case MODULE_STATE_COMING:
 		ret = static_call_add_module(mod);
 		if (ret) {
+<<<<<<< HEAD
 			WARN(1, "Failed to allocate memory for static calls");
+=======
+			pr_warn("Failed to allocate memory for static calls\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			static_call_del_module(mod);
 		}
 		break;

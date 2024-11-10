@@ -982,6 +982,11 @@ static const struct of_device_id vdec_dt_match[] = {
 	  .data = &vdec_platform_gxm },
 	{ .compatible = "amlogic,gxl-vdec",
 	  .data = &vdec_platform_gxl },
+<<<<<<< HEAD
+=======
+	{ .compatible = "amlogic,gxlx-vdec",
+	  .data = &vdec_platform_gxlx },
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .compatible = "amlogic,g12a-vdec",
 	  .data = &vdec_platform_g12a },
 	{ .compatible = "amlogic,sm1-vdec",

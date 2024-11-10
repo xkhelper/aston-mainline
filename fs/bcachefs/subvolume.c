@@ -92,6 +92,7 @@ static int check_subvol(struct btree_trans *trans,
 	}
 
 	struct bch_inode_unpacked inode;
+<<<<<<< HEAD
 	struct btree_iter inode_iter = {};
 	ret = bch2_inode_peek_nowarn(trans, &inode_iter, &inode,
 				    (subvol_inum) { k.k->p.offset, le64_to_cpu(subvol.v->inode) },
@@ -120,6 +121,35 @@ static int check_subvol(struct btree_trans *trans,
 		ret = __bch2_fsck_write_inode(trans, &inode, le32_to_cpu(subvol.v->snapshot));
 		if (ret)
 			goto err;
+=======
+	ret = bch2_inode_find_by_inum_nowarn_trans(trans,
+				    (subvol_inum) { k.k->p.offset, le64_to_cpu(subvol.v->inode) },
+				    &inode);
+	if (!ret) {
+		if (fsck_err_on(inode.bi_subvol != subvol.k->p.offset,
+				trans, subvol_root_wrong_bi_subvol,
+				"subvol root %llu:%u has wrong bi_subvol field: got %u, should be %llu",
+				inode.bi_inum, inode.bi_snapshot,
+				inode.bi_subvol, subvol.k->p.offset)) {
+			inode.bi_subvol = subvol.k->p.offset;
+			inode.bi_snapshot = le32_to_cpu(subvol.v->snapshot);
+			ret = __bch2_fsck_write_inode(trans, &inode);
+			if (ret)
+				goto err;
+		}
+	} else if (bch2_err_matches(ret, ENOENT)) {
+		if (fsck_err(trans, subvol_to_missing_root,
+			     "subvolume %llu points to missing subvolume root %llu:%u",
+			     k.k->p.offset, le64_to_cpu(subvol.v->inode),
+			     le32_to_cpu(subvol.v->snapshot))) {
+			ret = bch2_subvolume_delete(trans, iter->pos.offset);
+			bch_err_msg(c, ret, "deleting subvolume %llu", iter->pos.offset);
+			ret = ret ?: -BCH_ERR_transaction_restart_nested;
+			goto err;
+		}
+	} else {
+		goto err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (!BCH_SUBVOLUME_SNAP(subvol.v)) {
@@ -137,7 +167,11 @@ static int check_subvol(struct btree_trans *trans,
 				"%s: snapshot tree %u not found", __func__, snapshot_tree);
 
 		if (ret)
+<<<<<<< HEAD
 			return ret;
+=======
+			goto err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (fsck_err_on(le32_to_cpu(st.master_subvol) != subvol.k->p.offset,
 				trans, subvol_not_master_and_not_snapshot,
@@ -147,7 +181,11 @@ static int check_subvol(struct btree_trans *trans,
 				bch2_bkey_make_mut_typed(trans, iter, &subvol.s_c, 0, subvolume);
 			ret = PTR_ERR_OR_ZERO(s);
 			if (ret)
+<<<<<<< HEAD
 				return ret;
+=======
+				goto err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			SET_BCH_SUBVOLUME_SNAP(&s->v, true);
 		}
@@ -320,8 +358,12 @@ int bch2_subvol_is_ro_trans(struct btree_trans *trans, u32 subvol)
 
 int bch2_subvol_is_ro(struct bch_fs *c, u32 subvol)
 {
+<<<<<<< HEAD
 	return bch2_trans_do(c, NULL, NULL, 0,
 		bch2_subvol_is_ro_trans(trans, subvol));
+=======
+	return bch2_trans_do(c, bch2_subvol_is_ro_trans(trans, subvol));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int bch2_snapshot_get_subvol(struct btree_trans *trans, u32 snapshot,
@@ -333,8 +375,13 @@ int bch2_snapshot_get_subvol(struct btree_trans *trans, u32 snapshot,
 		bch2_subvolume_get(trans, le32_to_cpu(snap.subvol), true, 0, subvol);
 }
 
+<<<<<<< HEAD
 int bch2_subvolume_get_snapshot(struct btree_trans *trans, u32 subvolid,
 				u32 *snapid)
+=======
+int __bch2_subvolume_get_snapshot(struct btree_trans *trans, u32 subvolid,
+				  u32 *snapid, bool warn)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct btree_iter iter;
 	struct bkey_s_c_subvolume subvol;
@@ -345,7 +392,12 @@ int bch2_subvolume_get_snapshot(struct btree_trans *trans, u32 subvolid,
 					  BTREE_ITER_cached|BTREE_ITER_with_updates,
 					  subvolume);
 	ret = bkey_err(subvol);
+<<<<<<< HEAD
 	bch2_fs_inconsistent_on(bch2_err_matches(ret, ENOENT), trans->c,
+=======
+
+	bch2_fs_inconsistent_on(warn && bch2_err_matches(ret, ENOENT), trans->c,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				"missing subvolume %u", subvolid);
 
 	if (likely(!ret))
@@ -354,6 +406,15 @@ int bch2_subvolume_get_snapshot(struct btree_trans *trans, u32 subvolid,
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+int bch2_subvolume_get_snapshot(struct btree_trans *trans, u32 subvolid,
+				u32 *snapid)
+{
+	return __bch2_subvolume_get_snapshot(trans, subvolid, snapid, true);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int bch2_subvolume_reparent(struct btree_trans *trans,
 				   struct btree_iter *iter,
 				   struct bkey_s_c k,
@@ -670,8 +731,13 @@ err:
 /* set bi_subvol on root inode */
 int bch2_fs_upgrade_for_subvolumes(struct bch_fs *c)
 {
+<<<<<<< HEAD
 	int ret = bch2_trans_do(c, NULL, NULL, BCH_TRANS_COMMIT_lazy_rw,
 				__bch2_fs_upgrade_for_subvolumes(trans));
+=======
+	int ret = bch2_trans_commit_do(c, NULL, NULL, BCH_TRANS_COMMIT_lazy_rw,
+				       __bch2_fs_upgrade_for_subvolumes(trans));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bch_err_fn(c, ret);
 	return ret;
 }

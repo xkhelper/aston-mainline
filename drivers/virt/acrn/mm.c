@@ -177,9 +177,13 @@ int acrn_vm_ram_map(struct acrn_vm *vm, struct acrn_vm_memmap *memmap)
 	vma = vma_lookup(current->mm, memmap->vma_base);
 	if (vma && ((vma->vm_flags & VM_PFNMAP) != 0)) {
 		unsigned long start_pfn, cur_pfn;
+<<<<<<< HEAD
 		spinlock_t *ptl;
 		bool writable;
 		pte_t *ptep;
+=======
+		bool writable;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if ((memmap->vma_base + memmap->len) > vma->vm_end) {
 			mmap_read_unlock(current->mm);
@@ -187,6 +191,7 @@ int acrn_vm_ram_map(struct acrn_vm *vm, struct acrn_vm_memmap *memmap)
 		}
 
 		for (i = 0; i < nr_pages; i++) {
+<<<<<<< HEAD
 			ret = follow_pte(vma, memmap->vma_base + i * PAGE_SIZE,
 					 &ptep, &ptl);
 			if (ret)
@@ -197,6 +202,22 @@ int acrn_vm_ram_map(struct acrn_vm *vm, struct acrn_vm_memmap *memmap)
 				start_pfn = cur_pfn;
 			writable = !!pte_write(ptep_get(ptep));
 			pte_unmap_unlock(ptep, ptl);
+=======
+			struct follow_pfnmap_args args = {
+				.vma = vma,
+				.address = memmap->vma_base + i * PAGE_SIZE,
+			};
+
+			ret = follow_pfnmap_start(&args);
+			if (ret)
+				break;
+
+			cur_pfn = args.pfn;
+			if (i == 0)
+				start_pfn = cur_pfn;
+			writable = args.writable;
+			follow_pfnmap_end(&args);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			/* Disallow write access if the PTE is not writable. */
 			if (!writable &&

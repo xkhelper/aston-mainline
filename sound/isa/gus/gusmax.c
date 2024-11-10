@@ -64,8 +64,11 @@ struct snd_gusmax {
 	unsigned short pcm_status_reg;
 };
 
+<<<<<<< HEAD
 #define PFX	"gusmax: "
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int snd_gusmax_detect(struct snd_gus_card *gus)
 {
 	unsigned char d;
@@ -73,7 +76,11 @@ static int snd_gusmax_detect(struct snd_gus_card *gus)
 	snd_gf1_i_write8(gus, SNDRV_GF1_GB_RESET, 0);	/* reset GF1 */
 	d = snd_gf1_i_look8(gus, SNDRV_GF1_GB_RESET);
 	if ((d & 0x07) != 0) {
+<<<<<<< HEAD
 		snd_printdd("[0x%lx] check 1 failed - 0x%x\n", gus->gf1.port, d);
+=======
+		dev_dbg(gus->card->dev, "[0x%lx] check 1 failed - 0x%x\n", gus->gf1.port, d);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENODEV;
 	}
 	udelay(160);
@@ -81,7 +88,11 @@ static int snd_gusmax_detect(struct snd_gus_card *gus)
 	udelay(160);
 	d = snd_gf1_i_look8(gus, SNDRV_GF1_GB_RESET);
 	if ((d & 0x07) != 1) {
+<<<<<<< HEAD
 		snd_printdd("[0x%lx] check 2 failed - 0x%x\n", gus->gf1.port, d);
+=======
+		dev_dbg(gus->card->dev, "[0x%lx] check 2 failed - 0x%x\n", gus->gf1.port, d);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENODEV;
 	}
 
@@ -206,7 +217,11 @@ static int snd_gusmax_probe(struct device *pdev, unsigned int dev)
 	if (xirq == SNDRV_AUTO_IRQ) {
 		xirq = snd_legacy_find_free_irq(possible_irqs);
 		if (xirq < 0) {
+<<<<<<< HEAD
 			snd_printk(KERN_ERR PFX "unable to find a free IRQ\n");
+=======
+			dev_err(pdev, "unable to find a free IRQ\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EBUSY;
 		}
 	}
@@ -214,7 +229,11 @@ static int snd_gusmax_probe(struct device *pdev, unsigned int dev)
 	if (xdma1 == SNDRV_AUTO_DMA) {
 		xdma1 = snd_legacy_find_free_dma(possible_dmas);
 		if (xdma1 < 0) {
+<<<<<<< HEAD
 			snd_printk(KERN_ERR PFX "unable to find a free DMA1\n");
+=======
+			dev_err(pdev, "unable to find a free DMA1\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EBUSY;
 		}
 	}
@@ -222,7 +241,11 @@ static int snd_gusmax_probe(struct device *pdev, unsigned int dev)
 	if (xdma2 == SNDRV_AUTO_DMA) {
 		xdma2 = snd_legacy_find_free_dma(possible_dmas);
 		if (xdma2 < 0) {
+<<<<<<< HEAD
 			snd_printk(KERN_ERR PFX "unable to find a free DMA2\n");
+=======
+			dev_err(pdev, "unable to find a free DMA2\n");
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EBUSY;
 		}
 	}
@@ -267,13 +290,21 @@ static int snd_gusmax_probe(struct device *pdev, unsigned int dev)
 		return err;
 
 	if (!gus->max_flag) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR PFX "GUS MAX soundcard was not detected at 0x%lx\n", gus->gf1.port);
+=======
+		dev_err(pdev, "GUS MAX soundcard was not detected at 0x%lx\n", gus->gf1.port);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENODEV;
 	}
 
 	if (devm_request_irq(card->dev, xirq, snd_gusmax_interrupt, 0,
 			     "GUS MAX", (void *)maxcard)) {
+<<<<<<< HEAD
 		snd_printk(KERN_ERR PFX "unable to grab IRQ %d\n", xirq);
+=======
+		dev_err(pdev, "unable to grab IRQ %d\n", xirq);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 	}
 	maxcard->irq = xirq;

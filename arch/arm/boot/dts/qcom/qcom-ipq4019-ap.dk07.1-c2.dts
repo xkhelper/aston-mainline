@@ -9,7 +9,11 @@
 
 	soc {
 		pinctrl@1000000 {
+<<<<<<< HEAD
 			serial_1_pins: serial1-pinmux {
+=======
+			serial_1_pins: serial1-state {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				pins = "gpio8", "gpio9";
 				function = "blsp_uart1";
 				bias-disable;

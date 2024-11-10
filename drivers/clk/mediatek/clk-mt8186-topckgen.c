@@ -725,7 +725,11 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8186_topck);
 
 static struct platform_driver clk_mt8186_topck_drv = {
 	.probe = mtk_clk_simple_probe,
+<<<<<<< HEAD
 	.remove_new = mtk_clk_simple_remove,
+=======
+	.remove = mtk_clk_simple_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "clk-mt8186-topck",
 		.of_match_table = of_match_clk_mt8186_topck,

@@ -41,13 +41,18 @@ struct rpi_power_domains {
  */
 struct rpi_power_domain_packet {
 	u32 domain;
+<<<<<<< HEAD
 	u32 on;
+=======
+	u32 state;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
  * Asks the firmware to enable or disable power on a specific power
  * domain.
  */
+<<<<<<< HEAD
 static int rpi_firmware_set_power(struct rpi_power_domain *rpi_domain, bool on)
 {
 	struct rpi_power_domain_packet packet;
@@ -59,22 +64,55 @@ static int rpi_firmware_set_power(struct rpi_power_domain *rpi_domain, bool on)
 				     RPI_FIRMWARE_SET_POWER_STATE :
 				     RPI_FIRMWARE_SET_DOMAIN_STATE,
 				     &packet, sizeof(packet));
+=======
+static int rpi_firmware_set_power(struct generic_pm_domain *domain, bool on)
+{
+	struct rpi_power_domain *rpi_domain =
+		container_of(domain, struct rpi_power_domain, base);
+	bool old_interface = rpi_domain->old_interface;
+	struct rpi_power_domain_packet packet;
+	int ret;
+
+	packet.domain = rpi_domain->domain;
+	packet.state = on;
+
+	ret = rpi_firmware_property(rpi_domain->fw, old_interface ?
+				    RPI_FIRMWARE_SET_POWER_STATE :
+				    RPI_FIRMWARE_SET_DOMAIN_STATE,
+				    &packet, sizeof(packet));
+	if (ret)
+		dev_err(&domain->dev, "Failed to set %s to %u (%d)\n",
+			old_interface ? "power" : "domain", on, ret);
+	else
+		dev_dbg(&domain->dev, "Set %s to %u\n",
+			old_interface ? "power" : "domain", on);
+
+	return ret;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int rpi_domain_off(struct generic_pm_domain *domain)
 {
+<<<<<<< HEAD
 	struct rpi_power_domain *rpi_domain =
 		container_of(domain, struct rpi_power_domain, base);
 
 	return rpi_firmware_set_power(rpi_domain, false);
+=======
+	return rpi_firmware_set_power(domain, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int rpi_domain_on(struct generic_pm_domain *domain)
 {
+<<<<<<< HEAD
 	struct rpi_power_domain *rpi_domain =
 		container_of(domain, struct rpi_power_domain, base);
 
 	return rpi_firmware_set_power(rpi_domain, true);
+=======
+	return rpi_firmware_set_power(domain, true);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void rpi_common_init_power_domain(struct rpi_power_domains *rpi_domains,
@@ -85,6 +123,10 @@ static void rpi_common_init_power_domain(struct rpi_power_domains *rpi_domains,
 	dom->fw = rpi_domains->fw;
 
 	dom->base.name = name;
+<<<<<<< HEAD
+=======
+	dom->base.flags = GENPD_FLAG_ACTIVE_WAKEUP;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dom->base.power_on = rpi_domain_on;
 	dom->base.power_off = rpi_domain_off;
 
@@ -142,13 +184,21 @@ rpi_has_new_domain_support(struct rpi_power_domains *rpi_domains)
 	int ret;
 
 	packet.domain = RPI_POWER_DOMAIN_ARM;
+<<<<<<< HEAD
 	packet.on = ~0;
+=======
+	packet.state = ~0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = rpi_firmware_property(rpi_domains->fw,
 				    RPI_FIRMWARE_GET_DOMAIN_STATE,
 				    &packet, sizeof(packet));
 
+<<<<<<< HEAD
 	return ret == 0 && packet.on != ~0;
+=======
+	return ret == 0 && packet.state != ~0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int rpi_power_probe(struct platform_device *pdev)

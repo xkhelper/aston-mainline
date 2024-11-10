@@ -1204,9 +1204,13 @@ static void free_iommu(struct intel_iommu *iommu)
  */
 static inline void reclaim_free_desc(struct q_inval *qi)
 {
+<<<<<<< HEAD
 	while (qi->desc_status[qi->free_tail] == QI_DONE ||
 	       qi->desc_status[qi->free_tail] == QI_ABORT) {
 		qi->desc_status[qi->free_tail] = QI_FREE;
+=======
+	while (qi->desc_status[qi->free_tail] == QI_FREE && qi->free_tail != qi->free_head) {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		qi->free_tail = (qi->free_tail + 1) % QI_LENGTH;
 		qi->free_cnt++;
 	}
@@ -1463,8 +1467,21 @@ restart:
 		raw_spin_lock(&qi->q_lock);
 	}
 
+<<<<<<< HEAD
 	for (i = 0; i < count; i++)
 		qi->desc_status[(index + i) % QI_LENGTH] = QI_DONE;
+=======
+	/*
+	 * The reclaim code can free descriptors from multiple submissions
+	 * starting from the tail of the queue. When count == 0, the
+	 * status of the standalone wait descriptor at the tail of the queue
+	 * must be set to QI_FREE to allow the reclaim code to proceed.
+	 * It is also possible that descriptors from one of the previous
+	 * submissions has to be reclaimed by a subsequent submission.
+	 */
+	for (i = 0; i <= count; i++)
+		qi->desc_status[(index + i) % QI_LENGTH] = QI_FREE;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	reclaim_free_desc(qi);
 	raw_spin_unlock_irqrestore(&qi->q_lock, flags);
@@ -1520,6 +1537,7 @@ void qi_flush_context(struct intel_iommu *iommu, u16 did, u16 sid, u8 fm,
 void qi_flush_iotlb(struct intel_iommu *iommu, u16 did, u64 addr,
 		    unsigned int size_order, u64 type)
 {
+<<<<<<< HEAD
 	u8 dw = 0, dr = 0;
 
 	struct qi_desc desc;
@@ -1538,6 +1556,11 @@ void qi_flush_iotlb(struct intel_iommu *iommu, u16 did, u64 addr,
 	desc.qw2 = 0;
 	desc.qw3 = 0;
 
+=======
+	struct qi_desc desc;
+
+	qi_desc_iotlb(iommu, did, addr, size_order, type, &desc);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	qi_submit_sync(iommu, &desc, 1, 0);
 }
 
@@ -1555,6 +1578,7 @@ void qi_flush_dev_iotlb(struct intel_iommu *iommu, u16 sid, u16 pfsid,
 	if (!(iommu->gcmd & DMA_GCMD_TE))
 		return;
 
+<<<<<<< HEAD
 	if (mask) {
 		addr |= (1ULL << (VTD_PAGE_SHIFT + mask - 1)) - 1;
 		desc.qw1 = QI_DEV_IOTLB_ADDR(addr) | QI_DEV_IOTLB_SIZE;
@@ -1569,6 +1593,9 @@ void qi_flush_dev_iotlb(struct intel_iommu *iommu, u16 sid, u16 pfsid,
 	desc.qw2 = 0;
 	desc.qw3 = 0;
 
+=======
+	qi_desc_dev_iotlb(sid, pfsid, qdep, addr, mask, &desc);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	qi_submit_sync(iommu, &desc, 1, 0);
 }
 
@@ -1588,6 +1615,7 @@ void qi_flush_piotlb(struct intel_iommu *iommu, u16 did, u32 pasid, u64 addr,
 		return;
 	}
 
+<<<<<<< HEAD
 	if (npages == -1) {
 		desc.qw0 = QI_EIOTLB_PASID(pasid) |
 				QI_EIOTLB_DID(did) |
@@ -1610,6 +1638,9 @@ void qi_flush_piotlb(struct intel_iommu *iommu, u16 did, u32 pasid, u64 addr,
 				QI_EIOTLB_AM(mask);
 	}
 
+=======
+	qi_desc_piotlb(did, pasid, addr, npages, ih, &desc);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	qi_submit_sync(iommu, &desc, 1, 0);
 }
 
@@ -1617,7 +1648,10 @@ void qi_flush_piotlb(struct intel_iommu *iommu, u16 did, u32 pasid, u64 addr,
 void qi_flush_dev_iotlb_pasid(struct intel_iommu *iommu, u16 sid, u16 pfsid,
 			      u32 pasid,  u16 qdep, u64 addr, unsigned int size_order)
 {
+<<<<<<< HEAD
 	unsigned long mask = 1UL << (VTD_PAGE_SHIFT + size_order - 1);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct qi_desc desc = {.qw1 = 0, .qw2 = 0, .qw3 = 0};
 
 	/*
@@ -1629,6 +1663,7 @@ void qi_flush_dev_iotlb_pasid(struct intel_iommu *iommu, u16 sid, u16 pfsid,
 	if (!(iommu->gcmd & DMA_GCMD_TE))
 		return;
 
+<<<<<<< HEAD
 	desc.qw0 = QI_DEV_EIOTLB_PASID(pasid) | QI_DEV_EIOTLB_SID(sid) |
 		QI_DEV_EIOTLB_QDEP(qdep) | QI_DEIOTLB_TYPE |
 		QI_DEV_IOTLB_PFSID(pfsid);
@@ -1663,6 +1698,11 @@ void qi_flush_dev_iotlb_pasid(struct intel_iommu *iommu, u16 sid, u16 pfsid,
 		desc.qw1 |= QI_DEV_EIOTLB_SIZE;
 	}
 
+=======
+	qi_desc_dev_iotlb_pasid(sid, pfsid, pasid,
+				qdep, addr, size_order,
+				&desc);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	qi_submit_sync(iommu, &desc, 1, 0);
 }
 

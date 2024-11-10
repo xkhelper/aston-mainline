@@ -11,6 +11,11 @@ The acquisition orders for mutexes are as follows:
 
 - cpus_read_lock() is taken outside kvm_lock
 
+<<<<<<< HEAD
+=======
+- kvm_usage_lock is taken outside cpus_read_lock()
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 - kvm->lock is taken outside vcpu->mutex
 
 - kvm->lock is taken outside kvm->slots_lock and kvm->irq_lock
@@ -24,6 +29,16 @@ The acquisition orders for mutexes are as follows:
   are taken on the waiting side when modifying memslots, so MMU notifiers
   must not take either kvm->slots_lock or kvm->slots_arch_lock.
 
+<<<<<<< HEAD
+=======
+cpus_read_lock() vs kvm_lock:
+
+- Taking cpus_read_lock() outside of kvm_lock is problematic, despite that
+  being the official ordering, as it is quite easy to unknowingly trigger
+  cpus_read_lock() while holding kvm_lock.  Use caution when walking vm_list,
+  e.g. avoid complex operations when possible.
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 For SRCU:
 
 - ``synchronize_srcu(&kvm->srcu)`` is called inside critical sections
@@ -127,7 +142,11 @@ For direct sp, we can easily avoid it since the spte of direct sp is fixed
 to gfn.  For indirect sp, we disabled fast page fault for simplicity.
 
 A solution for indirect sp could be to pin the gfn, for example via
+<<<<<<< HEAD
 kvm_vcpu_gfn_to_pfn_atomic, before the cmpxchg.  After the pinning:
+=======
+gfn_to_pfn_memslot_atomic, before the cmpxchg.  After the pinning:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 - We have held the refcount of pfn; that means the pfn can not be freed and
   be reused for another gfn.
@@ -227,10 +246,23 @@ time it will be set using the Dirty tracking mechanism described above.
 :Type:		mutex
 :Arch:		any
 :Protects:	- vm_list
+<<<<<<< HEAD
 		- kvm_usage_count
 		- hardware virtualization enable/disable
 :Comment:	KVM also disables CPU hotplug via cpus_read_lock() during
 		enable/disable.
+=======
+
+``kvm_usage_lock``
+^^^^^^^^^^^^^^^^^^
+
+:Type:		mutex
+:Arch:		any
+:Protects:	- kvm_usage_count
+		- hardware virtualization enable/disable
+:Comment:	Exists to allow taking cpus_read_lock() while kvm_usage_count is
+		protected, which simplifies the virtualization enabling logic.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 ``kvm->mn_invalidate_lock``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -290,6 +322,7 @@ time it will be set using the Dirty tracking mechanism described above.
 		wakeup.
 
 ``vendor_module_lock``
+<<<<<<< HEAD
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 :Type:		mutex
 :Arch:		x86
@@ -298,3 +331,14 @@ time it will be set using the Dirty tracking mechanism described above.
     taken outside of kvm_lock, e.g. in KVM's CPU online/offline callbacks, and
     many operations need to take cpu_hotplug_lock when loading a vendor module,
     e.g. updating static calls.
+=======
+^^^^^^^^^^^^^^^^^^^^^^
+:Type:		mutex
+:Arch:		x86
+:Protects:	loading a vendor module (kvm_amd or kvm_intel)
+:Comment:	Exists because using kvm_lock leads to deadlock.  kvm_lock is taken
+    in notifiers, e.g. __kvmclock_cpufreq_notifier(), that may be invoked while
+    cpu_hotplug_lock is held, e.g. from cpufreq_boost_trigger_state(), and many
+    operations need to take cpu_hotplug_lock when loading a vendor module, e.g.
+    updating static calls.
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

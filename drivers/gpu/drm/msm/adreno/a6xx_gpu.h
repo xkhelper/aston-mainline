@@ -22,6 +22,11 @@ struct a6xx_info {
 	const struct adreno_reglist *hwcg;
 	const struct adreno_protect *protect;
 	u32 gmu_chipid;
+<<<<<<< HEAD
+=======
+	u32 gmu_cgc_mode;
+	u32 prim_fifo_threshold;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct a6xx_gpu {

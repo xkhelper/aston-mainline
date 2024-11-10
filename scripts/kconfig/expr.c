@@ -9,10 +9,17 @@
 #include <stdlib.h>
 #include <string.h>
 
+<<<<<<< HEAD
+=======
+#include <hash.h>
+#include <xalloc.h>
+#include "internal.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "lkc.h"
 
 #define DEBUG_EXPR	0
 
+<<<<<<< HEAD
 static struct expr *expr_eliminate_yn(struct expr *e);
 
 struct expr *expr_alloc_symbol(struct symbol *sym)
@@ -21,32 +28,87 @@ struct expr *expr_alloc_symbol(struct symbol *sym)
 	e->type = E_SYMBOL;
 	e->left.sym = sym;
 	return e;
+=======
+HASHTABLE_DEFINE(expr_hashtable, EXPR_HASHSIZE);
+
+static struct expr *expr_eliminate_yn(struct expr *e);
+
+/**
+ * expr_lookup - return the expression with the given type and sub-nodes
+ * This looks up an expression with the specified type and sub-nodes. If such
+ * an expression is found in the hash table, it is returned. Otherwise, a new
+ * expression node is allocated and added to the hash table.
+ * @type: expression type
+ * @l: left node
+ * @r: right node
+ * return: expression
+ */
+static struct expr *expr_lookup(enum expr_type type, void *l, void *r)
+{
+	struct expr *e;
+	int hash;
+
+	hash = hash_32((unsigned int)type ^ hash_ptr(l) ^ hash_ptr(r));
+
+	hash_for_each_possible(expr_hashtable, e, node, hash) {
+		if (e->type == type && e->left._initdata == l &&
+		    e->right._initdata == r)
+			return e;
+	}
+
+	e = xmalloc(sizeof(*e));
+	e->type = type;
+	e->left._initdata = l;
+	e->right._initdata = r;
+	e->val_is_valid = false;
+
+	hash_add(expr_hashtable, &e->node, hash);
+
+	return e;
+}
+
+struct expr *expr_alloc_symbol(struct symbol *sym)
+{
+	return expr_lookup(E_SYMBOL, sym, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 struct expr *expr_alloc_one(enum expr_type type, struct expr *ce)
 {
+<<<<<<< HEAD
 	struct expr *e = xcalloc(1, sizeof(*e));
 	e->type = type;
 	e->left.expr = ce;
 	return e;
+=======
+	return expr_lookup(type, ce, NULL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 struct expr *expr_alloc_two(enum expr_type type, struct expr *e1, struct expr *e2)
 {
+<<<<<<< HEAD
 	struct expr *e = xcalloc(1, sizeof(*e));
 	e->type = type;
 	e->left.expr = e1;
 	e->right.expr = e2;
 	return e;
+=======
+	return expr_lookup(type, e1, e2);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 struct expr *expr_alloc_comp(enum expr_type type, struct symbol *s1, struct symbol *s2)
 {
+<<<<<<< HEAD
 	struct expr *e = xcalloc(1, sizeof(*e));
 	e->type = type;
 	e->left.sym = s1;
 	e->right.sym = s2;
 	return e;
+=======
+	return expr_lookup(type, s1, s2);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 struct expr *expr_alloc_and(struct expr *e1, struct expr *e2)
@@ -63,6 +125,7 @@ struct expr *expr_alloc_or(struct expr *e1, struct expr *e2)
 	return e2 ? expr_alloc_two(E_OR, e1, e2) : e1;
 }
 
+<<<<<<< HEAD
 struct expr *expr_copy(const struct expr *org)
 {
 	struct expr *e;
@@ -133,6 +196,8 @@ void expr_free(struct expr *e)
 	free(e);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int trans_count;
 
 /*
@@ -145,6 +210,7 @@ static int trans_count;
  */
 static void __expr_eliminate_eq(enum expr_type type, struct expr **ep1, struct expr **ep2)
 {
+<<<<<<< HEAD
 	/* Recurse down to leaves */
 
 	if ((*ep1)->type == type) {
@@ -155,6 +221,26 @@ static void __expr_eliminate_eq(enum expr_type type, struct expr **ep1, struct e
 	if ((*ep2)->type == type) {
 		__expr_eliminate_eq(type, ep1, &(*ep2)->left.expr);
 		__expr_eliminate_eq(type, ep1, &(*ep2)->right.expr);
+=======
+	struct expr *l, *r;
+
+	/* Recurse down to leaves */
+
+	if ((*ep1)->type == type) {
+		l = (*ep1)->left.expr;
+		r = (*ep1)->right.expr;
+		__expr_eliminate_eq(type, &l, ep2);
+		__expr_eliminate_eq(type, &r, ep2);
+		*ep1 = expr_alloc_two(type, l, r);
+		return;
+	}
+	if ((*ep2)->type == type) {
+		l = (*ep2)->left.expr;
+		r = (*ep2)->right.expr;
+		__expr_eliminate_eq(type, ep1, &l);
+		__expr_eliminate_eq(type, ep1, &r);
+		*ep2 = expr_alloc_two(type, l, r);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 
@@ -170,7 +256,10 @@ static void __expr_eliminate_eq(enum expr_type type, struct expr **ep1, struct e
 	/* *ep1 and *ep2 are equal leaves. Prepare them for elimination. */
 
 	trans_count++;
+<<<<<<< HEAD
 	expr_free(*ep1); expr_free(*ep2);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (type) {
 	case E_OR:
 		*ep1 = expr_alloc_symbol(&symbol_no);
@@ -242,9 +331,16 @@ void expr_eliminate_eq(struct expr **ep1, struct expr **ep2)
  * equals some operand in the other (operands do not need to appear in the same
  * order), recursively.
  */
+<<<<<<< HEAD
 int expr_eq(struct expr *e1, struct expr *e2)
 {
 	int res, old_count;
+=======
+bool expr_eq(struct expr *e1, struct expr *e2)
+{
+	int old_count;
+	bool res;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * A NULL expr is taken to be yes, but there's also a different way to
@@ -254,7 +350,11 @@ int expr_eq(struct expr *e1, struct expr *e2)
 		return expr_is_yes(e1) && expr_is_yes(e2);
 
 	if (e1->type != e2->type)
+<<<<<<< HEAD
 		return 0;
+=======
+		return false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (e1->type) {
 	case E_EQUAL:
 	case E_GEQ:
@@ -269,14 +369,20 @@ int expr_eq(struct expr *e1, struct expr *e2)
 		return expr_eq(e1->left.expr, e2->left.expr);
 	case E_AND:
 	case E_OR:
+<<<<<<< HEAD
 		e1 = expr_copy(e1);
 		e2 = expr_copy(e2);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		old_count = trans_count;
 		expr_eliminate_eq(&e1, &e2);
 		res = (e1->type == E_SYMBOL && e2->type == E_SYMBOL &&
 		       e1->left.sym == e2->left.sym);
+<<<<<<< HEAD
 		expr_free(e1);
 		expr_free(e2);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		trans_count = old_count;
 		return res;
 	case E_RANGE:
@@ -291,11 +397,19 @@ int expr_eq(struct expr *e1, struct expr *e2)
 		printf(" ?\n");
 	}
 
+<<<<<<< HEAD
 	return 0;
 }
 
 /*
  * Recursively performs the following simplifications in-place (as well as the
+=======
+	return false;
+}
+
+/*
+ * Recursively performs the following simplifications (as well as the
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * corresponding simplifications with swapped operands):
  *
  *	expr && n  ->  n
@@ -307,6 +421,7 @@ int expr_eq(struct expr *e1, struct expr *e2)
  */
 static struct expr *expr_eliminate_yn(struct expr *e)
 {
+<<<<<<< HEAD
 	struct expr *tmp;
 
 	if (e) switch (e->type) {
@@ -380,6 +495,41 @@ static struct expr *expr_eliminate_yn(struct expr *e)
 				e->right.expr = NULL;
 				return e;
 			}
+=======
+	struct expr *l, *r;
+
+	if (e) switch (e->type) {
+	case E_AND:
+		l = expr_eliminate_yn(e->left.expr);
+		r = expr_eliminate_yn(e->right.expr);
+		if (l->type == E_SYMBOL) {
+			if (l->left.sym == &symbol_no)
+				return l;
+			else if (l->left.sym == &symbol_yes)
+				return r;
+		}
+		if (r->type == E_SYMBOL) {
+			if (r->left.sym == &symbol_no)
+				return r;
+			else if (r->left.sym == &symbol_yes)
+				return l;
+		}
+		break;
+	case E_OR:
+		l = expr_eliminate_yn(e->left.expr);
+		r = expr_eliminate_yn(e->right.expr);
+		if (l->type == E_SYMBOL) {
+			if (l->left.sym == &symbol_no)
+				return r;
+			else if (l->left.sym == &symbol_yes)
+				return l;
+		}
+		if (r->type == E_SYMBOL) {
+			if (r->left.sym == &symbol_no)
+				return l;
+			else if (r->left.sym == &symbol_yes)
+				return r;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		break;
 	default:
@@ -397,7 +547,11 @@ static struct expr *expr_join_or(struct expr *e1, struct expr *e2)
 	struct symbol *sym1, *sym2;
 
 	if (expr_eq(e1, e2))
+<<<<<<< HEAD
 		return expr_copy(e1);
+=======
+		return e1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (e1->type != E_EQUAL && e1->type != E_UNEQUAL && e1->type != E_SYMBOL && e1->type != E_NOT)
 		return NULL;
 	if (e2->type != E_EQUAL && e2->type != E_UNEQUAL && e2->type != E_SYMBOL && e2->type != E_NOT)
@@ -440,6 +594,10 @@ static struct expr *expr_join_or(struct expr *e1, struct expr *e2)
 		}
 	}
 	if (sym1->type == S_BOOLEAN) {
+<<<<<<< HEAD
+=======
+		// a || !a -> y
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if ((e1->type == E_NOT && e1->left.expr->type == E_SYMBOL && e2->type == E_SYMBOL) ||
 		    (e2->type == E_NOT && e2->left.expr->type == E_SYMBOL && e1->type == E_SYMBOL))
 			return expr_alloc_symbol(&symbol_yes);
@@ -461,7 +619,11 @@ static struct expr *expr_join_and(struct expr *e1, struct expr *e2)
 	struct symbol *sym1, *sym2;
 
 	if (expr_eq(e1, e2))
+<<<<<<< HEAD
 		return expr_copy(e1);
+=======
+		return e1;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (e1->type != E_EQUAL && e1->type != E_UNEQUAL && e1->type != E_SYMBOL && e1->type != E_NOT)
 		return NULL;
 	if (e2->type != E_EQUAL && e2->type != E_UNEQUAL && e2->type != E_SYMBOL && e2->type != E_NOT)
@@ -558,11 +720,16 @@ static struct expr *expr_join_and(struct expr *e1, struct expr *e2)
  */
 static void expr_eliminate_dups1(enum expr_type type, struct expr **ep1, struct expr **ep2)
 {
+<<<<<<< HEAD
 	struct expr *tmp;
+=======
+	struct expr *tmp, *l, *r;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Recurse down to leaves */
 
 	if ((*ep1)->type == type) {
+<<<<<<< HEAD
 		expr_eliminate_dups1(type, &(*ep1)->left.expr, ep2);
 		expr_eliminate_dups1(type, &(*ep1)->right.expr, ep2);
 		return;
@@ -570,11 +737,27 @@ static void expr_eliminate_dups1(enum expr_type type, struct expr **ep1, struct 
 	if ((*ep2)->type == type) {
 		expr_eliminate_dups1(type, ep1, &(*ep2)->left.expr);
 		expr_eliminate_dups1(type, ep1, &(*ep2)->right.expr);
+=======
+		l = (*ep1)->left.expr;
+		r = (*ep1)->right.expr;
+		expr_eliminate_dups1(type, &l, ep2);
+		expr_eliminate_dups1(type, &r, ep2);
+		*ep1 = expr_alloc_two(type, l, r);
+		return;
+	}
+	if ((*ep2)->type == type) {
+		l = (*ep2)->left.expr;
+		r = (*ep2)->right.expr;
+		expr_eliminate_dups1(type, ep1, &l);
+		expr_eliminate_dups1(type, ep1, &r);
+		*ep2 = expr_alloc_two(type, l, r);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 
 	/* *ep1 and *ep2 are leaves. Compare and process them. */
 
+<<<<<<< HEAD
 	if (*ep1 == *ep2)
 		return;
 
@@ -585,11 +768,16 @@ static void expr_eliminate_dups1(enum expr_type type, struct expr **ep1, struct 
 		;
 	}
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (type) {
 	case E_OR:
 		tmp = expr_join_or(*ep1, *ep2);
 		if (tmp) {
+<<<<<<< HEAD
 			expr_free(*ep1); expr_free(*ep2);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			*ep1 = expr_alloc_symbol(&symbol_no);
 			*ep2 = tmp;
 			trans_count++;
@@ -598,7 +786,10 @@ static void expr_eliminate_dups1(enum expr_type type, struct expr **ep1, struct 
 	case E_AND:
 		tmp = expr_join_and(*ep1, *ep2);
 		if (tmp) {
+<<<<<<< HEAD
 			expr_free(*ep1); expr_free(*ep2);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			*ep1 = expr_alloc_symbol(&symbol_yes);
 			*ep2 = tmp;
 			trans_count++;
@@ -628,10 +819,22 @@ struct expr *expr_eliminate_dups(struct expr *e)
 
 	oldcount = trans_count;
 	do {
+<<<<<<< HEAD
 		trans_count = 0;
 		switch (e->type) {
 		case E_OR: case E_AND:
 			expr_eliminate_dups1(e->type, &e, &e);
+=======
+		struct expr *l, *r;
+
+		trans_count = 0;
+		switch (e->type) {
+		case E_OR: case E_AND:
+			l = expr_eliminate_dups(e->left.expr);
+			r = expr_eliminate_dups(e->right.expr);
+			expr_eliminate_dups1(e->type, &l, &r);
+			e = expr_alloc_two(e->type, l, r);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		default:
 			;
 		}
@@ -645,12 +848,42 @@ struct expr *expr_eliminate_dups(struct expr *e)
  * Performs various simplifications involving logical operators and
  * comparisons.
  *
+<<<<<<< HEAD
+=======
+ *   For bool type:
+ *     A=n        ->  !A
+ *     A=m        ->  n
+ *     A=y        ->  A
+ *     A!=n       ->  A
+ *     A!=m       ->  y
+ *     A!=y       ->  !A
+ *
+ *   For any type:
+ *     !!A        ->  A
+ *     !(A=B)     ->  A!=B
+ *     !(A!=B)    ->  A=B
+ *     !(A<=B)    ->  A>B
+ *     !(A>=B)    ->  A<B
+ *     !(A<B)     ->  A>=B
+ *     !(A>B)     ->  A<=B
+ *     !(A || B)  ->  !A && !B
+ *     !(A && B)  ->  !A || !B
+ *
+ *   For constant:
+ *     !y         ->  n
+ *     !m         ->  m
+ *     !n         ->  y
+ *
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Allocates and returns a new expression.
  */
 struct expr *expr_transform(struct expr *e)
 {
+<<<<<<< HEAD
 	struct expr *tmp;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!e)
 		return NULL;
 	switch (e->type) {
@@ -663,8 +896,14 @@ struct expr *expr_transform(struct expr *e)
 	case E_SYMBOL:
 		break;
 	default:
+<<<<<<< HEAD
 		e->left.expr = expr_transform(e->left.expr);
 		e->right.expr = expr_transform(e->right.expr);
+=======
+		e = expr_alloc_two(e->type,
+				   expr_transform(e->left.expr),
+				   expr_transform(e->right.expr));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	switch (e->type) {
@@ -672,6 +911,7 @@ struct expr *expr_transform(struct expr *e)
 		if (e->left.sym->type != S_BOOLEAN)
 			break;
 		if (e->right.sym == &symbol_no) {
+<<<<<<< HEAD
 			e->type = E_NOT;
 			e->left.expr = expr_alloc_symbol(e->left.sym);
 			e->right.sym = NULL;
@@ -687,6 +927,21 @@ struct expr *expr_transform(struct expr *e)
 		if (e->right.sym == &symbol_yes) {
 			e->type = E_SYMBOL;
 			e->right.sym = NULL;
+=======
+			// A=n -> !A
+			e = expr_alloc_one(E_NOT, expr_alloc_symbol(e->left.sym));
+			break;
+		}
+		if (e->right.sym == &symbol_mod) {
+			// A=m -> n
+			printf("boolean symbol %s tested for 'm'? test forced to 'n'\n", e->left.sym->name);
+			e = expr_alloc_symbol(&symbol_no);
+			break;
+		}
+		if (e->right.sym == &symbol_yes) {
+			// A=y -> A
+			e = expr_alloc_symbol(e->left.sym);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		}
 		break;
@@ -694,6 +949,7 @@ struct expr *expr_transform(struct expr *e)
 		if (e->left.sym->type != S_BOOLEAN)
 			break;
 		if (e->right.sym == &symbol_no) {
+<<<<<<< HEAD
 			e->type = E_SYMBOL;
 			e->right.sym = NULL;
 			break;
@@ -709,12 +965,28 @@ struct expr *expr_transform(struct expr *e)
 			e->type = E_NOT;
 			e->left.expr = expr_alloc_symbol(e->left.sym);
 			e->right.sym = NULL;
+=======
+			// A!=n -> A
+			e = expr_alloc_symbol(e->left.sym);
+			break;
+		}
+		if (e->right.sym == &symbol_mod) {
+			// A!=m -> y
+			printf("boolean symbol %s tested for 'm'? test forced to 'y'\n", e->left.sym->name);
+			e = expr_alloc_symbol(&symbol_yes);
+			break;
+		}
+		if (e->right.sym == &symbol_yes) {
+			// A!=y -> !A
+			e = expr_alloc_one(E_NOT, e->left.expr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		}
 		break;
 	case E_NOT:
 		switch (e->left.expr->type) {
 		case E_NOT:
+<<<<<<< HEAD
 			// !!a -> a
 			tmp = e->left.expr->left.expr;
 			free(e->left.expr);
@@ -792,6 +1064,54 @@ struct expr *expr_transform(struct expr *e)
 				e->left.sym = &symbol_yes;
 				break;
 			}
+=======
+			// !!A -> A
+			e = e->left.expr->left.expr;
+			break;
+		case E_EQUAL:
+		case E_UNEQUAL:
+			// !(A=B) -> A!=B
+			e = expr_alloc_comp(e->left.expr->type == E_EQUAL ? E_UNEQUAL : E_EQUAL,
+					    e->left.expr->left.sym,
+					    e->left.expr->right.sym);
+			break;
+		case E_LEQ:
+		case E_GEQ:
+			// !(A<=B) -> A>B
+			e = expr_alloc_comp(e->left.expr->type == E_LEQ ? E_GTH : E_LTH,
+					    e->left.expr->left.sym,
+					    e->left.expr->right.sym);
+			break;
+		case E_LTH:
+		case E_GTH:
+			// !(A<B) -> A>=B
+			e = expr_alloc_comp(e->left.expr->type == E_LTH ? E_GEQ : E_LEQ,
+					    e->left.expr->left.sym,
+					    e->left.expr->right.sym);
+			break;
+		case E_OR:
+			// !(A || B) -> !A && !B
+			e = expr_alloc_and(expr_alloc_one(E_NOT, e->left.expr->left.expr),
+					   expr_alloc_one(E_NOT, e->left.expr->right.expr));
+			e = expr_transform(e);
+			break;
+		case E_AND:
+			// !(A && B) -> !A || !B
+			e = expr_alloc_or(expr_alloc_one(E_NOT, e->left.expr->left.expr),
+					  expr_alloc_one(E_NOT, e->left.expr->right.expr));
+			e = expr_transform(e);
+			break;
+		case E_SYMBOL:
+			if (e->left.expr->left.sym == &symbol_yes)
+				// !'y' -> 'n'
+				e = expr_alloc_symbol(&symbol_no);
+			else if (e->left.expr->left.sym == &symbol_mod)
+				// !'m' -> 'm'
+				e = expr_alloc_symbol(&symbol_mod);
+			else if (e->left.expr->left.sym == &symbol_no)
+				// !'n' -> 'y'
+				e = expr_alloc_symbol(&symbol_yes);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		default:
 			;
@@ -803,10 +1123,17 @@ struct expr *expr_transform(struct expr *e)
 	return e;
 }
 
+<<<<<<< HEAD
 int expr_contains_symbol(struct expr *dep, struct symbol *sym)
 {
 	if (!dep)
 		return 0;
+=======
+bool expr_contains_symbol(struct expr *dep, struct symbol *sym)
+{
+	if (!dep)
+		return false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	switch (dep->type) {
 	case E_AND:
@@ -828,7 +1155,11 @@ int expr_contains_symbol(struct expr *dep, struct symbol *sym)
 	default:
 		;
 	}
+<<<<<<< HEAD
 	return 0;
+=======
+	return false;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 bool expr_depends_symbol(struct expr *dep, struct symbol *sym)
@@ -915,6 +1246,7 @@ struct expr *expr_trans_compare(struct expr *e, enum expr_type type, struct symb
 	case E_EQUAL:
 		if (type == E_EQUAL) {
 			if (sym == &symbol_yes)
+<<<<<<< HEAD
 				return expr_copy(e);
 			if (sym == &symbol_mod)
 				return expr_alloc_symbol(&symbol_no);
@@ -927,6 +1259,20 @@ struct expr *expr_trans_compare(struct expr *e, enum expr_type type, struct symb
 				return expr_alloc_symbol(&symbol_yes);
 			if (sym == &symbol_no)
 				return expr_copy(e);
+=======
+				return e;
+			if (sym == &symbol_mod)
+				return expr_alloc_symbol(&symbol_no);
+			if (sym == &symbol_no)
+				return expr_alloc_one(E_NOT, e);
+		} else {
+			if (sym == &symbol_yes)
+				return expr_alloc_one(E_NOT, e);
+			if (sym == &symbol_mod)
+				return expr_alloc_symbol(&symbol_yes);
+			if (sym == &symbol_no)
+				return e;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		break;
 	case E_SYMBOL:
@@ -981,7 +1327,11 @@ static enum string_value_kind expr_parse_string(const char *str,
 	       ? kind : k_string;
 }
 
+<<<<<<< HEAD
 tristate expr_calc_value(struct expr *e)
+=======
+static tristate __expr_calc_value(struct expr *e)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	tristate val1, val2;
 	const char *str1, *str2;
@@ -989,9 +1339,12 @@ tristate expr_calc_value(struct expr *e)
 	union string_value lval = {}, rval = {};
 	int res;
 
+<<<<<<< HEAD
 	if (!e)
 		return yes;
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (e->type) {
 	case E_SYMBOL:
 		sym_calc_value(e->left.sym);
@@ -1055,6 +1408,38 @@ tristate expr_calc_value(struct expr *e)
 	}
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * expr_calc_value - return the tristate value of the given expression
+ * @e: expression
+ * return: tristate value of the expression
+ */
+tristate expr_calc_value(struct expr *e)
+{
+	if (!e)
+		return yes;
+
+	if (!e->val_is_valid) {
+		e->val = __expr_calc_value(e);
+		e->val_is_valid = true;
+	}
+
+	return e->val;
+}
+
+/**
+ * expr_invalidate_all - invalidate all cached expression values
+ */
+void expr_invalidate_all(void)
+{
+	struct expr *e;
+
+	hash_for_each(expr_hashtable, e, node)
+		e->val_is_valid = false;
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int expr_compare_type(enum expr_type t1, enum expr_type t2)
 {
 	if (t1 == t2)

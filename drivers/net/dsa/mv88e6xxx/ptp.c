@@ -18,6 +18,16 @@
 
 #define MV88E6XXX_MAX_ADJ_PPB	1000000
 
+<<<<<<< HEAD
+=======
+struct mv88e6xxx_cc_coeffs {
+	u32 cc_shift;
+	u32 cc_mult;
+	u32 cc_mult_num;
+	u32 cc_mult_dem;
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Family MV88E6250:
  * Raw timestamps are in units of 10-ns clock periods.
  *
@@ -25,22 +35,59 @@
  * simplifies to
  * clkadj = scaled_ppm * 2^7 / 5^5
  */
+<<<<<<< HEAD
 #define MV88E6250_CC_SHIFT	28
 #define MV88E6250_CC_MULT	(10 << MV88E6250_CC_SHIFT)
 #define MV88E6250_CC_MULT_NUM	(1 << 7)
 #define MV88E6250_CC_MULT_DEM	3125ULL
 
 /* Other families:
+=======
+#define MV88E6XXX_CC_10NS_SHIFT 28
+static const struct mv88e6xxx_cc_coeffs mv88e6xxx_cc_10ns_coeffs = {
+	.cc_shift = MV88E6XXX_CC_10NS_SHIFT,
+	.cc_mult = 10 << MV88E6XXX_CC_10NS_SHIFT,
+	.cc_mult_num = 1 << 7,
+	.cc_mult_dem = 3125ULL,
+};
+
+/* Other families except MV88E6393X in internal clock mode:
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Raw timestamps are in units of 8-ns clock periods.
  *
  * clkadj = scaled_ppm * 8*2^28 / (10^6 * 2^16)
  * simplifies to
  * clkadj = scaled_ppm * 2^9 / 5^6
  */
+<<<<<<< HEAD
 #define MV88E6XXX_CC_SHIFT	28
 #define MV88E6XXX_CC_MULT	(8 << MV88E6XXX_CC_SHIFT)
 #define MV88E6XXX_CC_MULT_NUM	(1 << 9)
 #define MV88E6XXX_CC_MULT_DEM	15625ULL
+=======
+#define MV88E6XXX_CC_8NS_SHIFT 28
+static const struct mv88e6xxx_cc_coeffs mv88e6xxx_cc_8ns_coeffs = {
+	.cc_shift = MV88E6XXX_CC_8NS_SHIFT,
+	.cc_mult = 8 << MV88E6XXX_CC_8NS_SHIFT,
+	.cc_mult_num = 1 << 9,
+	.cc_mult_dem = 15625ULL
+};
+
+/* Family MV88E6393X using internal clock:
+ * Raw timestamps are in units of 4-ns clock periods.
+ *
+ * clkadj = scaled_ppm * 4*2^28 / (10^6 * 2^16)
+ * simplifies to
+ * clkadj = scaled_ppm * 2^8 / 5^6
+ */
+#define MV88E6XXX_CC_4NS_SHIFT 28
+static const struct mv88e6xxx_cc_coeffs mv88e6xxx_cc_4ns_coeffs = {
+	.cc_shift = MV88E6XXX_CC_4NS_SHIFT,
+	.cc_mult = 4 << MV88E6XXX_CC_4NS_SHIFT,
+	.cc_mult_num = 1 << 8,
+	.cc_mult_dem = 15625ULL
+};
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define TAI_EVENT_WORK_INTERVAL msecs_to_jiffies(100)
 
@@ -83,6 +130,36 @@ static int mv88e6352_set_gpio_func(struct mv88e6xxx_chip *chip, int pin,
 	return chip->info->ops->gpio_ops->set_pctl(chip, pin, func);
 }
 
+<<<<<<< HEAD
+=======
+static const struct mv88e6xxx_cc_coeffs *
+mv88e6xxx_cc_coeff_get(struct mv88e6xxx_chip *chip)
+{
+	u16 period_ps;
+	int err;
+
+	err = mv88e6xxx_tai_read(chip, MV88E6XXX_TAI_CLOCK_PERIOD, &period_ps, 1);
+	if (err) {
+		dev_err(chip->dev, "failed to read cycle counter period: %d\n",
+			err);
+		return ERR_PTR(err);
+	}
+
+	switch (period_ps) {
+	case 4000:
+		return &mv88e6xxx_cc_4ns_coeffs;
+	case 8000:
+		return &mv88e6xxx_cc_8ns_coeffs;
+	case 10000:
+		return &mv88e6xxx_cc_10ns_coeffs;
+	default:
+		dev_err(chip->dev, "unexpected cycle counter period of %u ps\n",
+			period_ps);
+		return ERR_PTR(-ENODEV);
+	}
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static u64 mv88e6352_ptp_clock_read(const struct cyclecounter *cc)
 {
 	struct mv88e6xxx_chip *chip = cc_to_chip(cc);
@@ -204,7 +281,10 @@ out:
 static int mv88e6xxx_ptp_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
 {
 	struct mv88e6xxx_chip *chip = ptp_to_chip(ptp);
+<<<<<<< HEAD
 	const struct mv88e6xxx_ptp_ops *ptp_ops = chip->info->ops->ptp_ops;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int neg_adj = 0;
 	u32 diff, mult;
 	u64 adj;
@@ -214,10 +294,17 @@ static int mv88e6xxx_ptp_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
 		scaled_ppm = -scaled_ppm;
 	}
 
+<<<<<<< HEAD
 	mult = ptp_ops->cc_mult;
 	adj = ptp_ops->cc_mult_num;
 	adj *= scaled_ppm;
 	diff = div_u64(adj, ptp_ops->cc_mult_dem);
+=======
+	mult = chip->cc_coeffs->cc_mult;
+	adj = chip->cc_coeffs->cc_mult_num;
+	adj *= scaled_ppm;
+	diff = div_u64(adj, chip->cc_coeffs->cc_mult_dem);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mv88e6xxx_reg_lock(chip);
 
@@ -364,10 +451,13 @@ const struct mv88e6xxx_ptp_ops mv88e6165_ptp_ops = {
 		(1 << HWTSTAMP_FILTER_PTP_V2_EVENT) |
 		(1 << HWTSTAMP_FILTER_PTP_V2_SYNC) |
 		(1 << HWTSTAMP_FILTER_PTP_V2_DELAY_REQ),
+<<<<<<< HEAD
 	.cc_shift = MV88E6XXX_CC_SHIFT,
 	.cc_mult = MV88E6XXX_CC_MULT,
 	.cc_mult_num = MV88E6XXX_CC_MULT_NUM,
 	.cc_mult_dem = MV88E6XXX_CC_MULT_DEM,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 const struct mv88e6xxx_ptp_ops mv88e6250_ptp_ops = {
@@ -391,10 +481,13 @@ const struct mv88e6xxx_ptp_ops mv88e6250_ptp_ops = {
 		(1 << HWTSTAMP_FILTER_PTP_V2_EVENT) |
 		(1 << HWTSTAMP_FILTER_PTP_V2_SYNC) |
 		(1 << HWTSTAMP_FILTER_PTP_V2_DELAY_REQ),
+<<<<<<< HEAD
 	.cc_shift = MV88E6250_CC_SHIFT,
 	.cc_mult = MV88E6250_CC_MULT,
 	.cc_mult_num = MV88E6250_CC_MULT_NUM,
 	.cc_mult_dem = MV88E6250_CC_MULT_DEM,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 const struct mv88e6xxx_ptp_ops mv88e6352_ptp_ops = {
@@ -418,10 +511,13 @@ const struct mv88e6xxx_ptp_ops mv88e6352_ptp_ops = {
 		(1 << HWTSTAMP_FILTER_PTP_V2_EVENT) |
 		(1 << HWTSTAMP_FILTER_PTP_V2_SYNC) |
 		(1 << HWTSTAMP_FILTER_PTP_V2_DELAY_REQ),
+<<<<<<< HEAD
 	.cc_shift = MV88E6XXX_CC_SHIFT,
 	.cc_mult = MV88E6XXX_CC_MULT,
 	.cc_mult_num = MV88E6XXX_CC_MULT_NUM,
 	.cc_mult_dem = MV88E6XXX_CC_MULT_DEM,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 const struct mv88e6xxx_ptp_ops mv88e6390_ptp_ops = {
@@ -446,10 +542,13 @@ const struct mv88e6xxx_ptp_ops mv88e6390_ptp_ops = {
 		(1 << HWTSTAMP_FILTER_PTP_V2_EVENT) |
 		(1 << HWTSTAMP_FILTER_PTP_V2_SYNC) |
 		(1 << HWTSTAMP_FILTER_PTP_V2_DELAY_REQ),
+<<<<<<< HEAD
 	.cc_shift = MV88E6XXX_CC_SHIFT,
 	.cc_mult = MV88E6XXX_CC_MULT,
 	.cc_mult_num = MV88E6XXX_CC_MULT_NUM,
 	.cc_mult_dem = MV88E6XXX_CC_MULT_DEM,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static u64 mv88e6xxx_ptp_clock_read(const struct cyclecounter *cc)
@@ -462,10 +561,17 @@ static u64 mv88e6xxx_ptp_clock_read(const struct cyclecounter *cc)
 	return 0;
 }
 
+<<<<<<< HEAD
 /* With a 125MHz input clock, the 32-bit timestamp counter overflows in ~34.3
  * seconds; this task forces periodic reads so that we don't miss any.
  */
 #define MV88E6XXX_TAI_OVERFLOW_PERIOD (HZ * 16)
+=======
+/* With a 250MHz input clock, the 32-bit timestamp counter overflows in ~17.2
+ * seconds; this task forces periodic reads so that we don't miss any.
+ */
+#define MV88E6XXX_TAI_OVERFLOW_PERIOD (HZ * 8)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void mv88e6xxx_ptp_overflow_check(struct work_struct *work)
 {
 	struct delayed_work *dw = to_delayed_work(work);
@@ -484,11 +590,23 @@ int mv88e6xxx_ptp_setup(struct mv88e6xxx_chip *chip)
 	int i;
 
 	/* Set up the cycle counter */
+<<<<<<< HEAD
 	memset(&chip->tstamp_cc, 0, sizeof(chip->tstamp_cc));
 	chip->tstamp_cc.read	= mv88e6xxx_ptp_clock_read;
 	chip->tstamp_cc.mask	= CYCLECOUNTER_MASK(32);
 	chip->tstamp_cc.mult	= ptp_ops->cc_mult;
 	chip->tstamp_cc.shift	= ptp_ops->cc_shift;
+=======
+	chip->cc_coeffs = mv88e6xxx_cc_coeff_get(chip);
+	if (IS_ERR(chip->cc_coeffs))
+		return PTR_ERR(chip->cc_coeffs);
+
+	memset(&chip->tstamp_cc, 0, sizeof(chip->tstamp_cc));
+	chip->tstamp_cc.read	= mv88e6xxx_ptp_clock_read;
+	chip->tstamp_cc.mask	= CYCLECOUNTER_MASK(32);
+	chip->tstamp_cc.mult	= chip->cc_coeffs->cc_mult;
+	chip->tstamp_cc.shift	= chip->cc_coeffs->cc_shift;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	timecounter_init(&chip->tstamp_tc, &chip->tstamp_cc,
 			 ktime_to_ns(ktime_get_real()));

@@ -7,6 +7,10 @@
 
 #include <linux/dma-mapping.h>
 #include <linux/fault-inject.h>
+<<<<<<< HEAD
+=======
+#include <linux/debugfs.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/of_address.h>
 #include <linux/uaccess.h>
 
@@ -58,10 +62,15 @@ static bool modeset = true;
 MODULE_PARM_DESC(modeset, "Use kernel modesetting [KMS] (1=on (default), 0=disable)");
 module_param(modeset, bool, 0600);
 
+<<<<<<< HEAD
 #ifdef CONFIG_FAULT_INJECTION
 DECLARE_FAULT_ATTR(fail_gem_alloc);
 DECLARE_FAULT_ATTR(fail_gem_iova);
 #endif
+=======
+DECLARE_FAULT_ATTR(fail_gem_alloc);
+DECLARE_FAULT_ATTR(fail_gem_iova);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int msm_drm_uninit(struct device *dev)
 {

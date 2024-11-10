@@ -1188,6 +1188,7 @@ error:
 }
 EXPORT_SYMBOL_GPL(devm_hwmon_device_register_with_info);
 
+<<<<<<< HEAD
 static int devm_hwmon_match(struct device *dev, void *res, void *data)
 {
 	struct device **hwdev = res;
@@ -1206,6 +1207,8 @@ void devm_hwmon_device_unregister(struct device *dev)
 }
 EXPORT_SYMBOL_GPL(devm_hwmon_device_unregister);
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static char *__hwmon_sanitize_name(struct device *dev, const char *old_name)
 {
 	char *name, *p;

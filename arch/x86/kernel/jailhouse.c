@@ -12,6 +12,10 @@
 #include <linux/kernel.h>
 #include <linux/reboot.h>
 #include <linux/serial_8250.h>
+<<<<<<< HEAD
+=======
+#include <linux/acpi.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/apic.h>
 #include <asm/io_apic.h>
 #include <asm/acpi.h>

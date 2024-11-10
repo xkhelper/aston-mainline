@@ -10,6 +10,10 @@ obj-$(CONFIG_CAN_SLCAN)		+= slcan/
 obj-y				+= dev/
 obj-y				+= esd/
 obj-y				+= rcar/
+<<<<<<< HEAD
+=======
+obj-y				+= rockchip/
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 obj-y				+= spi/
 obj-y				+= usb/
 obj-y				+= softing/

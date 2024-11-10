@@ -12,6 +12,10 @@ if RTW89
 
 config RTW89_CORE
 	tristate
+<<<<<<< HEAD
+=======
+	select WANT_DEV_COREDUMP
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 config RTW89_PCI
 	tristate
@@ -28,6 +32,12 @@ config RTW89_8852B_COMMON
 config RTW89_8852B
 	tristate
 
+<<<<<<< HEAD
+=======
+config RTW89_8852BT
+	tristate
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config RTW89_8852C
 	tristate
 
@@ -68,6 +78,21 @@ config RTW89_8852BE
 
 	  802.11ax PCIe wireless network (Wi-Fi 6) adapter
 
+<<<<<<< HEAD
+=======
+config RTW89_8852BTE
+	tristate "Realtek 8852BE-VT PCI wireless network (Wi-Fi 6) adapter"
+	depends on PCI
+	select RTW89_CORE
+	select RTW89_PCI
+	select RTW89_8852BT
+	select RTW89_8852B_COMMON
+	help
+	  Select this option will enable support for 8852BE-VT chipset
+
+	  802.11ax PCIe wireless network (Wi-Fi 6) adapter
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config RTW89_8852CE
 	tristate "Realtek 8852CE PCI wireless network (Wi-Fi 6E) adapter"
 	depends on PCI

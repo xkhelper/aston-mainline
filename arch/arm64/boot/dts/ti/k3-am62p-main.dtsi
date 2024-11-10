@@ -65,5 +65,9 @@
 &main_gpio1 {
 	gpio-ranges = <&main_pmx0 0 94 32>, <&main_pmx0 42 137 5>,
 			<&main_pmx0 47 143 3>, <&main_pmx0 50 149 2>;
+<<<<<<< HEAD
+=======
+	gpio-reserved-ranges = <32 10>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ti,ngpio = <52>;
 };

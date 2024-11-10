@@ -5,7 +5,11 @@
  * Development of this code funded by Astaro AG (http://www.astaro.com/)
  */
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/kernel.h>
 #include <linux/init.h>
 #include <linux/module.h>
@@ -139,7 +143,11 @@ static int nft_byteorder_init(const struct nft_ctx *ctx,
 
 	priv->len = len;
 
+<<<<<<< HEAD
 	err = nft_parse_register_load(tb[NFTA_BYTEORDER_SREG], &priv->sreg,
+=======
+	err = nft_parse_register_load(ctx, tb[NFTA_BYTEORDER_SREG], &priv->sreg,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      priv->len);
 	if (err < 0)
 		return err;

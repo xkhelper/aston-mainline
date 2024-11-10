@@ -1095,7 +1095,10 @@ const struct file_operations ubi_vol_cdev_operations = {
 /* UBI character device operations */
 const struct file_operations ubi_cdev_operations = {
 	.owner          = THIS_MODULE,
+<<<<<<< HEAD
 	.llseek         = no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.unlocked_ioctl = ubi_cdev_ioctl,
 	.compat_ioctl   = compat_ptr_ioctl,
 };
@@ -1105,5 +1108,8 @@ const struct file_operations ubi_ctrl_cdev_operations = {
 	.owner          = THIS_MODULE,
 	.unlocked_ioctl = ctrl_cdev_ioctl,
 	.compat_ioctl   = compat_ptr_ioctl,
+<<<<<<< HEAD
 	.llseek		= no_llseek,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };

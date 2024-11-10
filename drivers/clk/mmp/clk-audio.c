@@ -436,7 +436,11 @@ static struct platform_driver mmp2_audio_clk_driver = {
 		.pm = &mmp2_audio_clk_pm_ops,
 	},
 	.probe = mmp2_audio_clk_probe,
+<<<<<<< HEAD
 	.remove_new = mmp2_audio_clk_remove,
+=======
+	.remove = mmp2_audio_clk_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(mmp2_audio_clk_driver);
 

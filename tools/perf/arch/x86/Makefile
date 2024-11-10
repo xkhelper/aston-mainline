@@ -13,6 +13,10 @@ PERF_HAVE_JITDUMP := 1
 generated := $(OUTPUT)arch/x86/include/generated
 out       := $(generated)/asm
 header    := $(out)/syscalls_64.c
+<<<<<<< HEAD
+=======
+header_32 := $(out)/syscalls_32.c
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 sys       := $(srctree)/tools/perf/arch/x86/entry/syscalls
 systbl    := $(sys)/syscalltbl.sh
 
@@ -22,7 +26,17 @@ $(shell [ -d '$(out)' ] || mkdir -p '$(out)')
 $(header): $(sys)/syscall_64.tbl $(systbl)
 	$(Q)$(SHELL) '$(systbl)' $(sys)/syscall_64.tbl 'x86_64' > $@
 
+<<<<<<< HEAD
 clean::
 	$(call QUIET_CLEAN, x86) $(RM) -r $(header) $(generated)
 
 archheaders: $(header)
+=======
+$(header_32): $(sys)/syscall_32.tbl $(systbl)
+	$(Q)$(SHELL) '$(systbl)' $(sys)/syscall_32.tbl 'x86' > $@
+
+clean::
+	$(call QUIET_CLEAN, x86) $(RM) -r $(header) $(generated)
+
+archheaders: $(header) $(header_32)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

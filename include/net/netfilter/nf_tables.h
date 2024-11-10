@@ -2,7 +2,11 @@
 #ifndef _NET_NF_TABLES_H
 #define _NET_NF_TABLES_H
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/list.h>
 #include <linux/netfilter.h>
 #include <linux/netfilter/nfnetlink.h>
@@ -209,6 +213,10 @@ static inline void nft_data_copy(u32 *dst, const struct nft_data *src,
  *	@family: protocol family
  *	@level: depth of the chains
  *	@report: notify via unicast netlink message
+<<<<<<< HEAD
+=======
+ *	@reg_inited: bitmap of initialised registers
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct nft_ctx {
 	struct net			*net;
@@ -221,6 +229,10 @@ struct nft_ctx {
 	u8				family;
 	u8				level;
 	bool				report;
+<<<<<<< HEAD
+=======
+	DECLARE_BITMAP(reg_inited, NFT_REG32_NUM);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum nft_data_desc_flags {
@@ -254,7 +266,12 @@ static inline enum nft_registers nft_type_to_reg(enum nft_data_types type)
 int nft_parse_u32_check(const struct nlattr *attr, int max, u32 *dest);
 int nft_dump_register(struct sk_buff *skb, unsigned int attr, unsigned int reg);
 
+<<<<<<< HEAD
 int nft_parse_register_load(const struct nlattr *attr, u8 *sreg, u32 len);
+=======
+int nft_parse_register_load(const struct nft_ctx *ctx,
+			    const struct nlattr *attr, u8 *sreg, u32 len);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int nft_parse_register_store(const struct nft_ctx *ctx,
 			     const struct nlattr *attr, u8 *dreg,
 			     const struct nft_data *data,
@@ -311,6 +328,10 @@ static inline void *nft_elem_priv_cast(const struct nft_elem_priv *priv)
 /**
  * enum nft_iter_type - nftables set iterator type
  *
+<<<<<<< HEAD
+=======
+ * @NFT_ITER_UNSPEC: unspecified, to catch errors
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @NFT_ITER_READ: read-only iteration over set elements
  * @NFT_ITER_UPDATE: iteration under mutex to update set element state
  */
@@ -683,9 +704,14 @@ void nf_tables_destroy_set(const struct nft_ctx *ctx, struct nft_set *set);
  *	@NFT_SET_EXT_DATA: mapping data
  *	@NFT_SET_EXT_FLAGS: element flags
  *	@NFT_SET_EXT_TIMEOUT: element timeout
+<<<<<<< HEAD
  *	@NFT_SET_EXT_EXPIRATION: element expiration time
  *	@NFT_SET_EXT_USERDATA: user data associated with the element
  *	@NFT_SET_EXT_EXPRESSIONS: expressions assiciated with the element
+=======
+ *	@NFT_SET_EXT_USERDATA: user data associated with the element
+ *	@NFT_SET_EXT_EXPRESSIONS: expressions associated with the element
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *	@NFT_SET_EXT_OBJREF: stateful object reference associated with element
  *	@NFT_SET_EXT_NUM: number of extension types
  */
@@ -695,7 +721,10 @@ enum nft_set_extensions {
 	NFT_SET_EXT_DATA,
 	NFT_SET_EXT_FLAGS,
 	NFT_SET_EXT_TIMEOUT,
+<<<<<<< HEAD
 	NFT_SET_EXT_EXPIRATION,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	NFT_SET_EXT_USERDATA,
 	NFT_SET_EXT_EXPRESSIONS,
 	NFT_SET_EXT_OBJREF,
@@ -807,16 +836,28 @@ static inline u8 *nft_set_ext_flags(const struct nft_set_ext *ext)
 	return nft_set_ext(ext, NFT_SET_EXT_FLAGS);
 }
 
+<<<<<<< HEAD
 static inline u64 *nft_set_ext_timeout(const struct nft_set_ext *ext)
+=======
+struct nft_timeout {
+	u64	timeout;
+	u64	expiration;
+};
+
+static inline struct nft_timeout *nft_set_ext_timeout(const struct nft_set_ext *ext)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return nft_set_ext(ext, NFT_SET_EXT_TIMEOUT);
 }
 
+<<<<<<< HEAD
 static inline u64 *nft_set_ext_expiration(const struct nft_set_ext *ext)
 {
 	return nft_set_ext(ext, NFT_SET_EXT_EXPIRATION);
 }
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline struct nft_userdata *nft_set_ext_userdata(const struct nft_set_ext *ext)
 {
 	return nft_set_ext(ext, NFT_SET_EXT_USERDATA);
@@ -830,8 +871,16 @@ static inline struct nft_set_elem_expr *nft_set_ext_expr(const struct nft_set_ex
 static inline bool __nft_set_elem_expired(const struct nft_set_ext *ext,
 					  u64 tstamp)
 {
+<<<<<<< HEAD
 	return nft_set_ext_exists(ext, NFT_SET_EXT_EXPIRATION) &&
 	       time_after_eq64(tstamp, *nft_set_ext_expiration(ext));
+=======
+	if (!nft_set_ext_exists(ext, NFT_SET_EXT_TIMEOUT) ||
+	    READ_ONCE(nft_set_ext_timeout(ext)->timeout) == 0)
+		return false;
+
+	return time_after_eq64(tstamp, READ_ONCE(nft_set_ext_timeout(ext)->expiration));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline bool nft_set_elem_expired(const struct nft_set_ext *ext)
@@ -959,8 +1008,12 @@ struct nft_expr_ops {
 						const struct nft_expr *expr,
 						bool reset);
 	int				(*validate)(const struct nft_ctx *ctx,
+<<<<<<< HEAD
 						    const struct nft_expr *expr,
 						    const struct nft_data **data);
+=======
+						    const struct nft_expr *expr);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool				(*reduce)(struct nft_regs_track *track,
 						  const struct nft_expr *expr);
 	bool				(*gc)(struct net *net,
@@ -1099,6 +1152,10 @@ struct nft_rule_blob {
  *	@name: name of the chain
  *	@udlen: user data length
  *	@udata: user data in the chain
+<<<<<<< HEAD
+=======
+ *	@rcu_head: rcu head for deferred release
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *	@blob_next: rule blob pointer to the next in the chain
  */
 struct nft_chain {
@@ -1116,6 +1173,10 @@ struct nft_chain {
 	char				*name;
 	u16				udlen;
 	u8				*udata;
+<<<<<<< HEAD
+=======
+	struct rcu_head			rcu_head;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Only used during control plane commit phase: */
 	struct nft_rule_blob		*blob_next;
@@ -1259,6 +1320,10 @@ static inline void nft_use_inc_restore(u32 *use)
  *	@sets: sets in the table
  *	@objects: stateful objects in the table
  *	@flowtables: flow tables in the table
+<<<<<<< HEAD
+=======
+ *	@net: netnamespace this table belongs to
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *	@hgenerator: handle generator state
  *	@handle: table handle
  *	@use: number of chain references to this table
@@ -1278,6 +1343,10 @@ struct nft_table {
 	struct list_head		sets;
 	struct list_head		objects;
 	struct list_head		flowtables;
+<<<<<<< HEAD
+=======
+	possible_net_t			net;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64				hgenerator;
 	u64				handle;
 	u32				use;
@@ -1674,6 +1743,10 @@ struct nft_trans_rule {
 
 struct nft_trans_set {
 	struct nft_trans_binding	nft_trans_binding;
+<<<<<<< HEAD
+=======
+	struct list_head		list_trans_newset;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct nft_set			*set;
 	u32				set_id;
 	u32				gc_int;
@@ -1744,10 +1817,24 @@ struct nft_trans_table {
 #define nft_trans_table_update(trans)			\
 	nft_trans_container_table(trans)->update
 
+<<<<<<< HEAD
+=======
+enum nft_trans_elem_flags {
+	NFT_TRANS_UPD_TIMEOUT		= (1 << 0),
+	NFT_TRANS_UPD_EXPIRATION	= (1 << 1),
+};
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct nft_trans_elem {
 	struct nft_trans		nft_trans;
 	struct nft_set			*set;
 	struct nft_elem_priv		*elem_priv;
+<<<<<<< HEAD
+=======
+	u64				timeout;
+	u64				expiration;
+	u8				update_flags;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool				bound;
 };
 
@@ -1757,6 +1844,15 @@ struct nft_trans_elem {
 	nft_trans_container_elem(trans)->set
 #define nft_trans_elem_priv(trans)			\
 	nft_trans_container_elem(trans)->elem_priv
+<<<<<<< HEAD
+=======
+#define nft_trans_elem_update_flags(trans)		\
+	nft_trans_container_elem(trans)->update_flags
+#define nft_trans_elem_timeout(trans)			\
+	nft_trans_container_elem(trans)->timeout
+#define nft_trans_elem_expiration(trans)		\
+	nft_trans_container_elem(trans)->expiration
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define nft_trans_elem_set_bound(trans)			\
 	nft_trans_container_elem(trans)->bound
 
@@ -1875,6 +1971,10 @@ static inline int nft_request_module(struct net *net, const char *fmt, ...) { re
 struct nftables_pernet {
 	struct list_head	tables;
 	struct list_head	commit_list;
+<<<<<<< HEAD
+=======
+	struct list_head	commit_set_list;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct list_head	binding_list;
 	struct list_head	module_list;
 	struct list_head	notify_list;

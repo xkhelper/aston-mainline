@@ -50,6 +50,7 @@ union pn48	{
 #ifdef __LITTLE_ENDIAN
 
 struct {
+<<<<<<< HEAD
   u8 TSC0;
   u8 TSC1;
   u8 TSC2;
@@ -69,24 +70,59 @@ struct {
   u8 TSC2;
   u8 TSC1;
   u8 TSC0;
+=======
+	u8 TSC0;
+	u8 TSC1;
+	u8 TSC2;
+	u8 TSC3;
+	u8 TSC4;
+	u8 TSC5;
+	u8 TSC6;
+	u8 TSC7;
+} _byte_;
+#else
+struct {
+	u8 TSC7;
+	u8 TSC6;
+	u8 TSC5;
+	u8 TSC4;
+	u8 TSC3;
+	u8 TSC2;
+	u8 TSC1;
+	u8 TSC0;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 } _byte_;
 #endif
 
 };
 
 union Keytype {
+<<<<<<< HEAD
         u8   skey[16];
         u32    lkey[4];
+=======
+	u8   skey[16];
+	u32    lkey[4];
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 
 struct rt_pmkid_list {
+<<<<<<< HEAD
 	u8 				bUsed;
 	u8 				Bssid[6];
 	u8 				PMKID[16];
 	u8 				SsidBuf[33];
 	u8 *ssid_octet;
 	u16 					ssid_length;
+=======
+	u8				bUsed;
+	u8				Bssid[6];
+	u8				PMKID[16];
+	u8				SsidBuf[33];
+	u8 *ssid_octet;
+	u16					ssid_length;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 
@@ -162,7 +198,11 @@ struct security_priv {
 
 	/*  For WPA2 Pre-Authentication. */
 	struct rt_pmkid_list		PMKIDList[NUM_PMKID_CACHE];	/*  Renamed from PreAuthKey[NUM_PRE_AUTH_KEY]. Annie, 2006-10-13. */
+<<<<<<< HEAD
 	u8 		PMKIDIndex;
+=======
+	u8		PMKIDIndex;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	u8 bWepDefaultKeyIdxSet;
 
@@ -170,6 +210,7 @@ struct security_priv {
 
 #define GET_ENCRY_ALGO(psecuritypriv, psta, encry_algo, bmcst)\
 do {\
+<<<<<<< HEAD
 	switch (psecuritypriv->dot11AuthAlgrthm)\
 	{\
 		case dot11AuthAlgrthm_Open:\
@@ -186,11 +227,29 @@ do {\
 	     case dot11AuthAlgrthm_WAPI:\
 		     encry_algo = (u8)psecuritypriv->dot11PrivacyAlgrthm;\
 		     break;\
+=======
+	switch (psecuritypriv->dot11AuthAlgrthm) {\
+	case dot11AuthAlgrthm_Open:\
+	case dot11AuthAlgrthm_Shared:\
+	case dot11AuthAlgrthm_Auto:\
+		encry_algo = (u8)psecuritypriv->dot11PrivacyAlgrthm;\
+		break;\
+	case dot11AuthAlgrthm_8021X:\
+		if (bmcst)\
+			encry_algo = (u8)psecuritypriv->dot118021XGrpPrivacy;\
+		else\
+			encry_algo = (u8)psta->dot118021XPrivacy;\
+		break;\
+	case dot11AuthAlgrthm_WAPI:\
+		encry_algo = (u8)psecuritypriv->dot11PrivacyAlgrthm;\
+		break;\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} \
 } while (0)
 
 #define SET_ICE_IV_LEN(iv_len, icv_len, encrypt)\
 do {\
+<<<<<<< HEAD
 	switch (encrypt)\
 	{\
 		case _WEP40_:\
@@ -214,6 +273,30 @@ do {\
 			iv_len = 0;\
 			icv_len = 0;\
 			break;\
+=======
+	switch (encrypt) {\
+	case _WEP40_:\
+	case _WEP104_:\
+		iv_len = 4;\
+		icv_len = 4;\
+		break;\
+	case _TKIP_:\
+		iv_len = 8;\
+		icv_len = 4;\
+		break;\
+	case _AES_:\
+		iv_len = 8;\
+		icv_len = 8;\
+		break;\
+	case _SMS4_:\
+		iv_len = 18;\
+		icv_len = 16;\
+		break;\
+	default:\
+		iv_len = 0;\
+		icv_len = 0;\
+		break;\
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} \
 } while (0)
 
@@ -242,7 +325,12 @@ struct mic_data {
 /* ===== start - public domain SHA256 implementation ===== */
 
 /* This is based on SHA256 implementation in LibTomCrypt that was released into
+<<<<<<< HEAD
  * public domain by Tom St Denis. */
+=======
+ * public domain by Tom St Denis.
+ */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int omac1_aes_128(u8 *key, u8 *data, size_t data_len, u8 *mac);
 void rtw_secmicsetkey(struct mic_data *pmicdata, u8 *key);

@@ -206,7 +206,11 @@ p9100_blank(int blank, struct fb_info *info)
 	return 0;
 }
 
+<<<<<<< HEAD
 static struct sbus_mmap_map p9100_mmap_map[] = {
+=======
+static const struct sbus_mmap_map p9100_mmap_map[] = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ CG3_MMAP_OFFSET,	0,		SBUS_MMAP_FBSIZE(1) },
 	{ 0,			0,		0		    }
 };
@@ -347,7 +351,11 @@ static struct platform_driver p9100_driver = {
 		.of_match_table = p9100_match,
 	},
 	.probe		= p9100_probe,
+<<<<<<< HEAD
 	.remove_new	= p9100_remove,
+=======
+	.remove		= p9100_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int __init p9100_init(void)

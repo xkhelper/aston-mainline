@@ -1260,7 +1260,12 @@ static int efx_poll(struct napi_struct *napi, int budget)
 
 	spent = efx_process_channel(channel, budget);
 
+<<<<<<< HEAD
 	xdp_do_flush();
+=======
+	if (budget)
+		xdp_do_flush();
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (spent < budget) {
 		if (efx_channel_has_rx_queue(channel) &&

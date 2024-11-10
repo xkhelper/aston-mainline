@@ -254,6 +254,7 @@ config TOUCHSCREEN_CYTTSP_SPI
 	  To compile this driver as a module, choose M here: the
 	  module will be called cyttsp_spi.
 
+<<<<<<< HEAD
 config TOUCHSCREEN_CYTTSP4_CORE
 	tristate "Cypress TrueTouch Gen4 Touchscreen Driver"
 	help
@@ -284,6 +285,8 @@ config TOUCHSCREEN_CYTTSP4_SPI
 	  To compile this driver as a module, choose M here: the
 	  module will be called cyttsp4_spi.
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config TOUCHSCREEN_CYTTSP5
 	tristate "Cypress TrueTouch Gen5 Touchscreen Driver"
 	depends on I2C
@@ -626,6 +629,7 @@ config TOUCHSCREEN_MAX11801
 	  To compile this driver as a module, choose M here: the
 	  module will be called max11801_ts.
 
+<<<<<<< HEAD
 config TOUCHSCREEN_MCS5000
 	tristate "MELFAS MCS-5000 touchscreen"
 	depends on I2C
@@ -638,6 +642,8 @@ config TOUCHSCREEN_MCS5000
 	  To compile this driver as a module, choose M here: the
 	  module will be called mcs5000_ts.
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config TOUCHSCREEN_MMS114
 	tristate "MELFAS MMS114 touchscreen"
 	depends on I2C
@@ -1430,8 +1436,11 @@ config TOUCHSCREEN_HIMAX_HX83112B
 	  To compile this driver as a module, choose M here: the
 	  module will be called himax_hx83112b.
 
+<<<<<<< HEAD
 source "drivers/input/touchscreen/synaptics_hbp/Kconfig"
 source "drivers/input/touchscreen/kernelFwUpdate/Kconfig"
 source "drivers/input/touchscreen/touchpanel_notify/Kconfig"
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 endif

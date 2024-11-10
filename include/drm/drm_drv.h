@@ -229,6 +229,7 @@ struct drm_driver {
 	void (*postclose) (struct drm_device *, struct drm_file *);
 
 	/**
+<<<<<<< HEAD
 	 * @lastclose:
 	 *
 	 * Called when the last &struct drm_file has been closed and there's
@@ -257,6 +258,8 @@ struct drm_driver {
 	void (*lastclose) (struct drm_device *);
 
 	/**
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * @unload:
 	 *
 	 * Reverse the effects of the driver load callback.  Ideally,

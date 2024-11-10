@@ -5,7 +5,10 @@
  *
  ******************************************************************************/
 #include <drv_types.h>
+<<<<<<< HEAD
 #include <rtw_debug.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <hal_btcoex.h>
 #include <linux/jiffies.h>
 
@@ -1884,9 +1887,12 @@ void rtw_createbss_cmd_callback(struct adapter *padapter, struct cmd_obj *pcmd)
 		/*  copy pdev_network information to	pmlmepriv->cur_network */
 		memcpy(&tgt_network->network, pnetwork, (get_wlan_bssid_ex_sz(pnetwork)));
 
+<<<<<<< HEAD
 		/*  reset ds_config */
 		/* tgt_network->network.configuration.ds_config = (u32)rtw_ch2freq(pnetwork->configuration.ds_config); */
 
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		_clr_fwstate_(pmlmepriv, _FW_UNDER_LINKING);
 
 		spin_unlock_bh(&pmlmepriv->scanned_queue.lock);

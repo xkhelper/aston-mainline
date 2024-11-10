@@ -23,6 +23,10 @@ config IONIC
 	depends on PTP_1588_CLOCK_OPTIONAL
 	select NET_DEVLINK
 	select DIMLIB
+<<<<<<< HEAD
+=======
+	select PAGE_POOL
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  This enables the support for the Pensando family of Ethernet
 	  adapters.  More specific information on this driver can be

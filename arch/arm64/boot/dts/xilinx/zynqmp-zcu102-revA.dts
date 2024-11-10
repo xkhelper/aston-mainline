@@ -941,6 +941,10 @@
 
 &pcie {
 	status = "okay";
+<<<<<<< HEAD
+=======
+	phys = <&psgtr 0 PHY_TYPE_PCIE 0 0>;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &psgtr {

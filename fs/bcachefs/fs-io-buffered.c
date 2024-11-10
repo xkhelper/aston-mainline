@@ -151,7 +151,10 @@ static void bchfs_read(struct btree_trans *trans,
 	struct bkey_buf sk;
 	int flags = BCH_READ_RETRY_IF_STALE|
 		BCH_READ_MAY_PROMOTE;
+<<<<<<< HEAD
 	u32 snapshot;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret = 0;
 
 	rbio->c = c;
@@ -159,6 +162,7 @@ static void bchfs_read(struct btree_trans *trans,
 	rbio->subvol = inum.subvol;
 
 	bch2_bkey_buf_init(&sk);
+<<<<<<< HEAD
 retry:
 	bch2_trans_begin(trans);
 	iter = (struct btree_iter) { NULL };
@@ -169,12 +173,18 @@ retry:
 
 	bch2_trans_iter_init(trans, &iter, BTREE_ID_extents,
 			     SPOS(inum.inum, rbio->bio.bi_iter.bi_sector, snapshot),
+=======
+	bch2_trans_begin(trans);
+	bch2_trans_iter_init(trans, &iter, BTREE_ID_extents,
+			     POS(inum.inum, rbio->bio.bi_iter.bi_sector),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     BTREE_ITER_slots);
 	while (1) {
 		struct bkey_s_c k;
 		unsigned bytes, sectors, offset_into_extent;
 		enum btree_id data_btree = BTREE_ID_extents;
 
+<<<<<<< HEAD
 		/*
 		 * read_extent -> io_time_reset may cause a transaction restart
 		 * without returning an error, we need to check for that here:
@@ -182,6 +192,16 @@ retry:
 		ret = bch2_trans_relock(trans);
 		if (ret)
 			break;
+=======
+		bch2_trans_begin(trans);
+
+		u32 snapshot;
+		ret = bch2_subvolume_get_snapshot(trans, inum.subvol, &snapshot);
+		if (ret)
+			goto err;
+
+		bch2_btree_iter_set_snapshot(&iter, snapshot);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		bch2_btree_iter_set_pos(&iter,
 				POS(inum.inum, rbio->bio.bi_iter.bi_sector));
@@ -189,7 +209,11 @@ retry:
 		k = bch2_btree_iter_peek_slot(&iter);
 		ret = bkey_err(k);
 		if (ret)
+<<<<<<< HEAD
 			break;
+=======
+			goto err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		offset_into_extent = iter.pos.offset -
 			bkey_start_offset(k.k);
@@ -200,7 +224,11 @@ retry:
 		ret = bch2_read_indirect_extent(trans, &data_btree,
 					&offset_into_extent, &sk);
 		if (ret)
+<<<<<<< HEAD
 			break;
+=======
+			goto err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		k = bkey_i_to_s_c(sk.k);
 
@@ -210,7 +238,11 @@ retry:
 			ret = readpage_bio_extend(trans, readpages_iter, &rbio->bio, sectors,
 						  extent_partial_reads_expensive(k));
 			if (ret)
+<<<<<<< HEAD
 				break;
+=======
+				goto err;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		bytes = min(sectors, bio_sectors(&rbio->bio)) << 9;
@@ -229,6 +261,7 @@ retry:
 
 		swap(rbio->bio.bi_iter.bi_size, bytes);
 		bio_advance(&rbio->bio, bytes);
+<<<<<<< HEAD
 
 		ret = btree_trans_too_many_iters(trans);
 		if (ret)
@@ -240,6 +273,15 @@ err:
 	if (bch2_err_matches(ret, BCH_ERR_transaction_restart))
 		goto retry;
 
+=======
+err:
+		if (ret &&
+		    !bch2_err_matches(ret, BCH_ERR_transaction_restart))
+			break;
+	}
+	bch2_trans_iter_exit(trans, &iter);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret) {
 		bch_err_inum_offset_ratelimited(c,
 				iter.pos.inode,
@@ -486,7 +528,11 @@ static void bch2_writepage_io_alloc(struct bch_fs *c,
 	op->nr_replicas		= nr_replicas;
 	op->res.nr_replicas	= nr_replicas;
 	op->write_point		= writepoint_hashed(inode->ei_last_dirtied);
+<<<<<<< HEAD
 	op->subvol		= inode->ei_subvol;
+=======
+	op->subvol		= inode->ei_inum.subvol;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	op->pos			= POS(inode->v.i_ino, sector);
 	op->end_io		= bch2_writepage_io_done;
 	op->devs_need_flush	= &inode->ei_devs_need_flush;
@@ -659,7 +705,11 @@ int bch2_writepages(struct address_space *mapping, struct writeback_control *wbc
 
 int bch2_write_begin(struct file *file, struct address_space *mapping,
 		     loff_t pos, unsigned len,
+<<<<<<< HEAD
 		     struct page **pagep, void **fsdata)
+=======
+		     struct folio **foliop, void **fsdata)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct bch_inode_info *inode = to_bch_ei(mapping->host);
 	struct bch_fs *c = inode->v.i_sb->s_fs_info;
@@ -728,12 +778,19 @@ out:
 		goto err;
 	}
 
+<<<<<<< HEAD
 	*pagep = &folio->page;
+=======
+	*foliop = folio;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 err:
 	folio_unlock(folio);
 	folio_put(folio);
+<<<<<<< HEAD
 	*pagep = NULL;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_unlock:
 	bch2_pagecache_add_put(inode);
 	kfree(res);
@@ -743,12 +800,19 @@ err_unlock:
 
 int bch2_write_end(struct file *file, struct address_space *mapping,
 		   loff_t pos, unsigned len, unsigned copied,
+<<<<<<< HEAD
 		   struct page *page, void *fsdata)
+=======
+		   struct folio *folio, void *fsdata)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct bch_inode_info *inode = to_bch_ei(mapping->host);
 	struct bch_fs *c = inode->v.i_sb->s_fs_info;
 	struct bch2_folio_reservation *res = fsdata;
+<<<<<<< HEAD
 	struct folio *folio = page_folio(page);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned offset = pos - folio_pos(folio);
 
 	lockdep_assert_held(&inode->v.i_rwsem);
@@ -869,6 +933,15 @@ static int __bch2_buffered_write(struct bch_inode_info *inode,
 				folios_trunc(&fs, fi);
 				end = min(end, folio_end_pos(darray_last(fs)));
 			} else {
+<<<<<<< HEAD
+=======
+				if (!folio_test_uptodate(f)) {
+					ret = bch2_read_single_folio(f, mapping);
+					if (ret)
+						goto out;
+				}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				folios_trunc(&fs, fi + 1);
 				end = f_pos + f_reserved;
 			}

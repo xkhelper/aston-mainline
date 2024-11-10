@@ -318,7 +318,11 @@ static void sh_dmae_setup_xfer(struct shdma_chan *schan,
 }
 
 /*
+<<<<<<< HEAD
  * Find a slave channel configuration from the contoller list by either a slave
+=======
+ * Find a slave channel configuration from the controller list by either a slave
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * ID in the non-DT case, or by a MID/RID value in the DT case
  */
 static const struct sh_dmae_slave_config *dmae_find_slave(

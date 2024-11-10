@@ -42,7 +42,11 @@ static struct board_info __initdata board_cvg834g = {
 	.expected_cpu_id = 0x3368,
 
 	.ephy_reset_gpio = 36,
+<<<<<<< HEAD
 	.ephy_reset_gpio_flags = GPIOF_INIT_HIGH,
+=======
+	.ephy_reset_gpio_flags = GPIOF_OUT_INIT_HIGH,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.has_pci = 1,
 	.has_uart0 = 1,
 	.has_uart1 = 1,

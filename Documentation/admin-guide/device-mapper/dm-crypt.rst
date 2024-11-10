@@ -160,6 +160,7 @@ iv_large_sectors
    The <iv_offset> must be multiple of <sector_size> (in 512 bytes units)
    if this flag is specified.
 
+<<<<<<< HEAD
 
 Module parameters::
 
@@ -169,6 +170,26 @@ Module parameters::
       is received, dm-crypt will split the request. The splitting improves
       concurrency (the split requests could be encrypted in parallel by multiple
       cores), but it also causes overhead. The user should tune these parameters to
+=======
+integrity_key_size:<bytes>
+   Use an integrity key of <bytes> size instead of using an integrity key size
+   of the digest size of the used HMAC algorithm.
+
+
+Module parameters::
+   max_read_size
+      Maximum size of read requests. When a request larger than this size
+      is received, dm-crypt will split the request. The splitting improves
+      concurrency (the split requests could be encrypted in parallel by multiple
+      cores), but it also causes overhead. The user should tune this parameters to
+      fit the actual workload.
+
+   max_write_size
+      Maximum size of write requests. When a request larger than this size
+      is received, dm-crypt will split the request. The splitting improves
+      concurrency (the split requests could be encrypted in parallel by multiple
+      cores), but it also causes overhead. The user should tune this parameters to
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       fit the actual workload.
 
 

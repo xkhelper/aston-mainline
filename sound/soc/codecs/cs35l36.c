@@ -949,6 +949,7 @@ static const struct cs35l36_pll_config *cs35l36_get_clk_config(
 	return NULL;
 }
 
+<<<<<<< HEAD
 static const unsigned int cs35l36_src_rates[] = {
 	8000, 12000, 11025, 16000, 22050, 24000, 32000,
 	44100, 48000, 88200, 96000, 176400, 192000, 384000
@@ -970,11 +971,27 @@ static int cs35l36_pcm_startup(struct snd_pcm_substream *substream,
 
 static const struct snd_soc_dai_ops cs35l36_ops = {
 	.startup = cs35l36_pcm_startup,
+=======
+static const struct snd_soc_dai_ops cs35l36_ops = {
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.set_fmt = cs35l36_set_dai_fmt,
 	.hw_params = cs35l36_pcm_hw_params,
 	.set_sysclk = cs35l36_dai_set_sysclk,
 };
 
+<<<<<<< HEAD
+=======
+#define CS35L36_RATES (		    \
+	SNDRV_PCM_RATE_8000_48000 | \
+	SNDRV_PCM_RATE_12000 |	    \
+	SNDRV_PCM_RATE_24000 |	    \
+	SNDRV_PCM_RATE_88200 |	    \
+	SNDRV_PCM_RATE_96000 |	    \
+	SNDRV_PCM_RATE_176400 |	    \
+	SNDRV_PCM_RATE_192000 |	    \
+	SNDRV_PCM_RATE_384000)
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct snd_soc_dai_driver cs35l36_dai[] = {
 	{
 		.name = "cs35l36-pcm",
@@ -983,14 +1000,22 @@ static struct snd_soc_dai_driver cs35l36_dai[] = {
 			.stream_name = "AMP Playback",
 			.channels_min = 1,
 			.channels_max = 8,
+<<<<<<< HEAD
 			.rates = SNDRV_PCM_RATE_KNOT,
+=======
+			.rates = CS35L36_RATES,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			.formats = CS35L36_RX_FORMATS,
 		},
 		.capture = {
 			.stream_name = "AMP Capture",
 			.channels_min = 1,
 			.channels_max = 8,
+<<<<<<< HEAD
 			.rates = SNDRV_PCM_RATE_KNOT,
+=======
+			.rates = CS35L36_RATES,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			.formats = CS35L36_TX_FORMATS,
 		},
 		.ops = &cs35l36_ops,

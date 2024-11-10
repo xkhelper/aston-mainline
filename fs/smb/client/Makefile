@@ -33,3 +33,8 @@ cifs-$(CONFIG_CIFS_SMB_DIRECT) += smbdirect.o
 cifs-$(CONFIG_CIFS_ROOT) += cifsroot.o
 
 cifs-$(CONFIG_CIFS_ALLOW_INSECURE_LEGACY) += smb1ops.o cifssmb.o
+<<<<<<< HEAD
+=======
+
+cifs-$(CONFIG_CIFS_COMPRESSION) += compress.o compress/lz77.o
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)

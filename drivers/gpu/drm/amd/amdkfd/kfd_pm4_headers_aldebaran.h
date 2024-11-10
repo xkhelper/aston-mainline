@@ -37,7 +37,11 @@ struct pm4_mes_map_process_aldebaran {
 		struct {
 			uint32_t pasid:16;	    /* 0 - 15  */
 			uint32_t single_memops:1;   /* 16      */
+<<<<<<< HEAD
 			uint32_t reserved1:1;	    /* 17      */
+=======
+			uint32_t exec_cleaner_shader:1;	    /* 17      */
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			uint32_t debug_vmid:4;	    /* 18 - 21 */
 			uint32_t new_debug:1;	    /* 22      */
 			uint32_t tmz:1;		    /* 23      */

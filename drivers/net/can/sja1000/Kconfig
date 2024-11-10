@@ -87,7 +87,11 @@ config CAN_PLX_PCI
 
 config CAN_SJA1000_ISA
 	tristate "ISA Bus based legacy SJA1000 driver"
+<<<<<<< HEAD
 	depends on ISA
+=======
+	depends on HAS_IOPORT
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  This driver adds legacy support for SJA1000 chips connected to
 	  the ISA bus using I/O port, memory mapped or indirect access.

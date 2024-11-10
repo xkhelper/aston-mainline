@@ -1210,7 +1210,10 @@ static struct platform_driver lvds_platform_driver = {
 	.remove = lvds_remove,
 	.driver = {
 		.name = "stm32-display-lvds",
+<<<<<<< HEAD
 		.owner = THIS_MODULE,
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.of_match_table = lvds_dt_ids,
 	},
 };

@@ -527,7 +527,11 @@ static struct platform_driver atmel_tcb_pwm_driver = {
 		.pm = pm_ptr(&atmel_tcb_pwm_pm_ops),
 	},
 	.probe = atmel_tcb_pwm_probe,
+<<<<<<< HEAD
 	.remove_new = atmel_tcb_pwm_remove,
+=======
+	.remove = atmel_tcb_pwm_remove,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(atmel_tcb_pwm_driver);
 

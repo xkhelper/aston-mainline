@@ -9,7 +9,10 @@
 #include <linux/sched/debug.h>
 #include <linux/kallsyms.h>
 #include <asm/ptrace.h>
+<<<<<<< HEAD
 #include <asm/sysrq.h>
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* This is declared by <linux/sched.h> */
 void show_regs(struct pt_regs *regs)

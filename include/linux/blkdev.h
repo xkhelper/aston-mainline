@@ -968,8 +968,11 @@ static inline void blk_queue_disable_write_zeroes(struct request_queue *q)
 /*
  * Access functions for manipulating queue properties
  */
+<<<<<<< HEAD
 extern void blk_limits_io_min(struct queue_limits *limits, unsigned int min);
 extern void blk_limits_io_opt(struct queue_limits *limits, unsigned int opt);
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void blk_set_queue_depth(struct request_queue *q, unsigned int depth);
 extern void blk_set_stacking_limits(struct queue_limits *lim);
 extern int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
@@ -1187,7 +1190,12 @@ static inline unsigned int queue_max_segment_size(const struct request_queue *q)
 	return q->limits.max_segment_size;
 }
 
+<<<<<<< HEAD
 static inline unsigned int queue_limits_max_zone_append_sectors(struct queue_limits *l)
+=======
+static inline unsigned int
+queue_limits_max_zone_append_sectors(const struct queue_limits *l)
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int max_sectors = min(l->chunk_sectors, l->max_hw_sectors);
 

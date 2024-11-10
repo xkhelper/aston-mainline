@@ -21,7 +21,11 @@
 #include "glob.h"
 #include "connection.h"
 #include "smb_common.h"
+<<<<<<< HEAD
 #include "smbstatus.h"
+=======
+#include "../common/smb2status.h"
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "transport_rdma.h"
 
 #define SMB_DIRECT_PORT_IWARP		5445
@@ -1405,8 +1409,13 @@ static int smb_direct_rdma_xmit(struct smb_direct_transport *t,
 	/* build rdma_rw_ctx for each descriptor */
 	desc_buf = buf;
 	for (i = 0; i < desc_num; i++) {
+<<<<<<< HEAD
 		msg = kzalloc(offsetof(struct smb_direct_rdma_rw_msg, sg_list) +
 			      sizeof(struct scatterlist) * SG_CHUNK_SIZE, GFP_KERNEL);
+=======
+		msg = kzalloc(struct_size(msg, sg_list, SG_CHUNK_SIZE),
+			      GFP_KERNEL);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!msg) {
 			ret = -ENOMEM;
 			goto out;

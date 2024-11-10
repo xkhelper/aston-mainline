@@ -357,6 +357,7 @@ int idpf_intr_req(struct idpf_adapter *adapter)
 		goto free_msix;
 	}
 
+<<<<<<< HEAD
 	if (adapter->req_vec_chunks) {
 		struct virtchnl2_vector_chunks *vchunks;
 		struct virtchnl2_alloc_vectors *ac;
@@ -375,6 +376,13 @@ int idpf_intr_req(struct idpf_adapter *adapter)
 
 		for (i = 0; i < v_actual; i++)
 			vecids[i] = i;
+=======
+	num_vec_ids = idpf_get_vec_ids(adapter, vecids, total_vecs,
+				       &adapter->req_vec_chunks->vchunks);
+	if (num_vec_ids < v_actual) {
+		err = -EINVAL;
+		goto free_vecids;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	for (vector = 0; vector < v_actual; vector++) {
@@ -1799,6 +1807,10 @@ static int idpf_init_hard_reset(struct idpf_adapter *adapter)
 	 */
 	err = idpf_vc_core_init(adapter);
 	if (err) {
+<<<<<<< HEAD
+=======
+		cancel_delayed_work_sync(&adapter->mbx_task);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		idpf_deinit_dflt_mbx(adapter);
 		goto unlock_mutex;
 	}
@@ -1873,7 +1885,11 @@ int idpf_initiate_soft_reset(struct idpf_vport *vport,
 	 * mess with. Nothing below should use those variables from new_vport
 	 * and should instead always refer to them in vport if they need to.
 	 */
+<<<<<<< HEAD
 	memcpy(new_vport, vport, offsetof(struct idpf_vport, link_speed_mbps));
+=======
+	memcpy(new_vport, vport, offsetof(struct idpf_vport, link_up));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Adjust resource parameters prior to reallocating resources */
 	switch (reset_cause) {
@@ -1919,7 +1935,11 @@ int idpf_initiate_soft_reset(struct idpf_vport *vport,
 	/* Same comment as above regarding avoiding copying the wait_queues and
 	 * mutexes applies here. We do not want to mess with those if possible.
 	 */
+<<<<<<< HEAD
 	memcpy(vport, new_vport, offsetof(struct idpf_vport, link_speed_mbps));
+=======
+	memcpy(vport, new_vport, offsetof(struct idpf_vport, link_up));
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (reset_cause == IDPF_SR_Q_CHANGE)
 		idpf_vport_alloc_vec_indexes(vport);

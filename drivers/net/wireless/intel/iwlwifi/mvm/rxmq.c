@@ -729,8 +729,11 @@ static bool iwl_mvm_reorder(struct iwl_mvm *mvm,
 	bool last_subframe =
 		desc->amsdu_info & IWL_RX_MPDU_AMSDU_LAST_SUBFRAME;
 	u8 tid = ieee80211_get_tid(hdr);
+<<<<<<< HEAD
 	u8 sub_frame_idx = desc->amsdu_info &
 			   IWL_RX_MPDU_AMSDU_SUBFRAME_IDX_MASK;
+=======
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct iwl_mvm_reorder_buf_entry *entries;
 	u32 sta_mask;
 	int index;
@@ -843,10 +846,15 @@ static bool iwl_mvm_reorder(struct iwl_mvm *mvm,
 	__skb_queue_tail(&entries[index].frames, skb);
 	buffer->num_stored++;
 
+<<<<<<< HEAD
 	if (amsdu) {
 		buffer->last_amsdu = sn;
 		buffer->last_sub_index = sub_frame_idx;
 	}
+=======
+	if (amsdu)
+		buffer->last_amsdu = sn;
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * We cannot trust NSSN for AMSDU sub-frames that are not the last.
@@ -2542,7 +2550,11 @@ void iwl_mvm_rx_bar_frame_release(struct iwl_mvm *mvm, struct napi_struct *napi,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	if (WARN(tid != baid_data->tid || sta_id > IWL_MVM_STATION_COUNT_MAX ||
+=======
+	if (WARN(tid != baid_data->tid || sta_id > IWL_STATION_COUNT_MAX ||
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 !(baid_data->sta_mask & BIT(sta_id)),
 		 "baid 0x%x is mapped to sta_mask:0x%x tid:%d, but BAR release received for sta:%d tid:%d\n",
 		 baid, baid_data->sta_mask, baid_data->tid, sta_id,

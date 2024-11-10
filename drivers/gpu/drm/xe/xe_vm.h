@@ -259,6 +259,11 @@ static inline struct dma_resv *xe_vm_resv(struct xe_vm *vm)
 	return drm_gpuvm_resv(&vm->gpuvm);
 }
 
+<<<<<<< HEAD
+=======
+void xe_vm_kill(struct xe_vm *vm, bool unlocked);
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * xe_vm_assert_held(vm) - Assert that the vm's reservation object is held.
  * @vm: The vm

@@ -16,6 +16,10 @@
 #include <linux/mm.h>
 #include <linux/swap.h>
 #include <linux/netfs.h>
+<<<<<<< HEAD
+=======
+#include <trace/events/netfs.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "internal.h"
 
 static int afs_file_mmap(struct file *file, struct vm_area_struct *vma);
@@ -242,9 +246,16 @@ static void afs_fetch_data_notify(struct afs_operation *op)
 
 	req->error = error;
 	if (subreq) {
+<<<<<<< HEAD
 		if (subreq->rreq->origin != NETFS_DIO_READ)
 			__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
 		netfs_subreq_terminated(subreq, error ?: req->actual_len, false);
+=======
+		subreq->rreq->i_size = req->file_size;
+		if (req->pos + req->actual_len >= req->file_size)
+			__set_bit(NETFS_SREQ_HIT_EOF, &subreq->flags);
+		netfs_read_subreq_terminated(subreq, error, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		req->subreq = NULL;
 	} else if (req->done) {
 		req->done(req);
@@ -262,6 +273,15 @@ static void afs_fetch_data_success(struct afs_operation *op)
 	afs_fetch_data_notify(op);
 }
 
+<<<<<<< HEAD
+=======
+static void afs_fetch_data_aborted(struct afs_operation *op)
+{
+	afs_check_for_remote_deletion(op);
+	afs_fetch_data_notify(op);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void afs_fetch_data_put(struct afs_operation *op)
 {
 	op->fetch.req->error = afs_op_error(op);
@@ -272,7 +292,11 @@ static const struct afs_operation_ops afs_fetch_data_operation = {
 	.issue_afs_rpc	= afs_fs_fetch_data,
 	.issue_yfs_rpc	= yfs_fs_fetch_data,
 	.success	= afs_fetch_data_success,
+<<<<<<< HEAD
 	.aborted	= afs_check_for_remote_deletion,
+=======
+	.aborted	= afs_fetch_data_aborted,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.failed		= afs_fetch_data_notify,
 	.put		= afs_fetch_data_put,
 };
@@ -294,7 +318,11 @@ int afs_fetch_data(struct afs_vnode *vnode, struct afs_read *req)
 	op = afs_alloc_operation(req->key, vnode->volume);
 	if (IS_ERR(op)) {
 		if (req->subreq)
+<<<<<<< HEAD
 			netfs_subreq_terminated(req->subreq, PTR_ERR(op), false);
+=======
+			netfs_read_subreq_terminated(req->subreq, PTR_ERR(op), false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return PTR_ERR(op);
 	}
 
@@ -305,14 +333,24 @@ int afs_fetch_data(struct afs_vnode *vnode, struct afs_read *req)
 	return afs_do_sync_operation(op);
 }
 
+<<<<<<< HEAD
 static void afs_issue_read(struct netfs_io_subrequest *subreq)
 {
+=======
+static void afs_read_worker(struct work_struct *work)
+{
+	struct netfs_io_subrequest *subreq = container_of(work, struct netfs_io_subrequest, work);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct afs_vnode *vnode = AFS_FS_I(subreq->rreq->inode);
 	struct afs_read *fsreq;
 
 	fsreq = afs_alloc_read(GFP_NOFS);
 	if (!fsreq)
+<<<<<<< HEAD
 		return netfs_subreq_terminated(subreq, -ENOMEM, false);
+=======
+		return netfs_read_subreq_terminated(subreq, -ENOMEM, false);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	fsreq->subreq	= subreq;
 	fsreq->pos	= subreq->start + subreq->transferred;
@@ -321,10 +359,23 @@ static void afs_issue_read(struct netfs_io_subrequest *subreq)
 	fsreq->vnode	= vnode;
 	fsreq->iter	= &subreq->io_iter;
 
+<<<<<<< HEAD
+=======
+	trace_netfs_sreq(subreq, netfs_sreq_trace_submit);
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	afs_fetch_data(fsreq->vnode, fsreq);
 	afs_put_read(fsreq);
 }
 
+<<<<<<< HEAD
+=======
+static void afs_issue_read(struct netfs_io_subrequest *subreq)
+{
+	INIT_WORK(&subreq->work, afs_read_worker);
+	queue_work(system_long_wq, &subreq->work);
+}
+
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int afs_symlink_read_folio(struct file *file, struct folio *folio)
 {
 	struct afs_vnode *vnode = AFS_FS_I(folio->mapping->host);
@@ -404,6 +455,10 @@ const struct netfs_request_ops afs_req_ops = {
 	.begin_writeback	= afs_begin_writeback,
 	.prepare_write		= afs_prepare_write,
 	.issue_write		= afs_issue_write,
+<<<<<<< HEAD
+=======
+	.retry_request		= afs_retry_request,
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void afs_add_open_mmap(struct afs_vnode *vnode)

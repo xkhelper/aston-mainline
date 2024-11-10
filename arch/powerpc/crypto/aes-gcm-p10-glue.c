@@ -5,7 +5,11 @@
  * Copyright 2022- IBM Inc. All rights reserved
  */
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/simd.h>
 #include <asm/switch_to.h>
 #include <crypto/aes.h>

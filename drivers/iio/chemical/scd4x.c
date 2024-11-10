@@ -11,7 +11,11 @@
  * https://www.sensirion.com/file/datasheet_scd4x
  */
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+#include <linux/unaligned.h>
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/crc8.h>
 #include <linux/delay.h>
 #include <linux/device.h>
